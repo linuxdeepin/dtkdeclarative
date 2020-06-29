@@ -1,0 +1,3 @@
+module QtQuick.Controls.Chameleon
+plugin qtquickcontrols2chameleonstyleplugin
+classname QtQuickControls2ChameleonStylePlugin

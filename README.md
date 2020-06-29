@@ -1,3 +1,3 @@
-# dtkdeclarative
+### dtkdeclarative
 
-* 一个基于dtk风格的QML工程
+Deepin Toolkit, QuQuick module for DDE look and feel 

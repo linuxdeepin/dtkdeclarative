@@ -1,22 +1,49 @@
-# Compiled Object files
+# C++ objects and libs
 *.slo
 *.lo
 *.o
-
-# Compiled Dynamic libraries
+*.a
+*.la
+*.lai
 *.so
+*.dll
 *.dylib
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
+# Qt-es
+object_script.*.Release
+object_script.*.Debug
+*_plugin_import.cpp
+/.qmake.cache
+/.qmake.stash
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.moc
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.qmlc
+*.jsc
+Makefile*
+*build-*
 
-build*/
-*.pro.user*
+# Qt unit tests
+target_wrapper.*
 
-# executeable files
-*.qm
+# QtCreator
+*.autosave
 
-# misc
-.vscode/
+# QtCreator Qml
+*.qmlproject.user
+*.qmlproject.user.*
+
+# QtCreator CMake
+CMakeLists.txt.user*
+
+bin
+cmake
+DtkGuis
+dtkgui_config.h
+qt_lib_dtkgui.pri
