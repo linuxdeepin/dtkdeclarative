@@ -1,0 +1,18 @@
+Source: dtkdeclarative
+Section: libs
+Priority: optional
+Maintainer: Deepin Packages Builder <packages@deepin.com>
+Build-Depends:
+ debhelper (>= 9),
+ pkg-config,
+ qt5-default,
+ qtbase5-dev,
+ qml-module-qtquick-controls2
+Standards-Version: 3.9.8    
+Homepage: http://www.deepin.org
+
+Package: qml-module-qtquick-controls2-styles-chameleon
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Deepin Tool Kit Qt Quick Controls 2 QML module
+ Dtkdeclarative is base library of Deepin Qt/QtQuick applications.

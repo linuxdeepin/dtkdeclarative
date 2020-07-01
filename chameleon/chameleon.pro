@@ -1,4 +1,5 @@
 TEMPLATE = lib
+CONFIG += plugin
 
 TARGET = qtquickcontrols2chameleonstyleplugin
 TARGETPATH = QtQuick/Controls.2/Chameleon
