@@ -7,7 +7,7 @@ TARGETPATH = QtQuick/Controls.2/Chameleon
 QT += qml quick
 
 include($$PWD/src/src.pri)
-include($$PWD/qml/qml.pri)
+include($$PWD/qml.pri)
 
 # Install *.so and qml files
 unix {

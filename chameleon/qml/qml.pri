@@ -1,1 +1,0 @@
-QML_FILES += \
