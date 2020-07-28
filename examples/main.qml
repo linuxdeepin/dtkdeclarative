@@ -8,6 +8,10 @@ Window {
     height: 480
     title: qsTr("Hello World")
 
+    BusyIndicator {
+        running: true
+    }
+
     Rectangle {
            id: frame
            clip: true

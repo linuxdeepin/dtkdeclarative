@@ -1,2 +1,3 @@
 QML_FILES += \
-    ScrollBar.qml
+    ScrollBar.qml \
+    BusyIndicator.qml
