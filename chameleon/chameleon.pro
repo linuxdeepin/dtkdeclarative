@@ -6,6 +6,8 @@ TARGETPATH = QtQuick/Controls.2/Chameleon
 
 QT += qml quick
 
+RESOURCES += chameleon.qrc
+
 include($$PWD/src/src.pri)
 include($$PWD/qml.pri)
 

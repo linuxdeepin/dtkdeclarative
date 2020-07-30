@@ -1,3 +1,6 @@
 QML_FILES += \
-    ScrollBar.qml \
-    BusyIndicator.qml
+    $$PWD/ScrollBar.qml \
+    $$PWD/BusyIndicator.qml \
+    $$PWD/CheckBox.qml \
+    $$PWD/RadioButton.qml \
+    $$PWD/Switch.qml

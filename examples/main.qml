@@ -1,6 +1,7 @@
 import QtQuick 2.11
 import QtQuick.Window 2.11
 import QtQuick.Controls 2.4
+import QtQuick.Layouts 1.11
 
 Window {
     visible: true
@@ -53,4 +54,58 @@ Window {
                anchors.bottom: parent.bottom
            }
        }
+
+    ColumnLayout {
+        id: radioFrame
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.leftMargin: 20
+        anchors.topMargin: 20
+
+        RadioButton {
+            checked: true
+            focus: true
+            text: qsTr("First")
+        }
+        RadioButton {
+            text: qsTr("Second")
+        }
+        RadioButton {
+            text: qsTr("Third")
+        }
+    }
+
+    ColumnLayout {
+        id: chckBx
+        anchors.left: radioFrame.right
+        anchors.leftMargin: 20
+        anchors.verticalCenter: radioFrame.verticalCenter
+
+        CheckBox {
+            checked: true
+            focus: true
+            text: qsTr("First")
+        }
+        CheckBox {
+            text: qsTr("Second")
+        }
+        CheckBox {
+            text: qsTr("Third")
+        }
+    }
+
+    ColumnLayout {
+        id: swtch
+        anchors.left: chckBx.right
+        anchors.leftMargin: 20
+        anchors.verticalCenter: radioFrame.verticalCenter
+
+        Switch {
+            width: 120
+            text: qsTr("Wi-Fi")
+        }
+        Switch {
+            text: qsTr("Bluetooth")
+        }
+    }
 }
