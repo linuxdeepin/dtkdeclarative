@@ -23,6 +23,7 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.4 as T
+import "PixelMetric.js" as PM
 
 T.RadioButton {
     id: control
@@ -34,28 +35,28 @@ T.RadioButton {
                                       indicator ? indicator.implicitHeight : 0) + topPadding + bottomPadding)
     baselineOffset: contentItem.y + contentItem.baselineOffset
 
-    padding: 6
-    spacing: 6
-    topPadding: padding + 6
-    bottomPadding: padding + 6
+    padding: PM.ControlPadding
+    spacing: PM.ControlSpacing
+    topPadding: padding + PM.ControlMargin
+    bottomPadding: padding + PM.ControlMargin
 
     indicator: Rectangle {
         x: text ? (control.mirrored ? control.width - width - control.rightPadding : control.leftPadding) : control.leftPadding + (control.availableWidth - width) / 2
         y: control.topPadding + (control.availableHeight - height) / 2
-        width:  21
-        height: width
+        width:  PM.RadioButton_Indicator_FocusWidth
+        height: PM.RadioButton_Indicator_FocusHeight
         border.color: control.focus ? control.palette.highlight : "transparent"
-        border.width: 2
+        border.width: PM.RadioButton_Indicator_FocusBorderWidth
         radius: height / 2
 
         Rectangle {
             x: (parent.width - width) / 2
             y: (parent.height - height) / 2
-            width: control.checked ? 14 : 13
-            height: width
+            width: control.checked ? PM.RadioButton_Indicator_CheckedWidth : PM.RadioButton_Indicator_UncheckedWidth
+            height: control.checked ? PM.RadioButton_Indicator_CheckedHeight : PM.RadioButton_Indicator_UncheckedHeight
             radius: height / 2
             border.color: control.checked ? control.palette.highlight : control.palette.buttonText
-            border.width: control.checked ? (width / 4) : 1
+            border.width: control.checked ? (width / 4) : PM.RadioButton_Indicator_UncheckeBorderWidth
         }
     }
 

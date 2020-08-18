@@ -23,6 +23,7 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.4 as T
+import "PixelMetric.js" as PM
 
 T.CheckBox {
     id: control
@@ -34,24 +35,24 @@ T.CheckBox {
                                       indicator ? indicator.implicitHeight : 0) + topPadding + bottomPadding)
     baselineOffset: contentItem.y + contentItem.baselineOffset
 
-    padding: 6
-    spacing: 6
+    padding: PM.ControlPadding
+    spacing: PM.ControlSpacing
 
     indicator: Rectangle {
-        implicitWidth: 21
-        implicitHeight: implicitWidth
+        implicitWidth: PM.CheckBox_Indicator_FocusWidth
+        implicitHeight: PM.CheckBox_Indicator_FocusHeight
         x: text ? (control.mirrored ? control.width - width - control.rightPadding : control.leftPadding) : control.leftPadding + (control.availableWidth - width) / 2
         y: control.topPadding + (control.availableHeight - height) / 2
         border.color: control.focus ? control.palette.highlight : "transparent"
-        border.width: 2
-        radius: 4
+        border.width: PM.CheckBox_Indicator_FocusBorderWidth
+        radius: PM.CheckBox_Indicator_FocusRadius
 
         ColorImage {
             x: (parent.width - width) / 2
             y: (parent.height - height) / 2
-            width: 15
-            height: width
-            defaultColor: control.palette.text
+            width: PM.CheckBox_Indicator_CheckedWidth
+            height: PM.CheckBox_Indicator_CheckedHeight
+            defaultColor: control.palette.changliangtext
             color: control.checkState === Qt.Checked ? control.palette.highlight : defaultColor
             source: "qrc:/assets/platformthemeplugin/icons/texts/checked_20px.svg"
             visible: control.checkState === Qt.Checked
@@ -60,19 +61,19 @@ T.CheckBox {
         Rectangle {
             x: (parent.width - width) / 2
             y: (parent.height - height) / 2
-            width: 13
-            height: width
-            radius: 2
+            width: PM.CheckBox_Indicator_UncheckedHeight
+            height: PM.CheckBox_Indicator_UncheckedHeight
+            radius: PM.CheckBox_Indicator_UncheckedRadius
             antialiasing: true
             border.color: control.palette.windowText
-            border.width: 1
+            border.width: PM.CheckBox_Indicator_UncheckedBorderWidth
             visible: control.checkState !== Qt.Checked
 
             Rectangle {
                 x: (parent.width - width) / 2
                 y: (parent.height - height) / 2
                 width: parent.width / 2
-                height: 2
+                height: PM.CheckBox_Indicator_PartiallyCheckedHeight
                 color: control.palette.windowText
                 visible: control.checkState === Qt.PartiallyChecked
             }

@@ -17,7 +17,7 @@ unix {
 
     # Qmldir file and qml files
     qmlfiles.base = $$_PRO_FILE_PWD_
-    qmlfiles.files = $$QML_FILES $$PWD/qmldir
+    qmlfiles.files = $$JS_FILES $$QML_FILES $$PWD/qmldir
     qmlfiles.path = $${target.path}
 
     INSTALLS += target qmlfiles

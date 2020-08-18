@@ -23,6 +23,8 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.4 as T
+import "PixelMetric.js" as PM
+
 
 T.Switch {
     id: control
@@ -34,24 +36,24 @@ T.Switch {
                                       indicator ? indicator.implicitHeight : 0) + topPadding + bottomPadding)
     baselineOffset: contentItem.y + contentItem.baselineOffset
 
-    padding: 6
-    spacing: 6
+    padding: PM.ControlPadding
+    spacing: PM.ControlSpacing
 
     indicator: Rectangle {
-        implicitWidth: 50
-        implicitHeight: 24
+        implicitWidth: PM.Switch_Indicator_Width
+        implicitHeight: PM.Switch_Indicator_Height
 
         x: text ? (control.mirrored ? control.width - width - control.rightPadding : control.leftPadding) : control.leftPadding + (control.availableWidth - width) / 2
         y: control.topPadding + (control.availableHeight - height) / 2
-        radius: 8
+        radius: PM.Switch_Radius
         color: control.palette.button
 
         Rectangle {
             x: Math.max(0, Math.min(parent.width - width, control.visualPosition * parent.width - (width / 2)))
             y: (parent.height - height) / 2
-            width: 30
-            height: 24
-            radius: 8
+            width: PM.Switch_Button_Width
+            height: PM.Switch_Button_Height
+            radius: PM.Switch_Radius
             antialiasing: true
             color: control.checked ? control.palette.highlight : control.palette.buttonText
 

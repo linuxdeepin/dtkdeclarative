@@ -1,3 +1,7 @@
+
+JS_FILES += \
+    $$PWD/PixelMetric.js
+
 QML_FILES += \
     $$PWD/ScrollBar.qml \
     $$PWD/BusyIndicator.qml \

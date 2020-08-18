@@ -25,6 +25,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtQuick.Controls.Fusion 2.4
 import QtQuick.Controls.Fusion.impl 2.4
+import "PixelMetric.js" as PM
 
 T.BusyIndicator {
     id: control
@@ -32,13 +33,13 @@ T.BusyIndicator {
     implicitWidth: contentItem.implicitWidth + leftPadding + rightPadding
     implicitHeight: contentItem.implicitHeight + topPadding + bottomPadding
 
-    padding: 6
+    padding: PM.ControlPadding
 
     SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
     contentItem: BusyIndicatorImpl {
-        implicitWidth: 28
-        implicitHeight: 28
+        implicitWidth: PM.BusyIndicator_ItemWidth
+        implicitHeight: PM.BusyIndicator_ItemHeight
         color: myPalette.text
 
         running: control.running
