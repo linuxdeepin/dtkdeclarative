@@ -7,4 +7,6 @@ QML_FILES += \
     $$PWD/BusyIndicator.qml \
     $$PWD/CheckBox.qml \
     $$PWD/RadioButton.qml \
-    $$PWD/Switch.qml
+    $$PWD/Switch.qml \
+    $$PWD/Slider.qml \
+    $$PWD/SliderHandle.qml

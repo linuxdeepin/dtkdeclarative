@@ -108,4 +108,15 @@ Window {
             text: qsTr("Bluetooth")
         }
     }
+
+    Slider {
+        id: slider
+        anchors.left: parent.left
+        anchors.top: radioFrame.bottom
+        orientation: Qt.Horizontal
+        stepSize: 10
+        from: 0
+        value: 30
+        to: 100
+    }
 }

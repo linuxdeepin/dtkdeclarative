@@ -25,6 +25,7 @@
 const ControlPadding = 6;
 const ControlMargin = 6;
 const ControlSpacing = 6;
+const ControlRadius = 8;
 
 // BusyIndicator
 const BusyIndicator_ItemWidth = 28;
@@ -69,5 +70,15 @@ const Switch_Button_Width = 30;
 const Switch_Button_Height = 24;
 
 const Switch_Radius = 8;
+
+// Slider
+const Slider_Handle_Width = 20;
+const Slider_Handle_Height = 24;
+
+const Slider_Groove_Width = 100;
+const Slider_Groove_height = 6;
+
+const Slider_Width = Slider_Handle_Width + Slider_Groove_Width;
+const Slider_Height = 60;
 
 
