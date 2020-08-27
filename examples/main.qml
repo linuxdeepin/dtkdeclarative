@@ -41,6 +41,11 @@ Window {
                anchors.top: parent.top
                anchors.right: parent.right
                anchors.bottom: parent.bottom
+
+               ToolTip.visible: hovered
+               ToolTip.delay: 1000
+               ToolTip.timeout: 5000
+               ToolTip.text: "This is a ScrollBar!!!"
            }
 
            ScrollBar {
