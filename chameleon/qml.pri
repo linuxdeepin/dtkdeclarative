@@ -10,4 +10,5 @@ QML_FILES += \
     $$PWD/Switch.qml \
     $$PWD/Slider.qml \
     $$PWD/SliderHandle.qml \
-    $$PWD/ToolTip.qml
+    $$PWD/ToolTip.qml \
+    $$PWD/ProgressBar.qml

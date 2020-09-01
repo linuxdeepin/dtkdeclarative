@@ -124,4 +124,16 @@ Window {
         value: 30
         to: 100
     }
+
+    ProgressBar {
+        id: proBar
+        anchors.left: slider.right
+        anchors.top: radioFrame.bottom
+        anchors.leftMargin: 20
+        anchors.margins: 20
+        from: 0
+        to: 100
+        value: 80
+        //        indeterminate: true
+    }
 }

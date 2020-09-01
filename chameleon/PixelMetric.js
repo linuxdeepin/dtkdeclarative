@@ -81,4 +81,7 @@ const Slider_Groove_height = 6;
 const Slider_Width = Slider_Handle_Width + Slider_Groove_Width;
 const Slider_Height = 60;
 
+// ProgressBar
+const ProgressBar_Width = 95;
+const ProgressBar_Height = 38;
 
