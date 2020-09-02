@@ -136,4 +136,48 @@ Window {
         value: 80
         //        indeterminate: true
     }
+
+    Rectangle {
+        id:swipe_view
+
+        width: 300
+        height: 150
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        SwipeView {
+            id: view
+
+            currentIndex: 1
+            anchors.fill: parent
+
+            Rectangle {
+                color: "red"
+                width: swipe_view.width
+                height: swipe_view.height
+            }
+
+            Rectangle {
+                color: "green"
+                width: swipe_view.width
+                height: swipe_view.height
+            }
+
+            Rectangle {
+                color: "blue"
+                width: swipe_view.width
+                height: swipe_view.height
+            }
+        }
+
+        PageIndicator {
+            id: indicator
+
+            count: view.count
+            currentIndex: view.currentIndex
+
+            anchors.bottom: view.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+    }
 }

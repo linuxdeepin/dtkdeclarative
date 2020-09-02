@@ -31,6 +31,10 @@ const ControlRadius = 8;
 const BusyIndicator_ItemWidth = 28;
 const BusyIndicator_ItemHeight = 28;
 
+//PageIndicator
+const PageIndicator_ImplicitWidth = 8;
+const PageIndicator_ImplicitHeight = 8;
+
 // CheckBox
 const CheckBox_Indicator_FocusWidth = 21;
 const CheckBox_Indicator_FocusHeight = 21;
