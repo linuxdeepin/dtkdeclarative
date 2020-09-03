@@ -26,6 +26,7 @@ const ControlPadding = 6;
 const ControlMargin = 6;
 const ControlSpacing = 6;
 const ControlRadius = 8;
+const ControlFocusBorderWidth = 2;
 
 // BusyIndicator
 const BusyIndicator_ItemWidth = 28;
@@ -91,6 +92,10 @@ const Slider_Height = 60;
 // ProgressBar
 const ProgressBar_Width = 95;
 const ProgressBar_Height = 38;
+
+// ComboBox
+const ComboBox_Width = 140
+const ComboBox_Heigt = 36
 
 // ItemDelegate
 const ItemDelegate_Height = 30;

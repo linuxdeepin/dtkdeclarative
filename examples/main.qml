@@ -210,4 +210,11 @@ Window {
             }
         }
     }
+    ComboBox {
+        id: cmbx
+        anchors.left: proBar.right
+        anchors.leftMargin: 20
+        anchors.top: proBar.top
+        model: ["First", "Second", "Third"]
+      }
 }

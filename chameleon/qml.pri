@@ -13,5 +13,6 @@ QML_FILES += \
     $$PWD/ToolTip.qml \
     $$PWD/ProgressBar.qml \
     $$PWD/PageIndicator.qml \
-    $$PWD/ItemDelegate.qml
-    $$PWD/StackView.qml
+    $$PWD/ItemDelegate.qml \
+    $$PWD/StackView.qml \
+    $$PWD/ComboBox.qml
