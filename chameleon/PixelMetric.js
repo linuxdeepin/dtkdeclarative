@@ -89,3 +89,5 @@ const Slider_Height = 60;
 const ProgressBar_Width = 95;
 const ProgressBar_Height = 38;
 
+// ItemDelegate
+const ItemDelegate_Height = 30;

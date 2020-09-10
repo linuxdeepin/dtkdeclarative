@@ -12,4 +12,5 @@ QML_FILES += \
     $$PWD/SliderHandle.qml \
     $$PWD/ToolTip.qml \
     $$PWD/ProgressBar.qml \
-    $$PWD/PageIndicator.qml
+    $$PWD/PageIndicator.qml \
+    $$PWD/ItemDelegate.qml
