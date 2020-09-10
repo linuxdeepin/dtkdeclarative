@@ -14,3 +14,4 @@ QML_FILES += \
     $$PWD/ProgressBar.qml \
     $$PWD/PageIndicator.qml \
     $$PWD/ItemDelegate.qml
+    $$PWD/StackView.qml

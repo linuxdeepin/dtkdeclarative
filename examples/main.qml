@@ -180,4 +180,34 @@ Window {
             anchors.horizontalCenter: parent.horizontalCenter
         }
     }
+
+    StackView {
+        id: stackview_1
+        width: 150
+        height: 150
+        anchors.right: parent.right
+        anchors.top: frame.bottom
+        anchors.topMargin: 50
+        anchors.rightMargin: 50
+
+        Component {
+             id: page
+             Rectangle {
+                 property real hue: Math.random()
+                 color: Qt.hsla(hue, 0.5, 0.8, 0.6)
+                 border.color: Qt.hsla(hue, 0.5, 0.5, 0.9)
+                 StackView.visible: true
+             }
+        }
+
+        initialItem: page
+
+        MouseArea {
+            id:area
+            anchors.fill: parent
+            onClicked: {
+                stackview_1.push(page)
+            }
+        }
+    }
 }
