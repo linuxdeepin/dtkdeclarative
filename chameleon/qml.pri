@@ -15,4 +15,5 @@ QML_FILES += \
     $$PWD/PageIndicator.qml \
     $$PWD/ItemDelegate.qml \
     $$PWD/StackView.qml \
-    $$PWD/ComboBox.qml
+    $$PWD/ComboBox.qml \
+    $$PWD/RoundButton.qml

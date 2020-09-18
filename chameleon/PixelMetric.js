@@ -39,6 +39,10 @@ const PageIndicator_ImplicitHeight = 8;
 //StackView
 const StackViewAnimationDuration = 200;
 
+//RoundButton
+const RoundButton_ImplicitWidth = 8;
+const RoundButton_ImplicitHeight = 8;
+
 // CheckBox
 const CheckBox_Indicator_FocusWidth = 21;
 const CheckBox_Indicator_FocusHeight = 21;
