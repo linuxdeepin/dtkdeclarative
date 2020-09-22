@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.11
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 
+
 Window {
     visible: true
     width: 640

@@ -46,6 +46,7 @@ T.CheckBox {
         border.color: control.focus ? control.palette.highlight : "transparent"
         border.width: PM.CheckBox_Indicator_FocusBorderWidth
         radius: PM.CheckBox_Indicator_FocusRadius
+        color: "transparent"
 
         ColorImage {
             x: (parent.width - width) / 2

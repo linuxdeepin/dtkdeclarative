@@ -16,4 +16,5 @@ QML_FILES += \
     $$PWD/ItemDelegate.qml \
     $$PWD/StackView.qml \
     $$PWD/ComboBox.qml \
-    $$PWD/RoundButton.qml
+    $$PWD/RoundButton.qml \
+    $$PWD/GroupBox.qml

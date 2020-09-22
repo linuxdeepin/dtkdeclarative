@@ -89,4 +89,19 @@ Rectangle {
         anchors.top: proBar.top
         model: ["First", "Second", "Third"]
     }
+
+    GroupBox {
+        id: gpBx
+        width: 180
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        anchors.top: slider.bottom
+        title: qsTr("Synchronize")
+        ColumnLayout {
+            anchors.fill: parent
+            CheckBox { text: qsTr("E-mail") }
+            CheckBox { text: qsTr("Calendar") }
+            CheckBox { text: qsTr("Contacts") }
+        }
+    }
 }
