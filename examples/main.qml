@@ -8,10 +8,11 @@ import QtQuick.Controls.Styles 1.4
 
 Window {
     visible: true
-    width: 640
-    height: 480
-    title: qsTr("Hello World")
-
+    width: Screen.desktopAvailableWidth / 5 * 3
+    height: Screen.desktopAvailableHeight / 5 * 3
+    title: qsTr("dtkdeclarative")
+    x:(Screen.desktopAvailableWidth - width) / 2
+    y:(Screen.desktopAvailableHeight - height) / 2
 
     TabView {
         id: frame
