@@ -40,6 +40,9 @@ T.RoundButton {
     icon.width: 16
     icon.height: 16
 
+    width: PM.RoundButton_ImplicitWidth
+    height: PM.RoundButton_ImplicitHeight
+
     contentItem: IconLabel {
         spacing: control.spacing
         mirrored: control.mirrored
@@ -52,8 +55,8 @@ T.RoundButton {
     }
 
     background: Rectangle {
-        implicitWidth: PM.RoundButton_ImplicitWidth
-        implicitHeight: PM.RoundButton_ImplicitHeight
+        implicitWidth: parent.width
+        implicitHeight: parent.height
         visible: !control.flat || control.down || control.checked
 
         gradient: Gradient {
