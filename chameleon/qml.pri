@@ -18,4 +18,6 @@ QML_FILES += \
     $$PWD/ComboBox.qml \
     $$PWD/RoundButton.qml \
     $$PWD/GroupBox.qml \
-    $$PWD/Frame.qml
+    $$PWD/Frame.qml \
+    $$PWD/MenuItem.qml \
+    $$PWD/Menu.qml

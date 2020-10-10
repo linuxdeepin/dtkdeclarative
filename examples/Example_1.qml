@@ -5,6 +5,38 @@ import QtQuick.Layouts 1.11
 
 Rectangle {
 
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        onClicked: {
+            if (mouse.button === Qt.RightButton)
+                contextMenu.popup()
+        }
+        onPressAndHold: {
+            if (mouse.source === Qt.MouseEventNotSynthesized)
+                contextMenu.popup()
+        }
+
+        Menu {
+            id: contextMenu
+            MenuItem { text: "Cut" }
+            MenuItem { text: "Copy" }
+            MenuItem {
+                text: "Paste"
+                checkable: true
+                checked: true
+            }
+            MenuSeparator { }
+            Menu {
+                title: "Find/Replace"
+                Action { text: "Find Next" }
+                Action { text: "Find Previous" }
+                Action { text: "Replace" }
+            }
+            MenuItem { text: "Exit" }
+        }
+    }
+
     ColumnLayout {
         id: radioFrame
         anchors.left: parent.left
