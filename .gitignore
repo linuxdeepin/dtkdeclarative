@@ -44,6 +44,7 @@ CMakeLists.txt.user*
 
 bin
 cmake
-DtkGuis
-dtkgui_config.h
-qt_lib_dtkgui.pri
+src/DtkDeclaratives
+src/dtkdeclarative_config.h
+src/qt_lib_dtkdeclarative.pri
+
