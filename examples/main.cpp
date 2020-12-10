@@ -23,6 +23,7 @@
 #include <QQuickStyle>
 
 #include <DQuickWindow>
+#include <DQMLGlobalObject>
 
 DQUICK_USE_NAMESPACE
 
@@ -37,6 +38,12 @@ int main(int argc, char *argv[])
     //这里为方便调试，直接使用这种方式注册，实际使用时直接安装对应的包即可使用 import com.deepin.dtk 1.0
     // 为防止冲突 这里使用 com.deepin.demo
     qmlRegisterType<DQuickWindow>("com.deepin.demo", 1, 0, "DWindow");
+
+    //DQMLGlobalObject 依赖 DWindowManagerHelper中枚举的定义，所以需要先注册
+    qmlRegisterType<DWindowManagerHelper>("com.deepin.demo", 1, 0, "DWindowManagerHelper");
+    qmlRegisterSingletonType<DQMLGlobalObject>("com.deepin.demo", 1, 0, "QMLGlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
+        return new DQMLGlobalObject;
+    });
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

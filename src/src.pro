@@ -15,17 +15,20 @@ HEADERS += \
     dtkdeclarative_global.h \
     dquickwindow.h \
     dapploader.h \
-    dqmlappplugininterface.h
+    dqmlappplugininterface.h \
+    dqmlglobalobject.h
 
 SOURCES += \
     dquickwindow.cpp \
-    dapploader.cpp
+    dapploader.cpp \
+    dqmlglobalobject.cpp
 
 includes.files += \
     $$PWD/*.h \
     $$PWD/DQuickWindow \
     $$PWD/DAppLoader \
-    $$PWD/DQmlAppPluginInterface
+    $$PWD/DQmlAppPluginInterface \
+    $$PWD/DQMLGlobalObject
 
 DTK_MODULE_NAME=$$TARGET
 load(dtk_build)

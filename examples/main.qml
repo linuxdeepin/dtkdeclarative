@@ -22,6 +22,16 @@ DWindow {
 
     Component.onCompleted: {
         console.log(root.isValid ? "DPlatformHandle有效" : "DPlatformHandle无效!!!!");
+        console.log("hasBlurWindow : ", QMLGlobalObject.hasBlurWindow ? "true" : "false");
+        console.log("windowManagerNameString : ", QMLGlobalObject.windowManagerNameString);
+
+        if (QMLGlobalObject.windowManagerName === DWindowManagerHelper.DeepinWM) {
+            console.log("windowManagerName : DeepinWM");
+        } else if (QMLGlobalObject.windowManagerName === DWindowManagerHelper.KWinWM) {
+            console.log("windowManagerName : KWinWM");
+        } else {
+            console.log("windowManagerName : OtherWM");
+        }
     }
 
     Rectangle {

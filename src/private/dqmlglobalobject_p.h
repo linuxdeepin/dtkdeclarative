@@ -15,24 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "qmlplugin_plugin.h"
-#include "dquickwindow.h"
-#include "dqmlglobalobject.h"
+#ifndef DQMLGLOBALOBJECT_P_H
+#define DQMLGLOBALOBJECT_P_H
 
-#include <qqml.h>
+#include <DObjectPrivate>
+#include <DObject>
+#include <DWindowManagerHelper>
+
+#include "dqmlglobalobject.h"
 
 DQUICK_BEGIN_NAMESPACE
 
-void QmlpluginPlugin::registerTypes(const char *uri)
+class DQMLGlobalObjectPrivate : public DTK_CORE_NAMESPACE::DObjectPrivate
 {
-    // @uri com.deepin.dtk
-    qmlRegisterType<DQuickWindow>(uri, 1, 0, "DWindow");
+public:
+    DQMLGlobalObjectPrivate(DQMLGlobalObject *qq);
 
-    //DQMLGlobalObject 依赖 DWindowManagerHelper中枚举的定义，所以需要先注册
-    qmlRegisterType<DWindowManagerHelper>(uri, 1, 0, "DWindowManagerHelper");
-    qmlRegisterSingletonType<DQMLGlobalObject>(uri, 1, 0, "QMLGlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
-        return new DQMLGlobalObject;
-    });
-}
+private:
+    Q_DECLARE_PUBLIC(DQMLGlobalObject)
+};
 
 DQUICK_END_NAMESPACE
+
+#endif // DQMLGLOBALOBJECT_P_H
