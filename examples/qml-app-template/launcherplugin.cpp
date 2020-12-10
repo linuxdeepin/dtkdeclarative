@@ -15,27 +15,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DQMLAPPPLUGININTERFACE_H
-#define DQMLAPPPLUGININTERFACE_H
+#include <QQmlContext>
 
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
+#include "launcherplugin.h"
 
-#include <dtkdeclarative_global.h>
-
-#define DQmlAppPluginInterface_iid "dtk.qml.app.plugin.interface"
-
-DQUICK_BEGIN_NAMESPACE
-
-class DQmlAppPluginInterface
+LauncherPlugin::LauncherPlugin(QObject *parent)
+    : QObject(parent)
 {
-public:
-    DQmlAppPluginInterface() = default;
-    virtual ~DQmlAppPluginInterface() = default;
-    virtual int main(QGuiApplication *app, QQmlApplicationEngine *engine) = 0;
-};
 
-DQUICK_END_NAMESPACE
+}
 
-Q_DECLARE_INTERFACE(DTK_QUICK_NAMESPACE::DQmlAppPluginInterface, DQmlAppPluginInterface_iid)
-#endif // DQMLAPPPLUGININTERFACE_H
+LauncherPlugin::~LauncherPlugin()
+{
+
+}
+
+int LauncherPlugin::main(QGuiApplication *app, QQmlApplicationEngine *engine)
+{
+    // 请在此处注册需要导入到QML中的C++类型
+    // 例如： engine->rootContext()->setContextProperty("Utils", new Utils);
+    engine->load(QUrl(QStringLiteral("qrc:/main.qml")));
+    if (engine->rootObjects().isEmpty())
+        return -1;
+
+    return app->exec();
+}

@@ -46,7 +46,7 @@ DAppLoader::DAppLoader(const QString &appName, const QString &appPath)
     }
 #endif
 
-    d->qmlPlugin = path + appName;
+    d->qmlPlugin = path + "/libdtkqml-" + appName + ".so";
 }
 
 /*!

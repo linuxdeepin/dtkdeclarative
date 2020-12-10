@@ -15,27 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DQMLAPPPLUGININTERFACE_H
-#define DQMLAPPPLUGININTERFACE_H
-
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
-#include <dtkdeclarative_global.h>
+#include "launcherplugin.h"
 
-#define DQmlAppPluginInterface_iid "dtk.qml.app.plugin.interface"
-
-DQUICK_BEGIN_NAMESPACE
-
-class DQmlAppPluginInterface
+// 此文件是QML应用的启动文件，一般无需修改
+// 请在LauncherPlugin::main()中实现所需功能
+int main(int argc, char *argv[])
 {
-public:
-    DQmlAppPluginInterface() = default;
-    virtual ~DQmlAppPluginInterface() = default;
-    virtual int main(QGuiApplication *app, QQmlApplicationEngine *engine) = 0;
-};
+    QGuiApplication app(argc, argv);
+    QQmlApplicationEngine engine;
 
-DQUICK_END_NAMESPACE
-
-Q_DECLARE_INTERFACE(DTK_QUICK_NAMESPACE::DQmlAppPluginInterface, DQmlAppPluginInterface_iid)
-#endif // DQMLAPPPLUGININTERFACE_H
+    LauncherPlugin plugin;
+    return plugin.main(&app, &engine);
+}

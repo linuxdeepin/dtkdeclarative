@@ -15,27 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DQMLAPPPLUGININTERFACE_H
-#define DQMLAPPPLUGININTERFACE_H
+import com.deepin.dtk 1.0
 
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
-
-#include <dtkdeclarative_global.h>
-
-#define DQmlAppPluginInterface_iid "dtk.qml.app.plugin.interface"
-
-DQUICK_BEGIN_NAMESPACE
-
-class DQmlAppPluginInterface
-{
-public:
-    DQmlAppPluginInterface() = default;
-    virtual ~DQmlAppPluginInterface() = default;
-    virtual int main(QGuiApplication *app, QQmlApplicationEngine *engine) = 0;
-};
-
-DQUICK_END_NAMESPACE
-
-Q_DECLARE_INTERFACE(DTK_QUICK_NAMESPACE::DQmlAppPluginInterface, DQmlAppPluginInterface_iid)
-#endif // DQMLAPPPLUGININTERFACE_H
+DWindow {
+    id: window
+    visible: true
+    width: 640
+    height: 480
+}

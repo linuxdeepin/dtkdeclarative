@@ -15,27 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DQMLAPPPLUGININTERFACE_H
-#define DQMLAPPPLUGININTERFACE_H
+#ifndef LAUNCHERPLUGIN_H
+#define LAUNCHERPLUGIN_H
 
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
+#include <DQmlAppPluginInterface>
 
-#include <dtkdeclarative_global.h>
-
-#define DQmlAppPluginInterface_iid "dtk.qml.app.plugin.interface"
-
-DQUICK_BEGIN_NAMESPACE
-
-class DQmlAppPluginInterface
+class LauncherPlugin : public QObject, public DTK_QUICK_NAMESPACE::DQmlAppPluginInterface
 {
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID DQmlAppPluginInterface_iid)
+    Q_INTERFACES(DTK_QUICK_NAMESPACE::DQmlAppPluginInterface)
 public:
-    DQmlAppPluginInterface() = default;
-    virtual ~DQmlAppPluginInterface() = default;
-    virtual int main(QGuiApplication *app, QQmlApplicationEngine *engine) = 0;
+    LauncherPlugin(QObject *parent = nullptr);
+    ~LauncherPlugin() override;
+
+    int main(QGuiApplication *app, QQmlApplicationEngine *engine) override;
 };
 
-DQUICK_END_NAMESPACE
-
-Q_DECLARE_INTERFACE(DTK_QUICK_NAMESPACE::DQmlAppPluginInterface, DQmlAppPluginInterface_iid)
-#endif // DQMLAPPPLUGININTERFACE_H
+#endif // LAUNCHERPLUGIN_H
