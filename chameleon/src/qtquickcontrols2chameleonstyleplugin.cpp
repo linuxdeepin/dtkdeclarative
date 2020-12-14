@@ -16,16 +16,16 @@
  */
 #include "qtquickcontrols2chameleonstyleplugin.h"
 
-QtQuickControls2ChameleonStylePlugin::QtQuickControls2ChameleonStylePlugin(QQuickItem *parent)
-    : QQuickItem(parent)
-{
-    // By default, QQuickItem does not draw anything. If you subclass
-    // QQuickItem to create a visual item, you will need to uncomment the
-    // following line and re-implement updatePaintNode()
+#include <qqml.h>
 
-    // setFlag(ItemHasContents, true);
+#ifdef USE_QQuickStylePlugin
+QString QtQuickControls2ChameleonStylePlugin::name() const
+{
+    return QStringLiteral("Chameleon");
 }
+#endif
 
-QtQuickControls2ChameleonStylePlugin::~QtQuickControls2ChameleonStylePlugin()
+void QtQuickControls2ChameleonStylePlugin::registerTypes(const char *uri)
 {
+    qmlRegisterModule(uri, 1, 0);
 }

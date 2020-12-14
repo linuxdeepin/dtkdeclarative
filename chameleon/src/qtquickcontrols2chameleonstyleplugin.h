@@ -17,16 +17,27 @@
 #ifndef QTQUICKCONTROLS2CHAMELEONSTYLEPLUGIN_H
 #define QTQUICKCONTROLS2CHAMELEONSTYLEPLUGIN_H
 
-#include <QQuickItem>
+#ifdef USE_QQuickStylePlugin
+#include <private/qquickstyleplugin_p.h>
+#else
+#include <QQmlExtensionPlugin>
+#endif
 
-class QtQuickControls2ChameleonStylePlugin : public QQuickItem
+class QtQuickControls2ChameleonStylePlugin
+#ifdef USE_QQuickStylePlugin
+        : public QQuickStylePlugin
+#else
+        : public QQmlExtensionPlugin
+#endif
 {
     Q_OBJECT
-    Q_DISABLE_COPY(QtQuickControls2ChameleonStylePlugin)
+    Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
 
 public:
-    QtQuickControls2ChameleonStylePlugin(QQuickItem *parent = nullptr);
-    ~QtQuickControls2ChameleonStylePlugin();
+#ifdef USE_QQuickStylePlugin
+    QString name() const override;
+#endif
+    void registerTypes(const char *uri) override;
 };
 
 #endif // QTQUICKCONTROLS2CHAMELEONSTYLEPLUGIN_H

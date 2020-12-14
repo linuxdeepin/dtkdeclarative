@@ -5,6 +5,10 @@ TARGET = qtquickcontrols2chameleonstyleplugin
 TARGETPATH = QtQuick/Controls.2/Chameleon
 
 QT += qml quick
+qtHaveModule(quickcontrols2-private) {
+    QT += quickcontrols2-private
+    DEFINES += USE_QQuickStylePlugin
+}
 
 RESOURCES += chameleon.qrc
 
