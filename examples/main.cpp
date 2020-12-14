@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 
     //DQMLGlobalObject 依赖 DWindowManagerHelper中枚举的定义，所以需要先注册
     qmlRegisterType<DWindowManagerHelper>("com.deepin.demo", 1, 0, "DWindowManagerHelper");
-    qmlRegisterSingletonType<DQMLGlobalObject>("com.deepin.demo", 1, 0, "QMLGlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
+    qmlRegisterSingletonType<DQMLGlobalObject>("com.deepin.demo", 1, 0, "DGlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
         return new DQMLGlobalObject;
     });
 

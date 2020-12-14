@@ -5,6 +5,9 @@ TEMPLATE = lib
 QT += dtkcore dtkgui core quick
 CONFIG += internal_module
 
+# 龙芯架构上没有默认添加PT_GNU_STACK-section,所以此处手动指定一下
+contains(QMAKE_HOST.arch, mips.*): QMAKE_LFLAGS_SHLIB += "-Wl,-z,noexecstack"
+
 isEmpty(DTK_QML_APP_PLUGIN_PATH) {
     DTK_QML_APP_PLUGIN_PATH = $$LIB_INSTALL_DIR/$$TARGET/qml-app
 }

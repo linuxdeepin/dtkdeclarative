@@ -30,7 +30,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
 
     //DQMLGlobalObject 依赖 DWindowManagerHelper中枚举的定义，所以需要先注册
     qmlRegisterType<DWindowManagerHelper>(uri, 1, 0, "DWindowManagerHelper");
-    qmlRegisterSingletonType<DQMLGlobalObject>(uri, 1, 0, "QMLGlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
+    qmlRegisterSingletonType<DQMLGlobalObject>(uri, 1, 0, "DGlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
         return new DQMLGlobalObject;
     });
 }
