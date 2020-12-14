@@ -25,6 +25,7 @@ DQUICK_BEGIN_NAMESPACE
 
 void QmlpluginPlugin::registerTypes(const char *uri)
 {
+    qmlRegisterModule(uri, 1, 0);
     // @uri com.deepin.dtk
     qmlRegisterType<DQuickWindow>(uri, 1, 0, "DWindow");
 

@@ -2,10 +2,11 @@ QT += quick quickcontrols2 dtkgui
 CONFIG += c++11
 
 unix* {
-    LIBS += -L$$OUT_PWD/../src -ldtkdeclarative
+    LIBS += -L$$OUT_PWD/../src -ldtkdeclarative \
+            -L$$OUT_PWD/../qmlplugin -ldtkdeclarativeplugin
 }
 
-INCLUDEPATH += $$PWD/../src
+INCLUDEPATH += $$PWD/../src $$PWD/../qmlplugin
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
