@@ -15,28 +15,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DWINDOW_P_H
-#define DWINDOW_P_H
+#ifndef DPLATFORMTHEMEPROXY_P_H
+#define DPLATFORMTHEMEPROXY_P_H
 
 #include <DObjectPrivate>
 #include <DObject>
-#include <DPlatformHandle>
+#include <DPlatformTheme>
 
-#include "dquickwindow.h"
+#include "dplatformthemeproxy.h"
 
 DQUICK_BEGIN_NAMESPACE
 
-class DQuickWindowPrivate : public DTK_CORE_NAMESPACE::DObjectPrivate
+class DPlatformThemeProxyPrivate : public DTK_CORE_NAMESPACE::DObjectPrivate
 {
 public:
-    DQuickWindowPrivate(DQuickWindow *qq);
+    DPlatformThemeProxyPrivate(DPlatformThemeProxy *qq);
 
-    DPlatformHandle *handle;
+    DPlatformTheme *proxy;
 
 private:
-    D_DECLARE_PUBLIC(DQuickWindow)
+    D_DECLARE_PUBLIC(DPlatformThemeProxy)
 };
 
 DQUICK_END_NAMESPACE
 
-#endif //DWINDOW_P_H
+#endif // DPLATFORMTHEMEPROXY_P_H

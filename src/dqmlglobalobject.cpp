@@ -20,6 +20,7 @@
 
 #include <DObjectPrivate>
 #include <DObject>
+#include <DGuiApplicationHelper>
 
 DGUI_USE_NAMESPACE
 
@@ -67,6 +68,28 @@ QString DQMLGlobalObject::windowManagerNameString() const
 DWindowManagerHelper::WMName DQMLGlobalObject::windowManagerName() const
 {
     return DWindowManagerHelper::instance()->windowManagerName();
+}
+
+DPlatformThemeProxy *DQMLGlobalObject::applicationTheme() const
+{
+    D_DC(DQMLGlobalObject);
+
+    if (!d->applicationThemeProxy) {
+        d->applicationThemeProxy = new DPlatformThemeProxy(DGuiApplicationHelper::instance()->applicationTheme(), const_cast<DQMLGlobalObject *>(this));
+    }
+
+    return d->applicationThemeProxy;
+}
+
+DPlatformThemeProxy *DQMLGlobalObject::systemTheme() const
+{
+    D_DC(DQMLGlobalObject);
+
+    if (!d->systemThemeProxy) {
+        d->systemThemeProxy = new DPlatformThemeProxy(DGuiApplicationHelper::instance()->systemTheme(), const_cast<DQMLGlobalObject *>(this));
+    }
+
+    return d->systemThemeProxy;
 }
 
 DQUICK_END_NAMESPACE

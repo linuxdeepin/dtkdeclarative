@@ -90,7 +90,7 @@ Q_SIGNALS:
     void enableBlurWindowChanged();
 
 private:
-    Q_DECLARE_PRIVATE(DQuickWindow)
+    D_DECLARE_PRIVATE(DQuickWindow)
 };
 
 DQUICK_END_NAMESPACE

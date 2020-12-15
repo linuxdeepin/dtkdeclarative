@@ -19,19 +19,22 @@ HEADERS += \
     dquickwindow.h \
     dapploader.h \
     dqmlappplugininterface.h \
-    dqmlglobalobject.h
+    dqmlglobalobject.h \
+    dplatformthemeproxy.h
 
 SOURCES += \
     dquickwindow.cpp \
     dapploader.cpp \
-    dqmlglobalobject.cpp
+    dqmlglobalobject.cpp \
+    dplatformthemeproxy.cpp
 
 includes.files += \
     $$PWD/*.h \
     $$PWD/DQuickWindow \
     $$PWD/DAppLoader \
     $$PWD/DQmlAppPluginInterface \
-    $$PWD/DQMLGlobalObject
+    $$PWD/DQMLGlobalObject \
+    $$PWD/DPlatformThemeProxy
 
 DTK_MODULE_NAME=$$TARGET
 load(dtk_build)

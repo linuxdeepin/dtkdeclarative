@@ -21,6 +21,7 @@
 #include <DObjectPrivate>
 #include <DObject>
 #include <DWindowManagerHelper>
+#include <DPlatformThemeProxy>
 
 #include "dqmlglobalobject.h"
 
@@ -31,8 +32,11 @@ class DQMLGlobalObjectPrivate : public DTK_CORE_NAMESPACE::DObjectPrivate
 public:
     DQMLGlobalObjectPrivate(DQMLGlobalObject *qq);
 
+    mutable DPlatformThemeProxy *applicationThemeProxy = nullptr;
+    mutable DPlatformThemeProxy *systemThemeProxy = nullptr;
+
 private:
-    Q_DECLARE_PUBLIC(DQMLGlobalObject)
+    D_DECLARE_PUBLIC(DQMLGlobalObject)
 };
 
 DQUICK_END_NAMESPACE

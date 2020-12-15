@@ -22,6 +22,8 @@
 
 #include <dtkdeclarative_global.h>
 #include <DWindowManagerHelper>
+#include <DPlatformThemeProxy>
+#include <DQuickWindow>
 
 DGUI_USE_NAMESPACE
 
@@ -37,6 +39,8 @@ class DQMLGlobalObject : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(bool hasNoTitlebar READ hasNoTitlebar NOTIFY hasNoTitlebarChanged)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::WMName windowManagerName READ windowManagerName)
     Q_PROPERTY(QString windowManagerNameString READ windowManagerNameString)
+    Q_PROPERTY(DPlatformThemeProxy *applicationTheme READ applicationTheme)
+    Q_PROPERTY(DPlatformThemeProxy *systemTheme READ systemTheme)
 
 public:
     explicit DQMLGlobalObject(QObject *parent = nullptr);
@@ -49,13 +53,16 @@ public:
     DWindowManagerHelper::WMName windowManagerName() const;
     QString windowManagerNameString() const;
 
+    DPlatformThemeProxy *applicationTheme() const;
+    DPlatformThemeProxy *systemTheme() const;
+
 Q_SIGNALS:
     void hasBlurWindowChanged();
     void hasCompositeChanged();
     void hasNoTitlebarChanged();
 
 private:
-    Q_DECLARE_PRIVATE(DQMLGlobalObject)
+    D_DECLARE_PRIVATE(DQMLGlobalObject)
 };
 
 DQUICK_END_NAMESPACE

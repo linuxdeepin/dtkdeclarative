@@ -32,6 +32,14 @@ DWindow {
         } else {
             console.log("windowManagerName : OtherWM");
         }
+
+        console.log("test applicationTheme info : " , DGlobalObject.applicationTheme.window, DGlobalObject.applicationTheme.themeName);
+        console.log("test systemTheme info : " , DGlobalObject.systemTheme.window, DGlobalObject.systemTheme.themeName);
+
+        //测试DPlatformThemeProxy信号传递(控制中心切换主题测试)
+        DGlobalObject.applicationTheme.themeNameChanged.connect(function(themeName) {
+            console.log("applicationTheme themeNameChanged : ", themeName);
+        });
     }
 
     Rectangle {
