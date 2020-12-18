@@ -41,6 +41,7 @@ int main(int argc, char *argv[])
     plugin.registerTypes("com.deepin.demo");
 
     QQmlApplicationEngine engine;
+    plugin.initializeEngine(&engine, nullptr);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;

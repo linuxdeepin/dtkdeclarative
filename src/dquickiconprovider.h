@@ -15,22 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#ifndef DQUICKICONPROVIDER_H
+#define DQUICKICONPROVIDER_H
 
-#include <QQmlExtensionPlugin>
+#include <QQuickImageProvider>
 
 #include <dtkdeclarative_global.h>
 
 DQUICK_BEGIN_NAMESPACE
 
-class QmlpluginPlugin : public QQmlExtensionPlugin
+class DQuickIconProvider : public QQuickImageProvider
 {
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
-
 public:
-    void registerTypes(const char *uri) override;
-    void initializeEngine(QQmlEngine *engine, const char *uri) override;
+    DQuickIconProvider();
+
+protected:
+    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize) override;
 };
 
 DQUICK_END_NAMESPACE
+
+#endif // DQUICKICONPROVIDER_H

@@ -15,22 +15,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#ifndef DQUICKICONFINDER_P_H
+#define DQUICKICONFINDER_P_H
 
-#include <QQmlExtensionPlugin>
+#include <DObjectPrivate>
 
-#include <dtkdeclarative_global.h>
+#include "dquickiconfinder.h"
 
 DQUICK_BEGIN_NAMESPACE
 
-class QmlpluginPlugin : public QQmlExtensionPlugin
+class DQuickIconFinderPrivate : public DTK_CORE_NAMESPACE::DObjectPrivate
 {
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
-
 public:
-    void registerTypes(const char *uri) override;
-    void initializeEngine(QQmlEngine *engine, const char *uri) override;
+    explicit DQuickIconFinderPrivate(DQuickIconFinder *qq);
+    void init();
+    void updateUrl();
+    QUrlQuery getUrlQuery();
+
+    QString name;
+    DQuickIconFinder::State state;
+    DQuickIconFinder::Mode mode;
+    QSize size;
+    QColor color;
+    QIcon icon;
+    QUrl url;
+
+private:
+    D_DECLARE_PUBLIC(DQuickIconFinder)
 };
 
 DQUICK_END_NAMESPACE
+
+#endif // DQUICKICONFINDER_P_H

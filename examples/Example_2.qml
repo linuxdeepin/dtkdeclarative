@@ -2,6 +2,7 @@ import QtQuick 2.11
 import QtQuick.Window 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
+import com.deepin.demo 1.0
 
 
 Rectangle {
@@ -12,6 +13,19 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
 
+        DIcon {
+            name: "dde-file-manager"
+            iconSize: Qt.size(100, 100)
+        }
+        DIcon {
+            name: "edit"
+            iconSize: Qt.size(100, 100)
+            color: "red"
+        }
+
+        BusyIndicator {
+            running: true
+        }
         BusyIndicator {
             running: true
         }

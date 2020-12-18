@@ -21,14 +21,18 @@ HEADERS += \
     dqmlappplugininterface.h \
     dqmlglobalobject.h \
     dplatformthemeproxy.h \
-    dquickitemviewport.h
+    dquickitemviewport.h \
+    dquickiconprovider.h \
+    dquickiconfinder.h
 
 SOURCES += \
     dquickwindow.cpp \
     dapploader.cpp \
     dqmlglobalobject.cpp \
     dplatformthemeproxy.cpp \
-    dquickitemviewport.cpp
+    dquickitemviewport.cpp \
+    dquickiconprovider.cpp \
+    dquickiconfinder.cpp
 
 includes.files += \
     $$PWD/*.h \
@@ -40,6 +44,7 @@ includes.files += \
     $$PWD/DQuickItemDuplicator
 
 RESOURCES += $$PWD/dtkdeclarative_assets.qrc
+    $$PWD/DQuickIconFinder
 
 DTK_MODULE_NAME=$$TARGET
 load(dtk_build)
@@ -57,4 +62,8 @@ load(dtk_module)
 
 DISTFILES += \
     shaders/quickitemduplicator.frag \
-    shaders/quickitemduplicator-opaque.frag
+    shaders/quickitemduplicator-opaque.frag \
+    DIcon.qml
+
+RESOURCES += \
+    dtkdeclarative_qml.qrc

@@ -15,22 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+import QtQuick 2.0
+import com.deepin.dtk 1.0
 
-#include <QQmlExtensionPlugin>
+Image {
+    property alias name: finder.name
+    property alias state: finder.state
+    property alias mode: finder.mode
+    property alias iconSize: finder.size
+    property alias color: finder.color
 
-#include <dtkdeclarative_global.h>
+    DIconFinder {
+        id: finder
+    }
+    source: finder.url
+}
 
-DQUICK_BEGIN_NAMESPACE
-
-class QmlpluginPlugin : public QQmlExtensionPlugin
-{
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
-
-public:
-    void registerTypes(const char *uri) override;
-    void initializeEngine(QQmlEngine *engine, const char *uri) override;
-};
-
-DQUICK_END_NAMESPACE

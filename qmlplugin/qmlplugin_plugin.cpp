@@ -19,7 +19,10 @@
 #include "dquickwindow.h"
 #include "dqmlglobalobject.h"
 #include "dquickitemviewport.h"
+#include "dquickiconprovider.h"
+#include "dquickiconfinder.h"
 
+#include <QQmlEngine>
 #include <qqml.h>
 
 DQUICK_BEGIN_NAMESPACE
@@ -29,6 +32,9 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     qmlRegisterModule(uri, 1, 0);
     // @uri com.deepin.dtk
     qmlRegisterType<DQuickWindow>(uri, 1, 0, "DWindow");
+    qmlRegisterType<DQuickIconFinder>(uri, 1, 0, "DIconFinder");
+    // DIcon 是由　Image 和　IconFinder　封装成的一个QML类型
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DIcon.qml")), uri, 1, 0, "DIcon");
 
     //DQMLGlobalObject 依赖 DWindowManagerHelper中枚举的定义，所以需要先注册
     qmlRegisterType<DWindowManagerHelper>(uri, 1, 0, "DWindowManagerHelper");
@@ -36,6 +42,12 @@ void QmlpluginPlugin::registerTypes(const char *uri)
         return new DQMLGlobalObject;
     });
     qmlRegisterType<DQuickItemViewport>(uri, 1, 0, "DItemViewport");
+}
+
+void QmlpluginPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
+{
+    engine->addImageProvider("dtk.icon", new DQuickIconProvider);
+    QQmlExtensionPlugin::initializeEngine(engine, uri);
 }
 
 DQUICK_END_NAMESPACE

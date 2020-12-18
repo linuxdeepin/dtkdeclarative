@@ -15,22 +15,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include <QIcon>
+#include <QUrlQuery>
 
-#include <QQmlExtensionPlugin>
-
-#include <dtkdeclarative_global.h>
+#include "dquickiconprovider.h"
+#include "dquickiconfinder.h"
 
 DQUICK_BEGIN_NAMESPACE
 
-class QmlpluginPlugin : public QQmlExtensionPlugin
+DQuickIconProvider::DQuickIconProvider()
+    : QQuickImageProvider(QQuickImageProvider::Pixmap)
 {
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
 
-public:
-    void registerTypes(const char *uri) override;
-    void initializeEngine(QQmlEngine *engine, const char *uri) override;
-};
+}
+
+QPixmap DQuickIconProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
+{
+    Q_UNUSED(requestedSize);
+    Q_UNUSED(size);
+
+    auto obj = DQuickIconFinder::queryToObject(id);
+    if (!obj) {
+        return QPixmap();
+    }
+
+    return obj->pixmap();
+}
 
 DQUICK_END_NAMESPACE
