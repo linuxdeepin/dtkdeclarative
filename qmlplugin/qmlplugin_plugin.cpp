@@ -18,6 +18,7 @@
 #include "qmlplugin_plugin.h"
 #include "dquickwindow.h"
 #include "dqmlglobalobject.h"
+#include "dquickitemviewport.h"
 
 #include <qqml.h>
 
@@ -34,6 +35,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     qmlRegisterSingletonType<DQMLGlobalObject>(uri, 1, 0, "DGlobalObject", [](QQmlEngine *, QJSEngine *) -> QObject * {
         return new DQMLGlobalObject;
     });
+    qmlRegisterType<DQuickItemViewport>(uri, 1, 0, "DItemViewport");
 }
 
 DQUICK_END_NAMESPACE

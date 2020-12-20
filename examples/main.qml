@@ -88,6 +88,10 @@ DWindow {
             title: "Example_2"
             Example_2 {}
         }
+        Tab {
+            title: "DItemViewport"
+            Example_3 {}
+        }
 
         SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
