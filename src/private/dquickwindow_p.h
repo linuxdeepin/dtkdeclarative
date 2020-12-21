@@ -32,6 +32,7 @@ public:
     DQuickWindowPrivate(DQuickWindow *qq);
 
     DPlatformHandle *handle;
+    DWindowManagerHelper::WmWindowTypes wmWindowTypes;
 
 private:
     D_DECLARE_PUBLIC(DQuickWindow)

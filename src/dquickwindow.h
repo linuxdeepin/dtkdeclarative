@@ -20,6 +20,7 @@
 #include <DObject>
 
 #include <dtkdeclarative_global.h>
+#include <DWindowManagerHelper>
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -39,6 +40,7 @@ class DQuickWindow : public QQuickWindow, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(bool enableSystemResize READ enableSystemResize WRITE setEnableSystemResize NOTIFY enableSystemResizeChanged)
     Q_PROPERTY(bool enableSystemMove READ enableSystemMove WRITE setEnableSystemMove NOTIFY enableSystemMoveChanged)
     Q_PROPERTY(bool enableBlurWindow READ enableBlurWindow WRITE setEnableBlurWindow NOTIFY enableBlurWindowChanged)
+    Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes READ wmWindowTypes WRITE setWmWindowTypes NOTIFY wmWindowTypesChanged)
 
 public:
     explicit DQuickWindow(QWindow *parent = nullptr);
@@ -62,6 +64,8 @@ public:
     bool enableSystemMove() const;
     bool enableBlurWindow() const;
 
+    DGUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes() const;
+
 public Q_SLOTS:
     void setWindowRadius(int windowRadius);
 
@@ -77,6 +81,8 @@ public Q_SLOTS:
     void setEnableSystemMove(bool enableSystemMove);
     void setEnableBlurWindow(bool enableBlurWindow);
 
+    void setWmWindowTypes(DGUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes);
+
 Q_SIGNALS:
     void windowRadiusChanged();
     void borderWidthChanged();
@@ -88,6 +94,7 @@ Q_SIGNALS:
     void enableSystemResizeChanged();
     void enableSystemMoveChanged();
     void enableBlurWindowChanged();
+    void wmWindowTypesChanged(DGUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes);
 
 private:
     D_DECLARE_PRIVATE(DQuickWindow)

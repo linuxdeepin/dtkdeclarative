@@ -24,6 +24,7 @@ DQUICK_BEGIN_NAMESPACE
 
 DQuickWindowPrivate::DQuickWindowPrivate(DQuickWindow *qq)
     : DTK_CORE_NAMESPACE::DObjectPrivate(qq)
+    , wmWindowTypes(DWindowManagerHelper::UnknowWindowType)
 {
 }
 
@@ -244,6 +245,17 @@ bool DQuickWindow::enableBlurWindow() const
 }
 
 /*!
+ * \~chinese \brief DQuickWindow::wmWindowTypes 返回此窗口在窗口管理器级别的窗口类型
+ * \~chinese 需要注意的是，此值只是内部状态的记录，只会在调用 \a setWmWindowTypes
+ * \~chinese 时更新，默认值为 \a DWindowManagerHelper::UnknowWindowType
+ */
+DWindowManagerHelper::WmWindowTypes DQuickWindow::wmWindowTypes() const
+{
+    D_DC(DQuickWindow);
+    return d->wmWindowTypes;
+}
+
+/*!
  * \~chinese \brief DQuickWindow::setWindowRadius　设定窗口的圆角
  * \~chinese \param windowRadius　窗口的圆角值
  */
@@ -391,6 +403,26 @@ void DQuickWindow::setEnableBlurWindow(bool enableBlurWindow)
     }
 
     d->handle->setEnableBlurWindow(enableBlurWindow);
+}
+
+/*!
+ * \~chinese \brief DQuickWindow::setWmWindowTypes 为此窗口设置与本地窗口管理器
+ * \~chinese 息息相关的窗口类型，这些类型不保证在所有平台下都能生效，因此可能会影响程序
+ * \~chinese 的跨平台行为，请尽量使用 \a QWindow::setFlags 设置所需要的窗口类型。
+ * \~chinese \param wmWindowTypes 新的窗口类型，此枚举值可组合使用
+ * \~chinese \note 调用此接口设置的窗口类型会与 \a QWindow::flags 中控制窗口类型的
+ * \~chinese 部分共同生效
+ */
+void DQuickWindow::setWmWindowTypes(DWindowManagerHelper::WmWindowTypes wmWindowTypes)
+{
+    D_D(DQuickWindow);
+
+    if (d->wmWindowTypes == wmWindowTypes)
+        return;
+
+    d->wmWindowTypes = wmWindowTypes;
+    DWindowManagerHelper::setWmWindowTypes(this, wmWindowTypes);
+    Q_EMIT wmWindowTypesChanged(d->wmWindowTypes);
 }
 
 DQUICK_END_NAMESPACE

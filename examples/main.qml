@@ -14,6 +14,7 @@ DWindow {
     title: qsTr("dtkdeclarative")
     x:(Screen.desktopAvailableWidth - width) / 2
     y:(Screen.desktopAvailableHeight - height) / 2
+//    wmWindowTypes: DWindowManagerHelper.Desktop
 
     // 测试DWindow的属性
     windowRadius: 16
@@ -21,6 +22,7 @@ DWindow {
     borderWidth: 1
 
     Component.onCompleted: {
+        console.log(wmWindowTypes)
         console.log(root.isValid ? "DPlatformHandle有效" : "DPlatformHandle无效!!!!");
         console.log("hasBlurWindow : ", DGlobalObject.hasBlurWindow ? "true" : "false");
         console.log("windowManagerNameString : ", DGlobalObject.windowManagerNameString);
