@@ -21,6 +21,14 @@ DWindow {
     borderColor: "red"
     borderWidth: 1
 
+    DFontManager {
+        id: font_manager
+        fontGenericPixelSize: 13
+        onFontGenericPixelSizeChanged: {
+            console.log("font_manager onFontGenericPixelSizeChanged ..........");
+        }
+    }
+
     Component.onCompleted: {
         console.log(wmWindowTypes)
         console.log(root.isValid ? "DPlatformHandle有效" : "DPlatformHandle无效!!!!");
@@ -42,6 +50,12 @@ DWindow {
         DGlobalObject.applicationTheme.themeNameChanged.connect(function(themeName) {
             console.log("applicationTheme themeNameChanged : ", themeName);
         });
+
+        //在控制中心修改字体大小可以看到打印输出
+        DGlobalObject.fontManager.fontGenericPixelSizeChanged.connect(function() {
+            console.log("fontGenericPixelSizeChanged ....", DGlobalObject.fontManager.fontGenericPixelSize);
+        });
+        console.log("fontManager t1 字体信息", DGlobalObject.fontManager.t1);
     }
 
     Rectangle {
@@ -60,7 +74,7 @@ DWindow {
             color: "red"
             Text {
                 text: "CLOSE"
-                font.pixelSize: 18
+                font: DGlobalObject.fontManager.t4
                 anchors.fill: parent
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
@@ -107,6 +121,7 @@ DWindow {
                     Text {
                         id: text
                         anchors.centerIn: parent
+                        font: font_manager.t7
                         text: styleData.title
                         color: styleData.selected ? "white" : "black"
                     }

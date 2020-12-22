@@ -23,7 +23,10 @@
 #include <dtkdeclarative_global.h>
 #include <DWindowManagerHelper>
 #include <DPlatformThemeProxy>
-#include <DQuickWindow>
+
+DGUI_BEGIN_NAMESPACE
+class DFontManager;
+DGUI_END_NAMESPACE
 
 DGUI_USE_NAMESPACE
 
@@ -41,6 +44,7 @@ class DQMLGlobalObject : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(QString windowManagerNameString READ windowManagerNameString)
     Q_PROPERTY(DPlatformThemeProxy *applicationTheme READ applicationTheme)
     Q_PROPERTY(DPlatformThemeProxy *systemTheme READ systemTheme)
+    Q_PROPERTY(DTK_GUI_NAMESPACE::DFontManager *fontManager READ fontManager NOTIFY fontManagerChanged)
 
 public:
     explicit DQMLGlobalObject(QObject *parent = nullptr);
@@ -55,11 +59,14 @@ public:
 
     DPlatformThemeProxy *applicationTheme() const;
     DPlatformThemeProxy *systemTheme() const;
+    DFontManager *fontManager() const;
 
 Q_SIGNALS:
     void hasBlurWindowChanged();
     void hasCompositeChanged();
     void hasNoTitlebarChanged();
+    //这个信号主要为了消除在属性绑定时出现的 "depends on non-NOTIFYable properties" 警告
+    void fontManagerChanged();
 
 private:
     D_DECLARE_PRIVATE(DQMLGlobalObject)

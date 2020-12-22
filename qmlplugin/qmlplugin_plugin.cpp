@@ -22,8 +22,12 @@
 #include "dquickiconprovider.h"
 #include "dquickiconfinder.h"
 
+#include <DFontManager>
+
 #include <QQmlEngine>
 #include <qqml.h>
+
+DGUI_USE_NAMESPACE
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -42,6 +46,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
         return new DQMLGlobalObject;
     });
     qmlRegisterType<DQuickItemViewport>(uri, 1, 0, "DItemViewport");
+    qmlRegisterType<DFontManager>(uri, 1, 0, "DFontManager");
 }
 
 void QmlpluginPlugin::initializeEngine(QQmlEngine *engine, const char *uri)

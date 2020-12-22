@@ -21,6 +21,7 @@
 #include <DObjectPrivate>
 #include <DObject>
 #include <DGuiApplicationHelper>
+#include <DFontManager>
 
 DGUI_USE_NAMESPACE
 
@@ -90,6 +91,11 @@ DPlatformThemeProxy *DQMLGlobalObject::systemTheme() const
     }
 
     return d->systemThemeProxy;
+}
+
+DFontManager *DQMLGlobalObject::fontManager() const
+{
+    return DFontManager::instance();
 }
 
 DQUICK_END_NAMESPACE
