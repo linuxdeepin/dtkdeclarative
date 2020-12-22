@@ -226,7 +226,7 @@ bool DQuickWindow::enableSystemMove() const
         return false;
     }
 
-    return d->handle->enableSystemResize();
+    return d->handle->enableSystemMove();
 }
 
 /*!
