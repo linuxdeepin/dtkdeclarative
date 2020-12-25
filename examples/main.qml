@@ -32,30 +32,30 @@ DWindow {
     Component.onCompleted: {
         console.log(wmWindowTypes)
         console.log(root.isValid ? "DPlatformHandle有效" : "DPlatformHandle无效!!!!");
-        console.log("hasBlurWindow : ", DGlobalObject.hasBlurWindow ? "true" : "false");
-        console.log("windowManagerNameString : ", DGlobalObject.windowManagerNameString);
+        console.log("hasBlurWindow : ", DTK.hasBlurWindow ? "true" : "false");
+        console.log("windowManagerNameString : ", DTK.windowManagerNameString);
 
-        if (DGlobalObject.windowManagerName === DWindowManagerHelper.DeepinWM) {
+        if (DTK.windowManagerName === DWindowManagerHelper.DeepinWM) {
             console.log("windowManagerName : DeepinWM");
-        } else if (DGlobalObject.windowManagerName === DWindowManagerHelper.KWinWM) {
+        } else if (DTK.windowManagerName === DWindowManagerHelper.KWinWM) {
             console.log("windowManagerName : KWinWM");
         } else {
             console.log("windowManagerName : OtherWM");
         }
 
-        console.log("test applicationTheme info : " , DGlobalObject.applicationTheme.window, DGlobalObject.applicationTheme.themeName);
-        console.log("test systemTheme info : " , DGlobalObject.systemTheme.window, DGlobalObject.systemTheme.themeName);
+        console.log("test applicationTheme info : " , DTK.applicationTheme.window, DTK.applicationTheme.themeName);
+        console.log("test systemTheme info : " , DTK.systemTheme.window, DTK.systemTheme.themeName);
 
         //测试DPlatformThemeProxy信号传递(控制中心切换主题测试)
-        DGlobalObject.applicationTheme.themeNameChanged.connect(function(themeName) {
+        DTK.applicationTheme.themeNameChanged.connect(function(themeName) {
             console.log("applicationTheme themeNameChanged : ", themeName);
         });
 
         //在控制中心修改字体大小可以看到打印输出
-        DGlobalObject.fontManager.fontGenericPixelSizeChanged.connect(function() {
-            console.log("fontGenericPixelSizeChanged ....", DGlobalObject.fontManager.fontGenericPixelSize);
+        DTK.fontManager.fontGenericPixelSizeChanged.connect(function() {
+            console.log("fontGenericPixelSizeChanged ....", DTK.fontManager.fontGenericPixelSize);
         });
-        console.log("fontManager t1 字体信息", DGlobalObject.fontManager.t1);
+        console.log("fontManager t1 字体信息", DTK.fontManager.t1);
     }
 
     Rectangle {
@@ -74,7 +74,7 @@ DWindow {
             color: "red"
             Text {
                 text: "CLOSE"
-                font: DGlobalObject.fontManager.t4
+                font: DTK.fontManager.t4
                 anchors.fill: parent
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
