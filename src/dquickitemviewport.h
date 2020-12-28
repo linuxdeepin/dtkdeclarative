@@ -57,6 +57,7 @@ Q_SIGNALS:
 protected:
     void itemChange(ItemChange, const ItemChangeData &) override;
     QSGNode *updatePaintNode(QSGNode *, UpdatePaintNodeData *) override;
+    void componentComplete() override;
 };
 
 DQUICK_END_NAMESPACE

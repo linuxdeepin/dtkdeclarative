@@ -142,6 +142,8 @@ public:
     ~DQuickItemViewportPrivate() override
     {
         resetOverrideMaterial(nullptr);
+        // 清理对sourceItem的操作
+        initSourceItem(sourceItem, nullptr);
     }
 
     inline void markDirtys(DirtyState states) {
@@ -159,6 +161,7 @@ public:
     void resetOverrideMaterial(QSGImageNode *node = nullptr);
     // 根据radius获取对应的蒙版材质
     inline QSGTexture *textureForRadiusMask();
+    void initSourceItem(QQuickItem *old, QQuickItem *item);
 
     void itemGeometryChanged(QQuickItem *item, QQuickGeometryChange data, const QRectF &) override;
 
@@ -194,7 +197,7 @@ public:
         Q_ASSERT(sourceItem && sourceItem->width() > 0 && sourceItem->height() > 0);
         D_Q(DQuickItemViewport);
         markDirty(DirtyMaskOffset, false);
-        auto offset = q->position() - sourceOffset;
+        auto offset = q->position() + sourceOffset;
         maskOffset.setX(static_cast<float>(offset.x() / sourceItem->width()));
         maskOffset.setY(static_cast<float>(offset.y() / sourceItem->height()));
         return maskOffset;
@@ -212,6 +215,7 @@ public:
     // mask材质相对于sourceItem材质的偏移量
     QVector2D maskOffset;
     QMetaObject::Connection textureChangedConnection;
+    // 自身parentItem位置相对于sourceItem的偏移量
     QPointF sourceOffset = QPointF(0, 0);
     QSGImageNode *overridedNode = nullptr;
     // 记录待更新的数据类型
@@ -322,6 +326,34 @@ QSGTexture *DQuickItemViewportPrivate::textureForRadiusMask()
     return maskTexture->texture;
 }
 
+void DQuickItemViewportPrivate::initSourceItem(QQuickItem *old, QQuickItem *item)
+{
+    if (old) {
+        QQuickItemPrivate *sd = QQuickItemPrivate::get(old);
+        sd->removeItemChangeListener(this, QQuickItemPrivate::Geometry);
+    }
+
+    // 监听材质变化的信号
+    if (textureChangedConnection)
+        QObject::disconnect(textureChangedConnection);
+
+    if (item) {
+        if (auto provider = item->textureProvider()) {
+            auto onTextureChanged = [this] {
+                markDirty(DQuickItemViewportPrivate::DirtySourceTexture);
+                q_func()->update();
+            };
+
+            textureChangedConnection = QObject::connect(provider,
+                                                        &QSGTextureProvider::textureChanged,
+                                                        q_func(), onTextureChanged);
+        }
+
+        QQuickItemPrivate *sd = QQuickItemPrivate::get(item);
+        sd->addItemChangeListener(this, QQuickItemPrivate::Geometry);
+    }
+}
+
 void DQuickItemViewportPrivate::itemGeometryChanged(QQuickItem *item, QQuickGeometryChange data, const QRectF &)
 {
     D_Q(DQuickItemViewport);
@@ -401,26 +433,8 @@ void DQuickItemViewport::setSourceItem(QQuickItem *sourceItem)
     if (d->sourceItem == sourceItem)
         return;
 
-    auto onTextureChanged = [this, d] {
-        d->markDirty(DQuickItemViewportPrivate::DirtySourceTexture);
-        update();
-    };
-
-    // 监听材质变化的信号
-    if (d->textureChangedConnection)
-        disconnect(d->textureChangedConnection);
-    d->textureChangedConnection = connect(sourceItem->textureProvider(),
-                                          &QSGTextureProvider::textureChanged,
-                                          this, onTextureChanged);
-
-    if (d->sourceItem) {
-        QQuickItemPrivate *sd = QQuickItemPrivate::get(d->sourceItem);
-        sd->removeItemChangeListener(d, QQuickItemPrivate::Geometry);
-    }
-
-    if (sourceItem) {
-        QQuickItemPrivate *sd = QQuickItemPrivate::get(sourceItem);
-        sd->removeItemChangeListener(d, QQuickItemPrivate::Geometry);
+    if (isComponentComplete()) {
+        d->initSourceItem(d->sourceItem, sourceItem);
     }
 
     d->sourceItem = sourceItem;
@@ -486,8 +500,8 @@ QSGNode *DQuickItemViewport::updatePaintNode(QSGNode *old, QQuickItem::UpdatePai
     }
 
     // 计算sourceItem应该被绘制的区域，如果此区域大小为0, 则没有必要再继续绘制
-    QRectF targetRect = QRectF(position(), size()) & QRectF(d->sourceOffset, d->sourceItem->size());
-    targetRect.translate(-position());
+    const QPointF &sourceOffset = position() + d->sourceOffset;
+    const QRectF &targetRect = QRectF(QPointF(0, 0), size()) & QRectF(-sourceOffset, d->sourceItem->size());
     if (!targetRect.isValid()) {
         d->resetOverrideMaterial(node);
         delete old;
@@ -536,13 +550,23 @@ QSGNode *DQuickItemViewport::updatePaintNode(QSGNode *old, QQuickItem::UpdatePai
 
     node->setFiltering(smooth() ? QSGTexture::Linear : QSGTexture::Nearest);
     // 更新 DQuickItemViewport 所对应的sourceItem的材质区域
-    node->setSourceRect(QRectF((targetRect.x() + x() - d->sourceOffset.x()) * xScale,
-                               (targetRect.y() + y() - d->sourceOffset.y()) * yScale,
+    node->setSourceRect(QRectF((targetRect.x() + sourceOffset.x()) * xScale,
+                               (targetRect.y() + sourceOffset.y()) * yScale,
                                targetRect.width() * xScale, targetRect.height() * yScale));
     // 目标绘制区域
     node->setRect(targetRect);
 
     return node;
+}
+
+void DQuickItemViewport::componentComplete()
+{
+    D_D(DQuickItemViewport);
+
+    if (d->sourceItem)
+        d->initSourceItem(nullptr, d->sourceItem);
+
+    return QQuickItem::componentComplete();
 }
 
 DQUICK_END_NAMESPACE

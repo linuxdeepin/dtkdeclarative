@@ -50,25 +50,31 @@ Item {
             margins: 10
         }
 
-        delegate: DItemViewport {
-            radius: 18
-            sourceItem: blurEffectSource // 可以为Image或ShaderEffectSource类型的组件
-            sourceOffset: Qt.point(ListView.view.contentX, ListView.view.contentY)
+        delegate: Item {
+            property ListView view: ListView.view
+
             height: 50
             width: 300
             anchors.horizontalCenter: parent.horizontalCenter
 
-            Rectangle {
+            DItemViewport {
+                radius: 18
+                sourceItem: blurEffectSource // 可以为Image或ShaderEffectSource类型的组件
+                sourceOffset: Qt.point(-parent.view.contentX + parent.x, -parent.view.contentY + parent.y)
                 anchors.fill: parent
-                color: "#55ffffff"
-                radius: parent.radius
-            }
 
-            Text {
-                anchors.centerIn: parent
-                text: index
-                color: "white"
-                font.pixelSize: 22
+                Rectangle {
+                    anchors.fill: parent
+                    color: "#55ffffff"
+                    radius: parent.radius
+                }
+
+                Text {
+                    anchors.centerIn: parent
+                    text: index
+                    color: "white"
+                    font.pixelSize: 22
+                }
             }
         }
     }
