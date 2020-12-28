@@ -338,17 +338,6 @@ void DQuickItemViewportPrivate::initSourceItem(QQuickItem *old, QQuickItem *item
         QObject::disconnect(textureChangedConnection);
 
     if (item) {
-        if (auto provider = item->textureProvider()) {
-            auto onTextureChanged = [this] {
-                markDirty(DQuickItemViewportPrivate::DirtySourceTexture);
-                q_func()->update();
-            };
-
-            textureChangedConnection = QObject::connect(provider,
-                                                        &QSGTextureProvider::textureChanged,
-                                                        q_func(), onTextureChanged);
-        }
-
         QQuickItemPrivate *sd = QQuickItemPrivate::get(item);
         sd->addItemChangeListener(this, QQuickItemPrivate::Geometry);
     }
@@ -518,9 +507,22 @@ QSGNode *DQuickItemViewport::updatePaintNode(QSGNode *old, QQuickItem::UpdatePai
 
     // 判断是否应该需要更新材质
     if (d->dirtyState.testFlag(DQuickItemViewportPrivate::DirtySourceTexture)) {
+        auto provider = d->sourceItem->textureProvider();
         d->markDirty(DQuickItemViewportPrivate::DirtySourceTexture, false);
-        node->setTexture(d->sourceItem->textureProvider()->texture());
+        node->setTexture(provider->texture());
         node->setOwnsTexture(false);
+
+        if (!d->textureChangedConnection) {
+            // 注意不要将此代码移动到别处，有些对象不允许在非渲染线程中获取 textureProvider
+            auto onTextureChanged = [this, d] {
+                d->markDirty(DQuickItemViewportPrivate::DirtySourceTexture);
+                update();
+            };
+
+            d->textureChangedConnection = QObject::connect(provider,
+                                                           &QSGTextureProvider::textureChanged,
+                                                           this, onTextureChanged);
+        }
     }
 
     if (d->radius > 0) {
