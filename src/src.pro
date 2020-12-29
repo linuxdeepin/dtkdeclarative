@@ -23,7 +23,8 @@ HEADERS += \
     dplatformthemeproxy.h \
     dquickitemviewport.h \
     dquickiconprovider.h \
-    dquickiconfinder.h
+    dquickiconfinder.h \
+    dquickpalette.h
 
 SOURCES += \
     dquickwindow.cpp \
@@ -32,7 +33,8 @@ SOURCES += \
     dplatformthemeproxy.cpp \
     dquickitemviewport.cpp \
     dquickiconprovider.cpp \
-    dquickiconfinder.cpp
+    dquickiconfinder.cpp \
+    dquickpalette.cpp
 
 includes.files += \
     $$PWD/*.h \
@@ -42,7 +44,8 @@ includes.files += \
     $$PWD/DQMLGlobalObject \
     $$PWD/DPlatformThemeProxy \
     $$PWD/DQuickItemViewport \
-    $$PWD/DQuickIconFinder
+    $$PWD/DQuickIconFinder \
+    $$PWS/DQuickPalette
 
 RESOURCES += $$PWD/dtkdeclarative_assets.qrc
 

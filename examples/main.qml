@@ -56,7 +56,17 @@ DWindow {
             console.log("fontGenericPixelSizeChanged ....", DTK.fontManager.fontGenericPixelSize);
         });
         console.log("fontManager t1 字体信息", DTK.fontManager.t1);
+
+        // 测试 DPalette 值
+        console.log("DPalette window value: ", myPalette.window)
+        console.log("DPalette windowText value: ", myPalette.windowText)
+        console.log("DPalette base value: ", myPalette.base)
+        console.log("DPalette itemBackground value: ", myPalette.itemBackground)
+        console.log("DPalette textTitle value: ", myPalette.textTitle)
+        console.log("DPalette textTips value: ", myPalette.textTips)
     }
+
+    DPalette { id: myPalette; sourceItem: frame }
 
     Rectangle {
         id: titlebar
@@ -108,8 +118,6 @@ DWindow {
             title: "DItemViewport"
             Example_3 {}
         }
-
-        SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
         style: TabViewStyle {
                 frameOverlap: 1

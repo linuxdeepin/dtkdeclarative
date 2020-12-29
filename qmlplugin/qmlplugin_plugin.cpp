@@ -21,6 +21,7 @@
 #include "dquickitemviewport.h"
 #include "dquickiconprovider.h"
 #include "dquickiconfinder.h"
+#include "dquickpalette.h"
 
 #include <DFontManager>
 
@@ -47,6 +48,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     });
     qmlRegisterType<DQuickItemViewport>(uri, 1, 0, "DItemViewport");
     qmlRegisterType<DFontManager>(uri, 1, 0, "DFontManager");
+    qmlRegisterType<DQuickPalette>(uri, 1, 0, "DPalette");
 }
 
 void QmlpluginPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
