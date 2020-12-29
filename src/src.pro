@@ -41,10 +41,10 @@ includes.files += \
     $$PWD/DQmlAppPluginInterface \
     $$PWD/DQMLGlobalObject \
     $$PWD/DPlatformThemeProxy \
-    $$PWD/DQuickItemDuplicator
+    $$PWD/DQuickItemViewport \
+    $$PWD/DQuickIconFinder
 
 RESOURCES += $$PWD/dtkdeclarative_assets.qrc
-    $$PWD/DQuickIconFinder
 
 DTK_MODULE_NAME=$$TARGET
 load(dtk_build)
