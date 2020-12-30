@@ -14,13 +14,23 @@ Rectangle {
         anchors.right: parent.right
 
         DIcon {
-            name: "dde-file-manager"
-            iconSize: Qt.size(100, 100)
+            name: "button_voice"
+            sourceSize: Qt.size(50, 50)
         }
         DIcon {
-            name: "edit"
-            iconSize: Qt.size(100, 100)
+            name: "search_indicator"
             color: "red"
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    if (Qt.colorEqual(parent.color, "red")) {
+                        parent.color = "blue"
+                    } else {
+                        parent.color = "red"
+                    }
+                }
+            }
         }
 
         BusyIndicator {

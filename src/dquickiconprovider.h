@@ -30,7 +30,7 @@ public:
     DQuickIconProvider();
 
 protected:
-    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize) override;
+    QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize) override;
 };
 
 DQUICK_END_NAMESPACE
