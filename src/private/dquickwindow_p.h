@@ -31,11 +31,24 @@ class DQuickWindowPrivate : public DTK_CORE_NAMESPACE::DObjectPrivate
 public:
     DQuickWindowPrivate(DQuickWindow *qq);
 
-    DPlatformHandle *handle;
-    DWindowManagerHelper::WmWindowTypes wmWindowTypes;
+    DQuickWindowAttached *attached;
 
 private:
     D_DECLARE_PUBLIC(DQuickWindow)
+};
+
+class DQuickWindowAttachedPrivate : public DTK_CORE_NAMESPACE::DObjectPrivate
+{
+public:
+    explicit DQuickWindowAttachedPrivate(DQuickWindowAttached *qq);
+    ~DQuickWindowAttachedPrivate();
+
+    DPlatformHandle *handle = nullptr;
+
+    DWindowManagerHelper::WmWindowTypes wmWindowTypes;
+
+private:
+    D_DECLARE_PUBLIC(DQuickWindowAttached)
 };
 
 DQUICK_END_NAMESPACE

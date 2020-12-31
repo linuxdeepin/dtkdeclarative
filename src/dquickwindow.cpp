@@ -24,7 +24,7 @@ DQUICK_BEGIN_NAMESPACE
 
 DQuickWindowPrivate::DQuickWindowPrivate(DQuickWindow *qq)
     : DTK_CORE_NAMESPACE::DObjectPrivate(qq)
-    , wmWindowTypes(DWindowManagerHelper::UnknowWindowType)
+    , attached(new DQuickWindowAttached(qq))
 {
 }
 
@@ -32,20 +32,7 @@ DQuickWindow::DQuickWindow(QWindow *parent)
     : QQuickWindow(parent)
     , DObject(*new DQuickWindowPrivate(this))
 {
-    d_func()->handle = new DPlatformHandle(this);
-    auto handle = d_func()->handle;
-    if (handle && DPlatformHandle::isEnabledDXcb(this)) {
-        connect(handle, &DPlatformHandle::borderColorChanged, this, &DQuickWindow::borderColorChanged);
-        connect(handle, &DPlatformHandle::borderWidthChanged, this, &DQuickWindow::borderWidthChanged);
-        connect(handle, &DPlatformHandle::shadowColorChanged, this, &DQuickWindow::shadowColorChanged);
-        connect(handle, &DPlatformHandle::shadowOffsetChanged, this, &DQuickWindow::shadowOffsetChanged);
-        connect(handle, &DPlatformHandle::shadowRadiusChanged, this, &DQuickWindow::shadowRadiusChanged);
-        connect(handle, &DPlatformHandle::windowRadiusChanged, this, &DQuickWindow::windowRadiusChanged);
-        connect(handle, &DPlatformHandle::translucentBackgroundChanged, this, &DQuickWindow::translucentBackgroundChanged);
-        connect(handle, &DPlatformHandle::enableSystemMoveChanged, this, &DQuickWindow::enableSystemMoveChanged);
-        connect(handle, &DPlatformHandle::enableSystemResizeChanged, this, &DQuickWindow::enableSystemResizeChanged);
-        connect(handle, &DPlatformHandle::enableBlurWindowChanged, this, &DQuickWindow::enableBlurWindowChanged);
-    }
+
 }
 
 DQuickWindow::~DQuickWindow()
@@ -53,27 +40,87 @@ DQuickWindow::~DQuickWindow()
 }
 
 /*!
- * \property DQuickWindow::isValid
- * \brief 这个属性用于判定DPlatformHandle 是否有效
+ * \~chinese \brief DQuickWindow::windowAttached　用于获取窗口的附加属性对象，
+ * \~chinese 可以设置通过这个对象设置窗口的圆角、边框等属性值。
  */
-bool DQuickWindow::isValid() const
+DQuickWindowAttached *DQuickWindow::attached() const
 {
     D_DC(DQuickWindow);
 
-    if (!d->handle) {
-        return false;
-    }
-
-    return DPlatformHandle::isEnabledDXcb(this);
+    return d->attached;
 }
 
 /*!
- * \property DQuickWindow::windowRadius
+ * \~chinese \brief DQuickWindow::qmlAttachedProperties 用于创建窗口的附加属性对象，
+ * \~chinese 在 QML 中使用附加属性时，会自动调用此函数。
+ */
+DQuickWindowAttached *DQuickWindow::qmlAttachedProperties(QObject *object)
+{
+    QQuickWindow *window = qobject_cast<QQuickWindow *>(object);
+    if (window) {
+        return new DQuickWindowAttached(window);
+    }
+
+    return nullptr;
+}
+
+DQuickWindowAttachedPrivate::DQuickWindowAttachedPrivate(DQuickWindowAttached *qq)
+    : DObjectPrivate(qq)
+    , wmWindowTypes(DWindowManagerHelper::UnknowWindowType)
+{
+
+}
+
+DQuickWindowAttachedPrivate::~DQuickWindowAttachedPrivate()
+{
+    if (handle) {
+        delete handle;
+    }
+}
+
+DQuickWindowAttached::DQuickWindowAttached(QWindow *window)
+    : QObject(window)
+    , DObject(*new DQuickWindowAttachedPrivate(this))
+{
+    D_D(DQuickWindowAttached);
+
+    auto tWindow = qobject_cast<QQuickWindow *>(window);
+    d->handle = new DPlatformHandle(tWindow);
+    if (d->handle && DPlatformHandle::isEnabledDXcb(tWindow)) {
+        QObject::connect(d->handle, &DPlatformHandle::borderColorChanged, this, &DQuickWindowAttached::borderColorChanged);
+        QObject::connect(d->handle, &DPlatformHandle::borderWidthChanged, this, &DQuickWindowAttached::borderWidthChanged);
+        QObject::connect(d->handle, &DPlatformHandle::shadowColorChanged, this, &DQuickWindowAttached::shadowColorChanged);
+        QObject::connect(d->handle, &DPlatformHandle::shadowOffsetChanged, this, &DQuickWindowAttached::shadowOffsetChanged);
+        QObject::connect(d->handle, &DPlatformHandle::shadowRadiusChanged, this, &DQuickWindowAttached::shadowRadiusChanged);
+        QObject::connect(d->handle, &DPlatformHandle::windowRadiusChanged, this, &DQuickWindowAttached::windowRadiusChanged);
+        QObject::connect(d->handle, &DPlatformHandle::translucentBackgroundChanged, this, &DQuickWindowAttached::translucentBackgroundChanged);
+        QObject::connect(d->handle, &DPlatformHandle::enableSystemMoveChanged, this, &DQuickWindowAttached::enableSystemMoveChanged);
+        QObject::connect(d->handle, &DPlatformHandle::enableSystemResizeChanged, this, &DQuickWindowAttached::enableSystemResizeChanged);
+        QObject::connect(d->handle, &DPlatformHandle::enableBlurWindowChanged, this, &DQuickWindowAttached::enableBlurWindowChanged);
+    }
+}
+
+QQuickWindow *DQuickWindowAttached::window() const
+{
+    return qobject_cast<QQuickWindow *>(parent());
+}
+
+/*!
+ * \property DQuickWindowAttached::isValid
+ * \brief 这个属性用于判定DPlatformHandle 是否有效
+ */
+bool DQuickWindowAttached::isValid() const
+{
+    return DPlatformHandle::isEnabledDXcb(window());
+}
+
+/*!
+ * \property DQuickWindowAttached::windowRadius
  * \brief This property holds the radius of the main window.
  */
-int DQuickWindow::windowRadius() const
+int DQuickWindowAttached::windowRadius() const
 {
-    D_DC(DQuickWindow);
+    D_DC(DQuickWindowAttached);
 
     if (!d->handle) {
         return 0;
@@ -83,12 +130,12 @@ int DQuickWindow::windowRadius() const
 }
 
 /*!
- * \property DQuickWindow::borderWidth
+ * \property DQuickWindowAttached::borderWidth
  * \brief This property holds the width of the main window's border.
  */
-int DQuickWindow::borderWidth() const
+int DQuickWindowAttached::borderWidth() const
 {
-    D_DC(DQuickWindow);
+    D_DC(DQuickWindowAttached);
 
     if (!d->handle) {
         return 0;
@@ -98,12 +145,12 @@ int DQuickWindow::borderWidth() const
 }
 
 /*!
- * \property DQuickWindow::borderColor
+ * \property DQuickWindowAttached::borderColor
  * \brief This property holds the color of the main window's border.
  */
-QColor DQuickWindow::borderColor() const
+QColor DQuickWindowAttached::borderColor() const
 {
-    D_DC(DQuickWindow);
+    D_DC(DQuickWindowAttached);
 
     if (!d->handle) {
         return QColor();
@@ -113,12 +160,12 @@ QColor DQuickWindow::borderColor() const
 }
 
 /*!
- * \property DQuickWindow::shadowRadius
+ * \property DQuickWindowAttached::shadowRadius
  * \brief This property holds the shadow radius of the main widnow.
  */
-int DQuickWindow::shadowRadius() const
+int DQuickWindowAttached::shadowRadius() const
 {
-    D_DC(DQuickWindow);
+    D_DC(DQuickWindowAttached);
 
     if (!d->handle) {
         return 0;
@@ -128,12 +175,12 @@ int DQuickWindow::shadowRadius() const
 }
 
 /*!
- * \property DQuickWindow::shadowOffset
+ * \property DQuickWindowAttached::shadowOffset
  * \brief This property holds the offset applied on the window shadow.
  */
-QPoint DQuickWindow::shadowOffset() const
+QPoint DQuickWindowAttached::shadowOffset() const
 {
-    D_DC(DQuickWindow);
+    D_DC(DQuickWindowAttached);
 
     if (!d->handle) {
         return QPoint();
@@ -143,12 +190,12 @@ QPoint DQuickWindow::shadowOffset() const
 }
 
 /*!
- * \property DQuickWindow::shadowColor
+ * \property DQuickWindowAttached::shadowColor
  * \brief This property holds the color of the window shadow.
  */
-QColor DQuickWindow::shadowColor() const
+QColor DQuickWindowAttached::shadowColor() const
 {
-    D_DC(DQuickWindow);
+    D_DC(DQuickWindowAttached);
 
     if (!d->handle) {
         return QColor();
@@ -158,15 +205,15 @@ QColor DQuickWindow::shadowColor() const
 }
 
 /*!
- * \property DQuickWindow::frameMask
+ * \property DQuickWindowAttached::frameMask
  * \brief This property holds the mask to be applied on the window.
  *
  * For better clip quality, for example antialiasing, use property
- * DQuickWindow::clipPath instead.
+ * DQuickWindowAttached::clipPath instead.
  */
-QRegion DQuickWindow::frameMask() const
+QRegion DQuickWindowAttached::frameMask() const
 {
-    D_DC(DQuickWindow);
+    D_DC(DQuickWindowAttached);
 
     if (!d->handle) {
         return QRegion();
@@ -176,12 +223,12 @@ QRegion DQuickWindow::frameMask() const
 }
 
 /*!
- * \property DQuickWindow::translucentBackground
+ * \property DQuickWindowAttached::translucentBackground
  * \brief This property holds whether the window has translucent background.
  */
-bool DQuickWindow::translucentBackground() const
+bool DQuickWindowAttached::translucentBackground() const
 {
-    D_DC(DQuickWindow);
+    D_DC(DQuickWindowAttached);
 
     if (!d->handle) {
         return false;
@@ -191,7 +238,7 @@ bool DQuickWindow::translucentBackground() const
 }
 
 /*!
- * \brief DQuickWindow::enableSystemResize
+ * \brief DQuickWindowAttached::enableSystemResize
  * \return This property holds whether the window can be resized by the user.
  *
  * The default value of this property is true.
@@ -199,9 +246,9 @@ bool DQuickWindow::translucentBackground() const
  * You can set this property to false and implement the resize polizy of this
  * window by you self.
  */
-bool DQuickWindow::enableSystemResize() const
+bool DQuickWindowAttached::enableSystemResize() const
 {
-    D_DC(DQuickWindow);
+    D_DC(DQuickWindowAttached);
 
     if (!d->handle) {
         return false;
@@ -211,16 +258,16 @@ bool DQuickWindow::enableSystemResize() const
 }
 
 /*!
- * \property DQuickWindow::enableSystemMove
+ * \property DQuickWindowAttached::enableSystemMove
  * \brief This property holds whether the window can be moved by the user.
  *
  * The default value of this property is true.
  *
  * You can set this property to false and choose the effective area to drag and move.
  */
-bool DQuickWindow::enableSystemMove() const
+bool DQuickWindowAttached::enableSystemMove() const
 {
-    D_DC(DQuickWindow);
+    D_DC(DQuickWindowAttached);
 
     if (!d->handle) {
         return false;
@@ -230,12 +277,12 @@ bool DQuickWindow::enableSystemMove() const
 }
 
 /*!
- * \property DQuickWindow::enableBlurWindow
+ * \property DQuickWindowAttached::enableBlurWindow
  * \brief This property holds whether the window background is blurred.
  */
-bool DQuickWindow::enableBlurWindow() const
+bool DQuickWindowAttached::enableBlurWindow() const
 {
-    D_DC(DQuickWindow);
+    D_DC(DQuickWindowAttached);
 
     if (!d->handle) {
         return false;
@@ -245,23 +292,24 @@ bool DQuickWindow::enableBlurWindow() const
 }
 
 /*!
- * \~chinese \brief DQuickWindow::wmWindowTypes 返回此窗口在窗口管理器级别的窗口类型
+ * \~chinese \brief DQuickWindowAttached::wmWindowTypes 返回此窗口在窗口管理器级别的窗口类型
  * \~chinese 需要注意的是，此值只是内部状态的记录，只会在调用 \a setWmWindowTypes
  * \~chinese 时更新，默认值为 \a DWindowManagerHelper::UnknowWindowType
  */
-DWindowManagerHelper::WmWindowTypes DQuickWindow::wmWindowTypes() const
+DWindowManagerHelper::WmWindowTypes DQuickWindowAttached::wmWindowTypes() const
 {
-    D_DC(DQuickWindow);
+    D_DC(DQuickWindowAttached);
+
     return d->wmWindowTypes;
 }
 
 /*!
- * \~chinese \brief DQuickWindow::setWindowRadius　设定窗口的圆角
+ * \~chinese \brief DQuickWindowAttached::setWindowRadius　设定窗口的圆角
  * \~chinese \param windowRadius　窗口的圆角值
  */
-void DQuickWindow::setWindowRadius(int windowRadius)
+void DQuickWindowAttached::setWindowRadius(int windowRadius)
 {
-    D_D(DQuickWindow);
+    D_D(DQuickWindowAttached);
 
     if (!d->handle) {
         return;
@@ -271,12 +319,12 @@ void DQuickWindow::setWindowRadius(int windowRadius)
 }
 
 /*!
- * \~chinese \brief DQuickWindow::setBorderWidth 设定边框的宽度
+ * \~chinese \brief DQuickWindowAttached::setBorderWidth 设定边框的宽度
  * \~chinese \param borderWidth　边框的宽度
  */
-void DQuickWindow::setBorderWidth(int borderWidth)
+void DQuickWindowAttached::setBorderWidth(int borderWidth)
 {
-    D_D(DQuickWindow);
+    D_D(DQuickWindowAttached);
 
     if (!d->handle) {
         return;
@@ -286,12 +334,12 @@ void DQuickWindow::setBorderWidth(int borderWidth)
 }
 
 /*!
- * \~chinese \brief DQuickWindow::setBorderColor 设定边框的颜色
+ * \~chinese \brief DQuickWindowAttached::setBorderColor 设定边框的颜色
  * \~chinese \param borderColor　边框的颜色
  */
-void DQuickWindow::setBorderColor(const QColor &borderColor)
+void DQuickWindowAttached::setBorderColor(const QColor &borderColor)
 {
-    D_D(DQuickWindow);
+    D_D(DQuickWindowAttached);
 
     if (!d->handle) {
         return;
@@ -301,12 +349,12 @@ void DQuickWindow::setBorderColor(const QColor &borderColor)
 }
 
 /*!
- * \~chinese \brief DQuickWindow::setShadowRadius 设定阴影区域的圆角
+ * \~chinese \brief DQuickWindowAttached::setShadowRadius 设定阴影区域的圆角
  * \~chinese \param shadowRadius　阴影区域圆角大小
  */
-void DQuickWindow::setShadowRadius(int shadowRadius)
+void DQuickWindowAttached::setShadowRadius(int shadowRadius)
 {
-    D_D(DQuickWindow);
+    D_D(DQuickWindowAttached);
 
     if (!d->handle) {
         return;
@@ -316,12 +364,12 @@ void DQuickWindow::setShadowRadius(int shadowRadius)
 }
 
 /*!
- * \~chinese \brief DQuickWindow::setShadowOffset 设定阴影区域的偏移距离
+ * \~chinese \brief DQuickWindowAttached::setShadowOffset 设定阴影区域的偏移距离
  * \~chinese \param shadowOffset　阴影区域的偏移距离
  */
-void DQuickWindow::setShadowOffset(const QPoint &shadowOffset)
+void DQuickWindowAttached::setShadowOffset(const QPoint &shadowOffset)
 {
-    D_D(DQuickWindow);
+    D_D(DQuickWindowAttached);
 
     if (!d->handle) {
         return;
@@ -331,12 +379,12 @@ void DQuickWindow::setShadowOffset(const QPoint &shadowOffset)
 }
 
 /*!
- * \~chinese \brief DQuickWindow::setShadowColor 设定阴影的颜色
+ * \~chinese \brief DQuickWindowAttached::setShadowColor 设定阴影的颜色
  * \~chinese \param shadowColor　阴影的颜色
  */
-void DQuickWindow::setShadowColor(const QColor &shadowColor)
+void DQuickWindowAttached::setShadowColor(const QColor &shadowColor)
 {
-    D_D(DQuickWindow);
+    D_D(DQuickWindowAttached);
 
     if (!d->handle) {
         return;
@@ -346,12 +394,12 @@ void DQuickWindow::setShadowColor(const QColor &shadowColor)
 }
 
 /*!
- * \~chinese \brief DQuickWindow::setTranslucentBackground 设定时候擦除背景
+ * \~chinese \brief DQuickWindowAttached::setTranslucentBackground 设定时候擦除背景
  * \~chinese \param translucentBackground true擦除背景　false不擦除背景
  */
-void DQuickWindow::setTranslucentBackground(bool translucentBackground)
+void DQuickWindowAttached::setTranslucentBackground(bool translucentBackground)
 {
-    D_D(DQuickWindow);
+    D_D(DQuickWindowAttached);
 
     if (!d->handle) {
         return;
@@ -361,12 +409,12 @@ void DQuickWindow::setTranslucentBackground(bool translucentBackground)
 }
 
 /*!
- * \~chinese \brief DQuickWindow::setEnableSystemResize　设定是否允许系统调整窗口大小
+ * \~chinese \brief DQuickWindowAttached::setEnableSystemResize　设定是否允许系统调整窗口大小
  * \~chinese \param enableSystemResize　true允许系统调整　false不允许系统调整
  */
-void DQuickWindow::setEnableSystemResize(bool enableSystemResize)
+void DQuickWindowAttached::setEnableSystemResize(bool enableSystemResize)
 {
-    D_D(DQuickWindow);
+    D_D(DQuickWindowAttached);
 
     if (!d->handle) {
         return;
@@ -376,12 +424,12 @@ void DQuickWindow::setEnableSystemResize(bool enableSystemResize)
 }
 
 /*!
- * \~chinese \brief DQuickWindow::setEnableSystemMove 设定时候允许系统移动窗口
+ * \~chinese \brief DQuickWindowAttached::setEnableSystemMove 设定时候允许系统移动窗口
  * \~chinese \param enableSystemMove　true允许移动　false不允许移动
  */
-void DQuickWindow::setEnableSystemMove(bool enableSystemMove)
+void DQuickWindowAttached::setEnableSystemMove(bool enableSystemMove)
 {
-    D_D(DQuickWindow);
+    D_D(DQuickWindowAttached);
 
     if (!d->handle) {
         return;
@@ -391,12 +439,12 @@ void DQuickWindow::setEnableSystemMove(bool enableSystemMove)
 }
 
 /*!
- * \~chinese \brief DQuickWindow::setEnableBlurWindow　设定时候能伸缩窗口
+ * \~chinese \brief DQuickWindowAttached::setEnableBlurWindow　设定时候能伸缩窗口
  * \~chinese \param enableBlurWindow true能伸缩　false不能伸缩
  */
-void DQuickWindow::setEnableBlurWindow(bool enableBlurWindow)
+void DQuickWindowAttached::setEnableBlurWindow(bool enableBlurWindow)
 {
-    D_D(DQuickWindow);
+    D_D(DQuickWindowAttached);
 
     if (!d->handle) {
         return;
@@ -406,22 +454,23 @@ void DQuickWindow::setEnableBlurWindow(bool enableBlurWindow)
 }
 
 /*!
- * \~chinese \brief DQuickWindow::setWmWindowTypes 为此窗口设置与本地窗口管理器
+ * \~chinese \brief DQuickWindowAttached::setWmWindowTypes 为此窗口设置与本地窗口管理器
  * \~chinese 息息相关的窗口类型，这些类型不保证在所有平台下都能生效，因此可能会影响程序
  * \~chinese 的跨平台行为，请尽量使用 \a QWindow::setFlags 设置所需要的窗口类型。
  * \~chinese \param wmWindowTypes 新的窗口类型，此枚举值可组合使用
  * \~chinese \note 调用此接口设置的窗口类型会与 \a QWindow::flags 中控制窗口类型的
  * \~chinese 部分共同生效
  */
-void DQuickWindow::setWmWindowTypes(DWindowManagerHelper::WmWindowTypes wmWindowTypes)
+void DQuickWindowAttached::setWmWindowTypes(DWindowManagerHelper::WmWindowTypes wmWindowTypes)
 {
-    D_D(DQuickWindow);
+    D_D(DQuickWindowAttached);
 
     if (d->wmWindowTypes == wmWindowTypes)
         return;
 
     d->wmWindowTypes = wmWindowTypes;
-    DWindowManagerHelper::setWmWindowTypes(this, wmWindowTypes);
+
+    DWindowManagerHelper::setWmWindowTypes(window(), wmWindowTypes);
     Q_EMIT wmWindowTypesChanged(d->wmWindowTypes);
 }
 

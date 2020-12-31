@@ -36,7 +36,6 @@ void QmlpluginPlugin::registerTypes(const char *uri)
 {
     qmlRegisterModule(uri, 1, 0);
     // @uri com.deepin.dtk
-    qmlRegisterType<DQuickWindow>(uri, 1, 0, "DWindow");
     qmlRegisterType<DQuickIconImage>(uri, 1, 0, "DIcon");
 
     //DQMLGlobalObject 依赖 DWindowManagerHelper中枚举的定义，所以需要先注册
@@ -47,6 +46,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     qmlRegisterType<DQuickItemViewport>(uri, 1, 0, "DItemViewport");
     qmlRegisterType<DFontManager>(uri, 1, 0, "DFontManager");
     qmlRegisterType<DQuickPalette>(uri, 1, 0, "DPalette");
+    qmlRegisterUncreatableType<DQuickWindow>(uri, 1, 0, "DWindow", "DQuickWindow Attached");
 }
 
 void QmlpluginPlugin::initializeEngine(QQmlEngine *engine, const char *uri)

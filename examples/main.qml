@@ -6,7 +6,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import com.deepin.demo 1.0
 
-DWindow {
+ApplicationWindow {
     id: root
     visible: true
     width: Screen.desktopAvailableWidth / 5 * 3
@@ -14,12 +14,12 @@ DWindow {
     title: qsTr("dtkdeclarative")
     x:(Screen.desktopAvailableWidth - width) / 2
     y:(Screen.desktopAvailableHeight - height) / 2
-//    wmWindowTypes: DWindowManagerHelper.Desktop
+//    DWindow.wmWindowTypes: DWindowManagerHelper.DesktopType
 
     // 测试DWindow的属性
-    windowRadius: 16
-    borderColor: "red"
-    borderWidth: 1
+    DWindow.windowRadius: 16
+    DWindow.borderColor: "red"
+    DWindow.borderWidth: 1
 
     DFontManager {
         id: font_manager
@@ -30,7 +30,7 @@ DWindow {
     }
 
     Component.onCompleted: {
-        console.log(wmWindowTypes)
+        console.log(DWindow.wmWindowTypes)
         console.log(root.isValid ? "DPlatformHandle有效" : "DPlatformHandle无效!!!!");
         console.log("hasBlurWindow : ", DTK.hasBlurWindow ? "true" : "false");
         console.log("windowManagerNameString : ", DTK.windowManagerNameString);

@@ -16,6 +16,7 @@
  */
 #ifndef DWINDOW_H
 #define DWINDOW_H
+
 #include <QQuickWindow>
 #include <DObject>
 
@@ -25,10 +26,28 @@
 DQUICK_BEGIN_NAMESPACE
 
 class DQuickWindowPrivate;
+class DQuickWindowAttached;
+class DQuickWindowAttachedPrivate;
+
 class DQuickWindow : public QQuickWindow, public DTK_CORE_NAMESPACE::DObject
 {
     Q_OBJECT
+public:
+    explicit DQuickWindow(QWindow *parent = nullptr);
+    ~DQuickWindow() override;
 
+    DQuickWindowAttached *attached() const;
+    static DQuickWindowAttached *qmlAttachedProperties(QObject *object);
+
+private:
+    D_DECLARE_PRIVATE(DQuickWindow)
+};
+
+class DQuickWindowAttachedPrivate;
+class DQuickWindowAttached : public QObject, public DTK_CORE_NAMESPACE::DObject
+{
+    Q_OBJECT
+    Q_PROPERTY(QQuickWindow *window READ window)
     Q_PROPERTY(bool isValid READ isValid)
     Q_PROPERTY(int windowRadius READ windowRadius WRITE setWindowRadius NOTIFY windowRadiusChanged)
     Q_PROPERTY(int borderWidth READ borderWidth WRITE setBorderWidth NOTIFY borderWidthChanged)
@@ -43,9 +62,9 @@ class DQuickWindow : public QQuickWindow, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes READ wmWindowTypes WRITE setWmWindowTypes NOTIFY wmWindowTypesChanged)
 
 public:
-    explicit DQuickWindow(QWindow *parent = nullptr);
-    ~DQuickWindow() override;
+    explicit DQuickWindowAttached(QWindow *window);
 
+    QQuickWindow *window() const;
     bool isValid() const;
 
     int windowRadius() const;
@@ -64,7 +83,7 @@ public:
     bool enableSystemMove() const;
     bool enableBlurWindow() const;
 
-    DGUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes() const;
+    DTK_GUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes() const;
 
 public Q_SLOTS:
     void setWindowRadius(int windowRadius);
@@ -81,7 +100,7 @@ public Q_SLOTS:
     void setEnableSystemMove(bool enableSystemMove);
     void setEnableBlurWindow(bool enableBlurWindow);
 
-    void setWmWindowTypes(DGUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes);
+    void setWmWindowTypes(DTK_GUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes);
 
 Q_SIGNALS:
     void windowRadiusChanged();
@@ -97,9 +116,11 @@ Q_SIGNALS:
     void wmWindowTypesChanged(DGUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes);
 
 private:
-    D_DECLARE_PRIVATE(DQuickWindow)
+    D_DECLARE_PRIVATE(DQuickWindowAttached)
 };
 
 DQUICK_END_NAMESPACE
+
+QML_DECLARE_TYPEINFO(DTK_QUICK_NAMESPACE::DQuickWindow, QML_HAS_ATTACHED_PROPERTIES)
 
 #endif // DWINDOW_H
