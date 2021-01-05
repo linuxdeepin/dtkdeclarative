@@ -1,9 +1,10 @@
-QT += quick quickcontrols2 dtkgui
+QT += quick quickcontrols2 dtkgui quick-private
 CONFIG += c++11
 
 unix* {
     LIBS += -L$$OUT_PWD/../src -ldtkdeclarative \
-            -L$$OUT_PWD/../qmlplugin -ldtkdeclarativeplugin
+            -L$$OUT_PWD/../qmlplugin -ldtkdeclarativeplugin \
+            -L$$OUT_PWD/../chameleon -lqtquickcontrols2chameleonstyleplugin
 }
 
 INCLUDEPATH += $$PWD/../src $$PWD/../qmlplugin
@@ -32,5 +33,6 @@ QML_DESIGNER_IMPORT_PATH =
 
 CONFIG(debug, debug|release) {
     unix:QMAKE_RPATHDIR += $$OUT_PWD/../src \
-                           $$OUT_PWD/../qmlplugin
+                           $$OUT_PWD/../qmlplugin \
+                           $$OUT_PWD/../chameleon
 }

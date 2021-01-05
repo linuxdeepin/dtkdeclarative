@@ -10,3 +10,4 @@ CONFIG(debug, debug|release) {
 }
 
 qmlplugin.depends += src
+chameleon.depends += src

@@ -34,14 +34,8 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQuickStyle::setStyle("Chameleon");
-
-    //这里为方便调试，直接使用这种方式注册，实际使用时直接安装对应的包即可使用 import com.deepin.dtk 1.0
-    // 为防止冲突 这里使用 com.deepin.demo
-    QmlpluginPlugin plugin;
-    plugin.registerTypes("com.deepin.demo");
-
     QQmlApplicationEngine engine;
-    plugin.initializeEngine(&engine, nullptr);
+
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;

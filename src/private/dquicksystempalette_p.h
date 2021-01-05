@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DQUICKPALETTE_P_H
-#define DQUICKPALETTE_P_H
+#ifndef DQUICKSYSTEMPALETTE_P_H
+#define DQUICKSYSTEMPALETTE_P_H
 
-#include "dquickpalette.h"
+#include "dquicksystempalette.h"
 
 #include <QPointer>
 #include <DPalette>
@@ -27,28 +27,18 @@
 DGUI_USE_NAMESPACE
 DQUICK_BEGIN_NAMESPACE
 
-class DQuickPalettePrivate : public DTK_CORE_NAMESPACE::DObjectPrivate
+class DQuickSystemPalettePrivate : public DTK_CORE_NAMESPACE::DObjectPrivate
 {
 public:
-    DQuickPalettePrivate(DQuickPalette *qq);
+    DQuickSystemPalettePrivate(DQuickSystemPalette *qq);
 
     DPalette palette;
-    // 初始化为true是为了能正常在c++代码中使用
-    // 因为classBegin和componentComplete只会
-    // 在qml中使用时才会被调用，因此当classBegin
-    // 未被调用时，有理由认为其是已初始化的
-    bool componentComplete = true;
-    QPointer<QQuickItem> item;
-    QPointer<QQuickWindow> itemWindow;
-
-    void initSourceItem(QQuickItem *old, QQuickItem *item);
-    void _q_updatePalette();
-    void _q_onWindowChanged(QQuickWindow *window);
+    QPalette::ColorGroup colorGroup = QPalette::Active;
 
 private:
-    D_DECLARE_PUBLIC(DQuickPalette)
+    D_DECLARE_PUBLIC(DQuickSystemPalette)
 };
 
 DQUICK_END_NAMESPACE
 
-#endif // DQUICKPALETTE_P_H
+#endif // DQUICKSYSTEMPALETTE_P_H

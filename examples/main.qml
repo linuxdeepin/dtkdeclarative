@@ -1,12 +1,12 @@
 import QtQuick 2.11
 import QtQuick.Window 2.11
-import QtQuick.Controls 2.4
+import QtQuick.Controls 2.4 as V2
 import QtQuick.Layouts 1.11
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-import com.deepin.demo 1.0
+import com.deepin.dtk 1.0
 
-ApplicationWindow {
+V2.ApplicationWindow {
     id: root
     visible: true
     width: Screen.desktopAvailableWidth / 5 * 3
@@ -18,7 +18,7 @@ ApplicationWindow {
 
     // 测试DWindow的属性
     DWindow.windowRadius: 16
-    DWindow.borderColor: "red"
+    DWindow.borderColor: palette.highlight
     DWindow.borderWidth: 1
 
     DFontManager {
@@ -43,12 +43,11 @@ ApplicationWindow {
             console.log("windowManagerName : OtherWM");
         }
 
-        console.log("test applicationTheme info : " , DTK.applicationTheme.window, DTK.applicationTheme.themeName);
-        console.log("test systemTheme info : " , DTK.systemTheme.window, DTK.systemTheme.themeName);
+        console.log("test platformTheme info : " , DTK.platformTheme.window, DTK.platformTheme.themeName);
 
         //测试DPlatformThemeProxy信号传递(控制中心切换主题测试)
-        DTK.applicationTheme.themeNameChanged.connect(function(themeName) {
-            console.log("applicationTheme themeNameChanged : ", themeName);
+        DTK.platformTheme.themeNameChanged.connect(function(themeName) {
+            console.log("platformTheme themeNameChanged : ", themeName);
         });
 
         //在控制中心修改字体大小可以看到打印输出
@@ -58,15 +57,13 @@ ApplicationWindow {
         console.log("fontManager t1 字体信息", DTK.fontManager.t1);
 
         // 测试 DPalette 值
-        console.log("DPalette window value: ", myPalette.window)
-        console.log("DPalette windowText value: ", myPalette.windowText)
-        console.log("DPalette base value: ", myPalette.base)
-        console.log("DPalette itemBackground value: ", myPalette.itemBackground)
-        console.log("DPalette textTitle value: ", myPalette.textTitle)
-        console.log("DPalette textTips value: ", myPalette.textTips)
+        console.log("DPalette window value: ", root.palette.window)
+        console.log("DPalette windowText value: ", root.palette.windowText)
+        console.log("DPalette base value: ", root.palette.base)
+        console.log("DPalette itemBackground value: ", root.palette.itemBackground)
+        console.log("DPalette textTitle value: ", root.palette.textTitle)
+        console.log("DPalette textTips value: ", root.palette.textTips)
     }
-
-    DPalette { id: myPalette; sourceItem: frame }
 
     Rectangle {
         id: titlebar
@@ -122,7 +119,7 @@ ApplicationWindow {
         style: TabViewStyle {
                 frameOverlap: 1
                 tab: Rectangle {
-                    color: styleData.selected ? myPalette.highlight : "lightgray"
+                    color: styleData.selected ? root.palette.highlight : "lightgray"
                     implicitWidth: Math.max(text.width + 4, 100)
                     implicitHeight: 30
                     radius: 2

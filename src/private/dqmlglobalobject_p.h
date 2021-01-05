@@ -32,8 +32,14 @@ class DQMLGlobalObjectPrivate : public DTK_CORE_NAMESPACE::DObjectPrivate
 public:
     DQMLGlobalObjectPrivate(DQMLGlobalObject *qq);
 
-    mutable DPlatformThemeProxy *applicationThemeProxy = nullptr;
-    mutable DPlatformThemeProxy *systemThemeProxy = nullptr;
+    void ensurePalette();
+    void _q_onPaletteChanged();
+
+    mutable DPlatformThemeProxy *platformTheme = nullptr;
+
+    bool paletteInit = false;
+    DPalette palette;
+    DPalette inactivePalette;
 
 private:
     D_DECLARE_PUBLIC(DQMLGlobalObject)

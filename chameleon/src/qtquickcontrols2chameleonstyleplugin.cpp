@@ -15,8 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "qtquickcontrols2chameleonstyleplugin.h"
+#include "dquickpaletteprovider_p.h"
 
 #include <qqml.h>
+
+DQUICK_USE_NAMESPACE
+
+QtQuickControls2ChameleonStylePlugin::~QtQuickControls2ChameleonStylePlugin()
+{
+    // 恢复到使用QQuickPaletteProvider
+    DQuickPaletteProvider::cleanup();
+}
 
 #ifdef USE_QQuickStylePlugin
 QString QtQuickControls2ChameleonStylePlugin::name() const
@@ -27,5 +36,8 @@ QString QtQuickControls2ChameleonStylePlugin::name() const
 
 void QtQuickControls2ChameleonStylePlugin::registerTypes(const char *uri)
 {
-    qmlRegisterModule(uri, 1, 0);
+    // 为 DPalette/QPalette 类型注册QQmlValueTypeProvider
+    DQuickPaletteProvider::init();
+
+    qmlRegisterModule(uri, 2, 0);
 }

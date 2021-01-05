@@ -20,7 +20,7 @@
  */
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
-import com.deepin.demo 1.0
+import com.deepin.dtk 1.0
 
 Item {
     FastBlur {

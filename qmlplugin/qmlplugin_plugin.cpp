@@ -20,7 +20,7 @@
 #include "dqmlglobalobject.h"
 #include "dquickitemviewport.h"
 #include "dquickiconprovider.h"
-#include "dquickpalette.h"
+#include "dquicksystempalette.h"
 #include "private/dquickiconimage_p.h"
 
 #include <DFontManager>
@@ -45,7 +45,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     });
     qmlRegisterType<DQuickItemViewport>(uri, 1, 0, "DItemViewport");
     qmlRegisterType<DFontManager>(uri, 1, 0, "DFontManager");
-    qmlRegisterType<DQuickPalette>(uri, 1, 0, "DPalette");
+    qmlRegisterType<DQuickSystemPalette>(uri, 1, 0, "DSystemPalette");
     qmlRegisterUncreatableType<DQuickWindow>(uri, 1, 0, "DWindow", "DQuickWindow Attached");
 }
 

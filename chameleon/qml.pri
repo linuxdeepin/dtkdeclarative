@@ -20,4 +20,5 @@ QML_FILES += \
     $$PWD/GroupBox.qml \
     $$PWD/Frame.qml \
     $$PWD/MenuItem.qml \
-    $$PWD/Menu.qml
+    $$PWD/Menu.qml \
+    $$PWD/ApplicationWindow.qml

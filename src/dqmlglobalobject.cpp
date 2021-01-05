@@ -32,6 +32,39 @@ DQMLGlobalObjectPrivate::DQMLGlobalObjectPrivate(DQMLGlobalObject *qq)
 {
 }
 
+void DQMLGlobalObjectPrivate::ensurePalette()
+{
+    if (paletteInit)
+        return;
+
+    paletteInit = true;
+    palette = DGuiApplicationHelper::instance()->applicationPalette();
+    inactivePalette = palette;
+
+    QObject::connect(DGuiApplicationHelper::instance(), SIGNAL(applicationPaletteChanged()), q_func(), SLOT(_q_onPaletteChanged()));
+}
+
+void DQMLGlobalObjectPrivate::_q_onPaletteChanged()
+{
+    palette = DGuiApplicationHelper::instance()->applicationPalette();
+    inactivePalette = palette;
+
+    for (int i = 0; i < QPalette::NColorRoles; ++i) {
+        QPalette::ColorRole role = static_cast<QPalette::ColorRole>(i);
+        const QBrush &brush = palette.brush(QPalette::Disabled, role);
+        inactivePalette.setBrush(QPalette::Active, role, brush);
+    }
+
+    for (int i = 0; i < DPalette::NColorTypes; ++i) {
+        DPalette::ColorType type = static_cast<DPalette::ColorType>(i);
+        const QBrush &brush = palette.brush(QPalette::Disabled, type);
+        inactivePalette.setBrush(QPalette::Active, type, brush);
+    }
+
+    Q_EMIT q_func()->paletteChanged();
+    Q_EMIT q_func()->inactivePaletteChanged();
+}
+
 DQMLGlobalObject::DQMLGlobalObject(QObject *parent)
     : QObject(parent)
     , DTK_CORE_NAMESPACE::DObject(*new DQMLGlobalObjectPrivate(this))
@@ -71,26 +104,15 @@ DWindowManagerHelper::WMName DQMLGlobalObject::windowManagerName() const
     return DWindowManagerHelper::instance()->windowManagerName();
 }
 
-DPlatformThemeProxy *DQMLGlobalObject::applicationTheme() const
+DPlatformThemeProxy *DQMLGlobalObject::platformTheme() const
 {
     D_DC(DQMLGlobalObject);
 
-    if (!d->applicationThemeProxy) {
-        d->applicationThemeProxy = new DPlatformThemeProxy(DGuiApplicationHelper::instance()->applicationTheme(), const_cast<DQMLGlobalObject *>(this));
+    if (!d->platformTheme) {
+        d->platformTheme = new DPlatformThemeProxy(DGuiApplicationHelper::instance()->applicationTheme(), const_cast<DQMLGlobalObject *>(this));
     }
 
-    return d->applicationThemeProxy;
-}
-
-DPlatformThemeProxy *DQMLGlobalObject::systemTheme() const
-{
-    D_DC(DQMLGlobalObject);
-
-    if (!d->systemThemeProxy) {
-        d->systemThemeProxy = new DPlatformThemeProxy(DGuiApplicationHelper::instance()->systemTheme(), const_cast<DQMLGlobalObject *>(this));
-    }
-
-    return d->systemThemeProxy;
+    return d->platformTheme;
 }
 
 DFontManager *DQMLGlobalObject::fontManager() const
@@ -98,4 +120,20 @@ DFontManager *DQMLGlobalObject::fontManager() const
     return DFontManager::instance();
 }
 
+DPalette DQMLGlobalObject::palette() const
+{
+    D_DC(DQMLGlobalObject);
+    const_cast<DQMLGlobalObjectPrivate*>(d)->ensurePalette();
+    return d->palette;
+}
+
+DPalette DQMLGlobalObject::inactivePalette() const
+{
+    D_DC(DQMLGlobalObject);
+    const_cast<DQMLGlobalObjectPrivate*>(d)->ensurePalette();
+    return d->inactivePalette;
+}
+
 DQUICK_END_NAMESPACE
+
+#include "moc_dqmlglobalobject.cpp"

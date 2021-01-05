@@ -34,6 +34,7 @@ class QtQuickControls2ChameleonStylePlugin
     Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
 
 public:
+    ~QtQuickControls2ChameleonStylePlugin() override;
 #ifdef USE_QQuickStylePlugin
     QString name() const override;
 #endif
