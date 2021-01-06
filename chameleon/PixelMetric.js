@@ -103,3 +103,6 @@ const ComboBox_Heigt = 36
 
 // ItemDelegate
 const ItemDelegate_Height = 30;
+
+// Button
+const Button_MiniSize = 36;

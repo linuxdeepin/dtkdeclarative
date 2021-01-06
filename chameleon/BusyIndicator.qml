@@ -35,12 +35,10 @@ T.BusyIndicator {
 
     padding: PM.ControlPadding
 
-    SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
-
     contentItem: BusyIndicatorImpl {
         implicitWidth: PM.BusyIndicator_ItemWidth
         implicitHeight: PM.BusyIndicator_ItemHeight
-        color: myPalette.text
+        color: control.text
 
         running: control.running
         opacity: control.running ? 1 : 0

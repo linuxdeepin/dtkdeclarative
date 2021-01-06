@@ -16,41 +16,39 @@
  */
 
 import QtQuick 2.11
-import QtQuick.Templates 2.4 as T
 import QtQuick.Controls 2.4
+import QtQuick.Controls.impl 2.4
+import QtQuick.Templates 2.4 as T
+import "PixelMetric.js" as PM
 
-T.ScrollBar {
+T.Button {
     id: control
 
     implicitWidth: Math.max(background ? background.implicitWidth : 0,
                             contentItem.implicitWidth + leftPadding + rightPadding)
     implicitHeight: Math.max(background ? background.implicitHeight : 0,
-                             contentItem.implicitHeight + topPadding + bottomPadding)
+                             Math.max(contentItem.implicitHeight,
+                                      indicator ? indicator.implicitHeight : 0) + topPadding + bottomPadding)
 
-    padding: 2
-    visible: control.policy !== T.ScrollBar.AlwaysOff
+    padding: PM.ControlPadding
+    spacing: PM.ControlSpacing
 
-    contentItem: Rectangle {
-        implicitWidth: control.interactive ? 6 : 2
-        implicitHeight: control.interactive ? 6 : 2
+    contentItem: IconLabel {
+        spacing: control.spacing
+        mirrored: control.mirrored
+        display: control.display
 
-        radius: width / 2
-        color: "gray"
-        opacity: 0.0
+        icon: control.icon
+        text: control.text
+        font: control.font
+        color: control.palette.buttonText
+    }
 
-        states: State {
-            name: "active"
-            when: control.policy === T.ScrollBar.AlwaysOn || (control.active && control.size < 1.0)
-            PropertyChanges { target: control.contentItem; opacity: 0.75 }
-        }
-
-        transitions: Transition {
-            from: "active"
-            SequentialAnimation {
-                PauseAnimation { duration: 450 }
-                NumberAnimation { target: control.contentItem; duration: 200; property: "opacity"; to: 0.0 }
-            }
-        }
+    background: Rectangle {
+        implicitWidth: control.text.length ? PM.Button_MiniSize + (4 * PM.ControlRadius) : PM.Button_MiniSize + (2 * PM.ControlRadius)
+        implicitHeight: PM.Button_MiniSize
+        radius: PM.ControlRadius
+        color: control.palette.button
     }
 }
 

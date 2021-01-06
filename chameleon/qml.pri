@@ -21,4 +21,5 @@ QML_FILES += \
     $$PWD/Frame.qml \
     $$PWD/MenuItem.qml \
     $$PWD/Menu.qml \
-    $$PWD/ApplicationWindow.qml
+    $$PWD/ApplicationWindow.qml \
+    $$PWD/Button.qml
