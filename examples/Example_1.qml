@@ -91,6 +91,24 @@ Rectangle {
         }
     }
 
+    ListView {
+        id: chckDlgt
+        anchors.left: swtch.right
+        anchors.leftMargin: 20
+        anchors.verticalCenter: radioFrame.verticalCenter
+
+        width: 100
+        height: 100
+
+        model: ["Option 1", "Option 2", "Option 3"]
+        delegate: CheckDelegate {
+            text: modelData
+            highlighted : true
+            icon.name: "search_indicator"
+            icon.color: "red"
+        }
+    }
+
     Slider {
         id: slider
         anchors.left: parent.left
@@ -120,6 +138,14 @@ Rectangle {
         anchors.leftMargin: 20
         anchors.top: proBar.top
         model: ["First", "Second", "Third"]
+    }
+
+    Button {
+        id: btn
+        anchors.left: cmbx.right
+        anchors.leftMargin: 20
+        anchors.top: proBar.top
+        text: "Button"
     }
 
     GroupBox {

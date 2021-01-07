@@ -22,4 +22,6 @@ QML_FILES += \
     $$PWD/MenuItem.qml \
     $$PWD/Menu.qml \
     $$PWD/ApplicationWindow.qml \
-    $$PWD/Button.qml
+    $$PWD/Button.qml \
+    $$PWD/CheckIndicator.qml \
+    $$PWD/CheckDelegate.qml

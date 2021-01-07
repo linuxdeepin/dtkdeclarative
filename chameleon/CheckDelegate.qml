@@ -1,9 +1,5 @@
 /*
- * Copyright (C) 2020 ~ 2020 Deepin Technology Co., Ltd.
- *
- * Author:     liuyang <liuyang@uniontech.com>
- *
- * Maintainer: liuyang <liuyang@uniontech.com>
+ * Copyright (C) 2020 ~ 2020 Uniontech Technology Co., Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -23,9 +19,11 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.4 as T
+import com.deepin.dtk 1.0
 import "PixelMetric.js" as PM
 
-T.CheckBox {
+
+T.CheckDelegate {
     id: control
 
     implicitWidth: Math.max(background ? background.implicitWidth : 0,
@@ -33,24 +31,38 @@ T.CheckBox {
     implicitHeight: Math.max(background ? background.implicitHeight : 0,
                              Math.max(contentItem.implicitHeight,
                                       indicator ? indicator.implicitHeight : 0) + topPadding + bottomPadding)
-    baselineOffset: contentItem.y + contentItem.baselineOffset
 
     padding: PM.ControlPadding
     spacing: PM.ControlSpacing
 
+    icon.color: control.palette.text
+
     indicator: CheckIndicator {
-        x: text ? (control.mirrored ? control.width - width - control.rightPadding : control.leftPadding) : control.leftPadding + (control.availableWidth - width) / 2
+        x: control.text ? (control.mirrored ? control.leftPadding : control.width - width - control.rightPadding) : control.leftPadding + (control.availableWidth - width) / 2
         y: control.topPadding + (control.availableHeight - height) / 2
         control: control
     }
 
-    contentItem: Text {
-        leftPadding: control.indicator && !control.mirrored ? control.indicator.width + control.spacing : 0
-        rightPadding: control.indicator && control.mirrored ? control.indicator.width + control.spacing : 0
+    contentItem: DIconLabel {
+        leftPadding: !control.mirrored ? 0 : control.indicator.width + control.spacing
+        rightPadding: control.mirrored ? 0 : control.indicator.width + control.spacing
 
+        spacing: control.spacing
+        mirrored: control.mirrored
+        display: control.display
+        alignment: control.display === DIconLabel.IconOnly || control.display === DIconLabel.TextUnderIcon ? Qt.AlignCenter : Qt.AlignLeft
+
+        iconName: control.icon.name
+        iconColor: control.icon.color
         text: control.text
         font: control.font
-        color: control.palette.windowText
+        color: control.palette.text
+    }
+
+    background: Rectangle {
+        implicitHeight: PM.ItemDelegate_Height
+
+        visible: control.down || control.highlighted
+        color: control.down ? (control.palette.highlight) : (control.highlighted ? control.palette.midlight : "transparent")
     }
 }
-

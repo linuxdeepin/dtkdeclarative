@@ -22,6 +22,7 @@
 #include "dquickiconprovider.h"
 #include "dquicksystempalette.h"
 #include "private/dquickiconimage_p.h"
+#include "private/dquickiconlabel_p.h"
 
 #include <DFontManager>
 
@@ -37,6 +38,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     qmlRegisterModule(uri, 1, 0);
     // @uri com.deepin.dtk
     qmlRegisterType<DQuickIconImage>(uri, 1, 0, "DIcon");
+    qmlRegisterType<DQuickIconLabel>(uri, 1, 0, "DIconLabel");
 
     //DQMLGlobalObject 依赖 DWindowManagerHelper中枚举的定义，所以需要先注册
     qmlRegisterType<DWindowManagerHelper>(uri, 1, 0, "DWindowManagerHelper");

@@ -20,4 +20,5 @@ import com.deepin.dtk 1.0
 
 T.ApplicationWindow {
     palette: active ? DTK.palette : DTK.inactivePalette
+    font: DTK.fontManager.t6
 }
