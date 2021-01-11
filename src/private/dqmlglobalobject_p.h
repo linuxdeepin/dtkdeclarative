@@ -33,6 +33,7 @@ public:
     DQMLGlobalObjectPrivate(DQMLGlobalObject *qq);
 
     void ensurePalette();
+    void updatePalettes();
     void _q_onPaletteChanged();
 
     mutable DPlatformThemeProxy *platformTheme = nullptr;

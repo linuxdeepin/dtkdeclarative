@@ -38,28 +38,32 @@ void DQMLGlobalObjectPrivate::ensurePalette()
         return;
 
     paletteInit = true;
-    palette = DGuiApplicationHelper::instance()->applicationPalette();
-    inactivePalette = palette;
+    updatePalettes();
 
     QObject::connect(DGuiApplicationHelper::instance(), SIGNAL(applicationPaletteChanged()), q_func(), SLOT(_q_onPaletteChanged()));
 }
 
-void DQMLGlobalObjectPrivate::_q_onPaletteChanged()
+void DQMLGlobalObjectPrivate::updatePalettes()
 {
     palette = DGuiApplicationHelper::instance()->applicationPalette();
     inactivePalette = palette;
 
     for (int i = 0; i < QPalette::NColorRoles; ++i) {
         QPalette::ColorRole role = static_cast<QPalette::ColorRole>(i);
-        const QBrush &brush = palette.brush(QPalette::Disabled, role);
+        const QBrush &brush = palette.brush(QPalette::Inactive, role);
         inactivePalette.setBrush(QPalette::Active, role, brush);
     }
 
     for (int i = 0; i < DPalette::NColorTypes; ++i) {
         DPalette::ColorType type = static_cast<DPalette::ColorType>(i);
-        const QBrush &brush = palette.brush(QPalette::Disabled, type);
+        const QBrush &brush = palette.brush(QPalette::Inactive, type);
         inactivePalette.setBrush(QPalette::Active, type, brush);
     }
+}
+
+void DQMLGlobalObjectPrivate::_q_onPaletteChanged()
+{
+    updatePalettes();
 
     Q_EMIT q_func()->paletteChanged();
     Q_EMIT q_func()->inactivePaletteChanged();
