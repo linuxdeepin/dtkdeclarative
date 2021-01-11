@@ -23,9 +23,9 @@ V2.ApplicationWindow {
 
     DFontManager {
         id: font_manager
-        fontGenericPixelSize: 13
-        onFontGenericPixelSizeChanged: {
-            console.log("font_manager onFontGenericPixelSizeChanged ..........");
+        baseFont: font_manager.get(13, Qt.application.font)
+        onFontChanged: {
+            console.log("font_manager fontChanged ..........");
         }
     }
 
@@ -51,8 +51,8 @@ V2.ApplicationWindow {
         });
 
         //在控制中心修改字体大小可以看到打印输出
-        DTK.fontManager.fontGenericPixelSizeChanged.connect(function() {
-            console.log("fontGenericPixelSizeChanged ....", DTK.fontManager.fontGenericPixelSize);
+        DTK.fontManager.fontChanged.connect(function() {
+            console.log("base font changed ....", DTK.fontManager.baseFont);
         });
         console.log("fontManager t1 字体信息", DTK.fontManager.t1);
 

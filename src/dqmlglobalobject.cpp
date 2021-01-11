@@ -121,7 +121,8 @@ DPlatformThemeProxy *DQMLGlobalObject::platformTheme() const
 
 DFontManager *DQMLGlobalObject::fontManager() const
 {
-    return DFontManager::instance();
+    // qml中只能识别非const的指针属性
+    return const_cast<DFontManager*>(DGuiApplicationHelper::instance()->fontManager());
 }
 
 DPalette DQMLGlobalObject::palette() const

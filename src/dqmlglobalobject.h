@@ -42,8 +42,8 @@ class DQMLGlobalObject : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(bool hasNoTitlebar READ hasNoTitlebar NOTIFY hasNoTitlebarChanged)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::WMName windowManagerName READ windowManagerName)
     Q_PROPERTY(QString windowManagerNameString READ windowManagerNameString)
-    Q_PROPERTY(DPlatformThemeProxy *platformTheme READ platformTheme FINAL)
-    Q_PROPERTY(DTK_GUI_NAMESPACE::DFontManager *fontManager READ fontManager NOTIFY fontManagerChanged)
+    Q_PROPERTY(DPlatformThemeProxy *platformTheme READ platformTheme FINAL CONSTANT)
+    Q_PROPERTY(DTK_GUI_NAMESPACE::DFontManager *fontManager READ fontManager FINAL CONSTANT)
     Q_PROPERTY(QPalette palette READ palette NOTIFY paletteChanged)
     Q_PROPERTY(QPalette inactivePalette READ inactivePalette NOTIFY inactivePaletteChanged)
 
@@ -68,8 +68,6 @@ Q_SIGNALS:
     void hasBlurWindowChanged();
     void hasCompositeChanged();
     void hasNoTitlebarChanged();
-    //这个信号主要为了消除在属性绑定时出现的 "depends on non-NOTIFYable properties" 警告
-    void fontManagerChanged();
     void paletteChanged();
     void inactivePaletteChanged();
 
