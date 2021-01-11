@@ -148,6 +148,21 @@ Rectangle {
         text: "Button"
     }
 
+    DelayButton {
+        id: dlyBtn
+        anchors.left: btn.right
+        anchors.leftMargin: 20
+        anchors.top: proBar.top
+        text: "DelayButton"
+
+        NumberAnimation on progress {
+            from: 0
+            to: 1.0
+            duration: 4000
+            loops: Animation.Infinite
+        }
+    }
+
     GroupBox {
         id: gpBx
         width: 180

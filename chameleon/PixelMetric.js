@@ -27,6 +27,7 @@ const ControlMargin = 6;
 const ControlSpacing = 6;
 const ControlRadius = 8;
 const ControlFocusBorderWidth = 2;
+const ControlFocusSpaceWidth = 1;
 
 // BusyIndicator
 const BusyIndicator_ItemWidth = 28;

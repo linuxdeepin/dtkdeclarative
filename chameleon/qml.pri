@@ -24,4 +24,5 @@ QML_FILES += \
     $$PWD/ApplicationWindow.qml \
     $$PWD/Button.qml \
     $$PWD/CheckIndicator.qml \
-    $$PWD/CheckDelegate.qml
+    $$PWD/CheckDelegate.qml \
+    $$PWD/DelayButton.qml
