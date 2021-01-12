@@ -46,6 +46,8 @@ Rectangle {
             height: 28
         }
 
+        Dial {}
+
         Rectangle {
                id: frame
                clip: true

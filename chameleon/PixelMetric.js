@@ -107,3 +107,6 @@ const ItemDelegate_Height = 30;
 
 // Button
 const Button_MiniSize = 36;
+
+// Dial
+const Dial_miniSize = 100;
