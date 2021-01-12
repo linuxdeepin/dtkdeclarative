@@ -67,6 +67,7 @@ DQuickWindowAttached *DQuickWindow::qmlAttachedProperties(QObject *object)
 DQuickWindowAttachedPrivate::DQuickWindowAttachedPrivate(DQuickWindowAttached *qq)
     : DObjectPrivate(qq)
     , wmWindowTypes(DWindowManagerHelper::UnknowWindowType)
+    , explicitEnable(false)
 {
 
 }
@@ -82,22 +83,6 @@ DQuickWindowAttached::DQuickWindowAttached(QWindow *window)
     : QObject(window)
     , DObject(*new DQuickWindowAttachedPrivate(this))
 {
-    D_D(DQuickWindowAttached);
-
-    auto tWindow = qobject_cast<QQuickWindow *>(window);
-    d->handle = new DPlatformHandle(tWindow);
-    if (d->handle && DPlatformHandle::isEnabledDXcb(tWindow)) {
-        QObject::connect(d->handle, &DPlatformHandle::borderColorChanged, this, &DQuickWindowAttached::borderColorChanged);
-        QObject::connect(d->handle, &DPlatformHandle::borderWidthChanged, this, &DQuickWindowAttached::borderWidthChanged);
-        QObject::connect(d->handle, &DPlatformHandle::shadowColorChanged, this, &DQuickWindowAttached::shadowColorChanged);
-        QObject::connect(d->handle, &DPlatformHandle::shadowOffsetChanged, this, &DQuickWindowAttached::shadowOffsetChanged);
-        QObject::connect(d->handle, &DPlatformHandle::shadowRadiusChanged, this, &DQuickWindowAttached::shadowRadiusChanged);
-        QObject::connect(d->handle, &DPlatformHandle::windowRadiusChanged, this, &DQuickWindowAttached::windowRadiusChanged);
-        QObject::connect(d->handle, &DPlatformHandle::translucentBackgroundChanged, this, &DQuickWindowAttached::translucentBackgroundChanged);
-        QObject::connect(d->handle, &DPlatformHandle::enableSystemMoveChanged, this, &DQuickWindowAttached::enableSystemMoveChanged);
-        QObject::connect(d->handle, &DPlatformHandle::enableSystemResizeChanged, this, &DQuickWindowAttached::enableSystemResizeChanged);
-        QObject::connect(d->handle, &DPlatformHandle::enableBlurWindowChanged, this, &DQuickWindowAttached::enableBlurWindowChanged);
-    }
 }
 
 QQuickWindow *DQuickWindowAttached::window() const
@@ -106,12 +91,14 @@ QQuickWindow *DQuickWindowAttached::window() const
 }
 
 /*!
- * \property DQuickWindowAttached::isValid
- * \brief 这个属性用于判定DPlatformHandle 是否有效
+ * \property DQuickWindowAttached::isEnabled
+ * \brief 这个属性用于判定是否使用了 DTK 风格的窗口
  */
-bool DQuickWindowAttached::isValid() const
+bool DQuickWindowAttached::isEnabled() const
 {
-    return DPlatformHandle::isEnabledDXcb(window());
+    D_DC(DQuickWindowAttached);
+
+    return d->explicitEnable && DPlatformHandle::isEnabledDXcb(window());
 }
 
 /*!
@@ -301,6 +288,39 @@ DWindowManagerHelper::WmWindowTypes DQuickWindowAttached::wmWindowTypes() const
     D_DC(DQuickWindowAttached);
 
     return d->wmWindowTypes;
+}
+
+/*!
+ * \~chinese \brief DQuickWindowAttached::setEnabled　设置当前的窗口为 DTK 风格。
+ * \~chinese \note 只能把默认风格设置为 DTK 风格，不能把 DTK 设置为默认风格。
+ * \~chinese \param e \a true 使用 DTK 风格， \a false 无效
+ */
+void DQuickWindowAttached::setEnabled(bool e)
+{
+    D_D(DQuickWindowAttached);
+
+    if (!e || e == d->explicitEnable)
+        return;
+
+    d->explicitEnable = e;
+
+    if (isEnabled())
+        Q_EMIT enabledChanged();
+
+    auto tWindow = qobject_cast<QQuickWindow *>(parent());
+    d->handle = new DPlatformHandle(tWindow);
+    if (d->handle && DPlatformHandle::isEnabledDXcb(tWindow)) {
+        QObject::connect(d->handle, &DPlatformHandle::borderColorChanged, this, &DQuickWindowAttached::borderColorChanged);
+        QObject::connect(d->handle, &DPlatformHandle::borderWidthChanged, this, &DQuickWindowAttached::borderWidthChanged);
+        QObject::connect(d->handle, &DPlatformHandle::shadowColorChanged, this, &DQuickWindowAttached::shadowColorChanged);
+        QObject::connect(d->handle, &DPlatformHandle::shadowOffsetChanged, this, &DQuickWindowAttached::shadowOffsetChanged);
+        QObject::connect(d->handle, &DPlatformHandle::shadowRadiusChanged, this, &DQuickWindowAttached::shadowRadiusChanged);
+        QObject::connect(d->handle, &DPlatformHandle::windowRadiusChanged, this, &DQuickWindowAttached::windowRadiusChanged);
+        QObject::connect(d->handle, &DPlatformHandle::translucentBackgroundChanged, this, &DQuickWindowAttached::translucentBackgroundChanged);
+        QObject::connect(d->handle, &DPlatformHandle::enableSystemMoveChanged, this, &DQuickWindowAttached::enableSystemMoveChanged);
+        QObject::connect(d->handle, &DPlatformHandle::enableSystemResizeChanged, this, &DQuickWindowAttached::enableSystemResizeChanged);
+        QObject::connect(d->handle, &DPlatformHandle::enableBlurWindowChanged, this, &DQuickWindowAttached::enableBlurWindowChanged);
+    }
 }
 
 /*!

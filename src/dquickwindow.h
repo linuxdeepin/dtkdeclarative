@@ -48,7 +48,7 @@ class DQuickWindowAttached : public QObject, public DTK_CORE_NAMESPACE::DObject
 {
     Q_OBJECT
     Q_PROPERTY(QQuickWindow *window READ window)
-    Q_PROPERTY(bool isValid READ isValid)
+    Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(int windowRadius READ windowRadius WRITE setWindowRadius NOTIFY windowRadiusChanged)
     Q_PROPERTY(int borderWidth READ borderWidth WRITE setBorderWidth NOTIFY borderWidthChanged)
     Q_PROPERTY(QColor borderColor READ borderColor WRITE setBorderColor NOTIFY borderColorChanged)
@@ -65,7 +65,7 @@ public:
     explicit DQuickWindowAttached(QWindow *window);
 
     QQuickWindow *window() const;
-    bool isValid() const;
+    bool isEnabled() const;
 
     int windowRadius() const;
 
@@ -86,6 +86,8 @@ public:
     DTK_GUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes() const;
 
 public Q_SLOTS:
+    void setEnabled(bool e);
+
     void setWindowRadius(int windowRadius);
 
     void setBorderWidth(int borderWidth);
@@ -103,6 +105,7 @@ public Q_SLOTS:
     void setWmWindowTypes(DTK_GUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes);
 
 Q_SIGNALS:
+    void enabledChanged();
     void windowRadiusChanged();
     void borderWidthChanged();
     void borderColorChanged();

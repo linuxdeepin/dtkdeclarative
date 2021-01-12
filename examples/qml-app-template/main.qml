@@ -15,11 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import QtQuick.Controls 2.4
 import com.deepin.dtk 1.0
 
-DWindow {
+ApplicationWindow {
     id: window
+
     visible: true
     width: 640
     height: 480
+
+    // 设置 dtk 风格窗口
+    DWindow.enabled: true
 }

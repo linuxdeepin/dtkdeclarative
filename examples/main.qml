@@ -17,6 +17,7 @@ V2.ApplicationWindow {
 //    DWindow.wmWindowTypes: DWindowManagerHelper.DesktopType
 
     // 测试DWindow的属性
+    DWindow.enabled: true
     DWindow.windowRadius: 16
     DWindow.borderColor: palette.highlight
     DWindow.borderWidth: 1

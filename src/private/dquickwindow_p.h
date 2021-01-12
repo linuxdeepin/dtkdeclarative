@@ -46,6 +46,7 @@ public:
     DPlatformHandle *handle = nullptr;
 
     DWindowManagerHelper::WmWindowTypes wmWindowTypes;
+    bool explicitEnable;
 
 private:
     D_DECLARE_PUBLIC(DQuickWindowAttached)
