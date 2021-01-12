@@ -26,7 +26,7 @@ DQUICK_BEGIN_NAMESPACE
 DAppLoaderPrivate::DAppLoaderPrivate(DAppLoader *qq)
     : DTK_CORE_NAMESPACE::DObjectPrivate(qq)
 {
-    qmlPlugin = QString();
+
 }
 
 /*!

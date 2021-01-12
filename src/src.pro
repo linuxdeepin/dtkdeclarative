@@ -8,6 +8,11 @@ CONFIG += internal_module c++11
 # 龙芯架构上没有默认添加PT_GNU_STACK-section,所以此处手动指定一下
 contains(QMAKE_HOST.arch, mips.*): QMAKE_LFLAGS_SHLIB += "-Wl,-z,noexecstack"
 
+# for debian
+isEmpty(LIB_INSTALL_DIR) {
+    LIB_INSTALL_DIR = /usr/lib/$${QMAKE_HOST.arch}-linux-gnu
+}
+
 isEmpty(DTK_QML_APP_PLUGIN_PATH) {
     DTK_QML_APP_PLUGIN_PATH = $$LIB_INSTALL_DIR/$$TARGET/qml-app
 }

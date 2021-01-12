@@ -17,12 +17,15 @@
 #ifndef DAPPLOADER_H
 #define DAPPLOADER_H
 
-#include <QString>
 #include <DObject>
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
 
 #include <dtkdeclarative_global.h>
+
+QT_BEGIN_NAMESPACE
+class QString;
+class QGuiApplication;
+class QQmlApplicationEngine;
+QT_END_NAMESPACE
 
 DQUICK_BEGIN_NAMESPACE
 
