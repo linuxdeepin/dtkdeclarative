@@ -41,13 +41,11 @@ public:
 
     qreal calculateDevicePixelRatio() const;
     bool updateDevicePixelRatio(qreal targetDevicePixelRatio) override;
-    void _q_onIconThemeChanged();
 
     QString name;
     DQuickIconImage::State state = DQuickIconImage::State::Off;
     DQuickIconImage::Mode mode = DQuickIconImage::Mode::Invalid;
     QColor color;
-    mutable QIcon icon;
 
     enum IconType : qint8 {
         ThemeIconName, // 图标名称

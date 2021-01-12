@@ -88,7 +88,6 @@ protected:
 private:
     Q_DISABLE_COPY(DQuickIconImage)
     Q_DECLARE_PRIVATE(DQuickIconImage)
-    Q_PRIVATE_SLOT(d_func(), void _q_onIconThemeChanged())
     Q_PRIVATE_SLOT(d_func(), void maybeUpdateUrl())
 };
 

@@ -67,6 +67,12 @@ void DQuickIconImagePrivate::maybeUpdateUrl()
     if (iconType != ThemeIconName)
         return;
 
+    // 当图标名为空视为清理图片内容
+    if (name.isEmpty()) {
+        q->setSource(QUrl());
+        return;
+    }
+
     QUrl url;
     url.setScheme("image");
     url.setHost("dtk.icon");
@@ -105,13 +111,6 @@ DQuickIconImage::Mode DQuickIconImagePrivate::getIconMode() const
     }
 
     return DQuickIconImage::Mode::Normal;
-}
-
-void DQuickIconImagePrivate::_q_onIconThemeChanged()
-{
-    // 图标名变化前要清理缓存的icon数据
-    icon = QIcon();
-    maybeUpdateUrl();
 }
 
 qreal DQuickIconImagePrivate::calculateDevicePixelRatio() const
@@ -179,9 +178,6 @@ void DQuickIconImage::setName(const QString &name)
             setSource(url);
         }
     }
-
-    // 图标名变化前要清理缓存的icon数据
-    d->icon = QIcon();
 
     if (isComponentComplete()) {
         d->init();
