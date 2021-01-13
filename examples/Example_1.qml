@@ -163,6 +163,17 @@ Rectangle {
         }
     }
 
+    DialogButtonBox {
+        id: dlgBtnBx
+        anchors.left: dlyBtn.right
+        anchors.leftMargin: 20
+        anchors.verticalCenter: dlyBtn.verticalCenter
+        standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
+
+        onAccepted: console.log("Ok clicked")
+        onRejected: console.log("Cancel clicked")
+    }
+
     GroupBox {
         id: gpBx
         width: 180

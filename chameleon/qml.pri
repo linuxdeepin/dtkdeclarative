@@ -26,4 +26,5 @@ QML_FILES += \
     $$PWD/CheckIndicator.qml \
     $$PWD/CheckDelegate.qml \
     $$PWD/DelayButton.qml \
-    $$PWD/Dial.qml
+    $$PWD/Dial.qml \
+    $$PWD/DialogButtonBox.qml
