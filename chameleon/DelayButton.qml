@@ -69,22 +69,16 @@ T.DelayButton {
         }
     }
 
-    // 绘制焦点框
-    Rectangle {
-        anchors.centerIn: background
-        width: background.width + 2 * (PM.ControlFocusBorderWidth + PM.ControlFocusSpaceWidth)
-        height: background.height + 2 * (PM.ControlFocusBorderWidth + PM.ControlFocusSpaceWidth)
-        radius: PM.ControlRadius + PM.ControlFocusBorderWidth + PM.ControlFocusSpaceWidth
-        color: "transparent"
-        border { width: PM.ControlFocusBorderWidth; color: control.palette.highlight }
-        visible: control.visualFocus
-    }
-
     background: Rectangle {
         implicitWidth: control.text.length ? PM.Button_MiniSize + (4 * PM.ControlRadius) : PM.Button_MiniSize + (2 * PM.ControlRadius)
         implicitHeight: PM.Button_MiniSize
         radius: PM.ControlRadius
         color: control.palette.button
+
+        DRectangleBorder {
+            visible: control.visualFocus
+            border.color: control.palette.highlight
+        }
 
         Item {
             width: control.progress * parent.width

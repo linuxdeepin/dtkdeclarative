@@ -27,4 +27,6 @@ QML_FILES += \
     $$PWD/CheckDelegate.qml \
     $$PWD/DelayButton.qml \
     $$PWD/Dial.qml \
-    $$PWD/DialogButtonBox.qml
+    $$PWD/DialogButtonBox.qml \
+    $$PWD/TextField.qml \
+    $$PWD/DRectangleBorder.qml

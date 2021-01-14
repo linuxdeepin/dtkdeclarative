@@ -110,3 +110,7 @@ const Button_MiniSize = 36;
 
 // Dial
 const Dial_miniSize = 100;
+
+// TextField
+const TextField_width = 180;
+const TextField_Height = 36;
