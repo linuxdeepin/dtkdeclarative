@@ -43,6 +43,10 @@ QImage DQuickIconProvider::requestImage(const QString &id, QSize *size, const QS
         return QImage();
 
     QIcon icon = QIcon::fromTheme(name);
+
+    if (icon.isNull())
+        return QImage();
+
     QIcon::Mode qMode = QIcon::Normal;
     QIcon::State qState = QIcon::Off;
 
