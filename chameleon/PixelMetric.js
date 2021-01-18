@@ -114,3 +114,7 @@ const Dial_miniSize = 100;
 // TextField
 const TextField_width = 180;
 const TextField_Height = 36;
+
+// TextArea
+const TextArea_Width = 180;
+const TextArea_Height = 100;

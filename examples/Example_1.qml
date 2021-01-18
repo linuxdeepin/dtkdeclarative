@@ -117,6 +117,15 @@ Rectangle {
         placeholderText: qsTr("This is TextField")
     }
 
+    TextArea {
+        id: txtArea
+        anchors.left: chckDlgt.right
+        anchors.leftMargin: 50
+        anchors.top: txtFld.bottom
+        anchors.topMargin: 20
+        placeholderText: qsTr("This is TextArea")
+    }
+
     Slider {
         id: slider
         anchors.left: parent.left
