@@ -30,4 +30,5 @@ QML_FILES += \
     $$PWD/DialogButtonBox.qml \
     $$PWD/TextField.qml \
     $$PWD/DRectangleBorder.qml \
-    $$PWD/TextArea.qml
+    $$PWD/TextArea.qml \
+    $$PWD/SpinBox.qml

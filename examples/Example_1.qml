@@ -191,6 +191,15 @@ Rectangle {
         onRejected: console.log("Cancel clicked")
     }
 
+    SpinBox {
+        id: spnBx
+        anchors.left: dlgBtnBx.right
+        anchors.leftMargin: 20
+        anchors.verticalCenter: dlyBtn.verticalCenter
+
+//        LayoutMirroring.enabled: true
+    }
+
     GroupBox {
         id: gpBx
         width: 180

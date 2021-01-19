@@ -118,3 +118,8 @@ const TextField_Height = 36;
 // TextArea
 const TextArea_Width = 180;
 const TextArea_Height = 100;
+
+// SpinBox
+const SpinBox_Content_Width = 140;
+const SpinBox_Height = 36;
+
