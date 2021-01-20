@@ -10,7 +10,8 @@ Build-Depends:
  libdtkgui-dev,
  libdtkcore-dev,
  qtdeclarative5-private-dev,
- qtbase5-private-dev
+ qtbase5-private-dev,
+ pkg-kde-tools
 Standards-Version: 3.9.8    
 Homepage: http://www.deepin.org
 
