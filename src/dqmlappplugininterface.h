@@ -19,11 +19,14 @@
 #define DQMLAPPPLUGININTERFACE_H
 
 #include <QGuiApplication>
-#include <QQmlApplicationEngine>
 
 #include <dtkdeclarative_global.h>
 
 #define DQmlAppPluginInterface_iid "dtk.qml.app.plugin.interface"
+
+QT_BEGIN_NAMESPACE
+class QQmlApplicationEngine;
+QT_END_NAMESPACE
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -33,6 +36,9 @@ public:
     DQmlAppPluginInterface() = default;
     virtual ~DQmlAppPluginInterface() = default;
     virtual int main(QGuiApplication *app, QQmlApplicationEngine *engine) = 0;
+    virtual QGuiApplication *createApplication(int &argc, char **argv) {
+        return new QGuiApplication(argc, argv);
+    }
 };
 
 DQUICK_END_NAMESPACE

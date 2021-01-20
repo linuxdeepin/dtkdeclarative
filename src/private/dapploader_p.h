@@ -25,12 +25,15 @@
 
 DQUICK_BEGIN_NAMESPACE
 
+class DQmlAppPluginInterface;
 class DAppLoaderPrivate : public DTK_CORE_NAMESPACE::DObjectPrivate
 {
 public:
     DAppLoaderPrivate(DAppLoader *qq);
+    void ensureInstant();
 
     QString qmlPlugin;
+    QScopedPointer<DQmlAppPluginInterface> instant;
 private:
     D_DECLARE_PUBLIC(DAppLoader)
 };

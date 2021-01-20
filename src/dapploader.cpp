@@ -29,6 +29,15 @@ DAppLoaderPrivate::DAppLoaderPrivate(DAppLoader *qq)
 
 }
 
+void DAppLoaderPrivate::ensureInstant()
+{
+    QPluginLoader loader(qmlPlugin);
+    instant.reset(qobject_cast<DQmlAppPluginInterface *>(loader.instance()));
+    if (instant.isNull()) {
+        qFatal("Can't load \"%s\", error message: %s", qPrintable(qmlPlugin), qPrintable(loader.errorString()));
+    }
+}
+
 /*!
  * \~chinese \brief DAppLoader::DAppLoader　用于加载DTk QML应用插件
  * \~chinese \param appName　　应用插件的名字
@@ -50,20 +59,32 @@ DAppLoader::DAppLoader(const QString &appName, const QString &appPath)
 }
 
 /*!
+ * \~chinese \brief DAppLoader::createApplication
+ * \~chinese 调用DQmlAppPluginInterface::createApplication创建一个全新的
+ * \~chinese QGuiApplication 对象，这个对象将被用于传递给 \a DAppLoader::exec.
+ * \~chinese 此接口主要是为了支持程序使用自定义的QGuiApplication类型，并且可以在
+ * \~chinese QGuiApplication被创建之前进行一些重要操作，如设置QCoreApplication::setAttribute
+ * \~chinese \param argc 同QCoreApplication构造函数中的argc
+ * \~chinese \param argv 同QCoreApplication构造函数中的argv
+ * \~chinese \warning 请不要管理QGuiApplication对象的生命周期
+ */
+QGuiApplication *DAppLoader::createApplication(int &argc, char **argv)
+{
+    D_D(DAppLoader);
+    d->ensureInstant();
+    return d->instant->createApplication(argc, argv);
+}
+
+/*!
  * \~chinese \brief DAppLoader::exec　解析DTK QML应用插件
- * \~chinese \param app　　应用对应的QGuiApplication
+ * \~chinese \param 必须使用 \a DAppLoader::createApplication获取这个QGuiApplication对象
  * \~chinese \param engine　　应用对应的QQmlApplicationEngine
  */
 int DAppLoader::exec(QGuiApplication *app, QQmlApplicationEngine *engine)
 {
     D_D(DAppLoader);
-    QPluginLoader loader(d->qmlPlugin);
-    QScopedPointer<QObject> instant(loader.instance());
-    if (!instant.isNull()) {
-        DQmlAppPluginInterface *interface = qobject_cast<DQmlAppPluginInterface *>(instant.data());
-        return interface->main(app, engine);
-    }
-    return 0;
+    d->ensureInstant();
+    return d->instant->main(app, engine);
 }
 
 DQUICK_END_NAMESPACE

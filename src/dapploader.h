@@ -36,6 +36,7 @@ public:
     DAppLoader() = delete ;
     DAppLoader(const QString &appName, const QString &appPath = QString());
     ~DAppLoader() = default;
+    QGuiApplication *createApplication(int &argc, char **argv);
     int exec(QGuiApplication *app, QQmlApplicationEngine *engine);
 private:
     D_DECLARE_PRIVATE(DAppLoader)
