@@ -46,8 +46,8 @@ T.Menu {
     }
 
     background: Rectangle {
-        implicitWidth: PM.ComboBox_Width
-        implicitHeight: PM.ComboBox_Heigt
+        implicitWidth: PM.MenuItem_Width
+        implicitHeight: PM.MenuItem_Height
 
         Rectangle {
             y: -PM.ControlRadius

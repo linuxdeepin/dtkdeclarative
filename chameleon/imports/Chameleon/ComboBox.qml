@@ -20,6 +20,7 @@ import QtQuick.Window 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.4 as T
+import com.deepin.dtk 1.0
 import "PixelMetric.js" as PM
 
 T.ComboBox {
@@ -44,13 +45,12 @@ T.ComboBox {
         hoverEnabled: control.hoverEnabled
     }
 
-    indicator: ColorImage {
+    indicator: DIcon {
         x: control.mirrored ? control.padding : control.width - width - control.padding
         y: control.topPadding + (control.availableHeight - height) / 2
 
-        defaultColor: control.palette.dark
+        name: "combobox_arrow"
         color: control.palette.buttonText
-        source: "qrc:/assets/platformthemeplugin/icons/texts/combobox_arrow_12px.svg"
     }
 
     contentItem: T.TextField {

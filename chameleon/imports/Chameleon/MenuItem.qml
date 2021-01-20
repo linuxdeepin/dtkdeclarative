@@ -23,6 +23,7 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.4 as T
+import com.deepin.dtk 1.0
 import "PixelMetric.js" as PM
 
 T.MenuItem {
@@ -55,12 +56,12 @@ T.MenuItem {
         color: control.hovered ? control.palette.base : control.palette.text
     }
 
-    indicator: ColorImage {
+    indicator: DIcon {
         x: control.mirrored ? control.width - width - control.rightPadding : control.leftPadding
         y: control.topPadding + (control.availableHeight - height) / 2
 
         visible: control.checked
-        source: "qrc:/assets/platformthemeplugin/icons/texts/mark_indicator_12px.svg"
+        name: "mark_indicator"
         color: control.hovered ? control.palette.base : control.palette.text
     }
 
@@ -75,7 +76,8 @@ T.MenuItem {
     }
 
     background: Rectangle {
-        implicitHeight: PM.ItemDelegate_Height
+        implicitWidth: PM.MenuItem_Width
+        implicitHeight: PM.MenuItem_Height
         color: control.hovered ? control.palette.highlight : "transparent"
     }
 }

@@ -102,6 +102,10 @@ const ProgressBar_Height = 38;
 const ComboBox_Width = 140
 const ComboBox_Heigt = 36
 
+// MenuItem
+const MenuItem_Width = 140;
+const MenuItem_Height = 30;
+
 // ItemDelegate
 const ItemDelegate_Height = 30;
 

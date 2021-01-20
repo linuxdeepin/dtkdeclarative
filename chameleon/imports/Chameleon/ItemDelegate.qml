@@ -23,6 +23,7 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.4 as T
+import com.deepin.dtk 1.0
 import "PixelMetric.js" as PM
 
 T.ItemDelegate {
@@ -39,12 +40,12 @@ T.ItemDelegate {
     spacing: PM.ControlSpacing
 
     contentItem: Item {
-        ColorImage {
+        DIcon {
             id: mark_indicator
             x: PM.ControlRadius
             y: (parent.height - height) / 2
+            name: "mark_indicator"
             color: control.hovered ? control.palette.base : control.palette.text
-            source: "qrc:/assets/platformthemeplugin/icons/texts/mark_indicator_12px.svg"
             visible: checked
         }
 

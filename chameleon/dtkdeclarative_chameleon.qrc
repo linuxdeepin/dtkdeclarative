@@ -1,8 +1,4 @@
 <RCC>
     <qresource prefix="/">
-        <file>assets/platformthemeplugin/icons/texts/checked_20px.svg</file>
-        <file>assets/platformthemeplugin/icons/texts/unchecked_20px.svg</file>
-        <file>assets/platformthemeplugin/icons/texts/combobox_arrow_12px.svg</file>
-        <file>assets/platformthemeplugin/icons/texts/mark_indicator_12px.svg</file>
     </qresource>
 </RCC>
