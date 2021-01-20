@@ -114,8 +114,8 @@ QQuickWindow *DQuickWindowAttached::window() const
 }
 
 /*!
- * \property DQuickWindowAttached::isEnabled
- * \brief 这个属性用于判定是否使用了 DTK 风格的窗口
+ * \~chinese \property DQuickWindowAttached::isEnabled
+ * \~chinese \brief 这个属性用于判定是否使用了 DTK 风格的窗口。
  */
 bool DQuickWindowAttached::isEnabled() const
 {
@@ -125,8 +125,8 @@ bool DQuickWindowAttached::isEnabled() const
 }
 
 /*!
- * \property DQuickWindowAttached::windowRadius
- * \brief This property holds the radius of the main window.
+ * \~chinese \property DQuickWindowAttached::windowRadius
+ * \~chinese \brief 这个属性保存着窗口圆角值。
  */
 int DQuickWindowAttached::windowRadius() const
 {
@@ -140,8 +140,8 @@ int DQuickWindowAttached::windowRadius() const
 }
 
 /*!
- * \property DQuickWindowAttached::borderWidth
- * \brief This property holds the width of the main window's border.
+ * \~chinese \property DQuickWindowAttached::borderWidth
+ * \~chinese \brief 这个属性保存着窗口边框的宽度。
  */
 int DQuickWindowAttached::borderWidth() const
 {
@@ -155,8 +155,8 @@ int DQuickWindowAttached::borderWidth() const
 }
 
 /*!
- * \property DQuickWindowAttached::borderColor
- * \brief This property holds the color of the main window's border.
+ * \~chinese \property DQuickWindowAttached::borderColor
+ * \~chinese \brief 这个属性保存这窗口边框的颜色。
  */
 QColor DQuickWindowAttached::borderColor() const
 {
@@ -170,8 +170,8 @@ QColor DQuickWindowAttached::borderColor() const
 }
 
 /*!
- * \property DQuickWindowAttached::shadowRadius
- * \brief This property holds the shadow radius of the main widnow.
+ * \~chinese \property DQuickWindowAttached::shadowRadius
+ * \~chinese \brief 这个属性保存着窗口阴影半径。
  */
 int DQuickWindowAttached::shadowRadius() const
 {
@@ -185,8 +185,8 @@ int DQuickWindowAttached::shadowRadius() const
 }
 
 /*!
- * \property DQuickWindowAttached::shadowOffset
- * \brief This property holds the offset applied on the window shadow.
+ * \~chinese \property DQuickWindowAttached::shadowOffset
+ * \~chinese \brief 这个属性保存着窗口阴影偏移量。
  */
 QPoint DQuickWindowAttached::shadowOffset() const
 {
@@ -200,8 +200,8 @@ QPoint DQuickWindowAttached::shadowOffset() const
 }
 
 /*!
- * \property DQuickWindowAttached::shadowColor
- * \brief This property holds the color of the window shadow.
+ * \~chinese \property DQuickWindowAttached::shadowColor
+ * \~chinese \brief 这个属性保存着窗口阴影颜色。
  */
 QColor DQuickWindowAttached::shadowColor() const
 {
@@ -215,11 +215,9 @@ QColor DQuickWindowAttached::shadowColor() const
 }
 
 /*!
- * \property DQuickWindowAttached::frameMask
- * \brief This property holds the mask to be applied on the window.
- *
- * For better clip quality, for example antialiasing, use property
- * DQuickWindowAttached::clipPath instead.
+ * \~chinese \property DQuickWindowAttached::frameMask
+ * \~chinese \brief 设置 Frame Window 的遮罩，和 \a clipPath 不同的是，它的裁剪包括阴影部分。
+ * \~chinese \note 由于实现机制限制，使用此属性裁剪 Frame Window 时，无法去除边缘产生的锯齿。
  */
 QRegion DQuickWindowAttached::frameMask() const
 {
@@ -233,8 +231,8 @@ QRegion DQuickWindowAttached::frameMask() const
 }
 
 /*!
- * \property DQuickWindowAttached::translucentBackground
- * \brief This property holds whether the window has translucent background.
+ * \~chinese \property DQuickWindowAttached::translucentBackground
+ * \~chinese \brief 如果此属性值为 true，则在更新窗口绘制内容之前会先清空要更新区域内的图像，否则不清空。
  */
 bool DQuickWindowAttached::translucentBackground() const
 {
@@ -248,13 +246,9 @@ bool DQuickWindowAttached::translucentBackground() const
 }
 
 /*!
- * \brief DQuickWindowAttached::enableSystemResize
- * \return This property holds whether the window can be resized by the user.
- *
- * The default value of this property is true.
- *
- * You can set this property to false and implement the resize polizy of this
- * window by you self.
+ * \~chinese \brief DQuickWindowAttached::enableSystemResize
+ * \~chinese \return 如果此属性值为 true，则允许外界改变窗口的大小（如使用鼠标拖拽窗口边框），否则不允许。
+ * \~chinese \note 此属性仅仅控制 dxcb 中的行为，不会影响窗口管理器的行为。
  */
 bool DQuickWindowAttached::enableSystemResize() const
 {
@@ -268,12 +262,9 @@ bool DQuickWindowAttached::enableSystemResize() const
 }
 
 /*!
- * \property DQuickWindowAttached::enableSystemMove
- * \brief This property holds whether the window can be moved by the user.
- *
- * The default value of this property is true.
- *
- * You can set this property to false and choose the effective area to drag and move.
+ * \~chinese \property DQuickWindowAttached::enableSystemMove
+ * \~chinese \brief 如果此属性值为 ture，则允许外界移动窗口的位置（如使用鼠标拖拽移动窗口），否则不允许。
+  * \~chinese \note 此属性仅仅控制 dxcb 中的行为，不会影响窗口管理器的行为。
  */
 bool DQuickWindowAttached::enableSystemMove() const
 {
@@ -287,8 +278,8 @@ bool DQuickWindowAttached::enableSystemMove() const
 }
 
 /*!
- * \property DQuickWindowAttached::enableBlurWindow
- * \brief This property holds whether the window background is blurred.
+ * \~chinese \property DQuickWindowAttached::enableBlurWindow
+ * \~chinese \brief 如果此属性为 true，则窗口有效区域内的背景将呈现出模糊效果，否则无特效。
  */
 bool DQuickWindowAttached::enableBlurWindow() const
 {
@@ -316,7 +307,7 @@ DWindowManagerHelper::WmWindowTypes DQuickWindowAttached::wmWindowTypes() const
 /*!
  * \~chinese \brief DQuickWindowAttached::setEnabled　设置当前的窗口为 DTK 风格。
  * \~chinese \note 只能把默认风格设置为 DTK 风格，不能把 DTK 设置为默认风格。
- * \~chinese \param e \a true 使用 DTK 风格， \a false 无效
+ * \~chinese \param \a true 使用 DTK 风格， \a false 无效。
  */
 void DQuickWindowAttached::setEnabled(bool e)
 {
@@ -441,8 +432,8 @@ void DQuickWindowAttached::setEnableSystemMove(bool enableSystemMove)
 }
 
 /*!
- * \~chinese \brief DQuickWindowAttached::setEnableBlurWindow　设定时候能伸缩窗口
- * \~chinese \param enableBlurWindow true能伸缩　false不能伸缩
+ * \~chinese \brief DQuickWindowAttached::setEnableBlurWindow　设定窗口有效区域内的背景将呈现出模糊效果。
+ * \~chinese \param enableBlurWindow true有特效　false无特效。
  */
 void DQuickWindowAttached::setEnableBlurWindow(bool enableBlurWindow)
 {
