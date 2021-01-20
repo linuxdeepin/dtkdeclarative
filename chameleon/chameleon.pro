@@ -31,10 +31,17 @@ unix {
 
     # Qmldir file and qml files
     qmlfiles.base = $$_PRO_FILE_PWD_/imports/Chameleon
-    qmlfiles.files = $$JS_FILES $$QML_FILES $${qmlfiles.base}/qmldir
+    qmlfiles.files = $$JS_FILES $$QML_FILES
     qmlfiles.path = $${target.path}
 
+    qmldir.input += $${qmlfiles.base}/qmldir.in
+    # 改名回qmldir，本地的qmldir主要是用于examples项目直接加载本地chameleon主题，不要将它安装到系统中
+    qmldir.output = $$OUT_PWD/qmldir
+    QMAKE_SUBSTITUTES += qmldir
+    qmlfiles.files += $$OUT_PWD/qmldir
+
     INSTALLS += target qmlfiles
+    OTHER_FILES += $${qmlfiles.base}/qmldir.in
 }
 
 # 自动生成qmlc文件
