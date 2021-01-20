@@ -43,6 +43,7 @@ public:
     explicit DQuickWindowAttachedPrivate(DQuickWindowAttached *qq);
     ~DQuickWindowAttachedPrivate();
 
+    void ensureHandle();
     DPlatformHandle *handle = nullptr;
 
     DWindowManagerHelper::WmWindowTypes wmWindowTypes;
