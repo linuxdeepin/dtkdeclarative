@@ -33,9 +33,10 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    QQuickStyle::setStyle("Chameleon");
+    QQuickStyle::setStyle(CHAMELEON_PATH"/Chameleon");
     QQmlApplicationEngine engine;
 
+    engine.addImportPath(CHAMELEON_PATH);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;

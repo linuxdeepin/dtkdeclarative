@@ -1,10 +1,11 @@
 QT += quick quickcontrols2 dtkgui quick-private
 CONFIG += c++11
+CHAMELEON_PATH = $$_PRO_FILE_PWD_/../chameleon/imports
 
 unix* {
     LIBS += -L$$OUT_PWD/../src -ldtkdeclarative \
             -L$$OUT_PWD/../qmlplugin -ldtkdeclarativeplugin \
-            -L$$OUT_PWD/../chameleon -lqtquickcontrols2chameleonstyleplugin
+            -L$$CHAMELEON_PATH/Chameleon -lqtquickcontrols2chameleonstyleplugin
 }
 
 INCLUDEPATH += $$PWD/../src $$PWD/../qmlplugin
@@ -14,6 +15,7 @@ INCLUDEPATH += $$PWD/../src $$PWD/../qmlplugin
 # depend on your compiler). Refer to the documentation for the
 # deprecated API to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += CHAMELEON_PATH=\\\"$$CHAMELEON_PATH\\\"
 
 # You can also make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -34,5 +36,5 @@ QML_DESIGNER_IMPORT_PATH =
 CONFIG(debug, debug|release) {
     unix:QMAKE_RPATHDIR += $$OUT_PWD/../src \
                            $$OUT_PWD/../qmlplugin \
-                           $$OUT_PWD/../chameleon
+                           $$CHAMELEON_PATH/Chameleon
 }

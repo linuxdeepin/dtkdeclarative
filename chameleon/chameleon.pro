@@ -3,6 +3,7 @@ CONFIG += plugin qtquickcompiler
 
 TARGET = qtquickcontrols2chameleonstyleplugin
 TARGETPATH = QtQuick/Controls.2/Chameleon
+DESTDIR = $$PWD/imports/Chameleon
 
 QT += qml quick quick-private dtkgui
 qtHaveModule(quickcontrols2-private) {
@@ -17,18 +18,19 @@ CONFIG(debug, debug|release) {
 }
 INCLUDEPATH += $$PWD/../src
 
-RESOURCES += chameleon.qrc
+RESOURCES += \
+    $$PWD/dtkdeclarative_chameleon.qrc
 
 include($$PWD/src/src.pri)
-include($$PWD/qml.pri)
+include($$PWD/imports/Chameleon/qml.pri)
 
 # Install *.so and qml files
 unix {
     target.path = $$[QT_INSTALL_QML]/$$TARGETPATH
 
     # Qmldir file and qml files
-    qmlfiles.base = $$_PRO_FILE_PWD_
-    qmlfiles.files = $$JS_FILES $$QML_FILES $$PWD/qmldir
+    qmlfiles.base = $$_PRO_FILE_PWD_/imports/Chameleon
+    qmlfiles.files = $$JS_FILES $$QML_FILES $${qmlfiles.base}/*.qmlc $${qmlfiles.base}/qmldir
     qmlfiles.path = $${target.path}
 
     INSTALLS += target qmlfiles
