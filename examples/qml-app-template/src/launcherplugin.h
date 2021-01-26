@@ -15,28 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QQmlContext>
+#ifndef LAUNCHERPLUGIN_H
+#define LAUNCHERPLUGIN_H
 
-#include "launcherplugin.h"
+#include <DQmlAppPluginInterface>
 
-LauncherPlugin::LauncherPlugin(QObject *parent)
-    : QObject(parent)
+class LauncherPlugin : public QObject, public DTK_QUICK_NAMESPACE::DQmlAppPluginInterface
 {
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID DQmlAppPluginInterface_iid)
+    Q_INTERFACES(DTK_QUICK_NAMESPACE::DQmlAppPluginInterface)
+public:
+    LauncherPlugin(QObject *parent = nullptr);
+    ~LauncherPlugin() override;
 
-}
+    int main(QGuiApplication *app, QQmlApplicationEngine *engine) override;
+    QGuiApplication *createApplication(int &argc, char **argv) override;
+};
 
-LauncherPlugin::~LauncherPlugin()
-{
-
-}
-
-int LauncherPlugin::main(QGuiApplication *app, QQmlApplicationEngine *engine)
-{
-    // 请在此处注册需要导入到QML中的C++类型
-    // 例如： engine->rootContext()->setContextProperty("Utils", new Utils);
-    engine->load(QUrl(QStringLiteral("qrc:/main.qml")));
-    if (engine->rootObjects().isEmpty())
-        return -1;
-
-    return app->exec();
-}
+#endif // LAUNCHERPLUGIN_H

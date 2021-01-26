@@ -144,24 +144,14 @@
                     "openAsProject": true
                 },
                 {
-                    "source": "./main.cpp",
-                    "openInEditor": true
+                    "source": "./src"
                 },
                 {
-                    "source": "./launcherplugin.cpp",
-                    "openInEditor": true
+                    "source": "./tests"
                 },
                 {
-                    "source": "./launcherplugin.h",
-                    "openInEditor": true
-                },
-                {
-                    "source": "./main.qml",
-                    "openInEditor": true
-                },
-                {
-                    "source": "./qml.qrc",
-                    "target": "%{ProjectName}.qrc"
+                    "source": "./template.qrc",
+                    "target": "./src/%{ProjectName}.qrc"
                 },
                 {
                     "source": "./template.desktop",
@@ -170,7 +160,7 @@
                 {
                     "source": "./debian"
                 },
-		{
+		        {
                     "source": "../../git.ignore",
                     "target": ".gitignore",
                     "condition": "%{JS: !%{IsSubproject} && '%{VersionControl}' === 'G.Git'}"
