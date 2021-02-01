@@ -28,7 +28,8 @@ HEADERS += \
     dplatformthemeproxy.h \
     dquickitemviewport.h \
     dquickiconprovider.h \
-    dquicksystempalette.h
+    dquicksystempalette.h \
+    dquickview.h
 
 SOURCES += \
     dquickwindow.cpp \
@@ -37,11 +38,13 @@ SOURCES += \
     dplatformthemeproxy.cpp \
     dquickitemviewport.cpp \
     dquickiconprovider.cpp \
-    dquicksystempalette.cpp
+    dquicksystempalette.cpp \
+    dquickview.cpp
 
 includes.files += \
     $$PWD/*.h \
     $$PWD/DQuickWindow \
+    $$PWD/DQuickView \
     $$PWD/DAppLoader \
     $$PWD/DQmlAppPluginInterface \
     $$PWD/DQMLGlobalObject \

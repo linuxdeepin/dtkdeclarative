@@ -6,7 +6,8 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dquickiconimage_p.h \
     $$PWD/dquickiconimage_p_p.h \
     $$PWD/dquickiconlabel_p.h \
-    $$PWD/dquickiconlabel_p_p.h
+    $$PWD/dquickiconlabel_p_p.h \
+    $$PWD/dquickview_p.h
 
 SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dquickiconlabel.cpp
