@@ -77,6 +77,9 @@ DQMLGlobalObject::DQMLGlobalObject(QObject *parent)
     connect(pHelper, &DWindowManagerHelper::hasBlurWindowChanged, this, &DQMLGlobalObject::hasBlurWindowChanged);
     connect(pHelper, &DWindowManagerHelper::hasCompositeChanged, this, &DQMLGlobalObject::hasCompositeChanged);
     connect(pHelper, &DWindowManagerHelper::hasNoTitlebarChanged, this, &DQMLGlobalObject::hasNoTitlebarChanged);
+
+    auto pAppHelper = DGuiApplicationHelper::instance();
+    connect(pAppHelper, &DGuiApplicationHelper::themeTypeChanged, this, &DQMLGlobalObject::themeTypeChanged);
 }
 
 DQMLGlobalObject::~DQMLGlobalObject()
@@ -101,6 +104,11 @@ bool DQMLGlobalObject::hasNoTitlebar() const
 QString DQMLGlobalObject::windowManagerNameString() const
 {
     return DWindowManagerHelper::instance()->windowManagerNameString();
+}
+
+DGuiApplicationHelper::ColorType DQMLGlobalObject::themeType() const
+{
+    return DGuiApplicationHelper::instance()->themeType();
 }
 
 DWindowManagerHelper::WMName DQMLGlobalObject::windowManagerName() const

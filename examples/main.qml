@@ -36,6 +36,18 @@ V2.ApplicationWindow {
         console.log("hasBlurWindow : ", DTK.hasBlurWindow ? "true" : "false");
         console.log("windowManagerNameString : ", DTK.windowManagerNameString);
 
+        // 测试系统亮暗色（枚举类型）
+        if (DTK.themeType === DApplicationHelper.LightType) {
+            console.log("themeType : Light Theme");
+        } else if (DTK.themeType === DApplicationHelper.DarkType) {
+            console.log("themeType : Dark Theme");
+        } else {
+            console.log("themeType : Unknown Theme");
+        }
+        DTK.themeTypeChanged.connect(function() {
+            console.log("themeNameChanged : ", DTK.themeType);
+        });
+
         if (DTK.windowManagerName === DWindowManagerHelper.DeepinWM) {
             console.log("windowManagerName : DeepinWM");
         } else if (DTK.windowManagerName === DWindowManagerHelper.KWinWM) {

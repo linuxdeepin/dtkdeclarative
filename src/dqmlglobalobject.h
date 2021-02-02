@@ -23,6 +23,7 @@
 #include <dtkdeclarative_global.h>
 #include <DWindowManagerHelper>
 #include <DPlatformThemeProxy>
+#include <DGuiApplicationHelper>
 
 DGUI_BEGIN_NAMESPACE
 class DFontManager;
@@ -41,6 +42,7 @@ class DQMLGlobalObject : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(bool hasComposite READ hasComposite NOTIFY hasCompositeChanged)
     Q_PROPERTY(bool hasNoTitlebar READ hasNoTitlebar NOTIFY hasNoTitlebarChanged)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::WMName windowManagerName READ windowManagerName)
+    Q_PROPERTY(DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType themeType READ themeType NOTIFY themeTypeChanged)
     Q_PROPERTY(QString windowManagerNameString READ windowManagerNameString)
     Q_PROPERTY(DPlatformThemeProxy *platformTheme READ platformTheme FINAL CONSTANT)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DFontManager *fontManager READ fontManager FINAL CONSTANT)
@@ -58,6 +60,8 @@ public:
     DWindowManagerHelper::WMName windowManagerName() const;
     QString windowManagerNameString() const;
 
+    DGuiApplicationHelper::ColorType themeType() const;
+
     DPlatformThemeProxy *platformTheme() const;
     DFontManager *fontManager() const;
 
@@ -70,6 +74,7 @@ Q_SIGNALS:
     void hasNoTitlebarChanged();
     void paletteChanged();
     void inactivePaletteChanged();
+    void themeTypeChanged(DGuiApplicationHelper::ColorType themeType);
 
 private:
     D_DECLARE_PRIVATE(DQMLGlobalObject)
