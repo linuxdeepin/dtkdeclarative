@@ -93,6 +93,7 @@ T.Slider {
             width: control.horizontal ? parent.width - sliderHandle.width : PM.Slider_Groove_height
             height: control.horizontal ? PM.Slider_Groove_height : parent.height - sliderHandle.height
             Shape {
+                // 绘制滑块滑动未经过的滑槽
                 ShapePath {
                     capStyle: ShapePath.FlatCap
                     strokeStyle: ShapePath.DashLine
@@ -105,6 +106,21 @@ T.Slider {
                     PathLine {
                         x: control.horizontal ? sliderGroove.width : sliderGroove.width / 2
                         y: control.horizontal ? sliderGroove.height / 2 : sliderGroove.height
+                    }
+                }
+                // 绘制滑块滑动经过的滑槽
+                ShapePath {
+                    capStyle: ShapePath.FlatCap
+                    strokeStyle: ShapePath.DashLine
+                    strokeColor: control.palette.highlight
+                    strokeWidth: control.horizontal ? sliderGroove.height : sliderGroove.width
+                    dashOffset: 0
+                    dashPattern: [0.5, 0.25]
+                    startX: control.horizontal ? 0 : sliderGroove.width / 2
+                    startY: control.horizontal ? sliderGroove.height / 2 : 0
+                    PathLine {
+                        x: control.horizontal ? control.handle.x : sliderGroove.width / 2
+                        y: control.horizontal ? sliderGroove.height / 2 : control.handle.y
                     }
                 }
             }
