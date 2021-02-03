@@ -38,7 +38,7 @@ T.BusyIndicator {
     contentItem: BusyIndicatorImpl {
         implicitWidth: PM.BusyIndicator_ItemWidth
         implicitHeight: PM.BusyIndicator_ItemHeight
-        color: control.text
+        color: control.palette.text
 
         running: control.running
         opacity: control.running ? 1 : 0

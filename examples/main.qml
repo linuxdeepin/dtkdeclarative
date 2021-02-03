@@ -2,8 +2,6 @@ import QtQuick 2.11
 import QtQuick.Window 2.11
 import QtQuick.Controls 2.4 as V2
 import QtQuick.Layouts 1.11
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
 import com.deepin.dtk 1.0
 
 V2.ApplicationWindow {
@@ -109,42 +107,29 @@ V2.ApplicationWindow {
         }
     }
 
-    TabView {
-        id: frame
+    V2.TabBar {
+        id: tabBar
+        anchors.top: titlebar.bottom
+        V2.TabButton {
+            text: qsTr("Example_1")
+        }
+        V2.TabButton {
+            text: qsTr("Example_2")
+        }
+        V2.TabButton {
+            text: qsTr("DItemViewport")
+        }
+    }
+    StackLayout {
         anchors.left: parent.left
         anchors.right: parent.right
+        anchors.top: tabBar.bottom
         anchors.bottom: parent.bottom
-        anchors.top: titlebar.bottom
         anchors.margins: 4
-        Tab {
-            title: "Example_1"
-            Example_1 {}
-        }
-        Tab {
-            title: "Example_2"
-            Example_2 {}
-        }
-        Tab {
-            title: "DItemViewport"
-            Example_3 {}
-        }
 
-        style: TabViewStyle {
-                frameOverlap: 1
-                tab: Rectangle {
-                    color: styleData.selected ? root.palette.highlight : "lightgray"
-                    implicitWidth: Math.max(text.width + 4, 100)
-                    implicitHeight: 30
-                    radius: 2
-                    Text {
-                        id: text
-                        anchors.centerIn: parent
-                        font: font_manager.t7
-                        text: styleData.title
-                        color: styleData.selected ? "white" : "black"
-                    }
-                }
-            }
+        currentIndex: tabBar.currentIndex
+        Example_1 {}
+        Example_2 {}
+        Example_3 {}
     }
 }
-
