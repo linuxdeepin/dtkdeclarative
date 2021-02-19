@@ -2,7 +2,8 @@ TEMPLATE = subdirs
 SUBDIRS += \
     chameleon \
     src \
-    qmlplugin
+    qmlplugin \
+    tests
 
 CONFIG(debug, debug|release) {
     SUBDIRS += examples

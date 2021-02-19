@@ -19,27 +19,7 @@ isEmpty(DTK_QML_APP_PLUGIN_PATH) {
 
 DEFINES += DTK_QML_APP_PLUGIN_PATH=\\\"'$$DTK_QML_APP_PLUGIN_PATH'\\\"
 
-HEADERS += \
-    dtkdeclarative_global.h \
-    dquickwindow.h \
-    dapploader.h \
-    dqmlappplugininterface.h \
-    dqmlglobalobject.h \
-    dplatformthemeproxy.h \
-    dquickitemviewport.h \
-    dquickiconprovider.h \
-    dquicksystempalette.h \
-    dquickview.h
-
-SOURCES += \
-    dquickwindow.cpp \
-    dapploader.cpp \
-    dqmlglobalobject.cpp \
-    dplatformthemeproxy.cpp \
-    dquickitemviewport.cpp \
-    dquickiconprovider.cpp \
-    dquicksystempalette.cpp \
-    dquickview.cpp
+include(src.pri)
 
 includes.files += \
     $$PWD/*.h \

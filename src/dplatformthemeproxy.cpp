@@ -116,7 +116,7 @@ int DPlatformThemeProxy::doubleClickDistance() const
 {
     D_DC(DPlatformThemeProxy);
 
-    return d->proxy->cursorBlink();
+    return d->proxy->doubleClickDistance();
 }
 
 int DPlatformThemeProxy::doubleClickTime() const

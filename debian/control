@@ -11,8 +11,9 @@ Build-Depends:
  libdtkcore-dev,
  qtdeclarative5-private-dev,
  qtbase5-private-dev,
- pkg-kde-tools
-Standards-Version: 3.9.8    
+ pkg-kde-tools,
+ libgtest-dev
+Standards-Version: 3.9.8
 Homepage: http://www.deepin.org
 
 Package: qml-module-qtquick-controls2-styles-chameleon
