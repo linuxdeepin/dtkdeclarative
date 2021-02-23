@@ -39,6 +39,7 @@ class DQuickItemViewport : public QQuickItem, public DCORE_NAMESPACE::DObject
 
 public:
     explicit DQuickItemViewport(QQuickItem *parent = nullptr);
+    ~DQuickItemViewport() override;
 
     QQuickItem* sourceItem() const;
     QPointF sourceOffset() const;

@@ -223,8 +223,10 @@ public:
     // 圆角半径大小
     float radius = 0;
 
+    static QQuickItemPrivate::ChangeType changeType;
     static QHash<QSGMaterial*, DQuickItemViewportPrivate*> materialMap;
 };
+QQuickItemPrivate::ChangeType DQuickItemViewportPrivate::changeType = QQuickItemPrivate::Geometry;
 QHash<QSGMaterial*, DQuickItemViewportPrivate*> DQuickItemViewportPrivate::materialMap;
 Q_DECLARE_OPERATORS_FOR_FLAGS(DQuickItemViewportPrivate::DirtyState)
 
@@ -388,8 +390,13 @@ DQuickItemViewport::DQuickItemViewport(QQuickItem *parent)
     : QQuickItem (parent)
     , DCORE_NAMESPACE::DObject(*new DQuickItemViewportPrivate(this))
 {
-    QQuickItemPrivate::get(this)->addItemChangeListener(d_func(), QQuickItemPrivate::Geometry);
+    QQuickItemPrivate::get(this)->addItemChangeListener(d_func(), DQuickItemViewportPrivate::changeType);
     setFlag(ItemHasContents);
+}
+
+DQuickItemViewport::~DQuickItemViewport()
+{
+    QQuickItemPrivate::get(this)->removeItemChangeListener(d_func(), DQuickItemViewportPrivate::changeType);
 }
 
 QQuickItem *DQuickItemViewport::sourceItem() const
