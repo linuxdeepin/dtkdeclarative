@@ -23,8 +23,7 @@ import QtQuick 2.11
 import QtQuick.Templates 2.4 as T
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
-import QtQuick.Controls.Fusion 2.4
-import QtQuick.Controls.Fusion.impl 2.4
+import com.deepin.dtk 1.0
 import "PixelMetric.js" as PM
 
 T.BusyIndicator {
@@ -35,21 +34,12 @@ T.BusyIndicator {
 
     padding: PM.ControlPadding
 
-    contentItem: BusyIndicatorImpl {
+    contentItem: DBusyIndicator {
         implicitWidth: PM.BusyIndicator_ItemWidth
         implicitHeight: PM.BusyIndicator_ItemHeight
-        color: control.palette.text
+        anchors.centerIn: parent
 
+        fill: control.palette.highlight
         running: control.running
-        opacity: control.running ? 1 : 0
-        Behavior on opacity { OpacityAnimator { duration: 250 } }
-
-        RotationAnimator on rotation {
-            running: control.running || contentItem.visible
-            from: 0
-            to: 360
-            duration: 1000
-            loops: Animation.Infinite
-        }
     }
 }
