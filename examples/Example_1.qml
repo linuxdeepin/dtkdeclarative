@@ -2,6 +2,7 @@ import QtQuick 2.11
 import QtQuick.Window 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
+import com.deepin.dtk 1.0
 
 Rectangle {
 
@@ -115,6 +116,23 @@ Rectangle {
         anchors.leftMargin: 50
         anchors.top: chckDlgt.top
         placeholderText: qsTr("This is TextField")
+    }
+
+    DLineEdit {
+        id: lineEdit
+        anchors.left: txtFld.right
+        anchors.leftMargin: 20
+        anchors.top: txtFld.top
+        placeholderText: qsTr("This is DLineEdit")
+    }
+
+    DSearchEdit {
+        id: srchDt
+        anchors.left: lineEdit.left
+        anchors.top: lineEdit.bottom
+        anchors.topMargin: 10
+        placeholder: qsTr("search")
+        placeholderText: qsTr("This is DSearchEdit")
     }
 
     TextArea {

@@ -1,3 +1,7 @@
 <RCC>
-    <qresource prefix="/dtk/declarative"/>
+    <qresource prefix="/dtk/declarative/">
+        <file>qml/DSearchEdit.qml</file>
+        <file>qml/DLineEdit.qml</file>
+        <file>qml/DControlBackground.qml</file>
+    </qresource>
 </RCC>
