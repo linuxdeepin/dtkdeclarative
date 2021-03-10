@@ -1,5 +1,5 @@
 TEMPLATE = app
-QT += dtkcore dtkgui core quick quick-private
+QT += dtkcore5.5 dtkgui5.5 core quick quick-private
 
 load(dtk_testcase)
 

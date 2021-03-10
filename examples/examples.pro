@@ -1,4 +1,4 @@
-QT += quick quickcontrols2 dtkgui quick-private
+QT += quick quickcontrols2 dtkgui5.5 quick-private
 CONFIG += c++11
 CHAMELEON_PATH = $$_PRO_FILE_PWD_/../chameleon/imports
 
