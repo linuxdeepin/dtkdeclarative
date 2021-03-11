@@ -24,66 +24,41 @@ import com.deepin.dtk 1.0
     等同于 dtkwidget 里边的 DSearchEdit 控件。
 */
 
-FocusScope {
+DLineEdit {
     id: control
 
     // 暴露给外部的属性
     property alias placeholder: centerIndicatorLabel.text
-    property alias placeholderText: content.placeholderText
 
-    implicitWidth: content.implicitWidth
-    implicitHeight: content.implicitHeight
+    leftPadding: !centerIndicator.visible? searchIcon.width : 0
 
-    DControlBackground {
-        anchors.fill: parent
-        color: content.palette.button
-        focusBorder.color: content.palette.highlight
-        focusBorderVisible: content.activeFocus
-    }
-
-    // 输入提示框
-    DLineEdit {
-        id: content
-
-        readonly property int tfOffset: 8
-
-        width: control.width - searchIcon.width
-        height: control.height
-        anchors { left: searchIcon.right; leftMargin: -8 }
-        focusVisible: false
-        focus: true
-        visible: content.activeFocus
-
-//        background: Item {}
-    }
-
-    // 搜索框中心处图标和字符提示信息，聚焦后隐藏
+    // 搜索框中心处字符提示信息，聚焦后隐藏
     Item {
         id: centerIndicator
 
         anchors.fill: parent
-        visible: !content.activeFocus
+        visible: (!control.activeFocus) && (control.text.length === 0)
 
-            Label {
-                id: centerIndicatorLabel
+        Label {
+            id: centerIndicatorLabel
 
-                x: control.width / 2
-                anchors.verticalCenter: parent.verticalCenter
-            }
+            x: control.width / 2
+            anchors.verticalCenter: parent.verticalCenter
+        }
 
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                content.forceActiveFocus(Qt.MouseFocusReason)
+                control.forceActiveFocus(Qt.MouseFocusReason)
             }
         }
     }
 
-    // 聚焦后左侧的搜索图标
+    // 搜索图标
     DIcon {
         id: searchIcon
 
-        x: !control.activeFocus? (control.width / 2) - width : 0
+        x: centerIndicator.visible? (control.width / 2) - width : 0
         anchors.verticalCenter: parent.verticalCenter
         name: "search_action"
     }

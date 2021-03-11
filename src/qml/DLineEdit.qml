@@ -24,49 +24,31 @@ import com.deepin.dtk 1.0
     等同于 dtkwidget 里边的 DLineEdit 控件。
 */
 
-FocusScope {
+TextField {
     id: control
 
-    // 暴露给外部的属性
-    property bool focusVisible: true
-    // 以后 Item 可能会修改为 TextField，所以导出 TextField 的属性
-    property alias placeholderText: content.placeholderText
-    property alias background: content.background
-    property alias focusReason: content.focusReason
-    property alias hovered : content.hovered
-    property alias palette: content.palette
+    // clearButtonAnchors 属性用于调整按钮的位置，比如在按钮右侧插入控件
+    property alias clearButtonAnchors: clearBtn.anchors
 
-    implicitWidth: content.implicitWidth
-    implicitHeight: content.implicitHeight
-
-    DControlBackground {
-        anchors.fill: parent
-        color: content.palette.button
-        focusBorder.color: content.palette.highlight
-        focusBorderVisible: control.focusVisible && content.activeFocus
-    }
-
-    TextField {
-        id: content
-
-        width: control.width - clearBtn.width
-        height: control.height
-        focus: true
-        background: Item {
-            implicitWidth: 180
-            implicitHeight: 36
-        }
-    }
+    rightPadding: clearBtn.visible? clearBtn.width + clearBtn.anchors.rightMargin : 0
 
     Button {
         id: clearBtn
 
-        width: visible ? implicitWidth : 0
-        anchors { left: content.right; verticalCenter: parent.verticalCenter }
-        icon.name: "window-close_round"
-        visible: (content.activeFocus) && (content.text.length !== 0)
+        width: height
+        anchors {
+            right: control.right
+            verticalCenter: control.verticalCenter
+        }
+        visible: control.text.length !== 0
+        focusPolicy: Qt.NoFocus
         onClicked: {
-            content.clear()
+            control.clear()
+        }
+
+        DIcon {
+            anchors.centerIn: parent
+            name: "window-close_round"
         }
     }
 }

@@ -132,7 +132,13 @@ Rectangle {
         anchors.top: lineEdit.bottom
         anchors.topMargin: 10
         placeholder: qsTr("search")
-        placeholderText: qsTr("This is DSearchEdit")
+    }
+
+    DPasswordEdit {
+        id: pswdDt
+        anchors.left: srchDt.left
+        anchors.top: srchDt.bottom
+        anchors.topMargin: 20
     }
 
     TextArea {

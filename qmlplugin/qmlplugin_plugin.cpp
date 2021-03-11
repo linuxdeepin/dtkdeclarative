@@ -56,6 +56,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     // 自定义的 QML 控件可以通过把 QML 文件注册到环境中的方式来实现
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DLineEdit.qml")), uri, 1, 0, "DLineEdit");
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DSearchEdit.qml")), uri, 1, 0, "DSearchEdit");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DPasswordEdit.qml")), uri, 1, 0, "DPasswordEdit");
 }
 
 void QmlpluginPlugin::initializeEngine(QQmlEngine *engine, const char *uri)

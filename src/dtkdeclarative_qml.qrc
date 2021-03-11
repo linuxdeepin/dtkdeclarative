@@ -3,5 +3,6 @@
         <file>qml/DSearchEdit.qml</file>
         <file>qml/DLineEdit.qml</file>
         <file>qml/DControlBackground.qml</file>
+        <file>qml/DPasswordEdit.qml</file>
     </qresource>
 </RCC>
