@@ -171,7 +171,7 @@ public:
         }
 
         Q_ASSERT(sourceItem);
-        D_Q(DQuickItemViewport);
+        D_Q(const DQuickItemViewport);
         markDirty(DirtySourceSizeRatio, false);
         soureSizeRatio.setX(static_cast<float>(sourceItem->width() / q->width()));
         soureSizeRatio.setY(static_cast<float>(sourceItem->height() / q->height()));
@@ -183,7 +183,7 @@ public:
         }
 
         Q_ASSERT(radius > 0);
-        D_Q(DQuickItemViewport);
+        D_Q(const DQuickItemViewport);
         markDirty(DirtyMaskSizeRatio, false);
         maskSizeRatio.setX(static_cast<float>(q->width() / static_cast<qreal>(radius)));
         maskSizeRatio.setY(static_cast<float>(q->height() / static_cast<qreal>(radius)));
@@ -195,7 +195,7 @@ public:
         }
 
         Q_ASSERT(sourceItem && sourceItem->width() > 0 && sourceItem->height() > 0);
-        D_Q(DQuickItemViewport);
+        D_Q(const DQuickItemViewport);
         markDirty(DirtyMaskOffset, false);
         auto offset = q->position() + sourceOffset;
         maskOffset.setX(static_cast<float>(offset.x() / sourceItem->width()));
