@@ -72,6 +72,13 @@ QGuiApplication *DAppLoader::createApplication(int &argc, char **argv)
 {
     D_D(DAppLoader);
     d->ensureInstant();
+
+    // TODO: 无 XDG_CURRENT_DESKTOP 变量时，将不会加载 deepin platformtheme 插件，会导致
+    // 查找图标的接口无法调用 qt5integration 提供的插件，后续应当把图标查找相关的功能移到 dtkgui
+    if (qEnvironmentVariableIsEmpty("XDG_CURRENT_DESKTOP")) {
+        qputenv("XDG_CURRENT_DESKTOP", "Deepin");
+    }
+
     return d->instant->createApplication(argc, argv);
 }
 
