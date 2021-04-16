@@ -141,7 +141,7 @@ public:
 
     ~DQuickItemViewportPrivate() override
     {
-        resetOverrideMaterial(nullptr);
+        resetOverrideMaterial(overridedNode);
         // 清理对sourceItem的操作
         initSourceItem(sourceItem, nullptr);
     }
