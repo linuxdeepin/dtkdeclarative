@@ -309,6 +309,8 @@ void DQuickItemViewportPrivate::resetOverrideMaterial(QSGImageNode *node)
 
     if (overridedNode) {
         for (auto key : materialMap.keys(this)) {
+            if (node != dynamic_cast<QSGImageNode*>(key))
+                DVtableHook::resetVtable(key);
             materialMap.remove(key);
         }
     }
