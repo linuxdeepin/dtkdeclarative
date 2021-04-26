@@ -53,6 +53,12 @@ QGuiApplication *LauncherPlugin::createApplication(int &argc, char **argv)
     //   QCoreApplication::setAttribute 禁用屏幕缩放）；
     // 3.可以添加一些在 QGuiApplication 构造过程中才需要的环境变量；
 
+    // TODO: 无 XDG_CURRENT_DESKTOP 变量时，将不会加载 deepin platformtheme 插件，会导致
+    // 查找图标的接口无法调用 qt5integration 提供的插件，后续应当把图标查找相关的功能移到 dtkgui
+    if (qEnvironmentVariableIsEmpty("XDG_CURRENT_DESKTOP")) {
+        qputenv("XDG_CURRENT_DESKTOP", "Deepin");
+    }
+
     // 注意:请不要管理 QGuiApplication 对象的生命周期！
     QGuiApplication *a = new QGuiApplication(argc, argv);
     // a->setApplicationName("Launch-plugin");

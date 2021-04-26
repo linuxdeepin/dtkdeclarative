@@ -17,6 +17,7 @@
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QScopedPointer>
 
 #include "launcherplugin.h"
 
@@ -24,9 +25,9 @@
 // 请在LauncherPlugin::main()中实现所需功能
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+    LauncherPlugin plugin;
+    QScopedPointer<QGuiApplication> app(plugin.createApplication(argc, argv));
     QQmlApplicationEngine engine;
 
-    LauncherPlugin plugin;
-    return plugin.main(&app, &engine);
+    return plugin.main(app.get(), &engine);
 }
