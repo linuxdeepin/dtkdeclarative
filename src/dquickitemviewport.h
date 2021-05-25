@@ -35,6 +35,7 @@ class DQuickItemViewport : public QQuickItem, public DCORE_NAMESPACE::DObject
     Q_PROPERTY(QQuickItem* sourceItem READ sourceItem WRITE setSourceItem NOTIFY sourceItemChanged)
     Q_PROPERTY(QPointF sourceOffset READ sourceOffset WRITE setSourceOffset NOTIFY sourceOffsetChanged)
     Q_PROPERTY(float radius READ radius WRITE setRadius NOTIFY radiusChanged)
+    Q_PROPERTY(QColor foregroundColor READ foregroundColor WRITE setForegroundColor NOTIFY foregroundColorChanged)
     D_DECLARE_PRIVATE(DQuickItemViewport)
 
 public:
@@ -44,16 +45,19 @@ public:
     QQuickItem* sourceItem() const;
     QPointF sourceOffset() const;
     float radius() const;
+    QColor foregroundColor() const;
 
 public Q_SLOTS:
     void setSourceItem(QQuickItem* sourceItem);
     void setSourceOffset(QPointF sourceOffset);
     void setRadius(float radius);
+    void setForegroundColor(const QColor &color);
 
 Q_SIGNALS:
     void sourceItemChanged(QQuickItem* sourceItem);
     void sourceOffsetChanged(QPointF sourceOffset);
     void radiusChanged(float radius);
+    void foregroundColorChanged(const QColor &color);
 
 protected:
     void itemChange(ItemChange, const ItemChangeData &) override;

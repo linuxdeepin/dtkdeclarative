@@ -20,6 +20,7 @@
  */
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
+import QtQuick.Controls 2.4
 import com.deepin.dtk 1.0
 
 Item {
@@ -42,6 +43,9 @@ Item {
     }
 
     ListView {
+        id: testView
+
+        property color foreground: "#55ffffff"
         model: 20
         spacing: 10
         clip: true
@@ -62,12 +66,7 @@ Item {
                 sourceItem: blurEffectSource // 可以为Image或ShaderEffectSource类型的组件
                 sourceOffset: Qt.point(-parent.view.contentX + parent.x, -parent.view.contentY + parent.y)
                 anchors.fill: parent
-
-                Rectangle {
-                    anchors.fill: parent
-                    color: "#55ffffff"
-                    radius: parent.radius
-                }
+                foregroundColor: testView.foreground
 
                 Text {
                     anchors.centerIn: parent
@@ -76,6 +75,17 @@ Item {
                     font.pixelSize: 22
                 }
             }
+        }
+    }
+
+
+    Button {
+        text: "深浅切换"
+        onClicked: {
+            if (testView.foreground == "#55000000")
+                testView.foreground = "#55ffffff"
+            else
+                testView.foreground = "#55000000"
         }
     }
 }

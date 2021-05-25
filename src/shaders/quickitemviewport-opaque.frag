@@ -5,6 +5,7 @@ uniform sampler2D mask;
 uniform lowp vec2 maskScale;
 uniform lowp vec2 maskOffset;
 uniform lowp vec2 sourceScale;
+uniform lowp vec4 foregroundColor;
 
 void main()
 {
@@ -32,5 +33,5 @@ void main()
 
     // 统一计算此像素点被模板遮盖后的颜色，此处不需要区分点是否在某个区域，不在此区域时取出的mask颜色的alpha值必为1
     tex *= mask_top_left * mask_bottom_left * mask_top_right * mask_bottom_right;
-    gl_FragColor = tex;
+    gl_FragColor = tex + foregroundColor * foregroundColor.a * tex.a;
 }

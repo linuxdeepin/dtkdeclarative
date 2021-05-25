@@ -222,6 +222,7 @@ public:
     DirtyState dirtyState = DirtyNothing;
     // 圆角半径大小
     float radius = 0;
+    QColor foregroundColor;
 
     static QQuickItemPrivate::ChangeType changeType;
     static QHash<QSGMaterial*, DQuickItemViewportPrivate*> materialMap;
@@ -244,6 +245,7 @@ static inline void overrideShaderUpdateState(QSGMaterialShader *shader, const QS
     shader->program()->setUniformValue("maskScale", viewport->getMaskSizeRatio());
     shader->program()->setUniformValue("maskOffset", viewport->getMaskOffset());
     shader->program()->setUniformValue("sourceScale", viewport->getSoureSizeRatio());
+    shader->program()->setUniformValue("foregroundColor", viewport->foregroundColor);
 
     DVtableHook::callOriginalFun(shader, &QSGMaterialShader::updateState, state, newMaterial, oldMaterial);
 }
@@ -419,6 +421,12 @@ float DQuickItemViewport::radius() const
     return d->radius;
 }
 
+QColor DQuickItemViewport::foregroundColor() const
+{
+    D_DC(DQuickItemViewport);
+    return d->foregroundColor;
+}
+
 void DQuickItemViewport::setSourceItem(QQuickItem *sourceItem)
 {
     D_D(DQuickItemViewport);
@@ -457,6 +465,7 @@ void DQuickItemViewport::setSourceOffset(QPointF sourceOffset)
 
 void DQuickItemViewport::setRadius(float radius)
 {
+    // TODO：目前深浅色融合在着色器中完成，融合不支持圆角为0
     D_D(DQuickItemViewport);
     if (qFuzzyCompare(d->radius, radius))
         return;
@@ -465,6 +474,17 @@ void DQuickItemViewport::setRadius(float radius)
     d->markDirtys(DQuickItemViewportPrivate::DirtyMaskSizeRatio
                   | DQuickItemViewportPrivate::DirtyMaskTexture);
     Q_EMIT radiusChanged(d->radius);
+    update();
+}
+
+void DQuickItemViewport::setForegroundColor(const QColor &color)
+{
+    D_D(DQuickItemViewport);
+    if (d->foregroundColor == color)
+        return;
+
+    d->foregroundColor = color;
+    Q_EMIT foregroundColorChanged(color);
     update();
 }
 
