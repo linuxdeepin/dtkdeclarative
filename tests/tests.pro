@@ -13,6 +13,7 @@ unix:LIBS += \
 MOC_DIR=$$OUT_PWD/../src
 
 include($$PWD/../src/src.pri)
+include($$PWD/../src/private/private.pri)
 
 HEADERS += \
 

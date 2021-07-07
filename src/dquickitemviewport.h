@@ -21,10 +21,10 @@
 #ifndef DQUICKITEMVIEWPORT_H
 #define DQUICKITEMVIEWPORT_H
 
-#include <QQuickItem>
-
 #include <dtkdeclarative_global.h>
 #include <DObject>
+
+#include <QQuickItem>
 
 DQUICK_BEGIN_NAMESPACE
 
