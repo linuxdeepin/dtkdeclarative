@@ -21,6 +21,7 @@
 #include "dquickitemviewport.h"
 #include "dquickiconprovider.h"
 #include "dquicksystempalette.h"
+#include "dhandlecontextmenuwindow.h"
 #include "private/dquickiconimage_p.h"
 #include "private/dquickiconlabel_p.h"
 #include "private/dquickbusyindicator_p.h"
@@ -53,6 +54,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     qmlRegisterType<DFontManager>(uri, 1, 0, "DFontManager");
     qmlRegisterType<DQuickSystemPalette>(uri, 1, 0, "DSystemPalette");
     qmlRegisterUncreatableType<DQuickWindow>(uri, 1, 0, "DWindow", "DQuickWindow Attached");
+    qmlRegisterType<DHandleContextMenuWindow>(uri, 1, 0, "DContextMenuWindow");
 
     // 自定义的 QML 控件可以通过把 QML 文件注册到环境中的方式来实现
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DLineEdit.qml")), uri, 1, 0, "DLineEdit");

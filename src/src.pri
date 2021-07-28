@@ -8,7 +8,8 @@ HEADERS += \
     $$PWD/dquickitemviewport.h \
     $$PWD/dquickiconprovider.h \
     $$PWD/dquicksystempalette.h \
-    $$PWD/dquickview.h
+    $$PWD/dquickview.h \
+    $$PWD/dhandlecontextmenuwindow.h
 
 SOURCES += \
     $$PWD/dquickwindow.cpp \
@@ -18,4 +19,5 @@ SOURCES += \
     $$PWD/dquickitemviewport.cpp \
     $$PWD/dquickiconprovider.cpp \
     $$PWD/dquicksystempalette.cpp \
-    $$PWD/dquickview.cpp
+    $$PWD/dquickview.cpp \
+    $$PWD/dhandlecontextmenuwindow.cpp
