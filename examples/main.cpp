@@ -19,13 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "qmlplugin_plugin.h"
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQuickStyle>
 
-DQUICK_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {
