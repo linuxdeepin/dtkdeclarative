@@ -149,7 +149,12 @@ DPalette DQMLGlobalObject::inactivePalette() const
 
 QColor DQMLGlobalObject::adjustColor(const QColor &base, qint8 hueFloat, qint8 saturationFloat, qint8 lightnessFloat, qint8 redFloat, qint8 greenFloat, qint8 blueFloat, qint8 alphaFloat)
 {
-    return  DGuiApplicationHelper::adjustColor(base, hueFloat, saturationFloat, lightnessFloat, redFloat, greenFloat, blueFloat, alphaFloat);
+    return DGuiApplicationHelper::adjustColor(base, hueFloat, saturationFloat, lightnessFloat, redFloat, greenFloat, blueFloat, alphaFloat);
+}
+
+QColor DQMLGlobalObject::blendColor(const QColor &substrate, const QColor &superstratum)
+{
+    return DGuiApplicationHelper::blendColor(substrate, superstratum);
 }
 
 DQUICK_END_NAMESPACE

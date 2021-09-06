@@ -19,6 +19,8 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.4 as T
+import QtGraphicalEffects 1.0
+import com.deepin.dtk 1.0
 import "PixelMetric.js" as PM
 
 T.Button {
@@ -27,11 +29,16 @@ T.Button {
     implicitWidth: Math.max(background ? background.implicitWidth : 0,
                             contentItem.implicitWidth + leftPadding + rightPadding)
     implicitHeight: Math.max(background ? background.implicitHeight : 0,
-                             Math.max(contentItem.implicitHeight,
-                                      indicator ? indicator.implicitHeight : 0) + topPadding + bottomPadding)
+                             Math.max(contentItem.implicitHeight, indicator ? indicator.implicitHeight : 0) + topPadding + bottomPadding)
 
     padding: PM.ControlPadding
     spacing: PM.ControlSpacing
+
+    property alias radius:  backgroundRect.radius
+    property string iconName: ""
+    property color textColor: palette.buttonText
+    property color initGradTopColor: palette.light
+    property color initGradBottomColor: palette.dark
 
     contentItem: IconLabel {
         spacing: control.spacing
@@ -41,14 +48,87 @@ T.Button {
         icon: control.icon
         text: control.text
         font: control.font
-        color: control.palette.buttonText
+        color: textColor
     }
 
     background: Rectangle {
+        id: backgroundRect
+        property color gradTopColor: initGradTopColor
+        property color gradBottomColor: initGradBottomColor
         implicitWidth: control.text.length ? PM.Button_MiniSize + (4 * PM.ControlRadius) : PM.Button_MiniSize + (2 * PM.ControlRadius)
         implicitHeight: PM.Button_MiniSize
         radius: PM.ControlRadius
         color: control.palette.button
+        gradient: Gradient {
+            GradientStop { position: 0;    color: flat? "transparent" : backgroundRect.gradTopColor }
+            GradientStop { position: 0.96; color: flat? "transparent" : backgroundRect.gradBottomColor }
+        }
+    }
+
+    DropShadow {
+        anchors.fill: backgroundRect
+        horizontalOffset: 0
+        verticalOffset: 4
+        radius: 4
+        samples: 9
+        color: palette.shadow
+        source: backgroundRect
+    }
+
+    MouseArea{
+        id: mouseArea
+        anchors.fill: parent;
+        hoverEnabled: true;
+        onPressed: {
+            var hightColor = palette.highlight;
+            hightColor.a = 0.1;
+
+            var tmpTopColor = initGradTopColor
+            var tmpBottomColor = initGradBottomColor
+
+            tmpTopColor = DTK.adjustColor(tmpTopColor, 0, 0, -20, 0, 0, +20, 0);
+            tmpTopColor = DTK.blendColor(tmpTopColor, hightColor);
+
+            tmpBottomColor = DTK.adjustColor(tmpBottomColor, 0, 0, -15, 0, 0, +20, 0);
+            tmpBottomColor = DTK.blendColor(tmpBottomColor, hightColor);
+
+            backgroundRect.gradTopColor = tmpTopColor
+            backgroundRect.gradBottomColor = tmpBottomColor
+        }
+        onEntered: {
+            var tmpTopColor = initGradTopColor
+            var tmpBottomColor = initGradBottomColor
+
+            tmpTopColor = DTK.adjustColor(tmpTopColor, 0, 0, -10, 0, 0, 0, 0);
+            tmpBottomColor = DTK.adjustColor(tmpBottomColor, 0, 0, -10, 0, 0, 0, 0);
+
+            backgroundRect.gradTopColor = tmpTopColor
+            backgroundRect.gradBottomColor = tmpBottomColor
+        }
+        onExited: {
+            backgroundRect.gradTopColor =  Qt.binding(function() { return initGradTopColor})
+            backgroundRect.gradBottomColor = Qt.binding(function() { return initGradBottomColor})
+        }
+        onReleased: {
+            var tmpTopColor = initGradTopColor
+            var tmpBottomColor = initGradBottomColor
+
+            tmpTopColor = DTK.adjustColor(tmpTopColor, 0, 0, -10, 0, 0, 0, 0);
+            tmpBottomColor = DTK.adjustColor(tmpBottomColor, 0, 0, -10, 0, 0, 0, 0);
+
+            backgroundRect.gradTopColor = tmpTopColor
+            backgroundRect.gradBottomColor = tmpBottomColor
+            control.released()
+        }
+        onClicked: {
+            control.clicked()
+        }
+    }
+
+    DIcon {
+        id: icon
+        anchors.centerIn: parent
+        name: iconName
     }
 }
 

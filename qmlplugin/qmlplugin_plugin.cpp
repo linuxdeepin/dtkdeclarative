@@ -60,6 +60,13 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DLineEdit.qml")), uri, 1, 0, "DLineEdit");
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DSearchEdit.qml")), uri, 1, 0, "DSearchEdit");
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DPasswordEdit.qml")), uri, 1, 0, "DPasswordEdit");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DWarningButton.qml")), uri, 1, 0, "DWarningButton");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DSuggestButton.qml")), uri, 1, 0, "DSuggestButton");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DToolButton.qml")), uri, 1, 0, "DToolButton");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DIconButton.qml")), uri, 1, 0, "DIconButton");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DFloatingButton.qml")), uri, 1, 0, "DFloatingButton");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DButtonBoxButton.qml")), uri, 1, 0, "DButtonBoxButton");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DButtonBox.qml")), uri, 1, 0, "DButtonBox");
 }
 
 void QmlpluginPlugin::initializeEngine(QQmlEngine *engine, const char *uri)

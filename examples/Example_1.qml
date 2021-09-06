@@ -38,162 +38,101 @@ Rectangle {
         }
     }
 
-    ColumnLayout {
-        id: radioFrame
-        anchors.left: parent.left
+    Label {
+        id: btnLabel
+        anchors.leftMargin: 20
         anchors.top: parent.top
-        anchors.leftMargin: 20
         anchors.topMargin: 20
-
-        RadioButton {
-            checked: true
-            focus: true
-            text: qsTr("First")
-        }
-        RadioButton {
-            text: qsTr("Second")
-        }
-        RadioButton {
-            text: qsTr("Third")
-        }
-    }
-
-    ColumnLayout {
-        id: chckBx
-        anchors.left: radioFrame.right
-        anchors.leftMargin: 20
-        anchors.verticalCenter: radioFrame.verticalCenter
-
-        CheckBox {
-            checked: true
-            focus: true
-            text: qsTr("First")
-        }
-        CheckBox {
-            text: qsTr("Second")
-        }
-        CheckBox {
-            text: qsTr("Third")
-        }
-    }
-
-    ColumnLayout {
-        id: swtch
-        anchors.left: chckBx.right
-        anchors.leftMargin: 20
-        anchors.verticalCenter: radioFrame.verticalCenter
-
-        Switch {
-            width: 120
-            text: qsTr("Wi-Fi")
-        }
-        Switch {
-            text: qsTr("Bluetooth")
-        }
-    }
-
-    ListView {
-        id: chckDlgt
-        anchors.left: swtch.right
-        anchors.leftMargin: 20
-        anchors.verticalCenter: radioFrame.verticalCenter
-
-        width: 100
-        height: 100
-
-        model: ["Option 1", "Option 2", "Option 3"]
-        delegate: CheckDelegate {
-            text: modelData
-            highlighted : true
-            icon.name: "search_indicator"
-            icon.color: "red"
-        }
-    }
-
-    TextField {
-        id: txtFld
-        anchors.left: chckDlgt.right
-        anchors.leftMargin: 50
-        anchors.top: chckDlgt.top
-        placeholderText: qsTr("This is TextField")
-    }
-
-    DLineEdit {
-        id: lineEdit
-        anchors.left: txtFld.right
-        anchors.leftMargin: 20
-        anchors.top: txtFld.top
-        placeholderText: qsTr("This is DLineEdit")
-    }
-
-    DSearchEdit {
-        id: srchDt
-        anchors.left: lineEdit.left
-        anchors.top: lineEdit.bottom
-        anchors.topMargin: 10
-        placeholder: qsTr("search")
-    }
-
-    DPasswordEdit {
-        id: pswdDt
-        anchors.left: srchDt.left
-        anchors.top: srchDt.bottom
-        anchors.topMargin: 20
-    }
-
-    TextArea {
-        id: txtArea
-        anchors.left: chckDlgt.right
-        anchors.leftMargin: 50
-        anchors.top: txtFld.bottom
-        anchors.topMargin: 20
-        placeholderText: qsTr("This is TextArea")
-    }
-
-    Slider {
-        id: slider
-        anchors.left: parent.left
-        anchors.top: radioFrame.bottom
-        orientation: Qt.Horizontal
-        stepSize: 10
-        from: 0
-        value: 30
-        to: 100
-    }
-
-    ProgressBar {
-        id: proBar
-        anchors.left: slider.right
-        anchors.top: radioFrame.bottom
-        anchors.leftMargin: 20
-        anchors.margins: 20
-        from: 0
-        to: 100
-        value: 80
-        //        indeterminate: true
-    }
-
-    ComboBox {
-        id: cmbx
-        anchors.left: proBar.right
-        anchors.leftMargin: 20
-        anchors.top: proBar.top
-        model: ["First", "Second", "Third"]
+        height: btn.height
+        text: qsTr("Button:")
+        verticalAlignment: Text.AlignVCenter
     }
 
     Button {
         id: btn
-        anchors.left: cmbx.right
+        anchors.left: btnLabel.right
         anchors.leftMargin: 20
-        anchors.top: proBar.top
+        anchors.top: parent.top
+        anchors.topMargin: 20
         text: "Button"
+    }
+
+    DWarningButton {
+        id: warningBtn
+        anchors.top: parent.top // @disable-check M16
+        anchors.topMargin: 20 // @disable-check M16
+        anchors.left: btn.right // @disable-check M16
+        anchors.leftMargin: 20 // @disable-check M16
+        text: "Warning" // @disable-check M16
+        onPressed: console.log("DWarningButton pressed") // @disable-check M16
+    }
+
+    DSuggestButton {
+        id: suggestionBtn
+        anchors.left: warningBtn.right // @disable-check M16
+        anchors.leftMargin: 20 // @disable-check M16
+        anchors.top: parent.top // @disable-check M16
+        anchors.topMargin: 20 // @disable-check M16
+        text: "Suggest" // @disable-check M16
+    }
+
+    DToolButton {
+        id: toolButton
+        anchors.left: suggestionBtn.right // @disable-check M16
+        anchors.leftMargin: 20 // @disable-check M16
+        anchors.top: parent.top // @disable-check M16
+        anchors.topMargin: 20 // @disable-check M16
+    }
+
+    DIconButton {
+        id: iconButton
+        width: 36  // @disable-check M16
+        anchors.left: toolButton.right // @disable-check M16
+        anchors.leftMargin: 20 // @disable-check M16
+        anchors.top: parent.top // @disable-check M16
+        anchors.topMargin: 20 // @disable-check M16
+        iconName: "button_add"  // @disable-check M16
+    }
+
+    DIconButton {
+        id: iconButton1
+        width: 36  // @disable-check M16
+        anchors.left: iconButton.right // @disable-check M16
+        anchors.leftMargin: 20 // @disable-check M16
+        anchors.top: parent.top // @disable-check M16
+        anchors.topMargin: 20 // @disable-check M16
+        circle: true // @disable-check M16
+        iconName: "button_add"  // @disable-check M16
+    }
+
+    DIconButton {
+        id: iconButton2
+        width: 36  // @disable-check M16
+        anchors.left: iconButton1.right // @disable-check M16
+        anchors.leftMargin: 20 // @disable-check M16
+        anchors.top: parent.top // @disable-check M16
+        anchors.topMargin: 20 // @disable-check M16
+        flat: true // @disable-check M16
+        iconName: "button_add"  // @disable-check M16
+    }
+
+    DFloatingButton {
+        id: floatingButton
+        width: 36  // @disable-check M16
+        anchors.left: iconButton2.right // @disable-check M16
+        anchors.leftMargin: 20 // @disable-check M16
+        anchors.top: parent.top // @disable-check M16
+        anchors.topMargin: 20 // @disable-check M16
+        circle: true // @disable-check M16
+        iconName: "button_reduce"  // @disable-check M16
     }
 
     DelayButton {
         id: dlyBtn
-        anchors.left: btn.right
+        anchors.left: floatingButton.right
         anchors.leftMargin: 20
-        anchors.top: proBar.top
+        anchors.top: parent.top
+        anchors.topMargin: 20
         text: "DelayButton"
 
         NumberAnimation on progress {
@@ -204,38 +143,25 @@ Rectangle {
         }
     }
 
-    DialogButtonBox {
-        id: dlgBtnBx
-        anchors.left: dlyBtn.right
-        anchors.leftMargin: 20
-        anchors.verticalCenter: dlyBtn.verticalCenter
-        standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
+    DButtonBox {
+        id: buttonBox
+        anchors.left: dlyBtn.right // @disable-check M16
+        anchors.leftMargin: 20 // @disable-check M16
+        anchors.top: parent.top // @disable-check M16
+        anchors.topMargin: 20  // @disable-check M16
 
-        onAccepted: console.log("Ok clicked")
-        onRejected: console.log("Cancel clicked")
-    }
-
-    SpinBox {
-        id: spnBx
-        anchors.left: dlgBtnBx.right
-        anchors.leftMargin: 20
-        anchors.verticalCenter: dlyBtn.verticalCenter
-
-//        LayoutMirroring.enabled: true
-    }
-
-    GroupBox {
-        id: gpBx
-        width: 180
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-        anchors.top: slider.bottom
-        title: qsTr("Synchronize")
-        ColumnLayout {
+        Row {
+            id: grid
             anchors.fill: parent
-            CheckBox { text: qsTr("E-mail") }
-            CheckBox { text: qsTr("Calendar") }
-            CheckBox { text: qsTr("Contacts") }
+            DButtonBoxButton {
+                iconName: "go-previous" // @disable-check M16
+            }
+            DButtonBoxButton {
+                iconName: "go-add" // @disable-check M16
+            }
+            DButtonBoxButton {
+                iconName: "go-next" // @disable-check M16
+            }
         }
     }
 }
