@@ -1,0 +1,13 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${prefix}/lib/x86_64-linux-gnu
+includedir=${prefix}/include/DDeclarative
+
+
+Name: DTKDECLARATIVE
+Description: Deepin Tool Kit dtkdeclarative header files
+Version: 5.5.17
+Libs: -L${libdir} -ldtkdeclarative
+Cflags: -I${includedir}
+Requires: dtkcore5.5, dtkgui5.5
+

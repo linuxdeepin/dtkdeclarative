@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/dtk/declarative/">
+        <file>qml/DSlider.qml</file>
         <file>qml/DSearchEdit.qml</file>
         <file>qml/DLineEdit.qml</file>
         <file>qml/DControlBackground.qml</file>

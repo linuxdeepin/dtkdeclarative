@@ -97,7 +97,7 @@ TEST_F(ut_DPlatformThemeProxy, soundThemeName)
     ASSERT_EQ(pAppTheme->soundThemeName(), pObj->soundThemeName());
 }
 
-TEST_F(ut_DPlatformThemeProxy, )
+TEST_F(ut_DPlatformThemeProxy, fontName)
 {
     ASSERT_EQ(pAppTheme->fontName(), pObj->fontName());
 }

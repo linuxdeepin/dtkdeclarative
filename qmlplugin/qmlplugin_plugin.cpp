@@ -20,12 +20,14 @@
 #include "dqmlglobalobject.h"
 #include "dquickitemviewport.h"
 #include "dquickiconprovider.h"
+#include "dquickprogressbar.h"
 #include "dquicksystempalette.h"
 #include "dhandlecontextmenuwindow.h"
 #include "private/dquickiconimage_p.h"
 #include "private/dquickiconlabel_p.h"
 #include "private/dquickbusyindicator_p.h"
 #include "private/dquickmaskeffectnode.h"
+#include "private/dquickimage.h"
 
 #include <DFontManager>
 
@@ -42,6 +44,8 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     // @uri com.deepin.dtk
     qmlRegisterType<DQuickIconImage>(uri, 1, 0, "DIcon");
     qmlRegisterType<DQuickIconLabel>(uri, 1, 0, "DIconLabel");
+    qmlRegisterType<DQuickProgressBar>(uri, 1, 0, "DProgressBar");
+    qmlRegisterType<DQuickImage>(uri, 1, 0, "DImage");
     qmlRegisterType<DQuickBusyIndicator>(uri, 1, 0, "DBusyIndicator");
 
     //DQMLGlobalObject 依赖 DWindowManagerHelper中枚举的定义，所以需要先注册
@@ -58,6 +62,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
 
     // 自定义的 QML 控件可以通过把 QML 文件注册到环境中的方式来实现
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DLineEdit.qml")), uri, 1, 0, "DLineEdit");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DSlider.qml")), uri, 1, 0, "DSlider");
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DSearchEdit.qml")), uri, 1, 0, "DSearchEdit");
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DPasswordEdit.qml")), uri, 1, 0, "DPasswordEdit");
 }

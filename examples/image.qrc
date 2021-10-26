@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/battery.svg</file>
+        <file>res/3.jpg</file>
+    </qresource>
+</RCC>

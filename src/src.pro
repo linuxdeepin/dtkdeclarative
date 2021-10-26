@@ -1,5 +1,6 @@
 load(dtk_lib)
 include(private/private.pri)
+include(scenegraph/scenegraph.pri)
 TARGET = dtkdeclarative
 TEMPLATE = lib
 QT += dtkcore5.5 dtkgui5.5 core quick quick-private
@@ -23,6 +24,7 @@ include(src.pri)
 
 includes.files += \
     $$PWD/*.h \
+    $$PWD/DQuickProgressBar \
     $$PWD/DQuickWindow \
     $$PWD/DQuickView \
     $$PWD/DAppLoader \
@@ -30,7 +32,19 @@ includes.files += \
     $$PWD/DQMLGlobalObject \
     $$PWD/DPlatformThemeProxy \
     $$PWD/DQuickItemViewport \
-    $$PWS/DQuickSystemPalette
+    $$PWS/DQuickSystemPalette \
+    $$PWS/DQuickProgressBar
+
+includes.path = /usr/include/DDeclarative
+
+pkgconfig.files += $$PWD/pkgconfig/dtkdeclarative.pc
+pkgconfig.path = /usr/lib/$${QMAKE_HOST.arch}-linux-gnu/pkgconfig
+
+unix {
+    target.path = /usr/lib/$${QMAKE_HOST.arch}-linux-gnu
+    INSTALLS += includes target pkgconfig
+}
+
 
 RESOURCES += $$PWD/dtkdeclarative_assets.qrc
 

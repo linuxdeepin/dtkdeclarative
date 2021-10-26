@@ -3,10 +3,11 @@ CONFIG += c++11
 CHAMELEON_PATH = $$_PRO_FILE_PWD_/../chameleon/imports
 
 unix* {
-    LIBS += -L$$OUT_PWD/../src -ldtkdeclarative
+    LIBS += -L$$OUT_PWD/../src -ldtkdeclarative \
+            -L$$OUT_PWD/../chameleon/imports/com/deepin/dtk -ldtkdeclarativeplugin
 }
 
-INCLUDEPATH += $$PWD/../src
+INCLUDEPATH += $$PWD/../src $$PWD/../qmlplugin
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -23,7 +24,8 @@ DEFINES += CHAMELEON_PATH=\\\"$$CHAMELEON_PATH\\\"
 SOURCES += \
         main.cpp
 
-RESOURCES += qml.qrc
+RESOURCES += qml.qrc \
+    image.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -32,5 +34,6 @@ QML_IMPORT_PATH =
 QML_DESIGNER_IMPORT_PATH =
 
 CONFIG(debug, debug|release) {
-    unix:QMAKE_RPATHDIR += $$OUT_PWD/../src
+    unix:QMAKE_RPATHDIR += $$OUT_PWD/../src \
+                           $$OUT_PWD/../qmlplugin \
 }
