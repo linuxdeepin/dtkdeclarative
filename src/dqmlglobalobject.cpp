@@ -157,6 +157,11 @@ QColor DQMLGlobalObject::blendColor(const QColor &substrate, const QColor &super
     return DGuiApplicationHelper::blendColor(substrate, superstratum);
 }
 
+DGuiApplicationHelper::ColorType DQMLGlobalObject::toColorType(const QColor &color)
+{
+    return  DGuiApplicationHelper::toColorType(color);
+}
+
 DQUICK_END_NAMESPACE
 
 #include "moc_dqmlglobalobject.cpp"

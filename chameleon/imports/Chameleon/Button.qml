@@ -108,10 +108,14 @@ T.Button {
 
             backgroundRect.gradTopColor = tmpTopColor
             backgroundRect.gradBottomColor = tmpBottomColor
+
+            hoverAnimation.centerPoint = Qt.point(mouseX, mouseY)
+            hoverAnimation.start()
         }
         onExited: {
             backgroundRect.gradTopColor =  Qt.binding(function() { return initGradTopColor})
             backgroundRect.gradBottomColor = Qt.binding(function() { return initGradBottomColor})
+            hoverAnimation.stop()
         }
         onReleased: {
             var tmpTopColor = initGradTopColor
@@ -133,6 +137,12 @@ T.Button {
         id: icon
         anchors.centerIn: parent
         name: iconName
+    }
+
+    D.CicleSpreadAnimation {
+        id: hoverAnimation
+        hoverColor: backgroundRect.gradBottomColor
+        source: control
     }
 }
 

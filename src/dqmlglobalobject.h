@@ -71,6 +71,8 @@ public:
     Q_INVOKABLE QColor adjustColor(const QColor &base, qint8 hueFloat, qint8 saturationFloat, qint8 lightnessFloat,
                                    qint8 redFloat, qint8 greenFloat, qint8 blueFloat, qint8 alphaFloat);
     Q_INVOKABLE QColor blendColor(const QColor &substrate, const QColor &superstratum);
+
+    Q_INVOKABLE DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType toColorType(const QColor &color);
 Q_SIGNALS:
     void hasBlurWindowChanged();
     void hasCompositeChanged();
