@@ -13,5 +13,6 @@
         <file>qml/WarningButton.qml</file>
         <file>qml/RectangleBorder.qml</file>
         <file alias="qml/PixelMetric.js">../chameleon/imports/Chameleon/PixelMetric.js</file>
+        <file>qml/CicleSpreadAnimation.qml</file>
     </qresource>
 </RCC>
