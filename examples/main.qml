@@ -119,6 +119,9 @@ V2.ApplicationWindow {
         V2.TabButton {
             text: qsTr("ItemViewport")
         }
+        V2.TabButton {
+            text: qsTr("Config")
+        }
     }
     StackLayout {
         anchors.left: parent.left
@@ -131,5 +134,6 @@ V2.ApplicationWindow {
         Example_1 {}
         Example_2 {}
         Example_3 {}
+        Example_config {}
     }
 }

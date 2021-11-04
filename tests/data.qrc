@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>data/dconf-example.meta.json</file>
+    </qresource>
+</RCC>

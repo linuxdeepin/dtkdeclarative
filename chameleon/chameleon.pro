@@ -6,7 +6,7 @@ TARGET = qtquickcontrols2chameleonstyleplugin
 TARGETPATH = QtQuick/Controls.2/Chameleon
 DESTDIR = $$PWD/imports/Chameleon
 
-QT += qml quick quick-private dtkgui5.5
+QT += qml quick quick-private dtkgui
 qtHaveModule(quickcontrols2-private) {
     QT += quickcontrols2-private
     DEFINES += USE_QQuickStylePlugin

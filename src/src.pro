@@ -2,7 +2,7 @@ load(dtk_lib)
 include(private/private.pri)
 TARGET = dtkdeclarative
 TEMPLATE = lib
-QT += dtkcore5.5 dtkgui5.5 core quick quick-private
+QT += dtkcore dtkgui core quick quick-private
 CONFIG += internal_module c++11
 
 # 龙芯架构上没有默认添加PT_GNU_STACK-section,所以此处手动指定一下
