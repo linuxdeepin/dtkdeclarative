@@ -1,6 +1,6 @@
 TEMPLATE = lib
 TARGET = dtkdeclarativeplugin
-QT += qml quick dtkcore5.5 dtkgui5.5 quick-private
+QT += qml quick dtkcore dtkgui quick-private
 
 unix: LIBS += -L$$OUT_PWD/../src -ldtkdeclarative
 

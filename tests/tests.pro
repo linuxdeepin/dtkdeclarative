@@ -1,5 +1,5 @@
 TEMPLATE = app
-QT += dtkcore5.5 dtkgui5.5 core quick quick-private
+QT += dtkcore dtkgui core quick quick-private testlib
 
 load(dtk_testcase)
 
@@ -20,4 +20,7 @@ HEADERS += \
 SOURCES += \
     main.cpp \
     ut_dqmlglobalobject.cpp \
-    ut_dplatformthemeproxy.cpp
+    ut_dplatformthemeproxy.cpp \
+    ut_dconfigwrapper.cpp
+
+RESOURCES += data.qrc

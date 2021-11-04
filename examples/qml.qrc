@@ -4,5 +4,6 @@
         <file>Example_1.qml</file>
         <file>Example_2.qml</file>
         <file>Example_3.qml</file>
+        <file>Example_config.qml</file>
     </qresource>
 </RCC>
