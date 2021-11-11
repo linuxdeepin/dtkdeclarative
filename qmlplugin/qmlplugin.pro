@@ -11,7 +11,7 @@ CONFIG(debug, debug|release) {
 CONFIG += plugin c++11
 
 TARGET = $$qtLibraryTarget($$TARGET)
-uri = com.deepin.dtk
+uri = org.deepin.dtk
 
 INCLUDEPATH += $$PWD/../src
 

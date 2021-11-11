@@ -23,7 +23,7 @@ import QtQuick 2.11
 import QtQuick.Templates 2.4 as T
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
-import com.deepin.dtk 1.0
+import org.deepin.dtk 1.0 as D
 import "PixelMetric.js" as PM
 
 T.BusyIndicator {
@@ -34,7 +34,7 @@ T.BusyIndicator {
 
     padding: PM.ControlPadding
 
-    contentItem: DBusyIndicator {
+    contentItem: D.BusyIndicator {
         implicitWidth: PM.BusyIndicator_ItemWidth
         implicitHeight: PM.BusyIndicator_ItemHeight
         anchors.centerIn: parent

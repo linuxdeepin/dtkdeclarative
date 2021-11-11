@@ -23,12 +23,12 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtGraphicalEffects 1.0
-import com.deepin.dtk 1.0
+import org.deepin.dtk 1.0 as D
 import "PixelMetric.js" as PM
 
 Button {
     id: control
     textColor: control.palette.highlightedText
-    initGradTopColor: DTK.adjustColor(control.palette.highlight, 0, 0, +10, 0, 0, 0, 0)
+    initGradTopColor: D.DTK.adjustColor(control.palette.highlight, 0, 0, +10, 0, 0, 0, 0)
     initGradBottomColor: palette.highlight
 }

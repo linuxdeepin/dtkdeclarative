@@ -2,7 +2,7 @@ import QtQuick 2.11
 import QtQuick.Window 2.11
 import QtQuick.Controls 2.4 as V2
 import QtQuick.Layouts 1.11
-import com.deepin.dtk 1.0
+import org.deepin.dtk 1.0 as D
 
 V2.ApplicationWindow {
     id: root
@@ -12,15 +12,15 @@ V2.ApplicationWindow {
     title: qsTr("dtkdeclarative")
     x:(Screen.desktopAvailableWidth - width) / 2
     y:(Screen.desktopAvailableHeight - height) / 2
-//    DWindow.wmWindowTypes: DWindowManagerHelper.DesktopType
+//    D.Window.wmWindowTypes: D.WindowManagerHelper.DesktopType
 
-    // 测试DWindow的属性
-    DWindow.enabled: true
-    DWindow.windowRadius: 16
-    DWindow.borderColor: palette.highlight
-    DWindow.borderWidth: 1
+    // 测试D.Window的属性
+    D.Window.enabled: true
+    D.Window.windowRadius: 16
+    D.Window.borderColor: palette.highlight
+    D.Window.borderWidth: 1
 
-    DFontManager {
+    D.FontManager {
         id: font_manager
         baseFont: font_manager.get(13, Qt.application.font)
         onFontChanged: {
@@ -29,51 +29,51 @@ V2.ApplicationWindow {
     }
 
     Component.onCompleted: {
-        console.log(DWindow.wmWindowTypes)
+        console.log(D.Window.wmWindowTypes)
         console.log(root.isValid ? "DPlatformHandle有效" : "DPlatformHandle无效!!!!");
-        console.log("hasBlurWindow : ", DTK.hasBlurWindow ? "true" : "false");
-        console.log("windowManagerNameString : ", DTK.windowManagerNameString);
+        console.log("hasBlurWindow : ", D.DTK.hasBlurWindow ? "true" : "false");
+        console.log("windowManagerNameString : ", D.DTK.windowManagerNameString);
 
         // 测试系统亮暗色（枚举类型）
-        if (DTK.themeType === DApplicationHelper.LightType) {
+        if (D.DTK.themeType === D.ApplicationHelper.LightType) {
             console.log("themeType : Light Theme");
-        } else if (DTK.themeType === DApplicationHelper.DarkType) {
+        } else if (D.DTK.themeType === D.ApplicationHelper.DarkType) {
             console.log("themeType : Dark Theme");
         } else {
             console.log("themeType : Unknown Theme");
         }
-        DTK.themeTypeChanged.connect(function() {
-            console.log("themeNameChanged : ", DTK.themeType);
+        D.DTK.themeTypeChanged.connect(function() {
+            console.log("themeNameChanged : ", D.DTK.themeType);
         });
 
-        if (DTK.windowManagerName === DWindowManagerHelper.DeepinWM) {
+        if (D.DTK.windowManagerName === D.WindowManagerHelper.DeepinWM) {
             console.log("windowManagerName : DeepinWM");
-        } else if (DTK.windowManagerName === DWindowManagerHelper.KWinWM) {
+        } else if (D.DTK.windowManagerName === D.WindowManagerHelper.KWinWM) {
             console.log("windowManagerName : KWinWM");
         } else {
             console.log("windowManagerName : OtherWM");
         }
 
-        console.log("test platformTheme info : " , DTK.platformTheme.window, DTK.platformTheme.themeName);
+        console.log("test platformTheme info : " , D.DTK.platformTheme.window, D.DTK.platformTheme.themeName);
 
         //测试DPlatformThemeProxy信号传递(控制中心切换主题测试)
-        DTK.platformTheme.themeNameChanged.connect(function(themeName) {
+        D.DTK.platformTheme.themeNameChanged.connect(function(themeName) {
             console.log("platformTheme themeNameChanged : ", themeName);
         });
 
         //在控制中心修改字体大小可以看到打印输出
-        DTK.fontManager.fontChanged.connect(function() {
-            console.log("base font changed ....", DTK.fontManager.baseFont);
+        D.DTK.fontManager.fontChanged.connect(function() {
+            console.log("base font changed ....", D.DTK.fontManager.baseFont);
         });
-        console.log("fontManager t1 字体信息", DTK.fontManager.t1);
+        console.log("fontManager t1 字体信息", D.DTK.fontManager.t1);
 
-        // 测试 DPalette 值
-        console.log("DPalette window value: ", root.palette.window)
-        console.log("DPalette windowText value: ", root.palette.windowText)
-        console.log("DPalette base value: ", root.palette.base)
-        console.log("DPalette itemBackground value: ", root.palette.itemBackground)
-        console.log("DPalette textTitle value: ", root.palette.textTitle)
-        console.log("DPalette textTips value: ", root.palette.textTips)
+        // 测试 D.Palette 值
+        console.log("D.Palette window value: ", root.palette.window)
+        console.log("D.Palette windowText value: ", root.palette.windowText)
+        console.log("D.Palette base value: ", root.palette.base)
+        console.log("D.Palette itemBackground value: ", root.palette.itemBackground)
+        console.log("D.Palette textTitle value: ", root.palette.textTitle)
+        console.log("D.Palette textTips value: ", root.palette.textTips)
     }
 
     Rectangle {
@@ -92,7 +92,7 @@ V2.ApplicationWindow {
             color: "red"
             Text {
                 text: "CLOSE"
-                font: DTK.fontManager.t4
+                font: D.DTK.fontManager.t4
                 anchors.fill: parent
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
@@ -117,7 +117,7 @@ V2.ApplicationWindow {
             text: qsTr("Example_2")
         }
         V2.TabButton {
-            text: qsTr("DItemViewport")
+            text: qsTr("ItemViewport")
         }
     }
     StackLayout {

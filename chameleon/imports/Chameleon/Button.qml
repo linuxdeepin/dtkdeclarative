@@ -20,7 +20,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.4 as T
 import QtGraphicalEffects 1.0
-import com.deepin.dtk 1.0
+import org.deepin.dtk 1.0 as D
 import "PixelMetric.js" as PM
 
 T.Button {
@@ -51,28 +51,32 @@ T.Button {
         color: textColor
     }
 
-    background: Rectangle {
-        id: backgroundRect
-        property color gradTopColor: initGradTopColor
-        property color gradBottomColor: initGradBottomColor
+    background: Item {
         implicitWidth: control.text.length ? PM.Button_MiniSize + (4 * PM.ControlRadius) : PM.Button_MiniSize + (2 * PM.ControlRadius)
         implicitHeight: PM.Button_MiniSize
-        radius: PM.ControlRadius
-        color: control.palette.button
-        gradient: Gradient {
-            GradientStop { position: 0;    color: flat? "transparent" : backgroundRect.gradTopColor }
-            GradientStop { position: 0.96; color: flat? "transparent" : backgroundRect.gradBottomColor }
+        DropShadow {
+            anchors.fill: backgroundRect
+            horizontalOffset: 0
+            verticalOffset: 4
+            radius: 4
+            samples: 9
+            color: palette.shadow
+            source: backgroundRect
         }
-    }
 
-    DropShadow {
-        anchors.fill: backgroundRect
-        horizontalOffset: 0
-        verticalOffset: 4
-        radius: 4
-        samples: 9
-        color: palette.shadow
-        source: backgroundRect
+        Rectangle {
+            id: backgroundRect
+            property color gradTopColor: initGradTopColor
+            property color gradBottomColor: initGradBottomColor
+
+            anchors.fill: parent
+            radius: PM.ControlRadius
+            color: control.palette.button
+            gradient: Gradient {
+                GradientStop { position: 0;    color: flat? "transparent" : backgroundRect.gradTopColor }
+                GradientStop { position: 0.96; color: flat? "transparent" : backgroundRect.gradBottomColor }
+            }
+        }
     }
 
     MouseArea{
@@ -86,11 +90,11 @@ T.Button {
             var tmpTopColor = initGradTopColor
             var tmpBottomColor = initGradBottomColor
 
-            tmpTopColor = DTK.adjustColor(tmpTopColor, 0, 0, -20, 0, 0, +20, 0);
-            tmpTopColor = DTK.blendColor(tmpTopColor, hightColor);
+            tmpTopColor = D.DTK.adjustColor(tmpTopColor, 0, 0, -20, 0, 0, +20, 0);
+            tmpTopColor = D.DTK.blendColor(tmpTopColor, hightColor);
 
-            tmpBottomColor = DTK.adjustColor(tmpBottomColor, 0, 0, -15, 0, 0, +20, 0);
-            tmpBottomColor = DTK.blendColor(tmpBottomColor, hightColor);
+            tmpBottomColor = D.DTK.adjustColor(tmpBottomColor, 0, 0, -15, 0, 0, +20, 0);
+            tmpBottomColor = D.DTK.blendColor(tmpBottomColor, hightColor);
 
             backgroundRect.gradTopColor = tmpTopColor
             backgroundRect.gradBottomColor = tmpBottomColor
@@ -99,8 +103,8 @@ T.Button {
             var tmpTopColor = initGradTopColor
             var tmpBottomColor = initGradBottomColor
 
-            tmpTopColor = DTK.adjustColor(tmpTopColor, 0, 0, -10, 0, 0, 0, 0);
-            tmpBottomColor = DTK.adjustColor(tmpBottomColor, 0, 0, -10, 0, 0, 0, 0);
+            tmpTopColor = D.DTK.adjustColor(tmpTopColor, 0, 0, -10, 0, 0, 0, 0);
+            tmpBottomColor = D.DTK.adjustColor(tmpBottomColor, 0, 0, -10, 0, 0, 0, 0);
 
             backgroundRect.gradTopColor = tmpTopColor
             backgroundRect.gradBottomColor = tmpBottomColor
@@ -113,8 +117,8 @@ T.Button {
             var tmpTopColor = initGradTopColor
             var tmpBottomColor = initGradBottomColor
 
-            tmpTopColor = DTK.adjustColor(tmpTopColor, 0, 0, -10, 0, 0, 0, 0);
-            tmpBottomColor = DTK.adjustColor(tmpBottomColor, 0, 0, -10, 0, 0, 0, 0);
+            tmpTopColor = D.DTK.adjustColor(tmpTopColor, 0, 0, -10, 0, 0, 0, 0);
+            tmpBottomColor = D.DTK.adjustColor(tmpBottomColor, 0, 0, -10, 0, 0, 0, 0);
 
             backgroundRect.gradTopColor = tmpTopColor
             backgroundRect.gradBottomColor = tmpBottomColor
@@ -125,7 +129,7 @@ T.Button {
         }
     }
 
-    DIcon {
+    D.Icon {
         id: icon
         anchors.centerIn: parent
         name: iconName

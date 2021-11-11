@@ -23,7 +23,7 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.4 as T
-import com.deepin.dtk 1.0
+import org.deepin.dtk 1.0 as D
 import "PixelMetric.js" as PM
 
 T.MenuItem {
@@ -56,7 +56,7 @@ T.MenuItem {
         color: control.hovered ? control.palette.base : control.palette.text
     }
 
-    indicator: DIcon {
+    indicator: D.Icon {
         x: control.mirrored ? control.width - width - control.rightPadding : control.leftPadding
         y: control.topPadding + (control.availableHeight - height) / 2
 

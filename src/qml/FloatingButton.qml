@@ -21,8 +21,9 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
+import org.deepin.dtk 1.0 as D
 
-DIconButton {
+D.IconButton {
     id: control
     initGradTopColor: palette.highlight
     initGradBottomColor: palette.highlight

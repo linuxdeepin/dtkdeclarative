@@ -82,8 +82,6 @@ void DQuickIconImagePrivate::maybeUpdateUrl()
 
 QUrlQuery DQuickIconImagePrivate::getUrlQuery()
 {
-    D_Q(DQuickIconImage);
-
     QUrlQuery query;
     query.addQueryItem("name", name);
     query.addQueryItem("themeName", QIcon::themeName());

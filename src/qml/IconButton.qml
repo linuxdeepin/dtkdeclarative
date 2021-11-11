@@ -27,7 +27,5 @@ Button {
     id: control
     property bool circle: false
     radius: circle ? width / 2 : PM.ControlRadius
-    width: Math.max(width, height)
-    height: Math.max(width, height)
 }
 

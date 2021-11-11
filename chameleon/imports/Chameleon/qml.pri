@@ -1,4 +1,3 @@
-
 JS_FILES += \
     $$PWD/PixelMetric.js
 
@@ -29,6 +28,5 @@ QML_FILES += \
     $$PWD/Dial.qml \
     $$PWD/DialogButtonBox.qml \
     $$PWD/TextField.qml \
-    $$PWD/DRectangleBorder.qml \
     $$PWD/TextArea.qml \
     $$PWD/SpinBox.qml

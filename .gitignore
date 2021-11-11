@@ -47,4 +47,4 @@ cmake
 src/DtkDeclaratives
 src/dtkdeclarative_config.h
 src/qt_lib_dtkdeclarative.pri
-chameleon/imports/com
+chameleon/imports/org

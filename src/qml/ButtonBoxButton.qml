@@ -23,7 +23,7 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtGraphicalEffects 1.0
-import com.deepin.dtk 1.0
+import org.deepin.dtk 1.0 as D
 import "PixelMetric.js" as PM
 
 Button {
@@ -35,7 +35,7 @@ Button {
         End,
         OnlyOne
     }
-    property int position: DButtonBoxButton.Position.OnlyOne
+    property int position: D.ButtonBoxButton.Position.OnlyOne
     property color color : control.palette.button
 
     contentItem: IconLabel {
@@ -53,13 +53,13 @@ Button {
         id: backgroundRect
         implicitWidth: control.text.length ? PM.Button_MiniSize + (4 * PM.ControlRadius) : PM.Button_MiniSize + (2 * PM.ControlRadius)
         implicitHeight: PM.Button_MiniSize
-        radius: position == DButtonBoxButton.Position.Middle ? 0 : PM.ControlRadius
+        radius: position == D.ButtonBoxButton.Position.Middle ? 0 : PM.ControlRadius
         color: control.palette.button
         Rectangle {
             id: cliped
-            width: position == DButtonBoxButton.Position.OnlyOne ? 0 : parent.radius
-            height: position == DButtonBoxButton.Position.OnlyOne ? 0 : parent.height
-            x: position == DButtonBoxButton.Position.Beginning ? parent.width - cliped.width : parent.x
+            width: position == D.ButtonBoxButton.Position.OnlyOne ? 0 : parent.radius
+            height: position == D.ButtonBoxButton.Position.OnlyOne ? 0 : parent.height
+            x: position == D.ButtonBoxButton.Position.Beginning ? parent.width - cliped.width : parent.x
             y: parent.y
             color: parent.color
         }
@@ -85,14 +85,14 @@ Button {
 
             color = checked ? palette.highlight : palette.button
 
-            color = DTK.adjustColor(color, 0, 0, -20, 0, 0, +20, 0);
-            color = DTK.blendColor(color, hightColor);
+            color = D.DTK.adjustColor(color, 0, 0, -20, 0, 0, +20, 0);
+            color = D.DTK.blendColor(color, hightColor);
 
             backgroundRect.color = color
         }
         onEntered: {
             color = checked ? palette.highlight : palette.button
-            color = DTK.adjustColor(color, 0, 0, -10, 0, 0, 0, 0);
+            color = D.DTK.adjustColor(color, 0, 0, -10, 0, 0, 0, 0);
             backgroundRect.color = color
         }
         onExited: {
@@ -100,7 +100,7 @@ Button {
         }
         onReleased: {
             color = checked ? palette.highlight : palette.button
-            color= DTK.adjustColor(color, 0, 0, -10, 0, 0, 0, 0);
+            color= D.DTK.adjustColor(color, 0, 0, -10, 0, 0, 0, 0);
             backgroundRect.color = color
             control.released()
             checked = true
@@ -110,7 +110,7 @@ Button {
         }
     }
 
-    DIcon {
+    D.Icon {
         id: icon
         anchors.centerIn: parent
         name: iconName

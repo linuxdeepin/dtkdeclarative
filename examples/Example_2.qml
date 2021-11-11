@@ -2,7 +2,7 @@ import QtQuick 2.11
 import QtQuick.Window 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
-import com.deepin.dtk 1.0
+import org.deepin.dtk 1.0 as D
 
 
 Rectangle {
@@ -13,11 +13,11 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
 
-        DIcon {
+        D.Icon {
             name: "button_voice"
             sourceSize: Qt.size(50, 50)
         }
-        DIcon {
+        D.Icon {
             name: "search_indicator"
             color: "red"
 

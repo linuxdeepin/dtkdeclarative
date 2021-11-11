@@ -50,8 +50,7 @@ load(dtk_module)
 
 DISTFILES += \
     shaders/quickitemduplicator.frag \
-    shaders/quickitemduplicator-opaque.frag \
-    DIcon.qml
+    shaders/quickitemduplicator-opaque.frag
 
 RESOURCES += \
     dtkdeclarative_qml.qrc

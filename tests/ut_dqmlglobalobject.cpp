@@ -90,7 +90,11 @@ TEST_F(ut_DQMLGlobalObject, platformTheme)
 
 TEST_F(ut_DQMLGlobalObject, fontManager)
 {
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     qmlRegisterType<DFontManager>();
+#else
+    qmlRegisterAnonymousType<DFontManager>("", 1);
+#endif
     ASSERT_TRUE(pObj->fontManager());
 }
 

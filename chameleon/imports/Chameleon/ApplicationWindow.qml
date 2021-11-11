@@ -16,9 +16,9 @@
  */
 
 import QtQuick.Templates 2.4 as T
-import com.deepin.dtk 1.0
+import org.deepin.dtk 1.0 as D
 
 T.ApplicationWindow {
-    palette: active ? DTK.palette : DTK.inactivePalette
-    font: DTK.fontManager.t6
+    palette: active ? D.DTK.palette : D.DTK.inactivePalette
+    font: D.DTK.fontManager.t6
 }

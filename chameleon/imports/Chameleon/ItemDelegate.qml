@@ -23,7 +23,7 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.4 as T
-import com.deepin.dtk 1.0
+import org.deepin.dtk 1.0 as D
 import "PixelMetric.js" as PM
 
 T.ItemDelegate {
@@ -40,7 +40,7 @@ T.ItemDelegate {
     spacing: PM.ControlSpacing
 
     contentItem: Item {
-        DIcon {
+        D.Icon {
             id: mark_indicator
             x: PM.ControlRadius
             y: (parent.height - height) / 2

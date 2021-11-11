@@ -18,7 +18,7 @@
 import QtQuick 2.11
 
 /*
-    DControlBackground 控件：
+    ControlBackground 控件：
     可以用作组合控件 button、edit 等的背景颜色以及焦点框的显示。
 */
 
