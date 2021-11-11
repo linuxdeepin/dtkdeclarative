@@ -1,16 +1,17 @@
 <RCC>
     <qresource prefix="/dtk/declarative">
-        <file>qml/DSearchEdit.qml</file>
-        <file>qml/DLineEdit.qml</file>
-        <file>qml/DControlBackground.qml</file>
-        <file>qml/DPasswordEdit.qml</file>
-        <file>qml/DButtonBox.qml</file>
-        <file>qml/DButtonBoxButton.qml</file>
-        <file>qml/DFloatingButton.qml</file>
-        <file>qml/DIconButton.qml</file>
-        <file>qml/DSuggestButton.qml</file>
-        <file>qml/DToolButton.qml</file>
-        <file>qml/DWarningButton.qml</file>
+        <file>qml/SearchEdit.qml</file>
+        <file>qml/LineEdit.qml</file>
+        <file>qml/ControlBackground.qml</file>
+        <file>qml/PasswordEdit.qml</file>
+        <file>qml/ButtonBox.qml</file>
+        <file>qml/ButtonBoxButton.qml</file>
+        <file>qml/FloatingButton.qml</file>
+        <file>qml/IconButton.qml</file>
+        <file>qml/SuggestButton.qml</file>
+        <file>qml/ToolButton.qml</file>
+        <file>qml/WarningButton.qml</file>
+        <file>qml/RectangleBorder.qml</file>
         <file alias="qml/PixelMetric.js">../chameleon/imports/Chameleon/PixelMetric.js</file>
     </qresource>
 </RCC>

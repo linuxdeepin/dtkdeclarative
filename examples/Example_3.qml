@@ -21,7 +21,7 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
 import QtQuick.Controls 2.4
-import com.deepin.dtk 1.0
+import org.deepin.dtk 1.0 as D
 
 Item {
     FastBlur {
@@ -61,7 +61,7 @@ Item {
             width: 300
             anchors.horizontalCenter: parent.horizontalCenter
 
-            DItemViewport {
+            D.ItemViewport {
                 radius: 18
                 sourceItem: blurEffectSource // 可以为Image或ShaderEffectSource类型的组件
                 sourceOffset: Qt.point(-parent.view.contentX + parent.x, -parent.view.contentY + parent.y)

@@ -1,2 +1,2 @@
 usr/lib/*/lib*.so.*
-usr/lib/*/qt5/qml/com/deepin/dtk/*
+usr/lib/*/qt5/qml/org/deepin/dtk/*

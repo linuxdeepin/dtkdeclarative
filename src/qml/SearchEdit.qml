@@ -17,14 +17,14 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
-import com.deepin.dtk 1.0
+import org.deepin.dtk 1.0 as D
 
 /*
-    DSearchEdit 控件：
-    等同于 dtkwidget 里边的 DSearchEdit 控件。
+    D.SearchEdit 控件：
+    等同于 dtkwidget 里边的 D.SearchEdit 控件。
 */
 
-DLineEdit {
+D.LineEdit {
     id: control
 
     // 暴露给外部的属性
@@ -55,7 +55,7 @@ DLineEdit {
     }
 
     // 搜索图标
-    DIcon {
+    D.Icon {
         id: searchIcon
 
         x: centerIndicator.visible? (control.width / 2) - width : 0

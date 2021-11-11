@@ -17,11 +17,11 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
-import com.deepin.dtk 1.0
+import org.deepin.dtk 1.0 as D
 
 /*
-    DLineEdit 控件：
-    等同于 dtkwidget 里边的 DLineEdit 控件。
+    D.LineEdit 控件：
+    等同于 dtkwidget 里边的 D.LineEdit 控件。
 */
 
 TextField {
@@ -46,7 +46,7 @@ TextField {
             control.clear()
         }
 
-        DIcon {
+        D.Icon {
             anchors.centerIn: parent
             name: "window-close_round"
         }

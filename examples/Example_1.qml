@@ -2,7 +2,7 @@ import QtQuick 2.11
 import QtQuick.Window 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
-import com.deepin.dtk 1.0
+import org.deepin.dtk 1.0 as D
 
 Rectangle {
 
@@ -57,17 +57,17 @@ Rectangle {
         text: "Button"
     }
 
-    DWarningButton {
+    D.WarningButton {
         id: warningBtn
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20 // @disable-check M16
         anchors.left: btn.right // @disable-check M16
         anchors.leftMargin: 20 // @disable-check M16
         text: "Warning" // @disable-check M16
-        onPressed: console.log("DWarningButton pressed") // @disable-check M16
+        onPressed: console.log("D.WarningButton pressed") // @disable-check M16
     }
 
-    DSuggestButton {
+    D.SuggestButton {
         id: suggestionBtn
         anchors.left: warningBtn.right // @disable-check M16
         anchors.leftMargin: 20 // @disable-check M16
@@ -76,7 +76,7 @@ Rectangle {
         text: "Suggest" // @disable-check M16
     }
 
-    DToolButton {
+    D.ToolButton {
         id: toolButton
         anchors.left: suggestionBtn.right // @disable-check M16
         anchors.leftMargin: 20 // @disable-check M16
@@ -84,7 +84,7 @@ Rectangle {
         anchors.topMargin: 20 // @disable-check M16
     }
 
-    DIconButton {
+    D.IconButton {
         id: iconButton
         width: 36  // @disable-check M16
         anchors.left: toolButton.right // @disable-check M16
@@ -94,7 +94,7 @@ Rectangle {
         iconName: "button_add"  // @disable-check M16
     }
 
-    DIconButton {
+    D.IconButton {
         id: iconButton1
         width: 36  // @disable-check M16
         anchors.left: iconButton.right // @disable-check M16
@@ -105,7 +105,7 @@ Rectangle {
         iconName: "button_add"  // @disable-check M16
     }
 
-    DIconButton {
+    D.IconButton {
         id: iconButton2
         width: 36  // @disable-check M16
         anchors.left: iconButton1.right // @disable-check M16
@@ -116,7 +116,7 @@ Rectangle {
         iconName: "button_add"  // @disable-check M16
     }
 
-    DFloatingButton {
+    D.FloatingButton {
         id: floatingButton
         width: 36  // @disable-check M16
         anchors.left: iconButton2.right // @disable-check M16
@@ -143,7 +143,7 @@ Rectangle {
         }
     }
 
-    DButtonBox {
+    D.ButtonBox {
         id: buttonBox
         anchors.left: dlyBtn.right // @disable-check M16
         anchors.leftMargin: 20 // @disable-check M16
@@ -153,13 +153,13 @@ Rectangle {
         Row {
             id: grid
             anchors.fill: parent
-            DButtonBoxButton {
+            D.ButtonBoxButton {
                 iconName: "go-previous" // @disable-check M16
             }
-            DButtonBoxButton {
+            D.ButtonBoxButton {
                 iconName: "go-add" // @disable-check M16
             }
-            DButtonBoxButton {
+            D.ButtonBoxButton {
                 iconName: "go-next" // @disable-check M16
             }
         }

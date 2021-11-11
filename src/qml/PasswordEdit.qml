@@ -17,14 +17,14 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
-import com.deepin.dtk 1.0
+import org.deepin.dtk 1.0 as D
 
 /*
-    DPasswordEdit 控件：
-    等同于 dtkwidget 里边的 DPasswordEdit 控件。
+    D.PasswordEdit 控件：
+    等同于 dtkwidget 里边的 D.PasswordEdit 控件。
 */
 
-DLineEdit {
+D.LineEdit {
     id: control
 
     // 暴露给外部的属性
@@ -52,16 +52,16 @@ DLineEdit {
         width: height
         focusPolicy: Qt.NoFocus
         palette {
-            button: DTK.themeType === DApplicationHelper.LightType ?
+            button: D.DTK.themeType === D.ApplicationHelper.LightType ?
                                         control.palette.highlight :
-                                        DTK.adjustColor(control.palette.highlight, 0, 0, +10, 0, 0, 0, 0)
+                                        D.DTK.adjustColor(control.palette.highlight, 0, 0, +10, 0, 0, 0, 0)
             text: control.palette.highlightedText
         }
         onClicked: {
             control.toggleEchoMode()
         }
 
-        DIcon {
+        D.Icon {
             anchors.centerIn: parent
             color: control.palette.base
             name: control.isEchoMode ? "password_hide" : "password_show"

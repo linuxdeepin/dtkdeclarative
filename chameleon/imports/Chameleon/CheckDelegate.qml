@@ -19,7 +19,7 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.4 as T
-import com.deepin.dtk 1.0
+import org.deepin.dtk 1.0 as D
 import "PixelMetric.js" as PM
 
 
@@ -43,14 +43,14 @@ T.CheckDelegate {
         control: control
     }
 
-    contentItem: DIconLabel {
+    contentItem: D.IconLabel {
         leftPadding: !control.mirrored ? 0 : control.indicator.width + control.spacing
         rightPadding: control.mirrored ? 0 : control.indicator.width + control.spacing
 
         spacing: control.spacing
         mirrored: control.mirrored
         display: control.display
-        alignment: control.display === DIconLabel.IconOnly || control.display === DIconLabel.TextUnderIcon ? Qt.AlignCenter : Qt.AlignLeft
+        alignment: control.display === D.IconLabel.IconOnly || control.display === D.IconLabel.TextUnderIcon ? Qt.AlignCenter : Qt.AlignLeft
 
         iconName: control.icon.name
         iconColor: control.icon.color

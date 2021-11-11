@@ -16,7 +16,7 @@
  */
 
 import QtQuick.Controls 2.4
-import com.deepin.dtk 1.0
+import org.deepin.dtk 1.0 as D
 
 ApplicationWindow {
     id: window
@@ -26,5 +26,5 @@ ApplicationWindow {
     height: 480
 
     // 设置 dtk 风格窗口
-    DWindow.enabled: true
+    D.Window.enabled: true
 }

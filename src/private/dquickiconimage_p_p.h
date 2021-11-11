@@ -23,9 +23,13 @@
 #define DQUICKICONIMAGE_P_P_H
 
 #include <private/dquickiconimage_p.h>
+#ifndef emit
 #define emit Q_EMIT
 #include <private/qquickimage_p_p.h>
 #undef emit
+#else
+#include <private/qquickimage_p_p.h>
+#endif
 
 DQUICK_BEGIN_NAMESPACE
 
