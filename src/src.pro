@@ -30,7 +30,8 @@ includes.files += \
     $$PWD/DQMLGlobalObject \
     $$PWD/DPlatformThemeProxy \
     $$PWD/DQuickItemViewport \
-    $$PWS/DQuickSystemPalette
+    $$PWD/DQuickSystemPalette \
+    $$PWD/DQuickBlitFramebuffer
 
 RESOURCES += $$PWD/dtkdeclarative_assets.qrc
 
