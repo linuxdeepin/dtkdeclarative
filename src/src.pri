@@ -9,7 +9,8 @@ HEADERS += \
     $$PWD/dquickiconprovider.h \
     $$PWD/dquicksystempalette.h \
     $$PWD/dquickview.h \
-    $$PWD/dhandlecontextmenuwindow.h
+    $$PWD/dhandlecontextmenuwindow.h \
+    $$PWD/dquickblitframebuffer.h
 
 SOURCES += \
     $$PWD/dquickwindow.cpp \
@@ -20,4 +21,5 @@ SOURCES += \
     $$PWD/dquickiconprovider.cpp \
     $$PWD/dquicksystempalette.cpp \
     $$PWD/dquickview.cpp \
-    $$PWD/dhandlecontextmenuwindow.cpp
+    $$PWD/dhandlecontextmenuwindow.cpp \
+    $$PWD/dquickblitframebuffer.cpp
