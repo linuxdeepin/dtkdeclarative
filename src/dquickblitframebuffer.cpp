@@ -57,12 +57,11 @@ class Q_DECL_HIDDEN DQuickBlitFramebufferPrivate : public DCORE_NAMESPACE::DObje
 public:
     DQuickBlitFramebufferPrivate(DQuickBlitFramebuffer *qq)
         : DObjectPrivate(qq)
-        , tp(new TextureProvider())
     {
 
     }
 
-    QScopedPointer<TextureProvider> tp;
+    mutable QScopedPointer<TextureProvider> tp;
 };
 
 DQuickBlitFramebuffer::DQuickBlitFramebuffer(QQuickItem *parent)
@@ -80,6 +79,18 @@ bool DQuickBlitFramebuffer::isTextureProvider() const
 QSGTextureProvider *DQuickBlitFramebuffer::textureProvider() const
 {
     D_DC(DQuickBlitFramebuffer);
+
+    QQuickWindow *w = window();
+    if (!w || !w->isSceneGraphInitialized()
+            || QThread::currentThread() != QQuickWindowPrivate::get(w)->context->thread()) {
+        qWarning("DQuickBlitFramebuffer::textureProvider: can only be queried on the rendering thread of an exposed window");
+        return nullptr;
+    }
+
+    if (!d->tp) {
+        d->tp.reset(new TextureProvider());
+    }
+
     return d->tp.data();
 }
 
@@ -118,6 +129,9 @@ QSGNode *DQuickBlitFramebuffer::updatePaintNode(QSGNode *oldNode, QQuickItem::Up
         return nullptr;
     }
 
+    if (!d->tp) {
+        d->tp.reset(new TextureProvider());
+    }
     node->setRenderCallback(onRender, d->tp.data());
     d->tp->setTexture(node->texture());
 
