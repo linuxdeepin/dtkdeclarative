@@ -27,7 +27,6 @@
 #include "private/dquickiconimage_p.h"
 #include "private/dquickiconlabel_p.h"
 #include "private/dquickbusyindicator_p.h"
-#include "private/dquickmaskeffectnode.h"
 
 #include <DFontManager>
 

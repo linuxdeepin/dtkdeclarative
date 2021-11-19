@@ -21,14 +21,78 @@
 
 #include "dquickitemviewport.h"
 #include "private/dquickitemviewport_p.h"
-#include "private/dquickmaskeffectnode.h"
+#include "private/dquickmaskeffectnode_p.h"
 
 #include <QOpenGLFunctions>
 #include <QQuickImageProvider>
 
 DQUICK_BEGIN_NAMESPACE
 
-QQuickItemPrivate::ChangeType DQuickItemViewportPrivate::changeType = QQuickItemPrivate::Geometry;
+template<typename T>
+inline static T *load(const QAtomicPointer<T> &atomicValue) {
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    return atomicValue.load();
+#else
+    return atomicValue.loadRelaxed();
+#endif
+}
+
+class Q_DECL_HIDDEN PreprocessNode : public QSGNode {
+public:
+    PreprocessNode(DQuickItemViewportPrivate *item)
+        : item(item)
+    {
+        setFlag(IsVisitableNode, false);
+        item->setPreprocessNode(this);
+    }
+    ~PreprocessNode() {
+        if (auto i = load(item))
+            i->clearPreprocessNode(this);
+    }
+
+    inline void setImageNode(QSGImageNode *node) {
+        Q_ASSERT(!imageNode);
+        maskNode = dynamic_cast<MaskEffectNode*>(node);
+        imageNode = node;
+        appendChildNode(imageNode);
+        setFlag(IsVisitableNode, true);
+    }
+
+    inline void clearImageNode() {
+        delete imageNode;
+        imageNode = nullptr;
+        maskNode = nullptr;
+        setFlag(IsVisitableNode, false);
+    }
+
+    void preprocess() override {
+        auto i = load(item);
+        if (Q_UNLIKELY(!i))
+            return;
+
+        const QPointF newPos = i->q_func()->mapToItem(i->sourceItem.data(), QPointF(0, 0));
+        if (!i->updateOffset(newPos))
+            return;
+
+        i->updateSourceRect(imageNode);
+
+        if (maskNode) {
+            maskNode->setMaskOffset(i->getMaskOffset());
+        }
+    }
+
+    QAtomicPointer<DQuickItemViewportPrivate> item;
+    MaskEffectNode *maskNode = nullptr;
+    QSGImageNode *imageNode = nullptr;
+};
+
+DQuickItemViewportPrivate::~DQuickItemViewportPrivate()
+{
+    if (auto node = load(preprocessNode))
+        node->item = nullptr;
+    // 清理对sourceItem的操作
+    initSourceItem(sourceItem, nullptr);
+}
 
 void DQuickItemViewportPrivate::initSourceItem(QQuickItem *old, QQuickItem *item)
 {
@@ -47,22 +111,34 @@ void DQuickItemViewportPrivate::initSourceItem(QQuickItem *old, QQuickItem *item
     }
 }
 
-void DQuickItemViewportPrivate::itemGeometryChanged(QQuickItem *item, QQuickGeometryChange data, const QRectF &)
+void DQuickItemViewportPrivate::itemGeometryChanged(QQuickItem *, QQuickGeometryChange data, const QRectF &)
 {
     D_Q(DQuickItemViewport);
     // 当DQuickItemViewport或其sourceItem的大小改变时应当更新sourceSizeRatio和maskOffset
     if (data.sizeChange()) {
         markDirtys(DirtySourceSizeRatio | DirtyMaskOffset);
-
-        if (item == q_func())
-            markDirty(DirtyMaskSizeRatio);
         q->update();
     }
+}
 
-    // 当DQuickItemViewport的位置改变时应当更新maskOffset
-    if (data.positionChange() && item == q_func()) {
-        markDirty(DirtyMaskOffset);
-        q->update();
+void DQuickItemViewportPrivate::setPreprocessNode(PreprocessNode *newNode)
+{
+    Q_ASSERT(load(preprocessNode) == nullptr);
+    newNode->item = this;
+    preprocessNode = newNode;
+    updateUsePreprocess();
+}
+
+void DQuickItemViewportPrivate::clearPreprocessNode(PreprocessNode *oldNode)
+{
+    Q_ASSERT(load(preprocessNode) == oldNode);
+    preprocessNode = nullptr;
+}
+
+void DQuickItemViewportPrivate::updateUsePreprocess() const
+{
+    if (auto pn = load(preprocessNode)) {
+        pn->setFlag(QSGNode::UsePreprocess, !fixed && pn->imageNode);
     }
 }
 
@@ -72,11 +148,11 @@ void DQuickItemViewportPrivate::itemGeometryChanged(QQuickItem *item, QQuickGeom
  * \~chinese 作为绘制时的材质来源，这个行为依赖于 \a QQuickItem::textureProvider 提供组件的
  * \~chinese 材质。故可将qml的 Image 和 ShaderEffectSource 作为 sourceItem 使用。
  * \~chinese
- * \~chinese 绘制材质的起始位置为：DQuickItemViewport 自身的位置 + \a sourceOffset 属性的值。
- * \~chinese 一般需将 \a sourceOffset 设置为 \a sourceItem 和 DQuickItemViewport 坐标系的
- * \~chinese 差值，当两者为兄弟关系时此值应该为 "0,0"，否则应该为 DQuickItemViewport 父组件相对
- * \~chinese 于 \a sourceItem 的位置。绘制材质的大小为 DQuickItemViewport 自身的组件大小。
- * \~chinese
+ * \~chinese 源材质的区域受 \a sourceRect 属性控制。此属性的坐标相对于 \a sourceItem，当属性未
+ * \~chinese 设置时，坐标默认为 (0, 0)，大小则跟随 DQuickItemViewport。此外，当 \a fixed 的值
+ * \~chinese 为 false 时，源材质的位置还会受到 DQuickItemViewport 相对于 \a sourceItem 的位置
+ * \~chinese 的影响，即当 \a fixed 为 false 且 \a sourceRect 的坐标为 (0, 0) 时，源材质的位置
+ * \~chinese 是 DQuickItemViewport 在窗口坐标系中对 \a sourceItem 的投影，且绘制时也会实时跟随。
  * \~chinese 当 \a radius 属性为 0 时，将直接使用 \a QSGImageNode 作为渲染节点，当其值大于 0
  * \~chinese 时，将使用 QPainter 渲染按 radius 的值绘制一张圆角 QImage 资源，并将其作为 mask
  * \~chinese 材质跟 \a sourceItem 的材质一起运算，并且会使用自定义的片段着色器为材质实现圆角效果。
@@ -87,13 +163,12 @@ DQuickItemViewport::DQuickItemViewport(QQuickItem *parent)
     : QQuickItem (parent)
     , DCORE_NAMESPACE::DObject(*new DQuickItemViewportPrivate(this))
 {
-    QQuickItemPrivate::get(this)->addItemChangeListener(d_func(), DQuickItemViewportPrivate::changeType);
     setFlag(ItemHasContents);
 }
 
 DQuickItemViewport::~DQuickItemViewport()
 {
-    QQuickItemPrivate::get(this)->removeItemChangeListener(d_func(), DQuickItemViewportPrivate::changeType);
+
 }
 
 QQuickItem *DQuickItemViewport::sourceItem() const
@@ -102,10 +177,10 @@ QQuickItem *DQuickItemViewport::sourceItem() const
     return d->sourceItem;
 }
 
-QPointF DQuickItemViewport::sourceOffset() const
+QRectF DQuickItemViewport::sourceRect() const
 {
     D_DC(DQuickItemViewport);
-    return d->sourceOffset;
+    return d->sourceRect;
 }
 
 float DQuickItemViewport::radius() const
@@ -114,10 +189,20 @@ float DQuickItemViewport::radius() const
     return d->radius;
 }
 
-QColor DQuickItemViewport::foregroundColor() const
+bool DQuickItemViewport::fixed() const
 {
     D_DC(DQuickItemViewport);
-    return d->foregroundColor;
+    return d->fixed;
+}
+
+void DQuickItemViewport::setFixed(bool newFixed)
+{
+    D_D(DQuickItemViewport);
+    if (d->fixed == newFixed)
+        return;
+    d->fixed = newFixed;
+    Q_EMIT fixedChanged();
+    update();
 }
 
 void DQuickItemViewport::setSourceItem(QQuickItem *sourceItem)
@@ -137,22 +222,25 @@ void DQuickItemViewport::setSourceItem(QQuickItem *sourceItem)
     }
 
     d->sourceItem = sourceItem;
-    d->markDirtys(DQuickItemViewportPrivate::DirtySourceTexture
-                  | DQuickItemViewportPrivate::DirtySourceSizeRatio
+    d->markDirtys(DQuickItemViewportPrivate::DirtySourceSizeRatio
                   | DQuickItemViewportPrivate::DirtyMaskOffset);
-    Q_EMIT sourceItemChanged(d->sourceItem);
+    Q_EMIT sourceItemChanged();
     update();
 }
 
-void DQuickItemViewport::setSourceOffset(QPointF sourceOffset)
+void DQuickItemViewport::setSourceRect(const QRectF &sourceRect)
 {
     D_D(DQuickItemViewport);
-    if (d->sourceOffset == sourceOffset)
+    if (d->sourceRect == sourceRect)
         return;
 
-    d->sourceOffset = sourceOffset;
-    d->markDirty(DQuickItemViewportPrivate::DirtyMaskOffset);
-    Q_EMIT sourceOffsetChanged(d->sourceOffset);
+    if (d->sourceRect.topLeft() != sourceRect.topLeft())
+        d->markDirty(DQuickItemViewportPrivate::DirtyMaskOffset);
+    if (d->sourceRect.size() != sourceRect.size())
+        d->markDirtys(DQuickItemViewportPrivate::DirtySourceSizeRatio
+                      | DQuickItemViewportPrivate::DirtyMaskSizeRatio);
+    d->sourceRect = sourceRect;
+    Q_EMIT sourceRectChanged();
     update();
 }
 
@@ -163,21 +251,14 @@ void DQuickItemViewport::setRadius(float radius)
     if (qFuzzyCompare(d->radius, radius))
         return;
 
-    d->radius = radius;
+    if (qIsNull(d->radius) || qIsNull(radius)) {
+        d->markDirty(DQuickItemViewportPrivate::DirtyContentNode);
+    }
     d->markDirtys(DQuickItemViewportPrivate::DirtyMaskSizeRatio
                   | DQuickItemViewportPrivate::DirtyMaskTexture);
-    Q_EMIT radiusChanged(d->radius);
-    update();
-}
 
-void DQuickItemViewport::setForegroundColor(const QColor &color)
-{
-    D_D(DQuickItemViewport);
-    if (d->foregroundColor == color)
-        return;
-
-    d->foregroundColor = color;
-    Q_EMIT foregroundColorChanged(color);
+    d->radius = radius;
+    Q_EMIT radiusChanged();
     update();
 }
 
@@ -200,82 +281,103 @@ void DQuickItemViewport::itemChange(QQuickItem::ItemChange change, const QQuickI
     QQuickItem::itemChange(change, data);
 }
 
+void DQuickItemViewport::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+{
+    D_D(DQuickItemViewport);
+    if (!d->sourceRect.isValid() && newGeometry.size() != oldGeometry.size()) {
+        d->markDirty(DQuickItemViewportPrivate::DirtyMaskSizeRatio);
+        if (!d->sourceRect.isValid())
+            d->markDirty(DQuickItemViewportPrivate::DirtySourceSizeRatio);
+    }
+    QQuickItem::geometryChanged(newGeometry, oldGeometry);
+}
+
 QSGNode *DQuickItemViewport::updatePaintNode(QSGNode *old, QQuickItem::UpdatePaintNodeData *)
 {
     D_D(DQuickItemViewport);
-    MaskEffectNode *node = static_cast<MaskEffectNode *>(old);
-    if (!d->sourceItem || !d->sourceItem->textureProvider()->texture()) {
+
+    if (Q_UNLIKELY(!d->sourceItem || d->sourceItem->width() <=0 || d->sourceItem->height() <= 0)) {
         delete old;
         return nullptr;
     }
 
-    // 计算sourceItem应该被绘制的区域，如果此区域大小为0, 则没有必要再继续绘制
-    const QPointF &sourceOffset = position() + d->sourceOffset;
-    const QRectF &targetRect = QRectF(QPointF(0, 0), size()) & QRectF(-sourceOffset, d->sourceItem->size());
-    if (!targetRect.isValid()) {
-        delete old;
-        return nullptr;
-    }
-
-    if (Q_UNLIKELY(!node)) {
-        // 创建image node
-        if (d->radius > 0) {
-            QSGRendererInterface *ri = window()->rendererInterface();
-            if (Q_UNLIKELY(ri && ri->graphicsApi() == QSGRendererInterface::Software)) {
-                // TODO(zccrs): 软件绘制时暂未支持radius属性
-                qWarning() << "Currently does not support software simulation drawing";
-            } else {
-                node = new MaskEffectNode;
-                node->setMaskTexture(d->textureForRadiusMask());
-                d->markDirty(DQuickItemViewportPrivate::DirtySourceTexture);
-                node->material()->setFlag(QSGMaterial::Blending);
-                node->opaqueMaterial()->setFlag(QSGMaterial::Blending);
-            }
-        } else {
-            node->material()->setFlag(QSGMaterial::Blending, false);
-            node->opaqueMaterial()->setFlag(QSGMaterial::Blending, false);
-        }
-    } else {
-        // TODO(xiaoyaobing):暂时先不处理无圆角矩形，后面再增加
-    }
-
-    // 判断是否应该需要更新材质
-    if (d->dirtyState.testFlag(DQuickItemViewportPrivate::DirtySourceTexture)) {
-        auto provider = d->sourceItem->textureProvider();
-        d->markDirty(DQuickItemViewportPrivate::DirtySourceTexture, false);
-        node->setTexture(provider->texture());
-        node->setOwnsTexture(false);
-
+    const auto tp = d->sourceItem->textureProvider();
+    PreprocessNode *preNode = static_cast<PreprocessNode*>(old);
+    if (Q_UNLIKELY(!preNode)) {
+        preNode = new PreprocessNode(d);
         if (!d->textureChangedConnection) {
             // 注意不要将此代码移动到别处，有些对象不允许在非渲染线程中获取 textureProvider
-            auto onTextureChanged = [this, d] {
-                d->markDirty(DQuickItemViewportPrivate::DirtySourceTexture);
-                update();
+            auto onTextureChanged = [this, d, tp] {
+                auto preNode = load(d->preprocessNode);
+                Q_ASSERT(preNode);
+                auto texture = tp->texture();
+                if (Q_LIKELY(texture)) {
+                    if (Q_LIKELY(preNode->imageNode)) {
+                        preNode->imageNode->setTexture(texture);
+                    } else {
+                        // to create image node
+                        update();
+                    }
+                } else {
+                    preNode->clearImageNode();
+                    d->updateUsePreprocess();
+                }
             };
 
-            d->textureChangedConnection = QObject::connect(provider,
+            d->textureChangedConnection = QObject::connect(tp,
                                                            &QSGTextureProvider::textureChanged,
                                                            this, onTextureChanged);
         }
     }
 
-    const QSizeF &textureSize = node->texture()->textureSize();
-    qreal xScale = textureSize.width() / d->sourceItem->width();
-    qreal yScale = textureSize.height() / d->sourceItem->height();
+    if (Q_UNLIKELY(d->dirtyState.testFlag(DQuickItemViewportPrivate::DirtyContentNode))) {
+        d->markDirty(DQuickItemViewportPrivate::DirtyContentNode, false);
+        preNode->clearImageNode();
+    }
 
-    node->setFiltering(smooth() ? QSGTexture::Linear : QSGTexture::Nearest);
-    // 更新 DQuickItemViewport 所对应的sourceItem的材质区域
-    node->setSourceRect(QRectF((targetRect.x() + sourceOffset.x()) * xScale,
-                               (targetRect.y() + sourceOffset.y()) * yScale,
-                               targetRect.width() * xScale, targetRect.height() * yScale));
+    QSGImageNode *imageNode = preNode->imageNode;
+    const bool useMaskNode = d->needMaskNode();
+    if (Q_UNLIKELY(!imageNode) && Q_LIKELY(tp->texture())) {
+        if (useMaskNode) {
+            // 创建image node
+            QSGRendererInterface *ri = window()->rendererInterface();
+            Q_ASSERT(ri);
+            if (Q_UNLIKELY(ri->graphicsApi() == QSGRendererInterface::Software)) {
+                // TODO(zccrs): 软件绘制时暂未支持radius属性
+                qWarning() << "Currently does not support software simulation drawing";
+                return nullptr;
+            } else {
+                imageNode = new MaskEffectNode;
+            }
+        } else {
+            imageNode = window()->createImageNode();
+        }
+
+        imageNode->material()->setFlag(QSGMaterial::Blending, useMaskNode);
+        imageNode->opaqueMaterial()->setFlag(QSGMaterial::Blending, useMaskNode);
+        imageNode->setOwnsTexture(false);
+        imageNode->setTexture(tp->texture());
+        preNode->setImageNode(imageNode);
+    }
+
+    d->updateUsePreprocess();
+    if (Q_UNLIKELY(!imageNode))
+        return preNode;
+
+    imageNode->setFiltering(smooth() ? QSGTexture::Linear : QSGTexture::Nearest);
     // 目标绘制区域
-    node->setRect(targetRect);
-    node->setMaskScale(d->getMaskSizeRatio());
-    node->setMaskOffset(d->getMaskOffset());
-    node->setSourceScale(d->getSoureSizeRatio());
-    node->setForegroundColor(d->foregroundColor);
+    imageNode->setRect(QRectF(QPointF(0, 0), size()));
+    d->updateSourceRect(imageNode);
 
-    return node;
+    if (useMaskNode) {
+        auto maskNode = static_cast<MaskEffectNode*>(imageNode);
+        maskNode->setMaskOffset(d->getMaskOffset());
+        maskNode->setSourceScale(d->getSoureSizeRatio());
+        maskNode->setMaskTexture(d->textureForRadiusMask());
+        maskNode->setMaskScale(d->getMaskSizeRatio());
+    }
+
+    return preNode;
 }
 
 void DQuickItemViewport::componentComplete()

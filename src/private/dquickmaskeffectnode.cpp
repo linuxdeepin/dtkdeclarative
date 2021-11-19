@@ -19,14 +19,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "dquickmaskeffectnode.h"
+#include "dquickmaskeffectnode_p.h"
 #include "private/qsgdefaultimagenode_p.h"
 
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
 
-DQUICK_USE_NAMESPACE
 DQUICK_BEGIN_NAMESPACE
+
+inline static bool isPowerOfTwo(int x)
+{
+    // Assumption: x >= 1
+    return x == (x & -x);
+}
 
 class OpaqueTextureMaterialShader : public QSGMaterialShader
 {
@@ -78,32 +83,59 @@ void OpaqueTextureMaterialShader::initialize()
 
 void OpaqueTextureMaterialShader::updateState(const RenderState &state, QSGMaterial *newEffect, QSGMaterial *oldEffect)
 {
-    OpaqueTextureMaterial *newMaterial = static_cast<OpaqueTextureMaterial *>(newEffect);
     Q_ASSERT(oldEffect == nullptr || newEffect->type() == oldEffect->type());
-    Q_ASSERT(newMaterial->texture());
+    const OpaqueTextureMaterial *newMaterial = static_cast<OpaqueTextureMaterial *>(newEffect);
 
-    auto gl = const_cast<QOpenGLContext *>(state.context())->functions();
     // TODO：一直刷新数据浪费性能，需要优化
     QSGTexture *t = newMaterial->texture();
+    Q_ASSERT(t);
+    t->setFiltering(newMaterial->filtering());
+    t->setHorizontalWrapMode(newMaterial->horizontalWrapMode());
+    t->setVerticalWrapMode(newMaterial->verticalWrapMode());
 
+#if QT_CONFIG(opengl)
+    auto gl = const_cast<QOpenGLContext *>(state.context())->functions();
+    bool npotSupported = gl->hasOpenGLFeature(QOpenGLFunctions::NPOTTextureRepeat);
+    if (!npotSupported) {
+        QSize size = t->textureSize();
+        const bool isNpot = !isPowerOfTwo(size.width()) || !isPowerOfTwo(size.height());
+        if (isNpot) {
+            t->setHorizontalWrapMode(QSGTexture::ClampToEdge);
+            t->setVerticalWrapMode(QSGTexture::ClampToEdge);
+        }
+    }
+#else
+    Q_UNUSED(state)
+#endif
+
+    t->setMipmapFiltering(newMaterial->mipmapFiltering());
+    t->setAnisotropyLevel(newMaterial->anisotropyLevel());
+
+    OpaqueTextureMaterial *oldTx = static_cast<OpaqueTextureMaterial *>(oldEffect);
+    if (oldTx == nullptr || oldTx->texture()->textureId() != t->textureId())
+        t->bind();
+    else
+        t->updateBindOptions();
+
+#if QT_CONFIG(opengl)
+    auto mask = newMaterial->maskTexture();
     gl->glActiveTexture(GL_TEXTURE1);
-    auto texture = newMaterial->maskTexture();
-    if (texture)
-        texture->bind();
-
+    if (oldTx == nullptr || oldTx->maskTexture()->textureId() != mask->textureId()) {
+        mask->bind();
+    } else {
+        mask->updateBindOptions();
+    }
     gl->glActiveTexture(GL_TEXTURE0);
-    t->bind();
 
-    program()->setUniformValue("qt_Texture", 0);
+    program()->setUniformValue("sourceScale", newMaterial->sourceScale());
     program()->setUniformValue("mask", 1);
     program()->setUniformValue("maskScale", newMaterial->maskScale());
     program()->setUniformValue("maskOffset", newMaterial->maskOffset());
-    program()->setUniformValue("sourceScale", newMaterial->sourceScale());
-    program()->setUniformValue("foregroundColor", newMaterial->foregroundColor());
 
-#if QT_CONFIG(opengl)
     if (state.isMatrixDirty())
         program()->setUniformValue(m_matrix_id, state.combinedMatrix());
+#else
+    Q_UNUSED(state)
 #endif
 }
 
@@ -229,16 +261,6 @@ void MaskEffectNode::setSourceScale(QVector2D sourceScale)
 
     m_material.setSourceScale(sourceScale);
     m_opaque_material.setSourceScale(sourceScale);
-    markDirty(DirtyMaterial);
-}
-
-void MaskEffectNode::setForegroundColor(const QColor &color)
-{
-    if (m_material.foregroundColor() == color)
-        return;
-
-    m_material.setForegroundColor(color);
-    m_opaque_material.setForegroundColor(color);
     markDirty(DirtyMaterial);
 }
 
@@ -391,14 +413,6 @@ void OpaqueTextureMaterial::setSourceScale(QVector2D sourceScale)
         return;
 
     m_sourceScale = sourceScale;
-}
-
-void OpaqueTextureMaterial::setForegroundColor(const QColor &color)
-{
-    if (color == m_foregroundColor)
-        return;
-
-    m_foregroundColor = color;
 }
 
 DQUICK_END_NAMESPACE

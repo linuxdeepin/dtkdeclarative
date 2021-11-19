@@ -33,9 +33,9 @@ class DQuickItemViewport : public QQuickItem, public DCORE_NAMESPACE::DObject
 {
     Q_OBJECT
     Q_PROPERTY(QQuickItem* sourceItem READ sourceItem WRITE setSourceItem NOTIFY sourceItemChanged)
-    Q_PROPERTY(QPointF sourceOffset READ sourceOffset WRITE setSourceOffset NOTIFY sourceOffsetChanged)
+    Q_PROPERTY(QRectF sourceRect READ sourceRect WRITE setSourceRect NOTIFY sourceRectChanged)
     Q_PROPERTY(float radius READ radius WRITE setRadius NOTIFY radiusChanged)
-    Q_PROPERTY(QColor foregroundColor READ foregroundColor WRITE setForegroundColor NOTIFY foregroundColorChanged)
+    Q_PROPERTY(bool fixed READ fixed WRITE setFixed NOTIFY fixedChanged)
     D_DECLARE_PRIVATE(DQuickItemViewport)
 
 public:
@@ -43,25 +43,27 @@ public:
     ~DQuickItemViewport() override;
 
     QQuickItem* sourceItem() const;
-    QPointF sourceOffset() const;
-    float radius() const;
-    QColor foregroundColor() const;
-
-public Q_SLOTS:
     void setSourceItem(QQuickItem* sourceItem);
-    void setSourceOffset(QPointF sourceOffset);
+
+    QRectF sourceRect() const;
+    void setSourceRect(const QRectF &sourceRect);
+
+    float radius() const;
     void setRadius(float radius);
-    void setForegroundColor(const QColor &color);
+
+    bool fixed() const;
+    void setFixed(bool newFixed);
 
 Q_SIGNALS:
-    void sourceItemChanged(QQuickItem* sourceItem);
-    void sourceOffsetChanged(QPointF sourceOffset);
-    void radiusChanged(float radius);
-    void foregroundColorChanged(const QColor &color);
+    void sourceItemChanged();
+    void sourceRectChanged();
+    void radiusChanged();
+    void fixedChanged();
 
 protected:
     void itemChange(ItemChange, const ItemChangeData &) override;
-    QSGNode *updatePaintNode(QSGNode *, UpdatePaintNodeData *) override;
+    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry) override;
+    QSGNode *updatePaintNode(QSGNode *old, UpdatePaintNodeData *) override;
     void componentComplete() override;
 };
 
