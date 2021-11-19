@@ -19,14 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DQUICKMASKEFFECTNODE_H
-#define DQUICKMASKEFFECTNODE_H
+#ifndef DQUICKMASKEFFECTNODE_P_H
+#define DQUICKMASKEFFECTNODE_P_H
 
 #include "private/qsgtexturematerial_p.h"
 
 #include <dtkdeclarative_global.h>
 
 #include <QSGImageNode>
+#include <QPointer>
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -49,14 +50,11 @@ public:
     void setSourceScale(QVector2D sourceScale);
     QVector2D sourceScale() const { return m_sourceScale; }
 
-    void setForegroundColor(const QColor &color);
-    QColor foregroundColor() const { return m_foregroundColor; }
 private:
-    QSGTexture *m_maskTexture = nullptr;
+    QPointer<QSGTexture> m_maskTexture;
     QVector2D m_maskScale;
     QVector2D m_maskOffset;
     QVector2D m_sourceScale;
-    QColor m_foregroundColor;
 };
 
 class TextureMaterial : public OpaqueTextureMaterial
@@ -100,7 +98,6 @@ public:
     void setMaskScale(QVector2D maskScale);
     void setMaskOffset(QVector2D maskOffset);
     void setSourceScale(QVector2D sourceScale);
-    void setForegroundColor(const QColor &color);
 
     QSGTexture::AnisotropyLevel anisotropyLevel() const;
 private:
@@ -116,4 +113,4 @@ private:
 
 DQUICK_END_NAMESPACE
 
-#endif // DQUICKMASKEFFECTNODE_H
+#endif // DQUICKMASKEFFECTNODE_P_H

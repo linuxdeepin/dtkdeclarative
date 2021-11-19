@@ -26,6 +26,7 @@
 
 #include <DObjectPrivate>
 
+#include <QSGImageNode>
 #include <private/qsgadaptationlayer_p.h>
 #include <private/qquickitem_p.h>
 #include <private/qquickitemchangelistener_p.h>
@@ -73,17 +74,23 @@ public:
         }
 
         if (!texture) {
-            QImage mask(QSize(qRound(radius), qRound(radius)), QImage::Format_ARGB32);
+            // 在边缘额外加一个像素，用于 ClampToEdge 时不会取到边缘的透明像素点
+            QImage mask(QSize(qRound(radius) + 1, qRound(radius) + 1), QImage::Format_ARGB32);
             mask.fill(Qt::transparent);
+            // 必须填充为白色，在着色器中运算时会使用rgb三个通道相乘
+            const QColor maskColor = Qt::white;
             QPainter pa(&mask);
+            pa.setPen(maskColor);
+            const QRect r = mask.rect();
+            pa.drawLine(r.bottomLeft(), r.bottomRight());
+            pa.drawLine(r.topRight(), r.bottomRight());
             pa.setRenderHint(QPainter::Antialiasing, antialiasing);
             QPainterPath path;
             path.moveTo(radius, radius);
             path.arcTo(0, 0, radius * 2,  radius * 2, 90, 90);
             path.lineTo(radius, radius);
             path.closeSubpath();
-            // 必须填充为白色，在着色器中运算时会使用rgb三个通道相乘
-            pa.fillPath(path, Qt::white);
+            pa.fillPath(path, maskColor);
             pa.end();
 
             texture = new Texture(context->createTexture(mask));
@@ -112,16 +119,17 @@ private:
 };
 
 DQUICK_BEGIN_NAMESPACE
+class PreprocessNode;
 class Q_DECL_HIDDEN DQuickItemViewportPrivate : public DCORE_NAMESPACE::DObjectPrivate, public QQuickItemChangeListener
 {
 public:
     enum DirtyStateBit {
         DirtyNothing = 0x0,
-        DirtySourceTexture = 0x1,
-        DirtySourceSizeRatio = 0x2,
-        DirtyMaskTexture = 0x4,
-        DirtyMaskSizeRatio = 0x8,
-        DirtyMaskOffset = 0x10
+        DirtySourceSizeRatio = 0x1,
+        DirtyMaskTexture = 0x2,
+        DirtyMaskSizeRatio = 0x4,
+        DirtyMaskOffset = 0x8,
+        DirtyContentNode = 0x10
     };
     Q_DECLARE_FLAGS(DirtyState, DirtyStateBit)
 
@@ -131,11 +139,7 @@ public:
 
     }
 
-    ~DQuickItemViewportPrivate() override
-    {
-        // 清理对sourceItem的操作
-        initSourceItem(sourceItem, nullptr);
-    }
+    ~DQuickItemViewportPrivate() override;
 
     inline void markDirtys(DirtyState states) {
         dirtyState |= states;
@@ -159,10 +163,10 @@ public:
         }
 
         Q_ASSERT(sourceItem);
-        D_Q(const DQuickItemViewport);
         markDirty(DirtySourceSizeRatio, false);
-        soureSizeRatio.setX(static_cast<float>(sourceItem->width() / q->width()));
-        soureSizeRatio.setY(static_cast<float>(sourceItem->height() / q->height()));
+        const auto &sr = getSourceRect();
+        soureSizeRatio.setX(static_cast<float>(sourceItem->width() / sr.width()));
+        soureSizeRatio.setY(static_cast<float>(sourceItem->height() / sr.height()));
         return soureSizeRatio;
     }
     inline const QVector2D &getMaskSizeRatio() {
@@ -171,10 +175,10 @@ public:
         }
 
         Q_ASSERT(radius > 0);
-        D_Q(const DQuickItemViewport);
         markDirty(DirtyMaskSizeRatio, false);
-        maskSizeRatio.setX(static_cast<float>(q->width() / static_cast<qreal>(radius)));
-        maskSizeRatio.setY(static_cast<float>(q->height() / static_cast<qreal>(radius)));
+        const auto &sr = getSourceRect();
+        maskSizeRatio.setX(static_cast<float>(sr.width() / static_cast<qreal>(radius)));
+        maskSizeRatio.setY(static_cast<float>(sr.height() / static_cast<qreal>(radius)));
         return maskSizeRatio;
     }
     inline const QVector2D &getMaskOffset() {
@@ -183,9 +187,8 @@ public:
         }
 
         Q_ASSERT(sourceItem && sourceItem->width() > 0 && sourceItem->height() > 0);
-        D_Q(const DQuickItemViewport);
         markDirty(DirtyMaskOffset, false);
-        auto offset = q->position() + sourceOffset;
+        auto offset = getSourceRect().topLeft();
         maskOffset.setX(static_cast<float>(offset.x() / sourceItem->width()));
         maskOffset.setY(static_cast<float>(offset.y() / sourceItem->height()));
         return maskOffset;
@@ -193,20 +196,59 @@ public:
 
     inline QSGTexture *textureForRadiusMask()
     {
+        Q_ASSERT(radius > 0);
         if (Q_UNLIKELY(dirtyState.testFlag(DirtyMaskTexture) || !maskTexture)) {
             QQuickItemPrivate *d = QQuickItemPrivate::get(q_func());
             maskTexture = MaskTextureCache::instance()->getTexture(d->sceneGraphRenderContext(),
                                                                    static_cast<float>(radius * d->window->effectiveDevicePixelRatio()),
                                                                    true);
+
             markDirty(DirtyMaskTexture, false);
         }
 
         return maskTexture->texture;
     }
 
+    inline bool needMaskNode() const {
+        return radius > 0;
+    }
+
+    inline bool updateOffset(const QPointF &offset) {
+        if (this->offset == offset)
+            return false;
+        this->offset = offset;
+        markDirty(DirtyMaskOffset);
+        return true;
+    }
+
+    inline QRectF getSourceRect() const {
+        QRectF sr = sourceRect;
+        if (!sourceRect.isValid()) {
+            sr = QRectF(QPointF(0, 0), q_func()->size());
+        }
+
+        return fixed ? sr : sr.translated(offset);
+    }
+
+    inline void updateSourceRect(QSGImageNode *imageNode) const {
+        const QSizeF &textureSize = imageNode->texture()->textureSize();
+        qreal xScale = textureSize.width() / sourceItem->width();
+        qreal yScale = textureSize.height() / sourceItem->height();
+        // 计算sourceItem应该被绘制的区域，如果此区域大小为0, 则没有必要再继续绘制
+        const QRectF &sourceRect = getSourceRect();
+        // 更新 DQuickItemViewport 所对应的sourceItem的材质区域
+        imageNode->setSourceRect(QRectF(sourceRect.x() * xScale, sourceRect.y() * yScale,
+                                        sourceRect.width() * xScale, sourceRect.height() * yScale));
+    }
+
+    void setPreprocessNode(PreprocessNode *newNode);
+    void clearPreprocessNode(PreprocessNode *oldNode);
+    void updateUsePreprocess() const;
+
     D_DECLARE_PUBLIC(DQuickItemViewport)
 
     QPointer<QQuickItem> sourceItem;
+    QAtomicPointer<PreprocessNode> preprocessNode;
     // 记录sourceItem的大小是自身的多少倍
     QVector2D soureSizeRatio;
     // 显示圆角的mask材质
@@ -216,15 +258,14 @@ public:
     // mask材质相对于sourceItem材质的偏移量
     QVector2D maskOffset;
     QMetaObject::Connection textureChangedConnection;
-    // 自身parentItem位置相对于sourceItem的偏移量
-    QPointF sourceOffset = QPointF(0, 0);
+    // 自身位置相对于sourceItem的偏移量
+    QPointF offset = QPointF(0, 0);
+    QRectF sourceRect;
     // 记录待更新的数据类型
     DirtyState dirtyState = DirtyNothing;
     // 圆角半径大小
     float radius = 0;
-    QColor foregroundColor;
-
-    static QQuickItemPrivate::ChangeType changeType;
+    bool fixed = false;
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(DQuickItemViewportPrivate::DirtyState)
 DQUICK_END_NAMESPACE

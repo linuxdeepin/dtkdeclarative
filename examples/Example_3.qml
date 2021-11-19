@@ -64,16 +64,21 @@ Item {
             D.ItemViewport {
                 radius: 18
                 sourceItem: blurEffectSource // 可以为Image或ShaderEffectSource类型的组件
-                sourceOffset: Qt.point(-parent.view.contentX + parent.x, -parent.view.contentY + parent.y)
                 anchors.fill: parent
-                foregroundColor: testView.foreground
 
-                Text {
-                    anchors.centerIn: parent
-                    text: index
-                    color: "white"
-                    font.pixelSize: 22
+                Rectangle {
+                    anchors.fill: parent
+                    color: view.foreground
+                    radius: parent.radius
+                    antialiasing: true
                 }
+            }
+
+            Text {
+                anchors.centerIn: parent
+                text: index
+                color: "white"
+                font.pixelSize: 22
             }
         }
     }
