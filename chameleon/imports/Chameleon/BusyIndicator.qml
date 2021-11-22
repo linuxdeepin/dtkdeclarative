@@ -37,7 +37,7 @@ T.BusyIndicator {
     contentItem: D.BusyIndicator {
         implicitWidth: PM.BusyIndicator_ItemWidth
         implicitHeight: PM.BusyIndicator_ItemHeight
-        anchors.centerIn: parent
+        anchors.fill: parent
 
         fill: control.palette.highlight
         running: control.running
