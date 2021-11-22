@@ -48,13 +48,7 @@ DQuickBusyIndicatorNode::DQuickBusyIndicatorNode(DQuickBusyIndicator *item)
     connect(item->window(), &QQuickWindow::beforeRendering, this, &DQuickBusyIndicatorNode::maybeRotate, Qt::DirectConnection);
     connect(item->window(), &QQuickWindow::frameSwapped, this, &DQuickBusyIndicatorNode::maybeUpdate, Qt::DirectConnection);
 
-    int totalCircleCount = 0;
-    // 获取每个 indicator 阴影的颜色值
-    for (int i = 0; i < CircleCount; i++) {
-        m_indicatorColors << createDefaultIndicatorColorList(item->fill());
-        totalCircleCount += m_indicatorColors.value(i).count();
-    }
-
+    int totalCircleCount = updateIndicatorColors(item->fill());
     // 为每个 indicator 创建一个 QSGTransformNode
     for (int i = 0; i < totalCircleCount; ++i) {
         QSGTransformNode *transformNode = new QSGTransformNode;
@@ -141,6 +135,24 @@ void DQuickBusyIndicatorNode::maybeUpdate()
         m_window->update();
 }
 
+void DQuickBusyIndicatorNode::setFill(const QColor &fill)
+{
+    updateIndicatorColors(fill);
+}
+
+int DQuickBusyIndicatorNode::updateIndicatorColors(const QColor &fill)
+{
+    int totalCircleCount = 0;
+    m_indicatorColors.clear();
+    // 获取每个 indicator 阴影的颜色值
+    for (int i = 0; i < CircleCount; i++) {
+        m_indicatorColors << createDefaultIndicatorColorList(fill);
+        totalCircleCount += m_indicatorColors.value(i).count();
+    }
+
+    return totalCircleCount;
+}
+
 DQuickBusyIndicator::DQuickBusyIndicator(QQuickItem *parent)
     : QQuickItem(parent)
     , m_fill(QColor::fromRgb(TransparentColor))
@@ -160,6 +172,7 @@ void DQuickBusyIndicator::setFill(const QColor &fill)
         return;
 
     m_fill = fill;
+    m_fillIsChanged = true;
     update();
 }
 
@@ -196,7 +209,14 @@ QSGNode *DQuickBusyIndicator::updatePaintNode(QSGNode *oldNode, QQuickItem::Upda
     if (width() > 0 && height() > 0) {
         if (!node) {
             node = new DQuickBusyIndicatorNode(this);
+            m_fillIsChanged = false;
         }
+
+        if (m_fillIsChanged) {
+            node->setFill(m_fill);
+            m_fillIsChanged = false;
+        }
+
         node->setSpinning(m_isRunning);
         node->sync(this);
     } else {

@@ -40,6 +40,10 @@ public:
 public Q_SLOTS:
     void maybeRotate();
     void maybeUpdate();
+    void setFill(const QColor &fill);
+
+private:
+    int updateIndicatorColors(const QColor &fill);
 
 private:
     bool m_spinning;
@@ -72,6 +76,7 @@ protected:
 private:
     QColor m_fill;
     bool m_isRunning;
+    bool m_fillIsChanged;
 };
 
 DQUICK_END_NAMESPACE
