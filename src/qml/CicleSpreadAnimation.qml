@@ -22,7 +22,7 @@
 import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtGraphicalEffects 1.0
-import com.deepin.dtk 1.0
+import org.deepin.dtk 1.0 as D
 
 Item{
     id: control
@@ -48,7 +48,7 @@ Item{
     // to start animation
     function start() {
         // it's not be binding due to a pair for increasing and decreasing.
-        impl.color = (DTK.toColorType(hoverColor) === DApplicationHelper.LightType) ? "black": "white"
+        impl.color = (D.DTK.toColorType(hoverColor) === D.ApplicationHelper.LightType) ? "black": "white"
 
         impl.__increase()
     }
