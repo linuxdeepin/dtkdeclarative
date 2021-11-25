@@ -19,10 +19,18 @@
 #include <QUrlQuery>
 #include <QPainter>
 #include <QDebug>
+#include <DIconTheme>
+#include <DDciIcon>
+#include <DGuiApplicationHelper>
+#include <DPlatformTheme>
+
+#include <private/dquickdciiconimage_p.h>
 
 #include "dquickiconprovider.h"
+#include "dqmlglobalobject.h"
 
 DQUICK_BEGIN_NAMESPACE
+DGUI_USE_NAMESPACE
 
 DQuickIconProvider::DQuickIconProvider()
     : QQuickImageProvider(QQuickImageProvider::Image, QQuickImageProvider::ForceAsynchronousImageLoading)
@@ -66,7 +74,7 @@ QImage DQuickIconProvider::requestImage(const QString &id, QSize *size, const QS
 
     QSize icon_size = requestedSize;
     // 初始时可能没有为图标设置期望的大小
-    if (!icon_size.isValid()) {
+    if (icon_size.isEmpty()) {
         icon_size = icon.availableSizes(qMode, qState).first();
     } else {
         // 因为传入的requestedSize是已经乘过缩放的, 因此此处要除以缩放比例获取真实的图标大小
@@ -79,7 +87,8 @@ QImage DQuickIconProvider::requestImage(const QString &id, QSize *size, const QS
     QPainter painter(&image);
 
     QColor color(urlQuery.queryItemValue("color"));
-    if (color.isValid())
+    // Fixed filling icon when color is transparent.
+    if (color.isValid() && color.alpha() > 0)
         painter.setPen(color);
 
     // 务必要使用paint的方式获取图片, 有部分可变色的图标类型, 在图标引擎中会使用QPainter::pen的颜色
@@ -89,6 +98,171 @@ QImage DQuickIconProvider::requestImage(const QString &id, QSize *size, const QS
     if (size)
         *size = icon_size;
 
+    return image;
+}
+
+class DQuickDciIconProviderPrivate
+{
+public:
+    QImage requestImageFromIconProvider(const QString &id, QSize *size, const QSize &requestedSize)
+    {
+        DQuickIconProvider iconProvider;
+        return iconProvider.requestImage(id, size, requestedSize);
+    }
+
+    int autoChooseDciType(DDciIcon &dciIcon, const QColor &foreground)
+    {
+        /*
+         * no type: {
+         *     has foreground:
+         *              text > action > icon
+         *     no foreground:
+         *              icon > action > text
+         * }
+         */
+        auto _chooser = [&](const QVector<int> &order) {
+            for (const int i : order) {
+                if (dciIcon.isNull(DDciIcon::Type(i)))
+                    continue;
+                return i;
+            }
+
+            return int(DQuickDciIconImage::UnknowType);
+        };
+
+        QVector<int> typeOrder = {
+            DDciIcon::TextType,
+            DDciIcon::ActionType,
+            DDciIcon::IconType
+        };
+        if (!foreground.isValid() || (foreground.alpha() <= 0)) {
+            std::reverse(typeOrder.begin(), typeOrder.end());
+        }
+
+        return _chooser(typeOrder);
+    }
+};
+
+DQuickDciIconProvider::DQuickDciIconProvider()
+    : QQuickImageProvider(QQuickImageProvider::Image,
+                          QQuickImageProvider::ForceAsynchronousImageLoading)
+    , d(new DQuickDciIconProviderPrivate)
+{
+}
+
+DQuickDciIconProvider::~DQuickDciIconProvider()
+{
+    delete d;
+}
+
+/*!
+    \internal
+    \brief A function that handles DCI icon for use in QML.
+
+    This provider is added when the dtk qml plugin construction
+    and use to generate the icon resource data needed in the \a id.
+    This function adds icon of specified size for the different states,
+    topics, types, and other attributes needed in the id.
+
+    \note You should not add a wrong DCI icon here.
+ */
+QImage DQuickDciIconProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
+{
+    QUrlQuery urlQuery(id);
+
+    if (!urlQuery.hasQueryItem("name"))
+        return QImage();
+
+    QString name = urlQuery.queryItemValue("name");
+
+    if (name.isEmpty())
+        return QImage();
+
+    QString iconPath;
+    if (auto cached = DIconTheme::cached()) {
+         iconPath = cached->findDciIconFile(name, DGuiApplicationHelper::instance()
+                                            ->applicationTheme()->iconThemeName());
+    } else {
+        iconPath = DIconTheme::findDciIconFile(name, DGuiApplicationHelper::instance()
+                                               ->applicationTheme()->iconThemeName());
+    }
+
+    if (Q_UNLIKELY(iconPath.isEmpty())) {
+        // Fallback to normal qicon.
+       return d->requestImageFromIconProvider(id, size, requestedSize);
+    }
+
+    DDciIcon dciIcon(iconPath);
+
+    QColor color(urlQuery.queryItemValue("color"));
+
+    int type = DQuickDciIconImage::UnknowType;
+    if (urlQuery.hasQueryItem("type"))
+        type = static_cast<DDciIcon::Type>(urlQuery.queryItemValue("type").toInt());
+
+    if (type == DQuickDciIconImage::UnknowType)
+        type = d->autoChooseDciType(dciIcon, color);
+
+    if (type == DQuickDciIconImage::UnknowType)  // No available type found, fallback to qicon.
+        return d->requestImageFromIconProvider(id, size, requestedSize);
+
+    DDciIcon::Mode mode = DDciIcon::Normal;
+    if (urlQuery.hasQueryItem("mode")) {
+        int modeValue = urlQuery.queryItemValue("mode").toInt();
+        switch (modeValue) {
+        case DQMLGlobalObject::NormalState:
+            mode = DDciIcon::Normal;
+            break;
+        case DQMLGlobalObject::DisabledState:
+            mode = DDciIcon::Disabled;
+            break;
+        case DQMLGlobalObject::HoveredState:
+            mode = DDciIcon::Hover;
+            break;
+        case DQMLGlobalObject::PressedState:
+            mode = DDciIcon::Pressed;
+            break;
+        default:
+            break;
+        }
+    }
+
+    int theme = DQuickDciIconImage::UnknowTheme;
+    if (urlQuery.hasQueryItem("theme"))
+        theme = static_cast<DDciIcon::Theme>(urlQuery.queryItemValue("theme").toInt());
+
+    if (theme == DQuickDciIconImage::UnknowTheme) {
+        QColor window = DGuiApplicationHelper::instance()->applicationPalette().window().color();
+        theme = DGuiApplicationHelper::toColorType(window);
+    }
+
+    // Get the icon pixel ratio
+    qreal devicePixelRatio = 1.0;
+    if (urlQuery.hasQueryItem("devicePixelRatio")) {
+        devicePixelRatio = urlQuery.queryItemValue("devicePixelRatio").toDouble();
+        if (qIsNull(devicePixelRatio))
+            devicePixelRatio = 1.0;
+    }
+
+    // If the target mode icon didn't found, we should find the normal mode icon
+    // and decorate to the target mode.
+    int boundingSize = qMax(requestedSize.width(), requestedSize.height());
+    auto iconPtr = dciIcon.findIcon(boundingSize, DDciIcon::Theme(theme), mode, DDciIcon::Type(type));
+    if (!iconPtr)
+        iconPtr = dciIcon.findIcon(boundingSize, DDciIcon::Theme(theme), DDciIcon::Normal, DDciIcon::Type(type));
+
+    if (!iconPtr)
+        return QImage();
+
+    QBrush foreground;
+    if (color.isValid() && color.alpha() > 0)
+        foreground = color;
+
+    QImage image = DDciIcon::generatePixmap(iconPtr, mode, boundingSize,
+                                            devicePixelRatio, foreground).toImage();
+
+    if (size)
+        *size = image.size();
     return image;
 }
 

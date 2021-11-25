@@ -82,6 +82,7 @@ Q_SIGNALS:
     void colorChanged();
 
 protected:
+    DQuickIconImage(DQuickIconImagePrivate &dd, QQuickItem *parent);
     void itemChange(ItemChange change, const ItemChangeData &value) override;
     void pixmapChange() override;
 

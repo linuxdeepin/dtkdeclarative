@@ -13,11 +13,11 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
 
-        D.Icon {
+        D.QtIcon {
             name: "button_voice"
             sourceSize: Qt.size(50, 50)
         }
-        D.Icon {
+        D.QtIcon {
             name: "search_indicator"
             color: "red"
 

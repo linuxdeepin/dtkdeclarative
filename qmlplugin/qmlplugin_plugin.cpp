@@ -31,6 +31,7 @@
 
 #include "private/dconfigwrapper_p.h"
 #include "private/dquickiconimage_p.h"
+#include "private/dquickdciiconimage_p.h"
 #include "private/dquickiconlabel_p.h"
 #include "private/dquickbusyindicator_p.h"
 #include "private/dquickcontrolpalette_p.h"
@@ -109,10 +110,27 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     qmlRegisterModule(styleUri.constData(), 1, 0);
 
     // for org.deepin.dtk and org.deepin.dtk.impl
-    dtkRegisterType<DQuickIconImage>(uri, implUri, 1, 0, "Icon");
+    dtkRegisterType<DQuickIconImage>(uri, implUri, 1, 0, "QtIcon");
     dtkRegisterType<DQuickIconLabel>(uri, implUri, 1, 0, "IconLabel");
     dtkRegisterType<DQuickBusyIndicator>(uri, implUri, 1, 0, "BusyIndicator");
     dtkRegisterType<DQuickGlow>(uri, implUri, 1, 0, "GlowEffect");
+    dtkRegisterType<DQUICK_NAMESPACE::DQuickDciIconImage>(uri, implUri, 1, 0, "DciIcon");
+    dtkRegisterType<DQuickItemViewport>(uri, implUri, 1, 0, "ItemViewport");
+    dtkRegisterType<DFontManager>(uri, implUri, 1, 0, "FontManager");
+    dtkRegisterType<DHandleContextMenuWindow>(uri, implUri, 1, 0, "ContextMenuWindow");
+    dtkRegisterType<DQuickBlitFramebuffer>(uri, implUri, 1, 0, "BlitFramebuffer");
+    dtkRegisterType<DConfigWrapper>(uri, implUri, 1, 0, "Config");
+    dtkRegisterType<DQuickInWindowBlendBlur>(uri, implUri, 1, 0, "InWindowBlendBlur");
+    dtkRegisterType<DQuickControlPalette>(uri, implUri, 1, 0, "Palette");
+    dtkRegisterType<DQuickControlColorSelector>(uri, implUri, 1, 0, "ColorSelector");
+
+    dtkRegisterAnonymousType<DQUICK_NAMESPACE::DQuickDciIcon>(uri, implUri, 1);
+    dtkRegisterAnonymousType<DQuickControlColor>(uri, implUri, 1);
+
+    dtkRegisterUncreatableType<DQuickWindow>(uri, implUri, 1, 0, "Window", "DQuickWindow Attached");
+
+    qRegisterMetaType<DQUICK_NAMESPACE::DQuickDciIcon>();
+    qRegisterMetaType<DQuickControlColor>("ControlColor");
 
     //DQMLGlobalObject 依赖 DWindowManagerHelper中枚举的定义，所以需要先注册
     dtkRegisterSingletonType<DWindowManagerHelper>(uri, implUri, 1, 0, "WindowManagerHelper",
@@ -132,17 +150,6 @@ void QmlpluginPlugin::registerTypes(const char *uri)
                                                [](QQmlEngine *, QJSEngine *) -> QObject * {
         return new DQMLGlobalObject;
     });
-    dtkRegisterType<DQuickItemViewport>(uri, implUri, 1, 0, "ItemViewport");
-    dtkRegisterType<DFontManager>(uri, implUri, 1, 0, "FontManager");
-    dtkRegisterUncreatableType<DQuickWindow>(uri, implUri, 1, 0, "Window", "DQuickWindow Attached");
-    dtkRegisterType<DHandleContextMenuWindow>(uri, implUri, 1, 0, "ContextMenuWindow");
-    dtkRegisterType<DQuickBlitFramebuffer>(uri, implUri, 1, 0, "BlitFramebuffer");
-    dtkRegisterType<DConfigWrapper>(uri, implUri, 1, 0, "Config");
-    dtkRegisterType<DQuickInWindowBlendBlur>(uri, implUri, 1, 0, "InWindowBlendBlur");
-    dtkRegisterAnonymousType<DQuickControlColor>(uri, implUri, 1);
-    qRegisterMetaType<DQuickControlColor>("ControlColor");
-    dtkRegisterType<DQuickControlPalette>(uri, implUri, 1, 0, "Palette");
-    dtkRegisterType<DQuickControlColorSelector>(uri, implUri, 1, 0, "ColorSelector");
 
     // 自定义的 QML 控件可以通过把 QML 文件注册到环境中的方式来实现
     // for org.deepin.dtk
@@ -189,6 +196,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
 void QmlpluginPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
 {
     engine->addImageProvider("dtk.icon", new DQuickIconProvider);
+    engine->addImageProvider("dtk.dci.icon", new DQuickDciIconProvider);
     QQmlExtensionPlugin::initializeEngine(engine, uri);
 }
 

@@ -15,8 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "dquickdciiconimage_p.h"
 #include "dquickiconlabel_p.h"
 #include "dquickiconlabel_p_p.h"
+
+#include <DGuiApplicationHelper>
+#include <DPlatformTheme>
+#include <DIconTheme>
 
 #include <private/qguiapplication_p.h>
 
@@ -36,12 +41,39 @@ static void completeComponent(QQuickItem *item)
 
 bool DQuickIconLabelPrivate::hasIcon() const
 {
-    return display != DQuickIconLabel::TextOnly && !iconName.isEmpty();
+    return display != DQuickIconLabel::TextOnly
+            && (!icon.isEmpty());
 }
 
 bool DQuickIconLabelPrivate::hasText() const
 {
     return display != DQuickIconLabel::IconOnly && !text.isEmpty();
+}
+
+void DQuickIconLabelPrivate::createIconImage()
+{
+    Q_Q(DQuickIconLabel);
+    DQuickDciIconImage *dciImage = new DQuickDciIconImage(q);
+    if (!dciImage->isNull(icon.name())) {
+        watchChanges(dciImage);
+        beginClass(dciImage);
+        dciImage->setObjectName(QStringLiteral("image"));
+        dciImage->setName(icon.name());
+        dciImage->setType(icon.type());
+        dciImage->setTheme(icon.theme());
+        dciImage->setColor(icon.color());
+        dciImage->setSourceSize(QSize(icon.width(), icon.height()));
+        dciImage->setMode(icon.mode());
+        image = dciImage;
+    } else {
+        delete dciImage;
+        image = new DQuickIconImage(q);
+        watchChanges(image);
+        beginClass(image);
+        image->setName(icon.name());
+        image->setSourceSize(QSize(icon.width(), icon.height()));
+        image->setColor(icon.color());
+    }
 }
 
 bool DQuickIconLabelPrivate::createImage()
@@ -50,12 +82,7 @@ bool DQuickIconLabelPrivate::createImage()
     if (image)
         return false;
 
-    image = new DQuickIconImage(q);
-    watchChanges(image);
-    beginClass(image);
-    image->setObjectName(QStringLiteral("image"));
-    image->setName(iconName);
-    image->setColor(iconColor);
+    createIconImage();
     QQmlEngine::setContextForObject(image, qmlContext(q));
     if (componentComplete)
         completeComponent(image);
@@ -82,11 +109,22 @@ bool DQuickIconLabelPrivate::updateImage()
 
 void DQuickIconLabelPrivate::syncImage()
 {
-    if (!image || iconName.isEmpty())
+    if (!image || !hasIcon())
         return;
 
-    image->setName(iconName);
-    image->setColor(iconColor);
+    if (auto dciImage = qobject_cast<DQuickDciIconImage *>(image)) {
+        dciImage->setName(icon.name());
+        dciImage->setColor(icon.color());
+        dciImage->setMode(icon.mode());
+        dciImage->setSourceSize(QSize(icon.width(), icon.height()));
+        dciImage->setType(icon.type());
+        dciImage->setTheme(icon.theme());
+    } else {
+        image->setName(icon.name());
+        image->setColor(icon.color());
+        image->setSourceSize(QSize(icon.width(), icon.height()));
+    }
+
     const int valign = static_cast<int>(alignment & Qt::AlignVertical_Mask);
     image->setVerticalAlignment(static_cast<QQuickImage::VAlignment>(valign));
     const int halign = static_cast<int>(alignment & Qt::AlignHorizontal_Mask);
@@ -256,12 +294,12 @@ void DQuickIconLabelPrivate::layout()
                                                  iconSize.height() + effectiveSpacing + textSize.height()),
                                           QRectF(leftPadding, topPadding, availableWidth, availableHeight));
         if (image) {
-            QRectF iconRect = alignedRect(mirrored, Qt::AlignHCenter | Qt::AlignTop, iconSize, combinedRect);
+            QRectF iconRect = alignedRect(mirrored, Qt::Alignment(Qt::AlignHCenter | Qt::AlignTop), iconSize, combinedRect);
             image->setSize(iconRect.size());
             image->setPosition(iconRect.topLeft());
         }
         if (label) {
-            QRectF textRect = alignedRect(mirrored, Qt::AlignHCenter | Qt::AlignBottom, textSize, combinedRect);
+            QRectF textRect = alignedRect(mirrored, Qt::Alignment(Qt::AlignHCenter | Qt::AlignBottom), textSize, combinedRect);
             label->setSize(textRect.size());
             label->setPosition(textRect.topLeft());
         }
@@ -290,12 +328,12 @@ void DQuickIconLabelPrivate::layout()
                                                        qMax(iconSize.height(), textSize.height())),
                                                 QRectF(leftPadding, topPadding, availableWidth, availableHeight));
         if (image) {
-            const QRectF iconRect = alignedRect(mirrored, Qt::AlignLeft | Qt::AlignVCenter, iconSize, combinedRect);
+            const QRectF iconRect = alignedRect(mirrored, Qt::Alignment(Qt::AlignLeft | Qt::AlignVCenter), iconSize, combinedRect);
             image->setSize(iconRect.size());
             image->setPosition(iconRect.topLeft());
         }
         if (label) {
-            const QRectF textRect = alignedRect(mirrored, Qt::AlignRight | Qt::AlignVCenter, textSize, combinedRect);
+            const QRectF textRect = alignedRect(mirrored, Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), textSize, combinedRect);
             label->setSize(textRect.size());
             label->setPosition(textRect.topLeft());
         }
@@ -357,35 +395,16 @@ DQuickIconLabel::~DQuickIconLabel()
         d->unwatchChanges(d->label);
 }
 
-QString DQuickIconLabel::iconName() const
+DQuickDciIcon DQuickIconLabel::icon() const
 {
     Q_D(const DQuickIconLabel);
-    return d->iconName;
+    return d->icon;
 }
 
-void DQuickIconLabel::setIconName(const QString &iconName)
+void DQuickIconLabel::setIcon(const DQuickDciIcon &icon)
 {
     Q_D(DQuickIconLabel);
-    if (d->iconName == iconName)
-        return;
-
-    d->iconName = iconName;
-    d->updateOrSyncImage();
-}
-
-QColor DQuickIconLabel::iconColor() const
-{
-    Q_D(const DQuickIconLabel);
-    return d->iconColor;
-}
-
-void DQuickIconLabel::setIconColor(const QColor &iconColor)
-{
-    Q_D(DQuickIconLabel);
-    if (d->iconColor == iconColor)
-        return;
-
-    d->iconColor = iconColor;
+    d->icon = icon;
     d->updateOrSyncImage();
 }
 

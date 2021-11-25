@@ -37,6 +37,7 @@ DGUI_USE_NAMESPACE
 
 DQUICK_BEGIN_NAMESPACE
 
+class DQuickDciIcon;
 class DQMLGlobalObjectPrivate;
 class DQMLGlobalObject : public QObject, public DTK_CORE_NAMESPACE::DObject
 {
@@ -97,6 +98,8 @@ public:
     QString deepinDistributionOrgLogo() const;
 
     Q_INVOKABLE QPoint cursorPosition() const;
+
+    Q_INVOKABLE DTK_QUICK_NAMESPACE::DQuickDciIcon makeIcon(const QJSValue &qicon, const QJSValue &iconExtra);
 
 Q_SIGNALS:
     void hasBlurWindowChanged();

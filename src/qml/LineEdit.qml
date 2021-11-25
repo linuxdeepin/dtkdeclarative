@@ -49,7 +49,7 @@ TextField {
             control.clear()
         }
 
-        D.Icon {
+        D.QtIcon {
             //###(Chen Bin): Use the Action control instead later or processes the icon of the press state.
             anchors.centerIn: parent
             name: "window-close_round"

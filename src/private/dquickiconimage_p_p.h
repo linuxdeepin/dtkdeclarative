@@ -39,13 +39,14 @@ class DQuickIconImagePrivate : public QQuickImagePrivate
 
 public:
     void init();
-    void maybeUpdateUrl();
+    virtual void maybeUpdateUrl();
     QUrlQuery getUrlQuery();
     DQuickIconImage::Mode getIconMode() const;
 
     qreal calculateDevicePixelRatio() const;
     bool updateDevicePixelRatio(qreal targetDevicePixelRatio) override;
 
+private:
     QString name;
     DQuickIconImage::State state = DQuickIconImage::State::Off;
     DQuickIconImage::Mode mode = DQuickIconImage::Mode::Invalid;

@@ -34,7 +34,7 @@ Rectangle {
     radius: PM.CheckBox_Indicator_FocusRadius
     color: "transparent"
 
-    D.Icon {
+    D.QtIcon {
         name: "checked"
         anchors.centerIn: parent
         width: PM.CheckBox_Indicator_CheckedWidth

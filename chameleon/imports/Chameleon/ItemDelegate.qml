@@ -49,17 +49,16 @@ T.ItemDelegate {
             visible: checked
         }
 
-        IconLabel {
+        D.IconLabel {
             x: mark_indicator.width + (2 * PM.ControlRadius)
             spacing: control.spacing
             mirrored: control.mirrored
             display: control.display
             alignment: control.display === IconLabel.IconOnly || control.display === IconLabel.TextUnderIcon ? Qt.AlignCenter : Qt.AlignLeft
-
-            icon: control.icon
             text: control.text
             font: control.font
             color: control.hovered ? control.palette.base : control.palette.text
+            icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
         }
     }
 

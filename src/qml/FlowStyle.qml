@@ -50,4 +50,8 @@ QtObject {
         hovered.common: "white"
         pressed.common: Qt.rgba(1, 1, 1, 0.6)
     }
+
+    // PixelMetric
+    property int buttonIconWidth: 24
+    property int buttonIconHeight: 24
 }

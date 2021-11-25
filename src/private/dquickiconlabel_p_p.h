@@ -32,6 +32,7 @@ public:
     bool hasIcon() const;
     bool hasText() const;
 
+    void createIconImage();
     bool createImage();
     bool destroyImage();
     bool updateImage();
@@ -68,10 +69,9 @@ public:
     QFont font;
     QColor color;
     QString text;
-    QString iconName;
-    QColor iconColor;
     DQuickIconImage *image = nullptr;
     QQuickText *label = nullptr;
+    DQuickDciIcon icon;
 };
 
 DQUICK_END_NAMESPACE

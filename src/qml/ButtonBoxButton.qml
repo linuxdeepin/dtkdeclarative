@@ -38,72 +38,9 @@ Button {
     property int position: ButtonBoxButton.Position.OnlyOne
     property color color : control.palette.button
 
-    contentItem: IconLabel {
-        spacing: control.spacing
-        mirrored: control.mirrored
-        display: control.display
-
-        icon: control.icon
-        text: control.text
-        font: control.font
-        color: control.palette.highlightedText
-    }
-
     background: Item {
         implicitWidth: control.text.length ? PM.Button_MiniSize + (4 * PM.ControlRadius) : PM.Button_MiniSize + (2 * PM.ControlRadius)
         implicitHeight: PM.Button_MiniSize
-
-        Rectangle {
-            id: backgroundRect
-            anchors.fill: parent
-            radius: position === ButtonBoxButton.Position.Middle ? 0 : PM.ControlRadius
-
-            Rectangle {
-                id: cliped
-                width: position === ButtonBoxButton.Position.OnlyOne ? 0 : parent.radius
-                height: position === ButtonBoxButton.Position.OnlyOne ? 0 : parent.height
-                x: position === ButtonBoxButton.Position.Beginning ? parent.width - cliped.width : parent.x
-                y: parent.y
-                color: parent.color
-            }
-
-            color: {
-                // TODO(Chen Bin): Use a c++ or js function instead.
-                if (flat)
-                    return "transparent"
-
-                var buttonColor = initGradTopColor
-                if (highlighted)
-                    buttonColor = palette.highlight
-
-                if (checked) {
-                    buttonColor = palette.highlight
-
-                    if (down) {
-                        buttonColor = D.DTK.adjustColor(buttonColor, 0, 0, -10, 0, 0, 0, 0)
-                    }
-
-                    if (hovered) {
-                        buttonColor = D.DTK.adjustColor(buttonColor, 0, 0, +20, 0, 0, 0, 0);
-                    }
-                } else {
-                    if (down) {
-                        var hightColor = palette.highlight;
-                        hightColor.a = 0.1;
-
-                        buttonColor = D.DTK.adjustColor(buttonColor, 0, 0, -20, 0, 0, +20, 0)
-                        buttonColor = D.DTK.blendColor(buttonColor, hightColor)
-                    }
-
-                    if (hovered) {
-                        buttonColor = D.DTK.adjustColor(buttonColor, 0, 0, -10, 0, 0, 0, 0)
-                    }
-                }
-
-                return buttonColor
-            }
-        }
-
         DropShadow {
             anchors.fill: backgroundRect
             horizontalOffset: 0
@@ -113,11 +50,21 @@ Button {
             color: palette.shadow
             source: backgroundRect
         }
-    }
 
-    D.Icon {
-        id: icon
-        anchors.centerIn: parent
-        name: iconName
+        Rectangle {
+            id: backgroundRect
+            anchors.fill: parent
+            radius: position === ButtonBoxButton.Position.Middle ? 0 : PM.ControlRadius
+            //TODO(Chen Bin): add checked state color
+
+            Rectangle {
+                id: cliped
+                width: position === ButtonBoxButton.Position.OnlyOne ? 0 : parent.radius
+                height: position === ButtonBoxButton.Position.OnlyOne ? 0 : parent.height
+                x: position === ButtonBoxButton.Position.Beginning ? parent.width - cliped.width : parent.x
+                y: parent.y
+                color: parent.color
+            }
+        }
     }
 }

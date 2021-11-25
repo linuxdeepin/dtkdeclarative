@@ -51,7 +51,7 @@ ToolTip {
 
         }
 
-        DropShadow {
+        RectangularShadow {
             z: -1
             anchors.fill: _background
             glowRadius: 10
@@ -79,7 +79,7 @@ ToolTip {
         border.width: 1
     }
 
-    DropShadow {
+    RectangularShadow {
         z: -1
         anchors.fill: connector
         color: Qt.rgba(0, 0, 0, 0.1)

@@ -51,6 +51,11 @@ T.Button {
 
     padding: PM.ControlPadding
     spacing: PM.ControlSpacing
+    D.DciIcon.mode: D.ColorSelector.controlState
+
+    icon.width: DS.Style.buttonIconWidth
+    icon.height: DS.Style.buttonIconHeight
+    icon.color: D.ColorSelector.palettes ? D.ColorSelector.buttonText : null
 
     background: Item {
         implicitWidth: control.text.length ? PM.Button_MiniSize + (4 * PM.ControlRadius) : PM.Button_MiniSize + (2 * PM.ControlRadius)
@@ -98,25 +103,28 @@ T.Button {
     }
 
     onHoveredChanged: {
+        if (!hoverAnimation)
+            return
+
         if (hovered) {
-            hoverAnimation.centerPoint = hoverAnimation.mapFromGlobal(D.DTK.cursorPosition())
+            var pos = D.DTK.cursorPosition()
+            hoverAnimation.centerPoint = hoverAnimation.mapFromGlobal(pos.x, pos.y)
             hoverAnimation.start()
         } else {
             hoverAnimation.stop()
         }
     }
 
-    contentItem: IconLabel {
+    contentItem: D.IconLabel {
         spacing: control.spacing
         mirrored: control.mirrored
         display: control.display
-
-        icon: control.icon
         text: control.text
         font: control.font
         color: control.D.ColorSelector.controlState === D.DTK.HoveredState
                ? csForHover.buttonText
                : control.D.ColorSelector.buttonText
+        icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
     }
 }
 
