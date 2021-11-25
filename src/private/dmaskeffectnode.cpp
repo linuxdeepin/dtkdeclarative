@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "dquickmaskeffectnode_p.h"
+#include "dmaskeffectnode_p.h"
 #include "private/qsgdefaultimagenode_p.h"
 
 #include <QOpenGLContext>
