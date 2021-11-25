@@ -21,7 +21,7 @@
 
 #include "dquickitemviewport.h"
 #include "private/dquickitemviewport_p.h"
-#include "private/dquickmaskeffectnode_p.h"
+#include "private/dmaskeffectnode_p.h"
 
 #include <QOpenGLFunctions>
 #include <QQuickImageProvider>

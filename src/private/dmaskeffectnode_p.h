@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DQUICKMASKEFFECTNODE_P_H
-#define DQUICKMASKEFFECTNODE_P_H
+#ifndef DMASKEFFECTNODE_P_H
+#define DMASKEFFECTNODE_P_H
 
 #include "private/qsgtexturematerial_p.h"
 
@@ -113,4 +113,4 @@ private:
 
 DQUICK_END_NAMESPACE
 
-#endif // DQUICKMASKEFFECTNODE_P_H
+#endif // DMASKEFFECTNODE_P_H
