@@ -91,7 +91,7 @@ Rectangle {
         anchors.leftMargin: 20 // @disable-check M16
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20 // @disable-check M16
-        icon.name: "button_add"  // @disable-check M16
+        icon.name: "org.deepin.Example/test/button_add"
     }
 
     D.IconButton {
@@ -102,7 +102,7 @@ Rectangle {
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20 // @disable-check M16
         circle: true // @disable-check M16
-        icon.name: "button_add"  // @disable-check M16
+        icon.name: "test/button_add"  // @disable-check M16
     }
 
     D.IconButton {
@@ -124,7 +124,7 @@ Rectangle {
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20 // @disable-check M16
         circle: true // @disable-check M16
-        icon.name: "button_reduce"  // @disable-check M16
+        icon.name: "button_add"
     }
 
     DelayButton {
@@ -143,9 +143,19 @@ Rectangle {
         }
     }
 
+    RoundButton {
+        id: roundButton;
+        anchors.top: parent.top
+        anchors.left: dlyBtn.right
+        anchors.leftMargin: 20
+        anchors.topMargin: 20
+
+        icon.name: "button_add"
+    }
+
     D.ButtonBox {
         id: buttonBox
-        anchors.left: dlyBtn.right // @disable-check M16
+        anchors.left: roundButton.right // @disable-check M16
         anchors.leftMargin: 20 // @disable-check M16
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20  // @disable-check M16
@@ -171,5 +181,21 @@ Rectangle {
         alertText: qsTr("This is a long sentence.")
         alertDuration: 2000  // millisecond
         showAlert: focus
+    }
+
+    ListView {
+        model: 5
+        implicitHeight: 250
+
+        delegate: CheckDelegate {
+            text: index;
+
+            icon.name: "button_add"
+        }
+
+        anchors.top: btnLabel.bottom
+        anchors.left: lineEdit.right
+        anchors.topMargin: 20
+        anchors.leftMargin: 20
     }
 }

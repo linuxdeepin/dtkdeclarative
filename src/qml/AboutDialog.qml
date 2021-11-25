@@ -31,7 +31,7 @@ DialogWindow {
 
     property alias windowTitle: control.title
     property alias productName: productNameLabel.text
-    property alias productIcon: logoLabel.iconName
+    property alias productIcon: logoLabel.icon.name
     property alias version: versionLabel.text
     property alias description: descriptionLabel.text
     property alias license: licenseLabel.text

@@ -22,6 +22,7 @@
 #include "dqmlglobalobject.h"
 #include "private/dqmlglobalobject_p.h"
 #include "private/dquickcontrolpalette_p.h"
+#include "private/dquickdciicon_p.h"
 
 #include <DObjectPrivate>
 #include <DObject>
@@ -228,6 +229,32 @@ QString DQMLGlobalObject::deepinDistributionOrgLogo() const
 QPoint DQMLGlobalObject::cursorPosition() const
 {
     return QCursor::pos();
+}
+
+DQuickDciIcon DQMLGlobalObject::makeIcon(const QJSValue &qicon, const QJSValue &iconExtra)
+{
+    if (!qicon.isObject() || !iconExtra.isObject())
+        return {};
+
+    const QString &name = qicon.property("name").toString();
+    int width = qicon.property("width").toInt();
+    int height = qicon.property("height").toInt();
+    const QColor &color = qicon.property("color").toVariant().value<QColor>();
+
+    int type = iconExtra.property("type").toInt();
+    int mode = iconExtra.property("mode").toInt();
+    int theme = iconExtra.property("theme").toInt();
+
+    DQuickDciIcon dciIcon;
+    dciIcon.setName(name);
+    dciIcon.setWidth(width);
+    dciIcon.setHeight(height);
+    dciIcon.setColor(color);
+    dciIcon.setType(DQuickDciIconImage::Type(type));
+    dciIcon.setMode(ControlState(mode));
+    dciIcon.setTheme(DQuickDciIconImage::Theme(theme));
+
+    return dciIcon;
 }
 
 DQUICK_END_NAMESPACE

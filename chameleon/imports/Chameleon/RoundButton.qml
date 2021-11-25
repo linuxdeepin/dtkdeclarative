@@ -23,6 +23,7 @@ import QtQuick 2.11
 import QtQuick.Templates 2.4 as T
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
+import org.deepin.dtk 1.0 as D
 import "PixelMetric.js" as PM
 
 T.RoundButton {
@@ -34,6 +35,7 @@ T.RoundButton {
                              contentItem.implicitHeight + topPadding + bottomPadding)
     baselineOffset: contentItem.y + contentItem.baselineOffset
 
+    D.DciIcon.mode: D.ColorSelector.controlState
     padding: PM.ControlPadding
     spacing: PM.ControlSpacing
 
@@ -43,12 +45,12 @@ T.RoundButton {
     width: PM.RoundButton_ImplicitWidth
     height: PM.RoundButton_ImplicitHeight
 
-    contentItem: IconLabel {
+    contentItem: D.IconLabel {
         spacing: control.spacing
         mirrored: control.mirrored
         display: control.display
 
-        icon: control.icon
+        icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
         text: control.text
         font: control.font
         color: control.palette.buttonText

@@ -18,6 +18,8 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dquickglow_p.h \
     $$PWD/dshadownode.h \
     $$PWD/dquickcontrolpalette_p.h \
+    $$PWD/dquickdciiconimage_p.h \
+    $$PWD/dquickdciicon_p.h \
 
 SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dblitframebuffernode.cpp \
@@ -29,3 +31,5 @@ SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dconfigwrapper.cpp \
     $$PWD/dshadownode.cpp \
     $$PWD/dquickcontrolpalette.cpp \
+    $$PWD/dquickdciiconimage.cpp \
+    $$PWD/dquickdciicon.cpp \

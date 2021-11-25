@@ -18,7 +18,7 @@
 #ifndef DQUICKICONLABEL_P_H
 #define DQUICKICONLABEL_P_H
 
-#include "dquickiconimage_p.h"
+#include "dquickdciicon_p.h"
 
 #include <dtkdeclarative_global.h>
 
@@ -31,8 +31,7 @@ class DQuickIconLabelPrivate;
 class DQuickIconLabel : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(QString iconName READ iconName WRITE setIconName FINAL)
-    Q_PROPERTY(QColor iconColor READ iconColor WRITE setIconColor FINAL)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickDciIcon icon READ icon WRITE setIcon FINAL)
     Q_PROPERTY(QString text READ text WRITE setText FINAL)
     Q_PROPERTY(QFont font READ font WRITE setFont FINAL)
     Q_PROPERTY(QColor color READ color WRITE setColor FINAL)
@@ -57,11 +56,8 @@ public:
     explicit DQuickIconLabel(QQuickItem *parent = nullptr);
     ~DQuickIconLabel() override;
 
-    QString iconName() const;
-    void setIconName(const QString &iconName);
-
-    QColor iconColor() const;
-    void setIconColor(const QColor &iconColor);
+    DQuickDciIcon icon() const;
+    void setIcon(const DQuickDciIcon &dciIcon);
 
     QString text() const;
     void setText(const QString &text);

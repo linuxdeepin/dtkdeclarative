@@ -51,12 +51,10 @@ T.CheckDelegate {
         mirrored: control.mirrored
         display: control.display
         alignment: control.display === D.IconLabel.IconOnly || control.display === D.IconLabel.TextUnderIcon ? Qt.AlignCenter : Qt.AlignLeft
-
-        iconName: control.icon.name
-        iconColor: control.icon.color
         text: control.text
         font: control.font
         color: control.palette.text
+        icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
     }
 
     background: Rectangle {

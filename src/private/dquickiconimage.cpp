@@ -269,12 +269,17 @@ void DQuickIconImage::setColor(const QColor &color)
     d->maybeUpdateUrl();
 }
 
+DQuickIconImage::DQuickIconImage(DQuickIconImagePrivate &dd, QQuickItem *parent)
+    : QQuickImage(dd, parent)
+{
+}
+
 void DQuickIconImage::itemChange(ItemChange change, const ItemChangeData &value)
 {
     Q_D(DQuickIconImage);
 
     switch (change) {
-    case ItemDevicePixelRatioHasChanged: Q_FALLTHROUGH()
+    case ItemDevicePixelRatioHasChanged: Q_FALLTHROUGH();
     case ItemEnabledHasChanged:
         d->maybeUpdateUrl();
         break;

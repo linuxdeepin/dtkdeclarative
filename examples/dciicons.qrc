@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/dsg">
+        <file alias="icons/bloom/org.deepin.Example/test/button_add.dci">icons/bloom/org.deepin.Example/button_add.dci</file>
+        <file alias="built-in-icons/test/button_add.dci">built-in-icons/button_add.dci</file>
+    </qresource>
+</RCC>

@@ -23,7 +23,8 @@ DEFINES += CHAMELEON_PATH=\\\"$$CHAMELEON_PATH\\\"
 SOURCES += \
         main.cpp
 
-RESOURCES += qml.qrc
+RESOURCES += qml.qrc \
+    dciicons.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =

@@ -39,7 +39,7 @@ T.MenuItem {
     padding: PM.ControlPadding
     spacing: PM.ControlSpacing
 
-    contentItem: IconLabel {
+    contentItem: D.IconLabel {
         readonly property real arrowPadding: control.arrow.width + control.spacing
         readonly property real indicatorPadding: control.indicator.width + control.spacing
         leftPadding: !control.mirrored ? indicatorPadding : arrowPadding
@@ -49,14 +49,13 @@ T.MenuItem {
         mirrored: control.mirrored
         display: control.display
         alignment: Qt.AlignLeft
-
-        icon: control.icon
         text: control.text
         font: control.font
         color: control.hovered ? control.palette.base : control.palette.text
+        icon: D.DTK.makeIcon(control.icon, D.DciIcon)
     }
 
-    indicator: D.Icon {
+    indicator: D.QtIcon {
         x: control.mirrored ? control.width - width - control.rightPadding : control.leftPadding
         y: control.topPadding + (control.availableHeight - height) / 2
 
