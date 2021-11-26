@@ -39,6 +39,7 @@ DSoftwareRoundedImageNode::DSoftwareRoundedImageNode(QQuickItem *owner)
 void DSoftwareRoundedImageNode::setTexture(QSGTexture *texture)
 {
     m_texture = texture;
+    markDirty(DirtyMaterial);
 }
 
 void DSoftwareRoundedImageNode::setRadius(qreal radius)
@@ -87,6 +88,9 @@ void DSoftwareRoundedImageNode::setRect(const QRectF &target)
 
 void DSoftwareRoundedImageNode::render(const RenderState *state)
 {
+    if (!sourceRect.isValid())
+        return;
+
     QSGRendererInterface *rif = item->window()->rendererInterface();
     QPainter *p = static_cast<QPainter *>(rif->getResource(item->window(),
                                                            QSGRendererInterface::PainterResource));
@@ -97,7 +101,6 @@ void DSoftwareRoundedImageNode::render(const RenderState *state)
         p->setClipRegion(*clipRegion, Qt::ReplaceClip); // must be done before setTransform
 
     p->setTransform(matrix()->toTransform());
-    qDebug() << radius << targetRect << p->transform();
     p->setOpacity(inheritedOpacity());
     p->setRenderHint(QPainter::Antialiasing, smooth);
 

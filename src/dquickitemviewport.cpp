@@ -333,8 +333,12 @@ QSGNode *DQuickItemViewport::updatePaintNode(QSGNode *old, QQuickItem::UpdatePai
                 if (Q_LIKELY(texture)) {
                     if (Q_LIKELY(preNode->imageNode)) {
                         preNode->imageNode->setTexture(texture);
+                        // Maybe the texture size is changed
+                        d->updateSourceRect(preNode->imageNode);
                     } if (Q_LIKELY(preNode->softwareNode)) {
                         preNode->softwareNode->setTexture(texture);
+                        // Maybe the texture size is changed
+                        d->updateSourceRect(preNode->softwareNode);
                     } else {
                         // to create image node
                         update();
