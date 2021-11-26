@@ -52,7 +52,7 @@ public:
             return;
 
         const qreal scale = m_item->window()->effectiveDevicePixelRatio();
-        const QPoint offset = m_item->mapToScene(m_item->position()).toPoint();
+        const QPoint offset = m_item->mapToScene(QPointF(0, 0)).toPoint();
         const QSize ss = QOpenGLContext::currentContext()->surface()->size() * scale;
         const QRect sourceRect(offset.x(), ss.height() - offset.y(), fbo->width(), -fbo->height());
         QOpenGLFramebufferObject::blitFramebuffer(fbo.data(), QRect(QPoint(0, 0), fbo->size()), nullptr, sourceRect);
@@ -93,8 +93,8 @@ public:
                                                                QSGRendererInterface::PainterResource));
         Q_ASSERT(p);
 
-        const QPoint offset = m_item->mapToScene(m_item->position()).toPoint();
-        const QRect sourceRect(offset, m_size);
+        const QPointF offset = m_item->mapToScene(QPointF(0, 0));
+        const QRectF sourceRect(offset, m_size);
         const auto device = p->device();
         Q_ASSERT(painter.isActive());
 

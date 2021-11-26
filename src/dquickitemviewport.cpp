@@ -22,6 +22,7 @@
 #include "dquickitemviewport.h"
 #include "private/dquickitemviewport_p.h"
 #include "private/dmaskeffectnode_p.h"
+#include "private/dsoftwareroundedimagenode_p.h"
 
 #include <QOpenGLFunctions>
 #include <QQuickImageProvider>
@@ -37,7 +38,7 @@ inline static T *load(const QAtomicPointer<T> &atomicValue) {
 #endif
 }
 
-class Q_DECL_HIDDEN PreprocessNode : public QSGNode {
+class Q_DECL_HIDDEN PreprocessNode : public QSGTransformNode {
 public:
     PreprocessNode(DQuickItemViewportPrivate *item)
         : item(item)
@@ -51,18 +52,26 @@ public:
     }
 
     inline void setImageNode(QSGImageNode *node) {
+        Q_ASSERT(!softwareNode);
         Q_ASSERT(!imageNode);
         maskNode = dynamic_cast<MaskEffectNode*>(node);
         imageNode = node;
         appendChildNode(imageNode);
-        setFlag(IsVisitableNode, true);
+    }
+
+    inline void setImageNode(DSoftwareRoundedImageNode *node) {
+        Q_ASSERT(!softwareNode);
+        Q_ASSERT(!imageNode);
+        softwareNode = node;
+        appendChildNode(softwareNode);
     }
 
     inline void clearImageNode() {
         delete imageNode;
         imageNode = nullptr;
         maskNode = nullptr;
-        setFlag(IsVisitableNode, false);
+        delete softwareNode;
+        softwareNode = nullptr;
     }
 
     void preprocess() override {
@@ -74,16 +83,20 @@ public:
         if (!i->updateOffset(newPos))
             return;
 
-        i->updateSourceRect(imageNode);
-
-        if (maskNode) {
-            maskNode->setMaskOffset(i->getMaskOffset());
+        if (imageNode) {
+            i->updateSourceRect(imageNode);
+            if (maskNode) {
+                maskNode->setMaskOffset(i->getMaskOffset());
+            }
+        } else if (softwareNode) {
+            i->updateSourceRect(softwareNode);
         }
     }
 
     QAtomicPointer<DQuickItemViewportPrivate> item;
     MaskEffectNode *maskNode = nullptr;
     QSGImageNode *imageNode = nullptr;
+    DSoftwareRoundedImageNode *softwareNode = nullptr;
 };
 
 DQuickItemViewportPrivate::~DQuickItemViewportPrivate()
@@ -138,7 +151,7 @@ void DQuickItemViewportPrivate::clearPreprocessNode(PreprocessNode *oldNode)
 void DQuickItemViewportPrivate::updateUsePreprocess() const
 {
     if (auto pn = load(preprocessNode)) {
-        pn->setFlag(QSGNode::UsePreprocess, !fixed && pn->imageNode);
+        pn->setFlag(QSGNode::UsePreprocess, !fixed && (pn->imageNode || pn->softwareNode));
     }
 }
 
@@ -292,6 +305,12 @@ void DQuickItemViewport::geometryChanged(const QRectF &newGeometry, const QRectF
     QQuickItem::geometryChanged(newGeometry, oldGeometry);
 }
 
+static inline void safeSetMaterialBlending(QSGMaterial *m, bool b) {
+    if (m && m != reinterpret_cast<QSGMaterial*>(1)) {
+        m->setFlag(QSGMaterial::Blending, b);
+    }
+}
+
 QSGNode *DQuickItemViewport::updatePaintNode(QSGNode *old, QQuickItem::UpdatePaintNodeData *)
 {
     D_D(DQuickItemViewport);
@@ -314,6 +333,8 @@ QSGNode *DQuickItemViewport::updatePaintNode(QSGNode *old, QQuickItem::UpdatePai
                 if (Q_LIKELY(texture)) {
                     if (Q_LIKELY(preNode->imageNode)) {
                         preNode->imageNode->setTexture(texture);
+                    } if (Q_LIKELY(preNode->softwareNode)) {
+                        preNode->softwareNode->setTexture(texture);
                     } else {
                         // to create image node
                         update();
@@ -336,16 +357,15 @@ QSGNode *DQuickItemViewport::updatePaintNode(QSGNode *old, QQuickItem::UpdatePai
     }
 
     QSGImageNode *imageNode = preNode->imageNode;
+    DSoftwareRoundedImageNode *softwareNode = preNode->softwareNode;
     const bool useMaskNode = d->needMaskNode();
-    if (Q_UNLIKELY(!imageNode) && Q_LIKELY(tp->texture())) {
+    if (Q_UNLIKELY(!imageNode && !softwareNode) && Q_LIKELY(tp->texture())) {
         if (useMaskNode) {
             // 创建image node
             QSGRendererInterface *ri = window()->rendererInterface();
             Q_ASSERT(ri);
             if (Q_UNLIKELY(ri->graphicsApi() == QSGRendererInterface::Software)) {
-                // TODO(zccrs): 软件绘制时暂未支持radius属性
-                qWarning() << "Currently does not support software simulation drawing";
-                return nullptr;
+                softwareNode = new DSoftwareRoundedImageNode(this);
             } else {
                 imageNode = new MaskEffectNode;
             }
@@ -353,28 +373,39 @@ QSGNode *DQuickItemViewport::updatePaintNode(QSGNode *old, QQuickItem::UpdatePai
             imageNode = window()->createImageNode();
         }
 
-        imageNode->material()->setFlag(QSGMaterial::Blending, useMaskNode);
-        imageNode->opaqueMaterial()->setFlag(QSGMaterial::Blending, useMaskNode);
-        imageNode->setOwnsTexture(false);
-        imageNode->setTexture(tp->texture());
-        preNode->setImageNode(imageNode);
+        if (imageNode) {
+            safeSetMaterialBlending(imageNode->material(), useMaskNode);
+            safeSetMaterialBlending(imageNode->opaqueMaterial(), useMaskNode);
+            imageNode->setOwnsTexture(false);
+            imageNode->setTexture(tp->texture());
+            preNode->setImageNode(imageNode);
+        } else {
+            Q_ASSERT(softwareNode);
+            softwareNode->setTexture(tp->texture());
+            preNode->setImageNode(softwareNode);
+        }
     }
 
     d->updateUsePreprocess();
-    if (Q_UNLIKELY(!imageNode))
-        return preNode;
+    if (Q_LIKELY(imageNode)) {
+        imageNode->setFiltering(smooth() ? QSGTexture::Linear : QSGTexture::Nearest);
+        // 目标绘制区域
+        imageNode->setRect(QRectF(QPointF(0, 0), size()));
+        d->updateSourceRect(imageNode);
 
-    imageNode->setFiltering(smooth() ? QSGTexture::Linear : QSGTexture::Nearest);
-    // 目标绘制区域
-    imageNode->setRect(QRectF(QPointF(0, 0), size()));
-    d->updateSourceRect(imageNode);
-
-    if (useMaskNode) {
-        auto maskNode = static_cast<MaskEffectNode*>(imageNode);
-        maskNode->setMaskOffset(d->getMaskOffset());
-        maskNode->setSourceScale(d->getSoureSizeRatio());
-        maskNode->setMaskTexture(d->textureForRadiusMask());
-        maskNode->setMaskScale(d->getMaskSizeRatio());
+        if (useMaskNode) {
+            auto maskNode = static_cast<MaskEffectNode*>(imageNode);
+            maskNode->setMaskOffset(d->getMaskOffset());
+            maskNode->setSourceScale(d->getSoureSizeRatio());
+            maskNode->setMaskTexture(d->textureForRadiusMask());
+            maskNode->setMaskScale(d->getMaskSizeRatio());
+        }
+    } else {
+        Q_ASSERT(softwareNode);
+        softwareNode->setSmooth(smooth());
+        softwareNode->setRect(QRectF(QPointF(0, 0), size()));
+        softwareNode->setRadius(d->radius);
+        d->updateSourceRect(softwareNode);
     }
 
     return preNode;

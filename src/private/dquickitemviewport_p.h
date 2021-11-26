@@ -230,15 +230,16 @@ public:
         return fixed ? sr : sr.translated(offset);
     }
 
-    inline void updateSourceRect(QSGImageNode *imageNode) const {
-        const QSizeF &textureSize = imageNode->texture()->textureSize();
+    template<typename T>
+    inline void updateSourceRect(T *node) const {
+        const QSizeF &textureSize = node->texture()->textureSize();
         qreal xScale = textureSize.width() / sourceItem->width();
         qreal yScale = textureSize.height() / sourceItem->height();
         // 计算sourceItem应该被绘制的区域，如果此区域大小为0, 则没有必要再继续绘制
         const QRectF &sourceRect = getSourceRect();
         // 更新 DQuickItemViewport 所对应的sourceItem的材质区域
-        imageNode->setSourceRect(QRectF(sourceRect.x() * xScale, sourceRect.y() * yScale,
-                                        sourceRect.width() * xScale, sourceRect.height() * yScale));
+        node->setSourceRect(QRectF(sourceRect.x() * xScale, sourceRect.y() * yScale,
+                                   sourceRect.width() * xScale, sourceRect.height() * yScale));
     }
 
     void setPreprocessNode(PreprocessNode *newNode);
