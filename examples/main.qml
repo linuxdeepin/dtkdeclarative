@@ -30,7 +30,7 @@ V2.ApplicationWindow {
 
     Component.onCompleted: {
         console.log(D.Window.wmWindowTypes)
-        console.log(root.isValid ? "DPlatformHandle有效" : "DPlatformHandle无效!!!!");
+        console.log(D.Window.enabled ? "DPlatformHandle有效" : "DPlatformHandle无效!!!!");
         console.log("hasBlurWindow : ", D.DTK.hasBlurWindow ? "true" : "false");
         console.log("windowManagerNameString : ", D.DTK.windowManagerNameString);
 
