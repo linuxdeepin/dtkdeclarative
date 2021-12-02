@@ -35,12 +35,16 @@ public:
     void ensurePalette();
     void updatePalettes();
     void _q_onPaletteChanged();
+    void ensureWebsiteInfo();
 
     mutable DPlatformThemeProxy *platformTheme = nullptr;
 
     bool paletteInit = false;
     DPalette palette;
     DPalette inactivePalette;
+    QString deepinWebsiteName;
+    QString deepinWebsiteLink;
+    QString deepinDistributionOrgLogo;
 
 private:
     D_DECLARE_PUBLIC(DQMLGlobalObject)

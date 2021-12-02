@@ -44,9 +44,12 @@ public:
     ~DQuickWindowAttachedPrivate();
 
     void updatePlatformHandle();
+    void _q_onWindowMotifHintsChanged(quint32 winId);
     DPlatformHandle *handle = nullptr;
 
     DWindowManagerHelper::WmWindowTypes wmWindowTypes;
+    DWindowManagerHelper::MotifFunctions motifFunctions;
+    DWindowManagerHelper::MotifDecorations motifDecorations;
     bool explicitEnable;
 
 private:

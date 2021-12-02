@@ -60,6 +60,8 @@ class DQuickWindowAttached : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(bool enableSystemMove READ enableSystemMove WRITE setEnableSystemMove NOTIFY enableSystemMoveChanged)
     Q_PROPERTY(bool enableBlurWindow READ enableBlurWindow WRITE setEnableBlurWindow NOTIFY enableBlurWindowChanged)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes READ wmWindowTypes WRITE setWmWindowTypes NOTIFY wmWindowTypesChanged)
+    Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifFunctions motifFunctions READ motifFunctions WRITE setMotifFunctions NOTIFY motifFunctionsChanged)
+    Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifDecorations motifDecorations READ motifDecorations WRITE setMotifDecorations NOTIFY motifDecorationsChanged)
 
 public:
     explicit DQuickWindowAttached(QWindow *window);
@@ -84,6 +86,8 @@ public:
     bool enableBlurWindow() const;
 
     DTK_GUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes() const;
+    DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifFunctions motifFunctions() const;
+    DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifDecorations motifDecorations() const;
 
 public Q_SLOTS:
     void setEnabled(bool e);
@@ -103,6 +107,10 @@ public Q_SLOTS:
     void setEnableBlurWindow(bool enableBlurWindow);
 
     void setWmWindowTypes(DTK_GUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes);
+    void setMotifFunctions(DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifFunctions motifFunctions);
+    void setMotifDecorations(DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifDecorations motifDecorations);
+
+    void popupSystemWindowMenu();
 
 Q_SIGNALS:
     void enabledChanged();
@@ -116,10 +124,13 @@ Q_SIGNALS:
     void enableSystemResizeChanged();
     void enableSystemMoveChanged();
     void enableBlurWindowChanged();
-    void wmWindowTypesChanged(DGUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes);
+    void wmWindowTypesChanged();
+    void motifFunctionsChanged();
+    void motifDecorationsChanged();
 
 private:
     D_DECLARE_PRIVATE(DQuickWindowAttached)
+    D_PRIVATE_SLOT(void _q_onWindowMotifHintsChanged(quint32))
 };
 
 DQUICK_END_NAMESPACE

@@ -22,6 +22,12 @@
 #include <DObject>
 #include <DGuiApplicationHelper>
 #include <DFontManager>
+#include <DSysInfo>
+
+#ifdef Q_OS_UNIX
+#include <unistd.h>
+#include <pwd.h>
+#endif
 
 DGUI_USE_NAMESPACE
 
@@ -67,6 +73,16 @@ void DQMLGlobalObjectPrivate::_q_onPaletteChanged()
 
     Q_EMIT q_func()->paletteChanged();
     Q_EMIT q_func()->inactivePaletteChanged();
+}
+
+void DQMLGlobalObjectPrivate::ensureWebsiteInfo()
+{
+    DCORE_USE_NAMESPACE;
+    if (deepinWebsiteName.isEmpty() || deepinWebsiteLink.isEmpty()) {
+        const auto &deepinWebsiteInfo = DSysInfo::distributionOrgWebsite(DSysInfo::Distribution);
+        deepinWebsiteName = deepinWebsiteInfo.first;
+        deepinWebsiteLink = deepinWebsiteInfo.second;
+    }
 }
 
 DQMLGlobalObject::DQMLGlobalObject(QObject *parent)
@@ -160,6 +176,38 @@ QColor DQMLGlobalObject::blendColor(const QColor &substrate, const QColor &super
 DGuiApplicationHelper::ColorType DQMLGlobalObject::toColorType(const QColor &color)
 {
     return  DGuiApplicationHelper::toColorType(color);
+}
+
+QString DQMLGlobalObject::deepinWebsiteName() const
+{
+    D_DC(DQMLGlobalObject);
+
+    const_cast<DQMLGlobalObjectPrivate*>(d)->ensureWebsiteInfo();
+
+    return d->deepinWebsiteName;
+}
+
+QString DQMLGlobalObject::deepinWebsiteLink() const
+{
+    D_DC(DQMLGlobalObject);
+
+    const_cast<DQMLGlobalObjectPrivate*>(d)->ensureWebsiteInfo();
+
+    return d->deepinWebsiteLink;
+}
+
+QString DQMLGlobalObject::deepinDistributionOrgLogo() const
+{
+    DCORE_USE_NAMESPACE;
+
+    D_DC(DQMLGlobalObject);
+    if (d->deepinDistributionOrgLogo.isEmpty()) {
+        const auto &logo = DSysInfo::distributionOrgLogo(DSysInfo::Distribution, DSysInfo::Light, ":/assets/images/deepin-logo.svg");
+        const_cast<DQMLGlobalObjectPrivate*>(d)->deepinDistributionOrgLogo = logo;
+
+    }
+    return d->deepinDistributionOrgLogo;
+
 }
 
 DQUICK_END_NAMESPACE

@@ -127,3 +127,8 @@ const TextArea_Height = 100;
 const SpinBox_Content_Width = 140;
 const SpinBox_Height = 36;
 
+// TitleBar
+const TitleBar_Height = 45;
+
+// DialogWindow
+const DialogWindow_MaximumHeight = 480;

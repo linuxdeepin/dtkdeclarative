@@ -1,5 +1,9 @@
-/*
- * Copyright (C) 2020 ~ 2020 Uniontech Technology Co., Ltd.
+﻿/*
+ * Copyright (C) 2021 UnionTech Technology Co., Ltd.
+ *
+ * Author:     yeshanshan <yeshanshan@uniontech.com>
+ *
+ * Maintainer: yeshanshan <yeshanshan@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,14 +20,11 @@
  */
 
 import QtQuick 2.11
-import "PixelMetric.js" as PM
+import QtQuick.Controls 2.4
+import org.deepin.dtk 1.0 as D
 
-Rectangle {
-    anchors.centerIn: parent
-    width: parent.width + 2 * (PM.ControlFocusBorderWidth + PM.ControlFocusSpaceWidth)
-    height: parent.height + 2 * (PM.ControlFocusBorderWidth + PM.ControlFocusSpaceWidth)
-    radius: PM.ControlRadius + PM.ControlFocusBorderWidth + PM.ControlFocusSpaceWidth
-    border { width: PM.ControlFocusBorderWidth; color: "transparent" }
-    color: "transparent"
-    visible: false
+Action {
+    id: helpAction
+    text: qsTr("Help")
+    onTriggered:  D.ApplicationHelper.handleHelpAction()
 }
