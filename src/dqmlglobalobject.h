@@ -48,6 +48,9 @@ class DQMLGlobalObject : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(DTK_GUI_NAMESPACE::DFontManager *fontManager READ fontManager FINAL CONSTANT)
     Q_PROPERTY(QPalette palette READ palette NOTIFY paletteChanged)
     Q_PROPERTY(QPalette inactivePalette READ inactivePalette NOTIFY inactivePaletteChanged)
+    Q_PROPERTY(QString deepinDistributionOrgLogo READ deepinDistributionOrgLogo CONSTANT)
+    Q_PROPERTY(QString deepinWebsiteName READ deepinWebsiteName CONSTANT)
+    Q_PROPERTY(QString deepinWebsiteLink READ deepinWebsiteLink CONSTANT)
 
 public:
     explicit DQMLGlobalObject(QObject *parent = nullptr);
@@ -73,6 +76,10 @@ public:
     Q_INVOKABLE QColor blendColor(const QColor &substrate, const QColor &superstratum);
 
     Q_INVOKABLE DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType toColorType(const QColor &color);
+    QString deepinWebsiteName() const;
+    QString deepinWebsiteLink() const;
+    QString deepinDistributionOrgLogo() const;
+
 Q_SIGNALS:
     void hasBlurWindowChanged();
     void hasCompositeChanged();

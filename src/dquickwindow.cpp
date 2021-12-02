@@ -105,6 +105,29 @@ void DQuickWindowAttachedPrivate::updatePlatformHandle()
         QObject::connect(handle, &DPlatformHandle::enableSystemMoveChanged, q, &DQuickWindowAttached::enableSystemMoveChanged);
         QObject::connect(handle, &DPlatformHandle::enableSystemResizeChanged, q, &DQuickWindowAttached::enableSystemResizeChanged);
         QObject::connect(handle, &DPlatformHandle::enableBlurWindowChanged, q, &DQuickWindowAttached::enableBlurWindowChanged);
+        QObject::connect(DWindowManagerHelper::instance(), SIGNAL(windowMotifWMHintsChanged(quint32)), q, SLOT(_q_onWindowMotifHintsChanged(quint32)));
+        // to initialize MotifFunctions and MotifDecorations forwardly.
+        _q_onWindowMotifHintsChanged(static_cast<quint32>(tWindow->winId()));
+    }
+}
+
+void DQuickWindowAttachedPrivate::_q_onWindowMotifHintsChanged(quint32 winId)
+{
+    D_Q(DQuickWindowAttached);
+
+    if (q->window()->winId() != winId)
+        return;
+
+    auto functions_hints = DWindowManagerHelper::getMotifFunctions(q->window());
+    if (functions_hints != motifFunctions) {
+        motifFunctions = functions_hints;
+        Q_EMIT q->motifFunctionsChanged();
+    }
+
+    auto decorations_hints = DWindowManagerHelper::getMotifDecorations(q->window());
+    if (decorations_hints != motifDecorations) {
+        motifDecorations = decorations_hints;
+        Q_EMIT q->motifDecorationsChanged();
     }
 }
 
@@ -310,6 +333,20 @@ DWindowManagerHelper::WmWindowTypes DQuickWindowAttached::wmWindowTypes() const
     return d->wmWindowTypes;
 }
 
+DWindowManagerHelper::MotifFunctions DQuickWindowAttached::motifFunctions() const
+{
+    D_DC(DQuickWindowAttached);
+
+    return d->motifFunctions;
+}
+
+DWindowManagerHelper::MotifDecorations DQuickWindowAttached::motifDecorations() const
+{
+    D_DC(DQuickWindowAttached);
+
+    return d->motifDecorations;
+}
+
 /*!
  * \~chinese \brief DQuickWindowAttached::setEnabled　设置当前的窗口为 DTK 风格。
  * \~chinese \note 只能把默认风格设置为 DTK 风格，不能把 DTK 设置为默认风格。
@@ -477,7 +514,39 @@ void DQuickWindowAttached::setWmWindowTypes(DWindowManagerHelper::WmWindowTypes 
     d->wmWindowTypes = wmWindowTypes;
 
     DWindowManagerHelper::setWmWindowTypes(window(), wmWindowTypes);
-    Q_EMIT wmWindowTypesChanged(d->wmWindowTypes);
+    Q_EMIT wmWindowTypesChanged();
+}
+
+void DQuickWindowAttached::setMotifFunctions(Gui::DWindowManagerHelper::MotifFunctions motifFunctions)
+{
+    D_D(DQuickWindowAttached);
+
+    if (d->motifFunctions == motifFunctions)
+        return;
+
+    d->motifFunctions = motifFunctions;
+
+    DWindowManagerHelper::setMotifFunctions(window(), motifFunctions);
+    Q_EMIT motifFunctionsChanged();
+}
+
+void DQuickWindowAttached::setMotifDecorations(DWindowManagerHelper::MotifDecorations motifDecorations)
+{
+    D_D(DQuickWindowAttached);
+
+    if (d->motifDecorations == motifDecorations)
+        return;
+
+    d->motifDecorations = motifDecorations;
+    DWindowManagerHelper::setMotifDecorations(window(), motifDecorations);
+    Q_EMIT motifDecorationsChanged();
+}
+
+void DQuickWindowAttached::popupSystemWindowMenu()
+{
+    DWindowManagerHelper::popupSystemWindowMenu(window());
 }
 
 DQUICK_END_NAMESPACE
+
+#include "moc_dquickwindow.cpp"

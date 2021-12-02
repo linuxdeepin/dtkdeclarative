@@ -14,5 +14,20 @@
         <file>qml/RectangleBorder.qml</file>
         <file alias="qml/PixelMetric.js">../chameleon/imports/Chameleon/PixelMetric.js</file>
         <file>qml/CicleSpreadAnimation.qml</file>
+        <file>qml/TitleBar.qml</file>
+        <file>qml/DialogTitleBar.qml</file>
+        <file>qml/WindowMinButton.qml</file>
+        <file>qml/WindowMaxButton.qml</file>
+        <file>qml/WindowRestoreButton.qml</file>
+        <file>qml/WindowCloseButton.qml</file>
+        <file>qml/WindowQuitFullButton.qml</file>
+        <file>qml/WindowOptionButton.qml</file>
+        <file>qml/WindowButtonGroup.qml</file>
+        <file>qml/DialogWindow.qml</file>
+        <file>qml/AboutDialog.qml</file>
+        <file>qml/HelpAction.qml</file>
+        <file>qml/AboutAction.qml</file>
+        <file>qml/QuitAction.qml</file>
+        <file>qml/ThemeMenu.qml</file>
     </qresource>
 </RCC>

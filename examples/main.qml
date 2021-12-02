@@ -7,12 +7,15 @@ import org.deepin.dtk 1.0 as D
 V2.ApplicationWindow {
     id: root
     visible: true
-    width: Screen.desktopAvailableWidth / 5 * 3
-    height: Screen.desktopAvailableHeight / 5 * 3
+    width: 1200
+    height: 400
     title: qsTr("dtkdeclarative")
     x:(Screen.desktopAvailableWidth - width) / 2
     y:(Screen.desktopAvailableHeight - height) / 2
 //    D.Window.wmWindowTypes: D.WindowManagerHelper.DesktopType
+    header: Example_TitleBar{}
+    flags: Qt.Window | Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+//    D.Window.motifFunctions: D.Window.motifFunctions & ~D.WindowManagerHelper.FUNC_MINIMIZE
 
     // 测试D.Window的属性
     D.Window.enabled: true
@@ -76,40 +79,9 @@ V2.ApplicationWindow {
         console.log("D.Palette textTips value: ", root.palette.textTips)
     }
 
-    Rectangle {
-        id: titlebar
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
-        height: 45
-        color: "lightgray"
-
-        Rectangle {
-            anchors.right: parent.right
-            anchors.rightMargin: 10
-            width: 80
-            height: parent.height
-            color: "red"
-            Text {
-                text: "CLOSE"
-                font: D.DTK.fontManager.t4
-                anchors.fill: parent
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    root.close();
-                }
-            }
-        }
-    }
-
     V2.TabBar {
         id: tabBar
-        anchors.top: titlebar.bottom
+        anchors.top: root.bottom
         V2.TabButton {
             text: qsTr("Example_1")
         }

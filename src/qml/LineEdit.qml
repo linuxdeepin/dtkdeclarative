@@ -31,6 +31,7 @@ TextField {
     property alias clearButtonAnchors: clearBtn.anchors
 
     rightPadding: clearBtn.visible? clearBtn.width + clearBtn.anchors.rightMargin : 0
+    selectByMouse: true
 
     Button {
         id: clearBtn

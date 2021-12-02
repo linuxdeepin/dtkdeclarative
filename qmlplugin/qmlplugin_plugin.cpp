@@ -47,8 +47,16 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     qmlRegisterType<DQuickBusyIndicator>(uri, 1, 0, "BusyIndicator");
 
     //DQMLGlobalObject 依赖 DWindowManagerHelper中枚举的定义，所以需要先注册
-    qmlRegisterType<DWindowManagerHelper>(uri, 1, 0, "WindowManagerHelper");
-    qmlRegisterType<DGuiApplicationHelper>(uri, 1, 0, "ApplicationHelper");
+    qmlRegisterSingletonType<DWindowManagerHelper>(uri, 1, 0, "WindowManagerHelper", [](QQmlEngine *, QJSEngine *) -> QObject * {
+        auto helper = DWindowManagerHelper::instance();
+        QQmlEngine::setObjectOwnership(helper, QQmlEngine::CppOwnership);
+        return helper;
+    });
+    qmlRegisterSingletonType<DGuiApplicationHelper>(uri, 1, 0, "ApplicationHelper", [](QQmlEngine *, QJSEngine *) -> QObject * {
+        auto helper = DGuiApplicationHelper::instance();
+        QQmlEngine::setObjectOwnership(helper, QQmlEngine::CppOwnership);
+        return helper;
+    });
     qRegisterMetaType<DGuiApplicationHelper::ColorType>("Dtk::Gui::DGuiApplicationHelper::ColorType");
     qmlRegisterSingletonType<DQMLGlobalObject>(uri, 1, 0, "DTK", [](QQmlEngine *, QJSEngine *) -> QObject * {
         return new DQMLGlobalObject;
@@ -74,6 +82,21 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/ButtonBox.qml")), uri, 1, 0, "ButtonBox");
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/RectangleBorder.qml")), uri, 1, 0, "RectangleBorder");
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/CicleSpreadAnimation.qml")), uri, 1, 0, "CicleSpreadAnimation");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/TitleBar.qml")), uri, 1, 0, "TitleBar");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DialogTitleBar.qml")), uri, 1, 0, "DialogTitleBar");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/WindowMinButton.qml")), uri, 1, 0, "WindowMinButton");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/WindowMaxButton.qml")), uri, 1, 0, "WindowMaxButton");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/WindowRestoreButton.qml")), uri, 1, 0, "WindowRestoreButton");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/WindowCloseButton.qml")), uri, 1, 0, "WindowCloseButton");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/WindowQuitFullButton.qml")), uri, 1, 0, "WindowQuitFullButton");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/WindowOptionButton.qml")), uri, 1, 0, "WindowOptionButton");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/WindowButtonGroup.qml")), uri, 1, 0, "WindowButtonGroup");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DialogWindow.qml")), uri, 1, 0, "DialogWindow");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/AboutDialog.qml")), uri, 1, 0, "AboutDialog");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/HelpAction.qml")), uri, 1, 0, "HelpAction");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/AboutAction.qml")), uri, 1, 0, "AboutAction");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/QuitAction.qml")), uri, 1, 0, "QuitAction");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/ThemeMenu.qml")), uri, 1, 0, "ThemeMenu");
 }
 
 void QmlpluginPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
