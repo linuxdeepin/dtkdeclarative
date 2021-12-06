@@ -77,6 +77,12 @@ T.Button {
                 GradientStop { position: 0.96; color: flat? "transparent" : backgroundRect.gradBottomColor }
             }
         }
+
+        D.CicleSpreadAnimation {
+            id: hoverAnimation
+            hoverColor: backgroundRect.gradBottomColor
+            source: control
+        }
     }
 
     MouseArea{
@@ -137,12 +143,6 @@ T.Button {
         id: icon
         anchors.centerIn: parent
         name: iconName
-    }
-
-    D.CicleSpreadAnimation {
-        id: hoverAnimation
-        hoverColor: backgroundRect.gradBottomColor
-        source: control
     }
 }
 
