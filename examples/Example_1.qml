@@ -157,7 +157,7 @@ Rectangle {
                 iconName: "go-previous" // @disable-check M16
             }
             D.ButtonBoxButton {
-                iconName: "go-add" // @disable-check M16
+                iconName: "go-down" // @disable-check M16
             }
             D.ButtonBoxButton {
                 iconName: "go-next" // @disable-check M16
