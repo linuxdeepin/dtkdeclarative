@@ -54,6 +54,7 @@ T.Button {
     background: Item {
         implicitWidth: control.text.length ? PM.Button_MiniSize + (4 * PM.ControlRadius) : PM.Button_MiniSize + (2 * PM.ControlRadius)
         implicitHeight: PM.Button_MiniSize
+
         DropShadow {
             anchors.fill: backgroundRect
             horizontalOffset: 0
@@ -73,8 +74,66 @@ T.Button {
             radius: PM.ControlRadius
             color: control.palette.button
             gradient: Gradient {
-                GradientStop { position: 0;    color: flat? "transparent" : backgroundRect.gradTopColor }
-                GradientStop { position: 0.96; color: flat? "transparent" : backgroundRect.gradBottomColor }
+                GradientStop {
+                    position: 0
+                    color: {
+                        // TODO(Chen Bin): Use a c++ or js function instead.
+                        if (flat)
+                            return "transparent"
+
+                        var buttonColorTop = initGradTopColor;
+                        if (highlighted)
+                            buttonColorTop = palette.highlight
+
+                        if (down || checked) {
+                            var hightColor = palette.highlight;
+                            hightColor.a = 0.1;
+
+                            buttonColorTop = D.DTK.adjustColor(buttonColorTop, 0, 0, -20, 0, 0, +20, 0);
+                            buttonColorTop = D.DTK.blendColor(buttonColorTop, hightColor);
+
+                            return buttonColorTop
+                        }
+
+                        if (hovered) {
+                            buttonColorTop = D.DTK.adjustColor(buttonColorTop, 0, 0, -10, 0, 0, 0, 0);
+
+                            return buttonColorTop
+                        }
+
+                        return buttonColorTop
+                    }
+                }
+                GradientStop {
+                    position: 0.96
+                    color: {
+                        // TODO(Chen Bin): Use a c++ or js function instead.
+                        if (flat)
+                            return "transparent"
+
+                        var buttonColorBottom = initGradBottomColor;
+                        if (highlighted)
+                            buttonColorBottom = palette.highlight
+
+                        if (down || checked) {
+                            var hightColor = palette.highlight;
+                            hightColor.a = 0.1;
+
+                            buttonColorBottom = D.DTK.adjustColor(buttonColorBottom, 0, 0, -15, 0, 0, +20, 0);
+                            buttonColorBottom = D.DTK.blendColor(buttonColorBottom, hightColor);
+
+                            return buttonColorBottom
+                        }
+
+                        if (hovered) {
+                            buttonColorBottom = D.DTK.adjustColor(buttonColorBottom, 0, 0, -10, 0, 0, 0, 0);
+
+                            return buttonColorBottom
+                        }
+
+                        return buttonColorBottom
+                    }
+                }
             }
         }
 
@@ -83,59 +142,28 @@ T.Button {
             hoverColor: backgroundRect.gradBottomColor
             source: control
         }
-    }
 
-    MouseArea{
-        id: mouseArea
-        anchors.fill: parent;
-        hoverEnabled: true;
-        onPressed: {
-            var hightColor = palette.highlight;
-            hightColor.a = 0.1;
+        MouseArea {
+            id: mouseArea
+            anchors.fill: parent
+            hoverEnabled: true
 
-            var tmpTopColor = initGradTopColor
-            var tmpBottomColor = initGradBottomColor
+            onEntered: {
+                hoverAnimation.centerPoint = Qt.point(mouseArea.mouseX, mouseArea.mouseY)
+                hoverAnimation.start()
+            }
 
-            tmpTopColor = D.DTK.adjustColor(tmpTopColor, 0, 0, -20, 0, 0, +20, 0);
-            tmpTopColor = D.DTK.blendColor(tmpTopColor, hightColor);
+            onExited: {
+                hoverAnimation.stop()
+            }
 
-            tmpBottomColor = D.DTK.adjustColor(tmpBottomColor, 0, 0, -15, 0, 0, +20, 0);
-            tmpBottomColor = D.DTK.blendColor(tmpBottomColor, hightColor);
-
-            backgroundRect.gradTopColor = tmpTopColor
-            backgroundRect.gradBottomColor = tmpBottomColor
-        }
-        onEntered: {
-            var tmpTopColor = initGradTopColor
-            var tmpBottomColor = initGradBottomColor
-
-            tmpTopColor = D.DTK.adjustColor(tmpTopColor, 0, 0, -10, 0, 0, 0, 0);
-            tmpBottomColor = D.DTK.adjustColor(tmpBottomColor, 0, 0, -10, 0, 0, 0, 0);
-
-            backgroundRect.gradTopColor = tmpTopColor
-            backgroundRect.gradBottomColor = tmpBottomColor
-
-            hoverAnimation.centerPoint = Qt.point(mouseX, mouseY)
-            hoverAnimation.start()
-        }
-        onExited: {
-            backgroundRect.gradTopColor =  Qt.binding(function() { return initGradTopColor})
-            backgroundRect.gradBottomColor = Qt.binding(function() { return initGradBottomColor})
-            hoverAnimation.stop()
-        }
-        onReleased: {
-            var tmpTopColor = initGradTopColor
-            var tmpBottomColor = initGradBottomColor
-
-            tmpTopColor = D.DTK.adjustColor(tmpTopColor, 0, 0, -10, 0, 0, 0, 0);
-            tmpBottomColor = D.DTK.adjustColor(tmpBottomColor, 0, 0, -10, 0, 0, 0, 0);
-
-            backgroundRect.gradTopColor = tmpTopColor
-            backgroundRect.gradBottomColor = tmpBottomColor
-            control.released()
-        }
-        onClicked: {
-            control.clicked()
+            onClicked: mouse.accepted = false;
+            onPressed: mouse.accepted = false;
+            onReleased: mouse.accepted = false;
+            onDoubleClicked: mouse.accepted = false;
+            onPositionChanged: mouse.accepted = false;
+            onPressAndHold: mouse.accepted = false;
+            onWheel: mouse.accepted = false;
         }
     }
 

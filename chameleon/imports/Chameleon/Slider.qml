@@ -68,7 +68,6 @@ T.Slider {
 
     // 绘制滑块（handle）
     handle: SliderHandle {
-        id: sliderHandle
         x: control.leftPadding + (control.horizontal ? control.visualPosition * (control.availableWidth - width) : (control.availableWidth - width) / 2)
         y: control.topPadding + (control.horizontal ? (control.availableHeight - height) / 2 : control.visualPosition * (control.availableHeight - height))
         width: horizontal ? PM.Slider_Handle_Width : PM.Slider_Handle_Height
@@ -88,10 +87,10 @@ T.Slider {
         // 绘制滑槽（groove）
         Rectangle {
             id: sliderGroove
-            x: control.horizontal ? sliderHandle.width / 2 : (parent.width - width) / 2
-            y: control.horizontal ? (parent.height - height) / 2 : sliderHandle.height / 2
-            width: control.horizontal ? parent.width - sliderHandle.width : PM.Slider_Groove_height
-            height: control.horizontal ? PM.Slider_Groove_height : parent.height - sliderHandle.height
+            x: control.horizontal ? handle.width / 2 : (parent.width - width) / 2
+            y: control.horizontal ? (parent.height - height) / 2 : handle.height / 2
+            width: control.horizontal ? parent.width - handle.width : PM.Slider_Groove_height
+            height: control.horizontal ? PM.Slider_Groove_height : parent.height - handle.height
             Shape {
                 // 绘制滑块滑动未经过的滑槽
                 ShapePath {
@@ -131,8 +130,8 @@ T.Slider {
             id: repeaterTop
             visible: false
             model: (Slider.TickPosition.TicksBothSides === tickPosition) ? (tickCount + 1) : 0
-            width: horizontal ? sliderGroove.width : (parent.width - sliderHandle.width) / 2
-            height: horizontal ? (parent.height - sliderHandle.height) / 2 : sliderGroove.height
+            width: horizontal ? sliderGroove.width : (parent.width - handle.width) / 2
+            height: horizontal ? (parent.height - handle.height) / 2 : sliderGroove.height
             Rectangle {
                 x: horizontal ? sliderGroove.x + index * (repeaterTop.width / (repeaterTop.count - 1)) : 0
                 y: horizontal ? 0 : sliderGroove.y + index * (repeaterTop.height / (repeaterTop.count - 1))
@@ -149,8 +148,8 @@ T.Slider {
             height: repeaterTop.height
             Rectangle {
                 x: horizontal ? sliderGroove.x + index * (repeaterBottom.width / (repeaterBottom.count - 1)) :
-                                repeaterBottom.width + sliderHandle.width
-                y: horizontal ? repeaterBottom.height + sliderHandle.height :
+                                repeaterBottom.width + handle.width
+                y: horizontal ? repeaterBottom.height + handle.height :
                                 sliderGroove.y + index * (repeaterBottom.height / (repeaterBottom.count - 1))
                 width: horizontal ? 1 : repeaterBottom.width
                 height: horizontal ? repeaterBottom.height : 1

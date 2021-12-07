@@ -74,7 +74,7 @@ T.RadioButton {
         anchors.fill: parent
         onClicked: {
             control.checked = !control.checked;
-            control.clicked();
+            mouse.accepted = false
         }
     }
 }

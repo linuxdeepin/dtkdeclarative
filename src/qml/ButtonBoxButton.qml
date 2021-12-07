@@ -49,64 +49,69 @@ Button {
         color: control.palette.highlightedText
     }
 
-    background: Rectangle {
-        id: backgroundRect
+    background: Item {
         implicitWidth: control.text.length ? PM.Button_MiniSize + (4 * PM.ControlRadius) : PM.Button_MiniSize + (2 * PM.ControlRadius)
         implicitHeight: PM.Button_MiniSize
-        radius: position == D.ButtonBoxButton.Position.Middle ? 0 : PM.ControlRadius
-        color: control.palette.button
+
         Rectangle {
-            id: cliped
-            width: position == D.ButtonBoxButton.Position.OnlyOne ? 0 : parent.radius
-            height: position == D.ButtonBoxButton.Position.OnlyOne ? 0 : parent.height
-            x: position == D.ButtonBoxButton.Position.Beginning ? parent.width - cliped.width : parent.x
-            y: parent.y
-            color: parent.color
-        }
-    }
+            id: backgroundRect
+            anchors.fill: parent
+            radius: position === D.ButtonBoxButton.Position.Middle ? 0 : PM.ControlRadius
 
-    DropShadow {
-        anchors.fill: backgroundRect
-        horizontalOffset: 0
-        verticalOffset: 4
-        radius: 4
-        samples: 9
-        color: palette.shadow
-        source: backgroundRect
-    }
+            Rectangle {
+                id: cliped
+                width: position === D.ButtonBoxButton.Position.OnlyOne ? 0 : parent.radius
+                height: position === D.ButtonBoxButton.Position.OnlyOne ? 0 : parent.height
+                x: position === D.ButtonBoxButton.Position.Beginning ? parent.width - cliped.width : parent.x
+                y: parent.y
+                color: parent.color
+            }
 
-    MouseArea{
-        id: mouseArea
-        anchors.fill: parent;
-        hoverEnabled: true;
-        onPressed: {
-            var hightColor = palette.highlight;
-            hightColor.a = 0.1;
+            color: {
+                // TODO(Chen Bin): Use a c++ or js function instead.
+                if (flat)
+                    return "transparent"
 
-            color = checked ? palette.highlight : palette.button
+                var buttonColor = initGradTopColor
+                if (highlighted)
+                    buttonColor = palette.highlight
 
-            color = D.DTK.adjustColor(color, 0, 0, -20, 0, 0, +20, 0);
-            color = D.DTK.blendColor(color, hightColor);
+                if (checked) {
+                    buttonColor = palette.highlight
 
-            backgroundRect.color = color
+                    if (down) {
+                        buttonColor = D.DTK.adjustColor(buttonColor, 0, 0, -10, 0, 0, 0, 0)
+                    }
+
+                    if (hovered) {
+                        buttonColor = D.DTK.adjustColor(buttonColor, 0, 0, +20, 0, 0, 0, 0);
+                    }
+                } else {
+                    if (down) {
+                        var hightColor = palette.highlight;
+                        hightColor.a = 0.1;
+
+                        buttonColor = D.DTK.adjustColor(buttonColor, 0, 0, -20, 0, 0, +20, 0)
+                        buttonColor = D.DTK.blendColor(buttonColor, hightColor)
+                    }
+
+                    if (hovered) {
+                        buttonColor = D.DTK.adjustColor(buttonColor, 0, 0, -10, 0, 0, 0, 0)
+                    }
+                }
+
+                return buttonColor
+            }
         }
-        onEntered: {
-            color = checked ? palette.highlight : palette.button
-            color = D.DTK.adjustColor(color, 0, 0, -10, 0, 0, 0, 0);
-            backgroundRect.color = color
-        }
-        onExited: {
-            backgroundRect.color = Qt.binding(function(){return checked ? palette.highlight : palette.button})
-        }
-        onReleased: {
-            color = checked ? palette.highlight : palette.button
-            color= D.DTK.adjustColor(color, 0, 0, -10, 0, 0, 0, 0);
-            backgroundRect.color = color
-            control.released()
-            checked = true
-        }
-        onClicked: {
-            control.clicked();
+
+        DropShadow {
+            anchors.fill: backgroundRect
+            horizontalOffset: 0
+            verticalOffset: 4
+            radius: 4
+            samples: 9
+            color: palette.shadow
+            source: backgroundRect
         }
     }
 
@@ -114,10 +119,5 @@ Button {
         id: icon
         anchors.centerIn: parent
         name: iconName
-    }
-
-    onCheckedChanged: {
-        color = checked ? palette.highlight : palette.button
-        mouseArea.onExited();
     }
 }
