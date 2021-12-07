@@ -31,59 +31,41 @@ ToolButton {
     implicitWidth: 36
     implicitHeight: 36
 
-    // normal,hover,press.disable状态下的背景色
-    Rectangle {
-        id: normal
-        property color backgroundColor: "transparent"
-    }
-
-    Rectangle {
-        id: hover
-        property color backgroundColor: Qt.rgba(0, 0, 0, 0.05)
-    }
-
-    Rectangle {
-        id: press
-        property color backgroundColor: Qt.rgba(0, 0, 0, 0.1)
-    }
-
-    background: Rectangle {
-        id: rect
+    background: Item {
         implicitWidth: control.text.length ? PM.Button_MiniSize + (4 * PM.ControlRadius) : PM.Button_MiniSize + (2 * PM.ControlRadius)
         implicitHeight: PM.Button_MiniSize
-        radius: PM.ControlRadius
-        color: normal.backgroundColor
-    }
-    DropShadow {
-        anchors.fill: rect
-        horizontalOffset: 0
-        verticalOffset: 2
-        radius: 4
-        samples: 9
-        color: palette.shadow
-        source: rect
-    }
 
-    MouseArea{
-        anchors.fill: parent;
-        hoverEnabled: true;
-        onPressed: {
-            control.background.color = press.backgroundColor
-        }
-        onEntered: {
-            control.background.color = hover.backgroundColor
-        }
-        onExited: {
-            control.background.color = normal.backgroundColor
-        }
-        onReleased: {
-            control.contentItem.color = normal.backgroundColor
-            control.released();
-        }
-        onClicked: {
-            control.clicked();
+        Rectangle {
+            id: rect
+            anchors.fill: parent
+            radius: PM.ControlRadius
+            color: {
+                var backgroundColor = "transparent"
+
+                if (flat)
+                    return backgroundColor
+
+                if (hovered) {
+                    backgroundColor = Qt.rgba(0, 0, 0, 0.05)
+                }
+
+                if (down || highlighted || checked) {
+                    backgroundColor = Qt.rgba(0, 0, 0, 0.1)
+                }
+
+                return backgroundColor
+            }
         }
 
+        DropShadow {
+            anchors.fill: rect
+            horizontalOffset: 0
+            verticalOffset: 2
+            radius: 4
+            samples: 9
+            color: palette.shadow
+            source: rect
+        }
     }
 }
 
