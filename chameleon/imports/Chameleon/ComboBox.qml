@@ -90,9 +90,9 @@ T.ComboBox {
 
     popup: T.Popup {
         x: -(2 * PM.ControlFocusBorderWidth)
-        y: -(PM.ControlRadius + control.currentIndex * contentItem.implicitHeight / control.count)
+        y: -(PM.ControlRadius + control.currentIndex * contentItem.implicitHeight / Math.max(control.count, 1))
         width: control.width + (2 * (PM.ControlFocusBorderWidth + PM.ControlFocusBorderWidth))
-        height: Math.min(contentItem.implicitHeight, control.Window.height - topMargin - bottomMargin) + 2 * PM.ControlRadius
+        height: control.count > 0 ? (Math.min(contentItem.implicitHeight, control.Window.height - topMargin - bottomMargin) + 2 * PM.ControlRadius ) : 0
 
         contentItem:ListView {
             clip: true
