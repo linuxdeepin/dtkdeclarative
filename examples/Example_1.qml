@@ -150,18 +150,14 @@ Rectangle {
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20  // @disable-check M16
 
-        Row {
-            id: grid
-            anchors.fill: parent
-            D.ButtonBoxButton {
-                iconName: "go-previous" // @disable-check M16
-            }
-            D.ButtonBoxButton {
-                iconName: "go-down" // @disable-check M16
-            }
-            D.ButtonBoxButton {
-                iconName: "go-next" // @disable-check M16
-            }
+        D.ButtonBoxButton {
+            iconName: "go-previous" // @disable-check M16
+        }
+        D.ButtonBoxButton {
+            iconName: "go-down" // @disable-check M16
+        }
+        D.ButtonBoxButton {
+            iconName: "go-next" // @disable-check M16
         }
     }
 }

@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 import QtQuick 2.11
@@ -29,32 +29,32 @@ import org.deepin.dtk 1.0 as D
     D.ButtonBox 控件：
     等同于 dtkwidget 里边的 D.ButtonBox 控件。
 */
-Rectangle {
+Row {
     id: control
 
     ButtonGroup {
         id: group
-        buttons: control.children[0].children
+        buttons: __buttons
     }
 
-    Component.onCompleted: {
-        internal.updateButtonsPosition()
+    default property alias __buttons: control.children
+
+    onPositioningComplete: {
+        __updateButtonsPosition()
     }
 
-    QtObject {
-        id: internal
-        function updateButtonsPosition() {
-            for (var i = 0; i < group.buttons.length; ++i)
-            {
-                if (group.buttons.length === 1) {
-                    group.buttons[i].position = D.ButtonBoxButton.Position.OnlyOne
-                } else if (i == 0) {
-                    group.buttons[i].position = D.ButtonBoxButton.Position.Beginning
-                } else if (i == group.buttons.length - 1) {
-                    group.buttons[i].position = D.ButtonBoxButton.Position.End
-                } else {
-                    group.buttons[i].position = D.ButtonBoxButton.Position.Middle
-                }
+    // TODO js code
+    function __updateButtonsPosition() {
+        for (var i = 0; i < group.buttons.length; ++i)
+        {
+            if (group.buttons.length === 1) {
+                group.buttons[i].position = D.ButtonBoxButton.Position.OnlyOne
+            } else if (i == 0) {
+                group.buttons[i].position = D.ButtonBoxButton.Position.Beginning
+            } else if (i == group.buttons.length - 1) {
+                group.buttons[i].position = D.ButtonBoxButton.Position.End
+            } else {
+                group.buttons[i].position = D.ButtonBoxButton.Position.Middle
             }
         }
     }
