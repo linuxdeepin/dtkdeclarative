@@ -216,6 +216,11 @@ QString DQMLGlobalObject::deepinDistributionOrgLogo() const
 
 }
 
+QPoint DQMLGlobalObject::cursorPosition() const
+{
+    return QCursor::pos();
+}
+
 DQUICK_END_NAMESPACE
 
 #include "moc_dqmlglobalobject.cpp"
