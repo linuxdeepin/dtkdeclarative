@@ -23,6 +23,7 @@
 #include "dquicksystempalette.h"
 #include "dhandlecontextmenuwindow.h"
 #include "dquickblitframebuffer.h"
+#include "dquickshadow.h"
 
 #include "private/dconfigwrapper_p.h"
 #include "private/dquickiconimage_p.h"
@@ -45,6 +46,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     qmlRegisterType<DQuickIconImage>(uri, 1, 0, "Icon");
     qmlRegisterType<DQuickIconLabel>(uri, 1, 0, "IconLabel");
     qmlRegisterType<DQuickBusyIndicator>(uri, 1, 0, "BusyIndicator");
+    qmlRegisterType<DQuickShadow>(uri, 1, 0, "ShadowEffect");
 
     //DQMLGlobalObject 依赖 DWindowManagerHelper中枚举的定义，所以需要先注册
     qmlRegisterSingletonType<DWindowManagerHelper>(uri, 1, 0, "WindowManagerHelper", [](QQmlEngine *, QJSEngine *) -> QObject * {
@@ -97,6 +99,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/AboutAction.qml")), uri, 1, 0, "AboutAction");
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/QuitAction.qml")), uri, 1, 0, "QuitAction");
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/ThemeMenu.qml")), uri, 1, 0, "ThemeMenu");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DropShadow.qml")), uri, 1, 0, "DropShadow");
 }
 
 void QmlpluginPlugin::initializeEngine(QQmlEngine *engine, const char *uri)

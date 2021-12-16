@@ -14,6 +14,8 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dquickitemviewport_p.h \
     $$PWD/dsoftwareroundedimagenode_p.h \
     $$PWD/dconfigwrapper_p.h \
+    $$PWD/dquickshadow_p.h \
+    $$PWD/dshadownode.h \
 
 SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dblitframebuffernode.cpp \
@@ -22,3 +24,4 @@ SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dquickbusyindicator.cpp \
     $$PWD/dsoftwareroundedimagenode_p.cpp \
     $$PWD/dconfigwrapper.cpp \
+    $$PWD/dshadownode.cpp \

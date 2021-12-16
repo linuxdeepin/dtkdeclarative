@@ -10,7 +10,8 @@ HEADERS += \
     $$PWD/dquicksystempalette.h \
     $$PWD/dquickview.h \
     $$PWD/dhandlecontextmenuwindow.h \
-    $$PWD/dquickblitframebuffer.h
+    $$PWD/dquickblitframebuffer.h \
+    $$PWD/dquickshadow.h \
 
 SOURCES += \
     $$PWD/dquickwindow.cpp \
@@ -22,4 +23,5 @@ SOURCES += \
     $$PWD/dquicksystempalette.cpp \
     $$PWD/dquickview.cpp \
     $$PWD/dhandlecontextmenuwindow.cpp \
-    $$PWD/dquickblitframebuffer.cpp
+    $$PWD/dquickblitframebuffer.cpp \
+    $$PWD/dquickshadow.cpp \

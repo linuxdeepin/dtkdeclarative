@@ -121,6 +121,29 @@ Rectangle {
     }
 
 
+    D.DropShadow {
+        anchors.fill: shadowSource
+        glowRadius: 20
+        spread: 0
+        color: "black"
+        cornerRadius: shadowSource.radius
+    }
+
+    Rectangle {
+        id: shadowSource
+
+        width: 300
+        height: 150
+        anchors {
+            left: parent.left
+            leftMargin: 50
+            bottom: parent.bottom
+            bottomMargin: 50
+        }
+        radius: 30
+        color: "red"
+    }
+
     Rectangle {
         id:swipe_view
 
