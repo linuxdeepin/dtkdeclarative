@@ -41,6 +41,7 @@ class DQMLGlobalObject : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(bool hasBlurWindow READ hasBlurWindow NOTIFY hasBlurWindowChanged)
     Q_PROPERTY(bool hasComposite READ hasComposite NOTIFY hasCompositeChanged)
     Q_PROPERTY(bool hasNoTitlebar READ hasNoTitlebar NOTIFY hasNoTitlebarChanged)
+    Q_PROPERTY(bool isSoftwareRender READ isSoftwareRender FINAL CONSTANT)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::WMName windowManagerName READ windowManagerName)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType themeType READ themeType NOTIFY themeTypeChanged)
     Q_PROPERTY(QString windowManagerNameString READ windowManagerNameString)
@@ -59,6 +60,7 @@ public:
     bool hasBlurWindow() const;
     bool hasComposite() const;
     bool hasNoTitlebar() const;
+    bool isSoftwareRender() const;
 
     DWindowManagerHelper::WMName windowManagerName() const;
     QString windowManagerNameString() const;

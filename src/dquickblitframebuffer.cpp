@@ -94,9 +94,11 @@ QSGTextureProvider *DQuickBlitFramebuffer::textureProvider() const
     return d->tp.data();
 }
 
-static void onRender(void *data) {
+static void onRender(DBlitFramebufferNode *node, void *data) {
     TextureProvider *tp = reinterpret_cast<TextureProvider*>(data);
-    Q_EMIT tp->textureChanged();
+    tp->setTexture(node->texture());
+    // Don't direct emit the signal, must ensure the signal emit on current render loop after.
+    tp->metaObject()->invokeMethod(tp, &TextureProvider::textureChanged, Qt::QueuedConnection);
 }
 
 QSGNode *DQuickBlitFramebuffer::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *oldData)
@@ -104,16 +106,15 @@ QSGNode *DQuickBlitFramebuffer::updatePaintNode(QSGNode *oldNode, QQuickItem::Up
     Q_UNUSED(oldData)
 
     auto node = static_cast<DBlitFramebufferNode*>(oldNode);
-    const QSize textureSize = (size() * window()->effectiveDevicePixelRatio()).toSize();
     if (Q_LIKELY(node)) {
-        node->resize(textureSize);
+        node->resize(size());
         return node;
     }
 
     D_DC(DQuickBlitFramebuffer);
     auto ri = window()->rendererInterface();
     if (ri->graphicsApi() == QSGRendererInterface::Software) {
-        node = DBlitFramebufferNode::createSoftwareNode(this, textureSize);
+        node = DBlitFramebufferNode::createSoftwareNode(this, false, false);
     }
 #ifndef QT_NO_OPENGL
     else if (ri->graphicsApi() == QSGRendererInterface::OpenGL
@@ -121,7 +122,7 @@ QSGNode *DQuickBlitFramebuffer::updatePaintNode(QSGNode *oldNode, QQuickItem::Up
              || ri->graphicsApi() == QSGRendererInterface::OpenGLRhi
 #endif
              ) {
-        node = DBlitFramebufferNode::createOpenGLNode(this, textureSize);
+        node = DBlitFramebufferNode::createOpenGLNode(this, false, false);
     }
 #endif
     else {
@@ -129,10 +130,11 @@ QSGNode *DQuickBlitFramebuffer::updatePaintNode(QSGNode *oldNode, QQuickItem::Up
         return nullptr;
     }
 
+    node->resize(size());
     if (!d->tp) {
         d->tp.reset(new TextureProvider());
+        node->setRenderCallback(onRender, d->tp.data());
     }
-    node->setRenderCallback(onRender, d->tp.data());
     d->tp->setTexture(node->texture());
 
     return node;

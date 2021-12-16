@@ -1,6 +1,7 @@
 HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dapploader_p.h \
     $$PWD/dblitframebuffernode_p.h \
+    $$PWD/dblurimagenode_p.h \
     $$PWD/dmaskeffectnode_p.h \
     $$PWD/dqmlglobalobject_p.h \
     $$PWD/dplatformthemeproxy_p.h \
@@ -19,6 +20,7 @@ HEADERS += $$PWD/dquickwindow_p.h \
 
 SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dblitframebuffernode.cpp \
+    $$PWD/dblurimagenode.cpp \
     $$PWD/dmaskeffectnode.cpp \
     $$PWD/dquickiconlabel.cpp \
     $$PWD/dquickbusyindicator.cpp \

@@ -19,27 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.0
-import QtGraphicalEffects 1.0
 import QtQuick.Controls 2.4
 import org.deepin.dtk 1.0 as D
 
 Item {
-    FastBlur {
-        id: blurBack
-        anchors.fill: back
-        source: back
-        radius: 50
-    }
-    ShaderEffectSource {
-        id: blurEffectSource
-        sourceItem: blurBack
-        anchors.fill: blurBack
-        hideSource: true
-    }
     Image {
         id: back
         anchors.fill: parent
         source: "file:///usr/share/wallpapers/deepin/Hummingbird_by_Shu_Le.jpg"
+    }
+
+    Button {
+        text: "深浅切换"
+        onClicked: {
+            if (testView.foreground == "#55000000")
+                testView.foreground = "#55ffffff"
+            else
+                testView.foreground = "#55000000"
+        }
     }
 
     ListView {
@@ -47,7 +44,7 @@ Item {
 
         property color foreground: "#55ffffff"
         model: 20
-        spacing: 10
+        spacing: 30
         clip: true
         anchors {
             fill: parent
@@ -61,17 +58,11 @@ Item {
             width: 300
             anchors.horizontalCenter: parent.horizontalCenter
 
-            D.ItemViewport {
-                radius: 18
-                sourceItem: blurEffectSource // 可以为Image或ShaderEffectSource类型的组件
+            D.InWindowBlendBlur {
+                id: blur
                 anchors.fill: parent
-
-                Rectangle {
-                    anchors.fill: parent
-                    color: view.foreground
-                    radius: parent.radius
-                    antialiasing: true
-                }
+                radius: 30
+                blendColor: view.foreground
             }
 
             Text {
@@ -80,17 +71,6 @@ Item {
                 color: "white"
                 font.pixelSize: 22
             }
-        }
-    }
-
-
-    Button {
-        text: "深浅切换"
-        onClicked: {
-            if (testView.foreground == "#55000000")
-                testView.foreground = "#55ffffff"
-            else
-                testView.foreground = "#55000000"
         }
     }
 }

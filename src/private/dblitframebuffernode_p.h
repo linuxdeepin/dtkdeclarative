@@ -33,41 +33,48 @@ QT_END_NAMESPACE
 
 DQUICK_BEGIN_NAMESPACE
 
+class ProxyAtlasTexture;
 class DBlitFramebufferNode : public QSGRenderNode {
 public:
-    inline QSize size() const {
+    inline QSizeF size() const {
         return m_size;
     }
-    inline QSGPlainTexture *texture() const {
-        return m_texture.data();
-    }
+    QSGTexture *texture() const;
 
 #ifndef QT_NO_OPENGL
-    static DBlitFramebufferNode *createOpenGLNode(QQuickItem *item, const QSize &size);
+    static DBlitFramebufferNode *createOpenGLNode(QQuickItem *item,
+                                                  bool shareBuffer = false,
+                                                  bool useAtlasTexture = false);
 #endif
-    static DBlitFramebufferNode *createSoftwareNode(QQuickItem *item, const QSize &size);
+    static DBlitFramebufferNode *createSoftwareNode(QQuickItem *item,
+                                                    bool shareBuffer = false,
+                                                    bool useAtlasTexture = false);
 
     QRectF rect() const override;
 
-    void resize(const QSize &size);
+    void resize(const QSizeF &size);
+    void setMargins(const QMarginsF &margin);
 
-    typedef void(*RenderCallback)(void *data);
+    typedef void(*RenderCallback)(DBlitFramebufferNode *node, void *data);
     void setRenderCallback(RenderCallback callback, void *data);
     inline void doRenderCallback() {
         if (!m_renderCallback)
             return;
-        m_renderCallback(m_callbackData);
+        m_renderCallback(this, m_callbackData);
     }
 
 protected:
-    DBlitFramebufferNode(QQuickItem *item, const QSize &textureSize);
-    virtual void reset() = 0;
+    DBlitFramebufferNode(QQuickItem *item);
 
     QQuickItem *m_item;
-    QSize m_size;
-    QScopedPointer<QSGPlainTexture> m_texture;
+    QSizeF m_size;
+    QMarginsF m_margins;
+    QRectF m_rect;
+    QScopedPointer<ProxyAtlasTexture> m_texture;
     RenderCallback m_renderCallback = nullptr;
     void *m_callbackData = nullptr;
+    bool shareBuffer = false;
+    bool useAtlasTexture = false;
 };
 
 DQUICK_END_NAMESPACE

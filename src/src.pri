@@ -1,4 +1,5 @@
 HEADERS += \
+    $$PWD/dquickinwindowblendblur.h \
     $$PWD/dtkdeclarative_global.h \
     $$PWD/dquickwindow.h \
     $$PWD/dapploader.h \
@@ -14,6 +15,7 @@ HEADERS += \
     $$PWD/dquickshadow.h \
 
 SOURCES += \
+    $$PWD/dquickinwindowblendblur.cpp \
     $$PWD/dquickwindow.cpp \
     $$PWD/dapploader.cpp \
     $$PWD/dqmlglobalobject.cpp \
