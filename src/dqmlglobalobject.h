@@ -82,6 +82,8 @@ public:
     QString deepinWebsiteLink() const;
     QString deepinDistributionOrgLogo() const;
 
+    Q_INVOKABLE QPoint cursorPosition() const;
+
 Q_SIGNALS:
     void hasBlurWindowChanged();
     void hasCompositeChanged();
