@@ -48,7 +48,7 @@ T.TextField {
 
         text: control.placeholderText
         font: control.font
-        color: control.color
+        color: palette.placeholderText
         verticalAlignment: control.verticalAlignment
         visible: !control.length && !control.preeditText && (!control.activeFocus || control.horizontalAlignment !== Qt.AlignHCenter)
         renderType: control.renderType

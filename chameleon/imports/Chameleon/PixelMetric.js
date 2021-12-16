@@ -132,3 +132,9 @@ const TitleBar_Height = 45;
 
 // DialogWindow
 const DialogWindow_MaximumHeight = 480;
+
+// AlertControl
+const AlertControl_VerticalPadding = 4
+const AlertControl_HorizontalPadding = 10
+const AlertConnector_Width = 3
+const AlertConnector_Height = 12
