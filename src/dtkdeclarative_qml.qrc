@@ -30,5 +30,6 @@
         <file>qml/QuitAction.qml</file>
         <file>qml/ThemeMenu.qml</file>
         <file>qml/DropShadow.qml</file>
+        <file>qml/AlertToolTip.qml</file>
     </qresource>
 </RCC>

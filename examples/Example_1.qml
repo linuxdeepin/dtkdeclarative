@@ -160,4 +160,16 @@ Rectangle {
             iconName: "go-next" // @disable-check M16
         }
     }
+
+    D.LineEdit {
+        id: lineEdit
+        anchors.left: parent.left
+        anchors.top: btnLabel.bottom
+        anchors.topMargin: 20
+        text: "Testing the alert message in line edit."
+
+        alertText: qsTr("This is a long sentence.")
+        alertDuration: 2000  // millisecond
+        showAlert: focus
+    }
 }

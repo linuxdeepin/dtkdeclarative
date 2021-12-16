@@ -102,6 +102,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/QuitAction.qml")), uri, 1, 0, "QuitAction");
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/ThemeMenu.qml")), uri, 1, 0, "ThemeMenu");
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/DropShadow.qml")), uri, 1, 0, "DropShadow");
+    qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/AlertToolTip.qml")), uri, 1, 0, "AlertToolTip");
 }
 
 void QmlpluginPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
