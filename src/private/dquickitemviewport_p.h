@@ -267,6 +267,7 @@ public:
     // 圆角半径大小
     float radius = 0;
     bool fixed = false;
+    bool hideSource = true;
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(DQuickItemViewportPrivate::DirtyState)
 DQUICK_END_NAMESPACE

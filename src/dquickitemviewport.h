@@ -36,6 +36,7 @@ class DQuickItemViewport : public QQuickItem, public DCORE_NAMESPACE::DObject
     Q_PROPERTY(QRectF sourceRect READ sourceRect WRITE setSourceRect NOTIFY sourceRectChanged)
     Q_PROPERTY(float radius READ radius WRITE setRadius NOTIFY radiusChanged)
     Q_PROPERTY(bool fixed READ fixed WRITE setFixed NOTIFY fixedChanged)
+    Q_PROPERTY(bool hideSource READ hideSource WRITE setHideSource NOTIFY hideSourceChanged)
     D_DECLARE_PRIVATE(DQuickItemViewport)
 
 public:
@@ -54,11 +55,15 @@ public:
     bool fixed() const;
     void setFixed(bool newFixed);
 
+    bool hideSource() const;
+    void setHideSource(bool newHideSource);
+
 Q_SIGNALS:
     void sourceItemChanged();
     void sourceRectChanged();
     void radiusChanged();
     void fixedChanged();
+    void hideSourceChanged();
 
 protected:
     void itemChange(ItemChange, const ItemChangeData &) override;

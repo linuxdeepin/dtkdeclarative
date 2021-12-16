@@ -24,6 +24,7 @@
 #include "dhandlecontextmenuwindow.h"
 #include "dquickblitframebuffer.h"
 #include "dquickshadow.h"
+#include "dquickinwindowblendblur.h"
 
 #include "private/dconfigwrapper_p.h"
 #include "private/dquickiconimage_p.h"
@@ -70,6 +71,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     qmlRegisterType<DHandleContextMenuWindow>(uri, 1, 0, "ContextMenuWindow");
     qmlRegisterType<DQuickBlitFramebuffer>(uri, 1, 0, "BlitFramebuffer");
     qmlRegisterType<DConfigWrapper>(uri, 1, 0, "Config");
+    qmlRegisterType<DQuickInWindowBlendBlur>(uri, 1, 0, "InWindowBlendBlur");
 
     // 自定义的 QML 控件可以通过把 QML 文件注册到环境中的方式来实现
     qmlRegisterType(QUrl(QStringLiteral("qrc:/dtk/declarative/qml/LineEdit.qml")), uri, 1, 0, "LineEdit");

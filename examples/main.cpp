@@ -23,7 +23,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQuickStyle>
-
+#include <QQuickWindow>
 
 int main(int argc, char *argv[])
 {
@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
     QQuickStyle::setStyle(CHAMELEON_PATH"/Chameleon");
     QQmlApplicationEngine engine;
 
+//    QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
     engine.addImportPath(CHAMELEON_PATH);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())

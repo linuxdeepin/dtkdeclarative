@@ -109,7 +109,7 @@ void DSoftwareRoundedImageNode::render(const RenderState *state)
     }
 
     updateCachedImage();
-    p->drawImage(targetRect, cachedImage, sourceRect);
+    p->drawImage(targetRect, cachedImage, convertToTextureNormalizedSourceRect());
 }
 
 void DSoftwareRoundedImageNode::releaseResources()
@@ -141,6 +141,18 @@ void DSoftwareRoundedImageNode::updateCachedImage()
     } else {
         DSoftwareRoundedImageNode::releaseResources();
     }
+}
+
+QRectF DSoftwareRoundedImageNode::convertToTextureNormalizedSourceRect() const
+{
+    if (!m_texture->isAtlasTexture())
+        return sourceRect;
+    const QRectF r = m_texture->normalizedTextureSubRect();
+    if (r.topLeft().isNull())
+        return sourceRect;
+
+    const QSize s = m_texture->textureSize();
+    return sourceRect.translated(r.x() * s.width(), r.y() * s.height());
 }
 
 DQUICK_END_NAMESPACE

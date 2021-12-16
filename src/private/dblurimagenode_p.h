@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Uniontech Technology Co., Ltd.
+ * Copyright (C) 2021 UnionTech Technology Co., Ltd.
  *
  * Author:     JiDe Zhang <zhangjide@deepin.org>
  *
@@ -18,13 +18,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef DSOFTWAREROUNDEDIMAGENODE_P_H
-#define DSOFTWAREROUNDEDIMAGENODE_P_H
+#ifndef DSOFTWAREBLURIMAGENODE_H
+#define DSOFTWAREBLURIMAGENODE_H
 
 #include <dtkdeclarative_global.h>
 #include <QSGRenderNode>
 #include <QImage>
-#include <QPainterPath>
 
 QT_BEGIN_NAMESPACE
 class QQuickItem;
@@ -33,18 +32,20 @@ QT_END_NAMESPACE
 
 DQUICK_BEGIN_NAMESPACE
 
-class Q_DECL_EXPORT DSoftwareRoundedImageNode : public QSGRenderNode
+class DSoftwareBlurImageNode : public QSGRenderNode
 {
 public:
-    DSoftwareRoundedImageNode(QQuickItem *owner);
+    DSoftwareBlurImageNode(QQuickItem *owner);
 
     void setTexture(QSGTexture *texture);
     inline QSGTexture *texture() const
     { return m_texture;}
     void setRadius(qreal radius);
-    void setSmooth(bool smooth);
     void setSourceRect(const QRectF &source);
     void setRect(const QRectF &target);
+    void setDisabledOpaqueRendering(bool disabled);
+    void setBlendColor(const QColor &color);
+    void setFollowMatrixForSource(bool on);
 
     void render(const RenderState *state) override;
     void releaseResources() override;
@@ -53,19 +54,19 @@ public:
 
 private:
     void updateCachedImage();
-    QRectF convertToTextureNormalizedSourceRect() const;
 
+    QQuickItem *item;
+    QSGTexture *m_texture = nullptr;
     qreal radius = 0;
-    bool smooth = false;
     QRectF sourceRect;
     QRectF targetRect;
-    QPainterPath clipPath;
+    bool disabledOpaqueRendering = false;
+    QColor blendColor;
+    bool followMatrixForSource = false;
 
-    QSGTexture *m_texture = nullptr;
-    QQuickItem *item = nullptr;
-    QImage cachedImage;
+    QImage cachedSource;
 };
 
 DQUICK_END_NAMESPACE
 
-#endif // DSOFTWAREROUNDEDIMAGENODE_P_H
+#endif // DSOFTWAREBLURIMAGENODE_H

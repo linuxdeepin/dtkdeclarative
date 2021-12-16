@@ -112,6 +112,7 @@ void DQuickItemViewportPrivate::initSourceItem(QQuickItem *old, QQuickItem *item
     if (old) {
         QQuickItemPrivate *sd = QQuickItemPrivate::get(old);
         sd->removeItemChangeListener(this, QQuickItemPrivate::Geometry);
+        sd->derefFromEffectItem(hideSource);
     }
 
     // 监听材质变化的信号
@@ -121,6 +122,7 @@ void DQuickItemViewportPrivate::initSourceItem(QQuickItem *old, QQuickItem *item
     if (item) {
         QQuickItemPrivate *sd = QQuickItemPrivate::get(item);
         sd->addItemChangeListener(this, QQuickItemPrivate::Geometry);
+        sd->refFromEffectItem(hideSource);
     }
 }
 
@@ -218,17 +220,37 @@ void DQuickItemViewport::setFixed(bool newFixed)
     update();
 }
 
+bool DQuickItemViewport::hideSource() const
+{
+    D_DC(DQuickItemViewport);
+    return d->hideSource;
+}
+
+void DQuickItemViewport::setHideSource(bool newHideSource)
+{
+    D_D(DQuickItemViewport);
+    if (d->hideSource == newHideSource)
+        return;
+
+    if (d->sourceItem) {
+        QQuickItemPrivate::get(d->sourceItem)->refFromEffectItem(newHideSource);
+        QQuickItemPrivate::get(d->sourceItem)->derefFromEffectItem(d->hideSource);
+    }
+    d->hideSource = newHideSource;
+    Q_EMIT hideSourceChanged();
+}
+
 void DQuickItemViewport::setSourceItem(QQuickItem *sourceItem)
 {
     D_D(DQuickItemViewport);
+
+    if (d->sourceItem == sourceItem)
+        return;
 
     if (sourceItem && !sourceItem->isTextureProvider()) {
         qWarning() << "DQuickItemViewport: sourceItem is missing or not a texture provider";
         return;
     }
-
-    if (d->sourceItem == sourceItem)
-        return;
 
     if (isComponentComplete()) {
         d->initSourceItem(d->sourceItem, sourceItem);
@@ -332,11 +354,15 @@ QSGNode *DQuickItemViewport::updatePaintNode(QSGNode *old, QQuickItem::UpdatePai
                 auto texture = tp->texture();
                 if (Q_LIKELY(texture)) {
                     if (Q_LIKELY(preNode->imageNode)) {
-                        preNode->imageNode->setTexture(texture);
+                        if (preNode->imageNode->texture() != texture) {
+                            preNode->imageNode->setTexture(texture);
+                        }
                         // Maybe the texture size is changed
                         d->updateSourceRect(preNode->imageNode);
                     } if (Q_LIKELY(preNode->softwareNode)) {
-                        preNode->softwareNode->setTexture(texture);
+                        if (preNode->softwareNode->texture() != texture) {
+                            preNode->softwareNode->setTexture(texture);
+                        }
                         // Maybe the texture size is changed
                         d->updateSourceRect(preNode->softwareNode);
                     } else {
@@ -351,7 +377,7 @@ QSGNode *DQuickItemViewport::updatePaintNode(QSGNode *old, QQuickItem::UpdatePai
 
             d->textureChangedConnection = QObject::connect(tp,
                                                            &QSGTextureProvider::textureChanged,
-                                                           this, onTextureChanged);
+                                                           this, onTextureChanged, Qt::DirectConnection);
         }
     }
 

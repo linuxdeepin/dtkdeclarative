@@ -60,6 +60,9 @@ MouseArea {
     property bool __isFullScreen: Window.window.visibility === Window.FullScreen
     property bool __isVisible: control.containsMouse
     readonly property int __includedAreaX: control.width - optionMenuBtn.width - windowButtonsLoader.width
+
+    property alias enableInWindowBlendBlur: background.visible
+
     onPressed: {
         if (mouse.button === Qt.RightButton) {
             if (mouse.x < __includedAreaX) {
@@ -81,6 +84,13 @@ MouseArea {
     }
     onReleased: mouse.accepted = false
     onClicked: mouse.accepted = false
+
+    D.InWindowBlendBlur {
+        id: background
+        anchors.fill: parent
+        radius: 30
+        visible: false
+    }
 
     ColumnLayout {
         id: content
