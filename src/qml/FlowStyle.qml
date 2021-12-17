@@ -76,6 +76,7 @@ QtObject {
         property int radius: 8
         property int spacing: 6
         property int borderWidth: 1
+        property int focusBorderWidth: 2
     }
 
     property QtObject button: QtObject {
@@ -93,5 +94,11 @@ QtObject {
         property int contentMarginL1: 10
         property int contentMarginL2: 30
         property int contentMarginOther: 50
+    }
+
+    property QtObject searchEdit: QtObject {
+        property int iconLeftMargin: 10
+        property int iconRightMargin: 7
+        property int animationDuration: 200
     }
 }

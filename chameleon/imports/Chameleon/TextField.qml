@@ -62,7 +62,7 @@ T.TextField {
 
        D.RectangleBorder {
             visible: control.activeFocus
-            border.color: control.palette.highlight
+            borderColor: control.palette.highlight
         }
     }
 }
