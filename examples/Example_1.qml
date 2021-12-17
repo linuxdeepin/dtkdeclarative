@@ -183,6 +183,13 @@ Rectangle {
         showAlert: focus
     }
 
+    D.SearchEdit {
+        id: searcherEdit
+        anchors.left: lineEdit.right
+        anchors.top: lineEdit.top
+        anchors.leftMargin: 20
+    }
+
     ListView {
         model: 5
         implicitHeight: 250
@@ -194,7 +201,7 @@ Rectangle {
         }
 
         anchors.top: btnLabel.bottom
-        anchors.left: lineEdit.right
+        anchors.left: searcherEdit.right
         anchors.topMargin: 20
         anchors.leftMargin: 20
     }

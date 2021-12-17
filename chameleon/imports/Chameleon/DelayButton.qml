@@ -78,7 +78,7 @@ T.DelayButton {
 
        D.RectangleBorder {
             visible: control.visualFocus
-            border.color: control.palette.highlight
+            borderColor: control.palette.highlight
         }
 
         Item {

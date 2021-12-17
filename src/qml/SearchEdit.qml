@@ -17,7 +17,9 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
+import QtQuick.Layouts 1.11
 import org.deepin.dtk.impl 1.0 as D
+import org.deepin.dtk.style 1.0 as DS
 
 LineEdit {
     id: control
@@ -25,36 +27,88 @@ LineEdit {
     // 暴露给外部的属性
     property alias placeholder: centerIndicatorLabel.text
 
-    leftPadding: !centerIndicator.visible? searchIcon.width : 0
+    leftPadding: (searchBackground.state === "Editting")
+                 ? searchIcon.width + DS.Style.searchEdit.iconLeftMargin + DS.Style.searchEdit.iconRightMargin
+                 : 0
 
-    // 搜索框中心处字符提示信息，聚焦后隐藏
+    // The search background will be hidden in the focus state,
+    // no text input and displayed in the non focus state.
     Item {
-        id: centerIndicator
+        id: searchBackground
 
         anchors.fill: parent
-        visible: (!control.activeFocus) && (control.text.length === 0)
+        state: control.activeFocus ? "Editting" : (text.length === 0) ? "NonEdit" : "Editting"
 
-        Label {
-            id: centerIndicatorLabel
+        RowLayout {
+            id: centerIndicator
+            spacing: DS.Style.control.spacing
 
-            x: control.width / 2
-            anchors.verticalCenter: parent.verticalCenter
+            // Search Icon
+            D.QtIcon {
+                // TODO(Chen Bin): Replace it to Dci Icon
+                id: searchIcon
+                name: "search"
+            }
+
+            Text {
+                id: centerIndicatorLabel
+
+                text: qsTr("Search")
+                color: palette.text
+                verticalAlignment: Text.AlignVCenter
+            }
         }
 
         MouseArea {
             anchors.fill: parent
+            visible: (searchBackground.state === "NonEdit")
             onClicked: {
                 control.forceActiveFocus(Qt.MouseFocusReason)
+                mouse.accepted = false
             }
         }
-    }
 
-    // 搜索图标
-    D.QtIcon {
-        id: searchIcon
+        states: [
+            State {
+                name: "Editting"
+                AnchorChanges {
+                    target: centerIndicator
+                    anchors.left: searchBackground.left
+                    anchors.verticalCenter: searchBackground.verticalCenter
+                }
+                PropertyChanges {
+                    target: centerIndicator
+                    anchors.leftMargin: DS.Style.searchEdit.iconLeftMargin
+                }
+                PropertyChanges {
+                    target: centerIndicatorLabel
+                    color: "transparent"
+                }
+            },
+            State {
+                name: "NonEdit"
+                AnchorChanges {
+                    target: centerIndicator
+                    anchors.horizontalCenter: searchBackground.horizontalCenter
+                    anchors.verticalCenter: searchBackground.verticalCenter
+                }
+                PropertyChanges {
+                    target: centerIndicatorLabel
+                    color: palette.text
+                }
+            }
+        ]
 
-        x: centerIndicator.visible? (control.width / 2) - width : 0
-        anchors.verticalCenter: parent.verticalCenter
-        name: "search_action"
+        transitions: Transition {
+            AnchorAnimation {
+                duration: DS.Style.searchEdit.animationDuration
+                easing.type: Easing.OutCubic
+            }
+
+            ColorAnimation {
+                duration: DS.Style.searchEdit.animationDuration
+                easing.type: Easing.OutCubic
+            }
+        }
     }
 }
