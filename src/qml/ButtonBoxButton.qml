@@ -23,7 +23,7 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtGraphicalEffects 1.0
-import org.deepin.dtk 1.0 as D
+import org.deepin.dtk.impl 1.0 as D
 import "PixelMetric.js" as PM
 
 Button {
@@ -35,7 +35,7 @@ Button {
         End,
         OnlyOne
     }
-    property int position: D.ButtonBoxButton.Position.OnlyOne
+    property int position: ButtonBoxButton.Position.OnlyOne
     property color color : control.palette.button
 
     contentItem: IconLabel {
@@ -56,13 +56,13 @@ Button {
         Rectangle {
             id: backgroundRect
             anchors.fill: parent
-            radius: position === D.ButtonBoxButton.Position.Middle ? 0 : PM.ControlRadius
+            radius: position === ButtonBoxButton.Position.Middle ? 0 : PM.ControlRadius
 
             Rectangle {
                 id: cliped
-                width: position === D.ButtonBoxButton.Position.OnlyOne ? 0 : parent.radius
-                height: position === D.ButtonBoxButton.Position.OnlyOne ? 0 : parent.height
-                x: position === D.ButtonBoxButton.Position.Beginning ? parent.width - cliped.width : parent.x
+                width: position === ButtonBoxButton.Position.OnlyOne ? 0 : parent.radius
+                height: position === ButtonBoxButton.Position.OnlyOne ? 0 : parent.height
+                x: position === ButtonBoxButton.Position.Beginning ? parent.width - cliped.width : parent.x
                 y: parent.y
                 color: parent.color
             }

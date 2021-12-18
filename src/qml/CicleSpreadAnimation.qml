@@ -22,7 +22,7 @@
 import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtGraphicalEffects 1.0
-import org.deepin.dtk 1.0 as D
+import org.deepin.dtk.impl 1.0 as D
 
 Item{
     id: control

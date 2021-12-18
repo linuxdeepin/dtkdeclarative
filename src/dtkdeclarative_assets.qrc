@@ -3,5 +3,6 @@
         <file>shaders/quickitemviewport.frag</file>
         <file>shaders/quickitemviewport-opaque.frag</file>
         <file>shaders/quickitemviewport-opaque.vert</file>
+        <file>qml/style/Style.qml</file>
     </qresource>
 </RCC>

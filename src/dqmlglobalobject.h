@@ -1,5 +1,9 @@
 /*
- * Copyright (C) 2020 ~ 2020 Deepin Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2021 deepin Technology Co., Ltd.
+ *
+ * Author:     JiDe Zhang <zhangjide@deepin.org>
+ *
+ * Maintainer: JiDe Zhang <zhangjide@deepin.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -70,14 +74,16 @@ public:
     DPlatformThemeProxy *platformTheme() const;
     DFontManager *fontManager() const;
 
-    DPalette palette() const;
-    DPalette inactivePalette() const;
+    QPalette palette() const;
+    QPalette inactivePalette() const;
 
     Q_INVOKABLE QColor adjustColor(const QColor &base, qint8 hueFloat, qint8 saturationFloat, qint8 lightnessFloat,
                                    qint8 redFloat, qint8 greenFloat, qint8 blueFloat, qint8 alphaFloat);
     Q_INVOKABLE QColor blendColor(const QColor &substrate, const QColor &superstratum);
 
     Q_INVOKABLE DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType toColorType(const QColor &color);
+    Q_INVOKABLE QColor selectColor(const QColor &windowColor, const QColor &light, const QColor &dark);
+
     QString deepinWebsiteName() const;
     QString deepinWebsiteLink() const;
     QString deepinDistributionOrgLogo() const;

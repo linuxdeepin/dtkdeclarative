@@ -111,8 +111,4 @@ TEST_F(ut_DQMLGlobalObject, inactivePalette)
         QPalette::ColorRole role = static_cast<QPalette::ColorRole>(i);
         ASSERT_EQ(expected.color(QPalette::Inactive, role), actual.color(QPalette::Active, role));
     }
-    for (int i = 0; i < DPalette::NColorTypes; ++i) {
-        DPalette::ColorType type = static_cast<DPalette::ColorType>(i);
-        ASSERT_EQ(expected.color(QPalette::Inactive, type), actual.color(QPalette::Active, type));
-    }
 }

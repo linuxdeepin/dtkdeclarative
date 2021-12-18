@@ -8,7 +8,6 @@ HEADERS += \
     $$PWD/dplatformthemeproxy.h \
     $$PWD/dquickitemviewport.h \
     $$PWD/dquickiconprovider.h \
-    $$PWD/dquicksystempalette.h \
     $$PWD/dquickview.h \
     $$PWD/dhandlecontextmenuwindow.h \
     $$PWD/dquickblitframebuffer.h \
@@ -22,7 +21,6 @@ SOURCES += \
     $$PWD/dplatformthemeproxy.cpp \
     $$PWD/dquickitemviewport.cpp \
     $$PWD/dquickiconprovider.cpp \
-    $$PWD/dquicksystempalette.cpp \
     $$PWD/dquickview.cpp \
     $$PWD/dhandlecontextmenuwindow.cpp \
     $$PWD/dquickblitframebuffer.cpp \

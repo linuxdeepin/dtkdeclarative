@@ -1,5 +1,9 @@
 /*
- * Copyright (C) 2020 ~ 2020 Deepin Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2021 deepin Technology Co., Ltd.
+ *
+ * Author:     JiDe Zhang <zhangjide@deepin.org>
+ *
+ * Maintainer: JiDe Zhang <zhangjide@deepin.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,12 +21,14 @@
 
 #include "dqmlglobalobject.h"
 #include "private/dqmlglobalobject_p.h"
+#include "private/dquickcontrolpalette_p.h"
 
 #include <DObjectPrivate>
 #include <DObject>
 #include <DGuiApplicationHelper>
 #include <DFontManager>
 #include <DSysInfo>
+#include <QQuickItem>
 
 #ifdef Q_OS_UNIX
 #include <unistd.h>
@@ -58,12 +64,6 @@ void DQMLGlobalObjectPrivate::updatePalettes()
         QPalette::ColorRole role = static_cast<QPalette::ColorRole>(i);
         const QBrush &brush = palette.brush(QPalette::Inactive, role);
         inactivePalette.setBrush(QPalette::Active, role, brush);
-    }
-
-    for (int i = 0; i < DPalette::NColorTypes; ++i) {
-        DPalette::ColorType type = static_cast<DPalette::ColorType>(i);
-        const QBrush &brush = palette.brush(QPalette::Inactive, type);
-        inactivePalette.setBrush(QPalette::Active, type, brush);
     }
 }
 
@@ -155,14 +155,14 @@ DFontManager *DQMLGlobalObject::fontManager() const
     return const_cast<DFontManager*>(DGuiApplicationHelper::instance()->fontManager());
 }
 
-DPalette DQMLGlobalObject::palette() const
+QPalette DQMLGlobalObject::palette() const
 {
     D_DC(DQMLGlobalObject);
     const_cast<DQMLGlobalObjectPrivate*>(d)->ensurePalette();
     return d->palette;
 }
 
-DPalette DQMLGlobalObject::inactivePalette() const
+QPalette DQMLGlobalObject::inactivePalette() const
 {
     D_DC(DQMLGlobalObject);
     const_cast<DQMLGlobalObjectPrivate*>(d)->ensurePalette();
@@ -181,7 +181,16 @@ QColor DQMLGlobalObject::blendColor(const QColor &substrate, const QColor &super
 
 DGuiApplicationHelper::ColorType DQMLGlobalObject::toColorType(const QColor &color)
 {
-    return  DGuiApplicationHelper::toColorType(color);
+    return DGuiApplicationHelper::toColorType(color);
+}
+
+QColor DQMLGlobalObject::selectColor(const QColor &windowColor, const QColor &light, const QColor &dark)
+{
+    if (toColorType(windowColor) == DGuiApplicationHelper::DarkType) {
+        return dark;
+    } else {
+        return light;
+    }
 }
 
 QString DQMLGlobalObject::deepinWebsiteName() const

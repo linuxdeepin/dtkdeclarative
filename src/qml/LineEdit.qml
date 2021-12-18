@@ -17,13 +17,8 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
-import org.deepin.dtk 1.0 as D
+import org.deepin.dtk.impl 1.0 as D
 import "PixelMetric.js" as PM
-
-/*
-    D.LineEdit 控件：
-    等同于 dtkwidget 里边的 D.LineEdit 控件。
-*/
 
 TextField {
     id: control

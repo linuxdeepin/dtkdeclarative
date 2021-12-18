@@ -23,12 +23,7 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtQuick.Layouts 1.11
-import org.deepin.dtk 1.0 as D
 
-/*
-    D.ButtonBox 控件：
-    等同于 dtkwidget 里边的 D.ButtonBox 控件。
-*/
 Row {
     id: control
 
@@ -48,13 +43,13 @@ Row {
         for (var i = 0; i < group.buttons.length; ++i)
         {
             if (group.buttons.length === 1) {
-                group.buttons[i].position = D.ButtonBoxButton.Position.OnlyOne
+                group.buttons[i].position = ButtonBoxButton.Position.OnlyOne
             } else if (i == 0) {
-                group.buttons[i].position = D.ButtonBoxButton.Position.Beginning
+                group.buttons[i].position = ButtonBoxButton.Position.Beginning
             } else if (i == group.buttons.length - 1) {
-                group.buttons[i].position = D.ButtonBoxButton.Position.End
+                group.buttons[i].position = ButtonBoxButton.Position.End
             } else {
-                group.buttons[i].position = D.ButtonBoxButton.Position.Middle
+                group.buttons[i].position = ButtonBoxButton.Position.Middle
             }
         }
     }

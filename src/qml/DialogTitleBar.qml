@@ -23,7 +23,7 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Window 2.11
 import QtQuick.Layouts 1.11
-import org.deepin.dtk 1.0 as D
+import org.deepin.dtk.impl 1.0 as D
 
 MouseArea {
     id: control
@@ -81,7 +81,7 @@ MouseArea {
                 Layout.fillWidth: true
             }
 
-            D.WindowCloseButton {
+            WindowCloseButton {
                 id: closeBtn
                 property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowCloseButtonHint)*/
                 Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowCloseButtonHint)
