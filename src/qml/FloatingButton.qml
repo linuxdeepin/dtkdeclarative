@@ -21,16 +21,8 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
-import org.deepin.dtk 1.0 as D
 
-D.IconButton {
+IconButton {
     id: control
-    initGradTopColor: palette.highlight
-    initGradBottomColor: palette.highlight
-    Component.onCompleted: {
-        if (!flat) {
-            textColor = palette.highlightedText
-        }
-    }
 }
 

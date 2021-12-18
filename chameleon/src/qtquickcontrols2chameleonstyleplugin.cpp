@@ -1,5 +1,9 @@
 /*
- * Copyright (C) 2020 ~ 2020 Deepin Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2021 deepin Technology Co., Ltd.
+ *
+ * Author:     JiDe Zhang <zhangjide@deepin.org>
+ *
+ * Maintainer: JiDe Zhang <zhangjide@deepin.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,16 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "qtquickcontrols2chameleonstyleplugin.h"
-#include "dquickpaletteprovider_p.h"
+//#include "dquickpaletteprovider_p.h"
 
 #include <qqml.h>
 
-DQUICK_USE_NAMESPACE
+//DQUICK_USE_NAMESPACE
 
 QtQuickControls2ChameleonStylePlugin::~QtQuickControls2ChameleonStylePlugin()
 {
     // 恢复到使用QQuickPaletteProvider
-    DQuickPaletteProvider::cleanup();
+//    DQuickPaletteProvider::cleanup();
 }
 
 #ifdef USE_QQuickStylePlugin
@@ -37,7 +41,7 @@ QString QtQuickControls2ChameleonStylePlugin::name() const
 void QtQuickControls2ChameleonStylePlugin::registerTypes(const char *uri)
 {
     // 为 DPalette/QPalette 类型注册QQmlValueTypeProvider
-    DQuickPaletteProvider::init();
+//    DQuickPaletteProvider::init(); // Use the QPalette in the dtk style, don't do custom of palette
 
     qmlRegisterModule(uri, 2, 0);
 }

@@ -2,7 +2,7 @@ import QtQuick 2.11
 import QtQuick.Window 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
-import org.deepin.dtk 1.0 as D
+import org.deepin.dtk.controls 1.0 as D
 
 Rectangle {
 
@@ -91,7 +91,7 @@ Rectangle {
         anchors.leftMargin: 20 // @disable-check M16
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20 // @disable-check M16
-        iconName: "button_add"  // @disable-check M16
+        icon.name: "button_add"  // @disable-check M16
     }
 
     D.IconButton {
@@ -102,7 +102,7 @@ Rectangle {
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20 // @disable-check M16
         circle: true // @disable-check M16
-        iconName: "button_add"  // @disable-check M16
+        icon.name: "button_add"  // @disable-check M16
     }
 
     D.IconButton {
@@ -113,7 +113,7 @@ Rectangle {
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20 // @disable-check M16
         flat: true // @disable-check M16
-        iconName: "button_add"  // @disable-check M16
+        icon.name: "button_add"  // @disable-check M16
     }
 
     D.FloatingButton {
@@ -124,7 +124,7 @@ Rectangle {
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20 // @disable-check M16
         circle: true // @disable-check M16
-        iconName: "button_reduce"  // @disable-check M16
+        icon.name: "button_reduce"  // @disable-check M16
     }
 
     DelayButton {
@@ -151,13 +151,13 @@ Rectangle {
         anchors.topMargin: 20  // @disable-check M16
 
         D.ButtonBoxButton {
-            iconName: "go-previous" // @disable-check M16
+            icon.name: "go-previous" // @disable-check M16
         }
         D.ButtonBoxButton {
-            iconName: "go-down" // @disable-check M16
+            icon.name: "go-down" // @disable-check M16
         }
         D.ButtonBoxButton {
-            iconName: "go-next" // @disable-check M16
+            icon.name: "go-next" // @disable-check M16
         }
     }
 

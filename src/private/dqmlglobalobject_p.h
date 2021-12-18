@@ -1,5 +1,9 @@
 /*
- * Copyright (C) 2020 ~ 2020 Deepin Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2021 deepin Technology Co., Ltd.
+ *
+ * Author:     JiDe Zhang <zhangjide@deepin.org>
+ *
+ * Maintainer: JiDe Zhang <zhangjide@deepin.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -40,8 +44,8 @@ public:
     mutable DPlatformThemeProxy *platformTheme = nullptr;
 
     bool paletteInit = false;
-    DPalette palette;
-    DPalette inactivePalette;
+    QPalette palette;
+    QPalette inactivePalette;
     QString deepinWebsiteName;
     QString deepinWebsiteLink;
     QString deepinDistributionOrgLogo;

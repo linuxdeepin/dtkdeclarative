@@ -23,7 +23,7 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Window 2.11
 import QtQuick.Layouts 1.11
-import org.deepin.dtk 1.0 as D
+import org.deepin.dtk.impl 1.0 as D
 
 RowLayout {
     id: control
@@ -49,7 +49,7 @@ RowLayout {
         }
     }
 
-    D.WindowMinButton {
+    WindowMinButton {
         width: 50
         height: 50
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowMinimizeButtonHint)*/
@@ -61,7 +61,7 @@ RowLayout {
         onClicked: Window.window.visibility = Window.Minimized
     }
 
-    D.WindowQuitFullButton {
+    WindowQuitFullButton {
         visible: !(!control.fullScreenButtonVisible ||
                     !__dwindow.enabled ||
                     Window.window.visibility !== Window.FullScreen)
@@ -85,12 +85,12 @@ RowLayout {
 
         Component {
             id: maxBtn
-            D.WindowMaxButton {}
+            WindowMaxButton {}
         }
 
         Component {
             id: restoreBtn
-            D.WindowRestoreButton {}
+            WindowRestoreButton {}
         }
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowMaximizeButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowMaximizeButtonHint)
@@ -105,7 +105,7 @@ RowLayout {
                     (__dwindow.motifFunctions & D.WindowManagerHelper.FUNC_RESIZE))
     }
 
-    D.WindowCloseButton {
+    WindowCloseButton {
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowCloseButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowCloseButtonHint)
 

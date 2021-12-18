@@ -26,6 +26,5 @@ import "PixelMetric.js" as PM
 Button {
     id: control
     property bool circle: false
-    radius: circle ? width / 2 : PM.ControlRadius
 }
 

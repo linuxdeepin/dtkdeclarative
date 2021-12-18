@@ -17,6 +17,7 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dconfigwrapper_p.h \
     $$PWD/dquickshadow_p.h \
     $$PWD/dshadownode.h \
+    $$PWD/dquickcontrolpalette_p.h \
 
 SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dblitframebuffernode.cpp \
@@ -27,3 +28,4 @@ SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dsoftwareroundedimagenode_p.cpp \
     $$PWD/dconfigwrapper.cpp \
     $$PWD/dshadownode.cpp \
+    $$PWD/dquickcontrolpalette.cpp \

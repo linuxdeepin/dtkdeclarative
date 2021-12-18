@@ -17,14 +17,9 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
-import org.deepin.dtk 1.0 as D
+import org.deepin.dtk.impl 1.0 as D
 
-/*
-    D.SearchEdit 控件：
-    等同于 dtkwidget 里边的 D.SearchEdit 控件。
-*/
-
-D.LineEdit {
+LineEdit {
     id: control
 
     // 暴露给外部的属性

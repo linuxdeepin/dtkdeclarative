@@ -23,7 +23,7 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 import QtQuick.Window 2.11
-import org.deepin.dtk 1.0 as D
+import org.deepin.dtk.impl 1.0 as D
 import "PixelMetric.js" as PM
 
 Window {
@@ -53,7 +53,7 @@ Window {
 
         Loader {
             id: titleBar
-            sourceComponent: D.DialogTitleBar {}
+            sourceComponent: DialogTitleBar {}
         }
 
         Item {

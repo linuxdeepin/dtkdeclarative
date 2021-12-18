@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 2021 UnionTech Software Technology Co., Ltd.
+ * Copyright (C) 2021 UnionTech Technology Co., Ltd.
  *
- * Author:     wangfei <wangfeia@uniontech.com>
+ * Author:     JiDe Zhang <zhangjide@deepin.org>
  *
- * Maintainer: wangfei <wangfeia@uniontech.com>
+ * Maintainer: JiDe Zhang <zhangjide@deepin.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,21 +16,10 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.deepin.dtk.impl 1.0 as D
-import org.deepin.dtk.style 1.0 as DS
+pragma Singleton
+import ".."
 
-Button {
-    id: control
-
-    colorSelector: D.ColorSelector {
-        control: control
-        palettes: [
-            DS.Style.button1,
-            DS.Style.button2,
-            DS.Style.suggestButtonText
-        ]
-    }
-}
+FlowStyle {}

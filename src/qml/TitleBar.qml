@@ -23,7 +23,7 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Window 2.11
 import QtQuick.Layouts 1.11
-import org.deepin.dtk 1.0 as D
+import org.deepin.dtk.impl 1.0 as D
 import "PixelMetric.js" as PM
 
 MouseArea {
@@ -132,7 +132,7 @@ MouseArea {
             Loader {
                 id: optionMenuBtn
                 enabled: !menuDisabled
-                sourceComponent: D.WindowOptionButton {}
+                sourceComponent: WindowOptionButton {}
                 Layout.alignment: Qt.AlignRight
                 onLoaded: {
                     item.clicked.connect(function () {
@@ -144,16 +144,16 @@ MouseArea {
                 Loader {
                     id: optionMenuLoader
                     sourceComponent: Menu {
-                        D.ThemeMenu{}
+                        ThemeMenu{}
                         MenuSeparator {
                             contentItem: Rectangle {
                                 implicitHeight: 1
                                 color: "black"
                             }
                         }
-                        D.HelpAction {}
-                        D.AboutAction { aboutDialog: control.aboutDialog }
-                        D.QuitAction{}
+                        HelpAction {}
+                        AboutAction { aboutDialog: control.aboutDialog }
+                        QuitAction{}
                     }
                     onLoaded: {
                         for (var i = 0; i < item.count; i++) {
@@ -171,7 +171,7 @@ MouseArea {
 
             Loader {
                 id: windowButtonsLoader
-                sourceComponent: D.WindowButtonGroup {
+                sourceComponent: WindowButtonGroup {
                     Layout.alignment: Qt.AlignRight
                     embedMode: control.embedMode
                     fullScreenButtonVisible: control.fullScreenButtonVisible

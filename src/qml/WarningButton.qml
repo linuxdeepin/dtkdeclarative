@@ -19,11 +19,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.11
-import QtQuick.Controls 2.4
+import org.deepin.dtk.impl 1.0 as D
+import org.deepin.dtk.style 1.0 as DS
 
 Button {
     id: control
-    textColor: control.palette.textWarning
+
+    colorSelector: D.ColorSelector {
+        id: cs
+        control: control
+        palettes: [
+            DS.Style.button1,
+            DS.Style.button2,
+            DS.Style.warningButtonText
+        ]
+    }
 }
 
