@@ -34,5 +34,13 @@
         <file>qml/FlowStyle.qml</file>
         <file>qml/Button.qml</file>
         <file>qml/style/Style.qml</file>
+        <file>qml/settings/SettingsDialog.qml</file>
+        <file>qml/settings/OptionDelegate.qml</file>
+        <file>qml/settings/CheckBox.qml</file>
+        <file>qml/settings/ComboBox.qml</file>
+        <file>qml/settings/NavigationTitle.qml</file>
+        <file>qml/settings/ContentTitle.qml</file>
+        <file>qml/settings/ContentBackground.qml</file>
+        <file>qml/settings/LineEdit.qml</file>
     </qresource>
 </RCC>

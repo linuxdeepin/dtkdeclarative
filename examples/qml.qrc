@@ -6,5 +6,6 @@
         <file>Example_3.qml</file>
         <file>Example_config.qml</file>
         <file>Example_TitleBar.qml</file>
+        <file>Example_settingsdialog.qml</file>
     </qresource>
 </RCC>

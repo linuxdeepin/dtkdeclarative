@@ -94,6 +94,9 @@ V2.ApplicationWindow {
         V2.TabButton {
             text: qsTr("Config")
         }
+        V2.TabButton {
+            text: qsTr("SettingsDialog")
+        }
     }
     StackLayout {
         anchors.left: parent.left
@@ -107,5 +110,6 @@ V2.ApplicationWindow {
         Example_2 {}
         Example_3 {}
         Example_config {}
+        Example_settingsdialog {}
     }
 }

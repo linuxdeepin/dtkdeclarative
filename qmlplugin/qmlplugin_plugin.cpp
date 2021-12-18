@@ -35,6 +35,7 @@
 #include "private/dquickiconlabel_p.h"
 #include "private/dquickbusyindicator_p.h"
 #include "private/dquickcontrolpalette_p.h"
+#include "private/dsettingscontainer_p.h"
 
 #include <DFontManager>
 
@@ -91,6 +92,13 @@ inline void dtkStyleRegisterSingletonType(const char *uri1, const char *uri2, in
     if (uri2)
         qmlRegisterSingletonType(url, uri2, versionMajor, versionMinor, qmlName);
 }
+inline void dtkSettingsRegisterType(const char *uri1, const char *uri2, int versionMajor, int versionMinor, const char *qmlName) {
+    static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml/settings/%1.qml");
+    const QUrl url(urlTemplate.arg(qmlName));
+    qmlRegisterType(url, uri1, versionMajor, versionMinor, qmlName);
+    if (uri2)
+        qmlRegisterType(url, uri2, versionMajor, versionMinor, qmlName);
+}
 
 void QmlpluginPlugin::registerTypes(const char *uri)
 {
@@ -108,6 +116,9 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     // @uri org.deepin.dtk.style
     const QByteArray styleUri = QByteArray(uri).append(".style");
     qmlRegisterModule(styleUri.constData(), 1, 0);
+    // @uri org.deepin.dtk.settings
+    const QByteArray settingsUri = QByteArray(uri) + ".settings";
+    qmlRegisterModule(settingsUri, 1, 0);
 
     // for org.deepin.dtk and org.deepin.dtk.impl
     dtkRegisterType<DQuickIconImage>(uri, implUri, 1, 0, "QtIcon");
@@ -191,6 +202,19 @@ void QmlpluginPlugin::registerTypes(const char *uri)
 
     // for org.deepin.dtk.style(allowed to override)
     dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");
+
+    // for org.deepin.dtk.settings
+    dtkRegisterType<SettingsOption>(settingsUri, implUri, 1, 0, "SettingsOption");
+    dtkRegisterType<SettingsGroup>(settingsUri, implUri, 1, 0, "SettingsGroup");
+    dtkRegisterType<SettingsContainer>(settingsUri, implUri, 1, 0, "SettingsContainer");
+    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "SettingsDialog");
+    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "OptionDelegate");
+    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "CheckBox");
+    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "LineEdit");
+    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "ComboBox");
+    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "NavigationTitle");
+    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "ContentTitle");
+    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "ContentBackground");
 }
 
 void QmlpluginPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
