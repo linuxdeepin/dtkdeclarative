@@ -46,8 +46,17 @@ static DefalutProperties propertyAndValues(const QObject* obj)
     const QMetaObject *mo = obj->metaObject();
     const int offset = mo->propertyOffset();
     const int count = mo->propertyCount();
+    static const QStringList ReservedPropertyNames {
+        "name",
+        "subpath"
+    };
+
     for (int i = offset; i < count; ++i) {
         const QMetaProperty &property = mo->property(i);
+        if (ReservedPropertyNames.contains(property.name())) {
+            qCWarning(cfLog()) << property.name() << " is keyword for Config." << property.isUser();
+            continue;
+        }
 
         const QVariant &previousValue = property.read(obj);
         properties[property.name()] = previousValue;
