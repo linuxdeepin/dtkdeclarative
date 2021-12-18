@@ -20,6 +20,7 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dquickcontrolpalette_p.h \
     $$PWD/dquickdciiconimage_p.h \
     $$PWD/dquickdciicon_p.h \
+    $$PWD/dsettingscontainer_p.h \
 
 SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dblitframebuffernode.cpp \
@@ -33,3 +34,4 @@ SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dquickcontrolpalette.cpp \
     $$PWD/dquickdciiconimage.cpp \
     $$PWD/dquickdciicon.cpp \
+    $$PWD/dsettingscontainer.cpp \

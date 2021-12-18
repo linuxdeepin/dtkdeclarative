@@ -50,8 +50,16 @@ QtObject {
         hovered.common: "white"
         pressed.common: Qt.rgba(1, 1, 1, 0.6)
     }
-
     // PixelMetric
     property int buttonIconWidth: 24
     property int buttonIconHeight: 24
+    property int controlBackgroundRadius: 8
+    property QtObject settings: QtObject {
+        property int titleMarginL1: 10
+        property int titleMarginL2: 30
+        property int titleMarginLOther: 50
+        property int contentMarginL1: 10
+        property int contentMarginL2: 30
+        property int contentMarginOther: 50
+    }
 }
