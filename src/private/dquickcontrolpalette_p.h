@@ -28,6 +28,7 @@
 #include <QQmlParserStatus>
 #include <QQmlListProperty>
 #include <QQmlEngine>
+#include <QVector>
 
 QT_BEGIN_NAMESPACE
 class QQuickItem;
@@ -154,6 +155,8 @@ public:
     DQuickControlColorSelector();
     ~DQuickControlColorSelector();
 
+    static DQuickControlColorSelector *qmlAttachedProperties(QObject *object);
+
     QQuickItem *control() const;
     void setControl(QQuickItem *newControl);
 
@@ -188,5 +191,7 @@ private:
 };
 
 DQUICK_END_NAMESPACE
+QML_DECLARE_TYPE(DTK_QUICK_NAMESPACE::DQuickControlColorSelector)
+QML_DECLARE_TYPEINFO(DTK_QUICK_NAMESPACE::DQuickControlColorSelector, QML_HAS_ATTACHED_PROPERTIES)
 
 #endif // DQUICKCONTROLPALETTE_P_H

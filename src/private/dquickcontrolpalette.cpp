@@ -144,6 +144,27 @@ DQuickControlColorSelector::~DQuickControlColorSelector()
 
 }
 
+DQuickControlColorSelector *DQuickControlColorSelector::qmlAttachedProperties(QObject *object)
+{
+#if defined(QT_NAMESPACE)
+#define NAMESPACE_STR1(NAME) #NAME"::QQuickControl"
+#define NAMESPACE_STR(R) NAMESPACE_STR1(R)
+#define ControlBaseClassName NAMESPACE_STR(QT_NAMESPACE)
+#else
+#define ControlBaseClassName "QQuickControl"
+#endif
+    DQuickControlColorSelector *colorSelector = nullptr;
+    if (!object->inherits(ControlBaseClassName))
+        return colorSelector;
+
+    if (QQuickItem *control = qobject_cast<QQuickItem *>(object)) {
+        colorSelector = new DQuickControlColorSelector;
+        colorSelector->setControl(control);
+    }
+
+    return colorSelector;
+}
+
 void DQuickControlColorSelector::palette_append(QQmlListProperty<DQuickControlPalette> *property, DQuickControlPalette *value) {
     if (!value)
         return;

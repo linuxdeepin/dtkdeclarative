@@ -25,14 +25,10 @@ import org.deepin.dtk.style 1.0 as DS
 Button {
     id: control
 
-    colorSelector: D.ColorSelector {
-        id: cs
-        control: control
-        palettes: [
-            DS.Style.button1,
-            DS.Style.button2,
-            DS.Style.warningButtonText
-        ]
-    }
+    D.ColorSelector.palettes: [
+        DS.Style.button1,
+        DS.Style.button2,
+        DS.Style.warningButtonText
+    ]
 }
 
