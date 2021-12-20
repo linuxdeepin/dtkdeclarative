@@ -30,15 +30,11 @@ import "PixelMetric.js" as PM
 T.Button {
     id: control
 
-    // TODO: Support the attached properies for QQuickControl on ColorSelector
-    property D.ColorSelector colorSelector: D.ColorSelector {
-        control: control
-        palettes: [
-            DS.Style.button1,
-            DS.Style.button2,
-            DS.Style.buttonText
-        ]
-    }
+    D.ColorSelector.palettes: [
+        DS.Style.button1,
+        DS.Style.button2,
+        DS.Style.buttonText
+    ]
 
     implicitWidth: Math.max(background ? background.implicitWidth : 0,
                             contentItem.implicitWidth + leftPadding + rightPadding)
@@ -66,8 +62,8 @@ T.Button {
             anchors.fill: parent
             radius: PM.ControlRadius
             gradient: Gradient {
-                GradientStop { position: 0.0; color: colorSelector.button1 }
-                GradientStop { position: 0.96; color: colorSelector.button2 }
+                GradientStop { position: 0.0; color: control.D.ColorSelector.button1 }
+                GradientStop { position: 0.96; color: control.D.ColorSelector.button2 }
             }
         }
 
@@ -96,7 +92,7 @@ T.Button {
         icon: control.icon
         text: control.text
         font: control.font
-        color: colorSelector.buttonText
+        color: control.D.ColorSelector.buttonText
     }
 }
 

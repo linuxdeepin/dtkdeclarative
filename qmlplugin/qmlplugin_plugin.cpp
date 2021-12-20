@@ -52,9 +52,16 @@ inline void dtkRegisterType(const char *uri1, const char *uri2, int versionMajor
 }
 template<typename T>
 inline void dtkRegisterAnonymousType(const char *uri1, const char *uri2, int versionMajor) {
+#if (QT_VERSION > QT_VERSION_CHECK(5, 14, 0))
     qmlRegisterAnonymousType<T>(uri1, versionMajor);
     if (uri2)
         qmlRegisterAnonymousType<T>(uri2, versionMajor);
+#else
+    Q_UNUSED(uri1)
+    Q_UNUSED(uri2)
+    Q_UNUSED(versionMajor)
+    qmlRegisterType<T>();
+#endif
 }
 template<typename T>
 inline void dtkRegisterUncreatableType(const char *uri1, const char *uri2, int versionMajor, int versionMinor, const char *qmlName, const QString& reason) {
