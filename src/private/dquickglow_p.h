@@ -19,30 +19,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DQUICKSHADOW_P_H
-#define DQUICKSHADOW_P_H
+#ifndef DQUICKGLOW_P_H
+#define DQUICKGLOW_P_H
 
-#include "dquickshadow.h"
+#include "dquickglow.h"
 
 #include <private/qquickitem_p.h>
 
 DQUICK_BEGIN_NAMESPACE
 
-class DQuickShadowPrivate : public QQuickItemPrivate
+class DQuickGlowPrivate : public QQuickItemPrivate
 {
-    Q_DECLARE_PUBLIC(DQuickShadow)
+    Q_DECLARE_PUBLIC(DQuickGlow)
 
 public:
-    DQuickShadowPrivate()
+    DQuickGlowPrivate()
         : QQuickItemPrivate()
         , fill(false)
     {
 
     }
 
-    qreal shadowRadius;  // 阴影半径
-    QColor shadowColor;  // 阴影颜色
-    qreal spread;        // 扩展系数
+    qreal glowRadius;
+    QColor color;
+    qreal spread;
     qreal relativeSizeX;
     qreal relativeSizeY;
     bool fill;
@@ -50,4 +50,4 @@ public:
 
 DQUICK_END_NAMESPACE
 
-#endif // DQUICKSHADOW_P_H
+#endif // DQUICKGLOW_P_H

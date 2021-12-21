@@ -26,7 +26,7 @@
 #include "dquickiconprovider.h"
 #include "dhandlecontextmenuwindow.h"
 #include "dquickblitframebuffer.h"
-#include "dquickshadow.h"
+#include "dquickglow.h"
 #include "dquickinwindowblendblur.h"
 
 #include "private/dconfigwrapper_p.h"
@@ -112,7 +112,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType<DQuickIconImage>(uri, implUri, 1, 0, "Icon");
     dtkRegisterType<DQuickIconLabel>(uri, implUri, 1, 0, "IconLabel");
     dtkRegisterType<DQuickBusyIndicator>(uri, implUri, 1, 0, "BusyIndicator");
-    dtkRegisterType<DQuickShadow>(uri, implUri, 1, 0, "ShadowEffect");
+    dtkRegisterType<DQuickGlow>(uri, implUri, 1, 0, "GlowEffect");
 
     //DQMLGlobalObject 依赖 DWindowManagerHelper中枚举的定义，所以需要先注册
     dtkRegisterSingletonType<DWindowManagerHelper>(uri, implUri, 1, 0, "WindowManagerHelper",
@@ -146,7 +146,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
 
     // 自定义的 QML 控件可以通过把 QML 文件注册到环境中的方式来实现
     // for org.deepin.dtk
-    dtkRegisterType(uri, nullptr, 1, 0, "DropShadow");
+    dtkRegisterType(uri, nullptr, 1, 0, "RectangularShadow");
     dtkRegisterType(uri, nullptr, 1, 0, "RectangleBorder");
     dtkRegisterType(uri, nullptr, 1, 0, "CicleSpreadAnimation");
 

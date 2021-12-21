@@ -19,66 +19,66 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "dquickshadow.h"
-#include "private/dquickshadow_p.h"
+#include "dquickglow.h"
+#include "private/dquickglow_p.h"
 #include "private/dshadownode.h"
 
 DQUICK_BEGIN_NAMESPACE
 
-DQuickShadow::DQuickShadow(QQuickItem *parent)
-    : QQuickItem(*(new DQuickShadowPrivate), parent)
+DQuickGlow::DQuickGlow(QQuickItem *parent)
+    : QQuickItem(*(new DQuickGlowPrivate), parent)
 {
     setFlag(ItemHasContents, true);
 }
 
-qreal DQuickShadow::shadowRadius() const
+qreal DQuickGlow::glowRadius() const
 {
-    Q_D(const DQuickShadow);
+    Q_D(const DQuickGlow);
 
-    return d->shadowRadius;
+    return d->glowRadius;
 }
 
-void DQuickShadow::setShadowRadius(qreal shadowRadius)
+void DQuickGlow::setGlowRadius(qreal radius)
 {
-    Q_D(DQuickShadow);
+    Q_D(DQuickGlow);
 
-    if(qFuzzyCompare(d->shadowRadius, shadowRadius))
+    if(qFuzzyCompare(d->glowRadius, radius))
         return;
 
-    d->shadowRadius = shadowRadius;
+    d->glowRadius = radius;
     update();
-    Q_EMIT shadowRadiusChanged();
+    Q_EMIT glowRadiusChanged();
 }
 
-QColor DQuickShadow::shadowColor() const
+QColor DQuickGlow::color() const
 {
-    Q_D(const DQuickShadow);
+    Q_D(const DQuickGlow);
 
-    return d->shadowColor;
+    return d->color;
 }
 
-void DQuickShadow::setShadowColor(const QColor &color)
+void DQuickGlow::setColor(const QColor &color)
 {
-    Q_D(DQuickShadow);
+    Q_D(DQuickGlow);
 
-    if (d->shadowColor == color)
+    if (d->color == color)
         return;
 
-    d->shadowColor = color;
+    d->color = color;
     update();
-    Q_EMIT shadowColorChanged();
+    Q_EMIT colorChanged();
 }
 
-qreal DQuickShadow::spread() const
+qreal DQuickGlow::spread() const
 {
-    Q_D(const DQuickShadow);
+    Q_D(const DQuickGlow);
 
     return d->spread;
 }
 
-void DQuickShadow::setSpread(qreal radius)
+void DQuickGlow::setSpread(qreal radius)
 {
-    Q_D(DQuickShadow);
+    Q_D(DQuickGlow);
 
     if (qFuzzyCompare(d->spread, radius))
         return;
@@ -88,16 +88,16 @@ void DQuickShadow::setSpread(qreal radius)
     Q_EMIT spreadChanged();
 }
 
-qreal DQuickShadow::relativeSizeX() const
+qreal DQuickGlow::relativeSizeX() const
 {
-    Q_D(const DQuickShadow);
+    Q_D(const DQuickGlow);
 
     return d->relativeSizeX;
 }
 
-void DQuickShadow::setRelativeSizeX(qreal x)
+void DQuickGlow::setRelativeSizeX(qreal x)
 {
-    Q_D(DQuickShadow);
+    Q_D(DQuickGlow);
 
     if (qFuzzyCompare(d->relativeSizeX, x))
         return;
@@ -107,16 +107,16 @@ void DQuickShadow::setRelativeSizeX(qreal x)
     Q_EMIT relativeSizeXChanged();
 }
 
-qreal DQuickShadow::relativeSizeY() const
+qreal DQuickGlow::relativeSizeY() const
 {
-    Q_D(const DQuickShadow);
+    Q_D(const DQuickGlow);
 
     return d->relativeSizeY;
 }
 
-void DQuickShadow::setRelativeSizeY(qreal y)
+void DQuickGlow::setRelativeSizeY(qreal y)
 {
-    Q_D(DQuickShadow);
+    Q_D(DQuickGlow);
 
     if (qFuzzyCompare(d->relativeSizeY, y))
         return;
@@ -126,16 +126,16 @@ void DQuickShadow::setRelativeSizeY(qreal y)
     Q_EMIT relativeSizeYChangd();
 }
 
-bool DQuickShadow::fill()
+bool DQuickGlow::fill()
 {
-    Q_D(const DQuickShadow);
+    Q_D(const DQuickGlow);
 
     return d->fill;
 }
 
-void DQuickShadow::setFill(bool isFill)
+void DQuickGlow::setFill(bool isFill)
 {
-    Q_D(DQuickShadow);
+    Q_D(DQuickGlow);
 
     if (d->fill == isFill)
         return;
@@ -145,12 +145,12 @@ void DQuickShadow::setFill(bool isFill)
     Q_EMIT fillChanged();
 }
 
-QSGNode *DQuickShadow::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *data)
+QSGNode *DQuickGlow::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *data)
 {
     Q_UNUSED(data);
-    Q_D(const DQuickShadow);
+    Q_D(const DQuickGlow);
 
-    if (width() <= 0 || height() <= 0 || d->shadowColor.alpha() == 0) {
+    if (width() <= 0 || height() <= 0 || d->color.alpha() == 0) {
         delete oldNode;
         return nullptr;
     }
@@ -167,8 +167,8 @@ QSGNode *DQuickShadow::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaint
     }
 
     shadow->setRect(QRectF(0, 0, width(), height()));
-    shadow->setColor(d->shadowColor);
-    shadow->setShadowRadius(d->shadowRadius);
+    shadow->setColor(d->color);
+    shadow->setGlowRadius(d->glowRadius);
     shadow->setRelativeSizeX(d->relativeSizeX);
     shadow->setRelativeSizeY(d->relativeSizeY);
     shadow->setSpread(d->spread);
@@ -178,7 +178,7 @@ QSGNode *DQuickShadow::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaint
     return shadow;
 }
 
-DQuickShadow::DQuickShadow(DQuickShadowPrivate &dd, QQuickItem *parent)
+DQuickGlow::DQuickGlow(DQuickGlowPrivate &dd, QQuickItem *parent)
     : QQuickItem (dd, parent)
 {
 

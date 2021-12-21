@@ -80,7 +80,7 @@ public:
 
     void setRect(const QRectF &);
     void setColor(const QColor &color);
-    void setShadowRadius(qreal shadowRadius);
+    void setGlowRadius(qreal radius);
     void setRelativeSizeX(qreal x);
     void setRelativeSizeY(qreal y);
     void setSpread(qreal spread);
@@ -106,7 +106,7 @@ private:
 
     QRectF m_rect;
     bool m_geometryChanged = true;
-    qreal m_shadowRadius;
+    qreal m_glowRadius;
     bool m_fill;
 };
 
