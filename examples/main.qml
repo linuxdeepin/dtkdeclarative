@@ -8,7 +8,7 @@ V2.ApplicationWindow {
     id: root
     visible: true
     width: 1200
-    height: 400
+    height: 700
     title: qsTr("dtkdeclarative")
     x:(Screen.desktopAvailableWidth - width) / 2
     y:(Screen.desktopAvailableHeight - height) / 2

@@ -11,7 +11,7 @@ HEADERS += \
     $$PWD/dquickview.h \
     $$PWD/dhandlecontextmenuwindow.h \
     $$PWD/dquickblitframebuffer.h \
-    $$PWD/dquickshadow.h \
+    $$PWD/dquickglow.h \
 
 SOURCES += \
     $$PWD/dquickinwindowblendblur.cpp \
@@ -24,4 +24,4 @@ SOURCES += \
     $$PWD/dquickview.cpp \
     $$PWD/dhandlecontextmenuwindow.cpp \
     $$PWD/dquickblitframebuffer.cpp \
-    $$PWD/dquickshadow.cpp \
+    $$PWD/dquickglow.cpp \

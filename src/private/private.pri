@@ -15,7 +15,7 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dquickitemviewport_p.h \
     $$PWD/dsoftwareroundedimagenode_p.h \
     $$PWD/dconfigwrapper_p.h \
-    $$PWD/dquickshadow_p.h \
+    $$PWD/dquickglow_p.h \
     $$PWD/dshadownode.h \
     $$PWD/dquickcontrolpalette_p.h \
 

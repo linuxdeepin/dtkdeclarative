@@ -48,7 +48,7 @@ T.Button {
         implicitWidth: control.text.length ? PM.Button_MiniSize + (4 * PM.ControlRadius) : PM.Button_MiniSize + (2 * PM.ControlRadius)
         implicitHeight: PM.Button_MiniSize
 
-        DropShadow {
+        RectangularShadow {
             anchors.fill: backgroundRect
             offsetX: 0
             offsetY: 4

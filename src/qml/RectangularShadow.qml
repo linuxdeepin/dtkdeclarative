@@ -46,12 +46,12 @@ Item {
     /*! This property defines does the shadow fill the entire area. */
     property alias fill: effct.fill
 
-    D.ShadowEffect {
+    D.GlowEffect {
         id: effct
 
         property real inverseSpread: 1.0 - rootItem.spread
         property real cornerRadius: {
-            var maxCornerRadius = Math.min(rootItem.width, rootItem.height) / 2 + glowRadius;
+            var maxCornerRadius = Math.min(rootItem.width, rootItem.height) / 2 + rootItem.glowRadius;
             return Math.max(0, Math.min(rootItem.cornerRadius + rootItem.glowRadius, maxCornerRadius))
         }
 
@@ -59,9 +59,9 @@ Item {
         y: (parent.height - height) / 2.0 + offsetY
         width: parent.width + rootItem.glowRadius * 2 + cornerRadius * 2
         height: parent.height + rootItem.glowRadius * 2 + cornerRadius * 2
-        shadowColor: rootItem.color
+        color: rootItem.color
         spread: rootItem.spread / 2.0
-        shadowRadius: rootItem.glowRadius * 1 + cornerRadius * 2
+        glowRadius: rootItem.glowRadius * 1 + cornerRadius * 2
         relativeSizeX: ((inverseSpread * inverseSpread) * rootItem.glowRadius + cornerRadius * 2.0) / width
         relativeSizeY: relativeSizeX * (width / height)
     }

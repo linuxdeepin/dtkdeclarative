@@ -144,7 +144,7 @@ void ShadowNode::setRect(const QRectF &r)
     if (r == m_rect)
         return;
 
-    m_geometryChanged |= true;
+    m_geometryChanged = true;
     m_rect = r;
 }
 
@@ -157,13 +157,13 @@ void ShadowNode::setColor(const QColor &color)
     markDirty(DirtyMaterial);
 }
 
-void ShadowNode::setShadowRadius(qreal shadowRadius)
+void ShadowNode::setGlowRadius(qreal radius)
 {
-    if (qFuzzyCompare(m_shadowRadius, shadowRadius))
+    if (qFuzzyCompare(m_glowRadius, radius))
         return;
 
-    m_geometryChanged |= (!qFuzzyCompare(m_shadowRadius, shadowRadius));
-    m_shadowRadius = shadowRadius;
+    m_geometryChanged = true;
+    m_glowRadius = radius;
 }
 
 void ShadowNode::setRelativeSizeX(qreal x)
@@ -213,7 +213,7 @@ void ShadowNode::update()
 
 void ShadowNode::updateGeometry()
 {
-    qreal radius = std::min({ m_rect.width() / 2, m_rect.height() / 2, m_shadowRadius });
+    qreal radius = std::min({ m_rect.width() / 2, m_rect.height() / 2, m_glowRadius });
 
     const float innerL = m_rect.left();
     const float innerR = m_rect.right();

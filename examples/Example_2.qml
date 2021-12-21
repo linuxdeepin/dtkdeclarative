@@ -121,7 +121,7 @@ Rectangle {
     }
 
 
-    D.DropShadow {
+    D.RectangularShadow {
         anchors.fill: shadowSource
         glowRadius: 20
         spread: 0
@@ -138,7 +138,7 @@ Rectangle {
             left: parent.left
             leftMargin: 50
             bottom: parent.bottom
-            bottomMargin: 50
+            bottomMargin: 200
         }
         radius: 30
         color: "red"
