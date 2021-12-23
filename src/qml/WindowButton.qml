@@ -21,8 +21,38 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
+import org.deepin.dtk.impl 1.0 as D
+import org.deepin.dtk.style 1.0 as DS
 
-Button {
+Control {
     id: control
-    text: "Min"
+    property alias icon: iconLoader
+    signal clicked
+
+    property alias pressed: mouseArea.pressed
+
+    property D.Palette highlightedPalette: D.Palette {
+        objectName: "buttonText"
+        normal: Qt.rgba(0, 0, 0, 0.29)
+        pressed: control.palette.highlight
+    }
+
+    D.ColorSelector.palettes: [
+        highlightedPalette,
+        DS.Style.windowButton
+    ]
+    hoverEnabled: true
+    contentItem: D.DciIcon {
+        id: iconLoader
+        color: control.D.ColorSelector.buttonText
+    }
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        Component.onCompleted: clicked.connect(control.clicked)
+    }
+    background: Rectangle {
+        anchors.fill: parent
+        color: control.D.ColorSelector.button
+    }
 }

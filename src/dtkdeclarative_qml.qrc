@@ -16,12 +16,7 @@
         <file>qml/CicleSpreadAnimation.qml</file>
         <file>qml/TitleBar.qml</file>
         <file>qml/DialogTitleBar.qml</file>
-        <file>qml/WindowMinButton.qml</file>
-        <file>qml/WindowMaxButton.qml</file>
-        <file>qml/WindowRestoreButton.qml</file>
-        <file>qml/WindowCloseButton.qml</file>
-        <file>qml/WindowQuitFullButton.qml</file>
-        <file>qml/WindowOptionButton.qml</file>
+        <file>qml/WindowButton.qml</file>
         <file>qml/WindowButtonGroup.qml</file>
         <file>qml/DialogWindow.qml</file>
         <file>qml/AboutDialog.qml</file>

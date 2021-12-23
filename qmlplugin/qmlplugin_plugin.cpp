@@ -195,12 +195,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "ButtonBox");
     dtkRegisterType(uri, controlsUri, 1, 0, "TitleBar");
     dtkRegisterType(uri, controlsUri, 1, 0, "DialogTitleBar");
-    dtkRegisterType(uri, controlsUri, 1, 0, "WindowMinButton");
-    dtkRegisterType(uri, controlsUri, 1, 0, "WindowMaxButton");
-    dtkRegisterType(uri, controlsUri, 1, 0, "WindowRestoreButton");
-    dtkRegisterType(uri, controlsUri, 1, 0, "WindowCloseButton");
-    dtkRegisterType(uri, controlsUri, 1, 0, "WindowQuitFullButton");
-    dtkRegisterType(uri, controlsUri, 1, 0, "WindowOptionButton");
+    dtkRegisterType(uri, controlsUri, 1, 0, "WindowButton");
     dtkRegisterType(uri, controlsUri, 1, 0, "WindowButtonGroup");
     dtkRegisterType(uri, controlsUri, 1, 0, "DialogWindow");
     dtkRegisterType(uri, controlsUri, 1, 0, "AboutDialog");

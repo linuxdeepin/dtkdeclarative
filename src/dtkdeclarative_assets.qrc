@@ -9,4 +9,12 @@
         <file>shaders/dualkawaseup.frag</file>
         <file>shaders/dualkawaseup.vert</file>
     </qresource>
+    <qresource prefix="/dsg/built-in-icons">
+        <file alias="window_maximize.dci">icons/bloom/window_maximize.dci</file>
+        <file alias="window_restore.dci">icons/bloom/window_restore.dci</file>
+        <file alias="window_minimize.dci">icons/bloom/window_minimize.dci</file>
+        <file alias="window_quit_full.dci">icons/bloom/window_quit_full.dci</file>
+        <file alias="window_close.dci">icons/bloom/window_close.dci</file>
+        <file alias="window_menu.dci">icons/bloom/window_menu.dci</file>
+    </qresource>
 </RCC>

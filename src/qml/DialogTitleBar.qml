@@ -90,8 +90,9 @@ MouseArea {
                 Layout.fillWidth: true
             }
 
-            WindowCloseButton {
+            WindowButton {
                 id: closeBtn
+                icon.name: "window_close"
                 property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowCloseButtonHint)*/
                 Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowCloseButtonHint)
 
