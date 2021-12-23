@@ -70,6 +70,15 @@ public:
     };
     Q_ENUM(ControlState)
 
+    enum ZOrder {
+        BottomOrder = -99,
+        BelowOrder = -1,
+        NormalOrder = 0,
+        AboveOrder = 1,
+        TopOrder = 99
+    };
+    Q_ENUM(ZOrder)
+
     bool hasBlurWindow() const;
     bool hasComposite() const;
     bool hasNoTitlebar() const;
