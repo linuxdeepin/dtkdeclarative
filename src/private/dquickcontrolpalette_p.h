@@ -22,6 +22,7 @@
 #define DQUICKCONTROLPALETTE_P_H
 
 #include <dtkdeclarative_global.h>
+#include <DQMLGlobalObject>
 
 #include <QColor>
 #include <QObject>
@@ -73,8 +74,8 @@ class DQuickControlPalette : public QObject
     Q_DISABLE_COPY(DQuickControlPalette)
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor normal READ normal WRITE set NOTIFY changed)
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor normalDark READ normalDark WRITE set NOTIFY changed)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor hover READ hover WRITE set NOTIFY changed)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor hoverDark READ hoverDark WRITE set NOTIFY changed)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor hovered READ hovered WRITE set NOTIFY changed)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor hoveredDark READ hoveredDark WRITE set NOTIFY changed)
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor pressed READ pressed WRITE set NOTIFY changed)
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor pressedDark READ pressedDark WRITE set NOTIFY changed)
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor disabled READ disabled WRITE set NOTIFY changed)
@@ -94,7 +95,7 @@ public:
         ThemeTypeCount,
 
         Normal = 0,
-        Hover = 1 * (ThemeTypeCount + ColorFamilyCount),
+        Hovered = 1 * (ThemeTypeCount + ColorFamilyCount),
         Pressed = 2 * (ThemeTypeCount + ColorFamilyCount),
         Disabled = 3 * (ThemeTypeCount + ColorFamilyCount),
         ColorTypeCount = 4
@@ -112,10 +113,10 @@ public:
     DQuickControlColor normalDark() {
         return DQuickControlColor(colors.data() + 1 * ColorFamilyCount);
     }
-    DQuickControlColor hover() {
+    DQuickControlColor hovered() {
         return DQuickControlColor(colors.data() + 2 * ColorFamilyCount);
     }
-    DQuickControlColor hoverDark() {
+    DQuickControlColor hoveredDark() {
         return DQuickControlColor(colors.data() + 3 * ColorFamilyCount);
     }
     DQuickControlColor pressed() {
@@ -148,11 +149,17 @@ class DQuickControlColorSelector : public QObject, public QQmlParserStatus
     Q_DISABLE_COPY(DQuickControlColorSelector)
 public:
     Q_PROPERTY(QQuickItem *control READ control WRITE setControl NOTIFY controlChanged)
+    Q_PROPERTY(DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType controlTheme READ controlTheme NOTIFY controlThemeChanged)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQMLGlobalObject::ControlState controlState READ controlState NOTIFY controlStateChanged)
+    Q_PROPERTY(bool hovered READ hovered WRITE setHovered RESET resetHovered NOTIFY hoveredChanged)
+    Q_PROPERTY(bool pressed READ pressed WRITE setPressed RESET resetPressed NOTIFY pressedChanged)
+    Q_PROPERTY(bool disabled READ disabled WRITE setDisabled RESET resetDisabled NOTIFY disabledChanged)
+    Q_PROPERTY(bool inactived READ inactived WRITE setInactived RESET resetInactived NOTIFY inactivedChanged)
     Q_PROPERTY(QQmlListProperty<DTK_QUICK_NAMESPACE::DQuickControlPalette> palettes READ palettes NOTIFY palettesChanged FINAL)
     Q_CLASSINFO("DefaultProperty", "palettes")
     Q_INTERFACES(QQmlParserStatus)
 
-    DQuickControlColorSelector();
+    explicit DQuickControlColorSelector(QObject *parent = nullptr);
     ~DQuickControlColorSelector();
 
     static DQuickControlColorSelector *qmlAttachedProperties(QObject *object);
@@ -160,23 +167,55 @@ public:
     QQuickItem *control() const;
     void setControl(QQuickItem *newControl);
 
+    DQMLGlobalObject::ControlState controlState() const;
+    DGuiApplicationHelper::ColorType controlTheme() const;
+
+    bool hovered() const;
+    void setHovered(bool newHovered);
+    void resetHovered();
+
+    bool pressed() const;
+    void setPressed(bool newPressed);
+    void resetPressed();
+
+    bool disabled() const;
+    void setDisabled(bool newDisabled);
+    void resetDisabled();
+
+    bool inactived() const;
+    void setInactived(bool newInactived);
+    void resetInactived();
+
     QQmlListProperty<DQuickControlPalette> palettes();
 
 Q_SIGNALS:
+    void controlThemeChanged();
+    void controlStateChanged();
     void controlChanged();
+    void hoveredChanged();
+    void pressedChanged();
+    void disabledChanged();
+    void inactivedChanged();
     void palettesChanged();
 
 private:
     void classBegin() override;
     void componentComplete() override;
 
-    QColor getColorOf(const DQuickControlPalette *palette);
+    QColor getColorOf(const DQuickControlPalette *palette,
+                      DGuiApplicationHelper::ColorType theme,
+                      DQMLGlobalObject::ControlState state);
     void ensureMetaObject();
-    void addPropertyForPalette(const DQuickControlPalette *palette);
+    void updatePropertyForPalette(const DQuickControlPalette *palette);
     void removePropertyForPalette(const DQuickControlPalette *palette);
+    Q_SLOT void updateControlTheme();
+    Q_SLOT void updateControlState();
     Q_SLOT void updateProperties();
     Q_SLOT void onPaletteChanged();
     Q_SLOT void onControlWindowChanged();
+
+    void setControlTheme(DGuiApplicationHelper::ColorType theme);
+    void setControlState(DQMLGlobalObject::ControlState state);
 
     static void palette_append(QQmlListProperty<DQuickControlPalette> *property, DQuickControlPalette *value);
     static int palette_count(QQmlListProperty<DQuickControlPalette> *property);
@@ -188,6 +227,16 @@ private:
     QQuickWindow *m_controlWindow = nullptr;
     QList<DQuickControlPalette*> m_palettes;
     CustomMetaObject *m_metaObject = nullptr;
+    DGuiApplicationHelper::ColorType m_controlTheme = DGuiApplicationHelper::LightType;
+    DQMLGlobalObject::ControlState m_controlState = DQMLGlobalObject::NormalState;
+    uint m_hovered:1;
+    uint m_hoveredValueValid:1;
+    uint m_pressed:1;
+    uint m_pressedValueValid:1;
+    uint m_disabled:1;
+    uint m_disabledValueValid:1;
+    uint m_inactived:1;
+    uint m_inactivedValueValid:1;
 };
 
 DQUICK_END_NAMESPACE
