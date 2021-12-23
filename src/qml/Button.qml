@@ -35,6 +35,14 @@ T.Button {
         DS.Style.button2,
         DS.Style.buttonText
     ]
+    D.ColorSelector.hovered: false
+
+    D.ColorSelector {
+        id: csForHover
+        control: control.D.ColorSelector.control
+        palettes: control.D.ColorSelector.palettes
+        hovered: true
+    }
 
     implicitWidth: Math.max(background ? background.implicitWidth : 0,
                             contentItem.implicitWidth + leftPadding + rightPadding)
@@ -56,6 +64,12 @@ T.Button {
             color: palette.shadow
         }
 
+        Gradient {
+            id: backgroundGradient
+            GradientStop { position: 0.0; color: control.D.ColorSelector.button1 }
+            GradientStop { position: 0.96; color: control.D.ColorSelector.button2 }
+        }
+
         Rectangle {
             id: backgroundRect
 
@@ -69,9 +83,17 @@ T.Button {
 
         CicleSpreadAnimation {
             id: hoverAnimation
-            hoverColor: palette.dark
-            source: control
-            visible: hoverEnabled
+            anchors.fill: backgroundRect
+            visible: control.D.ColorSelector.controlState === D.DTK.HoveredState
+
+            Rectangle {
+                anchors.fill: parent
+                radius: backgroundRect.radius
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: csForHover.button1 }
+                    GradientStop { position: 0.96; color: csForHover.button2 }
+                }
+            }
         }
     }
 
@@ -92,7 +114,9 @@ T.Button {
         icon: control.icon
         text: control.text
         font: control.font
-        color: control.D.ColorSelector.buttonText
+        color: control.D.ColorSelector.controlState === D.DTK.HoveredState
+               ? csForHover.buttonText
+               : control.D.ColorSelector.buttonText
     }
 }
 

@@ -61,6 +61,14 @@ public:
     explicit DQMLGlobalObject(QObject *parent = nullptr);
     ~DQMLGlobalObject() override;
 
+    enum ControlState {
+        NormalState,
+        HoveredState,
+        PressedState,
+        DisabledState
+    };
+    Q_ENUM(ControlState)
+
     bool hasBlurWindow() const;
     bool hasComposite() const;
     bool hasNoTitlebar() const;
