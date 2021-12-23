@@ -27,7 +27,7 @@ import org.deepin.dtk 1.0 as D
 
 D.TitleBar {
     id: titleBar
-    iconName: "music"
+    icon.name: "music"
     title: "title custom"
 
     property string appProductName: Qt.application.displayName

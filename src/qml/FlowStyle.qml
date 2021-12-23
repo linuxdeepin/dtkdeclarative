@@ -70,7 +70,13 @@ QtObject {
         objectName: "buttonBorder"
         normal: Qt.rgba(0, 0.581, 1, 0.2)
     }
-
+    property D.Palette windowButton: D.Palette {
+        objectName: "button"
+        normal: "#f7f7f7"
+        hovered: Qt.rgba(0, 0, 0, 0.29)
+        hoveredDark: Qt.rgba(0, 0, 0, 0.29)
+        pressed: Qt.rgba(0, 0, 0, 0.29)
+    }
     // PixelMetric
     property QtObject control: QtObject {
         property int radius: 8

@@ -49,9 +49,8 @@ RowLayout {
         }
     }
 
-    WindowMinButton {
-        width: 50
-        height: 50
+    WindowButton {
+        icon.name: "window_minimize"
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowMinimizeButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowMinimizeButtonHint)
 
@@ -61,7 +60,8 @@ RowLayout {
         onClicked: Window.window.visibility = Window.Minimized
     }
 
-    WindowQuitFullButton {
+    WindowButton {
+        icon.name: "window_quit_full"
         visible: !(!control.fullScreenButtonVisible ||
                     !__dwindow.enabled ||
                     Window.window.visibility !== Window.FullScreen)
@@ -75,23 +75,13 @@ RowLayout {
         }
     }
 
-    Loader {
+    WindowButton {
         id: maxOrWindedBtn
-        width: 50
-        height: 50
         property bool isMaximized: Window.window.visibility === Window.Maximized
-        sourceComponent: isMaximized ? restoreBtn : maxBtn
-        onLoaded: item.clicked.connect(maxOrWinded)
+        icon.name: isMaximized ? "window_restore" : "window_maximize"
 
-        Component {
-            id: maxBtn
-            WindowMaxButton {}
-        }
+        onClicked: maxOrWinded()
 
-        Component {
-            id: restoreBtn
-            WindowRestoreButton {}
-        }
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowMaximizeButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowMaximizeButtonHint)
 
@@ -105,7 +95,8 @@ RowLayout {
                     (__dwindow.motifFunctions & D.WindowManagerHelper.FUNC_RESIZE))
     }
 
-    WindowCloseButton {
+    WindowButton {
+        icon.name: "window_close"
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowCloseButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowCloseButtonHint)
 

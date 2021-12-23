@@ -38,7 +38,7 @@ MouseArea {
     propagateComposedEvents: true
 
     property string title: Window.window.title
-    property alias iconName: iconLabel.icon.name
+    property alias icon: iconLabel
 
     // custom control
     property alias content: customCenter.sourceComponent
@@ -112,10 +112,10 @@ MouseArea {
             Layout.alignment: Qt.AlignHCenter
             Layout.fillHeight: true
 
-            Button {
+            D.DciIcon {
                 id: iconLabel
-                width: 32
-                height: 32
+                sourceSize.width: 32
+                sourceSize.height: 32
                 Layout.alignment: Qt.AlignLeft
                 visible: control.iconName !== ""
             }
@@ -130,16 +130,14 @@ MouseArea {
             }
 
             // option button, it maybe load other Button in different scene.
-            Loader {
+            WindowButton {
                 id: optionMenuBtn
+                icon.name: "window_menu"
                 enabled: !menuDisabled
-                sourceComponent: WindowOptionButton {}
                 Layout.alignment: Qt.AlignRight
-                onLoaded: {
-                    item.clicked.connect(function () {
-                        var pos = Qt.point(optionMenuLoader.x, control.height)
-                        optionMenuLoader.item.popup(optionMenuBtn, pos)
-                    })
+                onClicked: {
+                    var pos = Qt.point(optionMenuLoader.x, control.height)
+                    optionMenuLoader.item.popup(optionMenuBtn, pos)
                 }
 
                 Loader {

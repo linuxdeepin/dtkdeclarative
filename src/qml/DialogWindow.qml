@@ -53,6 +53,7 @@ Window {
 
         Loader {
             id: titleBar
+            z: D.DTK.TopOrder
             sourceComponent: DialogTitleBar {}
         }
 
