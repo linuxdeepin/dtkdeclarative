@@ -28,6 +28,7 @@ import "PixelMetric.js" as PM
 
 MouseArea {
     id: control
+    z: D.DTK.TopOrder
     width: Window.window.width
     // it's binding `height` instead of `visible` property,
     // because MouseArea should accept event keeping visible.
@@ -48,7 +49,7 @@ MouseArea {
     property Component aboutDialog
 
     // visibility access
-    property bool fullScreenButtonVisible
+    property bool fullScreenButtonVisible: true
     signal toggleWindowState()
     property alias windowBuggonGroup: windowButtonsLoader.sourceComponent
 

@@ -27,6 +27,7 @@ import org.deepin.dtk.impl 1.0 as D
 
 MouseArea {
     id: control
+    z: D.DTK.TopOrder
     width: Window.window.width
     height: 45
 
@@ -34,6 +35,7 @@ MouseArea {
     property alias content: customCenter.sourceComponent
     // dialog icon
     property alias iconName: iconLabel.icon.name
+    property alias enableInWindowBlendBlur: background.visible
 
     property var __dwindow: Window.window.D.Window
 
@@ -48,6 +50,13 @@ MouseArea {
             }
         }
         mouse.accepted = false
+    }
+
+    D.InWindowBlendBlur {
+        id: background
+        anchors.fill: parent
+        radius: 30
+        visible: false
     }
 
     ColumnLayout {
