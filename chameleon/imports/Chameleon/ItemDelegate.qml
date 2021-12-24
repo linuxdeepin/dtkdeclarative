@@ -40,7 +40,7 @@ T.ItemDelegate {
     spacing: PM.ControlSpacing
 
     contentItem: Item {
-        D.Icon {
+        D.QtIcon {
             id: mark_indicator
             x: PM.ControlRadius
             y: (parent.height - height) / 2

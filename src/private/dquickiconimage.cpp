@@ -280,8 +280,16 @@ void DQuickIconImage::itemChange(ItemChange change, const ItemChangeData &value)
 
     switch (change) {
     case ItemDevicePixelRatioHasChanged: Q_FALLTHROUGH();
-    case ItemEnabledHasChanged:
+    case ItemEnabledHasChanged: {
+        // ###!(Chen Bin): When the program exits, it will be called
+        // again, but the engine has been freed, causing subsequent
+        // functions to crash when loading the image provider registered
+        // in engine.
+        if (!qmlEngine(this))
+            break;
+
         d->maybeUpdateUrl();
+    }
         break;
     default:
         break;

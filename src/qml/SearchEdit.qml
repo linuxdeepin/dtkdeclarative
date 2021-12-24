@@ -50,7 +50,7 @@ LineEdit {
     }
 
     // 搜索图标
-    D.Icon {
+    D.QtIcon {
         id: searchIcon
 
         x: centerIndicator.visible? (control.width / 2) - width : 0

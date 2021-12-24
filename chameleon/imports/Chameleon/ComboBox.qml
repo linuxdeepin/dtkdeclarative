@@ -45,7 +45,7 @@ T.ComboBox {
         hoverEnabled: control.hoverEnabled
     }
 
-    indicator: D.Icon {
+    indicator: D.QtIcon {
         x: control.mirrored ? control.padding : control.width - width - control.padding
         y: control.topPadding + (control.availableHeight - height) / 2
 

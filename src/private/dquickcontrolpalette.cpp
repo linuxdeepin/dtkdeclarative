@@ -106,6 +106,8 @@ DQuickControlColorSelector::DQuickControlColorSelector(QObject *parent)
     , m_hoveredValueValid(false)
     , m_pressed(false)
     , m_pressedValueValid(false)
+    , m_disabled(false)
+    , m_disabledValueValid(false)
     , m_inactived(false)
     , m_inactivedValueValid(false)
 {

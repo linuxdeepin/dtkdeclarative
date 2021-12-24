@@ -56,7 +56,7 @@ LineEdit {
             control.toggleEchoMode()
         }
 
-        D.Icon {
+        D.QtIcon {
             anchors.centerIn: parent
             color: control.palette.base
             name: control.isEchoMode ? "password_hide" : "password_show"

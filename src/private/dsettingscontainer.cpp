@@ -663,7 +663,7 @@ int SettingsInstanceModel::count() const
 
     return d->groups().count();
 }
-#if (QT_VERSION > QT_VERSION_CHECK(5, 11, 3))
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
 QVariant SettingsInstanceModel::variantValue(int index, const QString &name)
 {
     Q_D(SettingsInstanceModel);
