@@ -35,6 +35,18 @@ QtObject {
         hovered.common: "#d2d2d2"
         pressed.common: "#cdd6e0"
     }
+    property D.Palette suggestButton1: D.Palette {
+        objectName: "button1"
+        normal.common: "#00aaff"
+        hovered.common: "#24b6ff"
+        pressed.common: "#005bcb"
+    }
+    property D.Palette suggestButton2: D.Palette {
+        objectName: "button2"
+        normal.common: "#006eff"
+        hovered.common: "#3586ff"
+        pressed.common: "#0067ff"
+    }
     property D.Palette buttonText: D.Palette {
         objectName: "buttonText"
         normal.common: Qt.rgba(0, 0, 0, 0.7)
@@ -50,10 +62,30 @@ QtObject {
         hovered.common: "white"
         pressed.common: Qt.rgba(1, 1, 1, 0.6)
     }
+    property D.Palette buttonBorder: D.Palette {
+        objectName: "buttonBorder"
+        normal.common: Qt.rgba(0, 0, 0, 0.03)
+    }
+    property D.Palette suggestButtonBorder: D.Palette {
+        objectName: "buttonBorder"
+        normal.common: Qt.rgba(0, 0.581, 1, 0.2)
+    }
+
     // PixelMetric
-    property int buttonIconWidth: 24
-    property int buttonIconHeight: 24
-    property int controlBackgroundRadius: 8
+    property QtObject control: QtObject {
+        property int radius: 8
+        property int spacing: 6
+        property int borderWidth: 1
+    }
+
+    property QtObject button: QtObject {
+        property int width: 204
+        property int height: 36
+        property int hPadding: 10
+        property int vPadding: 6
+        property int iconSize: 24
+    }
+
     property QtObject settings: QtObject {
         property int titleMarginL1: 10
         property int titleMarginL2: 30

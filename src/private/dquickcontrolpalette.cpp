@@ -375,10 +375,6 @@ QColor DQuickControlColorSelector::getColorOf(const DQuickControlPalette *palett
     bool disabled = m_disabledValueValid ? m_disabled : (state == DQMLGlobalObject::DisabledState);
     if (disabled) {
         targetColor = palette->colors.at(themeIndex + DQuickControlPalette::Disabled);
-        if (!targetColor.isValid() && theme == DGuiApplicationHelper::DarkType) {
-            targetColor = palette->colors.at(DQuickControlPalette::Light + DQuickControlPalette::Disabled);
-        }
-
         if (targetColor.isValid()) // Don't process the disabled's color, should direct uses it.
             return targetColor;
         // fallback to normal color
@@ -389,18 +385,16 @@ QColor DQuickControlColorSelector::getColorOf(const DQuickControlPalette *palett
     }
 
     targetColor = getColor(palette, themeIndex, stateIndex);
-    if (!targetColor.isValid()) {
+    if (!targetColor.isValid() && theme == DGuiApplicationHelper::DarkType) {
         // create the dark color from the light theme
-        if (theme == DGuiApplicationHelper::DarkType) {
-            targetColor = getColor(palette, DQuickControlPalette::Light, stateIndex);
-            // inverse the color to dark
-            int r, g, b, a;
-            targetColor.getRgb(&r, &g, &b, &a);
-            targetColor = QColor(255 - r, 255 - g, 255 - b, a);
-        }
+        targetColor = getColor(palette, DQuickControlPalette::Light, stateIndex);
+        // inverse the color to dark
+        int r, g, b, a;
+        targetColor.getRgb(&r, &g, &b, &a);
+        targetColor = QColor(255 - r, 255 - g, 255 - b, a);
     }
 
-    if (!targetColor.isValid() || !m_control)
+    if (!targetColor.isValid() || !m_control || disabled)
         return targetColor;
 
     const QPalette pa = qvariant_cast<QPalette>(m_control->property("palette"));
@@ -408,19 +402,15 @@ QColor DQuickControlColorSelector::getColorOf(const DQuickControlPalette *palett
     if (!windowColor.isValid())
         return targetColor;
 
-    QColor disable_mask_color = windowColor, inactive_mask_color = windowColor;
+    QColor inactive_mask_color = windowColor;
 
     if (theme == DGuiApplicationHelper::DarkType) {
-        disable_mask_color.setAlphaF(0.7);
         inactive_mask_color.setAlphaF(0.6);
     } else {
-        disable_mask_color.setAlphaF(0.6);
         inactive_mask_color.setAlphaF(0.4);
     }
 
-    if (disabled) {
-        targetColor = DGuiApplicationHelper::blendColor(targetColor, disable_mask_color);
-    } else if ((m_inactivedValueValid ? m_inactived : (m_control->window() && !m_control->window()->isActive()))
+    if ((m_inactivedValueValid ? m_inactived : (m_control->window() && !m_control->window()->isActive()))
             && DGuiApplicationHelper::testAttribute(DGuiApplicationHelper::Attribute::UseInactiveColorGroup)) {
         targetColor = DGuiApplicationHelper::blendColor(targetColor, inactive_mask_color);
     }

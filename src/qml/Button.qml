@@ -25,7 +25,6 @@ import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.4 as T
 import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
-import "PixelMetric.js" as PM
 
 T.Button {
     id: control
@@ -33,7 +32,8 @@ T.Button {
     D.ColorSelector.palettes: [
         DS.Style.button1,
         DS.Style.button2,
-        DS.Style.buttonText
+        DS.Style.buttonText,
+        DS.Style.buttonBorder
     ]
     D.ColorSelector.hovered: false
 
@@ -44,22 +44,25 @@ T.Button {
         hovered: true
     }
 
-    implicitWidth: Math.max(background ? background.implicitWidth : 0,
-                            contentItem.implicitWidth + leftPadding + rightPadding)
-    implicitHeight: Math.max(background ? background.implicitHeight : 0,
-                             Math.max(contentItem.implicitHeight, indicator ? indicator.implicitHeight : 0) + topPadding + bottomPadding)
+    implicitWidth: Math.max(DS.Style.button.width, contentItem.implicitWidth + leftPadding + rightPadding)
+    implicitHeight: Math.max(DS.Style.button.height,
+                             Math.max(contentItem.implicitHeight, indicator ? indicator.implicitHeight : 0) +
+                             topPadding + bottomPadding)
 
-    padding: PM.ControlPadding
-    spacing: PM.ControlSpacing
+    topPadding: DS.Style.control.vPadding
+    bottomPadding: DS.Style.control.vPadding
+    spacing: DS.Style.control.spacing
+    opacity: enabled ? 1 : 0.4
     D.DciIcon.mode: D.ColorSelector.controlState
 
-    icon.width: DS.Style.buttonIconWidth
-    icon.height: DS.Style.buttonIconHeight
-    icon.color: D.ColorSelector.palettes ? D.ColorSelector.buttonText : null
+    icon {
+        width: DS.Style.button.iconSize
+        height: DS.Style.button.iconSize
+        color: D.ColorSelector.palettes ? D.ColorSelector.buttonText : null
+    }
 
     background: Item {
-        implicitWidth: control.text.length ? PM.Button_MiniSize + (4 * PM.ControlRadius) : PM.Button_MiniSize + (2 * PM.ControlRadius)
-        implicitHeight: PM.Button_MiniSize
+        anchors.fill: parent
 
         RectangularShadow {
             anchors.fill: backgroundRect
@@ -79,7 +82,11 @@ T.Button {
             id: backgroundRect
 
             anchors.fill: parent
-            radius: PM.ControlRadius
+            radius: DS.Style.control.radius
+            border {
+                width: DS.Style.control.borderWidth
+                color: control.D.ColorSelector.buttonBorder
+            }
             gradient: Gradient {
                 GradientStop { position: 0.0; color: control.D.ColorSelector.button1 }
                 GradientStop { position: 0.96; color: control.D.ColorSelector.button2 }
@@ -94,6 +101,10 @@ T.Button {
             Rectangle {
                 anchors.fill: parent
                 radius: backgroundRect.radius
+                border {
+                    width: backgroundRect.border.width
+                    color: backgroundRect.border.color
+                }
                 gradient: Gradient {
                     GradientStop { position: 0.0; color: csForHover.button1 }
                     GradientStop { position: 0.96; color: csForHover.button2 }

@@ -28,7 +28,8 @@ Button {
     D.ColorSelector.palettes: [
         DS.Style.button1,
         DS.Style.button2,
-        DS.Style.warningButtonText
+        DS.Style.warningButtonText,
+        DS.Style.buttonBorder
     ]
 }
 

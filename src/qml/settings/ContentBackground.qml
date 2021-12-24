@@ -35,7 +35,7 @@ Rectangle {
         rightMargin: __getMargin(SettingsGroup.level)
     }
     height: childrenRect.height
-    radius: DS.Style.controlBackgroundRadius
+    radius: DS.Style.control.radius
 
     function __getMargin(level) {
         switch(level) {
