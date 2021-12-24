@@ -26,8 +26,9 @@ Button {
     id: control
 
     D.ColorSelector.palettes: [
-        DS.Style.button1,
-        DS.Style.button2,
-        DS.Style.suggestButtonText
+        DS.Style.suggestButton1,
+        DS.Style.suggestButton2,
+        DS.Style.suggestButtonText,
+        DS.Style.suggestButtonBorder
     ]
 }
