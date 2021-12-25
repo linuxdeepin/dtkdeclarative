@@ -21,15 +21,13 @@
 
 import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
+import QtQuick 2.0
 
 Button {
     id: control
 
-    D.ColorSelector.palettes: [
-        DS.Style.button1,
-        DS.Style.button2,
-        DS.Style.warningButtonText,
-        DS.Style.buttonBorder
-    ]
+    Component.onCompleted: {
+        D.ColorSelector.buttonText = DS.Style.warningButtonText
+    }
 }
 
