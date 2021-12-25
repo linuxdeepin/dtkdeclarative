@@ -25,50 +25,50 @@ import org.deepin.dtk.impl 1.0 as D
 QtObject {
     property D.Palette button1: D.Palette {
         objectName: "button1"
-        normal.common: "#f7f7f7"
-        hovered.common: "#e1e1e1"
-        pressed.common: "#bcc4d0"
+        normal: "#f7f7f7"
+        hovered: "#e1e1e1"
+        pressed: "#bcc4d0"
     }
     property D.Palette button2: D.Palette {
         objectName: "button2"
-        normal.common: "#f0f0f0"
-        hovered.common: "#d2d2d2"
-        pressed.common: "#cdd6e0"
+        normal: "#f0f0f0"
+        hovered: "#d2d2d2"
+        pressed: "#cdd6e0"
     }
     property D.Palette suggestButton1: D.Palette {
         objectName: "button1"
-        normal.common: "#00aaff"
-        hovered.common: "#24b6ff"
-        pressed.common: "#005bcb"
+        normal: "#00aaff"
+        hovered: "#24b6ff"
+        pressed: "#005bcb"
     }
     property D.Palette suggestButton2: D.Palette {
         objectName: "button2"
-        normal.common: "#006eff"
-        hovered.common: "#3586ff"
-        pressed.common: "#0067ff"
+        normal: "#006eff"
+        hovered: "#3586ff"
+        pressed: "#0067ff"
     }
     property D.Palette buttonText: D.Palette {
         objectName: "buttonText"
-        normal.common: Qt.rgba(0, 0, 0, 0.7)
-        pressed.common: "#0081ff"
+        normal: Qt.rgba(0, 0, 0, 0.7)
+        pressed: "#0081ff"
     }
     property D.Palette warningButtonText: D.Palette {
         objectName: "buttonText"
-        normal.common: "#ff5736"
+        normal: "#ff5736"
     }
     property D.Palette suggestButtonText: D.Palette {
         objectName: "buttonText"
-        normal.common: Qt.rgba(1, 1, 1, 0.9)
-        hovered.common: "white"
-        pressed.common: Qt.rgba(1, 1, 1, 0.6)
+        normal: Qt.rgba(1, 1, 1, 0.9)
+        hovered: "white"
+        pressed: Qt.rgba(1, 1, 1, 0.6)
     }
     property D.Palette buttonBorder: D.Palette {
         objectName: "buttonBorder"
-        normal.common: Qt.rgba(0, 0, 0, 0.03)
+        normal: Qt.rgba(0, 0, 0, 0.03)
     }
     property D.Palette suggestButtonBorder: D.Palette {
         objectName: "buttonBorder"
-        normal.common: Qt.rgba(0, 0.581, 1, 0.2)
+        normal: Qt.rgba(0, 0.581, 1, 0.2)
     }
 
     // PixelMetric

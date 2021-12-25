@@ -100,6 +100,17 @@ inline void dtkSettingsRegisterType(const char *uri1, const char *uri2, int vers
         qmlRegisterType(url, uri2, versionMajor, versionMinor, qmlName);
 }
 
+static QVariant quickColorTypeConverter(const QString &data)
+{
+    return QVariant::fromValue(DQuickControlColor(QColor(data)));
+}
+
+template <typename ReturnType>
+ReturnType convertColorToQuickColorType(const QColor &value)
+{
+    return DQuickControlColor(value);
+}
+
 void QmlpluginPlugin::registerTypes(const char *uri)
 {
     // @uri org.deepin.dtk
@@ -215,6 +226,10 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "NavigationTitle");
     dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "ContentTitle");
     dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "ContentBackground");
+
+    // for custom type
+    QMetaType::registerConverter<QColor, DQuickControlColor>(convertColorToQuickColorType<DQuickControlColor>);
+    QQmlMetaType::registerCustomStringConverter(qMetaTypeId<DQuickControlColor>(), quickColorTypeConverter);
 }
 
 void QmlpluginPlugin::initializeEngine(QQmlEngine *engine, const char *uri)

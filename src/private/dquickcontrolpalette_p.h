@@ -39,20 +39,23 @@ QT_END_NAMESPACE
 DQUICK_BEGIN_NAMESPACE
 class DQuickControlColor
 {
+    friend class DQuickControlPalette;
     Q_GADGET
     Q_PROPERTY(QColor common READ common WRITE setCommon FINAL)
     Q_PROPERTY(QColor crystal READ crystal WRITE setCrystal FINAL)
 
 public:
     DQuickControlColor();
-    ~DQuickControlColor();
+    DQuickControlColor(const QColor &color);
     DQuickControlColor(QColor *colors);
     DQuickControlColor(const DQuickControlColor &other)
-        : colors(other.colors) {}
+        : colors(other.colors), color(other.color) {}
     DQuickControlColor(DQuickControlColor &&other)
-        {colors = std::move(other.colors);}
+        {colors = std::move(other.colors);
+         color = std::move(other.color);}
     inline DQuickControlColor &operator =(const DQuickControlColor &other)
-    {colors = other.colors; return *this;}
+    {colors = other.colors; color = other.color; return *this;}
+    ~DQuickControlColor();
 
     const QColor &common() const;
     void setCommon(const QColor &newCommon);
@@ -61,6 +64,7 @@ public:
 
 private:
     QColor *colors = nullptr;
+    QColor color;
 };
 DQUICK_END_NAMESPACE
 Q_DECLARE_METATYPE(DTK_QUICK_NAMESPACE::DQuickControlColor)
@@ -72,14 +76,14 @@ class DQuickControlPalette : public QObject
     friend class DQuickControlColorSelector;
     Q_OBJECT
     Q_DISABLE_COPY(DQuickControlPalette)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor normal READ normal WRITE set NOTIFY changed)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor normalDark READ normalDark WRITE set NOTIFY changed)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor hovered READ hovered WRITE set NOTIFY changed)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor hoveredDark READ hoveredDark WRITE set NOTIFY changed)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor pressed READ pressed WRITE set NOTIFY changed)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor pressedDark READ pressedDark WRITE set NOTIFY changed)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor disabled READ disabled WRITE set NOTIFY changed)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor disabledDark READ disabledDark WRITE set NOTIFY changed)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor normal READ normal WRITE setNormal NOTIFY changed)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor normalDark READ normalDark WRITE setNormalDark NOTIFY changed)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor hovered READ hovered WRITE setHovered NOTIFY changed)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor hoveredDark READ hoveredDark WRITE setHoveredDark NOTIFY changed)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor pressed READ pressed WRITE setPressed NOTIFY changed)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor pressedDark READ pressedDark WRITE setPressedDark NOTIFY changed)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor disabled READ disabled WRITE setDisabled NOTIFY changed)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor disabledDark READ disabledDark WRITE setDisabledDark NOTIFY changed)
 
 public:
     enum ColorFamily {
@@ -104,32 +108,68 @@ public:
     explicit DQuickControlPalette(QObject *parent = nullptr);
     ~DQuickControlPalette();
 
-    void set(const DQuickControlColor &) {
+    inline QColor *colorPointer(int colorPropertyIndex) {
+        return colors.data() + colorPropertyIndex * ColorFamilyCount;
+    }
+    inline void tryUnwrap(const DQuickControlColor &color, int colorPropertyIndex) {
+        if (color.color.isValid() || color.colors == nullptr)
+            *colorPointer(colorPropertyIndex) = color.color;
+    }
+    void setNormal(const DQuickControlColor &color) {
+        tryUnwrap(color, 0);
         Q_EMIT changed();
     }
     DQuickControlColor normal() {
-        return DQuickControlColor(colors.data() + 0 * ColorFamilyCount);
+        return DQuickControlColor(colorPointer(0));
+    }
+    void setNormalDark(const DQuickControlColor &color) {
+        tryUnwrap(color, 1);
+        Q_EMIT changed();
     }
     DQuickControlColor normalDark() {
-        return DQuickControlColor(colors.data() + 1 * ColorFamilyCount);
+        return DQuickControlColor(colorPointer(1));
+    }
+    void setHovered(const DQuickControlColor &color) {
+        tryUnwrap(color, 2);
+        Q_EMIT changed();
     }
     DQuickControlColor hovered() {
-        return DQuickControlColor(colors.data() + 2 * ColorFamilyCount);
+        return DQuickControlColor(colorPointer(2));
+    }
+    void setHoveredDark(const DQuickControlColor &color) {
+        tryUnwrap(color, 3);
+        Q_EMIT changed();
     }
     DQuickControlColor hoveredDark() {
-        return DQuickControlColor(colors.data() + 3 * ColorFamilyCount);
+        return DQuickControlColor(colorPointer(3));
+    }
+    void setPressed(const DQuickControlColor &color) {
+        tryUnwrap(color, 4);
+        Q_EMIT changed();
     }
     DQuickControlColor pressed() {
-        return DQuickControlColor(colors.data() + 4 * ColorFamilyCount);
+        return DQuickControlColor(colorPointer(4));
+    }
+    void setPressedDark(const DQuickControlColor &color) {
+        tryUnwrap(color, 5);
+        Q_EMIT changed();
     }
     DQuickControlColor pressedDark() {
-        return DQuickControlColor(colors.data() + 5 * ColorFamilyCount);
+        return DQuickControlColor(colorPointer(5));
+    }
+    void setDisabled(const DQuickControlColor &color) {
+        tryUnwrap(color, 6);
+        Q_EMIT changed();
     }
     DQuickControlColor disabled() {
-        return DQuickControlColor(colors.data() + 6 * ColorFamilyCount);
+        return DQuickControlColor(colorPointer(6));
+    }
+    void setDisabledDark(const DQuickControlColor &color) {
+        tryUnwrap(color, 7);
+        Q_EMIT changed();
     }
     DQuickControlColor disabledDark() {
-        return DQuickControlColor(colors.data() + 7 * ColorFamilyCount);
+        return DQuickControlColor(colorPointer(7));
     }
 
 Q_SIGNALS:
@@ -145,6 +185,7 @@ DQUICK_BEGIN_NAMESPACE
 class CustomMetaObject;
 class DQuickControlColorSelector : public QObject, public QQmlParserStatus
 {
+    friend class CustomMetaObject;
     Q_OBJECT
     Q_DISABLE_COPY(DQuickControlColorSelector)
 public:
@@ -221,14 +262,18 @@ private:
     static int palette_count(QQmlListProperty<DQuickControlPalette> *property);
     static DQuickControlPalette *palette_at(QQmlListProperty<DQuickControlPalette> *property, int index);
     static void palette_clear(QQmlListProperty<DQuickControlPalette> *property);
+    void palette_replace(int index, DQuickControlPalette *newValue, bool updateProperty);
+    static void palette_replace(QQmlListProperty<DQuickControlPalette> *property, int index,
+                                DQuickControlPalette *newValue);
+    static void palette_remove_last(QQmlListProperty<DQuickControlPalette> *property);
 
-    bool m_componentCompleted = true;
     QQuickItem *m_control = nullptr;
     QQuickWindow *m_controlWindow = nullptr;
     QList<DQuickControlPalette*> m_palettes;
     CustomMetaObject *m_metaObject = nullptr;
     DGuiApplicationHelper::ColorType m_controlTheme = DGuiApplicationHelper::LightType;
     DQMLGlobalObject::ControlState m_controlState = DQMLGlobalObject::NormalState;
+    uint m_componentCompleted:1;
     uint m_hovered:1;
     uint m_hoveredValueValid:1;
     uint m_pressed:1;
