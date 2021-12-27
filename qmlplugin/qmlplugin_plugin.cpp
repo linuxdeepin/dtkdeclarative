@@ -206,6 +206,10 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "AlertToolTip");
     dtkRegisterType(uri, controlsUri, 1, 0, "FlowStyle");
     dtkRegisterType(uri, controlsUri, 1, 0, "Control");
+    dtkRegisterType(uri, controlsUri, 1, 0, "SpinBox");
+    dtkRegisterType(uri, controlsUri, 1, 0, "TextField");
+    dtkRegisterType(uri, controlsUri, 1, 0, "TextArea");
+    dtkRegisterType(uri, controlsUri, 1, 0, "PlusMinusSpinBox");
 
     // for org.deepin.dtk.style(allowed to override)
     dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");
