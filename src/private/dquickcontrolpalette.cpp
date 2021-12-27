@@ -33,6 +33,14 @@
 DGUI_USE_NAMESPACE
 DQUICK_BEGIN_NAMESPACE
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
+#define ThrowError(obj, message) \
+    qmlEngine(obj)->throwError(message)
+#else
+#define ThrowError(obj, message) \
+    qCritical() << message.toLocal8Bit()
+#endif
+
 DQuickControlColor::DQuickControlColor()
 {
 
@@ -115,8 +123,8 @@ public:
             const QMetaProperty p = property(id + propertyOffset());
             const QString pn = QString::fromLatin1(p.name());
             if (pn != palette->objectName()) {
-                qmlEngine(palette)->throwError(QString("Unable to assign Palette \"%1\" of objectName to property \"%2\"")
-                                               .arg(palette->objectName(), pn));
+                ThrowError(palette, QStringLiteral("Unable to assign Palette \"%1\" of objectName to property \"%2\"")
+                           .arg(palette->objectName(), pn));
                 return value(id);
             }
             const auto &pl = owner()->m_palettes;
@@ -322,7 +330,7 @@ void DQuickControlColorSelector::palette_append(QQmlListProperty<DQuickControlPa
         return;
     auto that = qobject_cast<DQuickControlColorSelector*>(property->object);
     if (value->objectName().isEmpty())
-        qmlEngine(that)->throwError(QString("Must objectName for %1").arg(reinterpret_cast<quintptr>(value)));
+        ThrowError(that, QStringLiteral("Must objectName for %1").arg(reinterpret_cast<quintptr>(value)));
     if (!value->parent())
         value->setParent(that);
     that->m_palettes.append(value);
@@ -352,7 +360,7 @@ void DQuickControlColorSelector::palette_clear(QQmlListProperty<DQuickControlPal
 void DQuickControlColorSelector::palette_replace(int index, DQuickControlPalette *newValue, bool updateProperty)
 {
     if (newValue->objectName().isEmpty())
-        qmlEngine(this)->throwError(QString("Must objectName for 0x%1").arg(reinterpret_cast<quintptr>(newValue)));
+        ThrowError(this, QString("Must objectName for 0x%1").arg(reinterpret_cast<quintptr>(newValue)));
     if (!newValue->parent())
         newValue->setParent(this);
     m_palettes.replace(index, newValue);
@@ -380,8 +388,7 @@ void DQuickControlColorSelector::palette_remove_last(QQmlListProperty<DQuickCont
 QQmlListProperty<DQuickControlPalette> DQuickControlColorSelector::palettes()
 {
     return QQmlListProperty<DQuickControlPalette>(this, this, palette_append, palette_count,
-                                                  palette_at, palette_clear, palette_replace,
-                                                  palette_remove_last);
+                                                  palette_at, palette_clear);
 }
 
 void DQuickControlColorSelector::classBegin()
