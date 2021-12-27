@@ -19,8 +19,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.deepin.dtk.controls 1.0 as D
+import QtQuick 2.11
+import org.deepin.dtk.impl 1.0 as DI
+import org.deepin.dtk.style 1.0 as DS
 
-D.SpinBox {
 
+Rectangle {
+    id: panel
+    property Item control
+    radius: DS.Style.control.radius
+    color: colorSelector.palettes ? colorSelector.editBackground
+                                  : "transparent"
+
+    DI.ColorSelector {
+        id: colorSelector
+        control: panel.control
+
+        palettes: [
+            DS.Style.editBackground
+        ]
+    }
+
+    RectangleBorder {
+        visible: control.activeFocus
+        borderColor: control.palette.highlight
+    }
 }

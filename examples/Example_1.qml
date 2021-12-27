@@ -190,6 +190,22 @@ Rectangle {
         anchors.leftMargin: 20
     }
 
+    SpinBox {
+        id: spinBox
+        anchors.left: searcherEdit.right
+        anchors.top: searcherEdit.top
+        anchors.leftMargin: 20
+        editable: true
+    }
+
+    D.PlusMinusSpinBox {
+        id: plusMinusSpinBox
+        anchors.left: spinBox.right
+        anchors.top: spinBox.top
+        anchors.leftMargin: 20
+        spinBox.editable: true
+    }
+
     ListView {
         model: 5
         implicitHeight: 250
@@ -201,7 +217,7 @@ Rectangle {
         }
 
         anchors.top: btnLabel.bottom
-        anchors.left: searcherEdit.right
+        anchors.left: plusMinusSpinBox.right
         anchors.topMargin: 20
         anchors.leftMargin: 20
     }

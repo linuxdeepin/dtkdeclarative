@@ -78,10 +78,26 @@ QtObject {
         hoveredDark: Qt.rgba(0, 0, 0, 0.29)
         pressed: Qt.rgba(0, 0, 0, 0.29)
     }
+    property D.Palette editBackground: D.Palette {
+        objectName: "editBackground"
+        normal: Qt.rgba(0, 0, 0, 0.08)
+    }
+
+    property D.Palette spinBoxIndicator: D.Palette {
+        objectName: "spinBoxIndicator"
+        normal: "white"
+        pressed: Qt.rgba(1, 1, 1, 0.6)
+    }
+    property D.Palette spinBoxIndicatorBackground: D.Palette {
+        objectName: "spinBoxIndicatorBackground"
+        normal: Qt.rgba(0, 0, 0, 0.7)
+    }
+
     // PixelMetric
     property QtObject control: QtObject {
         property int radius: 8
         property int spacing: 6
+        property int padding: 6
         property int borderWidth: 1
         property int focusBorderWidth: 2
 
@@ -134,9 +150,29 @@ QtObject {
         property int contentMarginOther: 50
     }
 
+    property QtObject edit: QtObject {
+        property int width: 180
+        property int textFieldHeight: 36
+        property int textAreaHeight: 100
+    }
+
     property QtObject searchEdit: QtObject {
         property int iconLeftMargin: 10
         property int iconRightMargin: 7
         property int animationDuration: 200
+    }
+
+    property QtObject spinBox: QtObject {
+        property int width : 300
+        property int height: 36
+        property int spacing: 10
+        property int indicatorSpacing: 4
+        property int indicatorWidth: 24
+        property int indicatorHeight: 14
+        property int indicatorIconSize: 10
+    }
+
+    property QtObject plusMinusSpinBox: QtObject {
+        property int buttonIconSize: 16
     }
 }

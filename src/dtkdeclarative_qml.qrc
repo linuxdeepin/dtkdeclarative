@@ -38,5 +38,11 @@
         <file>qml/settings/ContentBackground.qml</file>
         <file>qml/settings/LineEdit.qml</file>
         <file>qml/Control.qml</file>
+        <file>qml/PlusMinusSpinBox.qml</file>
+        <file>qml/EditPanel.qml</file>
+        <file>qml/TextArea.qml</file>
+        <file>qml/TextField.qml</file>
+        <file>qml/SpinBox.qml</file>
+        <file>qml/SpinBoxIndicator.qml</file>
     </qresource>
 </RCC>
