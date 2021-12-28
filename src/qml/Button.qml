@@ -29,11 +29,26 @@ import org.deepin.dtk.style 1.0 as DS
 T.Button {
     id: control
 
+    property D.Palette highlightedPalette: D.Palette {
+        objectName: "highlighted"
+        normal: control.palette.highlight
+        hovered: D.DTK.adjustColor(control.palette.highlight, 0, 0, +10, 0, 0, 0, 0)
+        pressed: D.DTK.adjustColor(control.palette.highlight, 0, 0, -10, 0, 0, 0, 0)
+    }
+    property D.Palette highlightedTextPalette: D.Palette {
+        objectName: "highlightedText"
+        normal: control.palette.highlightedText
+        hovered: D.DTK.adjustColor(control.palette.highlightedText, 0, 0, +10, 0, 0, 0, 0)
+        pressed: D.DTK.adjustColor(control.palette.highlightedText, 0, 0, -20, 0, 0, 0, 0)
+    }
+
     D.ColorSelector.palettes: [
         DS.Style.button1,
         DS.Style.button2,
         DS.Style.buttonText,
-        DS.Style.buttonBorder
+        DS.Style.buttonBorder,
+        highlightedPalette,
+        highlightedTextPalette
     ]
     D.ColorSelector.hovered: false
 
@@ -44,10 +59,8 @@ T.Button {
         hovered: true
     }
 
-    implicitWidth: Math.max(DS.Style.button.width, contentItem.implicitWidth + leftPadding + rightPadding)
-    implicitHeight: Math.max(DS.Style.button.height,
-                             Math.max(contentItem.implicitHeight, indicator ? indicator.implicitHeight : 0) +
-                             topPadding + bottomPadding)
+    implicitWidth: DS.Style.control.implicitWidth(control)
+    implicitHeight: DS.Style.control.implicitHeight(control)
 
     topPadding: DS.Style.control.vPadding
     bottomPadding: DS.Style.control.vPadding
@@ -62,7 +75,9 @@ T.Button {
     }
 
     background: Item {
-        anchors.fill: parent
+        implicitWidth: DS.Style.button.width
+        implicitHeight: DS.Style.button.height
+        visible: !control.flat || control.down || control.checked || control.highlighted || control.visualFocus || control.hovered
 
         RectangularShadow {
             anchors.fill: backgroundRect
@@ -87,10 +102,15 @@ T.Button {
                 width: DS.Style.control.borderWidth
                 color: control.D.ColorSelector.buttonBorder
             }
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: control.D.ColorSelector.button1 }
-                GradientStop { position: 0.96; color: control.D.ColorSelector.button2 }
-            }
+            gradient: control.checked || control.highlighted ? null : backgroundGradient
+            color: control.D.ColorSelector.highlighted ? control.D.ColorSelector.highlighted
+                                                       : "transparent"
+        }
+
+        Gradient {
+            id :hoverBackgroundGradient
+            GradientStop { position: 0.0; color: csForHover.button1 }
+            GradientStop { position: 0.96; color: csForHover.button2 }
         }
 
         CicleSpreadAnimation {
@@ -105,10 +125,8 @@ T.Button {
                     width: backgroundRect.border.width
                     color: backgroundRect.border.color
                 }
-                gradient: Gradient {
-                    GradientStop { position: 0.0; color: csForHover.button1 }
-                    GradientStop { position: 0.96; color: csForHover.button2 }
-                }
+                gradient: control.checked || control.highlighted ? null : hoverBackgroundGradient
+                color: backgroundRect.color
             }
         }
     }
@@ -133,8 +151,8 @@ T.Button {
         text: control.text
         font: control.font
         color: control.D.ColorSelector.controlState === D.DTK.HoveredState
-               ? csForHover.buttonText
-               : control.D.ColorSelector.buttonText
+               ? (control.checked || control.highlighted ? csForHover.highlightedText : csForHover.buttonText)
+               : (control.checked || control.highlighted ? control.D.ColorSelector.highlightedText : control.D.ColorSelector.buttonText)
         icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
     }
 }
