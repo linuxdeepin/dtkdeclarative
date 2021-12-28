@@ -205,6 +205,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "ThemeMenu");
     dtkRegisterType(uri, controlsUri, 1, 0, "AlertToolTip");
     dtkRegisterType(uri, controlsUri, 1, 0, "FlowStyle");
+    dtkRegisterType(uri, controlsUri, 1, 0, "Control");
 
     // for org.deepin.dtk.style(allowed to override)
     dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");
