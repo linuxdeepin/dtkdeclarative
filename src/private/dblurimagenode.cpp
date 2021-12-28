@@ -484,11 +484,13 @@ void DBlurEffectNode::render(const QSGRenderNode::RenderState *state)
     if (!m_sourceRect.isValid() || !m_texture)
         return;
 
+#if(QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
     const bool needsWrap = QSGRendererInterface::isApiRhiBased(m_item->window()->rendererInterface()->graphicsApi());
     if (Q_LIKELY(needsWrap)) {
         m_item->window()->beginExternalCommands();
         m_item->window()->resetOpenGLState();
     }
+#endif
 
     if (Q_LIKELY(!m_programKawaseUp))
         initialize();
@@ -518,8 +520,10 @@ void DBlurEffectNode::render(const QSGRenderNode::RenderState *state)
 
     m_item->window()->resetOpenGLState();
 
+#if(QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
     if (Q_LIKELY(needsWrap))
         m_item->window()->endExternalCommands();
+#endif
 }
 
 QSGRenderNode::StateFlags DBlurEffectNode::changedStates() const
