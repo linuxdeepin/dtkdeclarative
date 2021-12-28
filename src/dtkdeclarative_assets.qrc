@@ -4,5 +4,9 @@
         <file>shaders/quickitemviewport-opaque.frag</file>
         <file>shaders/quickitemviewport-opaque.vert</file>
         <file>qml/style/Style.qml</file>
+        <file>shaders/dualkawasedown.frag</file>
+        <file>shaders/dualkawasedown.vert</file>
+        <file>shaders/dualkawaseup.frag</file>
+        <file>shaders/dualkawaseup.vert</file>
     </qresource>
 </RCC>

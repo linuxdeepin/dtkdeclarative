@@ -28,6 +28,11 @@
 #include <private/qquickitem_p.h>
 #include <private/qmemrotate_p.h>
 #include <QPainter>
+#ifndef QT_NO_OPENGL
+#include <QOpenGLFunctions>
+#include <QOpenGLContext>
+#include <QOpenGLBuffer>
+#endif
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -376,5 +381,379 @@ void DSoftwareBlurImageNode::updateCachedImage()
         DSoftwareBlurImageNode::releaseResources();
     }
 }
+
+#ifndef QT_NO_OPENGL
+
+DBlurEffectNode::DBlurEffectNode(QQuickItem *owner)
+    : QSGRenderNode ()
+    , m_item(owner)
+{
+}
+
+DBlurEffectNode::~DBlurEffectNode()
+{
+    delete m_programKawaseUp;
+    m_programKawaseUp = nullptr;
+    delete m_programKawaseDown;
+    m_programKawaseDown = nullptr;
+    delete m_program;
+    m_program = nullptr;
+
+    qDeleteAll(m_fboVector);
+    m_fboVector.clear();
+
+    delete m_vbo;
+    m_vbo = nullptr;
+
+    delete  m_sampleVbo;
+    m_sampleVbo = nullptr;
+}
+
+void DBlurEffectNode::setTexture(QSGTexture *texture)
+{
+    if (m_texture == texture)
+        return;
+
+    m_texture = texture;
+    m_needUpdateFBO = true;
+    markDirty(DirtyMaterial);
+}
+
+void DBlurEffectNode::setRadius(qreal radius)
+{
+    // TODO(xiaoyaobing): I don't want to do this, but the radius of software rendering and
+    //                    hardware rendering can't be unified
+    if (qRound(radius / 10) == m_radius)
+        return;
+
+    this->m_radius = qRound(radius / 10);
+    m_needUpdateFBO = true;
+    markDirty(DirtyMaterial);
+}
+
+void DBlurEffectNode::setSourceRect(const QRectF &source)
+{
+    if (m_sourceRect == source)
+        return;
+
+    m_sourceRect = source;
+    markDirty(DirtyMaterial);
+}
+
+void DBlurEffectNode::setRect(const QRectF &target)
+{
+    if (m_targetRect == target)
+        return;
+
+    m_targetRect = target;
+    markDirty(DirtyMaterial);
+}
+
+void DBlurEffectNode::setDisabledOpaqueRendering(bool disabled)
+{
+    if (m_disabledOpaqueRendering == disabled)
+        return;
+
+    m_disabledOpaqueRendering = disabled;
+    markDirty(DirtyForceUpdate);
+}
+
+void DBlurEffectNode::setBlendColor(const QColor &color)
+{
+    if (m_blendColor == color)
+        return;
+
+    m_blendColor = color;
+
+    markDirty(DirtyMaterial);
+}
+
+// TODO(xiaoyaobing): Not implemented yet
+void DBlurEffectNode::setFollowMatrixForSource(bool on)
+{
+    if (m_followMatrixForSource == on)
+        return;
+
+    m_followMatrixForSource = on;
+
+    markDirty(DirtyMaterial);
+}
+
+void DBlurEffectNode::render(const QSGRenderNode::RenderState *state)
+{
+    if (!m_sourceRect.isValid() || !m_texture)
+        return;
+
+    const bool needsWrap = QSGRendererInterface::isApiRhiBased(m_item->window()->rendererInterface()->graphicsApi());
+    if (Q_LIKELY(needsWrap)) {
+        m_item->window()->beginExternalCommands();
+        m_item->window()->resetOpenGLState();
+    }
+
+    if (Q_LIKELY(!m_programKawaseUp))
+        initialize();
+
+    if (Q_LIKELY(m_needUpdateFBO)) {
+        initFBOTextures();
+        m_needUpdateFBO = false;
+    }
+
+    if (Q_LIKELY(m_fboVector.count() > 1)) {
+        applyDaulBlur(m_fboVector[1], m_texture->textureId(), m_programKawaseDown, state,
+                m_matrixKawaseDownUniform, 2);
+
+        for (int i = 1; i < m_radius; i++) {
+            applyDaulBlur(m_fboVector[i + 1], m_fboVector[i]->texture(), m_programKawaseDown, state,
+                    m_matrixKawaseDownUniform, qPow(2, i + 1));
+        }
+
+        for (int i = m_radius; i > 0; i--) {
+            applyDaulBlur(m_fboVector[i - 1], m_fboVector[i]->texture(), m_programKawaseUp, state,
+                    m_matrixKawaseUpUniform, qPow(2, i - 1));
+        }
+
+        if (Q_LIKELY(m_fboVector.count() > 0))
+            renderToScreen(m_fboVector[0]->texture(), state);
+    }
+
+    m_item->window()->resetOpenGLState();
+
+    if (Q_LIKELY(needsWrap))
+        m_item->window()->endExternalCommands();
+}
+
+QSGRenderNode::StateFlags DBlurEffectNode::changedStates() const
+{
+    return BlendState | ScissorState;
+}
+
+QSGRenderNode::RenderingFlags DBlurEffectNode::flags() const
+{
+    RenderingFlags rf = BoundedRectRendering;
+    if (!m_disabledOpaqueRendering &&( !m_texture || !m_texture->hasAlphaChannel()))
+        rf |= OpaqueRendering;
+    return rf;
+}
+
+QRectF DBlurEffectNode::rect() const
+{
+    return m_targetRect;
+}
+
+void DBlurEffectNode::initialize()
+{
+    initDispalyShader();
+    initBlurSahder();
+}
+
+void DBlurEffectNode::initBlurSahder()
+{
+    m_programKawaseUp = new QOpenGLShaderProgram;
+    m_programKawaseDown = new QOpenGLShaderProgram;
+
+    m_programKawaseUp->addCacheableShaderFromSourceFile(QOpenGLShader::Vertex,
+                                                        ":/dtk/declarative/shaders/dualkawaseup.vert");
+    m_programKawaseUp->addCacheableShaderFromSourceFile(QOpenGLShader::Fragment,
+                                                        ":/dtk/declarative/shaders/dualkawaseup.frag");
+    m_programKawaseUp->bindAttributeLocation("posAttr", 0);
+    m_programKawaseUp->bindAttributeLocation("qt_VertexTexCoord", 1);
+    m_programKawaseUp->link();
+
+    m_matrixKawaseUpUniform = m_programKawaseUp->uniformLocation("matrix");
+
+    m_programKawaseDown->addCacheableShaderFromSourceFile(QOpenGLShader::Vertex,
+                                                          ":/dtk/declarative/shaders/dualkawasedown.vert");
+    m_programKawaseDown->addCacheableShaderFromSourceFile(QOpenGLShader::Fragment,
+                                                          ":/dtk/declarative/shaders/dualkawasedown.frag");
+    m_programKawaseDown->bindAttributeLocation("posAttr", 0);
+    m_programKawaseDown->bindAttributeLocation("qt_VertexTexCoord", 1);
+    m_programKawaseDown->link();
+
+    m_matrixKawaseDownUniform = m_programKawaseDown->uniformLocation("matrix");
+
+    const int VERTEX_SIZE = 8 * sizeof(GLfloat);
+
+    static GLfloat texCoord[] = {
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+    };
+
+    m_sampleVbo = new QOpenGLBuffer;
+    m_sampleVbo->create();
+    m_sampleVbo->bind();
+    m_sampleVbo->allocate(VERTEX_SIZE + sizeof(texCoord));
+    m_sampleVbo->write(VERTEX_SIZE, texCoord, sizeof(texCoord));
+}
+
+void DBlurEffectNode::applyDaulBlur(QOpenGLFramebufferObject *targetFBO, GLuint sourceTexture, QOpenGLShaderProgram *shader
+                                  , const QSGRenderNode::RenderState *state, int matrixUniform, int scale)
+{
+    targetFBO->bind();
+    QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
+    shader->bind();
+
+    // TODO(xiaoyaobing): Shader pixel offset value during hardware rendering, because software rendering
+    //                    does not, so write a fixed value here
+    shader->setUniformValue("offset", QVector2D(8, 8));
+    shader->setUniformValue("iResolution", QVector2D(targetFBO->size().width(), targetFBO->size().height()));
+    shader->setUniformValue("halfpixel", QVector2D(0.5 / targetFBO->size().width(), 0.5 / targetFBO->size().height()));
+    float yOffset = m_item->window()->height() - qRound(m_sourceRect.height() / scale);
+    shader->setUniformValue(matrixUniform, *state->projectionMatrix() * QMatrix4x4(1, 0, 0, 0,
+                                                                                   0, 1, 0, yOffset,
+                                                                                   0, 0, 1, 0,
+                                                                                   0, 0, 0, 1));
+    m_sampleVbo->bind();
+    QPointF p0(0, 0);
+    QPointF p1(0, qRound(m_sourceRect.height() / scale));
+    QPointF p2(qRound(m_sourceRect.width() / scale), 0);
+    QPointF p3(qRound(m_sourceRect.width() / scale), qRound(m_sourceRect.height() / scale));
+
+    GLfloat vertices[8] = { GLfloat(p0.x()), GLfloat(p0.y()),
+                            GLfloat(p1.x()), GLfloat(p1.y()),
+                            GLfloat(p2.x()), GLfloat(p2.y()),
+                            GLfloat(p3.x()), GLfloat(p3.y()) };
+
+    m_sampleVbo->write(0, vertices, sizeof(vertices));
+
+    shader->setAttributeBuffer(0, GL_FLOAT, 0, 2);
+    shader->setAttributeBuffer(1, GL_FLOAT, sizeof(vertices), 2);
+    shader->enableAttributeArray(0);
+    shader->enableAttributeArray(1);
+    m_sampleVbo->release();
+
+    glEnable(GL_TEXTURE_2D);
+    f->glBindTexture(GL_TEXTURE_2D, sourceTexture);
+    f->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    f->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    f->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glDisable(GL_TEXTURE_2D);
+    shader->release();
+    targetFBO->release();
+}
+
+void DBlurEffectNode::renderToScreen(GLuint sourceTexture, const QSGRenderNode::RenderState *state)
+{
+    QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
+    f->glBindTexture(GL_TEXTURE_2D, sourceTexture);
+    f->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    f->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    QOpenGLFramebufferObject::bindDefault();
+    m_program->bind();
+    m_program->setUniformValue(m_matrixUniform, *state->projectionMatrix() * *matrix());
+    m_program->setUniformValue(m_opacityUniform, float(inheritedOpacity()));
+    m_program->setUniformValue("blendColor", m_blendColor);
+
+    m_vbo->bind();
+
+    QPointF p0(0, 0);
+    QPointF p1(0, m_sourceRect.height());
+    QPointF p2(m_sourceRect.width(), 0);
+    QPointF p3(m_sourceRect.width(), m_sourceRect.height());
+
+    GLfloat vertices[8] = { GLfloat(p0.x()), GLfloat(p0.y()),
+                            GLfloat(p1.x()), GLfloat(p1.y()),
+                            GLfloat(p2.x()), GLfloat(p2.y()),
+                            GLfloat(p3.x()), GLfloat(p3.y()) };
+
+    m_vbo->write(0, vertices, sizeof(vertices));
+
+    m_program->setAttributeBuffer(0, GL_FLOAT, 0, 2);
+    m_program->setAttributeBuffer(1, GL_FLOAT, sizeof(vertices), 2);
+    m_program->enableAttributeArray(0);
+    m_program->enableAttributeArray(1);
+    m_vbo->release();
+
+    f->glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
+    f->glEnable(GL_BLEND);
+    f->glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
+    if (state->scissorEnabled()) {
+        f->glEnable(GL_SCISSOR_TEST);
+        const QRect r = state->scissorRect();
+        f->glScissor(r.x(), r.y(), r.width(), r.height());
+    }
+    if (state->stencilEnabled()) {
+        f->glEnable(GL_STENCIL_TEST);
+        f->glStencilFunc(GL_EQUAL, state->stencilValue(), 0xFF);
+        f->glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+    }
+    f->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    markDirty(QSGNode::DirtyGeometry);
+    m_program->release();
+}
+
+void DBlurEffectNode::initFBOTextures()
+{
+    QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
+    for (int i = 0; i < m_fboVector.size(); i++) {
+        delete m_fboVector[i];
+    }
+
+    m_fboVector.clear();
+    m_fboVector.append(new QOpenGLFramebufferObject(m_sourceRect.size().toSize(),
+                                                    QOpenGLFramebufferObject::CombinedDepthStencil, GL_TEXTURE_2D));
+    for (int i = 1; i <= m_radius; i++) {
+        m_fboVector.append(new QOpenGLFramebufferObject(m_sourceRect.size().toSize() / qPow(2, i),
+                                                        QOpenGLFramebufferObject::CombinedDepthStencil, GL_TEXTURE_2D));
+
+        f->glBindTexture(GL_TEXTURE_2D, m_fboVector.last()->texture());
+        f->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        f->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
+}
+
+void DBlurEffectNode::initDispalyShader()
+{
+    m_program = new QOpenGLShaderProgram;
+
+    static const char *vertexShaderSource =
+            "attribute highp vec4 posAttr;              \n"
+            "attribute highp vec2 qt_VertexTexCoord;    \n"
+            "varying highp vec2 qt_TexCoord;            \n"
+            "uniform highp mat4 matrix;                 \n"
+            "void main() {                              \n"
+            "   qt_TexCoord = qt_VertexTexCoord;        \n"
+            "   gl_Position = matrix * posAttr;         \n"
+            "}\n";
+
+    static const char *fragmentShaderSource =
+            "varying highp vec2 qt_TexCoord;                                                           \n"
+            "uniform lowp float opacity;                                                               \n"
+            "uniform sampler2D qt_Texture;                                                             \n"
+            "uniform highp vec4 blendColor;                                                            \n"
+            "void main() {                                                                             \n"
+            "   highp vec4 color = texture2D(qt_Texture, qt_TexCoord);                                 \n"
+            "   gl_FragColor = (color + blendColor * blendColor.a) * opacity;\n"
+            "}\n";
+
+    m_program->addCacheableShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource);
+    m_program->addCacheableShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShaderSource);
+    m_program->bindAttributeLocation("posAttr", 0);
+    m_program->bindAttributeLocation("qt_VertexTexCoord", 1);
+    m_program->link();
+
+    m_matrixUniform = m_program->uniformLocation("matrix");
+    m_opacityUniform = m_program->uniformLocation("opacity");
+
+    const int VERTEX_SIZE = 8 * sizeof(GLfloat);
+
+    static GLfloat texCoord[] = {
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+    };
+
+    m_vbo = new QOpenGLBuffer;
+    m_vbo->create();
+    m_vbo->bind();
+    m_vbo->allocate(VERTEX_SIZE + sizeof(texCoord));
+    m_vbo->write(VERTEX_SIZE, texCoord, sizeof(texCoord));
+}
+
+#endif
 
 DQUICK_END_NAMESPACE
