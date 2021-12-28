@@ -29,4 +29,5 @@ QML_FILES += \
     $$PWD/DialogButtonBox.qml \
     $$PWD/TextField.qml \
     $$PWD/TextArea.qml \
-    $$PWD/SpinBox.qml
+    $$PWD/SpinBox.qml \
+    $$PWD/Control.qml
