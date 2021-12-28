@@ -28,6 +28,9 @@
 QT_BEGIN_NAMESPACE
 class QQuickItem;
 class QSGTexture;
+class QOpenGLShaderProgram;
+class QOpenGLFramebufferObject;
+class QOpenGLBuffer;
 QT_END_NAMESPACE
 
 DQUICK_BEGIN_NAMESPACE
@@ -65,6 +68,60 @@ private:
     bool followMatrixForSource = false;
 
     QImage cachedSource;
+};
+
+class DBlurEffectNode : public QSGRenderNode
+{
+public:
+    DBlurEffectNode(QQuickItem *owner);
+    ~DBlurEffectNode() override;
+
+    void setTexture(QSGTexture *texture);
+    inline QSGTexture *texture() const
+    { return m_texture;}
+    void setRadius(qreal radius);
+    void setSourceRect(const QRectF &source);
+    void setRect(const QRectF &target);
+    void setDisabledOpaqueRendering(bool disabled);
+    void setBlendColor(const QColor &color);
+    void setFollowMatrixForSource(bool on);
+
+    void render(const RenderState *state) override;
+    StateFlags changedStates() const override;
+    RenderingFlags flags() const override;
+    QRectF rect() const override;
+
+private:
+    void initialize();
+    void initBlurSahder();
+    void applyDaulBlur(QOpenGLFramebufferObject* targetFBO, GLuint sourceTexture, QOpenGLShaderProgram *shader
+                     , const QSGRenderNode::RenderState *state, int matrixUniform, int scale);
+    void renderToScreen(GLuint sourceTexture, const QSGRenderNode::RenderState *state);
+    void initFBOTextures();
+    void initDispalyShader();
+
+private:
+    QQuickItem *m_item;
+    QSGTexture *m_texture = nullptr;
+    int m_radius = 0;
+    QRectF m_sourceRect;
+    QRectF m_targetRect;
+    bool m_disabledOpaqueRendering = false;
+    QColor m_blendColor;
+    bool m_followMatrixForSource = false;
+    bool m_needUpdateFBO = false;
+
+    QOpenGLShaderProgram *m_programKawaseUp = nullptr;
+    QOpenGLShaderProgram *m_programKawaseDown = nullptr;
+    QVector<QOpenGLFramebufferObject*> m_fboVector;
+    int m_matrixKawaseUpUniform;
+    int m_matrixKawaseDownUniform;
+    QOpenGLBuffer *m_sampleVbo = nullptr;
+
+    QOpenGLShaderProgram *m_program = nullptr;
+    int m_matrixUniform;
+    int m_opacityUniform;
+    QOpenGLBuffer *m_vbo = nullptr;
 };
 
 DQUICK_END_NAMESPACE

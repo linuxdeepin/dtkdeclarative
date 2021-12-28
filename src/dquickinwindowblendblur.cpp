@@ -66,6 +66,11 @@ static void updateSoftwareNodeTexture(DBlitFramebufferNode *node, void *blurNode
     bn->setTexture(node->texture());
 }
 
+static void updateHardwareNodeTexture(DBlitFramebufferNode *node, void *blurNode) {
+    auto bn = reinterpret_cast<DBlurEffectNode*>(blurNode);
+    bn->setTexture(node->texture());
+}
+
 QSGNode *DQuickInWindowBlendBlur::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *data)
 {
     Q_UNUSED(data)
@@ -80,16 +85,19 @@ QSGNode *DQuickInWindowBlendBlur::updatePaintNode(QSGNode *oldNode, UpdatePaintN
             node->appendChildNode(blurNode);
             node->setRenderCallback(updateSoftwareNodeTexture, blurNode);
         }
-    #ifndef QT_NO_OPENGL
+#ifndef QT_NO_OPENGL
         else if (ga == QSGRendererInterface::OpenGL
-    #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+         #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
                  || ga == QSGRendererInterface::OpenGLRhi
-    #endif
+         #endif
                  ) {
             node = DBlitFramebufferNode::createOpenGLNode(this, true, true);
-            // TODO: Add the HW blur image node
+            auto blurNode = new DBlurEffectNode(this);
+            blurNode->setDisabledOpaqueRendering(true);
+            node->appendChildNode(blurNode);
+            node->setRenderCallback(updateHardwareNodeTexture, blurNode);
         }
-    #endif
+#endif
         else {
             qWarning() << "Not supported graphics API:" << ga;
             return nullptr;
@@ -107,7 +115,14 @@ QSGNode *DQuickInWindowBlendBlur::updatePaintNode(QSGNode *oldNode, UpdatePaintN
         blurNode->setBlendColor(m_blendColor);
         blurNode->setFollowMatrixForSource(true);
     } else {
-        // TODO
+        auto blurNode = static_cast<DBlurEffectNode *>(node->firstChild());
+        blurNode->setRadius(m_radius);
+        const QRectF rect(0, 0, width(), height());
+        blurNode->setSourceRect(rect);
+        blurNode->setRect(rect);
+        blurNode->setTexture(node->texture());
+        blurNode->setBlendColor(m_blendColor);
+        blurNode->setFollowMatrixForSource(true);
     }
 
     return node;
