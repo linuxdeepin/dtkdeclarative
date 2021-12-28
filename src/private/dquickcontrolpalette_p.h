@@ -47,14 +47,53 @@ class DQuickControlColor
 public:
     DQuickControlColor();
     DQuickControlColor(const QColor &color);
-    DQuickControlColor(QColor *colors);
-    DQuickControlColor(const DQuickControlColor &other)
-        : colors(other.colors), color(other.color) {}
     DQuickControlColor(DQuickControlColor &&other)
-        {colors = std::move(other.colors);
-         color = std::move(other.color);}
-    inline DQuickControlColor &operator =(const DQuickControlColor &other)
-    {colors = other.colors; color = other.color; return *this;}
+        {data = std::move(other.data); other.data = nullptr;
+         changed = std::move(other.changed);
+         isSingleColor = std::move(other.isSingleColor);}
+    DQuickControlColor(const DQuickControlColor &other) {
+        isSingleColor = other.isSingleColor;
+        if (other.isSingleColor) {
+            data = new QColor(*other.data);
+        } else {
+            data = other.data;
+            changed = other.changed;
+        }
+    }
+    inline DQuickControlColor &operator=(const DQuickControlColor &other) {
+        if (isSingleColor) {
+            if (other.isSingleColor) {
+                *data = *other.data;
+            } else {
+                delete data;
+                data = other.data;
+                isSingleColor = false;
+            }
+        } else {
+            if (other.isSingleColor) {
+                if (data) {
+                    setCommon(*other.data);
+                } else {
+                    data = new QColor(*other.data);
+                }
+            } else {
+                data = other.data;
+            }
+        }
+        changed = other.changed;
+        return *this;
+    }
+    inline DQuickControlColor &operator=(DQuickControlColor &&other) {
+        if (data && isSingleColor) {
+            delete data;
+        }
+
+        data = std::move(other.data);
+        other.data = nullptr;
+        changed = other.changed;
+        isSingleColor = other.isSingleColor;
+        return *this;
+    }
     ~DQuickControlColor();
 
     const QColor &common() const;
@@ -63,8 +102,11 @@ public:
     void setCrystal(const QColor &newCrystal);
 
 private:
-    QColor *colors = nullptr;
-    QColor color;
+    DQuickControlColor(QColor *colors);
+
+    QColor *data = nullptr;
+    bool changed = false;
+    bool isSingleColor = false;
 };
 DQUICK_END_NAMESPACE
 Q_DECLARE_METATYPE(DTK_QUICK_NAMESPACE::DQuickControlColor)
@@ -76,14 +118,14 @@ class DQuickControlPalette : public QObject
     friend class DQuickControlColorSelector;
     Q_OBJECT
     Q_DISABLE_COPY(DQuickControlPalette)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor normal READ normal WRITE setNormal NOTIFY changed)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor normalDark READ normalDark WRITE setNormalDark NOTIFY changed)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor hovered READ hovered WRITE setHovered NOTIFY changed)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor hoveredDark READ hoveredDark WRITE setHoveredDark NOTIFY changed)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor pressed READ pressed WRITE setPressed NOTIFY changed)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor pressedDark READ pressedDark WRITE setPressedDark NOTIFY changed)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor disabled READ disabled WRITE setDisabled NOTIFY changed)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor disabledDark READ disabledDark WRITE setDisabledDark NOTIFY changed)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor normal READ normal WRITE setNormal NOTIFY normalChanged)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor normalDark READ normalDark WRITE setNormalDark NOTIFY normalDarkChanged)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor hovered READ hovered WRITE setHovered NOTIFY hoveredChanged)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor hoveredDark READ hoveredDark WRITE setHoveredDark NOTIFY hoveredDarkChanged)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor pressed READ pressed WRITE setPressed NOTIFY pressedChanged)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor pressedDark READ pressedDark WRITE setPressedDark NOTIFY pressedDarkChanged)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor disabled READ disabled WRITE setDisabled NOTIFY disabledChanged)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor disabledDark READ disabledDark WRITE setDisabledDark NOTIFY disabledDarkChanged)
 
 public:
     enum ColorFamily {
@@ -111,61 +153,87 @@ public:
     inline QColor *colorPointer(int colorPropertyIndex) {
         return colors.data() + colorPropertyIndex * ColorFamilyCount;
     }
-    inline void tryUnwrap(const DQuickControlColor &color, int colorPropertyIndex) {
-        if (color.color.isValid() || color.colors == nullptr)
-            *colorPointer(colorPropertyIndex) = color.color;
+    inline bool setTo(const DQuickControlColor &color, int colorPropertyIndex) {
+        auto colors = colorPointer(colorPropertyIndex);
+        Q_ASSERT(colors);
+        if (color.data == colors)
+            return color.changed;
+        bool changed = false;
+        for (int i = 0; i < ColorFamilyCount; ++i) {
+            if (color.data[i] == colors[i])
+                continue;
+            colors[i] = color.data[i];
+            changed = true;
+        }
+        return changed;
     }
     void setNormal(const DQuickControlColor &color) {
-        tryUnwrap(color, 0);
+        if (!setTo(color, 0))
+            return;
+        Q_EMIT normalChanged();
         Q_EMIT changed();
     }
     DQuickControlColor normal() {
         return DQuickControlColor(colorPointer(0));
     }
     void setNormalDark(const DQuickControlColor &color) {
-        tryUnwrap(color, 1);
+        if (!setTo(color, 1))
+            return;
+        Q_EMIT normalDarkChanged();
         Q_EMIT changed();
     }
     DQuickControlColor normalDark() {
         return DQuickControlColor(colorPointer(1));
     }
     void setHovered(const DQuickControlColor &color) {
-        tryUnwrap(color, 2);
+        if (!setTo(color, 2))
+            return;
+        Q_EMIT hoveredChanged();
         Q_EMIT changed();
     }
     DQuickControlColor hovered() {
         return DQuickControlColor(colorPointer(2));
     }
     void setHoveredDark(const DQuickControlColor &color) {
-        tryUnwrap(color, 3);
+        if (!setTo(color, 3))
+            return;
+        Q_EMIT hoveredDarkChanged();
         Q_EMIT changed();
     }
     DQuickControlColor hoveredDark() {
         return DQuickControlColor(colorPointer(3));
     }
     void setPressed(const DQuickControlColor &color) {
-        tryUnwrap(color, 4);
+        if (!setTo(color, 4))
+            return;
+        Q_EMIT pressedChanged();
         Q_EMIT changed();
     }
     DQuickControlColor pressed() {
         return DQuickControlColor(colorPointer(4));
     }
     void setPressedDark(const DQuickControlColor &color) {
-        tryUnwrap(color, 5);
+        if (!setTo(color, 5))
+            return;
+        Q_EMIT pressedDarkChanged();
         Q_EMIT changed();
     }
     DQuickControlColor pressedDark() {
         return DQuickControlColor(colorPointer(5));
     }
     void setDisabled(const DQuickControlColor &color) {
-        tryUnwrap(color, 6);
+        if (!setTo(color, 6))
+            return;
+        Q_EMIT disabledChanged();
         Q_EMIT changed();
     }
     DQuickControlColor disabled() {
         return DQuickControlColor(colorPointer(6));
     }
     void setDisabledDark(const DQuickControlColor &color) {
-        tryUnwrap(color, 7);
+        if (!setTo(color, 7))
+            return;
+        Q_EMIT disabledDarkChanged();
         Q_EMIT changed();
     }
     DQuickControlColor disabledDark() {
@@ -173,6 +241,14 @@ public:
     }
 
 Q_SIGNALS:
+    void normalChanged();
+    void normalDarkChanged();
+    void hoveredChanged();
+    void hoveredDarkChanged();
+    void pressedChanged();
+    void pressedDarkChanged();
+    void disabledChanged();
+    void disabledDarkChanged();
     void changed();
 
 public:

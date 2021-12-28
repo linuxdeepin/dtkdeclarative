@@ -47,44 +47,54 @@ DQuickControlColor::DQuickControlColor()
 }
 
 DQuickControlColor::DQuickControlColor(const QColor &color)
-    : color(color)
+    : data(new QColor(color))
+    , isSingleColor(true)
+{
+
+}
+
+DQuickControlColor::DQuickControlColor(QColor *colors)
+    : data(colors)
+    , isSingleColor(false)
 {
 
 }
 
 DQuickControlColor::~DQuickControlColor()
 {
-
-}
-
-DQuickControlColor::DQuickControlColor(QColor *colors)
-    : colors(colors)
-{
-
+    if (isSingleColor) {
+        delete data;
+    }
 }
 
 const QColor &DQuickControlColor::common() const
 {
-    Q_ASSERT(colors);
-    return colors[DQuickControlPalette::CommonColor];
+    Q_ASSERT(data && !isSingleColor);
+    return data[DQuickControlPalette::CommonColor];
 }
 
 void DQuickControlColor::setCommon(const QColor &newCommon)
 {
-    Q_ASSERT(colors);
-    colors[DQuickControlPalette::CommonColor] = newCommon;
+    Q_ASSERT(data && !isSingleColor);
+    if (common() == newCommon)
+        return;
+    changed =  true;
+    data[DQuickControlPalette::CommonColor] = newCommon;
 }
 
 const QColor &DQuickControlColor::crystal() const
 {
-    Q_ASSERT(colors);
-    return colors[DQuickControlPalette::CrystalColor];
+    Q_ASSERT(data && !isSingleColor);
+    return data[DQuickControlPalette::CrystalColor];
 }
 
 void DQuickControlColor::setCrystal(const QColor &newCrystal)
 {
-    Q_ASSERT(colors);
-    colors[DQuickControlPalette::CrystalColor] = newCrystal;
+    Q_ASSERT(data && !isSingleColor);
+    if (crystal() == newCrystal)
+        return;
+    changed = true;
+    data[DQuickControlPalette::CrystalColor] = newCrystal;
 }
 
 DQuickControlPalette::DQuickControlPalette(QObject *parent)
