@@ -414,7 +414,9 @@ void DQuickControlColorSelector::componentComplete()
     if (m_control) {
         connect(m_control, SIGNAL(paletteChanged()), this, SLOT(updateControlTheme()));
         connect(m_control, SIGNAL(hoveredChanged()), this, SLOT(updateControlState()));
-        connect(m_control, SIGNAL(pressedChanged()), this, SLOT(updateControlState()));
+        if (m_control->metaObject()->indexOfSignal("pressedChanged()") != -1) {
+            connect(m_control, SIGNAL(pressedChanged()), this, SLOT(updateControlState()));
+        }
         connect(m_control, &QQuickItem::enabledChanged, this, &DQuickControlColorSelector::updateControlState);
         connect(m_control, &QQuickItem::windowChanged, this, &DQuickControlColorSelector::onControlWindowChanged);
         onControlWindowChanged();
