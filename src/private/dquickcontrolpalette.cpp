@@ -109,6 +109,19 @@ DQuickControlPalette::~DQuickControlPalette()
 
 }
 
+bool DQuickControlPalette::enabled() const
+{
+    return m_enabled;
+}
+
+void DQuickControlPalette::setEnabled(bool newEnabled)
+{
+    if (m_enabled == newEnabled)
+        return;
+    m_enabled = newEnabled;
+    Q_EMIT enabledChanged();
+}
+
 class Q_DECL_HIDDEN CustomMetaObject : public QQmlOpenMetaObject
 {
 public:
@@ -141,7 +154,7 @@ public:
             for (int i = pl.count() - 1; i >= 0; --i) {
                 if (owner()->m_palettes.at(i)->objectName() == pn) {
                     owner()->palette_replace(i, palette, false);
-                    const QColor c = owner()->getColorOf(palette, owner()->m_controlTheme, owner()->m_controlState);
+                    const QColor c = owner()->getColorOf(pn, owner()->m_controlTheme, owner()->m_controlState);
                     return c;
                 }
             }
@@ -255,6 +268,13 @@ void DQuickControlColorSelector::setControlState(DQMLGlobalObject::ControlState 
     updateProperties();
 }
 
+void DQuickControlColorSelector::destroyPalette(DQuickControlPalette *palette)
+{
+    palette->disconnect(this);
+    if (palette->parent() == this)
+        palette->deleteLater();
+}
+
 bool DQuickControlColorSelector::hovered() const
 {
     return m_hovered;
@@ -346,8 +366,8 @@ void DQuickControlColorSelector::palette_append(QQmlListProperty<DQuickControlPa
     that->m_palettes.append(value);
     that->ensureMetaObject();
     that->updatePropertyForPalette(value);
-    connect(value, &DQuickControlPalette::changed,
-            that, std::bind(&DQuickControlColorSelector::updatePropertyForPalette, that, value));
+    connect(value, &DQuickControlPalette::changed, that, &DQuickControlColorSelector::onPaletteChanged);
+    connect(value, &DQuickControlPalette::enabledChanged, that, &DQuickControlColorSelector::onPaletteChanged);
     Q_EMIT that->palettesChanged();
 }
 
@@ -363,6 +383,8 @@ DQuickControlPalette *DQuickControlColorSelector::palette_at(QQmlListProperty<DQ
 
 void DQuickControlColorSelector::palette_clear(QQmlListProperty<DQuickControlPalette> *property) {
     auto that = qobject_cast<DQuickControlColorSelector*>(property->object);
+    for (auto palette : qAsConst(that->m_palettes))
+        that->destroyPalette(palette);
     that->m_palettes.clear();
     Q_EMIT that->palettesChanged();
 }
@@ -373,6 +395,7 @@ void DQuickControlColorSelector::palette_replace(int index, DQuickControlPalette
         ThrowError(this, QString("Must objectName for 0x%1").arg(reinterpret_cast<quintptr>(newValue)));
     if (!newValue->parent())
         newValue->setParent(this);
+    destroyPalette(m_palettes.at(index));
     m_palettes.replace(index, newValue);
     if (updateProperty) {
         ensureMetaObject();
@@ -391,7 +414,7 @@ void DQuickControlColorSelector::palette_replace(QQmlListProperty<DQuickControlP
 void DQuickControlColorSelector::palette_remove_last(QQmlListProperty<DQuickControlPalette> *property)
 {
     auto that = qobject_cast<DQuickControlColorSelector*>(property->object);
-    that->m_palettes.removeLast();
+    that->destroyPalette(that->m_palettes.takeLast());
     Q_EMIT that->palettesChanged();
 }
 
@@ -499,6 +522,23 @@ QColor DQuickControlColorSelector::getColorOf(const DQuickControlPalette *palett
     return targetColor;
 }
 
+QColor DQuickControlColorSelector::getColorOf(const QString &propertyName,
+                                              DGuiApplicationHelper::ColorType theme,
+                                              DQMLGlobalObject::ControlState state)
+{
+    // Ensure that only the last palette is used, other palettes with the same
+    // objectName property are ignored.
+    const auto &palettes = qAsConst(m_palettes);
+    for (auto p = palettes.rbegin(); p != palettes.rend(); ++p) {
+        if ((*p)->enabled() && (*p)->objectName() == propertyName) {
+            const QColor color = getColorOf(*p, theme, state);
+            return color;
+        }
+    }
+
+    return QColor();
+}
+
 void DQuickControlColorSelector::ensureMetaObject()
 {
     if (m_metaObject)
@@ -507,19 +547,24 @@ void DQuickControlColorSelector::ensureMetaObject()
     m_metaObject = new CustomMetaObject(this);
     m_metaObject->setCached(true);
 
-    for (auto palette : qAsConst(m_palettes)) {
-        updatePropertyForPalette(palette);
-    }
+    updateProperties();
 }
 
-void DQuickControlColorSelector::updatePropertyForPalette(const DQuickControlPalette *palette)
+bool DQuickControlColorSelector::updatePropertyForPalette(const DQuickControlPalette *palette, bool force)
 {
     const auto id = palette->objectName();
-    Q_ASSERT(!id.isEmpty());
-    if (!id.isEmpty()) {
+    if (id.isEmpty())
+        return false;
+
+    if (force) {
         const QColor color = getColorOf(palette, m_controlTheme, m_controlState);
         m_metaObject->setValue(id.toLatin1(), color);
+    } else {
+        const QColor color = getColorOf(id, m_controlTheme, m_controlState);
+        m_metaObject->setValue(id.toLatin1(), color);
     }
+
+    return true;
 }
 
 void DQuickControlColorSelector::removePropertyForPalette(const DQuickControlPalette *palette)
@@ -564,8 +609,20 @@ void DQuickControlColorSelector::updateControlState()
 
 void DQuickControlColorSelector::updateProperties()
 {
-    for (auto palette : qAsConst(m_palettes))
-        updatePropertyForPalette(palette);
+    const auto &palettes = qAsConst(m_palettes);
+    QSet<QString> properies;
+    properies.reserve(palettes.size());
+    for (auto palette = palettes.rbegin(); palette != palettes.rend(); ++palette) {
+        if (!(*palette)->enabled())
+            continue;
+
+        const QString &objName = (*palette)->objectName();
+        if (properies.contains(objName))
+            continue;
+        if (updatePropertyForPalette(*palette, true)) {
+            properies << objName;
+        }
+    }
 }
 
 void DQuickControlColorSelector::onPaletteChanged()
