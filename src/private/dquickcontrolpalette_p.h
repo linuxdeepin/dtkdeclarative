@@ -137,8 +137,8 @@ public:
 
     enum ColorGroup {
         Light = 0,
-        Dark = 1,
-        ThemeTypeCount,
+        Dark = 1 * ColorFamilyCount,
+        ThemeTypeCount = 2,
 
         Normal = 0,
         Hovered = 1 * (ThemeTypeCount + ColorFamilyCount),
