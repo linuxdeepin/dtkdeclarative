@@ -77,6 +77,37 @@ QtObject {
         property int spacing: 6
         property int borderWidth: 1
         property int focusBorderWidth: 2
+
+        function implicitWidth(control) {
+            var background = control.implicitBackgroundWidth !== undefined
+                    ? control.implicitBackgroundWidth
+                    : (control.background ? control.background.implicitWidth : 0)
+
+            if (control.leftInset !== undefined)
+                background += (control.leftInset + control.rightInset)
+
+            var content = control.implicitContentWidth !== undefined
+                    ? control.implicitContentWidth
+                    : (control.contentItem ? control.contentItem.implicitWidth : 0)
+            content += (control.leftPadding + control.rightPadding)
+
+            return Math.max(background, content)
+        }
+        function implicitHeight(control) {
+            var background = control.implicitBackgroundHeight !== undefined
+                    ? control.implicitBackgroundHeight
+                    : (control.background ? control.background.implicitHeight : 0)
+
+            if (control.topInset !== undefined)
+                background += (control.topInset + control.bottomInset)
+
+            var content = control.implicitContentHeight !== undefined
+                    ? control.implicitContentHeight
+                    : (control.contentItem ? control.contentItem.implicitHeight : 0)
+            content += (control.topPadding + control.bottomPadding)
+
+            return Math.max(background, content)
+        }
     }
 
     property QtObject button: QtObject {
