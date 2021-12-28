@@ -46,5 +46,8 @@
         <file>qml/SpinBoxIndicator.qml</file>
         <file>qml/ApplicationWindow.qml</file>
         <file>qml/BoxShadow.qml</file>
+        <file>qml/FloatingPanel.qml</file>
+        <file>qml/FloatingMessage.qml</file>
+        <file>qml/FloatingMessageCloseButton.qml</file>
     </qresource>
 </RCC>

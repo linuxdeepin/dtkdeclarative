@@ -99,6 +99,8 @@ QtObject {
         property int spacing: 6
         property int padding: 6
         property int borderWidth: 1
+        property color lightBorder: Qt.rgba(0, 0, 0, 0.05)
+        property color darkBorder: Qt.rgba(0, 0, 0, 0.05)
         property int focusBorderWidth: 2
 
         function implicitWidth(control) {
@@ -174,5 +176,15 @@ QtObject {
 
     property QtObject plusMinusSpinBox: QtObject {
         property int buttonIconSize: 16
+    }
+
+    property QtObject floatingPanel: QtObject {
+        property int maximumWidth: 450
+        property int minimumHeight: 40
+        property int radius: 14
+        property color lightBackground: Qt.rgba(247, 247, 247, 0.6)
+        property color darkBackground: Qt.rgba(247, 247, 247, 0.6)
+        property color lightShadowBackground: Qt.rgba(0, 0, 0, 0.2)
+        property color darkShadowBackground: Qt.rgba(0, 0, 0, 0.2)
     }
 }

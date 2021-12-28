@@ -37,6 +37,7 @@
 #include "private/dquickbusyindicator_p.h"
 #include "private/dquickcontrolpalette_p.h"
 #include "private/dsettingscontainer_p.h"
+#include "private/dmessagemanager_p.h"
 
 #include <DFontManager>
 
@@ -147,6 +148,8 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType<DQuickControlPalette>(uri, implUri, 1, 0, "Palette");
     dtkRegisterType<DQuickControlColorSelector>(uri, implUri, 1, 0, "ColorSelector");
     dtkRegisterType<DQuickShadowImage>(uri, implUri, 1, 0, "ShadowImage");
+    dtkRegisterType<FloatingMessageContainer>(uri, implUri, 1, 0, "FloatingMessageContainer");
+    dtkRegisterUncreatableType<MessageManager>(uri, implUri, 1, 0, "MessageManager", "Window Attached");
 
     dtkRegisterAnonymousType<DQUICK_NAMESPACE::DQuickDciIcon>(uri, implUri, 1);
     dtkRegisterAnonymousType<DQuickControlColor>(uri, implUri, 1);
@@ -214,6 +217,9 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "TextField");
     dtkRegisterType(uri, controlsUri, 1, 0, "TextArea");
     dtkRegisterType(uri, controlsUri, 1, 0, "PlusMinusSpinBox");
+    dtkRegisterType(uri, controlsUri, 1, 0, "FloatingPanel");
+    dtkRegisterType(uri, controlsUri, 1, 0, "FloatingMessage");
+    dtkRegisterType(uri, controlsUri, 1, 0, "FloatingMessageCloseButton");
 
     // for org.deepin.dtk.style(allowed to override)
     dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");

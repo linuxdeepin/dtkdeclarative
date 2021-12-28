@@ -23,6 +23,7 @@
 #include "private/dqmlglobalobject_p.h"
 #include "private/dquickcontrolpalette_p.h"
 #include "private/dquickdciicon_p.h"
+#include "private/dmessagemanager_p.h"
 
 #include <DObjectPrivate>
 #include <DObject>
@@ -255,6 +256,67 @@ DQuickDciIcon DQMLGlobalObject::makeIcon(const QJSValue &qicon, const QJSValue &
     dciIcon.setTheme(DQuickDciIconImage::Theme(theme));
 
     return dciIcon;
+}
+
+bool DQMLGlobalObject::sendMessage(QQuickItem *target, const QString &content, const QString &iconName, int duration, const QString &msgId)
+{
+    Q_ASSERT(target);
+
+    if (auto window = target->window())
+        return sendMessage(window, content, iconName, duration, msgId);
+
+    return false;
+}
+
+bool DQMLGlobalObject::sendMessage(QQuickWindow *target, const QString &content, const QString &iconName, int duration, const QString &msgId)
+{
+    if (auto manager = qobject_cast<MessageManager *>(qmlAttachedPropertiesObject<MessageManager>(target))) {
+        return manager->sendMessage(content, iconName, duration, msgId);
+    }
+    return false;
+}
+
+bool DQMLGlobalObject::sendMessage(QQuickItem *target, QQmlComponent *delegate, const QVariant &message, int duration, const QString &msgId)
+{
+    Q_ASSERT(target);
+
+    if (auto window = target->window())
+        return sendMessage(window, delegate, message, duration, msgId);
+
+    return false;
+}
+
+bool DQMLGlobalObject::sendMessage(QQuickWindow *target, QQmlComponent *delegate, const QVariant &message, int duration, const QString &msgId)
+{
+    if (auto manager = qobject_cast<MessageManager *>(qmlAttachedPropertiesObject<MessageManager>(target)))
+        return manager->sendMessage(delegate, message, duration, msgId);
+
+    return false;
+}
+
+void DQMLGlobalObject::closeMessage(FloatingMessageContainer *message)
+{
+    Q_ASSERT(message);
+
+    message->close();
+}
+
+void DQMLGlobalObject::closeMessage(QQuickItem *target, const QString &msgId)
+{
+    Q_ASSERT(target);
+
+    if (auto window = target->window())
+        closeMessage(window, msgId);
+}
+
+void DQMLGlobalObject::closeMessage(QQuickWindow *target, const QString &msgId)
+{
+    if (msgId.isEmpty())
+        return;
+
+    if (auto manager = qobject_cast<MessageManager *>(qmlAttachedPropertiesObject<MessageManager>(target))) {
+        manager->close(msgId);
+    }
 }
 
 DQUICK_END_NAMESPACE
