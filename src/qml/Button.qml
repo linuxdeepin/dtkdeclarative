@@ -30,13 +30,14 @@ T.Button {
     id: control
 
     property D.Palette highlightedPalette: D.Palette {
-        objectName: "highlighted"
+        objectName: "button"
         normal: control.palette.highlight
         hovered: D.DTK.adjustColor(control.palette.highlight, 0, 0, +10, 0, 0, 0, 0)
         pressed: D.DTK.adjustColor(control.palette.highlight, 0, 0, -10, 0, 0, 0, 0)
     }
     property D.Palette highlightedTextPalette: D.Palette {
-        objectName: "highlightedText"
+        objectName: "buttonText"
+        enabled: control.checked || control.highlighted
         normal: control.palette.highlightedText
         hovered: D.DTK.adjustColor(control.palette.highlightedText, 0, 0, +10, 0, 0, 0, 0)
         pressed: D.DTK.adjustColor(control.palette.highlightedText, 0, 0, -20, 0, 0, 0, 0)
@@ -56,7 +57,6 @@ T.Button {
         id: csForHover
         control: control.D.ColorSelector.control
         palettes: control.D.ColorSelector.palettes
-        hovered: true
     }
 
     implicitWidth: DS.Style.control.implicitWidth(control)
@@ -102,9 +102,9 @@ T.Button {
                 width: DS.Style.control.borderWidth
                 color: control.D.ColorSelector.buttonBorder
             }
-            gradient: control.checked || control.highlighted ? null : backgroundGradient
-            color: control.D.ColorSelector.highlighted ? control.D.ColorSelector.highlighted
-                                                       : "transparent"
+            gradient: highlightedTextPalette.enabled ? null : backgroundGradient
+            color: highlightedTextPalette.enabled ? control.D.ColorSelector.button
+                                                  : "transparent"
         }
 
         Gradient {
@@ -125,7 +125,7 @@ T.Button {
                     width: backgroundRect.border.width
                     color: backgroundRect.border.color
                 }
-                gradient: control.checked || control.highlighted ? null : hoverBackgroundGradient
+                gradient: highlightedTextPalette.enabled ? null : hoverBackgroundGradient
                 color: backgroundRect.color
             }
         }
@@ -150,9 +150,7 @@ T.Button {
         display: control.display
         text: control.text
         font: control.font
-        color: control.D.ColorSelector.controlState === D.DTK.HoveredState
-               ? (control.checked || control.highlighted ? csForHover.highlightedText : csForHover.buttonText)
-               : (control.checked || control.highlighted ? control.D.ColorSelector.highlightedText : control.D.ColorSelector.buttonText)
+        color: csForHover.buttonText
         icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
     }
 }
