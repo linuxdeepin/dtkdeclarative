@@ -28,6 +28,7 @@
 #include <DWindowManagerHelper>
 #include <DPlatformThemeProxy>
 #include <DGuiApplicationHelper>
+#include <QQmlComponent>
 
 DGUI_BEGIN_NAMESPACE
 class DFontManager;
@@ -38,6 +39,7 @@ DGUI_USE_NAMESPACE
 DQUICK_BEGIN_NAMESPACE
 
 class DQuickDciIcon;
+class FloatingMessageContainer;
 class DQMLGlobalObjectPrivate;
 class DQMLGlobalObject : public QObject, public DTK_CORE_NAMESPACE::DObject
 {
@@ -109,6 +111,14 @@ public:
     Q_INVOKABLE QPoint cursorPosition() const;
 
     Q_INVOKABLE DTK_QUICK_NAMESPACE::DQuickDciIcon makeIcon(const QJSValue &qicon, const QJSValue &iconExtra);
+
+    Q_INVOKABLE bool sendMessage(QQuickItem *target, const QString &content, const QString &iconName = QString(), int duration = 4000, const QString &msgId = QString());
+    Q_INVOKABLE bool sendMessage(QQuickWindow *target, const QString &content, const QString &iconName = QString(), int duration = 4000, const QString &msgId = QString());
+    Q_INVOKABLE bool sendMessage(QQuickItem *target, QQmlComponent *delegate, const QVariant &message, int duration = 4000, const QString &msgId = QString());
+    Q_INVOKABLE bool sendMessage(QQuickWindow *target, QQmlComponent *delegate, const QVariant &message, int duration = 4000, const QString &msgId = QString());
+    Q_INVOKABLE void closeMessage(DTK_QUICK_NAMESPACE::FloatingMessageContainer *message);
+    Q_INVOKABLE void closeMessage(QQuickItem *target, const QString &msgId);
+    Q_INVOKABLE void closeMessage(QQuickWindow *target, const QString &msgId);
 
 Q_SIGNALS:
     void hasBlurWindowChanged();

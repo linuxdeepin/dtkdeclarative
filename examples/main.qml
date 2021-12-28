@@ -31,6 +31,29 @@ D.ApplicationWindow {
         }
     }
 
+//    D.MessageManager.layout: Column {
+//        anchors {
+//            bottom: parent.bottom
+//            right: parent.right
+//        }
+//    }
+//    D.MessageManager.capacity: 6
+//    D.MessageManager.delegate: D.FloatingMessage {
+//        id: floatingMsg
+//        iconName: "error"
+//        type: D.FloatingMessage.TransientType
+//        contentItem: V2.Label {
+//            verticalAlignment: Text.AlignVCenter
+//            horizontalAlignment: Text.AlignLeft
+//            text: floatingMsg.content
+//            elide: Text.ElideRight
+//            maximumLineCount: 1
+//            wrapMode: Text.Wrap
+//        }
+
+//        duration: 3000
+//    }
+
     Component.onCompleted: {
         console.log(D.Window.wmWindowTypes)
         console.log(D.Window.enabled ? "DPlatformHandle有效" : "DPlatformHandle无效!!!!");
@@ -97,6 +120,9 @@ D.ApplicationWindow {
         V2.TabButton {
             text: qsTr("SettingsDialog")
         }
+        V2.TabButton {
+            text: qsTr("Notify")
+        }
     }
     StackLayout {
         anchors.left: parent.left
@@ -111,5 +137,6 @@ D.ApplicationWindow {
         Example_3 {}
         Example_config {}
         Example_settingsdialog {}
+        Example_Notify {}
     }
 }

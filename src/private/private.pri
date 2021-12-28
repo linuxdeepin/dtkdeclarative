@@ -24,6 +24,7 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dquickdciicon_p.h \
     $$PWD/dsettingscontainer_p.h \
     $$PWD/dquickshadowimage_p.h \
+    $$PWD/dmessagemanager_p.h \
 
 SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dblitframebuffernode.cpp \
@@ -38,3 +39,4 @@ SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dquickdciiconimage.cpp \
     $$PWD/dquickdciicon.cpp \
     $$PWD/dsettingscontainer.cpp \
+    $$PWD/dmessagemanager.cpp \
