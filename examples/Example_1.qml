@@ -67,13 +67,13 @@ Rectangle {
         onPressed: console.log("D.WarningButton pressed") // @disable-check M16
     }
 
-    D.SuggestButton {
+    D.RecommandButton {
         id: suggestionBtn
         anchors.left: warningBtn.right // @disable-check M16
         anchors.leftMargin: 20 // @disable-check M16
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20 // @disable-check M16
-        text: "Suggest" // @disable-check M16
+        text: "Recommand" // @disable-check M16
     }
 
     D.ToolButton {

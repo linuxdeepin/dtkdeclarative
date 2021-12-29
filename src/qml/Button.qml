@@ -29,35 +29,21 @@ import org.deepin.dtk.style 1.0 as DS
 T.Button {
     id: control
 
-    property D.Palette highlightedPalette: D.Palette {
-        objectName: "button"
-        normal: control.palette.highlight
-        hovered: D.DTK.adjustColor(control.palette.highlight, 0, 0, +10, 0, 0, 0, 0)
-        pressed: D.DTK.adjustColor(control.palette.highlight, 0, 0, -10, 0, 0, 0, 0)
-    }
-    property D.Palette highlightedTextPalette: D.Palette {
-        objectName: "buttonText"
-        enabled: control.checked || control.highlighted
-        normal: control.palette.highlightedText
-        hovered: D.DTK.adjustColor(control.palette.highlightedText, 0, 0, +10, 0, 0, 0, 0)
-        pressed: D.DTK.adjustColor(control.palette.highlightedText, 0, 0, -20, 0, 0, 0, 0)
-    }
-
-    D.ColorSelector.palettes: [
+    property var paletteGroup: [
         DS.Style.button1,
         DS.Style.button2,
         DS.Style.buttonText,
-        DS.Style.buttonBorder,
-        highlightedPalette,
-        highlightedTextPalette
+        DS.Style.buttonBorder
     ]
-    D.ColorSelector.hovered: false
 
-    D.ColorSelector {
-        id: csForHover
-        control: control.D.ColorSelector.control
-        palettes: control.D.ColorSelector.palettes
-    }
+    property var highlightedPaletteGroup: [
+        DS.Style.suggestButton1,
+        DS.Style.suggestButton2,
+        DS.Style.suggestButtonText,
+        DS.Style.suggestButtonBorder
+    ]
+
+    D.ColorSelector.palettes: highlighted ? highlightedPaletteGroup : paletteGroup
 
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
@@ -79,6 +65,11 @@ T.Button {
         implicitHeight: DS.Style.button.height
         visible: !control.flat || control.down || control.checked || control.highlighted || control.visualFocus || control.hovered
 
+        Component.onCompleted: {
+            paletteGroup.push(checkedPalette)
+            control.D.ColorSelector.palettes.push(checkedPalette)
+        }
+
         RectangularShadow {
             anchors.fill: backgroundRect
             offsetX: 0
@@ -87,10 +78,26 @@ T.Button {
             color: palette.shadow
         }
 
+        D.Palette {
+            id: checkedPalette
+            objectName: "button1"
+            enabled: control.checked
+            normal: control.palette.highlight
+            hovered: D.DTK.adjustColor(control.palette.highlight, 0, 0, +10, 0, 0, 0, 0)
+            pressed: D.DTK.adjustColor(control.palette.highlight, 0, 0, -10, 0, 0, 0, 0)
+        }
+
+        D.ColorSelector {
+            id: csForHover
+            control: control.D.ColorSelector.control
+            palettes: control.D.ColorSelector.palettes
+            hovered: false
+        }
+
         Gradient {
-            id: backgroundGradient
-            GradientStop { position: 0.0; color: control.D.ColorSelector.button1 }
-            GradientStop { position: 0.96; color: control.D.ColorSelector.button2 }
+            id :backgroundGradient
+            GradientStop { position: 0.0; color: csForHover.palettes ? csForHover.button1 : null }
+            GradientStop { position: 0.96; color: csForHover.palettes ? csForHover.button2 : null }
         }
 
         Rectangle {
@@ -102,15 +109,14 @@ T.Button {
                 width: DS.Style.control.borderWidth
                 color: control.D.ColorSelector.buttonBorder
             }
-            gradient: highlightedTextPalette.enabled ? null : backgroundGradient
-            color: highlightedTextPalette.enabled ? control.D.ColorSelector.button
-                                                  : "transparent"
+            gradient: checkedPalette.enabled ? null : backgroundGradient
+            color: control.D.ColorSelector.button1
         }
 
         Gradient {
-            id :hoverBackgroundGradient
-            GradientStop { position: 0.0; color: csForHover.button1 }
-            GradientStop { position: 0.96; color: csForHover.button2 }
+            id: hoverBackgroundGradient
+            GradientStop { position: 0.0; color: control.D.ColorSelector.button1 }
+            GradientStop { position: 0.96; color: control.D.ColorSelector.button2 }
         }
 
         CicleSpreadAnimation {
@@ -125,7 +131,7 @@ T.Button {
                     width: backgroundRect.border.width
                     color: backgroundRect.border.color
                 }
-                gradient: highlightedTextPalette.enabled ? null : hoverBackgroundGradient
+                gradient: checkedPalette.enabled ? null : hoverBackgroundGradient
                 color: backgroundRect.color
             }
         }
@@ -150,8 +156,22 @@ T.Button {
         display: control.display
         text: control.text
         font: control.font
-        color: csForHover.buttonText
+        color: control.D.ColorSelector.buttonText
         icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
+
+        Component.onCompleted: {
+            paletteGroup.push(checkedTextPalette)
+            control.D.ColorSelector.palettes.push(checkedTextPalette)
+        }
+
+        D.Palette {
+            id: checkedTextPalette
+            objectName: "buttonText"
+            enabled: control.checked
+            normal: control.palette.highlightedText
+            hovered: D.DTK.adjustColor(control.palette.highlightedText, 0, 0, +10, 0, 0, 0, 0)
+            pressed: D.DTK.adjustColor(control.palette.highlightedText, 0, 0, -20, 0, 0, 0, 0)
+        }
     }
 }
 

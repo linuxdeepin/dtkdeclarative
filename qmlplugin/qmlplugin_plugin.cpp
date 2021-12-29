@@ -187,7 +187,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "SearchEdit");
     dtkRegisterType(uri, controlsUri, 1, 0, "PasswordEdit");
     dtkRegisterType(uri, controlsUri, 1, 0, "WarningButton");
-    dtkRegisterType(uri, controlsUri, 1, 0, "SuggestButton");
+    dtkRegisterType(uri, controlsUri, 1, 0, "RecommandButton");
     dtkRegisterType(uri, controlsUri, 1, 0, "ToolButton");
     dtkRegisterType(uri, controlsUri, 1, 0, "IconButton");
     dtkRegisterType(uri, controlsUri, 1, 0, "FloatingButton");

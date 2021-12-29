@@ -365,7 +365,8 @@ void DQuickControlColorSelector::palette_append(QQmlListProperty<DQuickControlPa
         value->setParent(that);
     that->m_palettes.append(value);
     that->ensureMetaObject();
-    that->updatePropertyForPalette(value);
+    if (value->enabled())
+        that->updatePropertyForPalette(value, true);
     connect(value, &DQuickControlPalette::changed, that, &DQuickControlColorSelector::onPaletteChanged);
     connect(value, &DQuickControlPalette::enabledChanged, that, &DQuickControlColorSelector::onPaletteChanged);
     Q_EMIT that->palettesChanged();
@@ -565,14 +566,6 @@ bool DQuickControlColorSelector::updatePropertyForPalette(const DQuickControlPal
     }
 
     return true;
-}
-
-void DQuickControlColorSelector::removePropertyForPalette(const DQuickControlPalette *palette)
-{
-    const auto id = palette->objectName();
-    if (!id.isEmpty()) {
-        m_metaObject->setValue(id.toLatin1(), QVariant());
-    }
 }
 
 void DQuickControlColorSelector::updateControlTheme()

@@ -20,12 +20,10 @@
  */
 
 import QtQuick 2.11
-import QtQuick.Controls 2.4
-import QtQuick.Layouts 1.11
-import QtQuick.Window 2.11
 import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.settings 1.0 as Settings
 import org.deepin.dtk.style 1.0 as DS
+import ".."
 
 Button {
     id: control
@@ -37,7 +35,8 @@ Button {
     leftPadding: __getMargin(Settings.SettingsGroup.level)
     anchors.left: parent.left
 
-    highlighted: __view.isCurrentItem
+    checkable: true
+    checked: __view.isCurrentItem
 
     onClicked: {
         __view.view.currentIndex = Settings.SettingsGroup.index
