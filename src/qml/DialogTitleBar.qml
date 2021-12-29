@@ -24,17 +24,18 @@ import QtQuick.Controls 2.4
 import QtQuick.Window 2.11
 import QtQuick.Layouts 1.11
 import org.deepin.dtk.impl 1.0 as D
+import "PixelMetric.js" as PM
 
 MouseArea {
     id: control
     z: D.DTK.TopOrder
     width: Window.window.width
-    height: 45
+    height: PM.TitleBar_Height
 
     // custom control
     property alias content: customCenter.sourceComponent
     // dialog icon
-    property alias iconName: iconLabel.icon.name
+    property alias icon: iconLabel
     property alias enableInWindowBlendBlur: background.visible
 
     property var __dwindow: Window.window.D.Window
@@ -75,11 +76,11 @@ MouseArea {
             spacing: 0
             Layout.alignment: Qt.AlignHCenter
             Layout.fillHeight: true
-            Button {
+            D.DciIcon {
                 id: iconLabel
                 width: 32
                 height: 32
-                visible: control.iconName !== ""
+                visible: name !== ""
             }
 
             // center custom area

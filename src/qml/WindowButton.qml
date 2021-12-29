@@ -23,6 +23,7 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
+import "PixelMetric.js" as PM
 
 Control {
     id: control
@@ -34,6 +35,7 @@ Control {
     property D.Palette highlightedPalette: D.Palette {
         objectName: "buttonText"
         normal: Qt.rgba(0, 0, 0, 0.29)
+        normalDark: Qt.rgba(0, 0, 0, 0.29)
         pressed: control.palette.highlight
     }
 
@@ -45,6 +47,8 @@ Control {
     contentItem: D.DciIcon {
         id: iconLoader
         color: control.D.ColorSelector.buttonText
+        sourceSize.width: PM.TitleBar_Height
+        sourceSize.height: PM.TitleBar_Height
     }
     MouseArea {
         id: mouseArea
