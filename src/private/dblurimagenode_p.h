@@ -96,9 +96,11 @@ private:
     void initBlurSahder();
     void applyDaulBlur(QOpenGLFramebufferObject* targetFBO, GLuint sourceTexture, QOpenGLShaderProgram *shader
                      , const QSGRenderNode::RenderState *state, int matrixUniform, int scale);
+    void applyNoise(GLuint sourceTexture, const QSGRenderNode::RenderState *state);
     void renderToScreen(GLuint sourceTexture, const QSGRenderNode::RenderState *state);
     void initFBOTextures();
     void initDispalyShader();
+    void initNoiseShader();
 
 private:
     QQuickItem *m_item;
@@ -122,6 +124,9 @@ private:
     int m_matrixUniform;
     int m_opacityUniform;
     QOpenGLBuffer *m_vbo = nullptr;
+
+    QOpenGLShaderProgram *m_programNoise = nullptr;
+    QOpenGLBuffer *m_noiseVbo = nullptr;
 };
 
 DQUICK_END_NAMESPACE

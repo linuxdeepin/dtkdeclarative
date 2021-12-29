@@ -17,4 +17,4 @@ void main() {
    pixelOffset3 = qt_VertexTexCoord + vec2(halfpixel.x, -halfpixel.y) * offset;
    pixelOffset4 = qt_VertexTexCoord - vec2(halfpixel.x, -halfpixel.y) * offset;
    gl_Position = matrix * posAttr;
-};
+}

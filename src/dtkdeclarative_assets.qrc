@@ -8,6 +8,8 @@
         <file>shaders/dualkawasedown.vert</file>
         <file>shaders/dualkawaseup.frag</file>
         <file>shaders/dualkawaseup.vert</file>
+        <file>shaders/noise.vert</file>
+        <file>shaders/noise.frag</file>
     </qresource>
     <qresource prefix="/dsg/built-in-icons">
         <file alias="window_maximize.dci">icons/bloom/window_maximize.dci</file>

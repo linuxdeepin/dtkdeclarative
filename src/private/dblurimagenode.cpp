@@ -398,6 +398,8 @@ DBlurEffectNode::~DBlurEffectNode()
     m_programKawaseDown = nullptr;
     delete m_program;
     m_program = nullptr;
+    delete m_programNoise;
+    m_programNoise = nullptr;
 
     qDeleteAll(m_fboVector);
     m_fboVector.clear();
@@ -407,6 +409,9 @@ DBlurEffectNode::~DBlurEffectNode()
 
     delete  m_sampleVbo;
     m_sampleVbo = nullptr;
+
+    delete m_noiseVbo;
+    m_noiseVbo = nullptr;
 }
 
 void DBlurEffectNode::setTexture(QSGTexture *texture)
@@ -637,6 +642,58 @@ void DBlurEffectNode::applyDaulBlur(QOpenGLFramebufferObject *targetFBO, GLuint 
     targetFBO->release();
 }
 
+void DBlurEffectNode::applyNoise(GLuint sourceTexture, const QSGRenderNode::RenderState *state)
+{
+    QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
+    f->glBindTexture(GL_TEXTURE_2D, sourceTexture);
+    f->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    f->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    QOpenGLFramebufferObject::bindDefault();
+    m_programNoise->bind();
+    m_programNoise->setUniformValue("matrix", *state->projectionMatrix() * *matrix());
+    m_programNoise->setUniformValue("opacity", float(inheritedOpacity()));
+    m_programNoise->setUniformValue("blendColor", m_blendColor);
+
+    m_noiseVbo->bind();
+
+    QPointF p0(0, 0);
+    QPointF p1(0, m_sourceRect.height());
+    QPointF p2(m_sourceRect.width(), 0);
+    QPointF p3(m_sourceRect.width(), m_sourceRect.height());
+
+    GLfloat vertices[8] = { GLfloat(p0.x()), GLfloat(p0.y()),
+                            GLfloat(p1.x()), GLfloat(p1.y()),
+                            GLfloat(p2.x()), GLfloat(p2.y()),
+                            GLfloat(p3.x()), GLfloat(p3.y()) };
+
+    m_noiseVbo->write(0, vertices, sizeof(vertices));
+
+    m_programNoise->setAttributeBuffer(0, GL_FLOAT, 0, 2);
+    m_programNoise->setAttributeBuffer(1, GL_FLOAT, sizeof(vertices), 2);
+    m_programNoise->enableAttributeArray(0);
+    m_programNoise->enableAttributeArray(1);
+    m_noiseVbo->release();
+
+    f->glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
+    f->glEnable(GL_BLEND);
+    f->glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
+    if (state->scissorEnabled()) {
+        f->glEnable(GL_SCISSOR_TEST);
+        const QRect r = state->scissorRect();
+        f->glScissor(r.x(), r.y(), r.width(), r.height());
+    }
+    if (state->stencilEnabled()) {
+        f->glEnable(GL_STENCIL_TEST);
+        f->glStencilFunc(GL_EQUAL, state->stencilValue(), 0xFF);
+        f->glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+    }
+    f->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    markDirty(QSGNode::DirtyGeometry);
+    m_programNoise->release();
+}
+
 void DBlurEffectNode::renderToScreen(GLuint sourceTexture, const QSGRenderNode::RenderState *state)
 {
     QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
@@ -729,8 +786,9 @@ void DBlurEffectNode::initDispalyShader()
             "uniform sampler2D qt_Texture;                                                             \n"
             "uniform highp vec4 blendColor;                                                            \n"
             "void main() {                                                                             \n"
-            "   highp vec4 color = texture2D(qt_Texture, qt_TexCoord);                                 \n"
-            "   gl_FragColor = (color + blendColor * blendColor.a) * opacity;\n"
+            "   highp vec4 color = texture2D(qt_Texture, qt_TexCoord) * opacity;                       \n"
+            "   lowp vec3 rgb = blendColor.rgb;                                                        \n"
+            "   gl_FragColor = color * (1.0 - blendColor.a) + vec4(rgb * blendColor.a, blendColor.a);  \n"
             "}\n";
 
     m_program->addCacheableShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource);
@@ -756,6 +814,31 @@ void DBlurEffectNode::initDispalyShader()
     m_vbo->bind();
     m_vbo->allocate(VERTEX_SIZE + sizeof(texCoord));
     m_vbo->write(VERTEX_SIZE, texCoord, sizeof(texCoord));
+}
+
+void DBlurEffectNode::initNoiseShader()
+{
+    m_programNoise = new QOpenGLShaderProgram;
+    m_programNoise->addCacheableShaderFromSourceFile(QOpenGLShader::Vertex, ":/dtk/declarative/shaders/noise.vert");
+    m_programNoise->addCacheableShaderFromSourceFile(QOpenGLShader::Fragment, ":/dtk/declarative/shaders/noise.frag");
+    m_programNoise->bindAttributeLocation("posAttr", 0);
+    m_programNoise->bindAttributeLocation("qt_VertexTexCoord", 1);
+    m_programNoise->link();
+
+    const int VERTEX_SIZE = 8 * sizeof(GLfloat);
+
+    static GLfloat texCoord[] = {
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+    };
+
+    m_noiseVbo = new QOpenGLBuffer;
+    m_noiseVbo->create();
+    m_noiseVbo->bind();
+    m_noiseVbo->allocate(VERTEX_SIZE + sizeof(texCoord));
+    m_noiseVbo->write(VERTEX_SIZE, texCoord, sizeof(texCoord));
 }
 
 #endif

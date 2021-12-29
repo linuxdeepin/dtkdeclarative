@@ -13,4 +13,4 @@ void main() {
     sum += texture2D(qt_Texture, pixelOffset3);
     sum += texture2D(qt_Texture, pixelOffset4);
     gl_FragColor = sum / 8.0;
-};
+}
