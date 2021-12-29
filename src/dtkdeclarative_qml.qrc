@@ -8,7 +8,7 @@
         <file>qml/ButtonBoxButton.qml</file>
         <file>qml/FloatingButton.qml</file>
         <file>qml/IconButton.qml</file>
-        <file>qml/SuggestButton.qml</file>
+        <file>qml/RecommandButton.qml</file>
         <file>qml/ToolButton.qml</file>
         <file>qml/WarningButton.qml</file>
         <file>qml/RectangleBorder.qml</file>

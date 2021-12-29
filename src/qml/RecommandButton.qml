@@ -25,10 +25,5 @@ import org.deepin.dtk.style 1.0 as DS
 Button {
     id: control
 
-    D.ColorSelector.palettes: [
-        DS.Style.suggestButton1,
-        DS.Style.suggestButton2,
-        DS.Style.suggestButtonText,
-        DS.Style.suggestButtonBorder
-    ]
+    highlighted: true
 }

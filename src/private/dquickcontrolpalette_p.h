@@ -335,7 +335,6 @@ private:
                       DQMLGlobalObject::ControlState state);
     void ensureMetaObject();
     bool updatePropertyForPalette(const DQuickControlPalette *palette, bool force = false);
-    void removePropertyForPalette(const DQuickControlPalette *palette);
     Q_SLOT void updateControlTheme();
     Q_SLOT void updateControlState();
     Q_SLOT void updateProperties();
