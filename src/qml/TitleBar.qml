@@ -117,6 +117,7 @@ MouseArea {
                 sourceSize.width: 32
                 sourceSize.height: 32
                 Layout.alignment: Qt.AlignLeft
+                Layout.leftMargin: 2
                 visible: control.iconName !== ""
             }
 
@@ -124,7 +125,7 @@ MouseArea {
             Loader {
                 id: customCenter
                 height: parent.height
-                Layout.alignment: Qt.AlignHCenter
+                Layout.leftMargin: (optionMenuBtn.width + windowButtonsLoader.width - iconLabel.width)
                 Layout.fillWidth: true
                 sourceComponent: titleCenterCom
             }
@@ -170,8 +171,10 @@ MouseArea {
 
             Loader {
                 id: windowButtonsLoader
+                Layout.fillHeight: true
                 sourceComponent: WindowButtonGroup {
                     Layout.alignment: Qt.AlignRight
+                    Layout.fillHeight: true
                     embedMode: control.embedMode
                     fullScreenButtonVisible: control.fullScreenButtonVisible
                     Component.onCompleted: {

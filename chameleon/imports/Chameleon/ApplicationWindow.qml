@@ -15,10 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import QtQuick 2.11
 import QtQuick.Templates 2.4 as T
 import org.deepin.dtk 1.0 as D
 
 T.ApplicationWindow {
     palette: active ? D.DTK.palette : D.DTK.inactivePalette
     font: D.DTK.fontManager.t6
+    background: Rectangle {
+        anchors.fill: parent
+        color: root.palette.window
+    }
 }

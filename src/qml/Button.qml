@@ -25,6 +25,7 @@ import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.4 as T
 import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
+import QtGraphicalEffects 1.0
 
 T.Button {
     id: control
@@ -70,12 +71,11 @@ T.Button {
             control.D.ColorSelector.palettes.push(checkedPalette)
         }
 
-        RectangularShadow {
+        RectangularGlow {
             anchors.fill: backgroundRect
-            offsetX: 0
-            offsetY: 4
-            glowRadius: backgroundRect.radius
+            glowRadius: 10
             color: palette.shadow
+            cornerRadius: backgroundRect.radius
         }
 
         D.Palette {

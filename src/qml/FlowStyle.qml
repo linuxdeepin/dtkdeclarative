@@ -72,7 +72,8 @@ QtObject {
     }
     property D.Palette windowButton: D.Palette {
         objectName: "button"
-        normal: "#f7f7f7"
+        normal: "transparent"
+        normalDark: "transparent"
         hovered: Qt.rgba(0, 0, 0, 0.29)
         hoveredDark: Qt.rgba(0, 0, 0, 0.29)
         pressed: Qt.rgba(0, 0, 0, 0.29)
