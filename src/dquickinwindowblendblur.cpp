@@ -28,6 +28,7 @@ DQUICK_BEGIN_NAMESPACE
 
 DQuickInWindowBlendBlur::DQuickInWindowBlendBlur(QQuickItem *parent)
     : QQuickItem(parent)
+    , m_blendColor(Qt::transparent)
 {
     setFlag(QQuickItem::ItemHasContents, true);
 }
