@@ -101,8 +101,8 @@ MouseArea {
 
         Rectangle {
             id: separatorTop
-            width: control.width
-            height: 1
+            Layout.preferredWidth: control.width
+            Layout.preferredHeight: 1
             visible: embedMode
             color: "transparent"
         }
@@ -124,7 +124,6 @@ MouseArea {
             // center custom area
             Loader {
                 id: customCenter
-                height: parent.height
                 Layout.leftMargin: (optionMenuBtn.width + windowButtonsLoader.width - iconLabel.width)
                 Layout.fillWidth: true
                 sourceComponent: titleCenterCom
@@ -186,8 +185,8 @@ MouseArea {
 
         Rectangle {
             id: separatorButtom
-            width: control.width
-            height: 1
+            Layout.preferredWidth: control.width
+            Layout.preferredHeight: 1
             visible: separatorVisible
             color: "transparent"
             Layout.alignment: Qt.AlignBottom
