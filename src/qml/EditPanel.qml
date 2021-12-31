@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 ~ 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     Chen Bin <chenbin@uniontech.com>
  *
@@ -27,18 +27,10 @@ import org.deepin.dtk.style 1.0 as DS
 Rectangle {
     id: panel
     property Item control
+    property DI.Palette backgroundColor: DS.Style.editBackground
+
     radius: DS.Style.control.radius
-    color: colorSelector.palettes ? colorSelector.editBackground
-                                  : "transparent"
-
-    DI.ColorSelector {
-        id: colorSelector
-        control: panel.control
-
-        palettes: [
-            DS.Style.editBackground
-        ]
-    }
+    color: DI.ColorSelector.backgroundColor
 
     RectangleBorder {
         visible: control.activeFocus

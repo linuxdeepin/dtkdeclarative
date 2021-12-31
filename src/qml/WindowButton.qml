@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     yeshanshan <yeshanshan@uniontech.com>
  *
@@ -28,25 +28,19 @@ import "PixelMetric.js" as PM
 Control {
     id: control
     property alias icon: iconLoader
+    property alias pressed: mouseArea.pressed
     signal clicked
 
-    property alias pressed: mouseArea.pressed
-
-    property D.Palette highlightedPalette: D.Palette {
-        objectName: "buttonText"
-        normal: Qt.rgba(0, 0, 0, 0.29)
-        normalDark: Qt.rgba(0, 0, 0, 0.29)
-        pressed: control.palette.highlight
-    }
-
-    D.ColorSelector.palettes: [
-        highlightedPalette,
-        DS.Style.windowButton
-    ]
     hoverEnabled: true
     contentItem: D.DciIcon {
+        property D.Palette textColor: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.29)
+            normalDark: Qt.rgba(0, 0, 0, 0.29)
+            pressed: control.palette.highlight
+        }
+
         id: iconLoader
-        color: control.D.ColorSelector.buttonText
+        color: D.ColorSelector.textColor
         sourceSize.width: PM.TitleBar_Height
         sourceSize.height: PM.TitleBar_Height
     }
@@ -56,7 +50,8 @@ Control {
         Component.onCompleted: clicked.connect(control.clicked)
     }
     background: Rectangle {
+        property D.Palette color1: DS.Style.windowButton
         anchors.fill: parent
-        color: control.D.ColorSelector.button
+        color: D.ColorSelector.color1
     }
 }
