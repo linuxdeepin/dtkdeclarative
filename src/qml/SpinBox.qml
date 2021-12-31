@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 ~ 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     Chen Bin <chenbin@uniontech.com>
  *
@@ -79,7 +79,6 @@ T.SpinBox {
         singleIndicator: down.indicator
         direction: SpinBoxIndicator.IndicatorDirection.UpIndicator
         iconName: "go-up"
-        hovered: up.hovered
         pressed: up.pressed
     }
 
@@ -94,7 +93,6 @@ T.SpinBox {
         singleIndicator: up.indicator
         direction: SpinBoxIndicator.IndicatorDirection.DownIndicator
         iconName: "go-down"
-        hovered: down.hovered
         pressed: down.pressed
     }
 }

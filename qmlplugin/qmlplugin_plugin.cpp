@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 ~ 2021 deepin Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2022 deepin Technology Co., Ltd.
  *
  * Author:     JiDe Zhang <zhangjide@deepin.org>
  *
@@ -146,7 +146,6 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType<DConfigWrapper>(uri, implUri, 1, 0, "Config");
     dtkRegisterType<DQuickInWindowBlendBlur>(uri, implUri, 1, 0, "InWindowBlendBlur");
     dtkRegisterType<DQuickControlPalette>(uri, implUri, 1, 0, "Palette");
-    dtkRegisterType<DQuickControlColorSelector>(uri, implUri, 1, 0, "ColorSelector");
     dtkRegisterType<DQuickShadowImage>(uri, implUri, 1, 0, "ShadowImage");
     dtkRegisterType<FloatingMessageContainer>(uri, implUri, 1, 0, "FloatingMessageContainer");
     dtkRegisterUncreatableType<MessageManager>(uri, implUri, 1, 0, "MessageManager", "Window Attached");
@@ -155,6 +154,8 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterAnonymousType<DQuickControlColor>(uri, implUri, 1);
 
     dtkRegisterUncreatableType<DQuickWindow>(uri, implUri, 1, 0, "Window", "DQuickWindow Attached");
+    dtkRegisterUncreatableType<DQuickControlColorSelector>(uri, implUri, 1, 0, "ColorSelector",
+                                                           QStringLiteral("ColorSelector is only available as an attached property."));
 
     qRegisterMetaType<DQUICK_NAMESPACE::DQuickDciIcon>();
     qRegisterMetaType<DQuickControlColor>("ControlColor");

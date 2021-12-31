@@ -8,5 +8,7 @@
         <file>Example_TitleBar.qml</file>
         <file>Example_settingsdialog.qml</file>
         <file>Example_Notify.qml</file>
+        <file>Example_colorselector.qml</file>
+        <file>Example_customcontrolforcs.qml</file>
     </qresource>
 </RCC>

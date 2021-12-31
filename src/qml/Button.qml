@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     JiDe Zhang <zhangjide@deepin.org>
  *
@@ -30,21 +30,10 @@ import QtGraphicalEffects 1.0
 T.Button {
     id: control
 
-    property var paletteGroup: [
-        DS.Style.button1,
-        DS.Style.button2,
-        DS.Style.buttonText,
-        DS.Style.buttonBorder
-    ]
-
-    property var highlightedPaletteGroup: [
-        DS.Style.suggestButton1,
-        DS.Style.suggestButton2,
-        DS.Style.suggestButtonText,
-        DS.Style.suggestButtonBorder
-    ]
-
-    D.ColorSelector.palettes: highlighted ? highlightedPaletteGroup : paletteGroup
+    property D.Palette color1: highlighted ? DS.Style.suggestButton1 : DS.Style.button1
+    property D.Palette color2: highlighted ? DS.Style.suggestButton2 : DS.Style.button2
+    property D.Palette textColor: highlighted ? DS.Style.suggestButtonText : DS.Style.buttonText
+    property D.Palette borderColor: highlighted ? DS.Style.suggestButtonBorder : DS.Style.buttonBorder
 
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
@@ -54,62 +43,57 @@ T.Button {
     spacing: DS.Style.control.spacing
     opacity: enabled ? 1 : 0.4
     D.DciIcon.mode: D.ColorSelector.controlState
-
     icon {
         width: DS.Style.button.iconSize
         height: DS.Style.button.iconSize
-        color: D.ColorSelector.palettes ? D.ColorSelector.buttonText : null
+        color: D.ColorSelector.textColor
     }
 
     background: Item {
+        id: backgroundItem
+        objectName: "ColorSelectorMaster"
         implicitWidth: DS.Style.button.width
         implicitHeight: DS.Style.button.height
         visible: !control.flat || control.down || control.checked || control.highlighted || control.visualFocus || control.hovered
+        D.ColorSelector.hovered: false
 
-        Component.onCompleted: {
-            paletteGroup.push(checkedPalette)
-            control.D.ColorSelector.palettes.push(checkedPalette)
-        }
-
-        D.Palette {
-            id: checkedPalette
-            objectName: "button1"
-            enabled: control.checked
-            normal: control.palette.highlight
-            hovered: D.DTK.adjustColor(control.palette.highlight, 0, 0, +10, 0, 0, 0, 0)
-            pressed: D.DTK.adjustColor(control.palette.highlight, 0, 0, -10, 0, 0, 0, 0)
-        }
-
-        D.ColorSelector {
-            id: csForHover
-            control: control.D.ColorSelector.control
-            palettes: control.D.ColorSelector.palettes
-            hovered: false
+        RectangularGlow {
+            anchors.fill: backgroundRect
+            glowRadius: 10
+            color: palette.shadow
+            cornerRadius: backgroundRect.radius
         }
 
         Gradient {
-            id :backgroundGradient
-            GradientStop { position: 0.0; color: csForHover.palettes ? csForHover.button1 : null }
-            GradientStop { position: 0.96; color: csForHover.palettes ? csForHover.button2 : null }
+            id: backgroundGradient
+            // Use the backgroundItem's colorselecor can filter the hovered state.
+            GradientStop { position: 0.0; color: backgroundItem.D.ColorSelector.color1}
+            GradientStop { position: 0.96; color: backgroundItem.D.ColorSelector.color2}
         }
 
         Rectangle {
             id: backgroundRect
+            property D.Palette color1: D.Palette {
+                enabled: control.checked
+                normal: control.palette.highlight
+                hovered: D.DTK.adjustColor(control.palette.highlight, 0, 0, +10, 0, 0, 0, 0)
+                pressed: D.DTK.adjustColor(control.palette.highlight, 0, 0, -10, 0, 0, 0, 0)
+            }
 
             anchors.fill: parent
             radius: DS.Style.control.radius
             border {
                 width: DS.Style.control.borderWidth
-                color: control.D.ColorSelector.buttonBorder
+                color: D.ColorSelector.borderColor
             }
-            gradient: checkedPalette.enabled ? null : backgroundGradient
-            color: control.D.ColorSelector.button1
+            gradient: control.checked ? null : backgroundGradient
+            color: D.ColorSelector.color1
         }
 
         Gradient {
             id: hoverBackgroundGradient
-            GradientStop { position: 0.0; color: control.D.ColorSelector.button1 }
-            GradientStop { position: 0.96; color: control.D.ColorSelector.button2 }
+            GradientStop { position: 0.0; color: control.D.ColorSelector.color1 }
+            GradientStop { position: 0.96; color: control.D.ColorSelector.color2 }
         }
 
         CicleSpreadAnimation {
@@ -124,7 +108,7 @@ T.Button {
                     width: backgroundRect.border.width
                     color: backgroundRect.border.color
                 }
-                gradient: checkedPalette.enabled ? null : hoverBackgroundGradient
+                gradient: control.checked ? null : hoverBackgroundGradient
                 color: backgroundRect.color
             }
         }
@@ -144,27 +128,20 @@ T.Button {
     }
 
     contentItem: D.IconLabel {
-        spacing: control.spacing
-        mirrored: control.mirrored
-        display: control.display
-        text: control.text
-        font: control.font
-        color: control.D.ColorSelector.buttonText
-        icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
-
-        Component.onCompleted: {
-            paletteGroup.push(checkedTextPalette)
-            control.D.ColorSelector.palettes.push(checkedTextPalette)
-        }
-
-        D.Palette {
-            id: checkedTextPalette
-            objectName: "buttonText"
+        property D.Palette textColor: D.Palette {
             enabled: control.checked
             normal: control.palette.highlightedText
             hovered: D.DTK.adjustColor(control.palette.highlightedText, 0, 0, +10, 0, 0, 0, 0)
             pressed: D.DTK.adjustColor(control.palette.highlightedText, 0, 0, -20, 0, 0, 0, 0)
         }
+
+        spacing: control.spacing
+        mirrored: control.mirrored
+        display: control.display
+        text: control.text
+        font: control.font
+        color: D.ColorSelector.textColor
+        icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
     }
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 ~ 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     Chen Bin <chenbin@uniontech.com>
  *
@@ -23,7 +23,7 @@ import QtQuick 2.11
 import org.deepin.dtk.impl 1.0 as DI
 import org.deepin.dtk.style 1.0 as DS
 
-Item {
+Control {
     id: control
 
     enum IndicatorDirection {
@@ -33,20 +33,12 @@ Item {
 
     property int direction: IndicatorDirection.UpIndicator
     property bool singleIndicator: false
+    property bool pressed
     property alias iconName: icon.name
-    property alias hovered: icon.hovered
-    property alias pressed: icon.pressed
 
     implicitWidth: DS.Style.spinBox.indicatorWidth
     implicitHeight: singleIndicator ? DS.Style.spinBox.indicatorHeight : DS.Style.spinBox.indicatorWidth
-
-    DI.ColorSelector {
-        id: backgroundColor
-        control: control
-        palettes: [
-            DS.Style.spinBoxIndicatorBackground
-        ]
-    }
+    hoverEnabled: true
 
     Item {
         anchors.left: parent.left
@@ -57,43 +49,33 @@ Item {
         clip: singleIndicator
 
         Rectangle {
+            property DI.Palette indicatorBackgroundColor: DS.Style.spinBoxIndicatorBackground
             anchors.left: parent.left
             anchors.bottom: (direction === SpinBoxIndicator.IndicatorDirection.UpIndicator) ? undefined : parent.bottom
             anchors.top: (direction === SpinBoxIndicator.IndicatorDirection.UpIndicator) ? parent.top : undefined
             implicitWidth: DS.Style.spinBox.indicatorWidth
             implicitHeight: DS.Style.spinBox.indicatorWidth
             radius: parent.width / 2
-            color: backgroundColor.palettes ? backgroundColor.spinBoxIndicatorBackground
-                                            : "transparent"
+            color: DI.ColorSelector.indicatorBackgroundColor
         }
     }
 
     Rectangle {
+        property DI.Palette indicatorBackgroundColor: DS.Style.spinBoxIndicatorBackground
         visible: singleIndicator
         anchors.left: parent.left
         anchors.bottom: (direction === SpinBoxIndicator.IndicatorDirection.UpIndicator) ? parent.bottom : undefined
         anchors.top: (direction === SpinBoxIndicator.IndicatorDirection.UpIndicator) ? undefined : parent.top
         implicitWidth: parent.implicitWidth
         implicitHeight: DS.Style.spinBox.indicatorHeight - DS.Style.spinBox.indicatorWidth / 2
-        color: backgroundColor.palettes ? backgroundColor.spinBoxIndicatorBackground
-                                        : "transparent"
+        color: DI.ColorSelector.indicatorBackgroundColor
     }
 
     DI.DciIcon {
         id: icon
-        property bool hovered: control.hovered
-        property bool pressed: control.pressed
-        property DI.ColorSelector iconColor: DI.ColorSelector {
-            control: icon
-            palettes: [
-                DS.Style.spinBoxIndicator
-            ]
-        }
-
+        property DI.Palette indicatorColor: DS.Style.spinBoxIndicator
         anchors.centerIn: parent
         sourceSize.width: DS.Style.spinBox.indicatorIconSize
-
-        color: icon.iconColor.palettes ? icon.iconColor.spinBoxIndicator
-                                       : "transparent"
+        color: DI.ColorSelector.indicatorColor
     }
 }

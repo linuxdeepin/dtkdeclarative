@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 ~ 2021 UnionTech Software Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Software Technology Co., Ltd.
  *
  * Author:     wangfei <wangfeia@uniontech.com>
  *
@@ -25,9 +25,6 @@ import QtQuick 2.0
 
 Button {
     id: control
-
-    Component.onCompleted: {
-        D.ColorSelector.buttonText = DS.Style.warningButtonText
-    }
+    textColor: DS.Style.warningButtonText
 }
 

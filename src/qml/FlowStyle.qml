@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     JiDe Zhang <zhangjide@deepin.org>
  *
@@ -24,54 +24,44 @@ import org.deepin.dtk.impl 1.0 as D
 
 QtObject {
     property D.Palette button1: D.Palette {
-        objectName: "button1"
         normal: "#f7f7f7"
         hovered: "#e1e1e1"
         pressed: "#bcc4d0"
     }
     property D.Palette button2: D.Palette {
-        objectName: "button2"
         normal: "#f0f0f0"
         hovered: "#d2d2d2"
         pressed: "#cdd6e0"
     }
     property D.Palette suggestButton1: D.Palette {
-        objectName: "button1"
         normal: "#00aaff"
         hovered: "#24b6ff"
         pressed: "#005bcb"
     }
     property D.Palette suggestButton2: D.Palette {
-        objectName: "button2"
         normal: "#006eff"
         hovered: "#3586ff"
         pressed: "#0067ff"
     }
     property D.Palette buttonText: D.Palette {
-        objectName: "buttonText"
         normal: Qt.rgba(0, 0, 0, 0.7)
         pressed: "#0081ff"
     }
     property D.Palette warningButtonText: D.Palette {
-        objectName: "buttonText"
         normal: "#ff5736"
     }
     property D.Palette suggestButtonText: D.Palette {
-        objectName: "buttonText"
         normal: Qt.rgba(1, 1, 1, 0.9)
         hovered: "white"
         pressed: Qt.rgba(1, 1, 1, 0.6)
     }
     property D.Palette buttonBorder: D.Palette {
-        objectName: "buttonBorder"
         normal: Qt.rgba(0, 0, 0, 0.03)
     }
     property D.Palette suggestButtonBorder: D.Palette {
-        objectName: "buttonBorder"
         normal: Qt.rgba(0, 0.581, 1, 0.2)
     }
     property D.Palette windowButton: D.Palette {
-        objectName: "button"
         normal: "transparent"
         normalDark: "transparent"
         hovered: Qt.rgba(0, 0, 0, 0.29)
@@ -79,17 +69,14 @@ QtObject {
         pressed: Qt.rgba(0, 0, 0, 0.29)
     }
     property D.Palette editBackground: D.Palette {
-        objectName: "editBackground"
         normal: Qt.rgba(0, 0, 0, 0.08)
     }
 
     property D.Palette spinBoxIndicator: D.Palette {
-        objectName: "spinBoxIndicator"
         normal: "white"
         pressed: Qt.rgba(1, 1, 1, 0.6)
     }
     property D.Palette spinBoxIndicatorBackground: D.Palette {
-        objectName: "spinBoxIndicatorBackground"
         normal: Qt.rgba(0, 0, 0, 0.7)
     }
 
