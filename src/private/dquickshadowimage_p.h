@@ -216,7 +216,7 @@ public:
                 scissor.setRenderHint(QPainter::Antialiasing, true);
                 scissor.setCompositionMode(QPainter::CompositionMode_Clear);
                 QPainterPath path1;
-                scissor.setPen(QPen(Qt::transparent));
+                scissor.setPen(Qt::NoPen);
 
                 path1.moveTo(0, 0);
                 path1.arcTo(0, 0,  config.cornerRadius * 2,  config.cornerRadius * 2, 90, 90);
@@ -245,7 +245,7 @@ public:
             } else {
                 qreal pixel, innerPixel;
                 if (config.shapeType == ShapeType::Rectangle) {
-                    pixel = config.cornerRadius * 2.0 + config.shadowBlur * 4.0;
+                    pixel = config.cornerRadius * 2.0 + config.shadowBlur * 2.0 + 3;
                     innerPixel = pixel - config.shadowBlur * 2.0;
                 } else {
                     pixel = config.cornerRadius * 2.0 + config.shadowBlur * 2.0;
@@ -257,14 +257,12 @@ public:
 
                 QPainter shadowPainter(&shadowImage);
                 shadowPainter.setRenderHint(QPainter::Antialiasing, true);
+                shadowPainter.setPen(Qt::NoPen);
 
                 QRectF rectangle(config.shadowBlur, config.shadowBlur, innerPixel, innerPixel);
                 QPainterPath path;
                 path.addRoundedRect(rectangle, config.cornerRadius, config.cornerRadius);
-                QPen pen(Qt::transparent);
-                shadowPainter.setPen(pen);
                 shadowPainter.fillPath(path, config.shadowColor);
-                shadowPainter.drawPath(path);
                 shadowPainter.end();
 
                 if (config.shadowBlur > 0) {
@@ -303,8 +301,10 @@ public:
         : QQuickItemPrivate()
         , shadowColor(Qt::transparent)
         , isInner(false)
+        , cache(true)
         , needUpdateShadow(false)
         , shadowTexture(nullptr)
+        , spread(0.0)
     {
 
     }
@@ -357,6 +357,7 @@ public:
     bool cache;
     std::atomic<bool> needUpdateShadow;
     ShadowTextureCache::TextureData shadowTexture;
+    qreal spread;
 };
 
 DQUICK_END_NAMESPACE

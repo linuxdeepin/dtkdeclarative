@@ -38,6 +38,7 @@ class Q_DECL_EXPORT DQuickShadowImage : public QQuickItem
     Q_PROPERTY(QColor shadowColor READ shadowColor WRITE setShadowColor NOTIFY shadowColorChanged)
     Q_PROPERTY(bool isInner READ isInner WRITE setIsInner NOTIFY isInnerChanged)
     Q_PROPERTY(qreal cornerRadius READ cornerRadius WRITE setCornerRadius NOTIFY cornerRadiusChanded)
+    Q_PROPERTY(qreal spread READ spread WRITE setSpread NOTIFY spreadChanged)
 
 public:
     explicit DQuickShadowImage(QQuickItem *parent = nullptr);
@@ -57,12 +58,16 @@ public:
     qreal cornerRadius();
     void setCornerRadius(qreal radius);
 
+    qreal spread() const;
+    void setSpread(qreal spread);
+
 Q_SIGNALS:
     void cacheChanged();
     void shadowBlurChanged();
     void shadowColorChanged();
     void isInnerChanged();
     void cornerRadiusChanded();
+    void spreadChanged();
 
 protected:
     QSGNode *updatePaintNode(QSGNode *, UpdatePaintNodeData *) override;

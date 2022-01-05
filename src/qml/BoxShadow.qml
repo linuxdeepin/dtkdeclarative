@@ -28,8 +28,9 @@ Item {
     property real shadowOffsetX
     property real shadowOffsetY
     property alias inner: shadow.isInner
-    property alias sourceRadius: shadow.cornerRadius
+    property alias cornerRadius: shadow.cornerRadius
     property alias cache: shadow.cache
+    property alias spread: shadow.spread
 
     D.ShadowImage {
         id: shadow

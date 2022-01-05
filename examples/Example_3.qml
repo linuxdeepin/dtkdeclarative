@@ -26,7 +26,7 @@ Item {
     Image {
         id: back
         anchors.fill: parent
-        source: "file:///usr/share/wallpapers/deepin/Hummingbird_by_Shu_Le.jpg"
+        source: "file:///usr/share/wallpapers/deepin/desktop.jpg"
     }
 
     Button {
