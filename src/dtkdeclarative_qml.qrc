@@ -44,5 +44,6 @@
         <file>qml/TextField.qml</file>
         <file>qml/SpinBox.qml</file>
         <file>qml/SpinBoxIndicator.qml</file>
+        <file>qml/ApplicationWindow.qml</file>
     </qresource>
 </RCC>
