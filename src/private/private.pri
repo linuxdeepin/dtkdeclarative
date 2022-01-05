@@ -1,3 +1,5 @@
+QT +=  concurrent
+
 HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dapploader_p.h \
     $$PWD/dblitframebuffernode_p.h \
@@ -21,6 +23,7 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dquickdciiconimage_p.h \
     $$PWD/dquickdciicon_p.h \
     $$PWD/dsettingscontainer_p.h \
+    $$PWD/dquickshadowimage_p.h \
 
 SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dblitframebuffernode.cpp \

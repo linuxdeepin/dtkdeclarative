@@ -45,5 +45,6 @@
         <file>qml/SpinBox.qml</file>
         <file>qml/SpinBoxIndicator.qml</file>
         <file>qml/ApplicationWindow.qml</file>
+        <file>qml/BoxShadow.qml</file>
     </qresource>
 </RCC>
