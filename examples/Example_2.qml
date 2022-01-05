@@ -152,7 +152,7 @@ Rectangle {
         shadowColor : Qt.rgba(0, 0, 0, 0.9)
         shadowOffsetX : 0
         shadowOffsetY : 0
-        sourceRadius: boxShadowSource.radius
+        cornerRadius: boxShadowSource.radius
         cache: true
     }
 
@@ -178,7 +178,7 @@ Rectangle {
         shadowColor : Qt.rgba(0, 0, 0, 0.6)
         shadowOffsetX : 0
         shadowOffsetY : 0
-        sourceRadius: boxShadowSource.radius
+        cornerRadius: boxShadowSource.radius
         inner: true
     }
 

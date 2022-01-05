@@ -134,6 +134,25 @@ void DQuickShadowImage::setCornerRadius(qreal radius)
     Q_EMIT cornerRadiusChanded();
 }
 
+qreal DQuickShadowImage::spread() const
+{
+    Q_D(const DQuickShadowImage);
+
+    return d->spread;
+}
+
+void DQuickShadowImage::setSpread(qreal spread)
+{
+    Q_D(DQuickShadowImage);
+
+    if (qFuzzyCompare(spread, d->spread))
+        return;
+
+    d->spread = spread;
+    update();
+    Q_EMIT spreadChanged();
+}
+
 DQuickShadowImage::DQuickShadowImage(DQuickShadowImagePrivate &dd, QQuickItem *parent)
     : QQuickItem (dd, parent)
 {
@@ -245,32 +264,40 @@ void DQuickShadowImagePrivate::calculateRects(const QSize &sourceSize,
     if (isInner && (q->calculateCornerRadius() + shadowBlur) >= std::min({q->width() / 2.0, q->height() / 2.0}))
         border = q->calculateCornerRadius();
 
-    qreal borderLeft = border * devicePixelRatio;
-    qreal borderRight = border * devicePixelRatio;
-    qreal borderTop = border * devicePixelRatio;
-    qreal borderBottom = border * devicePixelRatio;
+    qreal borderLeft = border;
+    qreal borderRight = border;
+    qreal borderTop = border;
+    qreal borderBottom = border;
+    qreal margin =  std::min({qAbs(spread), shadowBlur});
+
+    if (margin * spread < 0)
+        margin = -margin;
+
+    if (isInner)
+        margin = -margin;
+
     if (borderLeft + borderRight > sourceSize.width() && borderLeft < sourceSize.width())
         borderRight = sourceSize.width() - borderLeft;
     if (borderTop + borderBottom > sourceSize.height() && borderTop < sourceSize.height())
         borderBottom = sourceSize.height() - borderTop;
-    *innerSourceRect = QRectF(QPointF(borderLeft / qreal(sourceSize.width()),
-                                      borderTop / qreal(sourceSize.height())),
-                              QPointF((sourceSize.width() - borderRight) / qreal(sourceSize.width()),
-                                      (sourceSize.height() - borderBottom) / qreal(sourceSize.height())));
-    *innerTargetRect = QRectF(border,
-                              border,
-                              qMax<qreal>(0, targetSize.width() - (border * 2.0)),
-                              qMax<qreal>(0, targetSize.height() - (border * 2.0)));
+    *innerSourceRect = QRectF(QPointF((borderLeft) / qreal(sourceSize.width()),
+                                      (borderTop) / qreal(sourceSize.height())),
+                              QPointF((sourceSize.width() - borderRight - 1) / qreal(sourceSize.width()),
+                                      (sourceSize.height() - borderBottom - 1) / qreal(sourceSize.height())));
+    *innerTargetRect = QRectF(border - margin,
+                              border - margin,
+                              qMax<qreal>(0, targetSize.width() - (border * 2.0) + 2 * margin),
+                              qMax<qreal>(0, targetSize.height() - (border * 2.0) + 2 * margin));
 
-    qreal hTiles = 1;
-    qreal vTiles = 1;
+    qreal hTiles = 1 - 2 * margin / sourceSize.width();
+    qreal vTiles = 1 - 2 * margin / sourceSize.height();
     if (innerSourceRect->width() <= 0)
         hTiles = 0;
 
     if (innerSourceRect->height() <= 0)
         vTiles = 0;
 
-    *subSourceRect = QRectF(0, 0, hTiles, vTiles);
+    *subSourceRect = QRectF((1 - hTiles) / 2, (1 - vTiles) / 2, hTiles, vTiles);
 }
 
 DQUICK_END_NAMESPACE
