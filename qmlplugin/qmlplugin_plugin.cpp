@@ -28,6 +28,7 @@
 #include "dquickblitframebuffer.h"
 #include "dquickglow.h"
 #include "dquickinwindowblendblur.h"
+#include "dquickshadowimage.h"
 
 #include "private/dconfigwrapper_p.h"
 #include "private/dquickiconimage_p.h"
@@ -145,6 +146,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType<DQuickInWindowBlendBlur>(uri, implUri, 1, 0, "InWindowBlendBlur");
     dtkRegisterType<DQuickControlPalette>(uri, implUri, 1, 0, "Palette");
     dtkRegisterType<DQuickControlColorSelector>(uri, implUri, 1, 0, "ColorSelector");
+    dtkRegisterType<DQuickShadowImage>(uri, implUri, 1, 0, "ShadowImage");
 
     dtkRegisterAnonymousType<DQUICK_NAMESPACE::DQuickDciIcon>(uri, implUri, 1);
     dtkRegisterAnonymousType<DQuickControlColor>(uri, implUri, 1);
@@ -178,6 +180,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, nullptr, 1, 0, "RectangularShadow");
     dtkRegisterType(uri, nullptr, 1, 0, "RectangleBorder");
     dtkRegisterType(uri, nullptr, 1, 0, "CicleSpreadAnimation");
+    dtkRegisterType(uri, nullptr, 1, 0, "BoxShadow");
 
     // for org.deepin.dtk.controls
     // QtQuick Controls

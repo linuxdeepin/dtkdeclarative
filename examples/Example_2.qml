@@ -144,6 +144,44 @@ Rectangle {
         color: "red"
     }
 
+    // test like DropShadow
+    D.BoxShadow {
+        anchors.fill: boxShadowSource
+
+        shadowBlur : 20
+        shadowColor : Qt.rgba(0, 0, 0, 0.9)
+        shadowOffsetX : 0
+        shadowOffsetY : 0
+        sourceRadius: boxShadowSource.radius
+        cache: true
+    }
+
+    Rectangle {
+        id: boxShadowSource
+
+        width: 200
+        height: 200
+        anchors {
+            left: shadowSource.right
+            leftMargin: 50
+            bottom: shadowSource.bottom
+        }
+        color: "red"
+        radius: 20
+    }
+
+    // test like InnerShadow
+    D.BoxShadow {
+        anchors.fill: boxShadowSource
+
+        shadowBlur : 20
+        shadowColor : Qt.rgba(0, 0, 0, 0.6)
+        shadowOffsetX : 0
+        shadowOffsetY : 0
+        sourceRadius: boxShadowSource.radius
+        inner: true
+    }
+
     Rectangle {
         id:swipe_view
 
