@@ -4,7 +4,7 @@ import QtQuick.Controls 2.4 as V2
 import QtQuick.Layouts 1.11
 import org.deepin.dtk 1.0 as D
 
-V2.ApplicationWindow {
+D.ApplicationWindow {
     id: root
     visible: true
     width: 1200

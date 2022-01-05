@@ -181,6 +181,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
 
     // for org.deepin.dtk.controls
     // QtQuick Controls
+    dtkRegisterType(uri, controlsUri, 1, 0, "ApplicationWindow");
     dtkRegisterType(uri, controlsUri, 1, 0, "Button");
     // DTK Controls
     dtkRegisterType(uri, controlsUri, 1, 0, "LineEdit");

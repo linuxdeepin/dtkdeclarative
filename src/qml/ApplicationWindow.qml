@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 ~ 2022 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     JiDe Zhang <zhangjide@deepin.org>
  *
@@ -19,8 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.deepin.dtk.controls 1.0 as D
+import QtQuick 2.11
+import QtQuick.Templates 2.4 as T
+import org.deepin.dtk.impl 1.0 as D
 
-D.ApplicationWindow {
-
+T.ApplicationWindow {
+    palette: active ? D.DTK.palette : D.DTK.inactivePalette
+    font: D.DTK.fontManager.t6
+    color: palette.window
 }
