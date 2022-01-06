@@ -192,7 +192,11 @@ QSGNode *DQuickShadowImage::updatePaintNode(QSGNode *oldNode, QQuickItem::Update
 
     QSGInternalImageNode *node = static_cast<QSGInternalImageNode *>(oldNode);
     if (!node)
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 13, 0))
         node = d->sceneGraphContext()->createInternalImageNode(d->sceneGraphRenderContext());
+#else
+        node = d->sceneGraphContext()->createInternalImageNode();
+#endif
 
     node->setTexture(texture);
 
