@@ -29,6 +29,7 @@
 #include <private/qquickitem_p.h>
 
 #include <QString>
+#include <QtMath>
 
 DQUICK_BEGIN_NAMESPACE
 
