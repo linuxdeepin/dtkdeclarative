@@ -608,16 +608,16 @@ void DBlurEffectNode::applyDaulBlur(QOpenGLFramebufferObject *targetFBO, GLuint 
     shader->setUniformValue("offset", QVector2D(8, 8));
     shader->setUniformValue("iResolution", QVector2D(targetFBO->size().width(), targetFBO->size().height()));
     shader->setUniformValue("halfpixel", QVector2D(0.5 / targetFBO->size().width(), 0.5 / targetFBO->size().height()));
-    float yOffset = m_item->window()->height() - qRound(m_sourceRect.height() / scale);
+    float yOffset = m_item->window()->height() - qRound(m_targetRect.height() / scale);
     shader->setUniformValue(matrixUniform, *state->projectionMatrix() * QMatrix4x4(1, 0, 0, 0,
                                                                                    0, 1, 0, yOffset,
                                                                                    0, 0, 1, 0,
                                                                                    0, 0, 0, 1));
     m_sampleVbo->bind();
     QPointF p0(0, 0);
-    QPointF p1(0, qRound(m_sourceRect.height() / scale));
-    QPointF p2(qRound(m_sourceRect.width() / scale), 0);
-    QPointF p3(qRound(m_sourceRect.width() / scale), qRound(m_sourceRect.height() / scale));
+    QPointF p1(0, qRound(m_targetRect.height() / scale));
+    QPointF p2(qRound( m_targetRect.width() / scale), 0);
+    QPointF p3(qRound(m_targetRect.width() / scale), qRound(m_targetRect.height() / scale));
 
     GLfloat vertices[8] = { GLfloat(p0.x()), GLfloat(p0.y()),
                             GLfloat(p1.x()), GLfloat(p1.y()),
@@ -657,9 +657,9 @@ void DBlurEffectNode::applyNoise(GLuint sourceTexture, const QSGRenderNode::Rend
     m_noiseVbo->bind();
 
     QPointF p0(0, 0);
-    QPointF p1(0, m_sourceRect.height());
-    QPointF p2(m_sourceRect.width(), 0);
-    QPointF p3(m_sourceRect.width(), m_sourceRect.height());
+    QPointF p1(0, m_targetRect.height());
+    QPointF p2(m_targetRect.width(), 0);
+    QPointF p3(m_targetRect.width(), m_targetRect.height());
 
     GLfloat vertices[8] = { GLfloat(p0.x()), GLfloat(p0.y()),
                             GLfloat(p1.x()), GLfloat(p1.y()),
@@ -709,9 +709,9 @@ void DBlurEffectNode::renderToScreen(GLuint sourceTexture, const QSGRenderNode::
     m_vbo->bind();
 
     QPointF p0(0, 0);
-    QPointF p1(0, m_sourceRect.height());
-    QPointF p2(m_sourceRect.width(), 0);
-    QPointF p3(m_sourceRect.width(), m_sourceRect.height());
+    QPointF p1(0, m_targetRect.height());
+    QPointF p2(m_targetRect.width(), 0);
+    QPointF p3(m_targetRect.width(), m_targetRect.height());
 
     GLfloat vertices[8] = { GLfloat(p0.x()), GLfloat(p0.y()),
                             GLfloat(p1.x()), GLfloat(p1.y()),
@@ -754,10 +754,20 @@ void DBlurEffectNode::initFBOTextures()
     }
 
     m_fboVector.clear();
-    m_fboVector.append(new QOpenGLFramebufferObject(m_sourceRect.size().toSize(),
+    qreal scale = m_item->window()->effectiveDevicePixelRatio();
+    QSize size;
+    /* when opengl rendering, the projectionmatrix matrix has high accuracy,
+       which will lead to deviation from the FBO size. When i reduce the FBO size by 1,
+       at most one boundary pixel will be lost, which will not affect the blurred imaging
+       boundary. */
+    size.setWidth(m_targetRect.width() * scale - 1);
+    size.setHeight(m_targetRect.height() * scale - 1);
+    m_fboVector.append(new QOpenGLFramebufferObject(size,
                                                     QOpenGLFramebufferObject::CombinedDepthStencil, GL_TEXTURE_2D));
     for (int i = 1; i <= m_radius; i++) {
-        m_fboVector.append(new QOpenGLFramebufferObject(m_sourceRect.size().toSize() / qPow(2, i),
+        size.setWidth(m_targetRect.width() / qPow(2, i) * scale - 1);
+        size.setHeight(m_targetRect.height() / qPow(2, i) * scale - 1);
+        m_fboVector.append(new QOpenGLFramebufferObject(size,
                                                         QOpenGLFramebufferObject::CombinedDepthStencil, GL_TEXTURE_2D));
 
         f->glBindTexture(GL_TEXTURE_2D, m_fboVector.last()->texture());
