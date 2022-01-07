@@ -51,7 +51,7 @@ Item {
     Item {
         id: mask
         anchors.fill: parent
-        visible: !D.DTK.isSoftwareRender
+        visible: false
 
         Rectangle {
             id: impl
