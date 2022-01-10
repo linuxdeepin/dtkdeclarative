@@ -30,6 +30,7 @@
 
 #include <QString>
 #include <QtMath>
+#include <QFileInfo>
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -74,83 +75,10 @@ public:
     QString buildShadowCacheKey(const ShadowConfig &config)
     {
         return QString("%1.%2.%3.%4.%5").arg(config.cornerRadius)
-                .arg(config.shadowBlur).arg(config.shadowColor.name()).arg(config.inner).arg(config.shapeType);
+                .arg(config.shadowBlur).arg(config.shadowColor.name(QColor::HexArgb)).arg(config.inner).arg(config.shapeType);
     }
 
-    QImage qt_image_convolute_filter(const QImage& src, const QVector<qreal>& weights, int radius = 0)
-    {
-        int delta = radius ? radius : qFloor(qSqrt(weights.size()) / qreal(2));
-        int filterDim = 2 * delta + 1;
-
-        QImage dst = QImage(src.size(), src.format());
-
-        int w = src.width();
-        int h = src.height();
-
-        const QRgb *sr = (const QRgb *)(src.constBits());
-        int srcStride = src.bytesPerLine() / 4;
-
-        QRgb *dr = (QRgb*)dst.bits();
-        int dstStride = dst.bytesPerLine() / 4;
-
-        for (int y = 0; y < h; ++y) {
-            for (int x = 0; x < w; ++x) {
-                int red = 0;
-                int green = 0;
-                int blue = 0;
-                int alpha = 0;
-
-                qreal redF = 0;
-                qreal greenF = 0;
-                qreal blueF = 0;
-                qreal alphaF = 0;
-
-                int sy = y;
-                int sx = x;
-
-                for (int cy = 0; cy < filterDim; ++cy) {
-                    int scy = sy + cy - delta;
-
-                    if (scy < 0 || scy >= h)
-                        continue;
-
-                    const QRgb *sry = sr + scy * srcStride;
-
-                    for (int cx = 0; cx < filterDim; ++cx) {
-                        int scx = sx + cx - delta;
-
-                        if (scx < 0 || scx >= w)
-                            continue;
-
-                        const QRgb col = sry[scx];
-
-                        if (radius) {
-                            red += qRed(col);
-                            green += qGreen(col);
-                            blue += qBlue(col);
-                            alpha += qAlpha(col);
-                        } else {
-                            qreal wt = weights[cy * filterDim + cx];
-
-                            redF += qRed(col) * wt;
-                            greenF += qGreen(col) * wt;
-                            blueF += qBlue(col) * wt;
-                            alphaF += qAlpha(col) * wt;
-                        }
-                    }
-                }
-
-                if (radius)
-                    dr[x] = qRgba(qRound(red * weights[0]), qRound(green * weights[0]), qRound(blue * weights[0]), qRound(alpha * weights[0]));
-                else
-                    dr[x] = qRgba(qRound(redF), qRound(greenF), qRound(blueF), qRound(alphaF));
-            }
-
-            dr += dstStride;
-        }
-
-        return dst;
-    }
+    QImage qt_image_convolute_filter(const QImage& src, const QVector<qreal>& weights, int radius = 0);
 
     void qt_image_boxblur(QImage& image, int radius, bool quality)
     {
@@ -162,128 +90,13 @@ public:
 
     bool keyIsCache(const ShadowConfig &config)
     {
-        return m_cache.contains(buildShadowCacheKey(config));
-    }
-
-    TextureData getShadowTexture(QSGRenderContext *context, const ShadowConfig &config, bool cache = false, bool antialiasing = true)
-    {
-        if ((config.shadowColor.alpha() == 0 || qIsNull(config.shadowBlur))) {
-            return TextureData();
-        }
-
         const QString &to_cache_key_key = buildShadowCacheKey(config);
-        Texture *texture = nullptr;
-
-        if (m_cache.contains(to_cache_key_key)) {
-            texture = m_cache.value(to_cache_key_key);
-        }
-
-        // TODO(xiaoyaobing): unfortunately, GPU acceleration has not been used yet,
-        // and the performance of this approach is worrying
-        if (!texture) {
-            QImage shadowImage;
-            if (config.inner) {
-                qreal pixel, innerPixel;
-                if (config.shapeType == ShapeType::Rectangle) {
-                    pixel = config.cornerRadius * 2.0 + config.shadowBlur * 6.0;
-                    innerPixel = pixel - config.shadowBlur * 2.0;
-                } else {
-                    pixel = config.cornerRadius * 2.0 + config.shadowBlur * 2.0;
-                    innerPixel = pixel - config.shadowBlur * 2.0;
-                }
-
-                QImage image(pixel, pixel, QImage::Format_ARGB32_Premultiplied);
-                image.fill(config.shadowColor);
-
-                QPainter shadowPainter(&image);
-                shadowPainter.setRenderHint(QPainter::Antialiasing, true);
-
-                shadowPainter.setCompositionMode(QPainter::CompositionMode_Clear);
-                QRectF rectangle(config.shadowBlur, config.shadowBlur, innerPixel, innerPixel);
-                QPainterPath path;
-                path.addRoundedRect(rectangle, config.cornerRadius, config.cornerRadius);
-                QPen pen(Qt::transparent);
-                shadowPainter.setPen(pen);
-                shadowPainter.fillPath(path, Qt::red);
-                shadowPainter.drawPath(path);
-                shadowPainter.end();
-
-                qt_image_boxblur(image, qMax(1, qRound(config.shadowBlur / 2)), true);
-                shadowImage = QImage(innerPixel, innerPixel, QImage::Format_ARGB32_Premultiplied);
-                shadowImage = image.copy(config.shadowBlur, config.shadowBlur,
-                                         innerPixel, innerPixel);
-
-                QPainter scissor(&shadowImage);
-                scissor.setRenderHint(QPainter::Antialiasing, true);
-                scissor.setCompositionMode(QPainter::CompositionMode_Clear);
-                QPainterPath path1;
-                scissor.setPen(Qt::NoPen);
-
-                path1.moveTo(0, 0);
-                path1.arcTo(0, 0,  config.cornerRadius * 2,  config.cornerRadius * 2, 90, 90);
-                path1.lineTo(0, 0);
-
-                path1.moveTo(shadowImage.width(), 0);
-                QRectF f(shadowImage.width() -  config.cornerRadius * 2, 0,
-                         config.cornerRadius * 2,  config.cornerRadius * 2);
-                path1.arcTo(f, 0, 90);
-                path1.lineTo(shadowImage.width(), 0);
-
-                path1.moveTo(0, shadowImage.height());
-                QRectF f1(0, shadowImage.height() -  config.cornerRadius * 2,
-                          config.cornerRadius * 2, config.cornerRadius * 2);
-                path1.arcTo(f1, 180, 90);
-                path1.lineTo(0, shadowImage.height());
-
-                path1.moveTo(shadowImage.width(), shadowImage.height());
-                QRectF f2(shadowImage.width() -  config.cornerRadius * 2,
-                          shadowImage.height() -  config.cornerRadius * 2,
-                          config.cornerRadius * 2,  config.cornerRadius * 2);
-                path1.arcTo(f2, 270, 90);
-                path1.lineTo(shadowImage.width(), shadowImage.height());
-                scissor.fillPath(path1, Qt::red);
-                scissor.end();
-            } else {
-                qreal pixel, innerPixel;
-                if (config.shapeType == ShapeType::Rectangle) {
-                    pixel = config.cornerRadius * 2.0 + config.shadowBlur * 2.0 + 3;
-                    innerPixel = pixel - config.shadowBlur * 2.0;
-                } else {
-                    pixel = config.cornerRadius * 2.0 + config.shadowBlur * 2.0;
-                    innerPixel = pixel - config.shadowBlur * 2.0;
-                }
-
-                shadowImage = QImage(pixel, pixel, QImage::Format_ARGB32_Premultiplied);
-                shadowImage.fill(Qt::transparent);
-
-                QPainter shadowPainter(&shadowImage);
-                shadowPainter.setRenderHint(QPainter::Antialiasing, true);
-                shadowPainter.setPen(Qt::NoPen);
-
-                QRectF rectangle(config.shadowBlur, config.shadowBlur, innerPixel, innerPixel);
-                QPainterPath path;
-                path.addRoundedRect(rectangle, config.cornerRadius, config.cornerRadius);
-                shadowPainter.fillPath(path, config.shadowColor);
-                shadowPainter.end();
-
-                if (config.shadowBlur > 0) {
-                    qt_image_boxblur(shadowImage, qMax(1, qRound(config.shadowBlur / 2)), true);
-                }
-            }
-
-            texture = new Texture(context->createTexture(shadowImage));
-            texture->cacheKey = to_cache_key_key;
-            texture->texture->setFiltering(QSGTexture::Nearest);
-            texture->texture->setVerticalWrapMode(QSGTexture::ClampToEdge);
-            texture->texture->setHorizontalWrapMode(QSGTexture::ClampToEdge);
-
-            if (cache && !m_cache.contains(to_cache_key_key))
-                m_cache[to_cache_key_key] = texture;
-        }
-
-        TextureData data(texture);
-        return data;
+        QString path = ":/dtk/declarative/shadow/" + to_cache_key_key + ".png";
+        return m_cache.contains(to_cache_key_key) || QFileInfo::exists(path);
     }
+
+    TextureData getShadowTexture(QSGRenderContext *context, const ShadowConfig &config,
+                                 bool cache = false, bool antialiasing = true);
 
 private:
     ShadowTextureCache() {

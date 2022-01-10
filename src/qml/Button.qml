@@ -71,13 +71,6 @@ T.Button {
             control.D.ColorSelector.palettes.push(checkedPalette)
         }
 
-        RectangularGlow {
-            anchors.fill: backgroundRect
-            glowRadius: 10
-            color: palette.shadow
-            cornerRadius: backgroundRect.radius
-        }
-
         D.Palette {
             id: checkedPalette
             objectName: "button1"
