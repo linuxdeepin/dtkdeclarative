@@ -153,7 +153,6 @@ Rectangle {
         shadowOffsetX : 0
         shadowOffsetY : 0
         cornerRadius: boxShadowSource.radius
-        cache: true
     }
 
     Rectangle {
