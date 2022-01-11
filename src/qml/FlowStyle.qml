@@ -106,13 +106,21 @@ QtObject {
     property D.Palette editBackground: D.Palette {
         normal: Qt.rgba(0, 0, 0, 0.08)
     }
-
     property D.Palette spinBoxIndicator: D.Palette {
         normal: "white"
         pressed: Qt.rgba(1, 1, 1, 0.6)
     }
     property D.Palette spinBoxIndicatorBackground: D.Palette {
         normal: Qt.rgba(0, 0, 0, 0.7)
+    }
+    property D.Palette warningText: D.Palette {
+        normal: "#e15736"
+    }
+    property D.Palette tooltipBase: D.Palette {
+        normal: Qt.rgba(247, 247, 247, 0.6)
+    }
+    property D.Palette alertBackground: D.Palette {
+        normal: Qt.rgba(0.95, 0.22, 0.20, 0.15)
     }
 
     // PixelMetric
@@ -208,5 +216,12 @@ QtObject {
         property color darkBackground: Qt.rgba(247, 247, 247, 0.6)
         property color lightShadowBackground: Qt.rgba(0, 0, 0, 0.2)
         property color darkShadowBackground: Qt.rgba(0, 0, 0, 0.2)
+    }
+
+    property QtObject alertToolTip: QtObject {
+        property int connectorWidth: 3
+        property int connectorHeight: 12
+        property int verticalPadding: 4
+        property int horizontalPadding: 10
     }
 }

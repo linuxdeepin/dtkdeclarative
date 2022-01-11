@@ -18,19 +18,13 @@
 import QtQuick 2.11
 import QtQuick.Controls 2.4
 import org.deepin.dtk.impl 1.0 as D
-import "PixelMetric.js" as PM
+import org.deepin.dtk.style 1.0 as DS
 
 TextField {
     id: control
-
-    // clearButtonAnchors 属性用于调整按钮的位置，比如在按钮右侧插入控件
     property alias clearButtonAnchors: clearBtn.anchors
-    // alert control properties
-    property alias alertText: _alert.text
-    property alias alertDuration: _alert.timeout
-    property alias showAlert: _alert.visible
 
-    rightPadding: clearBtn.visible? clearBtn.width + clearBtn.anchors.rightMargin : 0
+    rightPadding: clearBtn.visible ? (clearBtn.width + clearBtn.anchors.rightMargin) : 0
     selectByMouse: true
 
     ToolButton {
@@ -55,21 +49,4 @@ TextField {
             name: "window-close_round"
         }
     }
-
-    AlertToolTip {
-        id: _alert
-        target: control
-        default property color defaultButtonColor: {
-            defaultButtonColor = control.palette.button
-        }
-
-        onVisibleChanged: {
-            if (visible) {
-                control.palette.button = Qt.rgba(0.95, 0.22, 0.20, 0.15)
-            } else {
-                control.palette.button = defaultButtonColor
-            }
-        }
-    }
-
 }

@@ -202,6 +202,9 @@ Rectangle {
         anchors.top: searcherEdit.top
         anchors.leftMargin: 20
         editable: true
+        alertText: qsTr("This is a long sentence.")
+        alertDuration: 2000  // millisecond
+        showAlert: focus
     }
 
     D.PlusMinusSpinBox {
@@ -210,6 +213,9 @@ Rectangle {
         anchors.top: spinBox.top
         anchors.leftMargin: 20
         spinBox.editable: true
+        spinBox.alertText: qsTr("Only numbers can be entered.")
+        spinBox.alertDuration: 2000  // millisecond
+        spinBox.showAlert: focus
     }
 
     ListView {

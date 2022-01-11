@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 ~ 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     Chen Bin <chenbin@uniontech.com>
  *
@@ -27,13 +27,18 @@ import org.deepin.dtk.style 1.0 as DS
 
 T.TextField {
     id: control
+    property alias backgroundColor: panel.backgroundColor
+    // alert control properties
+    property alias alertText: panel.alertText
+    property alias alertDuration: panel.alertDuration
+    property alias showAlert: panel.showAlert
 
-    implicitWidth: Math.max(DS.Style.control.implicitWidth(control), placeholderText ? placeholder.implicitWidth + leftPadding + rightPadding
-                                                                                     : 0) || contentWidth + leftPadding + rightPadding
-    implicitHeight: Math.max(DS.Style.control.implicitHeight(control), placeholder.implicitHeight + topPadding + bottomPadding)
-
+    implicitWidth: Math.max(DS.Style.control.implicitWidth(control),
+                            placeholderText ? placeholder.implicitWidth + leftPadding + rightPadding
+                                            : 0) || contentWidth + leftPadding + rightPadding
+    implicitHeight: Math.max(DS.Style.control.implicitHeight(control),
+                             placeholder.implicitHeight + topPadding + bottomPadding)
     padding: DS.Style.control.padding
-
     color: control.palette.text
     selectionColor: control.palette.highlight
     selectedTextColor: control.palette.highlightedText
@@ -55,6 +60,7 @@ T.TextField {
     }
 
     background: EditPanel {
+        id: panel
         control: control
         implicitWidth: DS.Style.edit.width
         implicitHeight: DS.Style.edit.textFieldHeight

@@ -23,21 +23,17 @@ import org.deepin.dtk.style 1.0 as DS
 
 LineEdit {
     id: control
-
-    // 暴露给外部的属性
     property alias placeholder: centerIndicatorLabel.text
-
-    leftPadding: (searchBackground.state === "Editting")
-                 ? searchIcon.width + DS.Style.searchEdit.iconLeftMargin + DS.Style.searchEdit.iconRightMargin
-                 : 0
+    default property bool editting: control.activeFocus || (text.length !== 0)
+    leftPadding: (editting) ? searchIcon.width + DS.Style.searchEdit.iconLeftMargin
+                              + DS.Style.searchEdit.iconRightMargin
+                            : 0
 
     // The search background will be hidden in the focus state,
     // no text input and displayed in the non focus state.
     Item {
         id: searchBackground
-
         anchors.fill: parent
-        state: control.activeFocus ? "Editting" : (text.length === 0) ? "NonEdit" : "Editting"
 
         RowLayout {
             id: centerIndicator
@@ -52,7 +48,6 @@ LineEdit {
 
             Text {
                 id: centerIndicatorLabel
-
                 text: qsTr("Search")
                 color: palette.text
                 verticalAlignment: Text.AlignVCenter
@@ -61,16 +56,18 @@ LineEdit {
 
         MouseArea {
             anchors.fill: parent
-            visible: (searchBackground.state === "NonEdit")
+            visible: !editting
             onClicked: {
                 control.forceActiveFocus(Qt.MouseFocusReason)
                 mouse.accepted = false
             }
         }
 
+        state: "NONEDIT"
         states: [
             State {
-                name: "Editting"
+                name: "EDITTING"
+                when: editting
                 AnchorChanges {
                     target: centerIndicator
                     anchors.left: searchBackground.left
@@ -86,7 +83,8 @@ LineEdit {
                 }
             },
             State {
-                name: "NonEdit"
+                name: "NONEDIT"
+                when: !editting
                 AnchorChanges {
                     target: centerIndicator
                     anchors.horizontalCenter: searchBackground.horizontalCenter
@@ -104,7 +102,6 @@ LineEdit {
                 duration: DS.Style.searchEdit.animationDuration
                 easing.type: Easing.OutCubic
             }
-
             ColorAnimation {
                 duration: DS.Style.searchEdit.animationDuration
                 easing.type: Easing.OutCubic
