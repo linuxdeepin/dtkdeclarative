@@ -33,15 +33,38 @@ QtObject {
         hovered: "#d2d2d2"
         pressed: "#cdd6e0"
     }
-    property D.Palette suggestButton1: D.Palette {
+    property D.Palette buttonDropShadow: D.Palette {
+        normal: Qt.rgba(0, 0, 0, 0.08)
+        hovered: Qt.rgba(0, 0, 0, 0.1)
+    }
+    property D.Palette buttonInnerShadow1: D.Palette {
+        normal: Qt.rgba(0, 0, 0, 0.05)
+        pressed: "transparent"
+    }
+    property D.Palette buttonInnerShadow2: D.Palette {
+        normal: "transparent"
+        hovered: Qt.rgba(1, 1, 1, 0.5)
+    }
+    property D.Palette highlightedButton1: D.Palette {
         normal: "#00aaff"
         hovered: "#24b6ff"
         pressed: "#005bcb"
     }
-    property D.Palette suggestButton2: D.Palette {
+    property D.Palette highlightedButton2: D.Palette {
         normal: "#006eff"
         hovered: "#3586ff"
         pressed: "#0067ff"
+    }
+    property D.Palette highlightedButtonDropShadow: D.Palette {
+        normal: Qt.rgba(0, 112 / 255.0, 1, 0.3)
+    }
+    property D.Palette highlightedButtonInnerShadow1: D.Palette {
+        normal: Qt.rgba(0, 50 / 255.0, 1, 0.3)
+        hovered: Qt.rgba(0, 85 / 255.0, 1, 0.5)
+        pressed: Qt.rgba(0, 97 / 255.0, 1, 0.5)
+    }
+    property D.Palette highlightedButtonInnerShadow2: D.Palette {
+        normal: "transparent"
     }
     property D.Palette buttonText: D.Palette {
         normal: Qt.rgba(0, 0, 0, 0.7)
@@ -50,7 +73,7 @@ QtObject {
     property D.Palette warningButtonText: D.Palette {
         normal: "#ff5736"
     }
-    property D.Palette suggestButtonText: D.Palette {
+    property D.Palette highlightedButtonText: D.Palette {
         normal: Qt.rgba(1, 1, 1, 0.9)
         hovered: "white"
         pressed: Qt.rgba(1, 1, 1, 0.6)
@@ -58,7 +81,7 @@ QtObject {
     property D.Palette buttonBorder: D.Palette {
         normal: Qt.rgba(0, 0, 0, 0.03)
     }
-    property D.Palette suggestButtonBorder: D.Palette {
+    property D.Palette highlightedButtonBorder: D.Palette {
         normal: Qt.rgba(0, 0.581, 1, 0.2)
     }
     property D.Palette windowButton: D.Palette {
@@ -123,10 +146,10 @@ QtObject {
     }
 
     property QtObject button: QtObject {
-        property int width: 204
+        property int width: 140
         property int height: 36
-        property int hPadding: 10
-        property int vPadding: 6
+        property int hPadding: control.radius
+        property int vPadding: control.radius / 2.0
         property int iconSize: 24
     }
 

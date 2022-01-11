@@ -25,15 +25,17 @@ import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.4 as T
 import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
-import QtGraphicalEffects 1.0
 
 T.Button {
     id: control
 
-    property D.Palette color1: highlighted ? DS.Style.suggestButton1 : DS.Style.button1
-    property D.Palette color2: highlighted ? DS.Style.suggestButton2 : DS.Style.button2
-    property D.Palette textColor: highlighted ? DS.Style.suggestButtonText : DS.Style.buttonText
-    property D.Palette borderColor: highlighted ? DS.Style.suggestButtonBorder : DS.Style.buttonBorder
+    property D.Palette color1: highlighted ? DS.Style.highlightedButton1 : DS.Style.button1
+    property D.Palette color2: highlighted ? DS.Style.highlightedButton2 : DS.Style.button2
+    property D.Palette textColor: highlighted ? DS.Style.highlightedButtonText : DS.Style.buttonText
+    property D.Palette borderColor: highlighted ? DS.Style.highlightedButtonBorder : DS.Style.buttonBorder
+    property D.Palette dropShadowColor: highlighted ? DS.Style.highlightedButtonDropShadow : DS.Style.buttonDropShadow
+    property D.Palette innerShadowColor1: highlighted ? DS.Style.highlightedButtonInnerShadow1 : DS.Style.buttonInnerShadow1
+    property D.Palette innerShadowColor2: highlighted ? DS.Style.highlightedButtonInnerShadow2 : DS.Style.buttonInnerShadow2
 
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
@@ -57,10 +59,11 @@ T.Button {
         visible: !control.flat || control.down || control.checked || control.highlighted || control.visualFocus || control.hovered
         D.ColorSelector.hovered: false
 
-        RectangularGlow {
+        BoxShadow {
             anchors.fill: backgroundRect
-            glowRadius: 10
-            color: palette.shadow
+            shadowBlur: 6
+            shadowOffsetY: 4
+            shadowColor: control.D.ColorSelector.dropShadowColor
             cornerRadius: backgroundRect.radius
         }
 
@@ -112,6 +115,27 @@ T.Button {
                 color: backgroundRect.color
             }
         }
+
+        BoxShadow {
+            inner: true
+            anchors.fill: backgroundRect
+            shadowBlur: 2
+            shadowOffsetY: innerShadow2.shadowColor !== "transparent" ? -3 : -1
+            spread: 1
+            shadowColor: control.D.ColorSelector.innerShadowColor1
+            cornerRadius: backgroundRect.radius
+            visible: control.D.ColorSelector.controlState !== D.DTK.PressedState
+        }
+
+        BoxShadow {
+            id: innerShadow2
+            inner: true
+            anchors.fill: backgroundRect
+            shadowBlur: 1
+            shadowOffsetY: 2
+            shadowColor: control.D.ColorSelector.innerShadowColor2
+            cornerRadius: backgroundRect.radius
+        }
     }
 
     onHoveredChanged: {
@@ -144,4 +168,3 @@ T.Button {
         icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
     }
 }
-

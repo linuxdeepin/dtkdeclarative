@@ -68,7 +68,7 @@ Rectangle {
     }
 
     D.RecommandButton {
-        id: suggestionBtn
+        id: highlightedionBtn
         anchors.left: warningBtn.right // @disable-check M16
         anchors.leftMargin: 20 // @disable-check M16
         anchors.top: parent.top // @disable-check M16
@@ -78,7 +78,7 @@ Rectangle {
 
     D.ToolButton {
         id: toolButton
-        anchors.left: suggestionBtn.right // @disable-check M16
+        anchors.left: highlightedionBtn.right // @disable-check M16
         anchors.leftMargin: 20 // @disable-check M16
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20 // @disable-check M16
