@@ -163,7 +163,8 @@ public:
         if (color.data == colors)
             return color.changed;
         bool changed = false;
-        for (int i = 0; i < ColorFamilyCount; ++i) {
+        const int colorCount = color.isSingleColor ? 1 : ColorFamilyCount;
+        for (int i = 0; i < colorCount; ++i) {
             if (color.data[i] == colors[i])
                 continue;
             colors[i] = color.data[i];
@@ -276,6 +277,7 @@ public:
     Q_PROPERTY(QQuickItem *control READ control NOTIFY controlChanged)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType controlTheme READ controlTheme NOTIFY controlThemeChanged)
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DQMLGlobalObject::ControlState controlState READ controlState NOTIFY controlStateChanged)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlPalette::ColorFamily family READ family WRITE setFamily RESET resetFamily NOTIFY familyChanged)
     Q_PROPERTY(bool hovered READ hovered WRITE setHovered RESET resetHovered NOTIFY hoveredChanged)
     Q_PROPERTY(bool pressed READ pressed WRITE setPressed RESET resetPressed NOTIFY pressedChanged)
     Q_PROPERTY(bool disabled READ disabled WRITE setDisabled RESET resetDisabled NOTIFY disabledChanged)
@@ -283,7 +285,7 @@ public:
     Q_PROPERTY(QQmlListProperty<DTK_QUICK_NAMESPACE::DQuickControlPalette> palettes READ palettes NOTIFY palettesChanged FINAL)
     Q_CLASSINFO("DefaultProperty", "palettes")
 
-    explicit DQuickControlColorSelector(QQuickItem *parent = nullptr);
+    explicit DQuickControlColorSelector(QQuickItem *parent);
     ~DQuickControlColorSelector();
 
     static DQuickControlColorSelector *qmlAttachedProperties(QObject *object);
@@ -291,10 +293,11 @@ public:
     QQuickItem *control() const;
     void setControl(QQuickItem *newControl);
 
-    void setSuperColorSelector(DQuickControlColorSelector *parent);
-
     DQMLGlobalObject::ControlState controlState() const;
     DGuiApplicationHelper::ColorType controlTheme() const;
+    Dtk::Quick::DQuickControlPalette::ColorFamily family() const;
+    void setFamily(const DQuickControlPalette::ColorFamily &newFamily);
+    void resetFamily();
 
     bool hovered() const;
     void setHovered(bool newHovered);
@@ -328,6 +331,7 @@ Q_SIGNALS:
     void palettesChanged();
     void colorPropertyChanged(const QByteArray &name);
     void colorPropertiesChanged();
+    void familyChanged();
 
 private:
     void ensureMetaObject();
@@ -341,6 +345,7 @@ private:
 
     void updatePaletteFromMetaProperty(const QMetaProperty &mp, const QObject *obj);
     void updatePropertyFromName(const QByteArray &name, const DQuickControlPalette *palette = nullptr);
+    void updateFamilyForChildrenRecu(QQuickItem *parent);
 
     void findAndSetControlParent();
     QByteArray findPalettePropertyName(const DQuickControlPalette *palette) const;
@@ -350,28 +355,36 @@ private:
     Q_SLOT void updateControlState();
     Q_SLOT void updateAllColorProperties();
     Q_SLOT void recvPaletteColorChanged();
-    Q_SLOT void onControlWindowChanged();
+    Q_SLOT void updateControlWindow();
     Q_SLOT void resolveMetaPropertyChanged();
     Q_SLOT void notifyColorPropertyChanged();
 
     void setControlTheme(DGuiApplicationHelper::ColorType theme);
     void setControlState(DQMLGlobalObject::ControlState state);
+    bool doSetFamily(DQuickControlPalette::ColorFamily newFamily);
+    void doResetFamily();
 
     void destroyPalette(DQuickControlPalette *palette);
     static int palette_count(QQmlListProperty<DQuickControlPalette> *property);
     static DQuickControlPalette *palette_at(QQmlListProperty<DQuickControlPalette> *property, int index);
 
+    void setSuperColorSelector(DQuickControlColorSelector *parent);
+    void setFamilyPropertyParent(DQuickControlColorSelector *parent);
+
     QQuickItem *m_control = nullptr;
     QQuickWindow *m_controlWindow = nullptr;
-    QPointer<DQuickControlColorSelector> m_superColorSelector = nullptr;
+    QPointer<DQuickControlColorSelector> m_superColorSelector;
+    QPointer<DQuickControlColorSelector> m_parentOfFamilyProperty;
     typedef QPair<QByteArray, DQuickControlPalette*> ControlPaletteData;
     QList<ControlPaletteData> m_palettes;
     CustomMetaObject *m_metaObject = nullptr;
     struct PaletteState {
-        PaletteState(DQuickControlColorSelector *parent)
-            : parent(parent)
+        PaletteState(DQuickControlColorSelector *owner)
+            : owner(owner)
             , controlTheme(DGuiApplicationHelper::LightType)
             , controlState(DQMLGlobalObject::NormalState)
+            , family(DQuickControlPalette::CommonColor)
+            , familyIsUserSet(false)
             , hovered(false)
             , hoveredValueValid(false)
             , pressed(false)
@@ -384,9 +397,11 @@ private:
 
         }
 
-        DQuickControlColorSelector *parent = nullptr;
+        DQuickControlColorSelector *owner = nullptr;
         DGuiApplicationHelper::ColorType controlTheme;
         DQMLGlobalObject::ControlState controlState;
+        DQuickControlPalette::ColorFamily family;
+        uint familyIsUserSet:1;
         uint hovered:1;
         uint hoveredValueValid:1;
         uint pressed:1;
