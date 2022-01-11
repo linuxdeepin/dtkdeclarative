@@ -25,6 +25,8 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dsettingscontainer_p.h \
     $$PWD/dquickshadowimage_p.h \
     $$PWD/dmessagemanager_p.h \
+    $$PWD/dquickrectangle_p.h \
+    $$PWD/drectanglenode.h \
 
 SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dblitframebuffernode.cpp \
@@ -40,3 +42,4 @@ SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dquickdciicon.cpp \
     $$PWD/dsettingscontainer.cpp \
     $$PWD/dmessagemanager.cpp \
+    $$PWD/drectanglenode.cpp \

@@ -29,6 +29,7 @@
 #include "dquickglow.h"
 #include "dquickinwindowblendblur.h"
 #include "dquickshadowimage.h"
+#include "dquickrectangle.h"
 
 #include "private/dconfigwrapper_p.h"
 #include "private/dquickiconimage_p.h"
@@ -149,6 +150,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType<DQuickShadowImage>(uri, implUri, 1, 0, "ShadowImage");
     dtkRegisterType<FloatingMessageContainer>(uri, implUri, 1, 0, "FloatingMessageContainer");
     dtkRegisterUncreatableType<MessageManager>(uri, implUri, 1, 0, "MessageManager", "Window Attached");
+    dtkRegisterType<DQuickRectangle>(uri, implUri, 1, 0, "RoundRectangle");
 
     dtkRegisterAnonymousType<DQUICK_NAMESPACE::DQuickDciIcon>(uri, implUri, 1);
     dtkRegisterAnonymousType<DQuickControlColor>(uri, implUri, 1);

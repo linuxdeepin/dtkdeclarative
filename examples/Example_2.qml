@@ -4,7 +4,6 @@ import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 import org.deepin.dtk 1.0 as D
 
-
 Rectangle {
 
     RowLayout {
@@ -179,6 +178,52 @@ Rectangle {
         shadowOffsetY : 0
         cornerRadius: boxShadowSource.radius
         inner: true
+    }
+
+    ListView {
+        spacing: 10
+        anchors {
+            left: boxShadowSource.right
+            leftMargin: 50
+            verticalCenter: boxShadowSource.verticalCenter
+        }
+        width: 200
+        height: 280
+
+        model: ListModel {
+            ListElement {
+                cornor: 1
+            }
+            ListElement {
+                cornor: 2
+            }
+            ListElement {
+                cornor: 4
+            }
+            ListElement {
+                cornor: 8
+            }
+            ListElement {
+                cornor: 3
+            }
+            ListElement {
+                cornor: 5
+            }
+            ListElement {
+                cornor: 10
+            }
+            ListElement {
+                cornor: 12
+            }
+        }
+        delegate: D.RoundRectangle {
+            width: 200
+            height: 60
+            color: "blue"
+            radius: 20
+            antialiasing: true
+            corners: cornor
+        }
     }
 
     Rectangle {
