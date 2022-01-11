@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 ~ 2020 Uniontech Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2022 Uniontech Technology Co., Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -49,7 +49,8 @@ public:
         IconOnly,
         TextOnly,
         TextBesideIcon,
-        TextUnderIcon
+        TextUnderIcon,
+        IconBesideText = 128 // Extended value, previous values are consistent with AbstractButton.
     };
     Q_ENUM(Display)
 
