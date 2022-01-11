@@ -53,11 +53,9 @@ T.Button {
 
     background: Item {
         id: backgroundItem
-        objectName: "ColorSelectorMaster"
         implicitWidth: DS.Style.button.width
         implicitHeight: DS.Style.button.height
         visible: !control.flat || control.down || control.checked || control.highlighted || control.visualFocus || control.hovered
-        D.ColorSelector.hovered: false
 
         BoxShadow {
             anchors.fill: backgroundRect
@@ -65,13 +63,7 @@ T.Button {
             shadowOffsetY: 4
             shadowColor: control.D.ColorSelector.dropShadowColor
             cornerRadius: backgroundRect.radius
-        }
-
-        Gradient {
-            id: backgroundGradient
-            // Use the backgroundItem's colorselecor can filter the hovered state.
-            GradientStop { position: 0.0; color: backgroundItem.D.ColorSelector.color1}
-            GradientStop { position: 0.96; color: backgroundItem.D.ColorSelector.color2}
+            visible: control.D.ColorSelector.family === D.Palette.CommonColor
         }
 
         Rectangle {
@@ -82,6 +74,14 @@ T.Button {
                 hovered: D.DTK.adjustColor(control.palette.highlight, 0, 0, +10, 0, 0, 0, 0)
                 pressed: D.DTK.adjustColor(control.palette.highlight, 0, 0, -10, 0, 0, 0, 0)
             }
+            D.ColorSelector.hovered: false
+
+            Gradient {
+                id: backgroundGradient
+                // Use the backgroundItem's colorselecor can filter the hovered state.
+                GradientStop { position: 0.0; color: backgroundRect.D.ColorSelector.color1}
+                GradientStop { position: 0.96; color: backgroundRect.D.ColorSelector.color2}
+            }
 
             anchors.fill: parent
             radius: DS.Style.control.radius
@@ -89,7 +89,7 @@ T.Button {
                 width: DS.Style.control.borderWidth
                 color: D.ColorSelector.borderColor
             }
-            gradient: control.checked ? null : backgroundGradient
+            gradient: D.ColorSelector.color1 === D.ColorSelector.color2 ? null : backgroundGradient
             color: D.ColorSelector.color1
         }
 
@@ -103,16 +103,17 @@ T.Button {
             id: hoverAnimation
             anchors.fill: backgroundRect
             visible: control.D.ColorSelector.controlState === D.DTK.HoveredState
+                     && control.D.ColorSelector.family === D.Palette.CommonColor
 
             Rectangle {
                 anchors.fill: parent
                 radius: backgroundRect.radius
                 border {
                     width: backgroundRect.border.width
-                    color: backgroundRect.border.color
+                    color: control.D.ColorSelector.borderColor
                 }
-                gradient: control.checked ? null : hoverBackgroundGradient
-                color: backgroundRect.color
+                gradient: control.D.ColorSelector.color1 === control.D.ColorSelector.color2 ? null : hoverBackgroundGradient
+                color: control.D.ColorSelector.color1
             }
         }
 
@@ -125,6 +126,7 @@ T.Button {
             shadowColor: control.D.ColorSelector.innerShadowColor1
             cornerRadius: backgroundRect.radius
             visible: control.D.ColorSelector.controlState !== D.DTK.PressedState
+                     && control.D.ColorSelector.family === D.Palette.CommonColor
         }
 
         BoxShadow {
@@ -135,6 +137,7 @@ T.Button {
             shadowOffsetY: 2
             shadowColor: control.D.ColorSelector.innerShadowColor2
             cornerRadius: backgroundRect.radius
+            visible: control.D.ColorSelector.family === D.Palette.CommonColor
         }
     }
 

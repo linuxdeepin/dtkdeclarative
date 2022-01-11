@@ -24,12 +24,18 @@ import org.deepin.dtk.impl 1.0 as D
 
 QtObject {
     property D.Palette button1: D.Palette {
-        normal: "#f7f7f7"
+        normal {
+            common: "#f7f7f7"
+            crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.1)
+        }
         hovered: "#e1e1e1"
         pressed: "#bcc4d0"
     }
     property D.Palette button2: D.Palette {
-        normal: "#f0f0f0"
+        normal {
+            common: "#f0f0f0"
+            crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.1)
+        }
         hovered: "#d2d2d2"
         pressed: "#cdd6e0"
     }
@@ -67,8 +73,14 @@ QtObject {
         normal: "transparent"
     }
     property D.Palette buttonText: D.Palette {
-        normal: Qt.rgba(0, 0, 0, 0.7)
-        pressed: "#0081ff"
+        normal {
+            common: Qt.rgba(0, 0, 0, 0.7)
+            crystal: Qt.rgba(0, 0, 0, 0.9)
+        }
+        pressed {
+            common: "#0081ff"
+            crystal: "#0081ff"
+        }
     }
     property D.Palette warningButtonText: D.Palette {
         normal: "#ff5736"

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     yeshanshan <yeshanshan@uniontech.com>
  *
@@ -39,6 +39,7 @@ Window {
     D.Window.enableSystemResize: false
     D.Window.enableBlurWindow: true
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.MSWindowsFixedSizeDialogHint
+    D.ColorSelector.family: D.Palette.CrystalColor
 
     readonly property int maxDialogWindowHeight: PM.DialogWindow_MaximumHeight
     readonly property int maxContentHeight: maxDialogWindowHeight - titleBar.height
