@@ -21,7 +21,6 @@
 
 import QtQuick 2.11
 import org.deepin.dtk.style 1.0 as DS
-import "PixelMetric.js" as PM
 
 Item {
     property color borderColor: "transparent"

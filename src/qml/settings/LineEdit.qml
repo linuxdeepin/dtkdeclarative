@@ -33,7 +33,7 @@ Settings.OptionDelegate {
         Layout.alignment: Qt.AlignRight
         Layout.fillWidth: true
 
-        text: Settings.SettingsOption.value
+        text: Settings.SettingsOption.value || ""
 
         onEditingFinished: {
             Settings.SettingsOption.value = text

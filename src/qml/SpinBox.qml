@@ -24,23 +24,24 @@ import QtQuick.Controls 2.4
 import QtQuick.Shapes 1.11
 import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.4 as T
-import org.deepin.dtk.impl 1.0 as DI
 import org.deepin.dtk.style 1.0 as DS
 
 T.SpinBox {
     id: control
+    // alert control properties
+    property alias alertText: panel.alertText
+    property alias alertDuration: panel.alertDuration
+    property alias showAlert: panel.showAlert
 
     implicitWidth: DS.Style.control.implicitWidth(control)
-
     implicitHeight:  Math.max(DS.Style.control.implicitHeight(control),
                              up.indicator ? up.indicator.implicitHeight : 0,
                              down.indicator ? down.indicator.implicitHeight : 0)
     baselineOffset: contentItem.y + contentItem.baselineOffset
-
     padding: 0
     rightPadding: padding + ((down.indicator ? (down.indicator.width + DS.Style.spinBox.spacing)
-                                                                       :  (up.indicator ? (up.indicator.width + DS.Style.spinBox.spacing)
-                                                                                        : 0)))
+                                             :  (up.indicator ? (up.indicator.width + DS.Style.spinBox.spacing)
+                                                              : 0)))
 
     validator: IntValidator {
         locale: control.locale.name
@@ -49,6 +50,7 @@ T.SpinBox {
     }
 
     background: EditPanel {
+        id: panel
         control: control
         implicitWidth: DS.Style.spinBox.width
         implicitHeight: DS.Style.spinBox.height
@@ -66,6 +68,7 @@ T.SpinBox {
         readOnly: !control.editable
         validator: control.validator
         inputMethodHints: control.inputMethodHints
+        selectByMouse: control.editable
     }
 
     up.indicator: SpinBoxIndicator {

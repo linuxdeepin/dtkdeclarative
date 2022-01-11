@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     Chen Bin <chenbin@uniontech.com>
  *
@@ -20,71 +20,68 @@
  */
 import QtQuick 2.11
 import QtQuick.Controls 2.4
-import "PixelMetric.js" as PM
+import org.deepin.dtk.impl 1.0 as D
+import org.deepin.dtk.style 1.0 as DS
 
 ToolTip {
     id: control
-
     property Item target
-    property bool connectorVisible: true
 
     x: 0
-    y: target.height + PM.ControlSpacing
-    topPadding: PM.AlertControl_VerticalPadding
-    bottomPadding: PM.AlertControl_VerticalPadding
-    leftPadding: PM.AlertControl_HorizontalPadding
-    rightPadding: PM.AlertControl_HorizontalPadding
-    implicitWidth: Math.max(background ? background.implicitWidth : 0,
-                            contentItem.implicitWidth + leftPadding + rightPadding)
-    implicitHeight: Math.max(background ? background.implicitHeight : 0,
-                             contentItem.implicitHeight + topPadding + bottomPadding)
+    y: target.height + DS.Style.control.spacing
+    topPadding: DS.Style.alertToolTip.verticalPadding
+    bottomPadding: DS.Style.alertToolTip.verticalPadding
+    leftPadding: DS.Style.alertToolTip.horizontalPadding
+    rightPadding: DS.Style.alertToolTip.horizontalPadding
+    implicitWidth: DS.Style.control.implicitWidth(control)
+    implicitHeight: DS.Style.control.implicitHeight(control)
     margins: 0
     closePolicy: Popup.NoAutoClose
 
     background: Item {
-        Rectangle {
-            id: _background
-            anchors.fill: parent
-            color: palette.toolTipBase
-            border.color: palette.frameBorder
-            radius: PM.ControlRadius
-
+        BoxShadow {
+            anchors.fill: _background
+            shadowBlur: 20
+            shadowOffsetY: 6
+            shadowColor: Qt.rgba(0, 0, 0, 0.2)
+            cornerRadius: _background.radius
         }
 
-        RectangularShadow {
-            z: -1
-            anchors.fill: _background
-            glowRadius: 10
-            offsetY: 6
-            color: Qt.rgba(0, 0, 0, 0.25)
-            cornerRadius: _background.radius
+        Rectangle {
+            property D.Palette backgroundColor: DS.Style.tooltipBase
+            id: _background
+            anchors.fill: parent
+            color: D.ColorSelector.backgroundColor
+            border.color: D.DTK.selectColor(control.palette.window, DS.Style.control.lightBorder,
+                                            DS.Style.control.darkBorder)
+            radius: DS.Style.control.radius
         }
     }
 
     contentItem: Text {
+        property D.Palette warningColor: DS.Style.warningText
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
         text: control.text
-        color: palette.textWarning
+        color: D.ColorSelector.warningColor
+    }
+
+    BoxShadow {
+        anchors.fill: _connector
+        shadowBlur: 4
+        shadowOffsetY: 2
+        shadowColor: Qt.rgba(0, 0, 0, 0.1)
+        cornerRadius: _background.radius
     }
 
     Rectangle {
-        id: connector
+        id: _connector
         y: - height * (0.75) - control.topMargin - control.topPadding
-        width: PM.AlertConnector_Width
-        visible: connectorVisible
-        height: PM.AlertConnector_Height
-        color: palette.base
-        border.color: Qt.rgba(0, 0, 0, 0.1)
+        width: DS.Style.alertToolTip.connectorWidth
+        height: DS.Style.alertToolTip.connectorHeight
+        color: _background.color
+        border.color: D.DTK.selectColor(control.palette.window, DS.Style.control.lightBorder,
+                                        DS.Style.control.darkBorder)
         border.width: 1
-    }
-
-    RectangularShadow {
-        z: -1
-        anchors.fill: connector
-        color: Qt.rgba(0, 0, 0, 0.1)
-        offsetY: 2
-        glowRadius: 4
-        visible: connector.visible
     }
 }

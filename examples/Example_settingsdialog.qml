@@ -46,7 +46,7 @@ Rectangle {
         id: settingsDialog
         height: 400
         width: 680
-        visible: true
+        visible: false
         config: settingsConfig
 
         //            container.groups: [

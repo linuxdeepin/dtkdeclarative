@@ -20,7 +20,7 @@
  */
 
 import QtQuick 2.11
-import org.deepin.dtk.impl 1.0 as DI
+import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
 Control {
@@ -31,6 +31,8 @@ Control {
         DownIndicator = 1
     }
 
+    property D.Palette indicatorBackgroundColor: DS.Style.spinBoxIndicatorBackground
+    property D.Palette indicatorColor: DS.Style.spinBoxIndicator
     property int direction: IndicatorDirection.UpIndicator
     property bool singleIndicator: false
     property bool pressed
@@ -49,33 +51,30 @@ Control {
         clip: singleIndicator
 
         Rectangle {
-            property DI.Palette indicatorBackgroundColor: DS.Style.spinBoxIndicatorBackground
             anchors.left: parent.left
             anchors.bottom: (direction === SpinBoxIndicator.IndicatorDirection.UpIndicator) ? undefined : parent.bottom
             anchors.top: (direction === SpinBoxIndicator.IndicatorDirection.UpIndicator) ? parent.top : undefined
             implicitWidth: DS.Style.spinBox.indicatorWidth
             implicitHeight: DS.Style.spinBox.indicatorWidth
             radius: parent.width / 2
-            color: DI.ColorSelector.indicatorBackgroundColor
+            color: control.D.ColorSelector.indicatorBackgroundColor
         }
     }
 
     Rectangle {
-        property DI.Palette indicatorBackgroundColor: DS.Style.spinBoxIndicatorBackground
         visible: singleIndicator
         anchors.left: parent.left
         anchors.bottom: (direction === SpinBoxIndicator.IndicatorDirection.UpIndicator) ? parent.bottom : undefined
         anchors.top: (direction === SpinBoxIndicator.IndicatorDirection.UpIndicator) ? undefined : parent.top
         implicitWidth: parent.implicitWidth
         implicitHeight: DS.Style.spinBox.indicatorHeight - DS.Style.spinBox.indicatorWidth / 2
-        color: DI.ColorSelector.indicatorBackgroundColor
+        color: control.D.ColorSelector.indicatorBackgroundColor
     }
 
-    DI.DciIcon {
+    D.DciIcon {
         id: icon
-        property DI.Palette indicatorColor: DS.Style.spinBoxIndicator
         anchors.centerIn: parent
         sourceSize.width: DS.Style.spinBox.indicatorIconSize
-        color: DI.ColorSelector.indicatorColor
+        color: control.D.ColorSelector.indicatorColor
     }
 }

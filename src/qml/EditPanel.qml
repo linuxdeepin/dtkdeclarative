@@ -20,20 +20,30 @@
  */
 
 import QtQuick 2.11
-import org.deepin.dtk.impl 1.0 as DI
+import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
 
 Rectangle {
     id: panel
     property Item control
-    property DI.Palette backgroundColor: DS.Style.editBackground
+    property D.Palette backgroundColor: DS.Style.editBackground
+    property D.Palette alertBackgroundColor: DS.Style.alertBackground
+    property alias alertText: _alert.text
+    property alias alertDuration: _alert.timeout
+    property alias showAlert: _alert.visible
 
     radius: DS.Style.control.radius
-    color: DI.ColorSelector.backgroundColor
+    color: showAlert ? D.ColorSelector.alertBackgroundColor
+                     : D.ColorSelector.backgroundColor
 
     RectangleBorder {
         visible: control.activeFocus
         borderColor: control.palette.highlight
+    }
+
+    AlertToolTip {
+        id: _alert
+        target: control
     }
 }

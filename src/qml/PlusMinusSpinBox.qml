@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 ~ 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     Chen Bin <chenbin@uniontech.com>
  *
@@ -24,11 +24,8 @@ import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 import org.deepin.dtk.style 1.0 as DS
 
-RowLayout {
+FocusScope {
     id: control
-    width: DS.Style.spinBox.width
-    height: DS.Style.spinBox.height
-
     // Default SpinBox Properties
     property alias spinBox: spinBoxControl
     // Button Visible Properties
@@ -36,55 +33,61 @@ RowLayout {
     property alias downButtonVisible: minusButton.visible
     property alias resetButtonVisible: resetButton.visible
 
-    spacing: DS.Style.spinBox.spacing
-    SpinBox {
-        id: spinBoxControl
-        Layout.fillWidth: true
-        up.indicator: null
-        down.indicator: null
-    }
+    implicitWidth: DS.Style.spinBox.width
+    implicitHeight: DS.Style.spinBox.height
 
-    IconButton {
-        id: plusButton
-
-        implicitWidth: DS.Style.spinBox.height
-        implicitHeight: DS.Style.spinBox.height
-        focusPolicy: Qt.NoFocus
-
-        icon.name: "button_add"  // TODO(Chen Bin): Replace it with dci icon.
-        icon.width: 16
-        onClicked: {
-            spinBoxControl.increase()
+    RowLayout {
+        anchors.fill: parent
+        spacing: DS.Style.spinBox.spacing
+        SpinBox {
+            id: spinBoxControl
+            Layout.fillWidth: true
+            up.indicator: null
+            down.indicator: null
         }
-    }
 
-    IconButton {
-        id: minusButton
+        IconButton {
+            id: plusButton
 
-        implicitWidth: DS.Style.spinBox.height
-        implicitHeight: DS.Style.spinBox.height
-        focusPolicy: Qt.NoFocus
+            implicitWidth: DS.Style.spinBox.height
+            implicitHeight: DS.Style.spinBox.height
+            focusPolicy: Qt.NoFocus
 
-        icon.name: "button_reduce"  // TODO(Chen Bin): Replace it with dci icon.
-        icon.width: 16
-        onClicked: {
-            spinBoxControl.decrease()
+            icon.name: "button_add"  // TODO(Chen Bin): Replace it with dci icon.
+            icon.width: 16
+            onClicked: {
+                spinBoxControl.increase()
+            }
         }
-    }
 
-    IconButton {
-        id: resetButton
+        IconButton {
+            id: minusButton
 
-        implicitWidth: DS.Style.spinBox.height
-        implicitHeight: DS.Style.spinBox.height
-        focusPolicy: Qt.NoFocus
+            implicitWidth: DS.Style.spinBox.height
+            implicitHeight: DS.Style.spinBox.height
+            focusPolicy: Qt.NoFocus
 
-        visible: false
-        icon.name: ""  // TODO(Chen Bin): Replace it with dci icon.
-        icon.width: 16
+            icon.name: "button_reduce"  // TODO(Chen Bin): Replace it with dci icon.
+            icon.width: 16
+            onClicked: {
+                spinBoxControl.decrease()
+            }
+        }
 
-        onClicked: {
-            spinBoxControl.value = 0
+        IconButton {
+            id: resetButton
+
+            implicitWidth: DS.Style.spinBox.height
+            implicitHeight: DS.Style.spinBox.height
+            focusPolicy: Qt.NoFocus
+
+            visible: false
+            icon.name: ""  // TODO(Chen Bin): Replace it with dci icon.
+            icon.width: 16
+
+            onClicked: {
+                spinBoxControl.value = 0
+            }
         }
     }
 }
