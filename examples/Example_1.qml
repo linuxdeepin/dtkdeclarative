@@ -1,8 +1,6 @@
 import QtQuick 2.11
-import QtQuick.Window 2.11
 import QtQuick.Controls 2.4
-import QtQuick.Layouts 1.11
-import org.deepin.dtk.controls 1.0 as D
+import org.deepin.dtk 1.0 as D
 
 Rectangle {
 
@@ -20,8 +18,16 @@ Rectangle {
 
         Menu {
             id: contextMenu
-            MenuItem { text: "Cut" }
-            MenuItem { text: "Copy" }
+            MenuItem {
+                text: "Cut"
+                icon.name: "edit-cut"
+                display: AbstractButton.TextBesideIcon
+            }
+            MenuItem {
+                text: "Copy"
+                icon.name: "edit-copy"
+                display: D.IconLabel.IconBesideText
+            }
             MenuItem {
                 text: "Paste"
                 checkable: true

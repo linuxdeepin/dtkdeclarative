@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 ~ 2020 Uniontech Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2022 Uniontech Technology Co., Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -216,7 +216,8 @@ void DQuickIconLabelPrivate::updateImplicitSize()
     const qreal textImplicitWidth = showText ? label->implicitWidth() : 0;
     const qreal textImplicitHeight = showText ? label->implicitHeight() : 0;
     const qreal effectiveSpacing = showText && showIcon && image->implicitWidth() > 0 ? spacing : 0;
-    const qreal implicitWidth = display == DQuickIconLabel::TextBesideIcon ? iconImplicitWidth + textImplicitWidth + effectiveSpacing
+    const bool needAddIconAndTextWidth = display == DQuickIconLabel::TextBesideIcon || display == DQuickIconLabel::IconBesideText;
+    const qreal implicitWidth = needAddIconAndTextWidth ? iconImplicitWidth + textImplicitWidth + effectiveSpacing
                                                                            : qMax(iconImplicitWidth, textImplicitWidth);
     const qreal implicitHeight = display == DQuickIconLabel::TextUnderIcon ? iconImplicitHeight + textImplicitHeight + effectiveSpacing
                                                                            : qMax(iconImplicitHeight, textImplicitHeight);
@@ -300,6 +301,38 @@ void DQuickIconLabelPrivate::layout()
         }
         if (label) {
             QRectF textRect = alignedRect(mirrored, Qt::Alignment(Qt::AlignHCenter | Qt::AlignBottom), textSize, combinedRect);
+            label->setSize(textRect.size());
+            label->setPosition(textRect.topLeft());
+        }
+        break;
+    }
+    case DQuickIconLabel::IconBesideText: {
+        // Work out the sizes first, as the positions depend on them.
+        QSizeF iconSize(0, 0);
+        QSizeF textSize(0, 0);
+        if (image) {
+            iconSize.setWidth(qMin(image->implicitWidth(), availableWidth));
+            iconSize.setHeight(qMin(image->implicitHeight(), availableHeight));
+        }
+        qreal effectiveSpacing = 0;
+        if (label) {
+            if (!iconSize.isEmpty())
+                effectiveSpacing = spacing;
+            textSize.setWidth(qMin(label->implicitWidth(), availableWidth - iconSize.width() - effectiveSpacing));
+            textSize.setHeight(qMin(label->implicitHeight(), availableHeight));
+        }
+
+        const QRectF combinedRect = alignedRect(mirrored, alignment,
+                                                QSizeF(availableWidth,
+                                                       qMax(iconSize.height(), textSize.height())),
+                                                QRectF(leftPadding, topPadding, availableWidth, availableHeight));
+        if (image) {
+            const QRectF iconRect = alignedRect(mirrored, Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), iconSize, combinedRect);
+            image->setSize(iconRect.size());
+            image->setPosition(iconRect.topLeft());
+        }
+        if (label) {
+            const QRectF textRect = alignedRect(mirrored, Qt::Alignment(Qt::AlignLeft | Qt::AlignVCenter), textSize, combinedRect);
             label->setSize(textRect.size());
             label->setPosition(textRect.topLeft());
         }
