@@ -13,6 +13,7 @@ HEADERS += \
     $$PWD/dquickblitframebuffer.h \
     $$PWD/dquickglow.h \
     $$PWD/dquickshadowimage.h \
+    $$PWD/dquickrectangle.h \
 
 SOURCES += \
     $$PWD/dquickinwindowblendblur.cpp \
@@ -27,3 +28,4 @@ SOURCES += \
     $$PWD/dquickblitframebuffer.cpp \
     $$PWD/dquickglow.cpp \
     $$PWD/dquickshadowimage.cpp \
+    $$PWD/dquickrectangle.cpp \
