@@ -51,7 +51,7 @@ public:
 
     class Texture : public QSharedData {
     public:
-        Texture(QSGTexture *t)
+        Texture(QImage *t)
             : texture(t)
         {}
 
@@ -61,7 +61,7 @@ public:
         }
 
         QString cacheKey;
-        QSGTexture *texture;
+        QImage *texture;
     };
 
     typedef QExplicitlySharedDataPointer<Texture> TextureData;
@@ -95,8 +95,7 @@ public:
         return m_cache.contains(to_cache_key_key) || QFileInfo::exists(path);
     }
 
-    TextureData getShadowTexture(QSGRenderContext *context, const ShadowConfig &config,
-                                 bool cache = false, bool antialiasing = true);
+    TextureData getShadowTexture(const ShadowConfig &config, bool cache = false, bool antialiasing = true);
 
 private:
     ShadowTextureCache() {
@@ -119,23 +118,67 @@ public:
         , needUpdateShadow(false)
         , shadowTexture(nullptr)
         , spread(0.0)
+        , hollow(false)
+        , offsetX(0.0)
+        , offsetY(0.0)
+        , cacheShadow(nullptr)
+        , needUpdateHollow (false)
     {
 
+    }
+
+    ~DQuickShadowImagePrivate() override
+    {
+        delete cacheShadow;
     }
 
     /**
      * @brief textureForShadow Call function on the rendering thread
      * @return
      */
-    QSGTexture *ensureTextureForShadow()
+    QImage *ensureTextureForShadow()
     {
         // when doing geometry change animation, I don't want to draw shadows again,
         // resulting in performance degradation.
         if (needUpdateShadow || !shadowTexture) {
-            shadowTexture = ShadowTextureCache::instance()->getShadowTexture(sceneGraphRenderContext(), shadowConfig(), cache, antialiasing);
+            shadowTexture = ShadowTextureCache::instance()->getShadowTexture(shadowConfig(), cache, antialiasing);
         }
+
         needUpdateShadow = false;
         return shadowTexture ? shadowTexture->texture : nullptr;
+    }
+
+    void updateHollowShdowTexture()
+    {
+        if (hollow && !isInner && needUpdateHollow && shadowColor.alpha() != 0) {
+            // use deep copy to avoid polluting cached images
+            QImage image = shadowTexture->texture->copy(shadowTexture->texture->rect());
+            QPainter hollow(&image);
+            hollow.setRenderHint(QPainter::Antialiasing, true);
+            hollow.setCompositionMode(QPainter::CompositionMode_Clear);
+            QPainterPath path;
+            hollow.setPen(Qt::NoPen);
+            qreal pixel, innerPixel;
+            ShadowTextureCache::ShadowConfig config = shadowConfig();
+            pixel = shadowTexture->texture->size().width();
+            if (config.shapeType == ShadowTextureCache::Rectangle) {
+                innerPixel = pixel - config.shadowBlur * 2.0;
+            } else {
+                innerPixel = pixel - config.shadowBlur * 2.0;
+            }
+
+            QRectF rectangle(config.shadowBlur, config.shadowBlur,
+                             innerPixel - 2 - offsetX, innerPixel - 2 - offsetY);
+            path.addRoundedRect(rectangle, config.cornerRadius, config.cornerRadius);
+            hollow.fillPath(path, Qt::red);
+            hollow.end();
+
+            if (!cacheShadow)
+                delete cacheShadow;
+
+            cacheShadow = sceneGraphRenderContext()->createTexture(image);
+            needUpdateHollow = false;
+        }
     }
 
     bool hasCache()
@@ -172,6 +215,11 @@ public:
     std::atomic<bool> needUpdateShadow;
     ShadowTextureCache::TextureData shadowTexture;
     qreal spread;
+    bool hollow;
+    qreal offsetX;
+    qreal offsetY;
+    QSGTexture *cacheShadow;
+    bool needUpdateHollow;
 };
 
 DQUICK_END_NAMESPACE
