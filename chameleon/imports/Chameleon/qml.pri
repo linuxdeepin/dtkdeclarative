@@ -18,6 +18,7 @@ QML_FILES += \
     $$PWD/RoundButton.qml \
     $$PWD/GroupBox.qml \
     $$PWD/Frame.qml \
+    $$PWD/MenuSeparator.qml \
     $$PWD/MenuItem.qml \
     $$PWD/Menu.qml \
     $$PWD/ApplicationWindow.qml \
@@ -30,4 +31,5 @@ QML_FILES += \
     $$PWD/TextField.qml \
     $$PWD/TextArea.qml \
     $$PWD/SpinBox.qml \
-    $$PWD/Control.qml
+    $$PWD/Control.qml \
+    $$PWD/ScrollIndicator.qml

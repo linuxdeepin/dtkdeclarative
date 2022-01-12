@@ -143,16 +143,11 @@ MouseArea {
                 Loader {
                     id: optionMenuLoader
                     sourceComponent: Menu {
-                        ThemeMenu{}
-                        MenuSeparator {
-                            contentItem: Rectangle {
-                                implicitHeight: 1
-                                color: "black"
-                            }
-                        }
-                        HelpAction {}
+                        ThemeMenu { }
+                        MenuSeparator { }
+                        HelpAction { }
                         AboutAction { aboutDialog: control.aboutDialog }
-                        QuitAction{}
+                        QuitAction { }
                     }
                     onLoaded: {
                         for (var i = 0; i < item.count; i++) {

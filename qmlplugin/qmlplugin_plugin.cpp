@@ -192,6 +192,10 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     // QtQuick Controls
     dtkRegisterType(uri, controlsUri, 1, 0, "ApplicationWindow");
     dtkRegisterType(uri, controlsUri, 1, 0, "Button");
+    dtkRegisterType(uri, controlsUri, 1, 0, "Menu");
+    dtkRegisterType(uri, controlsUri, 1, 0, "MenuItem");
+    dtkRegisterType(uri, controlsUri, 1, 0, "MenuSeparator");
+    dtkRegisterType(uri, controlsUri, 1, 0, "ScrollIndicator");
     // DTK Controls
     dtkRegisterType(uri, controlsUri, 1, 0, "LineEdit");
     dtkRegisterType(uri, controlsUri, 1, 0, "SearchEdit");
@@ -223,6 +227,8 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "FloatingPanel");
     dtkRegisterType(uri, controlsUri, 1, 0, "FloatingMessage");
     dtkRegisterType(uri, controlsUri, 1, 0, "FloatingMessageCloseButton");
+    dtkRegisterType(uri, controlsUri, 1, 0, "HighlightPanel");
+    dtkRegisterType(uri, controlsUri, 1, 0, "ArrowListView");
 
     // for org.deepin.dtk.style(allowed to override)
     dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");

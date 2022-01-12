@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 2020 ~ 2022 Deepin Technology Co., Ltd.
+ * Copyright (C) 2022 UnionTech Technology Co., Ltd.
  *
- * Author:     liuyang <liuyang@uniontech.com>
+ * Author:     yeshanshan <yeshanshan@uniontech.com>
  *
- * Maintainer: liuyang <liuyang@uniontech.com>
+ * Maintainer: yeshanshan <yeshanshan@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -21,6 +21,6 @@
 
 import org.deepin.dtk.controls 1.0 as D
 
-D.MenuItem {
+D.ScrollIndicator {
 
 }

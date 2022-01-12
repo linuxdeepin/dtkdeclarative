@@ -212,8 +212,8 @@ QtObject {
         property int maximumWidth: 450
         property int minimumHeight: 40
         property int radius: 14
-        property color lightBackground: Qt.rgba(247, 247, 247, 0.6)
-        property color darkBackground: Qt.rgba(247, 247, 247, 0.6)
+        property color lightBackground: Qt.rgba(247 / 255.0, 247 / 255.0, 247 / 255.0, 0.6)
+        property color darkBackground: Qt.rgba(247 / 255.0, 247 / 255.0, 247 / 255.0, 0.6)
         property color lightShadowBackground: Qt.rgba(0, 0, 0, 0.2)
         property color darkShadowBackground: Qt.rgba(0, 0, 0, 0.2)
     }
@@ -223,5 +223,36 @@ QtObject {
         property int connectorHeight: 12
         property int verticalPadding: 4
         property int horizontalPadding: 10
+    }
+
+    property QtObject highlightPanel: QtObject {
+        property int width: 180
+        property int height: 30
+    }
+
+    property QtObject arrowListView: QtObject {
+        property size stepButtonSize: Qt.size(16, 16)
+        property int maxVisibleItems: 16
+        property int itemHeight: 30
+    }
+
+    property QtObject menu: QtObject {
+        property int padding: 10
+        property int radius: 18
+        property int margins: 0
+        property int overlap: 1
+        property color lightBackground: Qt.rgba(235 / 255.0, 235 / 255.0, 235 / 255.0, 0.6)
+        property color darkBackground: Qt.rgba(247 / 255.0, 247 / 255.0, 247 / 255.0, 0.6)
+        property int itemWidth: 180
+        property int itemHeight: 30
+        property size itemIconSize: Qt.size(14, 14)
+        property color subMenuOpendBackground: Qt.rgba(0, 0, 0, 0.15)
+        property int itemCount: 0
+        property int separatorLineTopPadding : 6
+        property int separatorLineBottomPadding : 4
+        property int separatorLineHeight : 2
+        property color separatorLineColor : Qt.rgba(0, 0, 0, 0.1)
+        property int separatorTopPadding: 11
+        property int separatorBottomPadding: 2
     }
 }
