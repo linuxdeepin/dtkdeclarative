@@ -49,5 +49,11 @@
         <file>qml/FloatingPanel.qml</file>
         <file>qml/FloatingMessage.qml</file>
         <file>qml/FloatingMessageCloseButton.qml</file>
+        <file>qml/Menu.qml</file>
+        <file>qml/MenuItem.qml</file>
+        <file>qml/MenuSeparator.qml</file>
+        <file>qml/HighlightPanel.qml</file>
+        <file>qml/ArrowListView.qml</file>
+        <file>qml/ScrollIndicator.qml</file>
     </qresource>
 </RCC>

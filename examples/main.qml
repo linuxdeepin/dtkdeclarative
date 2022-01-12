@@ -146,6 +146,9 @@ D.ApplicationWindow {
         V2.TabButton {
             text: qsTr("ColorSelector")
         }
+        V2.TabButton {
+            text: qsTr("Menu")
+        }
     }
     StackLayout {
         anchors.left: parent.left
@@ -162,5 +165,6 @@ D.ApplicationWindow {
         Example_settingsdialog {}
         Example_Notify {}
         Example_colorselector {}
+        Example_Menu {}
     }
 }

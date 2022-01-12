@@ -10,5 +10,6 @@
         <file>Example_Notify.qml</file>
         <file>Example_colorselector.qml</file>
         <file>Example_customcontrolforcs.qml</file>
+        <file>Example_Menu.qml</file>
     </qresource>
 </RCC>

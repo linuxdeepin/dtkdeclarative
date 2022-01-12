@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 2020 ~ 2022 Deepin Technology Co., Ltd.
+ * Copyright (C) 2022 UnionTech Technology Co., Ltd.
  *
- * Author:     liuyang <liuyang@uniontech.com>
+ * Author:     yeshanshan <yeshanshan@uniontech.com>
  *
- * Maintainer: liuyang <liuyang@uniontech.com>
+ * Maintainer: yeshanshan <yeshanshan@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,11 +16,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.deepin.dtk.controls 1.0 as D
+import QtQuick 2.11
+import QtQuick.Templates 2.4 as T
 
-D.MenuItem {
+T.ScrollIndicator {
 
 }
