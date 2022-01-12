@@ -153,6 +153,70 @@ void DQuickShadowImage::setSpread(qreal spread)
     Q_EMIT spreadChanged();
 }
 
+bool DQuickShadowImage::hollow() const
+{
+    Q_D(const DQuickShadowImage);
+
+    return d->hollow;
+}
+
+void DQuickShadowImage::setHollow(bool hollow)
+{
+    Q_D(DQuickShadowImage);
+
+    if (hollow == d->hollow)
+        return;
+
+    d->hollow = hollow;
+    d->needUpdateHollow = true;
+    Q_EMIT hollowChanged();
+    update();
+}
+
+qreal DQuickShadowImage::offsetX() const
+{
+    Q_D(const DQuickShadowImage);
+
+    return d->offsetX;
+}
+
+void DQuickShadowImage::setOffsetX(qreal offset)
+{
+    Q_D(DQuickShadowImage);
+
+    if (qFuzzyCompare(offset, d->offsetX))
+        return;
+
+    d->offsetX = offset;
+    Q_EMIT offsetXChanged();
+    if (hollow() && !isInner())
+        d->needUpdateHollow = true;
+
+    update();
+}
+
+qreal DQuickShadowImage::offsetY() const
+{
+    Q_D(const DQuickShadowImage);
+
+    return d->offsetY;
+}
+
+void DQuickShadowImage::setOffsetY(qreal offset)
+{
+    Q_D(DQuickShadowImage);
+
+    if (qFuzzyCompare(offset, d->offsetY))
+        return;
+
+    d->offsetY = offset;
+    Q_EMIT offsetYChanged();
+    if (hollow() && !isInner())
+        d->needUpdateHollow = true;
+
+    update();
+}
+
 DQuickShadowImage::DQuickShadowImage(DQuickShadowImagePrivate &dd, QQuickItem *parent)
     : QQuickItem (dd, parent)
 {
@@ -171,21 +235,30 @@ QSGNode *DQuickShadowImage::updatePaintNode(QSGNode *oldNode, QQuickItem::Update
         if (d->hasCache()) {
             d->ensureTextureForShadow();
         } else {
-            QFutureWatcher<QSGTexture *> *watcher =  new QFutureWatcher<QSGTexture *>();
+            QFutureWatcher<QImage *> *watcher =  new QFutureWatcher<QImage *>();
             connect(watcher, &QFutureWatcher<QSGTexture *>::finished, this, [watcher, this]{
                 this->update();
                 watcher->deleteLater();
             });
 
             d->shadowTexture = nullptr;
-            QFuture<QSGTexture *> future = QtConcurrent::run(d, &DQuickShadowImagePrivate::ensureTextureForShadow);
+            QFuture<QImage *> future = QtConcurrent::run(d, &DQuickShadowImagePrivate::ensureTextureForShadow);
             watcher->setFuture(future);
         }
     }
 
-    QSGTexture *texture = d->shadowTexture ? d->shadowTexture->texture : nullptr;
+    if (!(d->shadowTexture && d->shadowTexture->texture)) {
+        delete oldNode;
+        return nullptr;
+    }
 
-    if (!texture) {
+    if (d->hollow && !isInner()) {
+        d->updateHollowShdowTexture();
+    } else {
+        d->cacheShadow = d->sceneGraphRenderContext()->createTexture(*d->shadowTexture->texture);
+    }
+
+    if (!d->cacheShadow) {
         delete oldNode;
         return nullptr;
     }
@@ -198,13 +271,13 @@ QSGNode *DQuickShadowImage::updatePaintNode(QSGNode *oldNode, QQuickItem::Update
         node = d->sceneGraphContext()->createInternalImageNode();
 #endif
 
-    node->setTexture(texture);
+    node->setTexture(d->cacheShadow);
 
     QRectF targetRect;
     QRectF innerTargetRect;
     QRectF innerSourceRect;
     QRectF subSourceRect;
-    d->calculateRects(QSize(texture->textureSize().width(), texture->textureSize().height()), QSizeF(width(), height()),
+    d->calculateRects(QSize(d->cacheShadow->textureSize().width(), d->cacheShadow->textureSize().height()), QSizeF(width(), height()),
                       window()->effectiveDevicePixelRatio(),
                       &targetRect, &innerTargetRect,
                       &innerSourceRect, &subSourceRect);
@@ -384,7 +457,7 @@ QImage ShadowTextureCache::qt_image_convolute_filter(const QImage &src, const QV
     return dst;
 }
 
-ShadowTextureCache::TextureData ShadowTextureCache::getShadowTexture(QSGRenderContext *context, const ShadowTextureCache::ShadowConfig &config, bool cache, bool antialiasing)
+ShadowTextureCache::TextureData ShadowTextureCache::getShadowTexture(const ShadowTextureCache::ShadowConfig &config, bool cache, bool antialiasing)
 {
     if ((config.shadowColor.alpha() == 0 || qIsNull(config.shadowBlur))) {
         return TextureData();
@@ -400,19 +473,16 @@ ShadowTextureCache::TextureData ShadowTextureCache::getShadowTexture(QSGRenderCo
     if (!texture) {
         QString path = ":/dtk/declarative/shadow/" + to_cache_key_key + ".png";
         if (QFileInfo::exists(path)) {
-            QImage image(path);
-            texture = new Texture(context->createTexture(image));
+            QImage *image = new QImage(path);
+            texture = new Texture(image);
             texture->cacheKey = to_cache_key_key;
-            texture->texture->setFiltering(QSGTexture::Nearest);
-            texture->texture->setVerticalWrapMode(QSGTexture::ClampToEdge);
-            texture->texture->setHorizontalWrapMode(QSGTexture::ClampToEdge);
         }
     }
 
     // TODO(xiaoyaobing): unfortunately, GPU acceleration has not been used yet,
     // and the performance of this approach is worrying
     if (!texture) {
-        QImage shadowImage;
+        QImage *shadowImage;
         if (config.inner) {
             qreal pixel, innerPixel;
             if (config.shapeType == ShapeType::Rectangle) {
@@ -440,11 +510,11 @@ ShadowTextureCache::TextureData ShadowTextureCache::getShadowTexture(QSGRenderCo
             shadowPainter.end();
 
             qt_image_boxblur(image, qMax(1, qRound(config.shadowBlur / 3 - 3.0)), true);
-            shadowImage = QImage(innerPixel, innerPixel, QImage::Format_ARGB32_Premultiplied);
-            shadowImage = image.copy(config.shadowBlur, config.shadowBlur,
+            shadowImage = new QImage(innerPixel, innerPixel, QImage::Format_ARGB32_Premultiplied);
+            *shadowImage = image.copy(config.shadowBlur, config.shadowBlur,
                                      innerPixel, innerPixel);
 
-            QPainter scissor(&shadowImage);
+            QPainter scissor(shadowImage);
             scissor.setRenderHint(QPainter::Antialiasing, true);
             scissor.setCompositionMode(QPainter::CompositionMode_Clear);
             QPainterPath path1;
@@ -454,24 +524,24 @@ ShadowTextureCache::TextureData ShadowTextureCache::getShadowTexture(QSGRenderCo
             path1.arcTo(0, 0,  config.cornerRadius * 2,  config.cornerRadius * 2, 90, 90);
             path1.lineTo(0, 0);
 
-            path1.moveTo(shadowImage.width(), 0);
-            QRectF f(shadowImage.width() -  config.cornerRadius * 2, 0,
+            path1.moveTo(shadowImage->width(), 0);
+            QRectF f(shadowImage->width() -  config.cornerRadius * 2, 0,
                      config.cornerRadius * 2,  config.cornerRadius * 2);
             path1.arcTo(f, 0, 90);
-            path1.lineTo(shadowImage.width(), 0);
+            path1.lineTo(shadowImage->width(), 0);
 
-            path1.moveTo(0, shadowImage.height());
-            QRectF f1(0, shadowImage.height() -  config.cornerRadius * 2,
+            path1.moveTo(0, shadowImage->height());
+            QRectF f1(0, shadowImage->height() -  config.cornerRadius * 2,
                       config.cornerRadius * 2, config.cornerRadius * 2);
             path1.arcTo(f1, 180, 90);
-            path1.lineTo(0, shadowImage.height());
+            path1.lineTo(0, shadowImage->height());
 
-            path1.moveTo(shadowImage.width(), shadowImage.height());
-            QRectF f2(shadowImage.width() -  config.cornerRadius * 2,
-                      shadowImage.height() -  config.cornerRadius * 2,
+            path1.moveTo(shadowImage->width(), shadowImage->height());
+            QRectF f2(shadowImage->width() -  config.cornerRadius * 2,
+                      shadowImage->height() -  config.cornerRadius * 2,
                       config.cornerRadius * 2,  config.cornerRadius * 2);
             path1.arcTo(f2, 270, 90);
-            path1.lineTo(shadowImage.width(), shadowImage.height());
+            path1.lineTo(shadowImage->width(), shadowImage->height());
             scissor.fillPath(path1, Qt::red);
             scissor.end();
         } else {
@@ -484,10 +554,10 @@ ShadowTextureCache::TextureData ShadowTextureCache::getShadowTexture(QSGRenderCo
                 innerPixel = pixel - config.shadowBlur * 2.0;
             }
 
-            shadowImage = QImage(pixel, pixel, QImage::Format_ARGB32_Premultiplied);
-            shadowImage.fill(Qt::transparent);
+            shadowImage = new QImage(pixel, pixel, QImage::Format_ARGB32_Premultiplied);
+            shadowImage->fill(Qt::transparent);
 
-            QPainter shadowPainter(&shadowImage);
+            QPainter shadowPainter(shadowImage);
             shadowPainter.setRenderHint(QPainter::Antialiasing, true);
             shadowPainter.setPen(Qt::NoPen);
 
@@ -497,15 +567,12 @@ ShadowTextureCache::TextureData ShadowTextureCache::getShadowTexture(QSGRenderCo
             shadowPainter.fillPath(path, config.shadowColor);
             shadowPainter.end();
             if (config.shadowBlur > 0) {
-                qt_image_boxblur(shadowImage, qMax(1, qRound(config.shadowBlur / 3 - 3.0)), true);
+                qt_image_boxblur(*shadowImage, qMax(1, qRound(config.shadowBlur / 3 - 3.0)), true);
             }
         }
 
-        texture = new Texture(context->createTexture(shadowImage));
+        texture = new Texture(shadowImage);
         texture->cacheKey = to_cache_key_key;
-        texture->texture->setFiltering(QSGTexture::Nearest);
-        texture->texture->setVerticalWrapMode(QSGTexture::ClampToEdge);
-        texture->texture->setHorizontalWrapMode(QSGTexture::ClampToEdge);
         if (cache && !m_cache.contains(to_cache_key_key))
             m_cache[to_cache_key_key] = texture;
     }

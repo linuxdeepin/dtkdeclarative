@@ -31,6 +31,7 @@ Item {
     property alias cornerRadius: shadow.cornerRadius
     property alias cache: shadow.cache
     property alias spread: shadow.spread
+    property alias hollow: shadow.hollow
 
     D.ShadowImage {
         id: shadow
@@ -39,5 +40,7 @@ Item {
         y: isInner ? 0 : -parent.shadowBlur + parent.shadowOffsetY
         width: isInner ? parent.width : parent.width + parent.shadowBlur * 2
         height: isInner ? parent.height : parent.height + parent.shadowBlur * 2
+        offsetX: parent.shadowOffsetX
+        offsetY: parent.shadowOffsetY
     }
 }

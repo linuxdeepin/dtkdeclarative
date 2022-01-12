@@ -152,6 +152,7 @@ Rectangle {
         shadowOffsetX : 0
         shadowOffsetY : 0
         cornerRadius: boxShadowSource.radius
+        hollow: true
     }
 
     Rectangle {
