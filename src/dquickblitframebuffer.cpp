@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     zccrs <zccrs@live.com>
  *
@@ -95,10 +95,12 @@ QSGTextureProvider *DQuickBlitFramebuffer::textureProvider() const
 }
 
 static void onRender(DBlitFramebufferNode *node, void *data) {
-    TextureProvider *tp = reinterpret_cast<TextureProvider*>(data);
-    tp->setTexture(node->texture());
+    auto *d = reinterpret_cast<DQuickBlitFramebufferPrivate*>(data);
+    if (!d->tp)
+        return;
+    d->tp->setTexture(node->texture());
     // Don't direct emit the signal, must ensure the signal emit on current render loop after.
-    tp->metaObject()->invokeMethod(tp, &TextureProvider::textureChanged, Qt::QueuedConnection);
+    d->tp->metaObject()->invokeMethod(d->tp.data(), &TextureProvider::textureChanged, Qt::QueuedConnection);
 }
 
 QSGNode *DQuickBlitFramebuffer::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *oldData)
@@ -130,12 +132,8 @@ QSGNode *DQuickBlitFramebuffer::updatePaintNode(QSGNode *oldNode, QQuickItem::Up
         return nullptr;
     }
 
+    node->setRenderCallback(onRender, const_cast<DQuickBlitFramebufferPrivate*>(d));
     node->resize(size());
-    if (!d->tp) {
-        d->tp.reset(new TextureProvider());
-        node->setRenderCallback(onRender, d->tp.data());
-    }
-    d->tp->setTexture(node->texture());
 
     return node;
 }

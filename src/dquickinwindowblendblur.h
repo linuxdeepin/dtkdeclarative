@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     JiDe Zhang <zhangjide@deepin.org>
  *
@@ -22,36 +22,53 @@
 #define DQUICKINWINDOWBLENDBLUR_H
 
 #include <dtkdeclarative_global.h>
+
 #include <QQuickItem>
+
+QT_BEGIN_NAMESPACE
+class QSGPlainTexture;
+#ifndef QT_NO_OPENGL
+class QOpenGLFramebufferObject;
+#endif
+QT_END_NAMESPACE
 
 DQUICK_BEGIN_NAMESPACE
 
 class DQuickInWindowBlendBlurPrivate;
+class TextureProvider;
+class DSGBlurNode;
 class DQuickInWindowBlendBlur : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(qreal radius READ radius WRITE setRadius NOTIFY radiusChanged)
-    Q_PROPERTY(QColor blendColor READ blendColor WRITE setBlendColor NOTIFY blendColorChanged)
+    Q_PROPERTY(bool offscreen READ offscreen WRITE setOffscreen NOTIFY offscreenChanged)
 
 public:
     explicit DQuickInWindowBlendBlur(QQuickItem *parent = nullptr);
+    ~DQuickInWindowBlendBlur() override;
 
     qreal radius() const;
     void setRadius(qreal newRadius);
 
-    const QColor &blendColor() const;
-    void setBlendColor(const QColor &newBlendColor);
+    bool offscreen() const;
+    void setOffscreen(bool newOffscreen);
+
+    bool isTextureProvider() const override { return true; }
+    QSGTextureProvider *textureProvider() const override;
 
 Q_SIGNALS:
     void radiusChanged();
-    void blendColorChanged();
+    void offscreenChanged();
 
-private:
+protected:
     QSGNode *updatePaintNode(QSGNode *, UpdatePaintNodeData *) override;
     void itemChange(ItemChange, const ItemChangeData &) override;
 
-    qreal m_radius;
-    QColor m_blendColor;
+private:
+    qreal m_radius = 20;
+    bool m_offscreen = false;
+    mutable QScopedPointer<TextureProvider> m_tp;
+    friend void onRender(DSGBlurNode *, void *);
 };
 
 DQUICK_END_NAMESPACE

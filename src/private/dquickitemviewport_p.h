@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Uniontech Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2022 Uniontech Technology Co., Ltd.
  *
  * Author:     xiaoyaobing <xiaoyaobing@uniontech.com>
  *
@@ -267,7 +267,7 @@ public:
     // 圆角半径大小
     float radius = 0;
     bool fixed = false;
-    bool hideSource = true;
+    bool hideSource = false;
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(DQuickItemViewportPrivate::DirtyState)
 DQUICK_END_NAMESPACE

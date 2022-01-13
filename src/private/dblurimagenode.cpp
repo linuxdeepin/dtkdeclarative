@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     JiDe Zhang <zhangjide@deepin.org>
  *
@@ -224,67 +224,97 @@ static inline void qt_blurImage(QImage &blurImage, qreal radius, bool quality, i
 }
 // Copy from qpixmapfilter.cpp end
 
-DSoftwareBlurImageNode::DSoftwareBlurImageNode(QQuickItem *owner)
-    : item(owner)
+DSGBlurNode::DSGBlurNode(QQuickItem *owner)
+    : m_item(owner)
 {
 
 }
 
-void DSoftwareBlurImageNode::setTexture(QSGTexture *texture)
+void DSGBlurNode::setRenderCallback(RenderCallback callback, void *data)
+{
+    m_renderCallback = callback;
+    m_callbackData = data;
+}
+
+void DSGBlurNode::setTexture(QSGTexture *texture)
 {
     if (m_texture == texture)
         return;
     m_texture = texture;
-    DSoftwareBlurImageNode::releaseResources();
+    releaseResources();
     markDirty(DirtyMaterial);
 }
 
-void DSoftwareBlurImageNode::setRadius(qreal radius)
+bool DSGBlurNode::writeToTexture(QSGPlainTexture *) const
 {
-    if (qFuzzyCompare(radius, this->radius))
+    return false;
+}
+
+void DSGBlurNode::setRadius(qreal radius)
+{
+    if (qFuzzyCompare(radius, this->m_radius))
         return;
-    this->radius = radius;
+    this->m_radius = radius;
     markDirty(DirtyMaterial);
 }
 
-void DSoftwareBlurImageNode::setSourceRect(const QRectF &source)
+void DSGBlurNode::setSourceRect(const QRectF &source)
 {
-    if (this->sourceRect == source)
+    if (this->m_sourceRect == source)
         return;
-    this->sourceRect = source;
+    this->m_sourceRect = source;
     markDirty(DirtyMaterial);
 }
 
-void DSoftwareBlurImageNode::setRect(const QRectF &target)
+void DSGBlurNode::setRect(const QRectF &target)
 {
-    if (this->targetRect == target)
+    if (this->m_targetRect == target)
         return;
-    this->targetRect = target;
+    this->m_targetRect = target;
     markDirty(DirtyMaterial);
 }
 
-void DSoftwareBlurImageNode::setDisabledOpaqueRendering(bool disabled)
+void DSGBlurNode::setDisabledOpaqueRendering(bool disabled)
 {
-    if (this->disabledOpaqueRendering == disabled)
+    if (this->m_disabledOpaqueRendering == disabled)
         return;
-    this->disabledOpaqueRendering = disabled;
+    this->m_disabledOpaqueRendering = disabled;
     markDirty(DirtyForceUpdate);
 }
 
-void DSoftwareBlurImageNode::setBlendColor(const QColor &color)
+void DSGBlurNode::setBlendColor(const QColor &color)
 {
-    if (this->blendColor == color)
+    if (this->m_blendColor == color)
         return;
-    this->blendColor = color;
+    this->m_blendColor = color;
     markDirty(DirtyMaterial);
 }
 
-void DSoftwareBlurImageNode::setFollowMatrixForSource(bool on)
+void DSGBlurNode::setFollowMatrixForSource(bool on)
 {
-    if (followMatrixForSource == on)
+    if (m_followMatrixForSource == on)
         return;
-    followMatrixForSource = on;
+    m_followMatrixForSource = on;
     markDirty(DirtyMaterial);
+}
+
+QSGRenderNode::RenderingFlags DSGBlurNode::flags() const
+{
+    RenderingFlags rf = BoundedRectRendering;
+    if (!m_disabledOpaqueRendering &&( !m_texture || !m_texture->hasAlphaChannel()))
+        rf |= OpaqueRendering;
+    return rf;
+}
+
+QRectF DSGBlurNode::rect() const
+{
+    return m_targetRect;
+}
+
+DSoftwareBlurImageNode::DSoftwareBlurImageNode(QQuickItem *owner)
+    : DSGBlurNode(owner)
+{
+
 }
 
 static inline QImage refQImage(QImage &source, const QRectF &rect) {
@@ -296,7 +326,7 @@ static inline QImage refQImage(QImage &source, const QRectF &rect) {
 
 void DSoftwareBlurImageNode::render(const RenderState *state)
 {
-    if (!sourceRect.isValid() || !m_texture)
+    if (!m_sourceRect.isValid() || !m_texture)
         return;
 
     updateCachedImage();
@@ -304,8 +334,8 @@ void DSoftwareBlurImageNode::render(const RenderState *state)
     if (cachedSource.isNull())
         return;
 
-    QSGRendererInterface *rif = item->window()->rendererInterface();
-    QPainter *p = static_cast<QPainter *>(rif->getResource(item->window(),
+    QSGRendererInterface *rif = m_item->window()->rendererInterface();
+    QPainter *p = static_cast<QPainter *>(rif->getResource(m_item->window(),
                                                            QSGRendererInterface::PainterResource));
     Q_ASSERT(p);
 
@@ -316,27 +346,27 @@ void DSoftwareBlurImageNode::render(const RenderState *state)
     p->setOpacity(inheritedOpacity());
 
     const qreal dpr = cachedSource.devicePixelRatio();
-    QPointF offset = QPointF(sourceRect.x() * dpr, sourceRect.y() * dpr);
+    QPointF offset = QPointF(m_sourceRect.x() * dpr, m_sourceRect.y() * dpr);
     if (m_texture->isAtlasTexture()) {
         const QRectF subRect = m_texture->normalizedTextureSubRect();
         offset.rx() += subRect.x() * cachedSource.width();
         offset.ry() += subRect.y() * cachedSource.height();
     }
     QRectF actualSourceRect(offset.x(), offset.y(),
-                            sourceRect.width() * dpr,
-                            sourceRect.height() * dpr);
+                            m_sourceRect.width() * dpr,
+                            m_sourceRect.height() * dpr);
 
     const QTransform t = matrix()->toTransform();
-    QRectF actualTargetRect = targetRect;
-    if (followMatrixForSource) {
+    QRectF actualTargetRect = m_targetRect;
+    if (m_followMatrixForSource) {
         // map the targetRect to the actualSourceRect
         QPainterPath path;
-        path.addRect(targetRect);
+        path.addRect(m_targetRect);
         path = t.map(path);
         p->setClipPath(path, Qt::IntersectClip);
 
         actualSourceRect.setSize(t.mapRect(actualSourceRect).size());
-        actualTargetRect = t.mapRect(targetRect);
+        actualTargetRect = t.mapRect(m_targetRect);
     } else {
         p->setTransform(t);
     }
@@ -344,30 +374,22 @@ void DSoftwareBlurImageNode::render(const RenderState *state)
     // do blur
     QImage sourceRef = refQImage(cachedSource, actualSourceRect);
     // TODO: Don't transparent the borders
-    qt_blurImage(sourceRef, radius, false);
-    p->drawImage(actualTargetRect, cachedSource, actualSourceRect);
-    if (blendColor.isValid()) {
-        p->fillRect(actualTargetRect, blendColor);
+    qt_blurImage(sourceRef, m_radius, false);
+
+    if (!m_offscreen) {
+        p->drawImage(actualTargetRect, cachedSource, actualSourceRect);
+        if (m_blendColor.isValid()) {
+            p->fillRect(actualTargetRect, m_blendColor);
+        }
     }
+
+    doRenderCallback();
 }
 
 void DSoftwareBlurImageNode::releaseResources()
 {
     static QImage globalNullImage;
     cachedSource = globalNullImage;
-}
-
-QSGRenderNode::RenderingFlags DSoftwareBlurImageNode::flags() const
-{
-    RenderingFlags rf = BoundedRectRendering;
-    if (!disabledOpaqueRendering &&( !m_texture || !m_texture->hasAlphaChannel()))
-        rf |= OpaqueRendering;
-    return rf;
-}
-
-QRectF DSoftwareBlurImageNode::rect() const
-{
-    return targetRect;
 }
 
 void DSoftwareBlurImageNode::updateCachedImage()
@@ -382,15 +404,20 @@ void DSoftwareBlurImageNode::updateCachedImage()
     }
 }
 
+bool DSoftwareBlurImageNode::writeToTexture(QSGPlainTexture *targetTexture) const
+{
+    targetTexture->setImage(cachedSource);
+    return true;
+}
+
 #ifndef QT_NO_OPENGL
 
-DBlurEffectNode::DBlurEffectNode(QQuickItem *owner)
-    : QSGRenderNode ()
-    , m_item(owner)
+DOpenGLBlurEffectNode::DOpenGLBlurEffectNode(QQuickItem *owner)
+    : DSGBlurNode(owner)
 {
 }
 
-DBlurEffectNode::~DBlurEffectNode()
+DOpenGLBlurEffectNode::~DOpenGLBlurEffectNode()
 {
     delete m_programKawaseUp;
     m_programKawaseUp = nullptr;
@@ -414,7 +441,7 @@ DBlurEffectNode::~DBlurEffectNode()
     m_noiseVbo = nullptr;
 }
 
-void DBlurEffectNode::setTexture(QSGTexture *texture)
+void DOpenGLBlurEffectNode::setTexture(QSGTexture *texture)
 {
     if (m_texture == texture)
         return;
@@ -424,7 +451,7 @@ void DBlurEffectNode::setTexture(QSGTexture *texture)
     markDirty(DirtyMaterial);
 }
 
-void DBlurEffectNode::setRadius(qreal radius)
+void DOpenGLBlurEffectNode::setRadius(qreal radius)
 {
     // TODO(xiaoyaobing): I don't want to do this, but the radius of software rendering and
     //                    hardware rendering can't be unified
@@ -436,126 +463,77 @@ void DBlurEffectNode::setRadius(qreal radius)
     markDirty(DirtyMaterial);
 }
 
-void DBlurEffectNode::setSourceRect(const QRectF &source)
+void DOpenGLBlurEffectNode::render(const QSGRenderNode::RenderState *state)
 {
-    if (m_sourceRect == source)
-        return;
-
-    m_sourceRect = source;
-    markDirty(DirtyMaterial);
-}
-
-void DBlurEffectNode::setRect(const QRectF &target)
-{
-    if (m_targetRect == target)
-        return;
-
-    m_targetRect = target;
-    markDirty(DirtyMaterial);
-}
-
-void DBlurEffectNode::setDisabledOpaqueRendering(bool disabled)
-{
-    if (m_disabledOpaqueRendering == disabled)
-        return;
-
-    m_disabledOpaqueRendering = disabled;
-    markDirty(DirtyForceUpdate);
-}
-
-void DBlurEffectNode::setBlendColor(const QColor &color)
-{
-    if (m_blendColor == color)
-        return;
-
-    m_blendColor = color;
-
-    markDirty(DirtyMaterial);
-}
-
-// TODO(xiaoyaobing): Not implemented yet
-void DBlurEffectNode::setFollowMatrixForSource(bool on)
-{
-    if (m_followMatrixForSource == on)
-        return;
-
-    m_followMatrixForSource = on;
-
-    markDirty(DirtyMaterial);
-}
-
-void DBlurEffectNode::render(const QSGRenderNode::RenderState *state)
-{
-    if (!m_sourceRect.isValid() || !m_texture)
+    if (Q_UNLIKELY(!m_sourceRect.isValid() || !m_texture))
         return;
 
 #if(QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
     const bool needsWrap = QSGRendererInterface::isApiRhiBased(m_item->window()->rendererInterface()->graphicsApi());
     if (Q_LIKELY(needsWrap)) {
         m_item->window()->beginExternalCommands();
-        m_item->window()->resetOpenGLState();
     }
 #endif
 
-    if (Q_LIKELY(!m_programKawaseUp))
+    if (Q_UNLIKELY(!m_programKawaseUp))
         initialize();
 
-    if (Q_LIKELY(m_needUpdateFBO)) {
+    if (Q_UNLIKELY(m_needUpdateFBO)) {
         initFBOTextures();
         m_needUpdateFBO = false;
     }
 
-    if (Q_LIKELY(m_fboVector.count() > 1)) {
-        applyDaulBlur(m_fboVector[1], m_texture->textureId(), m_programKawaseDown, state,
-                m_matrixKawaseDownUniform, 2);
+    if (Q_UNLIKELY(m_fboVector.isEmpty()))
+        return;
 
-        for (int i = 1; i < m_radius; i++) {
-            applyDaulBlur(m_fboVector[i + 1], m_fboVector[i]->texture(), m_programKawaseDown, state,
-                    m_matrixKawaseDownUniform, qPow(2, i + 1));
-        }
+    applyDaulBlur(m_fboVector[1], m_texture->textureId(), m_programKawaseDown, state,
+            m_matrixKawaseDownUniform, 2);
 
-        for (int i = m_radius; i > 0; i--) {
-            applyDaulBlur(m_fboVector[i - 1], m_fboVector[i]->texture(), m_programKawaseUp, state,
-                    m_matrixKawaseUpUniform, qPow(2, i - 1));
-        }
-
-        if (Q_LIKELY(m_fboVector.count() > 0))
-            renderToScreen(m_fboVector[0]->texture(), state);
+    for (int i = 1; i < m_radius; i++) {
+        applyDaulBlur(m_fboVector[i + 1], m_fboVector[i]->texture(), m_programKawaseDown, state,
+                m_matrixKawaseDownUniform, qPow(2, i + 1));
     }
 
-    m_item->window()->resetOpenGLState();
+    for (int i = m_radius; i > 0; i--) {
+        applyDaulBlur(m_fboVector[i - 1], m_fboVector[i]->texture(), m_programKawaseUp, state,
+                m_matrixKawaseUpUniform, qPow(2, i - 1));
+    }
+
+    if (!m_offscreen)
+        renderToScreen(m_fboVector[0]->texture(), state);
 
 #if(QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
     if (Q_LIKELY(needsWrap))
         m_item->window()->endExternalCommands();
 #endif
+
+    doRenderCallback();
 }
 
-QSGRenderNode::StateFlags DBlurEffectNode::changedStates() const
+QSGRenderNode::StateFlags DOpenGLBlurEffectNode::changedStates() const
 {
-    return BlendState | ScissorState;
+    if (m_offscreen)
+        return StateFlags();
+    return BlendState | StencilState | ScissorState;
 }
 
-QSGRenderNode::RenderingFlags DBlurEffectNode::flags() const
+bool DOpenGLBlurEffectNode::writeToTexture(QSGPlainTexture *targetTexture) const
 {
-    RenderingFlags rf = BoundedRectRendering;
-    if (!m_disabledOpaqueRendering &&( !m_texture || !m_texture->hasAlphaChannel()))
-        rf |= OpaqueRendering;
-    return rf;
+    if (Q_UNLIKELY(m_fboVector.isEmpty()))
+        return false;
+    targetTexture->setTextureId(m_fboVector.first()->texture());
+    targetTexture->setHasAlphaChannel(m_texture->hasAlphaChannel());
+    targetTexture->setTextureSize(m_fboVector.first()->size());
+    return true;
 }
 
-QRectF DBlurEffectNode::rect() const
-{
-    return m_targetRect;
-}
-
-void DBlurEffectNode::initialize()
+void DOpenGLBlurEffectNode::initialize()
 {
     initDispalyShader();
     initBlurSahder();
 }
 
-void DBlurEffectNode::initBlurSahder()
+void DOpenGLBlurEffectNode::initBlurSahder()
 {
     m_programKawaseUp = new QOpenGLShaderProgram;
     m_programKawaseDown = new QOpenGLShaderProgram;
@@ -596,7 +574,7 @@ void DBlurEffectNode::initBlurSahder()
     m_sampleVbo->write(VERTEX_SIZE, texCoord, sizeof(texCoord));
 }
 
-void DBlurEffectNode::applyDaulBlur(QOpenGLFramebufferObject *targetFBO, GLuint sourceTexture, QOpenGLShaderProgram *shader
+void DOpenGLBlurEffectNode::applyDaulBlur(QOpenGLFramebufferObject *targetFBO, GLuint sourceTexture, QOpenGLShaderProgram *shader
                                   , const QSGRenderNode::RenderState *state, int matrixUniform, int scale)
 {
     targetFBO->bind();
@@ -642,7 +620,7 @@ void DBlurEffectNode::applyDaulBlur(QOpenGLFramebufferObject *targetFBO, GLuint 
     targetFBO->release();
 }
 
-void DBlurEffectNode::applyNoise(GLuint sourceTexture, const QSGRenderNode::RenderState *state)
+void DOpenGLBlurEffectNode::applyNoise(GLuint sourceTexture, const QSGRenderNode::RenderState *state)
 {
     QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
     f->glBindTexture(GL_TEXTURE_2D, sourceTexture);
@@ -694,7 +672,7 @@ void DBlurEffectNode::applyNoise(GLuint sourceTexture, const QSGRenderNode::Rend
     m_programNoise->release();
 }
 
-void DBlurEffectNode::renderToScreen(GLuint sourceTexture, const QSGRenderNode::RenderState *state)
+void DOpenGLBlurEffectNode::renderToScreen(GLuint sourceTexture, const QSGRenderNode::RenderState *state)
 {
     QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
     f->glBindTexture(GL_TEXTURE_2D, sourceTexture);
@@ -746,7 +724,7 @@ void DBlurEffectNode::renderToScreen(GLuint sourceTexture, const QSGRenderNode::
     m_program->release();
 }
 
-void DBlurEffectNode::initFBOTextures()
+void DOpenGLBlurEffectNode::initFBOTextures()
 {
     QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
     for (int i = 0; i < m_fboVector.size(); i++) {
@@ -754,6 +732,10 @@ void DBlurEffectNode::initFBOTextures()
     }
 
     m_fboVector.clear();
+
+    if (m_radius <= 0)
+        return;
+
     qreal scale = m_item->window()->effectiveDevicePixelRatio();
     QSize size;
     /* when opengl rendering, the projectionmatrix matrix has high accuracy,
@@ -776,7 +758,7 @@ void DBlurEffectNode::initFBOTextures()
     }
 }
 
-void DBlurEffectNode::initDispalyShader()
+void DOpenGLBlurEffectNode::initDispalyShader()
 {
     m_program = new QOpenGLShaderProgram;
 
@@ -826,7 +808,7 @@ void DBlurEffectNode::initDispalyShader()
     m_vbo->write(VERTEX_SIZE, texCoord, sizeof(texCoord));
 }
 
-void DBlurEffectNode::initNoiseShader()
+void DOpenGLBlurEffectNode::initNoiseShader()
 {
     m_programNoise = new QOpenGLShaderProgram;
     m_programNoise->addCacheableShaderFromSourceFile(QOpenGLShader::Vertex, ":/dtk/declarative/shaders/noise.vert");

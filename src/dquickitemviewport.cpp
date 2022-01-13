@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Uniontech Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2022 Uniontech Technology Co., Ltd.
  *
  * Author:     zccrs <zccrs@live.com>
  *
@@ -343,6 +343,12 @@ QSGNode *DQuickItemViewport::updatePaintNode(QSGNode *old, QQuickItem::UpdatePai
     }
 
     const auto tp = d->sourceItem->textureProvider();
+
+    if (Q_LIKELY(!tp)) {
+        delete old;
+        return nullptr;
+    }
+
     PreprocessNode *preNode = static_cast<PreprocessNode*>(old);
     if (Q_UNLIKELY(!preNode)) {
         preNode = new PreprocessNode(d);
