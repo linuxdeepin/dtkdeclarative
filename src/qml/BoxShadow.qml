@@ -38,8 +38,10 @@ Item {
 
         x: isInner ? 0 : -parent.shadowBlur + parent.shadowOffsetX
         y: isInner ? 0 : -parent.shadowBlur + parent.shadowOffsetY
-        width: isInner ? parent.width : parent.width + parent.shadowBlur * 2
-        height: isInner ? parent.height : parent.height + parent.shadowBlur * 2
+        width: isInner ? parent.width : parent.width ? (parent.width + parent.shadowBlur * 2)
+                                                     : parent.width
+        height: isInner ? parent.height : parent.height ? (parent.height + parent.shadowBlur * 2)
+                                                        : parent.height
         offsetX: parent.shadowOffsetX
         offsetY: parent.shadowOffsetY
     }

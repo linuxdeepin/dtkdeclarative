@@ -88,8 +88,6 @@ protected:
     QSGNode *updatePaintNode(QSGNode *, UpdatePaintNodeData *) override;
 
 protected:
-    bool shapeIsCircular();
-    qreal calculateCornerRadius();
     DQuickShadowImage(DQuickShadowImagePrivate &dd, QQuickItem *parent = nullptr);
 
 private:
