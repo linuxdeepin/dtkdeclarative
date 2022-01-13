@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     JiDe Zhang <zhangjide@deepin.org>
  *
@@ -22,15 +22,42 @@
 #include "private/dblitframebuffernode_p.h"
 #include "private/dblurimagenode_p.h"
 
+#include <private/qquickitem_p.h>
+#include <private/qsgplaintexture_p.h>
+
 #include <QQuickWindow>
 
 DQUICK_BEGIN_NAMESPACE
 
+class Q_DECL_HIDDEN TextureProvider : public QSGTextureProvider {
+public:
+    TextureProvider()
+        : QSGTextureProvider()
+        , m_texture(new QSGPlainTexture())
+    {
+        m_texture->setOwnsTexture(false);
+    }
+
+    inline QSGPlainTexture *plainTexture() const {
+        return m_texture.data();
+    }
+    QSGTexture *texture() const override {
+        return plainTexture();
+    }
+
+private:
+    QScopedPointer<QSGPlainTexture> m_texture;
+};
+
 DQuickInWindowBlendBlur::DQuickInWindowBlendBlur(QQuickItem *parent)
     : QQuickItem(parent)
-    , m_blendColor(Qt::transparent)
 {
     setFlag(QQuickItem::ItemHasContents, true);
+}
+
+DQuickInWindowBlendBlur::~DQuickInWindowBlendBlur()
+{
+
 }
 
 qreal DQuickInWindowBlendBlur::radius() const
@@ -47,29 +74,47 @@ void DQuickInWindowBlendBlur::setRadius(qreal newRadius)
     update();
 }
 
-const QColor &DQuickInWindowBlendBlur::blendColor() const
+bool DQuickInWindowBlendBlur::offscreen() const
 {
-    return m_blendColor;
+    return m_offscreen;
 }
 
-void DQuickInWindowBlendBlur::setBlendColor(const QColor &newBlendColor)
+void DQuickInWindowBlendBlur::setOffscreen(bool newOffscreen)
 {
-    if (m_blendColor == newBlendColor)
+    if (m_offscreen == newOffscreen)
         return;
+    m_offscreen = newOffscreen;
+    Q_EMIT offscreenChanged();
 
-    m_blendColor = newBlendColor;
-    Q_EMIT blendColorChanged();
     update();
 }
 
-static void updateSoftwareNodeTexture(DBlitFramebufferNode *node, void *blurNode) {
-    auto bn = reinterpret_cast<DSoftwareBlurImageNode*>(blurNode);
+QSGTextureProvider *DQuickInWindowBlendBlur::textureProvider() const
+{
+    const QQuickItemPrivate *d = QQuickItemPrivate::get(this);
+    if (!d->window || !d->sceneGraphRenderContext() || QThread::currentThread() != d->sceneGraphRenderContext()->thread()) {
+        qWarning("DQuickInWindowBlendBlur::textureProvider: can only be queried on the rendering thread of an exposed window");
+        return nullptr;
+    }
+
+    if (!m_tp) {
+        m_tp.reset(new TextureProvider());
+    }
+    return m_tp.data();
+}
+
+static void updateBlurNodeTexture(DBlitFramebufferNode *node, void *blurNode) {
+    auto bn = reinterpret_cast<DSGBlurNode*>(blurNode);
     bn->setTexture(node->texture());
 }
 
-static void updateHardwareNodeTexture(DBlitFramebufferNode *node, void *blurNode) {
-    auto bn = reinterpret_cast<DBlurEffectNode*>(blurNode);
-    bn->setTexture(node->texture());
+void onRender(DSGBlurNode *node, void *data) {
+    DQuickInWindowBlendBlur *that = reinterpret_cast<DQuickInWindowBlendBlur*>(data);
+    if (!that->m_tp)
+        return;
+    node->writeToTexture(that->m_tp->plainTexture());
+    // Don't direct emit the signal, must ensure the signal emit on current render loop after.
+    that->m_tp->metaObject()->invokeMethod(that->m_tp.data(), &TextureProvider::textureChanged, Qt::QueuedConnection);
 }
 
 QSGNode *DQuickInWindowBlendBlur::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *data)
@@ -83,8 +128,9 @@ QSGNode *DQuickInWindowBlendBlur::updatePaintNode(QSGNode *oldNode, UpdatePaintN
             node = DBlitFramebufferNode::createSoftwareNode(this, true, true);
             auto blurNode = new DSoftwareBlurImageNode(this);
             blurNode->setDisabledOpaqueRendering(true);
+            blurNode->setRenderCallback(onRender, this);
             node->appendChildNode(blurNode);
-            node->setRenderCallback(updateSoftwareNodeTexture, blurNode);
+            node->setRenderCallback(updateBlurNodeTexture, blurNode);
         }
 #ifndef QT_NO_OPENGL
         else if (ga == QSGRendererInterface::OpenGL
@@ -93,10 +139,11 @@ QSGNode *DQuickInWindowBlendBlur::updatePaintNode(QSGNode *oldNode, UpdatePaintN
          #endif
                  ) {
             node = DBlitFramebufferNode::createOpenGLNode(this, true, true);
-            auto blurNode = new DBlurEffectNode(this);
+            auto blurNode = new DOpenGLBlurEffectNode(this);
             blurNode->setDisabledOpaqueRendering(true);
+            blurNode->setRenderCallback(onRender, this);
             node->appendChildNode(blurNode);
-            node->setRenderCallback(updateHardwareNodeTexture, blurNode);
+            node->setRenderCallback(updateBlurNodeTexture, blurNode);
         }
 #endif
         else {
@@ -105,26 +152,20 @@ QSGNode *DQuickInWindowBlendBlur::updatePaintNode(QSGNode *oldNode, UpdatePaintN
         }
     }
 
-    node->resize(size());
-    if (ga == QSGRendererInterface::Software) {
-        auto blurNode = static_cast<DSoftwareBlurImageNode*>(node->firstChild());
-        blurNode->setRadius(m_radius);
-        const QRectF rect(0, 0, width(), height());
-        blurNode->setSourceRect(rect);
-        blurNode->setRect(rect);
-        blurNode->setTexture(node->texture());
-        blurNode->setBlendColor(m_blendColor);
-        blurNode->setFollowMatrixForSource(true);
-    } else {
-        auto blurNode = static_cast<DBlurEffectNode *>(node->firstChild());
-        blurNode->setRadius(m_radius);
-        const QRectF rect(0, 0, width(), height());
-        blurNode->setSourceRect(rect);
-        blurNode->setRect(rect);
-        blurNode->setTexture(node->texture());
-        blurNode->setBlendColor(m_blendColor);
-        blurNode->setFollowMatrixForSource(true);
+    if (!m_tp) {
+        m_tp.reset(new TextureProvider());
     }
+
+    node->resize(size());
+    DSGBlurNode *blurNode = static_cast<DSGBlurNode*>(node->firstChild());
+    Q_ASSERT(blurNode);
+    blurNode->setRadius(m_radius);
+    const QRectF rect(0, 0, width(), height());
+    blurNode->setSourceRect(rect);
+    blurNode->setRect(rect);
+    blurNode->setTexture(node->texture());
+    blurNode->setFollowMatrixForSource(true);
+    blurNode->setOffscreen(m_offscreen);
 
     return node;
 }

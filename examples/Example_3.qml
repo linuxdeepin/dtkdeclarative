@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Uniontech Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2022 Uniontech Technology Co., Ltd.
  *
  * Author:     zccrs <zccrs@live.com>
  *
@@ -19,7 +19,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.0
-import QtQuick.Controls 2.4
 import org.deepin.dtk 1.0 as D
 
 Item {
@@ -29,21 +28,11 @@ Item {
         source: "file:///usr/share/wallpapers/deepin/desktop.jpg"
     }
 
-    Button {
-        text: "深浅切换"
-        onClicked: {
-            if (testView.foreground == "#55000000")
-                testView.foreground = "#55ffffff"
-            else
-                testView.foreground = "#55000000"
-        }
-    }
-
     ListView {
         id: testView
 
         property color foreground: "#55ffffff"
-        model: 20
+        model: 1
         spacing: 30
         clip: true
         anchors {
@@ -61,8 +50,23 @@ Item {
             D.InWindowBlendBlur {
                 id: blur
                 anchors.fill: parent
-                radius: 30
-                blendColor: view.foreground
+                radius: 20
+                offscreen: true
+            }
+
+            D.ItemViewport {
+                id: roundBlur
+                anchors.fill: blur
+                fixed: true
+                sourceItem: blur
+                radius: 20
+                hideSource: false
+            }
+
+            Rectangle {
+                radius: roundBlur.radius
+                anchors.fill: roundBlur
+                color: view.foreground
             }
 
             Text {
@@ -71,6 +75,16 @@ Item {
                 color: "white"
                 font.pixelSize: 22
             }
+        }
+    }
+
+    D.Button {
+        text: "深浅切换"
+        onClicked: {
+            if (testView.foreground == "#55000000")
+                testView.foreground = "#55ffffff"
+            else
+                testView.foreground = "#55000000"
         }
     }
 }

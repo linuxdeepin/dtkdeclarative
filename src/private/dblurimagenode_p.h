@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     JiDe Zhang <zhangjide@deepin.org>
  *
@@ -28,70 +28,95 @@
 QT_BEGIN_NAMESPACE
 class QQuickItem;
 class QSGTexture;
+class QSGPlainTexture;
+#ifndef QT_NO_OPENGL
 class QOpenGLShaderProgram;
 class QOpenGLFramebufferObject;
 class QOpenGLBuffer;
+#endif
 QT_END_NAMESPACE
 
 DQUICK_BEGIN_NAMESPACE
 
-class DSoftwareBlurImageNode : public QSGRenderNode
+class DSGBlurNode : public QSGRenderNode
+{
+public:
+    DSGBlurNode(QQuickItem *owner);
+
+    typedef void(*RenderCallback)(DSGBlurNode *node, void *data);
+    void setRenderCallback(RenderCallback callback, void *data);
+    inline void doRenderCallback() {
+        if (!m_renderCallback)
+            return;
+        m_renderCallback(this, m_callbackData);
+    }
+
+    inline void setOffscreen(bool offscreen) {
+        if (m_offscreen == offscreen)
+            return;
+        m_offscreen = offscreen;
+        markDirty(DirtyMaterial);
+    }
+
+    virtual void setTexture(QSGTexture *texture);
+    inline QSGTexture *texture() const
+    { return m_texture;}
+    virtual bool writeToTexture(QSGPlainTexture *targetTexture) const;
+    virtual void setRadius(qreal radius);
+    void setSourceRect(const QRectF &source);
+    void setRect(const QRectF &target);
+    void setDisabledOpaqueRendering(bool disabled);
+    void setBlendColor(const QColor &color);
+    void setFollowMatrixForSource(bool on);
+
+    RenderingFlags flags() const override;
+    QRectF rect() const override;
+
+protected:
+    RenderCallback m_renderCallback = nullptr;
+    void *m_callbackData = nullptr;
+    bool m_offscreen = false;
+
+    QQuickItem *m_item;
+    QSGTexture *m_texture = nullptr;
+    qreal m_radius = 0;
+    QRectF m_sourceRect;
+    QRectF m_targetRect;
+    QColor m_blendColor = Qt::transparent;
+    bool m_disabledOpaqueRendering = false;
+    bool m_followMatrixForSource = false;
+};
+
+class DSoftwareBlurImageNode : public DSGBlurNode
 {
 public:
     DSoftwareBlurImageNode(QQuickItem *owner);
 
-    void setTexture(QSGTexture *texture);
-    inline QSGTexture *texture() const
-    { return m_texture;}
-    void setRadius(qreal radius);
-    void setSourceRect(const QRectF &source);
-    void setRect(const QRectF &target);
-    void setDisabledOpaqueRendering(bool disabled);
-    void setBlendColor(const QColor &color);
-    void setFollowMatrixForSource(bool on);
-
+private:
     void render(const RenderState *state) override;
     void releaseResources() override;
-    RenderingFlags flags() const override;
-    QRectF rect() const override;
-
-private:
     void updateCachedImage();
-
-    QQuickItem *item;
-    QSGTexture *m_texture = nullptr;
-    qreal radius = 0;
-    QRectF sourceRect;
-    QRectF targetRect;
-    bool disabledOpaqueRendering = false;
-    QColor blendColor;
-    bool followMatrixForSource = false;
+    bool writeToTexture(QSGPlainTexture *targetTexture) const override;
 
     QImage cachedSource;
 };
 
-class DBlurEffectNode : public QSGRenderNode
+#ifndef QT_NO_OPENGL
+class DOpenGLBlurEffectNode : public DSGBlurNode
 {
 public:
-    DBlurEffectNode(QQuickItem *owner);
-    ~DBlurEffectNode() override;
+    DOpenGLBlurEffectNode(QQuickItem *owner);
+    ~DOpenGLBlurEffectNode() override;
 
-    void setTexture(QSGTexture *texture);
-    inline QSGTexture *texture() const
-    { return m_texture;}
-    void setRadius(qreal radius);
-    void setSourceRect(const QRectF &source);
-    void setRect(const QRectF &target);
-    void setDisabledOpaqueRendering(bool disabled);
-    void setBlendColor(const QColor &color);
-    void setFollowMatrixForSource(bool on);
+    void setTexture(QSGTexture *texture) override;
+    void setRadius(qreal radius) override;
 
     void render(const RenderState *state) override;
     StateFlags changedStates() const override;
-    RenderingFlags flags() const override;
-    QRectF rect() const override;
 
 private:
+    bool writeToTexture(QSGPlainTexture *targetTexture) const override;
+
     void initialize();
     void initBlurSahder();
     void applyDaulBlur(QOpenGLFramebufferObject* targetFBO, GLuint sourceTexture, QOpenGLShaderProgram *shader
@@ -103,14 +128,6 @@ private:
     void initNoiseShader();
 
 private:
-    QQuickItem *m_item;
-    QSGTexture *m_texture = nullptr;
-    int m_radius = 0;
-    QRectF m_sourceRect;
-    QRectF m_targetRect;
-    bool m_disabledOpaqueRendering = false;
-    QColor m_blendColor;
-    bool m_followMatrixForSource = false;
     bool m_needUpdateFBO = false;
 
     QOpenGLShaderProgram *m_programKawaseUp = nullptr;
@@ -128,6 +145,7 @@ private:
     QOpenGLShaderProgram *m_programNoise = nullptr;
     QOpenGLBuffer *m_noiseVbo = nullptr;
 };
+#endif
 
 DQUICK_END_NAMESPACE
 
