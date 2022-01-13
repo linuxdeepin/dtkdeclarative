@@ -31,6 +31,8 @@
 #include <QString>
 #include <QtMath>
 #include <QFileInfo>
+#include <QFutureWatcher>
+#include <QtConcurrent>
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -47,6 +49,17 @@ public:
         QColor shadowColor;
         bool inner;
         ShapeType shapeType = ShapeType::Rectangle;
+
+        bool operator==(ShadowConfig &other) {
+            return (qFuzzyCompare(cornerRadius, other.cornerRadius)
+                   && qFuzzyCompare(shadowBlur, other.shadowBlur)
+                   && shadowColor == other.shadowColor
+                   && inner == other.inner
+                   && shapeType == other.shapeType);
+        }
+        bool operator!=(ShadowConfig &other) {
+            return !operator==(other);
+        }
     };
 
     class Texture : public QSharedData {
@@ -115,7 +128,6 @@ public:
         , shadowColor(Qt::transparent)
         , isInner(false)
         , cache(true)
-        , needUpdateShadow(false)
         , shadowTexture(nullptr)
         , spread(0.0)
         , hollow(false)
@@ -140,11 +152,25 @@ public:
     {
         // when doing geometry change animation, I don't want to draw shadows again,
         // resulting in performance degradation.
-        if (needUpdateShadow || !shadowTexture) {
-            shadowTexture = ShadowTextureCache::instance()->getShadowTexture(shadowConfig(), cache, antialiasing);
-        }
+        auto newConfig = shadowConfig();
+        if (shadowTexture && (newConfig == curConfig))
+            return nullptr;
 
-        needUpdateShadow = false;
+        curConfig = newConfig;
+        if (ShadowTextureCache::instance()->keyIsCache(curConfig)) {
+            shadowTexture = ShadowTextureCache::instance()->getShadowTexture(curConfig, cache, antialiasing);
+        } else {
+            QFutureWatcher<ShadowTextureCache::TextureData> *watcher = new QFutureWatcher<ShadowTextureCache::TextureData>();
+            QObject::connect(watcher, &QFutureWatcher<QSGTexture *>::finished, q_func(), [watcher, this]{
+                shadowTexture = watcher->result();
+                q_func()->update();
+                watcher->deleteLater();
+            });
+
+            QFuture<ShadowTextureCache::TextureData> future = QtConcurrent::run(ShadowTextureCache::instance(), &ShadowTextureCache::getShadowTexture,
+                                                                                curConfig, cache, antialiasing);
+            watcher->setFuture(future);
+        }
         return shadowTexture ? shadowTexture->texture : nullptr;
     }
 
@@ -159,17 +185,16 @@ public:
             QPainterPath path;
             hollow.setPen(Qt::NoPen);
             qreal pixel, innerPixel;
-            ShadowTextureCache::ShadowConfig config = shadowConfig();
             pixel = shadowTexture->texture->size().width();
-            if (config.shapeType == ShadowTextureCache::Rectangle) {
-                innerPixel = pixel - config.shadowBlur * 2.0;
+            if (curConfig.shapeType == ShadowTextureCache::Rectangle) {
+                innerPixel = pixel - curConfig.shadowBlur * 2.0;
             } else {
-                innerPixel = pixel - config.shadowBlur * 2.0;
+                innerPixel = pixel - curConfig.shadowBlur * 2.0;
             }
 
-            QRectF rectangle(config.shadowBlur, config.shadowBlur,
-                             innerPixel - 2 - offsetX, innerPixel - 2 - offsetY);
-            path.addRoundedRect(rectangle, config.cornerRadius, config.cornerRadius);
+            QRectF rectangle(curConfig.shadowBlur - offsetX, curConfig.shadowBlur - offsetY,
+                             innerPixel - 2, innerPixel - 2);
+            path.addRoundedRect(rectangle, curConfig.cornerRadius, curConfig.cornerRadius);
             hollow.fillPath(path, Qt::red);
             hollow.end();
 
@@ -181,11 +206,6 @@ public:
         }
     }
 
-    bool hasCache()
-    {
-        return ShadowTextureCache::instance()->keyIsCache(shadowConfig());
-    }
-
     void calculateRects(const QSize &sourceSize,
                         const QSizeF &targetSize,
                         qreal devicePixelRatio,
@@ -194,15 +214,32 @@ public:
                         QRectF *innerSourceRect,
                         QRectF *subSourceRect);
 private:
-    ShadowTextureCache::ShadowConfig shadowConfig()
+    inline bool shapeIsCircular() const
     {
-        Q_Q(DQuickShadowImage);
+        Q_Q(const DQuickShadowImage);
+        if (isInner)
+            return cornerRadius * 2 >= std::min({q->width(), q->height()});
+        return cornerRadius * 2 >= std::min({q->width() - shadowBlur * 2.0, q->height() - shadowBlur * 2.0});
+    }
+
+    inline qreal calculateCornerRadius() const
+    {
+        Q_Q(const DQuickShadowImage);
+        if (isInner)
+            return std::min({cornerRadius, std::min({q->width() / 2.0, q->height() / 2.0})});
+        return std::min({cornerRadius, std::min({(q->width() - 2.0 * shadowBlur) / 2.0,
+                                                 (q->height() - 2.0 * shadowBlur) / 2.0})});
+    }
+
+    ShadowTextureCache::ShadowConfig shadowConfig() const
+    {
         ShadowTextureCache::ShadowConfig config;
-        config.cornerRadius = q->calculateCornerRadius();
+        config.cornerRadius = calculateCornerRadius();
         config.shadowBlur = shadowBlur;
         config.shadowColor = shadowColor;
         config.inner = isInner;
-        config.shapeType = q->shapeIsCircular() ? ShadowTextureCache::Circular : ShadowTextureCache::Rectangle;
+        config.shapeType = shapeIsCircular() ? ShadowTextureCache::Circular
+                                             : ShadowTextureCache::Rectangle;
         return config;
     }
 
@@ -212,7 +249,6 @@ public:
     qreal cornerRadius;
     bool isInner;
     bool cache;
-    std::atomic<bool> needUpdateShadow;
     ShadowTextureCache::TextureData shadowTexture;
     qreal spread;
     bool hollow;
@@ -220,6 +256,7 @@ public:
     qreal offsetY;
     QSGTexture *cacheShadow;
     bool needUpdateHollow;
+    ShadowTextureCache::ShadowConfig curConfig;
 };
 
 DQUICK_END_NAMESPACE

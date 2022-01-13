@@ -24,9 +24,6 @@
 
 #include <QSGTexture>
 #include <QQuickWindow>
-#include <QFuture>
-#include <QtConcurrent>
-#include <QFutureWatcher>
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -69,7 +66,6 @@ void DQuickShadowImage::setShadowBlur(qreal blur)
         return;
 
     d->shadowBlur = blur;
-    d->needUpdateShadow = true;
     update();
     Q_EMIT shadowBlurChanged();
 }
@@ -89,7 +85,6 @@ void DQuickShadowImage::setShadowColor(const QColor &color)
         return;
 
     d->shadowColor = color;
-    d->needUpdateShadow = true;
     update();
     Q_EMIT shadowColorChanged();
 }
@@ -109,7 +104,6 @@ void DQuickShadowImage::setIsInner(bool inner)
         return;
 
     d->isInner = inner;
-    d->needUpdateShadow = true;
     update();
     Q_EMIT isInnerChanged();
 }
@@ -129,7 +123,6 @@ void DQuickShadowImage::setCornerRadius(qreal radius)
         return;
 
     d->cornerRadius = radius;
-    d->needUpdateShadow = true;
     update();
     Q_EMIT cornerRadiusChanded();
 }
@@ -225,28 +218,12 @@ DQuickShadowImage::DQuickShadowImage(DQuickShadowImagePrivate &dd, QQuickItem *p
 QSGNode *DQuickShadowImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
 {
     Q_D(DQuickShadowImage);
-
     if (width() <= 0 || height() <= 0 || d->shadowColor.alpha() == 0) {
         delete oldNode;
         return nullptr;
     }
 
-    if (d->needUpdateShadow) {
-        if (d->hasCache()) {
-            d->ensureTextureForShadow();
-        } else {
-            QFutureWatcher<QImage *> *watcher =  new QFutureWatcher<QImage *>();
-            connect(watcher, &QFutureWatcher<QSGTexture *>::finished, this, [watcher, this]{
-                this->update();
-                watcher->deleteLater();
-            });
-
-            d->shadowTexture = nullptr;
-            QFuture<QImage *> future = QtConcurrent::run(d, &DQuickShadowImagePrivate::ensureTextureForShadow);
-            watcher->setFuture(future);
-        }
-    }
-
+    d->ensureTextureForShadow();
     if (!(d->shadowTexture && d->shadowTexture->texture)) {
         delete oldNode;
         return nullptr;
@@ -302,27 +279,6 @@ QSGNode *DQuickShadowImage::updatePaintNode(QSGNode *oldNode, QQuickItem::Update
     return node;
 }
 
-bool DQuickShadowImage::shapeIsCircular()
-{
-    Q_D(const DQuickShadowImage);
-
-    if (d->isInner)
-        return d->cornerRadius * 2 >= std::min({width(), height()});
-
-    return d->cornerRadius * 2 >= std::min({width() - d->shadowBlur * 2.0, height() - d->shadowBlur * 2.0});
-}
-
-qreal DQuickShadowImage::calculateCornerRadius()
-{
-    Q_D(const DQuickShadowImage);
-
-    if (d->isInner)
-        return std::min({d->cornerRadius, std::min({width() / 2.0, height() / 2.0})});
-
-    return std::min({d->cornerRadius, std::min({(width() - 2.0 * d->shadowBlur) / 2.0,
-                                                (height() - 2.0 * d->shadowBlur) / 2.0})});
-}
-
 void DQuickShadowImagePrivate::calculateRects(const QSize &sourceSize,
                                               const QSizeF &targetSize,
                                               qreal devicePixelRatio,
@@ -337,9 +293,9 @@ void DQuickShadowImagePrivate::calculateRects(const QSize &sourceSize,
     *targetRect = QRectF(0, 0, targetSize.width(), targetSize.height());
     *innerTargetRect = *targetRect;
 
-    qreal border = q->calculateCornerRadius() + shadowBlur;
-    if (isInner && (q->calculateCornerRadius() + shadowBlur) >= std::min({q->width() / 2.0, q->height() / 2.0}))
-        border = q->calculateCornerRadius();
+    qreal border = calculateCornerRadius() + shadowBlur;
+    if (isInner && (calculateCornerRadius() + shadowBlur) >= std::min({q->width() / 2.0, q->height() / 2.0}))
+        border = calculateCornerRadius();
 
     qreal borderLeft = border;
     qreal borderRight = border;
