@@ -159,10 +159,14 @@ public:
         curConfig = newConfig;
         if (ShadowTextureCache::instance()->keyIsCache(curConfig)) {
             shadowTexture = ShadowTextureCache::instance()->getShadowTexture(curConfig, cache, antialiasing);
+            if (hollow && !isInner)
+                needUpdateHollow = true;
         } else {
             QFutureWatcher<ShadowTextureCache::TextureData> *watcher = new QFutureWatcher<ShadowTextureCache::TextureData>();
             QObject::connect(watcher, &QFutureWatcher<QSGTexture *>::finished, q_func(), [watcher, this]{
                 shadowTexture = watcher->result();
+                if (hollow && !isInner)
+                    needUpdateHollow = true;
                 q_func()->update();
                 watcher->deleteLater();
             });
@@ -174,33 +178,40 @@ public:
         return shadowTexture ? shadowTexture->texture : nullptr;
     }
 
-    void updateHollowShdowTexture()
+    void updateCacheShadow(const QImage &image)
     {
-        if (hollow && !isInner && needUpdateHollow && shadowColor.alpha() != 0) {
-            // use deep copy to avoid polluting cached images
-            QImage image = shadowTexture->texture->copy(shadowTexture->texture->rect());
-            QPainter hollow(&image);
-            hollow.setRenderHint(QPainter::Antialiasing, true);
-            hollow.setCompositionMode(QPainter::CompositionMode_Clear);
-            QPainterPath path;
-            hollow.setPen(Qt::NoPen);
-            qreal pixel, innerPixel;
-            pixel = shadowTexture->texture->size().width();
-            if (curConfig.shapeType == ShadowTextureCache::Rectangle) {
-                innerPixel = pixel - curConfig.shadowBlur * 2.0;
-            } else {
-                innerPixel = pixel - curConfig.shadowBlur * 2.0;
-            }
+        if (cacheShadow)
+            delete cacheShadow;
+        cacheShadow = sceneGraphRenderContext()->createTexture(image);
+    }
 
-            QRectF rectangle(curConfig.shadowBlur - offsetX, curConfig.shadowBlur - offsetY,
-                             innerPixel - 2, innerPixel - 2);
-            path.addRoundedRect(rectangle, curConfig.cornerRadius, curConfig.cornerRadius);
-            hollow.fillPath(path, Qt::red);
-            hollow.end();
-
-            cacheShadow = sceneGraphRenderContext()->createTexture(image);
-            needUpdateHollow = false;
+    QImage reprocessHollowShadowTexture()
+    {
+        if (Q_LIKELY(!needUpdateHollow) || shadowColor.alpha() == 0)
+            return QImage();
+        // use deep copy to avoid polluting cached images
+        QImage image = shadowTexture->texture->copy(shadowTexture->texture->rect());
+        QPainter hollow(&image);
+        hollow.setRenderHint(QPainter::Antialiasing, true);
+        hollow.setCompositionMode(QPainter::CompositionMode_Clear);
+        QPainterPath path;
+        hollow.setPen(Qt::NoPen);
+        qreal pixel, innerPixel;
+        pixel = shadowTexture->texture->size().width();
+        if (curConfig.shapeType == ShadowTextureCache::Rectangle) {
+            innerPixel = pixel - curConfig.shadowBlur * 2.0;
+        } else {
+            innerPixel = pixel - curConfig.shadowBlur * 2.0;
         }
+
+        QRectF rectangle(curConfig.shadowBlur - offsetX, curConfig.shadowBlur - offsetY,
+                         innerPixel - 2, innerPixel - 2);
+        path.addRoundedRect(rectangle, curConfig.cornerRadius, curConfig.cornerRadius);
+        hollow.fillPath(path, Qt::red);
+        hollow.end();
+
+        needUpdateHollow = false;
+        return image;
     }
 
     void calculateRects(const QSize &sourceSize,
