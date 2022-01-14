@@ -85,6 +85,7 @@ void CornerColorShader::initialize()
 
 CornerColorMaterial::CornerColorMaterial()
     : QSGOpaqueTextureMaterial()
+    , m_radius(0.0)
 {
     // blending must be turned on to handle cornor mask
     setFlag(Blending, true);
@@ -131,22 +132,22 @@ void DRectangleNode::setRect(const QRectF &r)
 void DRectangleNode::setRadius(qreal radius)
 {
     qreal cornorRadius = m_cornerMaterial.radius();
-    if (qFuzzyCompare(cornorRadius, radius))
+    m_geometryChanged = !qFuzzyCompare(cornorRadius, radius);
+
+    if (m_geometryChanged)
+        m_cornerMaterial.setRadius(std::min({rect().width() / 2.0, rect().height() / 2.0, radius}));
+
+    const bool needCornerNode = radius > 0;
+    const bool existsCornerNode = childCount() > 0;
+    if (needCornerNode == existsCornerNode)
         return;
 
-    m_geometryChanged |= true;
-    m_cornerMaterial.setRadius(std::min({rect().width() / 2.0, rect().height() / 2.0, radius}));
-    if (radius > 0) {
-        if (childCount() == 0) {
-            appendChildNode(&m_cornerNode);
-            markDirty(QSGNode::DirtyNodeAdded);
-        }
+    if (!existsCornerNode) {
+        appendChildNode(&m_cornerNode);
     } else {
-        if (childCount() > 0) {
-            removeChildNode(&m_cornerNode);
-            markDirty(QSGNode::DirtyNodeRemoved);
-        }
+        removeChildNode(&m_cornerNode);
     }
+
     m_cornerNode.markDirty(DirtyMaterial);
 }
 
@@ -194,8 +195,11 @@ void DRectangleNode::update()
 
 void DRectangleNode::updateGeometry()
 {
-    const QRectF rect = QRectF(0, 0, 1, 1);
     qreal cornorRadius = m_cornerMaterial.radius();
+    uchar r = uchar(qRound(color().redF() * color().alphaF() * 255));
+    uchar g = uchar(qRound(color().greenF() * color().alphaF() * 255));
+    uchar b = uchar(qRound(color().blueF() * color().alphaF() * 255));
+    uchar a = uchar(qRound(color().alphaF() * 255));
     if (cornorRadius > 0)
     {
         qreal radius = std::min({ m_rect.width() / 2, m_rect.height() / 2, cornorRadius });
@@ -218,10 +222,6 @@ void DRectangleNode::updateGeometry()
         bool topLeft = m_coners.testFlag(DQuickRectangle::TopLeftCorner);
         bool bottomRight = m_coners.testFlag(DQuickRectangle::BottomRightCorner);
         bool topRight = m_coners.testFlag(DQuickRectangle::TopRightCorner);
-        uchar r = uchar(qRound(color().redF() * color().alphaF() * 255));
-        uchar g = g = uchar(qRound(color().greenF() * color().alphaF() * 255));
-        uchar b = uchar(qRound(color().blueF() * color().alphaF() * 255));
-        uchar a = uchar(qRound(color().alphaF() * 255));
         //          (3)*********(5)
         //            *         *
         //           *           *
@@ -311,7 +311,13 @@ void DRectangleNode::updateGeometry()
         markDirty(QSGNode::DirtyGeometry);
     } else {
         m_geometry.allocate(4);
-        QSGGeometry::updateRectGeometry(&m_geometry, m_rect);
+        m_geometry.setDrawingMode(QSGGeometry::DrawTriangleStrip);
+        QSGGeometry::ColoredPoint2D *vertices = m_geometry.vertexDataAsColoredPoint2D();
+
+        vertices[0].set(m_rect.left(), m_rect.top(), r, g, b, a);
+        vertices[1].set(m_rect.left(), m_rect.bottom(), r, g, b, a);
+        vertices[2].set(m_rect.right(), m_rect.top(), r, g, b, a);
+        vertices[3].set(m_rect.right(), m_rect.bottom(), r, g, b, a);
         markDirty(QSGNode::DirtyGeometry);
     }
 }
