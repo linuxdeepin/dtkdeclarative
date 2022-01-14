@@ -36,6 +36,7 @@ class DQuickRectanglePrivate : public QQuickItemPrivate
 public:
     DQuickRectanglePrivate()
         : QQuickItemPrivate ()
+        , radius(0.0)
         , color(Qt::white)
     {
 
