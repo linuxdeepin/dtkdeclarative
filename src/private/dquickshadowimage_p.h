@@ -198,9 +198,6 @@ public:
             hollow.fillPath(path, Qt::red);
             hollow.end();
 
-            if (!cacheShadow)
-                delete cacheShadow;
-
             cacheShadow = sceneGraphRenderContext()->createTexture(image);
             needUpdateHollow = false;
         }
