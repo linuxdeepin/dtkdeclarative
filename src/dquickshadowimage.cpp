@@ -218,26 +218,27 @@ DQuickShadowImage::DQuickShadowImage(DQuickShadowImagePrivate &dd, QQuickItem *p
 QSGNode *DQuickShadowImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
 {
     Q_D(DQuickShadowImage);
-    if (width() <= 0 || height() <= 0 || d->shadowColor.alpha() == 0)
-        return oldNode;
+    if (width() <= 0 || height() <= 0 || d->shadowColor.alpha() == 0) {
+        delete oldNode;
+        return nullptr;
+    }
 
     d->ensureTextureForShadow();
     if (!(d->shadowTexture && d->shadowTexture->texture))
         return oldNode;
 
-    if (d->cacheShadow) {
-        delete d->cacheShadow;
-        d->cacheShadow = nullptr;
-    }
-
+    QImage texture;
     if (d->hollow && !isInner()) {
-        d->updateHollowShdowTexture();
+        texture = d->reprocessHollowShadowTexture();
     } else {
-        d->cacheShadow = d->sceneGraphRenderContext()->createTexture(*d->shadowTexture->texture);
+        texture = *d->shadowTexture->texture;
     }
 
+    if (!texture.isNull())
+        d->updateCacheShadow(texture);
     if (!d->cacheShadow)
         return oldNode;
+
     QSGInternalImageNode *node = static_cast<QSGInternalImageNode *>(oldNode);
     if (!node)
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 13, 0))
