@@ -78,7 +78,8 @@ bool DColor::operator==(const DColor &c) const noexcept
         return false;
     if (!isTypedColor() && data.color.value != c.data.color.value)
         return false;
-    return data.lightness == c.data.lightness && data.opacity == c.data.opacity;
+    return data.hue == c.data.hue && data.saturation == c.data.saturation
+            && data.lightness == c.data.lightness && data.opacity == c.data.opacity;
 }
 
 bool DColor::operator!=(const DColor &c) const noexcept
@@ -89,13 +90,28 @@ bool DColor::operator!=(const DColor &c) const noexcept
 QColor DColor::toColor(const QPalette &palette) const
 {
     QColor color = isTypedColor() ? palette.color(toPaletteColorRole(data.color.type)) : data.color.value;
-    return DGuiApplicationHelper::adjustColor(color, 0, 0, data.lightness, 0, 0, 0, data.opacity);
+    return DGuiApplicationHelper::adjustColor(color, data.hue, data.saturation, data.lightness, 0, 0, 0, data.opacity);
 }
 
 QColor DColor::color() const
 {
     Q_ASSERT(!isTypedColor());
-    return DGuiApplicationHelper::adjustColor(data.color.value, 0, 0, data.lightness, 0, 0, 0, data.opacity);
+    return DGuiApplicationHelper::adjustColor(data.color.value, data.hue, data.saturation, data.lightness,
+                                              0, 0, 0, data.opacity);
+}
+
+DColor DColor::hue(qint8 floatValue) const
+{
+    DColor newColor = *this;
+    newColor.data.hue += floatValue;
+    return newColor;
+}
+
+DColor DColor::saturation(qint8 floatValue) const
+{
+    DColor newColor = *this;
+    newColor.data.saturation += floatValue;
+    return newColor;
 }
 
 DColor DColor::lightness(qint8 floatValue) const

@@ -24,5 +24,6 @@
         <file>KeySequenceEdit.qml</file>
         <file>ToolBar.qml</file>
         <file>Dialog.qml</file>
+        <file>ProgressBar.qml</file>
     </qresource>
 </RCC>

@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2022 UnionTech Technology Co., Ltd.
  *
- * Author:     yeshanshan <yeshanshan@uniontech.com>
+ * Author:     Chen Bin <chenbin@uniontech.com>
  *
- * Maintainer: yeshanshan <yeshanshan@uniontech.com>
+ * Maintainer: Chen Bin <chenbin@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -20,26 +20,28 @@
  */
 
 import QtQuick 2.11
-import QtQuick.Templates 2.4 as T
 import org.deepin.dtk.style 1.0 as DS
-import "private"
+import ".."
 
-T.ProgressBar {
+Item {
     id: control
-    property string formatText
-    property bool animationStop: false
-    implicitWidth: DS.Style.control.implicitWidth(control)
-    implicitHeight: DS.Style.control.implicitHeight(control)
+    property Item progressBar
 
-    contentItem: ProgressBarImpl {
-        progressBar: control
-        formatText: control.formatText
-        animationStop: control.animationStop
+    Loader {
+        anchors.fill: parent
+        sourceComponent: progressBar.formatText ? _textPanelComponent : _normalTextComponent
     }
 
-    background: ProgressBarPanel {
-        implicitWidth: DS.Style.progressBar.width
-        implicitHeight: DS.Style.progressBar.height
-        progressBar: control
+    Component {
+        id: _textPanelComponent
+        BoxPanel {}
+    }
+
+    Component {
+        id: _normalTextComponent
+        Rectangle {
+            radius: DS.Style.control.radius
+            color: Qt.rgba(0, 0, 0, 0.1);
+        }
     }
 }

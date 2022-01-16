@@ -43,6 +43,7 @@
 #include "private/dmessagemanager_p.h"
 #include "private/dpopupwindowhandle_p.h"
 #include "private/dobjectmodelproxy_p.h"
+#include "private/dquickwaterprogressattribute_p.h"
 
 #include <DFontManager>
 
@@ -189,10 +190,12 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType<ObjectModelProxy>(uri, implUri, 1, 0, "ObjectModelProxy");
     dtkRegisterType<DQuickOpacityMask>(uri, implUri, 1, 0, "SoftwareOpacityMask");
     dtkRegisterType<DQuickKeyListener>(uri, implUri, 1, 0, "KeySequenceListener");
+    dtkRegisterType<DQuickWaterProgressAttribute>(uri, implUri, 1, 0, "WaterProgressAttribute");
 
     dtkRegisterAnonymousType<DQUICK_NAMESPACE::DQuickDciIcon>(uri, implUri, 1);
     dtkRegisterAnonymousType<DQuickControlColor>(uri, implUri, 1);
     dtkRegisterAnonymousType<DDciIconPalette>(uri, implUri, 1);
+    dtkRegisterAnonymousType<WaterPopAttribute>(uri, implUri, 1);
 
     dtkRegisterUncreatableType<DQuickWindow>(uri, implUri, 1, 0, "DWindow", "DQuickWindow Attached");
     dtkRegisterUncreatableType<DQuickControlColorSelector>(uri, implUri, 1, 0, "ColorSelector",
@@ -328,6 +331,9 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "BoxPanel");
     dtkRegisterType(uri, controlsUri, 1, 0, "KeySequenceEdit");
     dtkRegisterType(uri, controlsUri, 1, 0, "ButtonIndicator");
+    dtkRegisterType(uri, controlsUri, 1, 0, "EmbeddedProgressBar");
+    dtkRegisterType(uri, controlsUri, 1, 0, "WaterProgressBar");
+
     // for org.deepin.dtk.style(allowed to override)
     dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");
 

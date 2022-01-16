@@ -31,6 +31,8 @@
         <file>shadow/2.8.2.1.24.png</file>
         <file>shadow/2.8.10.1.35.png</file>
         <file>shadow/2.8.10.1.38.png</file>
+        <file>resources/water_back.png</file>
+        <file>resources/water_front.png</file>
     </qresource>
     <qresource prefix="/dsg">
         <file alias="built-in-icons/window_maximize.dci">icons/bloom/window_maximize.dci</file>
