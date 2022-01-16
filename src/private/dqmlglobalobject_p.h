@@ -78,6 +78,8 @@ public:
         return *this;
     }
     inline DColor &operator=(DColor &&other) {
+        data.hue = std::move(other.data.hue);
+        data.saturation = std::move(other.data.saturation);
         data.lightness = std::move(other.data.lightness);
         data.opacity = std::move(other.data.opacity);
         data.color.value = std::move(other.data.color.value);
@@ -86,11 +88,15 @@ public:
 
     Q_INVOKABLE QColor toColor(const QPalette &palette) const;
     Q_INVOKABLE QColor color() const;
+    Q_INVOKABLE DTK_QUICK_NAMESPACE::DColor hue(qint8 floatValue) const;
+    Q_INVOKABLE DTK_QUICK_NAMESPACE::DColor saturation(qint8 floatValue) const;
     Q_INVOKABLE DTK_QUICK_NAMESPACE::DColor lightness(qint8 floatValue) const;
     Q_INVOKABLE DTK_QUICK_NAMESPACE::DColor opacity(qint8 floatValue) const;
 
 private:
     struct Data {
+        qint8 hue = 0;
+        qint8 saturation = 0;
         qint8 lightness = 0;
         qint8 opacity = 0;
 

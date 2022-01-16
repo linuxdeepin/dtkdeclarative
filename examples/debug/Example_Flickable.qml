@@ -25,53 +25,130 @@ import org.deepin.dtk 1.0
 
 Flow {
     id: control
-
-    ScrollView {
-        id: scrollView
-        width: 200
-        height: 400
-        clip: true
-        ListView {
-            model: 20
-            delegate: Button {
-                text: "index" + String(modelData)
+    Row {
+        spacing: 20
+        ScrollView {
+            id: scrollView
+            width: 200
+            height: 400
+            clip: true
+            ListView {
+                model: 20
+                delegate: Button {
+                    text: "index" + String(modelData)
+                }
+            }
+            background: Rectangle {
+                border.color: "green"
             }
         }
-        background: Rectangle {
-            border.color: "green"
-        }
-    }
-    Column {
-        spacing: 10
-        IpV4LineEdit {
 
-        }
-        IpV4LineEdit {
-            width: 300
-            height: 40
-            showAlert: focus
-            alertText: "alert tips"
-        }
-        IpV4LineEdit {
-            width: 300
-            height: 40
-            text: "10.20.52.57"
-        }
+        Column {
+            Row {
+                spacing: 20
+                ProgressBar {
+                    from: 0
+                    to: 100
+                    formatText: ("已下载" + (value / to * 100).toFixed() + "%（点击暂停）")
+                    NumberAnimation on value {
+                        from: 0
+                        to: 100
+                        duration: 1000
+                        loops: Animation.Infinite
+                    }
+                }
 
-        Row {
-            spacing: 10
-            IpV4LineEdit {
-                id: idLineEditSetValueByText
-                width: 300
-                height: 40
+                ProgressBar {
+                    from: 0
+                    to: 100
+                    height: 8
+
+                    NumberAnimation on value {
+                        from: 0
+                        to: 100
+                        duration: 1000
+                        loops: Animation.Infinite
+                    }
+                }
+
+                EmbeddedProgressBar {
+                    from: 0
+                    to: 100
+                    NumberAnimation on value {
+                        from: 0
+                        to: 100
+                        duration: 1000
+                        loops: Animation.Infinite
+                    }
+                }
+
+                WaterProgressBar {
+                    NumberAnimation on value {
+                        loops: Animation.Infinite
+                        from: 0
+                        to: 100
+                        duration: 10000
+                    }
+                }
             }
 
-            Button {
-                text: "set IP by Text"
-                onClicked: idLineEditSetValueByText.text = "10.20.52.57"
+            Row {
+                spacing: 20
+                ProgressBar {
+                    from: 0
+                    to: 100
+                    height: 18
+                    indeterminate: true
+                }
+
+                ProgressBar {
+                    from: 0
+                    to: 100
+                    indeterminate: true
+                    formatText: "正在准备（点击终止）"
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            parent.animationStop = !parent.animationStop
+                        }
+                    }
+                }
             }
-            Text {
-                text: idLineEditSetValueByText.text
+
+            Column {
+                spacing: 10
+                IpV4LineEdit {
+
+                }
+                IpV4LineEdit {
+                    width: 300
+                    height: 40
+                    showAlert: focus
+                    alertText: "alert tips"
+                }
+                IpV4LineEdit {
+                    width: 300
+                    height: 40
+                    text: "10.20.52.57"
+                }
+
+                Row {
+                    spacing: 10
+                    IpV4LineEdit {
+                        id: idLineEditSetValueByText
+                        width: 300
+                        height: 40
+                    }
+
+                    Button {
+                        text: "set IP by Text"
+                        onClicked: idLineEditSetValueByText.text = "10.20.52.57"
+                    }
+                    Text {
+                        text: idLineEditSetValueByText.text
+                    }
+                }
             }
         }
     }
@@ -87,15 +164,18 @@ Flow {
                 Layout.fillWidth: true
                 onTextChanged: sortFilterModel.update()
             }
-            RadioButton {
-                id: sortByName
-                checked: true
-                text: qsTr("Sort by name")
-                onCheckedChanged: sortFilterModel.update()
-            }
-            RadioButton {
-                text: qsTr("Sort by team")
-                onCheckedChanged: sortFilterModel.update()
+
+            Column {
+                RadioButton {
+                    id: sortByName
+                    checked: true
+                    text: qsTr("Sort by name")
+                    onCheckedChanged: sortFilterModel.update()
+                }
+                RadioButton {
+                    text: qsTr("Sort by team")
+                    onCheckedChanged: sortFilterModel.update()
+                }
             }
         }
 

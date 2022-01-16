@@ -41,6 +41,7 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dquickopacitymask_p_p.h \
     $$PWD/dopacitymasknode.h \
     $$PWD/dquickkeylistener_p.h \
+    $$PWD/dquickwaterprogressattribute_p.h \
 
 SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dblitframebuffernode.cpp \
@@ -69,3 +70,4 @@ SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dquickopacitymask.cpp \
     $$PWD/dopacitymasknode.cpp \
     $$PWD/dquickkeylistener.cpp \
+    $$PWD/dquickwaterprogressattribute.cpp \

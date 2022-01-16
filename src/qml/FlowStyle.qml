@@ -616,4 +616,43 @@ QtObject {
         property int topPadding: 20
         property int bottomPadding: 10
     }
+
+    property QtObject progressBar: QtObject {
+        property int width: 300
+        property int height: 36
+        property int indeterminateProgressBarWidth: 90
+        property int indeterminateProgressBarAnimationDuration: 2000
+
+        property QtObject embedded: QtObject {
+            property int width: 48
+            property int height: 6
+            property int contentHeight: 4
+            property int backgroundRadius: 3
+            property int contentRadius: 2
+            property color lightBackgroundColor: Qt.rgba(0, 0, 0, 0.7)
+            property color darkBackgroundColor: Qt.rgba(0, 0, 0, 0.2)
+            property color lightProgressColor: "white"
+            property color darkProgressColor: Qt.rgba(1, 1, 1, 0.7)
+        }
+
+        property QtObject water: QtObject {
+            property int width: 98
+            property int height: 98
+            property color shadowColor: Qt.rgba(42 / 255, 154 / 255, 248 / 255, 0.3)
+            property color backgroundColor1: "#1f08ff"
+            property color backgroundColor2: "#50fff7"
+            property color popBackgroundColor: Qt.rgba(255, 255, 255, 0.3)
+            property color textColor: "white"
+            property string waterFrontImagePath: "qrc:/dtk/declarative/resources/water_front.png"
+            property string waterBackImagePath: "qrc:/dtk/declarative/resources/water_back.png"
+        }
+
+        property D.Palette shadowColor:  D.Palette {
+            normal: D.DTK.makeColor(D.Color.Highlight).opacity(-60)
+        }
+
+        property D.Palette handleGradientColor:  D.Palette {
+            normal: D.DTK.makeColor(D.Color.Highlight).hue(-10).saturation(+40).lightness(+20)
+        }
+    }
 }
