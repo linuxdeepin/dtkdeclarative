@@ -1,5 +1,5 @@
-#ifndef DHANDLECONTEXTMENUWINDOW_H
-#define DHANDLECONTEXTMENUWINDOW_H
+#ifndef DHANDLECONTEXTMENUWINDOW_P_H
+#define DHANDLECONTEXTMENUWINDOW_P_H
 
 #include <QQuickWindow>
 
@@ -13,4 +13,4 @@ protected:
     void handleMouseEvent(QMouseEvent *);
 };
 
-#endif // DHANDLECONTEXTMENUWINDOW_H
+#endif // DHANDLECONTEXTMENUWINDOW_P_H

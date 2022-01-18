@@ -195,7 +195,7 @@ Q_SIGNALS:
     void fontPointSizeChanged(qreal fontPointSize);
     void gtkFontNameChanged(QByteArray fontName);
     void activeColorChanged(QColor activeColor);
-    void paletteChanged(DPalette palette);
+    void paletteChanged(DTK_GUI_NAMESPACE::DPalette palette);
     void windowChanged(QColor window);
     void windowTextChanged(QColor windowText);
     void baseChanged(QColor base);

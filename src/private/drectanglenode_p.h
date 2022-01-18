@@ -19,10 +19,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DRECTANGLENODE_H
-#define DRECTANGLENODE_H
+#ifndef DRECTANGLENODE_P_H
+#define DRECTANGLENODE_P_H
 
-#include "dquickrectangle.h"
+#include "dquickrectangle_p.h"
 
 #include <dtkdeclarative_global.h>
 
@@ -125,4 +125,4 @@ private:
 
 DQUICK_END_NAMESPACE
 
-#endif // DRECTANGLENODE_H
+#endif // DRECTANGLENODE_P_H

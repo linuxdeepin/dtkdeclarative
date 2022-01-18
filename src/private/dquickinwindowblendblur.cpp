@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "dquickinwindowblendblur.h"
+#include "dquickinwindowblendblur_p.h"
 #include "private/dblitframebuffernode_p.h"
 #include "private/dblurimagenode_p.h"
 

@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DQUICKICONPROVIDER_H
-#define DQUICKICONPROVIDER_H
+#ifndef DQUICKICONPROVIDER_P_H
+#define DQUICKICONPROVIDER_P_H
 
 #include <QQuickImageProvider>
 
@@ -50,4 +50,4 @@ private:
 
 DQUICK_END_NAMESPACE
 
-#endif // DQUICKICONPROVIDER_H
+#endif // DQUICKICONPROVIDER_P_H

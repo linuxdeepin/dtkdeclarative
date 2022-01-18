@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "dquickshadowimage.h"
-#include "private/dquickshadowimage_p.h"
+#include "dquickshadowimage_p.h"
+#include "private/dquickshadowimage_p_p.h"
 
 #include <QSGTexture>
 #include <QQuickWindow>
@@ -286,6 +286,7 @@ void DQuickShadowImagePrivate::calculateRects(const QSize &sourceSize,
                                               QRectF *innerSourceRect,
                                               QRectF *subSourceRect)
 {
+    Q_UNUSED(devicePixelRatio)
     Q_Q(DQuickShadowImage);
 
     *innerSourceRect = QRectF(0, 0, 1, 1);
@@ -414,6 +415,8 @@ QImage ShadowTextureCache::qt_image_convolute_filter(const QImage &src, const QV
 
 ShadowTextureCache::TextureData ShadowTextureCache::getShadowTexture(const ShadowTextureCache::ShadowConfig &config, bool cache, bool antialiasing)
 {
+    Q_UNUSED(antialiasing)
+
     if ((config.shadowColor.alpha() == 0 || qIsNull(config.shadowBlur))) {
         return TextureData();
     }

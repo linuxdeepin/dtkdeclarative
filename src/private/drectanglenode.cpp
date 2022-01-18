@@ -19,7 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "drectanglenode.h"
+#include "drectanglenode_p.h"
 
 #include <QSGRendererInterface>
 #include <QPainter>

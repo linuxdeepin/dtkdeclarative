@@ -19,9 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "dquickrectangle.h"
-#include "private/dquickrectangle_p.h"
-#include "private/drectanglenode.h"
+#include "dquickrectangle_p.h"
+#include "private/dquickrectangle_p_p.h"
+#include "private/drectanglenode_p.h"
 
 DQUICK_BEGIN_NAMESPACE
 
