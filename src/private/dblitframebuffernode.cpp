@@ -108,7 +108,7 @@ public:
         if (!QOpenGLFramebufferObject::hasOpenGLFramebufferBlit())
             return;
 
-        const qreal scale = m_item->window()->effectiveDevicePixelRatio();
+        const qreal scale = m_item->window() ? m_item->window()->effectiveDevicePixelRatio() : 1;
         QRectF sourceRect = matrix()->mapRect(m_rect);
         sourceRect.moveTopLeft(sourceRect.topLeft() * scale);
         sourceRect.setSize(sourceRect.size() * scale);
@@ -206,6 +206,8 @@ public:
 
     void render(const RenderState *state) override {
         Q_UNUSED(state)
+        if (!m_item->window())
+            return;
         QSGRendererInterface *rif = m_item->window()->rendererInterface();
         QPainter *p = static_cast<QPainter *>(rif->getResource(m_item->window(),
                                                                QSGRendererInterface::PainterResource));
