@@ -329,6 +329,9 @@ void DSoftwareBlurImageNode::render(const RenderState *state)
     if (!m_sourceRect.isValid() || !m_texture)
         return;
 
+    if (!m_item->window())
+        return;
+
     updateCachedImage();
 
     if (cachedSource.isNull())
@@ -466,6 +469,9 @@ void DOpenGLBlurEffectNode::setRadius(qreal radius)
 void DOpenGLBlurEffectNode::render(const QSGRenderNode::RenderState *state)
 {
     if (Q_UNLIKELY(!m_sourceRect.isValid() || !m_texture))
+        return;
+
+    if (!m_item->window())
         return;
 
 #if(QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
