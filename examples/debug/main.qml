@@ -150,6 +150,9 @@ D.ApplicationWindow {
         V2.TabButton {
             text: qsTr("Menu")
         }
+        V2.TabButton {
+            text: qsTr("Popup")
+        }
     }
     StackLayout {
         anchors.left: parent.left
@@ -167,6 +170,7 @@ D.ApplicationWindow {
         Example_Notify {}
         Example_colorselector {}
         Example_Menu {}
+        Example_Popup {}
     }
 
     D.BehindWindowBlur {

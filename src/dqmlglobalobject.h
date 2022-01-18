@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 ~ 2022 deepin Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2021 deepin Technology Co., Ltd.
  *
  * Author:     JiDe Zhang <zhangjide@deepin.org>
  *
@@ -19,17 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DQMLGLOBALOBJECT_P_H
-#define DQMLGLOBALOBJECT_P_H
-
-#include <dtkdeclarative_global.h>
-
-#include <DPlatformThemeProxy>
-#include <DWindowManagerHelper>
-#include <DGuiApplicationHelper>
+#ifndef DQMLGLOBALOBJECT_H
+#define DQMLGLOBALOBJECT_H
+#include <QQuickWindow>
 #include <DObject>
 
-#include <QQuickWindow>
+#include <dtkdeclarative_global.h>
+#include <DWindowManagerHelper>
+#include <DPlatformThemeProxy>
+#include <DGuiApplicationHelper>
 #include <QQmlComponent>
 
 DGUI_BEGIN_NAMESPACE
@@ -39,69 +37,6 @@ DGUI_END_NAMESPACE
 DGUI_USE_NAMESPACE
 
 DQUICK_BEGIN_NAMESPACE
-
-class DColor
-{
-    Q_GADGET
-public:
-    enum Type : quint8 {
-        Invalid = 0,
-        Highlight,
-        HighlightedText
-    };
-    Q_ENUM(Type)
-
-    DColor() {}
-    inline DColor(const QColor &color) {
-        data.color.value = color;
-    }
-    DColor(Type type);
-    inline DColor(const DColor &other) {
-        memcpy(static_cast<void*>(&data), static_cast<const void*>(&other.data), sizeof(Data));
-    }
-    inline DColor(DColor &&other) {
-        operator =(other);
-    }
-
-    [[nodiscard]] bool isValid() const noexcept;
-    [[nodiscard]] bool isTypedColor() const noexcept;
-
-    bool operator==(const DColor &c) const noexcept;
-    bool operator!=(const DColor &c) const noexcept;
-    inline DColor &operator=(const QColor &color) {
-        data.color.value = color;
-        return *this;
-    }
-    inline DColor &operator=(const DColor &other) {
-        memcpy(static_cast<void*>(&data), static_cast<const void*>(&other.data), sizeof(Data));
-        return *this;
-    }
-    inline DColor &operator=(DColor &&other) {
-        data.lightness = std::move(other.data.lightness);
-        data.opacity = std::move(other.data.opacity);
-        data.color.value = std::move(other.data.color.value);
-        return *this;
-    }
-
-    Q_INVOKABLE QColor toColor(const QPalette &palette) const;
-    Q_INVOKABLE QColor color() const;
-    Q_INVOKABLE DTK_QUICK_NAMESPACE::DColor lightness(qint8 floatValue) const;
-    Q_INVOKABLE DTK_QUICK_NAMESPACE::DColor opacity(qint8 floatValue) const;
-
-private:
-    struct Data {
-        qint8 lightness = 0;
-        qint8 opacity = 0;
-
-        union Color {
-    #ifdef Q_COMPILER_UNIFORM_INIT
-            Color() {} // doesn't init anything, thus can't be constexpr
-    #endif
-            quint8 type; // DQMLGlobalObject::TypedColor
-            QColor value = QColor();
-        } color;
-    } data;
-};
 
 class DQuickDciIcon;
 class FloatingMessageContainer;
@@ -114,9 +49,9 @@ class DQMLGlobalObject : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(bool hasComposite READ hasComposite NOTIFY hasCompositeChanged)
     Q_PROPERTY(bool hasNoTitlebar READ hasNoTitlebar NOTIFY hasNoTitlebarChanged)
     Q_PROPERTY(bool isSoftwareRender READ isSoftwareRender FINAL CONSTANT)
-    Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::WMName windowManagerName READ windowManagerName CONSTANT)
+    Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::WMName windowManagerName READ windowManagerName)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType themeType READ themeType NOTIFY themeTypeChanged)
-    Q_PROPERTY(QString windowManagerNameString READ windowManagerNameString CONSTANT)
+    Q_PROPERTY(QString windowManagerNameString READ windowManagerNameString)
     Q_PROPERTY(DPlatformThemeProxy *platformTheme READ platformTheme FINAL CONSTANT)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DFontManager *fontManager READ fontManager FINAL CONSTANT)
     Q_PROPERTY(QPalette palette READ palette NOTIFY paletteChanged)
@@ -170,9 +105,9 @@ public:
     QPalette palette() const;
     QPalette inactivePalette() const;
 
+    Q_INVOKABLE QColor adjustColor(const QColor &base, qint8 hueFloat, qint8 saturationFloat, qint8 lightnessFloat,
+                                   qint8 redFloat, qint8 greenFloat, qint8 blueFloat, qint8 alphaFloat);
     Q_INVOKABLE QColor blendColor(const QColor &substrate, const QColor &superstratum);
-    Q_INVOKABLE DTK_QUICK_NAMESPACE::DColor makeColor(DTK_QUICK_NAMESPACE::DColor::Type type);
-    Q_INVOKABLE DTK_QUICK_NAMESPACE::DColor makeColor(const QColor &color);
 
     Q_INVOKABLE DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType toColorType(const QColor &color);
     Q_INVOKABLE QColor selectColor(const QColor &windowColor, const QColor &light, const QColor &dark);
@@ -209,6 +144,5 @@ private:
 };
 
 DQUICK_END_NAMESPACE
-Q_DECLARE_METATYPE(DTK_QUICK_NAMESPACE::DColor)
 
-#endif // DQMLGLOBALOBJECT_P_H
+#endif // DQMLGLOBALOBJECT_H

@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
 
     QQuickStyle::setStyle(CHAMELEON_PATH"/Chameleon");
     QQmlApplicationEngine engine;
+//    qputenv("D_POPUP_MODE", "window");
 
 //    QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
     engine.addImportPath(CHAMELEON_PATH);

@@ -24,6 +24,7 @@
 #include "dquickcontrolpalette_p.h"
 #include "dquickdciicon_p.h"
 #include "dmessagemanager_p.h"
+#include "dpopupwindowhandle_p.h"
 
 #include <DObjectPrivate>
 #include <DObject>
@@ -403,6 +404,11 @@ void DQMLGlobalObject::closeMessage(QQuickWindow *target, const QString &msgId)
     if (auto manager = qobject_cast<MessageManager *>(qmlAttachedPropertiesObject<MessageManager>(target))) {
         manager->close(msgId);
     }
+}
+
+void DQMLGlobalObject::setPopupMode(const PopupMode mode)
+{
+    DPopupWindowHandle::setPopupMode(mode);
 }
 
 DQUICK_END_NAMESPACE

@@ -40,6 +40,7 @@
 #include "private/dquickcontrolpalette_p.h"
 #include "private/dsettingscontainer_p.h"
 #include "private/dmessagemanager_p.h"
+#include "private/dpopupwindowhandle_p.h"
 
 #include <DFontManager>
 
@@ -180,6 +181,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
                                                            QStringLiteral("ColorSelector is only available as an attached property."));
     dtkRegisterUncreatableType<DColor>(uri, implUri, 1, 0, "Color",
                                        QStringLiteral("Color is only available as enums."));
+    dtkRegisterUncreatableType<DPopupWindowHandle>(uri, implUri, 1, 0, "PopupHandle", "PopupWindow Attached");
 
     qRegisterMetaType<DQUICK_NAMESPACE::DQuickDciIcon>();
     qRegisterMetaType<DQuickControlColor>("ControlColor");
@@ -220,6 +222,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "MenuItem");
     dtkRegisterType(uri, controlsUri, 1, 0, "MenuSeparator");
     dtkRegisterType(uri, controlsUri, 1, 0, "ScrollIndicator");
+    dtkRegisterType(uri, controlsUri, 1, 0, "Popup");
     // DTK Controls
     dtkRegisterType(uri, controlsUri, 1, 0, "LineEdit");
     dtkRegisterType(uri, controlsUri, 1, 0, "SearchEdit");
@@ -254,6 +257,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "HighlightPanel");
     dtkRegisterType(uri, controlsUri, 1, 0, "ArrowListView");
     dtkRegisterType(uri, controlsUri, 1, 0, "StyledBehindWindowBlur");
+    dtkRegisterType(uri, controlsUri, 1, 0, "PopupWindow");
 
     // for org.deepin.dtk.style(allowed to override)
     dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");
