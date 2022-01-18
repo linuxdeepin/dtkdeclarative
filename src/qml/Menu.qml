@@ -38,6 +38,10 @@ T.Menu {
 
     delegate: MenuItem { }
 
+    D.PopupHandle.delegate: PopupWindow {
+        blurControl: control
+    }
+
     contentItem: ArrowListView {
         id: contentView
         property int count: contentView.view.count
@@ -75,6 +79,7 @@ T.Menu {
     }
 
     background: FloatingPanel {
+        visible: !control.D.PopupHandle.window
         implicitWidth: DS.Style.menu.itemWidth
         implicitHeight: DS.Style.menu.itemHeight
         radius: DS.Style.menu.radius

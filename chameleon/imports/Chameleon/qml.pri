@@ -32,4 +32,5 @@ QML_FILES += \
     $$PWD/TextArea.qml \
     $$PWD/SpinBox.qml \
     $$PWD/Control.qml \
-    $$PWD/ScrollIndicator.qml
+    $$PWD/ScrollIndicator.qml \
+    $$PWD/Popup.qml
