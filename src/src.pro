@@ -24,7 +24,6 @@ include(src.pri)
 includes.files += \
     $$PWD/*.h \
     $$PWD/DQuickWindow \
-    $$PWD/DQuickView \
     $$PWD/DAppLoader \
     $$PWD/DQmlAppPluginInterface \
     $$PWD/DQMLGlobalObject \

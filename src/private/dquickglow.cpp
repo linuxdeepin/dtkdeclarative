@@ -19,9 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "dquickglow.h"
-#include "private/dquickglow_p.h"
-#include "private/dshadownode.h"
+#include "dquickglow_p.h"
+#include "private/dquickglow_p_p.h"
+#include "private/dshadownode_p.h"
 
 DQUICK_BEGIN_NAMESPACE
 

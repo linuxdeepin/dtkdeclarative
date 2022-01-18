@@ -32,7 +32,7 @@ class MessageManager;
 class FloatingMessageContainer : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QQuickItem *panel READ panel WRITE setPanel CONSTANT)
+    Q_PROPERTY(QQuickItem *panel READ panel WRITE setPanel)
     Q_PROPERTY(QVariant message READ message WRITE setMessage NOTIFY messageChanged)
     Q_PROPERTY(int duration READ duration WRITE setDuration NOTIFY durationChanged)
     Q_CLASSINFO("DefaultProperty", "panel")
@@ -67,9 +67,9 @@ private:
 class MessageManager : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QQmlComponent *delegate READ delegate WRITE setDelegate CONSTANT)
-    Q_PROPERTY(QQuickItem *layout READ layout WRITE setLayout CONSTANT)
-    Q_PROPERTY(int capacity READ capacity WRITE setCapacity CONSTANT)
+    Q_PROPERTY(QQmlComponent *delegate READ delegate WRITE setDelegate)
+    Q_PROPERTY(QQuickItem *layout READ layout WRITE setLayout)
+    Q_PROPERTY(int capacity READ capacity WRITE setCapacity)
     Q_PROPERTY(int count READ count NOTIFY countChanged)
 
 public:

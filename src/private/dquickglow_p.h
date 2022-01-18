@@ -22,30 +22,61 @@
 #ifndef DQUICKGLOW_P_H
 #define DQUICKGLOW_P_H
 
-#include "dquickglow.h"
+#include <dtkdeclarative_global.h>
+#include <DObject>
 
-#include <private/qquickitem_p.h>
+#include <QQuickItem>
 
 DQUICK_BEGIN_NAMESPACE
 
-class DQuickGlowPrivate : public QQuickItemPrivate
+class DQuickGlowPrivate;
+class Q_DECL_EXPORT DQuickGlow : public QQuickItem
 {
-    Q_DECLARE_PUBLIC(DQuickGlow)
+    Q_OBJECT
+    Q_PROPERTY(qreal glowRadius READ glowRadius WRITE setGlowRadius NOTIFY glowRadiusChanged)
+    Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
+    Q_PROPERTY(qreal spread READ spread WRITE setSpread NOTIFY spreadChanged)
+    Q_PROPERTY(qreal relativeSizeX READ relativeSizeX WRITE setRelativeSizeX NOTIFY relativeSizeXChanged)
+    Q_PROPERTY(qreal relativeSizeY READ relativeSizeY WRITE setRelativeSizeY NOTIFY relativeSizeYChangd)
+    Q_PROPERTY(bool fill READ fill WRITE setFill NOTIFY fillChanged)
 
 public:
-    DQuickGlowPrivate()
-        : QQuickItemPrivate()
-        , fill(false)
-    {
+    explicit DQuickGlow(QQuickItem *parent = nullptr);
 
-    }
+    qreal glowRadius() const;
+    void setGlowRadius(qreal radius);
 
-    qreal glowRadius;
-    QColor color;
-    qreal spread;
-    qreal relativeSizeX;
-    qreal relativeSizeY;
-    bool fill;
+    QColor color() const;
+    void setColor(const QColor &);
+
+    qreal spread() const;
+    void setSpread(qreal radius);
+
+    qreal relativeSizeX() const;
+    void setRelativeSizeX(qreal x);
+
+    qreal relativeSizeY() const;
+    void setRelativeSizeY(qreal y);
+
+    bool fill();
+    void setFill(bool);
+Q_SIGNALS:
+    void glowRadiusChanged();
+    void colorChanged();
+    void spreadChanged();
+    void relativeSizeXChanged();
+    void relativeSizeYChangd();
+    void fillChanged();
+
+protected:
+    QSGNode *updatePaintNode(QSGNode *, UpdatePaintNodeData *) override;
+
+protected:
+    DQuickGlow(DQuickGlowPrivate &dd, QQuickItem *parent = nullptr);
+
+private:
+    Q_DISABLE_COPY(DQuickGlow)
+    Q_DECLARE_PRIVATE(DQuickGlow)
 };
 
 DQUICK_END_NAMESPACE

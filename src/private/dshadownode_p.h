@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DSHADOWNODE_H
-#define DSHADOWNODE_H
+#ifndef DSHADOWNODE_P_H
+#define DSHADOWNODE_P_H
 
 #include <dtkdeclarative_global.h>
 
@@ -112,4 +112,4 @@ private:
 
 DQUICK_END_NAMESPACE
 
-#endif // DSHADOWNODE_H
+#endif // DSHADOWNODE_P_H

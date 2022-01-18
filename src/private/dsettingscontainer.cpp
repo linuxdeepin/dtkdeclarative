@@ -74,7 +74,11 @@ SettingsContainer::~SettingsContainer()
 
 QQmlListProperty<SettingsGroup> SettingsContainer::groups()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    return QQmlListProperty<SettingsGroup>(this, &m_groups);
+#else
     return QQmlListProperty<SettingsGroup>(this, m_groups);
+#endif
 }
 
 SettingsContentModel *SettingsContainer::contentModel() const
@@ -358,12 +362,20 @@ SettingsGroup::~SettingsGroup()
 
 QQmlListProperty<SettingsOption> SettingsGroup::options()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    return QQmlListProperty<SettingsOption>(this, &m_options);
+#else
     return QQmlListProperty<SettingsOption>(this, m_options);
+#endif
 }
 
 QQmlListProperty<SettingsGroup> SettingsGroup::children()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    return QQmlListProperty<SettingsGroup>(this, &m_children);
+#else
     return QQmlListProperty<SettingsGroup>(this, m_children);
+#endif
 }
 
 QQmlComponent *SettingsGroup::background() const
@@ -382,10 +394,10 @@ void SettingsGroup::setBackground(QQmlComponent *background)
 
 void SettingsGroup::setConfig(DConfigWrapper *config)
 {
-    for (auto childGroup : m_children) {
+    for (auto childGroup : qAsConst(m_children)) {
         childGroup->setConfig(config);
     }
-    for (auto option : m_options) {
+    for (auto option : qAsConst(m_options)) {
         option->setConfig(config);
     }
 }
@@ -682,7 +694,7 @@ QQmlInstanceModel::ReleaseFlags SettingsInstanceModel::release(QObject *object, 
     if (d->compositor.itemIndex(object) >= 0) {
         return QQmlInstanceModel::Referenced;
     }
-    return nullptr;
+    return ReleaseFlags();
 }
 #else
 QString SettingsInstanceModel::stringValue(int index, const QString &name)

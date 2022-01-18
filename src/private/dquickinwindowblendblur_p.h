@@ -18,8 +18,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef DQUICKINWINDOWBLENDBLUR_H
-#define DQUICKINWINDOWBLENDBLUR_H
+#ifndef DQUICKINWINDOWBLENDBLUR_P_H
+#define DQUICKINWINDOWBLENDBLUR_P_H
 
 #include <dtkdeclarative_global.h>
 
@@ -73,4 +73,4 @@ private:
 
 DQUICK_END_NAMESPACE
 
-#endif // DQUICKINWINDOWBLENDBLUR_H
+#endif // DQUICKINWINDOWBLENDBLUR_P_H

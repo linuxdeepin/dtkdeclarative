@@ -1,4 +1,4 @@
-#include "dhandlecontextmenuwindow.h"
+#include "dhandlecontextmenuwindow_p.h"
 #include "private/qquickwindow_p.h"
 
 DHandleContextMenuWindow::DHandleContextMenuWindow(QWindow *parent)

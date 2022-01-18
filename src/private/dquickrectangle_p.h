@@ -22,42 +22,61 @@
 #ifndef DQUICKRECTANGLE_P_H
 #define DQUICKRECTANGLE_P_H
 
-#include "dquickrectangle.h"
-#include "dquickitemviewport_p.h"
+#include <dtkdeclarative_global.h>
+#include <DObject>
 
-#include <private/qquickitem_p.h>
+#include <QQuickItem>
 
 DQUICK_BEGIN_NAMESPACE
 
-class DQuickRectanglePrivate : public QQuickItemPrivate
+class DQuickRectanglePrivate;
+class Q_DECL_EXPORT DQuickRectangle : public QQuickItem
 {
-    Q_DECLARE_PUBLIC(DQuickRectangle)
+    Q_OBJECT
+    Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
+    Q_PROPERTY(qreal radius READ radius WRITE setRadius NOTIFY radiusChanged)
+    Q_PROPERTY(Corners corners READ corners WRITE setCorners NOTIFY cornersChanged)
 
 public:
-    DQuickRectanglePrivate()
-        : QQuickItemPrivate ()
-        , radius(0.0)
-        , color(Qt::white)
-    {
+    enum Corner {
+        TopLeftCorner = 0x1,
+        TopRightCorner = 0x2,
+        BottomLeftCorner = 0x4,
+        BottomRightCorner = 0x8
+    };
+    Q_DECLARE_FLAGS(Corners, Corner)
+    Q_FLAG(Corners)
 
-    }
+    explicit DQuickRectangle(QQuickItem *parent = nullptr);
 
-    inline QSGTexture *textureForRadiusMask()
-    {
-        if (!maskTexture && radius > 0) {
-            QQuickItemPrivate *d = QQuickItemPrivate::get(q_func());
-            maskTexture = MaskTextureCache::instance()->getTexture(d->sceneGraphRenderContext(),
-                                                                   radius * d->window->effectiveDevicePixelRatio(), true);
-        }
-        return maskTexture->texture;
-    }
+    QColor color() const;
+    void setColor(const QColor &color);
 
-    qreal radius;
-    QColor color;
-    DQuickRectangle::Corners corners;
-    MaskTextureCache::TextureData maskTexture;
+    qreal radius() const;
+    void setRadius(qreal radius);
+
+    DQuickRectangle::Corners corners() const;
+    void setCorners(Corners corners);
+
+Q_SIGNALS:
+    void colorChanged();
+    void radiusChanged();
+    void cornersChanged();
+
+protected:
+    QSGNode *updatePaintNode(QSGNode *, UpdatePaintNodeData *) override;
+
+protected:
+    DQuickRectangle(DQuickRectanglePrivate &dd, QQuickItem *parent = nullptr);
+
+private:
+    Q_DISABLE_COPY(DQuickRectangle)
+    Q_DECLARE_PRIVATE(DQuickRectangle)
 };
 
 DQUICK_END_NAMESPACE
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(DTK_QUICK_NAMESPACE::DQuickRectangle::Corners)
+Q_DECLARE_METATYPE(DTK_QUICK_NAMESPACE::DQuickRectangle::Corner)
 
 #endif // DQUICKRECTANGLE_P_H
