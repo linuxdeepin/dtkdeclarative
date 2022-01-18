@@ -85,10 +85,6 @@ T.Button {
 
             anchors.fill: parent
             radius: DS.Style.control.radius
-            border {
-                width: DS.Style.control.borderWidth
-                color: D.ColorSelector.borderColor
-            }
             gradient: D.ColorSelector.color1 === D.ColorSelector.color2 ? null : backgroundGradient
             color: D.ColorSelector.color1
         }
@@ -108,10 +104,6 @@ T.Button {
             Rectangle {
                 anchors.fill: parent
                 radius: backgroundRect.radius
-                border {
-                    width: backgroundRect.border.width
-                    color: control.D.ColorSelector.borderColor
-                }
                 gradient: control.D.ColorSelector.color1 === control.D.ColorSelector.color2 ? null : hoverBackgroundGradient
                 color: control.D.ColorSelector.color1
             }
@@ -138,6 +130,16 @@ T.Button {
             shadowColor: control.D.ColorSelector.innerShadowColor2
             cornerRadius: backgroundRect.radius
             visible: control.D.ColorSelector.family === D.Palette.CommonColor
+        }
+
+        Rectangle {
+            anchors.fill: backgroundRect
+            color: "transparent"
+            radius: backgroundRect.radius
+            border {
+                width: DS.Style.control.borderWidth
+                color: control.D.ColorSelector.borderColor
+            }
         }
     }
 

@@ -92,6 +92,7 @@ QtObject {
     }
     property D.Palette buttonBorder: D.Palette {
         normal: Qt.rgba(0, 0, 0, 0.03)
+        hovered: Qt.rgba(0, 0, 0, 0.15)
     }
     property D.Palette highlightedButtonBorder: D.Palette {
         normal: Qt.rgba(0, 0.581, 1, 0.2)
