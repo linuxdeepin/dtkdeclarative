@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     yeshanshan <yeshanshan@uniontech.com>
  *
@@ -53,7 +53,7 @@ MouseArea {
         mouse.accepted = false
     }
 
-    D.InWindowBlendBlur {
+    D.InWindowBlur {
         id: background
         anchors.fill: parent
         radius: 30

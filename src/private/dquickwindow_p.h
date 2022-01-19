@@ -26,10 +26,11 @@
 
 DQUICK_BEGIN_NAMESPACE
 
+class DQuickBehindWindowBlur;
 class DQuickWindowPrivate : public DTK_CORE_NAMESPACE::DObjectPrivate
 {
 public:
-    DQuickWindowPrivate(DQuickWindow *qq);
+    explicit DQuickWindowPrivate(DQuickWindow *qq);
 
     DQuickWindowAttached *attached;
 
@@ -45,6 +46,11 @@ public:
 
     void updatePlatformHandle();
     void _q_onWindowMotifHintsChanged(quint32 winId);
+    void addBlur(DQuickBehindWindowBlur *blur);
+    void removeBlur(DQuickBehindWindowBlur *blur);
+    void updateBlurAreaFor(DQuickBehindWindowBlur *blur);
+    void _q_updateBlurAreaForWindow();
+
     DPlatformHandle *handle = nullptr;
 
     DWindowManagerHelper::WmWindowTypes wmWindowTypes;
@@ -52,6 +58,7 @@ public:
     DWindowManagerHelper::MotifDecorations motifDecorations;
     bool explicitEnable;
 
+    QList<DQuickBehindWindowBlur*> blurList;
 private:
     D_DECLARE_PUBLIC(DQuickWindowAttached)
 };

@@ -18,8 +18,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef DQUICKINWINDOWBLENDBLUR_P_H
-#define DQUICKINWINDOWBLENDBLUR_P_H
+#ifndef DQUICKINWINDOWBLUR_P_H
+#define DQUICKINWINDOWBLUR_P_H
 
 #include <dtkdeclarative_global.h>
 
@@ -37,15 +37,15 @@ DQUICK_BEGIN_NAMESPACE
 class DQuickInWindowBlendBlurPrivate;
 class TextureProvider;
 class DSGBlurNode;
-class DQuickInWindowBlendBlur : public QQuickItem
+class DQuickInWindowBlur : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(qreal radius READ radius WRITE setRadius NOTIFY radiusChanged)
     Q_PROPERTY(bool offscreen READ offscreen WRITE setOffscreen NOTIFY offscreenChanged)
 
 public:
-    explicit DQuickInWindowBlendBlur(QQuickItem *parent = nullptr);
-    ~DQuickInWindowBlendBlur() override;
+    explicit DQuickInWindowBlur(QQuickItem *parent = nullptr);
+    ~DQuickInWindowBlur() override;
 
     qreal radius() const;
     void setRadius(qreal newRadius);
@@ -73,4 +73,4 @@ private:
 
 DQUICK_END_NAMESPACE
 
-#endif // DQUICKINWINDOWBLENDBLUR_P_H
+#endif // DQUICKINWINDOWBLUR_P_H

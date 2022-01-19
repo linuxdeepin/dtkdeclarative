@@ -55,5 +55,6 @@
         <file>qml/HighlightPanel.qml</file>
         <file>qml/ArrowListView.qml</file>
         <file>qml/ScrollIndicator.qml</file>
+        <file>qml/StyledBehindWindowBlur.qml</file>
     </qresource>
 </RCC>

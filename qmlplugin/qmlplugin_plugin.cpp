@@ -27,9 +27,10 @@
 #include "private/dhandlecontextmenuwindow_p.h"
 #include "private/dquickiconprovider_p.h"
 #include "private/dquickglow_p.h"
-#include "private/dquickinwindowblendblur_p.h"
+#include "private/dquickinwindowblur_p.h"
 #include "private/dquickshadowimage_p.h"
 #include "private/dquickrectangle_p.h"
+#include "private/dquickbehindwindowblur_p.h"
 
 #include "private/dconfigwrapper_p.h"
 #include "private/dquickiconimage_p.h"
@@ -145,12 +146,13 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType<DHandleContextMenuWindow>(uri, implUri, 1, 0, "ContextMenuWindow");
     dtkRegisterType<DQuickBlitFramebuffer>(uri, implUri, 1, 0, "BlitFramebuffer");
     dtkRegisterType<DConfigWrapper>(uri, implUri, 1, 0, "Config");
-    dtkRegisterType<DQuickInWindowBlendBlur>(uri, implUri, 1, 0, "InWindowBlendBlur");
+    dtkRegisterType<DQuickInWindowBlur>(uri, implUri, 1, 0, "InWindowBlur");
     dtkRegisterType<DQuickControlPalette>(uri, implUri, 1, 0, "Palette");
     dtkRegisterType<DQuickShadowImage>(uri, implUri, 1, 0, "ShadowImage");
     dtkRegisterType<FloatingMessageContainer>(uri, implUri, 1, 0, "FloatingMessageContainer");
     dtkRegisterUncreatableType<MessageManager>(uri, implUri, 1, 0, "MessageManager", "Window Attached");
     dtkRegisterType<DQuickRectangle>(uri, implUri, 1, 0, "RoundRectangle");
+    dtkRegisterType<DQuickBehindWindowBlur>(uri, implUri, 1, 0, "BehindWindowBlur");
 
     dtkRegisterAnonymousType<DQUICK_NAMESPACE::DQuickDciIcon>(uri, implUri, 1);
     dtkRegisterAnonymousType<DQuickControlColor>(uri, implUri, 1);
@@ -229,6 +231,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "FloatingMessageCloseButton");
     dtkRegisterType(uri, controlsUri, 1, 0, "HighlightPanel");
     dtkRegisterType(uri, controlsUri, 1, 0, "ArrowListView");
+    dtkRegisterType(uri, controlsUri, 1, 0, "StyledBehindWindowBlur");
 
     // for org.deepin.dtk.style(allowed to override)
     dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");

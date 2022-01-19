@@ -11,7 +11,7 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dquickglow_p.h \
     $$PWD/dquickglow_p_p.h \
     $$PWD/dquickiconprovider_p.h \
-    $$PWD/dquickinwindowblendblur_p.h \
+    $$PWD/dquickinwindowblur_p.h \
     $$PWD/dquickrectangle_p.h \
     $$PWD/dquickrectangle_p_p.h \
     $$PWD/dquickshadowimage_p.h \
@@ -33,6 +33,8 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dquickdciicon_p.h \
     $$PWD/dsettingscontainer_p.h \
     $$PWD/dmessagemanager_p.h \
+    $$PWD/dquickbehindwindowblur_p_p.h \
+    $$PWD/dquickbehindwindowblur_p.h \
 
 SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dblitframebuffernode.cpp \
@@ -43,7 +45,7 @@ SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dquickiconlabel.cpp \
     $$PWD/dquickbusyindicator.cpp \
     $$PWD/dquickiconprovider.cpp \
-    $$PWD/dquickinwindowblendblur.cpp \
+    $$PWD/dquickinwindowblur.cpp \
     $$PWD/dquickrectangle.cpp \
     $$PWD/dquickshadowimage.cpp \
     $$PWD/drectanglenode.cpp \
@@ -54,4 +56,5 @@ SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dquickdciicon.cpp \
     $$PWD/dsettingscontainer.cpp \
     $$PWD/dmessagemanager.cpp \
-    $$PWD/dsoftwareroundedimagenode.cpp
+    $$PWD/dsoftwareroundedimagenode.cpp \
+    $$PWD/dquickbehindwindowblur.cpp \

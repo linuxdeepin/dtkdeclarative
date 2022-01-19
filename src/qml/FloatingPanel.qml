@@ -31,7 +31,7 @@ Control {
     property color backgroundColor: D.DTK.selectColor(control.palette.window, DS.Style.floatingPanel.lightBackground, DS.Style.floatingPanel.darkBackground)
     property int radius: DS.Style.floatingPanel.radius
 
-    background: D.InWindowBlendBlur {
+    background: D.InWindowBlur {
         implicitWidth: DS.Style.floatingPanel.width
         implicitHeight: DS.Style.floatingPanel.height
         radius: control.radius
