@@ -47,7 +47,7 @@ Item {
             width: 300
             anchors.horizontalCenter: parent.horizontalCenter
 
-            D.InWindowBlendBlur {
+            D.InWindowBlur {
                 id: blur
                 anchors.fill: parent
                 radius: 20
@@ -71,7 +71,7 @@ Item {
 
             Text {
                 anchors.centerIn: parent
-                text: index
+                text: "InWindowBlur" + index
                 color: "white"
                 font.pixelSize: 22
             }

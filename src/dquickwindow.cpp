@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <DPlatformHandle>
-
 #include "dquickwindow.h"
 #include "private/dquickwindow_p.h"
+#include "private/dquickbehindwindowblur_p.h"
+#include "private/dquickbehindwindowblur_p_p.h"
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -105,6 +105,7 @@ void DQuickWindowAttachedPrivate::updatePlatformHandle()
         QObject::connect(handle, &DPlatformHandle::enableSystemMoveChanged, q, &DQuickWindowAttached::enableSystemMoveChanged);
         QObject::connect(handle, &DPlatformHandle::enableSystemResizeChanged, q, &DQuickWindowAttached::enableSystemResizeChanged);
         QObject::connect(handle, &DPlatformHandle::enableBlurWindowChanged, q, &DQuickWindowAttached::enableBlurWindowChanged);
+        QObject::connect(handle, SIGNAL(enableBlurWindowChanged()), q, SLOT(_q_updateBlurAreaForWindow()));
         QObject::connect(DWindowManagerHelper::instance(), SIGNAL(windowMotifWMHintsChanged(quint32)), q, SLOT(_q_onWindowMotifHintsChanged(quint32)));
         // to initialize MotifFunctions and MotifDecorations forwardly.
         _q_onWindowMotifHintsChanged(static_cast<quint32>(tWindow->winId()));
@@ -128,6 +129,63 @@ void DQuickWindowAttachedPrivate::_q_onWindowMotifHintsChanged(quint32 winId)
     if (decorations_hints != motifDecorations) {
         motifDecorations = decorations_hints;
         Q_EMIT q->motifDecorationsChanged();
+    }
+}
+
+void DQuickWindowAttachedPrivate::addBlur(DQuickBehindWindowBlur *blur)
+{
+    Q_ASSERT(!blurList.contains(blur));
+    blurList.append(blur);
+    _q_updateBlurAreaForWindow();
+}
+
+void DQuickWindowAttachedPrivate::removeBlur(DQuickBehindWindowBlur *blur)
+{
+    Q_ASSERT(blurList.contains(blur));
+    blurList.removeOne(blur);
+    Q_ASSERT(!blurList.contains(blur));
+    _q_updateBlurAreaForWindow();
+}
+
+void DQuickWindowAttachedPrivate::updateBlurAreaFor(DQuickBehindWindowBlur *blur)
+{
+    Q_ASSERT(blurList.contains(blur));
+    _q_updateBlurAreaForWindow();
+}
+
+void DQuickWindowAttachedPrivate::_q_updateBlurAreaForWindow()
+{
+    D_Q(DQuickWindowAttached);
+    if (q->enableBlurWindow())
+        return;
+
+    QList<QPainterPath> blurPathList;
+    QVector<DPlatformHandle::WMBlurArea> blurAreaList;
+
+    for (const DQuickBehindWindowBlur *blur : qAsConst(blurList)) {
+        if (!blur->d_func()->isValidBlur())
+            continue;
+
+        if (blur->d_func()->blurPath.isEmpty()) {
+            blurAreaList.append(blur->d_func()->blurArea);
+        } else {
+            blurPathList.append(blur->d_func()->blurPath);
+        }
+    }
+
+    if (blurPathList.isEmpty()) {
+        q->setWindowBlurAreaByWM(blurPathList);
+        q->setWindowBlurAreaByWM(blurAreaList);
+    } else {
+        // convert to QPainterPath
+        for (const DPlatformHandle::WMBlurArea &area : qAsConst(blurAreaList)) {
+            QPainterPath path;
+            path.addRoundedRect(area.x, area.y, area.width, area.height, area.xRadius, area.yRaduis);
+            blurPathList << path;
+        }
+
+        q->setWindowBlurAreaByWM(QVector<DPlatformHandle::WMBlurArea>{});
+        q->setWindowBlurAreaByWM(blurPathList);
     }
 }
 
@@ -257,6 +315,11 @@ QRegion DQuickWindowAttached::frameMask() const
     }
 
     return d->handle->frameMask();
+}
+
+int DQuickWindowAttached::alphaBufferSize() const
+{
+    return window()->format().alphaBufferSize();
 }
 
 /*!
@@ -545,6 +608,42 @@ void DQuickWindowAttached::setMotifDecorations(DWindowManagerHelper::MotifDecora
 void DQuickWindowAttached::popupSystemWindowMenu()
 {
     DWindowManagerHelper::popupSystemWindowMenu(window());
+}
+
+bool DQuickWindowAttached::setWindowBlurAreaByWM(const QVector<DPlatformHandle::WMBlurArea> &area)
+{
+    D_D(DQuickWindowAttached);
+
+    d->updatePlatformHandle();
+    if (d->handle) {
+        return d->handle->setWindowBlurAreaByWM(area);
+    }
+
+    return false;
+}
+
+bool DQuickWindowAttached::setWindowBlurAreaByWM(const QList<QPainterPath> &area)
+{
+    D_D(DQuickWindowAttached);
+
+    d->updatePlatformHandle();
+    if (d->handle) {
+        return d->handle->setWindowBlurAreaByWM(area);
+    }
+
+    return false;
+}
+
+void DQuickWindowAttached::setAlphaBufferSize(int size)
+{
+    if (alphaBufferSize() == size)
+        return;
+
+    QQuickWindow *w = window();
+    QSurfaceFormat fmt = w->requestedFormat();
+    fmt.setAlphaBufferSize(size);
+    w->setFormat(fmt);
+    Q_EMIT alphaBufferSizeChanged();
 }
 
 DQUICK_END_NAMESPACE

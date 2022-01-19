@@ -87,7 +87,7 @@ MouseArea {
     onReleased: mouse.accepted = false
     onClicked: mouse.accepted = false
 
-    D.InWindowBlendBlur {
+    D.InWindowBlur {
         id: background
         anchors.fill: parent
         radius: 30

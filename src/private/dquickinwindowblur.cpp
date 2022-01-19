@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "dquickinwindowblendblur_p.h"
+#include "dquickinwindowblur_p.h"
 #include "private/dblitframebuffernode_p.h"
 #include "private/dblurimagenode_p.h"
 
@@ -53,23 +53,23 @@ private:
     QScopedPointer<QSGPlainTexture> m_texture;
 };
 
-DQuickInWindowBlendBlur::DQuickInWindowBlendBlur(QQuickItem *parent)
+DQuickInWindowBlur::DQuickInWindowBlur(QQuickItem *parent)
     : QQuickItem(parent)
 {
     setFlag(QQuickItem::ItemHasContents, true);
 }
 
-DQuickInWindowBlendBlur::~DQuickInWindowBlendBlur()
+DQuickInWindowBlur::~DQuickInWindowBlur()
 {
 
 }
 
-qreal DQuickInWindowBlendBlur::radius() const
+qreal DQuickInWindowBlur::radius() const
 {
     return m_radius;
 }
 
-void DQuickInWindowBlendBlur::setRadius(qreal newRadius)
+void DQuickInWindowBlur::setRadius(qreal newRadius)
 {
     if (qFuzzyCompare(m_radius, newRadius))
         return;
@@ -78,12 +78,12 @@ void DQuickInWindowBlendBlur::setRadius(qreal newRadius)
     update();
 }
 
-bool DQuickInWindowBlendBlur::offscreen() const
+bool DQuickInWindowBlur::offscreen() const
 {
     return m_offscreen;
 }
 
-void DQuickInWindowBlendBlur::setOffscreen(bool newOffscreen)
+void DQuickInWindowBlur::setOffscreen(bool newOffscreen)
 {
     if (m_offscreen == newOffscreen)
         return;
@@ -93,7 +93,7 @@ void DQuickInWindowBlendBlur::setOffscreen(bool newOffscreen)
     update();
 }
 
-QSGTextureProvider *DQuickInWindowBlendBlur::textureProvider() const
+QSGTextureProvider *DQuickInWindowBlur::textureProvider() const
 {
     const QQuickItemPrivate *d = QQuickItemPrivate::get(this);
     if (!d->window || !d->sceneGraphRenderContext() || QThread::currentThread() != d->sceneGraphRenderContext()->thread()) {
@@ -113,7 +113,7 @@ static void updateBlurNodeTexture(DBlitFramebufferNode *node, void *blurNode) {
 }
 
 void onRender(DSGBlurNode *node, void *data) {
-    DQuickInWindowBlendBlur *that = reinterpret_cast<DQuickInWindowBlendBlur*>(data);
+    DQuickInWindowBlur *that = reinterpret_cast<DQuickInWindowBlur*>(data);
     if (!that->m_tp)
         return;
     node->writeToTexture(that->m_tp->plainTexture());
@@ -121,7 +121,7 @@ void onRender(DSGBlurNode *node, void *data) {
     that->m_tp->metaObject()->invokeMethod(that->m_tp.data(), &TextureProvider::textureChanged, Qt::QueuedConnection);
 }
 
-QSGNode *DQuickInWindowBlendBlur::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *data)
+QSGNode *DQuickInWindowBlur::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *data)
 {
     Q_UNUSED(data)
 
@@ -174,7 +174,7 @@ QSGNode *DQuickInWindowBlendBlur::updatePaintNode(QSGNode *oldNode, UpdatePaintN
     return node;
 }
 
-void DQuickInWindowBlendBlur::itemChange(ItemChange type, const ItemChangeData &data)
+void DQuickInWindowBlur::itemChange(ItemChange type, const ItemChangeData &data)
 {
     if (type == ItemDevicePixelRatioHasChanged) {
         update();

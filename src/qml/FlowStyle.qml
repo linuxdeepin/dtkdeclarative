@@ -276,4 +276,11 @@ QtObject {
     property QtObject titleBar: QtObject {
         property int height: 45
     }
+
+    property QtObject behindWindowBlur: QtObject {
+        property color lightColor: Qt.rgba(235 / 255.0, 235 / 255.0, 235 / 255.0, 0.6)
+        property color lightNoBlurColor: Qt.rgba(235 / 255.0, 235 / 255.0, 235 / 255.0, 1.0)
+        property color darkColor: "#55000000"
+        property color darkNoBlurColor: Qt.rgba(35 / 255.0, 35 / 255.0, 35 / 255.0, 1.0)
+    }
 }

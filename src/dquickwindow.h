@@ -22,6 +22,7 @@
 
 #include <dtkdeclarative_global.h>
 #include <DWindowManagerHelper>
+#include <DPlatformHandle>
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -47,7 +48,7 @@ class DQuickWindowAttachedPrivate;
 class DQuickWindowAttached : public QObject, public DTK_CORE_NAMESPACE::DObject
 {
     Q_OBJECT
-    Q_PROPERTY(QQuickWindow *window READ window)
+    Q_PROPERTY(QQuickWindow *window READ window CONSTANT)
     Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(int windowRadius READ windowRadius WRITE setWindowRadius NOTIFY windowRadiusChanged)
     Q_PROPERTY(int borderWidth READ borderWidth WRITE setBorderWidth NOTIFY borderWidthChanged)
@@ -59,6 +60,7 @@ class DQuickWindowAttached : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(bool enableSystemResize READ enableSystemResize WRITE setEnableSystemResize NOTIFY enableSystemResizeChanged)
     Q_PROPERTY(bool enableSystemMove READ enableSystemMove WRITE setEnableSystemMove NOTIFY enableSystemMoveChanged)
     Q_PROPERTY(bool enableBlurWindow READ enableBlurWindow WRITE setEnableBlurWindow NOTIFY enableBlurWindowChanged)
+    Q_PROPERTY(int alphaBufferSize READ alphaBufferSize WRITE setAlphaBufferSize NOTIFY alphaBufferSizeChanged)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes READ wmWindowTypes WRITE setWmWindowTypes NOTIFY wmWindowTypesChanged)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifFunctions motifFunctions READ motifFunctions WRITE setMotifFunctions NOTIFY motifFunctionsChanged)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifDecorations motifDecorations READ motifDecorations WRITE setMotifDecorations NOTIFY motifDecorationsChanged)
@@ -84,6 +86,7 @@ public:
     bool enableSystemResize() const;
     bool enableSystemMove() const;
     bool enableBlurWindow() const;
+    int alphaBufferSize() const;
 
     DTK_GUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes() const;
     DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifFunctions motifFunctions() const;
@@ -105,12 +108,16 @@ public Q_SLOTS:
     void setEnableSystemResize(bool enableSystemResize);
     void setEnableSystemMove(bool enableSystemMove);
     void setEnableBlurWindow(bool enableBlurWindow);
+    void setAlphaBufferSize(int size);
 
     void setWmWindowTypes(DTK_GUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes);
     void setMotifFunctions(DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifFunctions motifFunctions);
     void setMotifDecorations(DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifDecorations motifDecorations);
 
     void popupSystemWindowMenu();
+
+    bool setWindowBlurAreaByWM(const QVector<DPlatformHandle::WMBlurArea> &area);
+    bool setWindowBlurAreaByWM(const QList<QPainterPath> &area);
 
 Q_SIGNALS:
     void enabledChanged();
@@ -127,10 +134,15 @@ Q_SIGNALS:
     void wmWindowTypesChanged();
     void motifFunctionsChanged();
     void motifDecorationsChanged();
+    void alphaBufferSizeChanged();
 
 private:
     D_DECLARE_PRIVATE(DQuickWindowAttached)
     D_PRIVATE_SLOT(void _q_onWindowMotifHintsChanged(quint32))
+    D_PRIVATE_SLOT(void _q_updateBlurAreaForWindow())
+
+    friend class DQuickBehindWindowBlur;
+    friend class DQuickBehindWindowBlurPrivate;
 };
 
 DQUICK_END_NAMESPACE

@@ -42,6 +42,7 @@ D.ApplicationWindow {
     D.Window.windowRadius: 16
     D.Window.borderColor: palette.highlight
     D.Window.borderWidth: 1
+    D.Window.alphaBufferSize: 8
 
     D.FontManager {
         id: font_manager
@@ -166,5 +167,29 @@ D.ApplicationWindow {
         Example_Notify {}
         Example_colorselector {}
         Example_Menu {}
+    }
+
+    D.BehindWindowBlur {
+        anchors {
+            fill: parent
+            topMargin: parent.height - 100
+        }
+        blendColor: Qt.rgba(1, 0, 0, 0.3)
+    }
+
+    D.StyledBehindWindowBlur {
+        control: root
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            bottom: parent.bottom
+            bottomMargin: 130
+        }
+        width: 200
+        height: 200
+        cornerRadius: 30
+        Text {
+            anchors.centerIn: parent
+            text: qsTr("WMBlur")
+        }
     }
 }
