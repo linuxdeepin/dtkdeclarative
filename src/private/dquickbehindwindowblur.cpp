@@ -271,8 +271,18 @@ inline DQuickWindowAttached *windowAttached(QQuickWindow *window) {
 
 void DQuickBehindWindowBlur::itemChange(ItemChange change, const ItemChangeData &value)
 {
-    if (change == ItemSceneChange)
+    if (change == ItemSceneChange) {
         setWindowAttached(windowAttached(value.window));
+    } else if (change == ItemVisibleHasChanged) {
+        Q_D(DQuickBehindWindowBlur);
+        if (value.boolValue) {
+            if (d->windowAttach)
+                d->windowAttach->d_func()->addBlur(this);
+        } else {
+            if (d->windowAttach)
+                d->windowAttach->d_func()->removeBlur(this);
+        }
+    }
 
     QQuickItem::itemChange(change, value);
 }
