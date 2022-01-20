@@ -23,7 +23,11 @@
 #include "private/dblurimagenode_p.h"
 
 #include <private/qquickitem_p.h>
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
 #include <private/qsgplaintexture_p.h>
+#else
+#include <private/qsgtexture_p.h>
+#endif
 
 #include <QQuickWindow>
 
