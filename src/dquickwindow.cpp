@@ -141,10 +141,8 @@ void DQuickWindowAttachedPrivate::addBlur(DQuickBehindWindowBlur *blur)
 
 void DQuickWindowAttachedPrivate::removeBlur(DQuickBehindWindowBlur *blur)
 {
-    Q_ASSERT(blurList.contains(blur));
-    blurList.removeOne(blur);
-    Q_ASSERT(!blurList.contains(blur));
-    _q_updateBlurAreaForWindow();
+    if (blurList.removeOne(blur))
+        _q_updateBlurAreaForWindow();
 }
 
 void DQuickWindowAttachedPrivate::updateBlurAreaFor(DQuickBehindWindowBlur *blur)
