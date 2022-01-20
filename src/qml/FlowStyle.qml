@@ -97,12 +97,16 @@ QtObject {
     property D.Palette highlightedButtonBorder: D.Palette {
         normal: Qt.rgba(0, 0.581, 1, 0.2)
     }
-    property D.Palette windowButton: D.Palette {
-        normal: "transparent"
-        normalDark: "transparent"
-        hovered: Qt.rgba(0, 0, 0, 0.29)
-        hoveredDark: Qt.rgba(0, 0, 0, 0.29)
-        pressed: Qt.rgba(0, 0, 0, 0.29)
+    property QtObject windowButton: QtObject {
+        property int width: 45
+        property int height: 45
+        property D.Palette background: D.Palette {
+            normal: "transparent"
+            normalDark: "transparent"
+            hovered: Qt.rgba(0, 0, 0, 0.29)
+            hoveredDark: Qt.rgba(0, 0, 0, 0.29)
+            pressed: Qt.rgba(0, 0, 0, 0.29)
+        }
     }
     property D.Palette editBackground: D.Palette {
         normal: Qt.rgba(0, 0, 0, 0.08)
@@ -210,13 +214,18 @@ QtObject {
     }
 
     property QtObject floatingPanel: QtObject {
-        property int maximumWidth: 450
-        property int minimumHeight: 40
+        property int width: 180
+        property int height: 40
         property int radius: 14
         property color lightBackground: Qt.rgba(247 / 255.0, 247 / 255.0, 247 / 255.0, 0.6)
         property color darkBackground: Qt.rgba(247 / 255.0, 247 / 255.0, 247 / 255.0, 0.6)
         property color lightShadowBackground: Qt.rgba(0, 0, 0, 0.2)
         property color darkShadowBackground: Qt.rgba(0, 0, 0, 0.2)
+    }
+
+    property QtObject floatingMessage: QtObject {
+        property int maximumWidth: 450
+        property int minimumHeight: 40
     }
 
     property QtObject alertToolTip: QtObject {
@@ -255,5 +264,16 @@ QtObject {
         property color separatorLineColor : Qt.rgba(0, 0, 0, 0.1)
         property int separatorTopPadding: 11
         property int separatorBottomPadding: 2
+    }
+
+    property QtObject popup: QtObject {
+        property int width: 80
+        property int height: 180
+        property int radius: 18
+        property int padding: 10
+    }
+
+    property QtObject titleBar: QtObject {
+        property int height: 45
     }
 }

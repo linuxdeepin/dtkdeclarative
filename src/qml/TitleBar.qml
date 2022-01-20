@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021~2022 UnionTech Technology Co., Ltd.
  *
  * Author:     yeshanshan <yeshanshan@uniontech.com>
  *
@@ -24,6 +24,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Window 2.11
 import QtQuick.Layouts 1.11
 import org.deepin.dtk.impl 1.0 as D
+import org.deepin.dtk.style 1.0 as DS
 import "PixelMetric.js" as PM
 
 MouseArea {
@@ -32,7 +33,7 @@ MouseArea {
     width: Window.window.width
     // it's binding `height` instead of `visible` property,
     // because MouseArea should accept event keeping visible.
-    height: (!__isFullScreen || __isVisible) ? PM.TitleBar_Height : 0
+    implicitHeight: (!__isFullScreen || __isVisible) ? DS.Style.titleBar.height : 0
     hoverEnabled: __isFullScreen && autoHideOnFullscreen
     acceptedButtons: Qt.AllButtons
     propagateComposedEvents: true
@@ -51,7 +52,7 @@ MouseArea {
     // visibility access
     property bool fullScreenButtonVisible: true
     signal toggleWindowState()
-    property alias windowBuggonGroup: windowButtonsLoader.sourceComponent
+    property alias windowButtonGroup: windowButtonsLoader.sourceComponent
 
     property bool autoHideOnFullscreen: false
     property bool embedMode: !__dwindow.enabled
