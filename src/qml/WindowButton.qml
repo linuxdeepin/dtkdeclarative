@@ -23,7 +23,6 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
-import "PixelMetric.js" as PM
 
 Control {
     id: control
@@ -41,8 +40,8 @@ Control {
 
         id: iconLoader
         color: D.ColorSelector.textColor
-        sourceSize.width: PM.TitleBar_Height
-        sourceSize.height: PM.TitleBar_Height
+        sourceSize.width: DS.Style.titleBar.buttonWidth
+        sourceSize.height: DS.Style.titleBar.buttonHeight
     }
     MouseArea {
         id: mouseArea
@@ -50,8 +49,9 @@ Control {
         Component.onCompleted: clicked.connect(control.clicked)
     }
     background: Rectangle {
-        property D.Palette color1: DS.Style.windowButton
-        anchors.fill: parent
+        property D.Palette color1: DS.Style.windowButton.background
+        implicitWidth: DS.Style.windowButton.width
+        implicitHeight: DS.Style.titleBar.height
         color: D.ColorSelector.color1
     }
 }

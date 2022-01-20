@@ -32,7 +32,8 @@ Control {
     property int radius: DS.Style.floatingPanel.radius
 
     background: D.InWindowBlendBlur {
-        anchors.fill: parent
+        implicitWidth: DS.Style.floatingPanel.width
+        implicitHeight: DS.Style.floatingPanel.height
         radius: control.radius
         BoxShadow {
             anchors.fill: backgroundRect

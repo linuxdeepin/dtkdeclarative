@@ -38,7 +38,8 @@ FocusScope {
             width: DS.Style.arrowListView.stepButtonSize.width
             flat: true
             anchors.horizontalCenter: parent.horizontalCenter
-            enabled: itemsView.interactive && !itemsView.atYBeginning
+            enabled: !itemsView.atYBeginning
+            visible: itemsView.interactive
             icon.name: "go-up"
             onClicked: itemsView.decrementCurrentIndex()
         }
@@ -56,7 +57,8 @@ FocusScope {
             width: DS.Style.arrowListView.stepButtonSize.width
             flat: true
             anchors.horizontalCenter: parent.horizontalCenter
-            enabled: itemsView.interactive && !itemsView.atYEnd
+            enabled: !itemsView.atYEnd
+            visible: itemsView.interactive
             icon.name: "go-down"
             onClicked: itemsView.incrementCurrentIndex()
         }

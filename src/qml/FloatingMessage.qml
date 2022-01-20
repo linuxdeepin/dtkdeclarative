@@ -48,8 +48,8 @@ D.FloatingMessageContainer {
         bottomPadding: 0
 
         contentItem: RowLayout {
-            height: DS.Style.floatingPanel.minimumHeight
-            width: Math.min(DS.Style.floatingPanel.maximumWidth, children.width + floatingPanel.leftPadding - floatingPanel.rightPadding)
+            height: DS.Style.floatingMessage.minimumHeight
+            width: Math.min(DS.Style.floatingMessage.maximumWidth, children.width + floatingPanel.leftPadding - floatingPanel.rightPadding)
             spacing: 10
 
             D.DciIcon {
@@ -69,8 +69,8 @@ D.FloatingMessageContainer {
                 Layout.fillHeight: true
                 Layout.alignment: Qt.AlignVCenter
                 Layout.maximumWidth: maxContentWidth
-                Layout.preferredHeight: DS.Style.floatingPanel.minimumHeight
-                property int maxContentWidth: DS.Style.floatingPanel.maximumWidth - iconLoader.implicitWidth - closeButton.implicitWidth
+                Layout.preferredHeight: DS.Style.floatingMessage.minimumHeight
+                property int maxContentWidth: DS.Style.floatingMessage.maximumWidth - iconLoader.implicitWidth - closeButton.implicitWidth
                 sourceComponent: control.contentItem
             }
 
