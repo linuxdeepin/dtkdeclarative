@@ -12,5 +12,6 @@
         <file>Example_customcontrolforcs.qml</file>
         <file>Example_Menu.qml</file>
         <file>Example_Popup.qml</file>
+        <file>Example_Flickable.qml</file>
     </qresource>
 </RCC>

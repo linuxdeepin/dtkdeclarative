@@ -369,4 +369,20 @@ QtObject {
         property int highlightMargin: -4
         property int tickTextMargin: 2
     }
+
+    property QtObject scrollBar: QtObject {
+        property int padding: 2
+        property int width: 6
+        property int activeWidth: 12
+        property color lightBackground: "black"
+        property color darkBackground: "black"
+        property color innerShadowColor: Qt.rgba(0, 0, 0, 0.5)
+        property color outerShadowColor: Qt.rgba(1, 1, 1, 0.1)
+        property real hideOpacity: 0.0
+        property real normalOpacity: 0.4
+        property real hoverOpacity: 0.7
+        property real activeOpacity: 0.5
+        property int hidePauseDuration: 450
+        property int hideDuration: 1500
+    }
 }

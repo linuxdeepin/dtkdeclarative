@@ -61,5 +61,6 @@
         <file>qml/Switch.qml</file>
         <file>qml/Slider.qml</file>
         <file>qml/SliderHandle.qml</file>
+        <file>qml/ScrollBar.qml</file>
     </qresource>
 </RCC>

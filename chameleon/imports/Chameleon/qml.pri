@@ -32,4 +32,5 @@ QML_FILES += \
     $$PWD/SpinBox.qml \
     $$PWD/Control.qml \
     $$PWD/ScrollIndicator.qml \
-    $$PWD/Popup.qml
+    $$PWD/Popup.qml \
+    $$PWD/ScrollBar.qml \
