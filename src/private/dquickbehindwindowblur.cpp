@@ -53,6 +53,7 @@ protected:
     QMatrix4x4 m_lastMatrix;
     QRegion m_lastClip;
     qreal m_lastRadius = -1;
+    QSizeF m_lastSize;
 };
 
 DSGBlendNode::DSGBlendNode(bool restore)
@@ -87,13 +88,16 @@ void DSGBlendNode::render(const QSGRenderNode::RenderState *state)
     const bool dirtyMatrix = m_lastMatrix != *matrix();
     const bool dirtyClip = state->clipRegion() ? m_lastClip != *state->clipRegion() : !m_lastClip.isEmpty();
     const bool dirtyRadius = !qFuzzyCompare(m_lastRadius, blurData->radius);
+    // QMatrix4x4 represents position and rotation only
+    const bool dirtySzie = m_lastSize != m_item->size();
 
-    if (Q_LIKELY(!dirtyMatrix && !dirtyClip && !dirtyRadius)) {
+    if (Q_LIKELY(!dirtyMatrix && !dirtyClip && !dirtyRadius && !dirtySzie)) {
         return;
     }
     m_lastMatrix = *matrix();
     m_lastClip = state->clipRegion() ? *state->clipRegion() : QRegion();
     m_lastRadius = blurData->radius;
+    m_lastSize = m_item->size();
 
     const  auto transform = matrix()->toTransform();
     const QRectF itemRect(0, 0, m_item->width(), m_item->height());
