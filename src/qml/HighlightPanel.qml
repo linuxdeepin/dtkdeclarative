@@ -26,7 +26,7 @@ import org.deepin.dtk.style 1.0 as DS
 Item {
     id: panel
 
-    property Control __control: D.ColorSelector.control
+    property var __control: D.ColorSelector.control
     property D.Palette backgroundColor:  D.Palette {
         normal: "transparent"
         hovered: __control.palette.highlight

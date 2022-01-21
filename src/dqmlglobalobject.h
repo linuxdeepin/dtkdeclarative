@@ -68,7 +68,8 @@ public:
         NormalState,
         HoveredState,
         PressedState,
-        DisabledState
+        DisabledState,
+        InactiveState
     };
     Q_ENUM(ControlState)
 

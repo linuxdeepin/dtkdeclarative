@@ -21,7 +21,31 @@
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include <QQuickStyle>
+#include <QDir>
+#include <QFile>
+#include <QUrl>
+#include <QDebug>
+#include <QQuickItem>
+
+class Object : public QObject {
+    Q_OBJECT
+public:
+    Q_INVOKABLE QByteArray readFile(const QUrl &url) const {
+        QFile file(url.isLocalFile() ? url.toLocalFile() : (":" + url.path()));
+        if (!file.open(QIODevice::ReadOnly))
+            return QByteArray();
+        return file.readAll();
+    }
+    Q_INVOKABLE void replace(QQuickItem *oldItem, QQuickItem *newItem) const {
+        newItem->setParentItem(oldItem->parentItem());
+        newItem->stackBefore(oldItem);
+        oldItem->setParentItem(nullptr);
+        QQmlEngine::setObjectOwnership(oldItem, QQmlEngine::CppOwnership);
+        oldItem->deleteLater();
+    }
+};
 
 int main(int argc, char **argv)
 {
@@ -39,6 +63,9 @@ int main(int argc, char **argv)
 
 //    QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
     engine.addImportPath(CHAMELEON_PATH);
+    engine.rootContext()->setContextProperty("examplesFiles",
+                                             QDir(":/examples").entryList({"*.qml"}));
+    engine.rootContext()->setContextProperty("globalObject", new Object());
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
@@ -47,3 +74,5 @@ int main(int argc, char **argv)
 
     return 0;
 }
+
+#include "main.moc"

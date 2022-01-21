@@ -334,6 +334,15 @@ Q_SIGNALS:
     void familyChanged();
 
 private:
+    bool doGetHoveredRecu(bool *value) const;
+    bool doGetPressedRecu(bool *value) const;
+    bool doGetDisabledRecu(bool *value) const;
+    bool doGetInactivedRecu(bool *value) const;
+    void doSetHovered(bool newHovered, bool isUserSet);
+    void doSetPressed(bool newPressed, bool isUserSet);
+    void doSetDisabled(bool newDisabled, bool isUserSet);
+    void doSetInactived(bool newInactived, bool isUserSet);
+
     void ensureMetaObject();
     void setupMetaPropertyPalettes(QQuickItem *object);
     struct PaletteState;
@@ -352,7 +361,7 @@ private:
     void clearAndSetParentProperties();
 
     Q_SLOT void updateControlTheme();
-    Q_SLOT void updateControlState();
+    Q_SLOT bool updateControlState();
     Q_SLOT void updateAllColorProperties();
     Q_SLOT void recvPaletteColorChanged();
     Q_SLOT void updateControlWindow();
@@ -360,7 +369,7 @@ private:
     Q_SLOT void notifyColorPropertyChanged();
 
     void setControlTheme(DGuiApplicationHelper::ColorType theme);
-    void setControlState(DQMLGlobalObject::ControlState state);
+    bool setControlState(DQMLGlobalObject::ControlState state);
     bool doSetFamily(DQuickControlPalette::ColorFamily newFamily);
     void doResetFamily();
 
