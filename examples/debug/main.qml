@@ -153,6 +153,9 @@ D.ApplicationWindow {
         V2.TabButton {
             text: qsTr("Popup")
         }
+        V2.TabButton {
+            text: qsTr("Flickable")
+        }
     }
     StackLayout {
         anchors.left: parent.left
@@ -171,6 +174,7 @@ D.ApplicationWindow {
         Example_colorselector {}
         Example_Menu {}
         Example_Popup {}
+        Example_Flickable {}
     }
 
     D.BehindWindowBlur {

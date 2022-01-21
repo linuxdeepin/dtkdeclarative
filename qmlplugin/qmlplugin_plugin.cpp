@@ -223,6 +223,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "MenuSeparator");
     dtkRegisterType(uri, controlsUri, 1, 0, "ScrollIndicator");
     dtkRegisterType(uri, controlsUri, 1, 0, "Popup");
+    dtkRegisterType(uri, controlsUri, 1, 0, "ScrollBar");
     // DTK Controls
     dtkRegisterType(uri, controlsUri, 1, 0, "LineEdit");
     dtkRegisterType(uri, controlsUri, 1, 0, "SearchEdit");
