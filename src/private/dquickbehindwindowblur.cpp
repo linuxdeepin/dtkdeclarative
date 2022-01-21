@@ -121,7 +121,11 @@ void DSGBlendNode::render(const QSGRenderNode::RenderState *state)
 
         blurData->blurPath = mapOnScene;
     } else {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
         blurData->blurPath.clear();
+#else
+        blurData->blurPath = QPainterPath();
+#endif
 
         const QRect blurArea = matrix()->mapRect(itemRect).toRect();
         blurData->blurArea.x = blurArea.x();

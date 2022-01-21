@@ -49,7 +49,11 @@ public:
         return blurArea.width > 0 && blurArea.height > 0;
     }
     inline void makeToInvalidBlur() {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
         blurPath.clear();
+#else
+        blurPath = QPainterPath();
+#endif
         blurArea.width = blurArea.height = -1;
     }
 
