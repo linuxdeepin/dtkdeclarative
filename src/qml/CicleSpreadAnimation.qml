@@ -29,8 +29,11 @@ Item {
     // to select center point
     property point centerPoint: Qt.point(0, 0)
 
-    layer.effect: OpacityMask {
-        maskSource: mask
+    layer {
+        enabled: false
+        effect: OpacityMask {
+            maskSource: mask
+        }
     }
 
     // to start animation

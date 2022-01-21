@@ -29,13 +29,27 @@ import org.deepin.dtk.style 1.0 as DS
 T.Button {
     id: control
 
-    property D.Palette color1: highlighted ? DS.Style.highlightedButton1 : DS.Style.button1
+    property D.Palette color1: checked ? checkedColor1 : (highlighted ? DS.Style.highlightedButton1 : DS.Style.button1)
     property D.Palette color2: highlighted ? DS.Style.highlightedButton2 : DS.Style.button2
-    property D.Palette textColor: highlighted ? DS.Style.highlightedButtonText : DS.Style.buttonText
+    property D.Palette textColor: checked ? checkedTextColor : (highlighted ? DS.Style.highlightedButtonText : DS.Style.buttonText)
     property D.Palette borderColor: highlighted ? DS.Style.highlightedButtonBorder : DS.Style.buttonBorder
     property D.Palette dropShadowColor: highlighted ? DS.Style.highlightedButtonDropShadow : DS.Style.buttonDropShadow
     property D.Palette innerShadowColor1: highlighted ? DS.Style.highlightedButtonInnerShadow1 : DS.Style.buttonInnerShadow1
     property D.Palette innerShadowColor2: highlighted ? DS.Style.highlightedButtonInnerShadow2 : DS.Style.buttonInnerShadow2
+
+    D.Palette {
+        id: checkedColor1
+        normal: control.palette.highlight
+        hovered: D.DTK.adjustColor(control.palette.highlight, 0, 0, +10, 0, 0, 0, 0)
+        pressed: D.DTK.adjustColor(control.palette.highlight, 0, 0, -10, 0, 0, 0, 0)
+    }
+
+    D.Palette {
+        id: checkedTextColor
+        normal: control.palette.highlightedText
+        hovered: D.DTK.adjustColor(control.palette.highlightedText, 0, 0, +10, 0, 0, 0, 0)
+        pressed: D.DTK.adjustColor(control.palette.highlightedText, 0, 0, -20, 0, 0, 0, 0)
+    }
 
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
@@ -43,7 +57,7 @@ T.Button {
     topPadding: DS.Style.control.vPadding
     bottomPadding: DS.Style.control.vPadding
     spacing: DS.Style.control.spacing
-    opacity: enabled ? 1 : 0.4
+    opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
     D.DciIcon.mode: D.ColorSelector.controlState
     icon {
         width: DS.Style.button.iconSize
@@ -68,12 +82,7 @@ T.Button {
 
         Rectangle {
             id: backgroundRect
-            property D.Palette color1: D.Palette {
-                enabled: control.checked
-                normal: control.palette.highlight
-                hovered: D.DTK.adjustColor(control.palette.highlight, 0, 0, +10, 0, 0, 0, 0)
-                pressed: D.DTK.adjustColor(control.palette.highlight, 0, 0, -10, 0, 0, 0, 0)
-            }
+            objectName: "ColorSelectorMaster"
             D.ColorSelector.hovered: false
 
             Gradient {
@@ -157,19 +166,12 @@ T.Button {
     }
 
     contentItem: D.IconLabel {
-        property D.Palette textColor: D.Palette {
-            enabled: control.checked
-            normal: control.palette.highlightedText
-            hovered: D.DTK.adjustColor(control.palette.highlightedText, 0, 0, +10, 0, 0, 0, 0)
-            pressed: D.DTK.adjustColor(control.palette.highlightedText, 0, 0, -20, 0, 0, 0, 0)
-        }
-
         spacing: control.spacing
         mirrored: control.mirrored
         display: control.display
         text: control.text
         font: control.font
-        color: D.ColorSelector.textColor
+        color: control.D.ColorSelector.textColor
         icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
     }
 }

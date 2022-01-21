@@ -459,10 +459,15 @@ void DQuickControlColorSelector::setSuperColorSelector(DQuickControlColorSelecto
         connect(parent, &DQuickControlColorSelector::colorPropertiesChanged, this, &DQuickControlColorSelector::clearAndSetParentProperties);
         connect(parent, &DQuickControlColorSelector::destroyed, this, std::bind(
                     &DQuickControlColorSelector::setSuperColorSelector, this, nullptr));
+        connect(parent, &DQuickControlColorSelector::hoveredChanged, this, &DQuickControlColorSelector::updateControlState);
+        connect(parent, &DQuickControlColorSelector::pressedChanged, this, &DQuickControlColorSelector::updateControlState);
+        connect(parent, &DQuickControlColorSelector::disabledChanged, this, &DQuickControlColorSelector::updateControlState);
+        connect(parent, &DQuickControlColorSelector::inactivedChanged, this, &DQuickControlColorSelector::updateControlState);
     }
 
     clearAndSetParentProperties();
-    updateAllColorProperties();
+    if (!updateControlState())
+        updateAllColorProperties();
 
     Q_EMIT palettesChanged();
 }
@@ -504,14 +509,15 @@ void DQuickControlColorSelector::setControlTheme(DGuiApplicationHelper::ColorTyp
     updateAllColorProperties();
 }
 
-void DQuickControlColorSelector::setControlState(DQMLGlobalObject::ControlState controlState)
+bool DQuickControlColorSelector::setControlState(DQMLGlobalObject::ControlState controlState)
 {
     if (m_state->controlState == controlState)
-        return;
+        return false;
 
     m_state->controlState = controlState;
     Q_EMIT controlStateChanged();
     updateAllColorProperties();
+    return true;
 }
 
 bool DQuickControlColorSelector::doSetFamily(DQuickControlPalette::ColorFamily newFamily)
@@ -550,17 +556,12 @@ bool DQuickControlColorSelector::hovered() const
 
 void DQuickControlColorSelector::setHovered(bool newHovered)
 {
-    m_state->hoveredValueValid = true;
-    if (m_state->hovered == newHovered)
-        return;
-    m_state->hovered = newHovered;
-    Q_EMIT hoveredChanged();
+    doSetHovered(newHovered, true);
 }
 
 void DQuickControlColorSelector::resetHovered()
 {
-    setHovered(false);
-    m_state->hoveredValueValid = false;
+    doSetHovered(false, false);
 }
 
 bool DQuickControlColorSelector::pressed() const
@@ -570,17 +571,12 @@ bool DQuickControlColorSelector::pressed() const
 
 void DQuickControlColorSelector::setPressed(bool newPressed)
 {
-    m_state->pressedValueValid = true;
-    if (m_state->pressed == newPressed)
-        return;
-    m_state->pressed = newPressed;
-    Q_EMIT pressedChanged();
+    doSetPressed(newPressed, true);
 }
 
 void DQuickControlColorSelector::resetPressed()
 {
-    setPressed(false);
-    m_state->pressedValueValid = false;
+    doSetPressed(false, false);
 }
 
 bool DQuickControlColorSelector::disabled() const
@@ -590,17 +586,12 @@ bool DQuickControlColorSelector::disabled() const
 
 void DQuickControlColorSelector::setDisabled(bool newDisabled)
 {
-    m_state->disabledValueValid = true;
-    if (m_state->disabled == newDisabled)
-        return;
-    m_state->disabled = newDisabled;
-    Q_EMIT disabledChanged();
+    doSetDisabled(newDisabled, true);
 }
 
 void DQuickControlColorSelector::resetDisabled()
 {
-    setDisabled(false);
-    m_state->disabledValueValid = false;
+    doSetDisabled(false, false);
 }
 
 bool DQuickControlColorSelector::inactived() const
@@ -610,17 +601,12 @@ bool DQuickControlColorSelector::inactived() const
 
 void DQuickControlColorSelector::setInactived(bool newInactived)
 {
-    m_state->inactivedValueValid = true;
-    if (m_state->inactived == newInactived)
-        return;
-    m_state->inactived = newInactived;
-    Q_EMIT inactivedChanged();
+    doSetInactived(newInactived, true);
 }
 
 void DQuickControlColorSelector::resetInactived()
 {
-    setInactived(false);
-    m_state->inactivedValueValid = false;
+    doSetInactived(false, false);
 }
 
 int DQuickControlColorSelector::palette_count(QQmlListProperty<DQuickControlPalette> *property) {
@@ -679,6 +665,86 @@ QStringList DQuickControlColorSelector::specialObjectNameItems()
     return { QLatin1String("ColorSelectorMaster") };
 }
 
+bool DQuickControlColorSelector::doGetHoveredRecu(bool *value) const
+{
+    if (m_state->hoveredValueValid) {
+        *value = m_state->hovered;
+        return true;
+    }
+
+    return m_superColorSelector ? m_superColorSelector->doGetHoveredRecu(value) : false;
+}
+
+bool DQuickControlColorSelector::doGetPressedRecu(bool *value) const
+{
+    if (m_state->pressedValueValid) {
+        *value = m_state->pressed;
+        return true;
+    }
+
+    return m_superColorSelector ? m_superColorSelector->doGetPressedRecu(value) : false;
+}
+
+bool DQuickControlColorSelector::doGetDisabledRecu(bool *value) const
+{
+    if (m_state->disabledValueValid) {
+        *value = m_state->disabled;
+        return true;
+    }
+
+    return m_superColorSelector ? m_superColorSelector->doGetDisabledRecu(value) : false;
+}
+
+bool DQuickControlColorSelector::doGetInactivedRecu(bool *value) const
+{
+    if (m_state->inactivedValueValid) {
+        *value = m_state->inactived;
+        return true;
+    }
+
+    return m_superColorSelector ? m_superColorSelector->doGetInactivedRecu(value) : false;
+}
+
+void DQuickControlColorSelector::doSetHovered(bool newHovered, bool isUserSet)
+{
+    if (newHovered == m_state->hovered && isUserSet == m_state->hoveredValueValid)
+        return;
+    m_state->hoveredValueValid = isUserSet;
+    m_state->hovered = newHovered;
+    Q_EMIT hoveredChanged();
+    updateControlState();
+}
+
+void DQuickControlColorSelector::doSetPressed(bool newPressed, bool isUserSet)
+{
+    if (newPressed == m_state->pressed && isUserSet == m_state->pressedValueValid)
+        return;
+    m_state->pressedValueValid = isUserSet;
+    m_state->pressed = newPressed;
+    Q_EMIT pressedChanged();
+    updateControlState();
+}
+
+void DQuickControlColorSelector::doSetDisabled(bool newDisabled, bool isUserSet)
+{
+    if (newDisabled == m_state->disabled && isUserSet == m_state->disabledValueValid)
+        return;
+    m_state->disabledValueValid = isUserSet;
+    m_state->disabled = newDisabled;
+    Q_EMIT disabledChanged();
+    updateControlState();
+}
+
+void DQuickControlColorSelector::doSetInactived(bool newInactived, bool isUserSet)
+{
+    if (newInactived == m_state->inactived && isUserSet == m_state->inactivedValueValid)
+        return;
+    m_state->inactivedValueValid = isUserSet;
+    m_state->inactived = newInactived;
+    Q_EMIT inactivedChanged();
+    updateControlState();
+}
+
 static inline QColor getColor(const DQuickControlPalette *palette, int themeIndex, int familyIndex, int stateIndex) {
     QColor color = palette->colors.at(themeIndex + familyIndex + stateIndex);
 
@@ -712,15 +778,15 @@ QColor DQuickControlColorSelector::getColorOf(const DQuickControlPalette *palett
     const int familyIndex = state->family;
 
     int stateIndex = DQuickControlPalette::Normal;
-    bool disabled = state->disabledValueValid ? state->disabled : (state->controlState == DQMLGlobalObject::DisabledState);
+    bool disabled = state->controlState == DQMLGlobalObject::DisabledState;
     if (disabled) {
         targetColor = palette->colors.at(themeIndex + DQuickControlPalette::Disabled);
         if (targetColor.isValid()) // Don't process the disabled's color, should direct uses it.
             return targetColor;
         // fallback to normal color
-    } else if (state->pressedValueValid ? state->pressed : (state->controlState == DQMLGlobalObject::PressedState)) {
+    } else if (state->controlState == DQMLGlobalObject::PressedState) {
         stateIndex = DQuickControlPalette::Pressed;
-    } else if (state->hoveredValueValid ? state->hovered : (state->controlState == DQMLGlobalObject::HoveredState)) {
+    } else if (state->controlState == DQMLGlobalObject::HoveredState) {
         stateIndex = DQuickControlPalette::Hovered;
     }
 
@@ -734,10 +800,10 @@ QColor DQuickControlColorSelector::getColorOf(const DQuickControlPalette *palett
         targetColor = QColor(255 - r, 255 - g, 255 - b, a);
     }
 
-    if (!targetColor.isValid() || !state->owner->m_control || disabled)
+    if (!targetColor.isValid())
         return targetColor;
 
-    if ((state->inactivedValueValid ? state->inactived : (state->owner->m_controlWindow && !state->owner->m_controlWindow->isActive()))
+    if (state->controlState == DQMLGlobalObject::InactiveState && state->owner->m_control
             && DGuiApplicationHelper::testAttribute(DGuiApplicationHelper::Attribute::UseInactiveColorGroup)) {
         const QPalette pa = qvariant_cast<QPalette>(state->owner->m_control->property("palette"));
         const QColor windowColor = pa.color(QPalette::Window);
@@ -896,21 +962,22 @@ void DQuickControlColorSelector::updateControlTheme()
     setControlTheme(themeType);
 }
 
-void DQuickControlColorSelector::updateControlState()
+bool DQuickControlColorSelector::updateControlState()
 {
-    if (!m_control)
-        return;
-
     DQMLGlobalObject::ControlState state = DQMLGlobalObject::NormalState;
-    if (!m_control->isEnabled()) {
+
+    bool value = false;
+    if (doGetDisabledRecu(&value) ? value : m_control && !m_control->isEnabled()) {
         state = DQMLGlobalObject::DisabledState;
-    } else if (m_control->property("pressed").toBool()) {
+    } else if (doGetPressedRecu(&value) ? value : m_control && m_control->property("pressed").toBool()) {
         state = DQMLGlobalObject::PressedState;
-    } else if (m_control->property("hovered").toBool()) {
+    } else if (doGetHoveredRecu(&value) ? value : m_control && m_control->property("hovered").toBool()) {
         state = DQMLGlobalObject::HoveredState;
+    } else if (doGetInactivedRecu(&value) ? value : m_controlWindow && !m_controlWindow->isActive()) {
+        state = DQMLGlobalObject::InactiveState;
     }
 
-    setControlState(state);
+    return setControlState(state);
 }
 
 void DQuickControlColorSelector::updateAllColorProperties()
@@ -943,7 +1010,7 @@ void DQuickControlColorSelector::updateControlWindow()
     m_controlWindow = m_control->window();
     if (m_controlWindow) {
         connect(m_controlWindow, &QQuickWindow::activeChanged,
-                this, &DQuickControlColorSelector::updateAllColorProperties);
+                this, &DQuickControlColorSelector::updateControlState);
         updateAllColorProperties();
     }
 }

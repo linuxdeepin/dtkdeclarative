@@ -20,15 +20,112 @@
  */
 
 import QtQuick 2.11
-import org.deepin.dtk 1.0 as D
+import QtQuick.Controls 2.15
+// 确保在最后引入
+import org.deepin.dtk 1.0
 
-D.ApplicationWindow {
+ApplicationWindow {
     id: root
     visible: true
-    width: 800
+    width: Math.max(contentList.contentWidth, 800)
     height: 600
     title: qsTr("DTK Exhibition")
 
-    // 测试D.Window的属性
-    D.Window.enabled: true
+    // 开启“圆角窗口&无系统标题栏”模式
+    Window.enabled: true
+
+    ButtonGroup {
+        id: activeColorSelector
+        onCheckedButtonChanged: {
+            root.palette.highlight = checkedButton.color
+        }
+    }
+
+    header: TitleBar {
+        enableInWindowBlendBlur: true
+        content: Item {
+            SearchEdit {
+                anchors.centerIn: parent
+                width: 300
+            }
+        }
+        menu: Menu {
+            Action {
+                text: "Light Theme"
+            }
+            Action {
+                text: "Dark Theme"
+            }
+            MenuItem {
+                contentItem: Item {
+                    Row {
+                        anchors.centerIn: parent
+                        Repeater {
+                            model: ["#d8316c", "#ff5d00", "#f8cb00", "#23c400", "#00a48a", "#0081ff", "#3c02d7", "#8c00d4"]
+                            delegate: ColorButton {
+                                color: modelData
+                                Component.onCompleted: {
+                                    activeColorSelector.addButton(this)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    Popup {
+        id: sourceViewerDialog
+        width: parent.width
+        height: parent.height
+        modal: true
+
+        enter: Transition {
+            NumberAnimation { property: "opacity"; from: 0.0; to: 1.0 }
+        }
+        exit: Transition {
+            NumberAnimation { property: "opacity"; from: 1.0; to: 0.0 }
+        }
+
+        Overlay.modal: Rectangle {
+            color: palette.window
+        }
+
+        ViewQMLSource {
+            id: sourceViewer
+            anchors.fill: parent
+        }
+    }
+
+    ListView {
+        id: contentList
+        anchors {
+            fill: parent
+            margins: 10
+        }
+
+        spacing: 10
+        model: examplesFiles
+        delegate: Column {
+            width: contentList.width
+
+            Loader {
+                source: "qrc:/examples/" + modelData
+                width: parent.width
+            }
+        }
+        section {
+            property: "modelData"
+            delegate: GroupTitle {
+                required property string section
+                text: section
+                width: parent.width
+                onViewSource: {
+                    sourceViewer.url = "qrc:/examples/" + section
+                    sourceViewerDialog.open()
+                }
+            }
+        }
+    }
 }

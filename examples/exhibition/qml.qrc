@@ -1,5 +1,11 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>ColorButton.qml</file>
+        <file>GroupTitle.qml</file>
+        <file>ViewQMLSource.qml</file>
+    </qresource>
+    <qresource prefix="/examples">
+        <file>Button.qml</file>
     </qresource>
 </RCC>
