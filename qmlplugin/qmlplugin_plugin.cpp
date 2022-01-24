@@ -173,6 +173,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
 
     dtkRegisterAnonymousType<DQUICK_NAMESPACE::DQuickDciIcon>(uri, implUri, 1);
     dtkRegisterAnonymousType<DQuickControlColor>(uri, implUri, 1);
+    dtkRegisterAnonymousType<DDciIconPalette>(uri, implUri, 1);
 
     dtkRegisterUncreatableType<DQuickWindow>(uri, implUri, 1, 0, "Window", "DQuickWindow Attached");
     dtkRegisterUncreatableType<DQuickControlColorSelector>(uri, implUri, 1, 0, "ColorSelector",
@@ -183,6 +184,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     qRegisterMetaType<DQUICK_NAMESPACE::DQuickDciIcon>();
     qRegisterMetaType<DQuickControlColor>("ControlColor");
     qRegisterMetaType<DColor::Type>();
+    qRegisterMetaType<DGUI_NAMESPACE::DDciIconPalette>();
 
     //DQMLGlobalObject 依赖 DWindowManagerHelper中枚举的定义，所以需要先注册
     dtkRegisterSingletonType<DWindowManagerHelper>(uri, implUri, 1, 0, "WindowManagerHelper",

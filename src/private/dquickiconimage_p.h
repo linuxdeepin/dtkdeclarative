@@ -38,10 +38,10 @@ class DQuickIconImagePrivate;
 class DQuickIconImage : public QQuickImage
 {
     Q_OBJECT
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
-    Q_PROPERTY(Mode mode READ mode WRITE setMode NOTIFY modeChanged)
-    Q_PROPERTY(State state READ state WRITE setState NOTIFY stateChanged)
-    Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged FINAL)
+    Q_PROPERTY(Mode mode READ mode WRITE setMode NOTIFY modeChanged FINAL)
+    Q_PROPERTY(State state READ state WRITE setState NOTIFY stateChanged FINAL)
+    Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged FINAL)
 
 public:
     enum class Mode {
