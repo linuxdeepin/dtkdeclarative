@@ -49,13 +49,15 @@ public:
         QColor shadowColor;
         bool inner;
         ShapeType shapeType = ShapeType::Rectangle;
+        qreal spread = 0.0;
 
         bool operator==(ShadowConfig &other) {
             return (qFuzzyCompare(cornerRadius, other.cornerRadius)
                    && qFuzzyCompare(shadowBlur, other.shadowBlur)
                    && shadowColor == other.shadowColor
                    && inner == other.inner
-                   && shapeType == other.shapeType);
+                   && shapeType == other.shapeType
+                   && qFuzzyCompare(spread, other.spread));
         }
         bool operator!=(ShadowConfig &other) {
             return !operator==(other);
@@ -87,8 +89,9 @@ public:
 
     QString buildShadowCacheKey(const ShadowConfig &config)
     {
-        return QString("%1.%2.%3.%4.%5").arg(config.cornerRadius)
-                .arg(config.shadowBlur).arg(config.shadowColor.name(QColor::HexArgb)).arg(config.inner).arg(config.shapeType);
+        return QString("%1.%2.%3.%4.%5.%6").arg(config.cornerRadius)
+                .arg(config.shadowBlur).arg(config.shadowColor.name(QColor::HexArgb))
+                .arg(config.inner).arg(config.shapeType).arg(config.spread);
     }
 
     QImage qt_image_convolute_filter(const QImage& src, const QVector<qreal>& weights, int radius = 0);
@@ -248,6 +251,8 @@ private:
         config.inner = isInner;
         config.shapeType = shapeIsCircular() ? ShadowTextureCache::Circular
                                              : ShadowTextureCache::Rectangle;
+        if (isInner)
+            config.spread = spread;
         return config;
     }
 

@@ -293,27 +293,16 @@ void DQuickShadowImagePrivate::calculateRects(const QSize &sourceSize,
     *targetRect = QRectF(0, 0, targetSize.width(), targetSize.height());
     *innerTargetRect = *targetRect;
 
-    qreal border = calculateCornerRadius() + shadowBlur;
-    if (isInner && (calculateCornerRadius() + shadowBlur) >= std::min({q->width() / 2.0, q->height() / 2.0}))
-        border = calculateCornerRadius();
+    qreal border = isInner ? ((shadowBlur + spread) >= calculateCornerRadius()
+                              ? calculateCornerRadius() : (shadowBlur + spread))
+                              : (calculateCornerRadius() + shadowBlur);
 
     qreal borderLeft = border;
     qreal borderRight = border;
     qreal borderTop = border;
     qreal borderBottom = border;
-    // TODO(xiaoyaobing) there is a problem with the shadow spread function. It is temporarily masked
-    qreal margin = 0.0;
-//    qreal margin =  std::min({qAbs(spread), shadowBlur});
 
-//    if (margin * spread < 0)
-//        margin = -margin;
-
-//    if (isInner)
-//        margin = -margin;
-
-//    if (q->shapeIsCircular())
-//        margin = 0;
-
+    qreal margin = isInner ? 0.0 : spread;
     if (borderLeft + borderRight > sourceSize.width() && borderLeft < sourceSize.width())
         borderRight = sourceSize.width() - borderLeft;
     if (borderTop + borderBottom > sourceSize.height() && borderTop < sourceSize.height())
@@ -444,7 +433,7 @@ ShadowTextureCache::TextureData ShadowTextureCache::getShadowTexture(const Shado
         if (config.inner) {
             qreal pixel, innerPixel;
             if (config.shapeType == ShapeType::Rectangle) {
-                pixel = config.cornerRadius * 2.0 + config.shadowBlur * 4.0;
+                pixel = config.cornerRadius * 2.0 + config.shadowBlur * 4.0 + 2 * config.spread;
                 innerPixel = pixel - config.shadowBlur * 2.0;
             } else {
                 pixel = config.cornerRadius * 2.0 + config.shadowBlur * 2.0;
@@ -458,7 +447,8 @@ ShadowTextureCache::TextureData ShadowTextureCache::getShadowTexture(const Shado
             shadowPainter.setRenderHint(QPainter::Antialiasing, true);
 
             shadowPainter.setCompositionMode(QPainter::CompositionMode_Clear);
-            QRectF rectangle(config.shadowBlur, config.shadowBlur, innerPixel, innerPixel);
+            QRectF rectangle(config.shadowBlur + config.spread, config.shadowBlur + config.spread,
+                             innerPixel - 2 * config.spread, innerPixel - 2 * config.spread);
             QPainterPath path;
             path.addRoundedRect(rectangle, config.cornerRadius, config.cornerRadius);
             QPen pen(Qt::transparent);
