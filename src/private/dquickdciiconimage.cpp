@@ -33,8 +33,7 @@ DGUI_USE_NAMESPACE
 
 static QString appIconThemeName()
 {
-    return DGuiApplicationHelper::instance()
-            ->applicationTheme()->iconThemeName();
+    return DGuiApplicationHelper::instance()->applicationTheme()->iconThemeName();
 }
 
 class DQuickDciIconImagePrivate : public DQuickIconImagePrivate
@@ -46,10 +45,9 @@ public:
     QUrlQuery getUrlQuery();
 
     QString name;
-    DQuickDciIconImage::Type type = DQuickDciIconImage::UnknowType;
     DQMLGlobalObject::ControlState mode = DQMLGlobalObject::NormalState;
     DQuickDciIconImage::Theme theme = DQuickDciIconImage::Light;
-    QColor color;
+    DDciIconPalette palette;
 };
 
 void DQuickDciIconImagePrivate::maybeUpdateUrl()
@@ -71,13 +69,13 @@ QUrlQuery DQuickDciIconImagePrivate::getUrlQuery()
 {
     QUrlQuery query;
     query.addQueryItem(QLatin1String("name"), name);
-    query.addQueryItem(QLatin1String("type"), QString::number(type));
     query.addQueryItem(QLatin1String("mode"), QString::number(mode));
     query.addQueryItem(QLatin1String("theme"), QString::number(theme));
-
-    if (color.isValid())
-        query.addQueryItem(QLatin1String("color"), color.name(QColor::HexArgb));
-
+    DDciIconPalette pal = palette;
+    if (!palette.foreground().isValid() && q_func()->color().isValid()) {
+        pal.setForeground(q_func()->color());
+    }
+    query.addQueryItem(QLatin1String("palette"), DDciIconPalette::convertToString(pal));
     query.addQueryItem(QLatin1String("devicePixelRatio"), QString::number(devicePixelRatio));
 
     return query;
@@ -97,13 +95,6 @@ QString DQuickDciIconImage::name() const
     Q_D(const DQuickDciIconImage);
 
     return d->name;
-}
-
-DQuickDciIconImage::Type DQuickDciIconImage::type() const
-{
-    Q_D(const DQuickDciIconImage);
-
-    return d->type;
 }
 
 DQMLGlobalObject::ControlState DQuickDciIconImage::mode() const
@@ -128,14 +119,6 @@ void DQuickDciIconImage::setName(const QString &name)
     Q_EMIT nameChanged();
 }
 
-void DQuickDciIconImage::setType(DQuickDciIconImage::Type type)
-{
-    Q_D(DQuickDciIconImage);
-    d->type = type;
-    d->maybeUpdateUrl();
-    Q_EMIT typeChanged();
-}
-
 void DQuickDciIconImage::setMode(DQMLGlobalObject::ControlState mode)
 {
     Q_D(DQuickDciIconImage);
@@ -152,19 +135,18 @@ void DQuickDciIconImage::setTheme(DQuickDciIconImage::Theme theme)
     Q_EMIT themeChanged();
 }
 
-QColor DQuickDciIconImage::color() const
-{
-    Q_D(const DQuickDciIconImage);
-
-    return d->color;
-}
-
-void DQuickDciIconImage::setColor(QColor color)
+void DQuickDciIconImage::setPalette(const DDciIconPalette &palette)
 {
     Q_D(DQuickDciIconImage);
-    d->color = color;
+    d->palette = palette;
     d->maybeUpdateUrl();
-    Q_EMIT colorChanged();
+    Q_EMIT paletteChanged();
+}
+
+DDciIconPalette DQuickDciIconImage::palette() const
+{
+    Q_D(const DQuickDciIconImage);
+    return d->palette;
 }
 
 bool DQuickDciIconImage::isNull(const QString &iconName) const
@@ -199,9 +181,9 @@ public:
     : DObjectPrivate(qq)
     {}
 
-    DQuickDciIconImage::Type type = DQuickDciIconImage::UnknowType;
     DQMLGlobalObject::ControlState mode = DQMLGlobalObject::NormalState;
     DQuickDciIconImage::Theme theme = DQuickDciIconImage::Light;
+    DDciIconPalette palette;
 };
 
 DQuickIconAttached::DQuickIconAttached(QQuickItem *parent)
@@ -212,22 +194,6 @@ DQuickIconAttached::DQuickIconAttached(QQuickItem *parent)
 
 DQuickIconAttached::~DQuickIconAttached()
 {
-}
-
-DQuickDciIconImage::Type DQuickIconAttached::type() const
-{
-    D_DC(DQuickIconAttached);
-    return d->type;
-}
-
-void DQuickIconAttached::setType(DQuickDciIconImage::Type type)
-{
-    D_D(DQuickIconAttached);
-    if (d->type == type)
-        return;
-
-    d->type = type;
-    Q_EMIT typeChanged();
 }
 
 DQMLGlobalObject::ControlState DQuickIconAttached::mode() const
@@ -260,6 +226,22 @@ void DQuickIconAttached::setTheme(DQuickDciIconImage::Theme theme)
 
     d->theme = theme;
     Q_EMIT themeChanged();
+}
+
+DDciIconPalette DQuickIconAttached::palette() const
+{
+    D_DC(DQuickIconAttached);
+    return d->palette;
+}
+
+void DQuickIconAttached::setPalette(const DDciIconPalette &palette)
+{
+    D_D(DQuickIconAttached);
+    if (d->palette == palette)
+        return;
+
+    d->palette = palette;
+    Q_EMIT paletteChanged();
 }
 
 DQUICK_END_NAMESPACE

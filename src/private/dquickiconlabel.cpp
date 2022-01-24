@@ -59,9 +59,8 @@ void DQuickIconLabelPrivate::createIconImage()
         beginClass(dciImage);
         dciImage->setObjectName(QStringLiteral("image"));
         dciImage->setName(icon.name());
-        dciImage->setType(icon.type());
         dciImage->setTheme(icon.theme());
-        dciImage->setColor(icon.color());
+        dciImage->setPalette(icon.palette());
         dciImage->setSourceSize(QSize(icon.width(), icon.height()));
         dciImage->setMode(icon.mode());
         image = dciImage;
@@ -71,8 +70,8 @@ void DQuickIconLabelPrivate::createIconImage()
         watchChanges(image);
         beginClass(image);
         image->setName(icon.name());
+        image->setColor(icon.palette().foreground());
         image->setSourceSize(QSize(icon.width(), icon.height()));
-        image->setColor(icon.color());
     }
 }
 
@@ -114,14 +113,13 @@ void DQuickIconLabelPrivate::syncImage()
 
     if (auto dciImage = qobject_cast<DQuickDciIconImage *>(image)) {
         dciImage->setName(icon.name());
-        dciImage->setColor(icon.color());
         dciImage->setMode(icon.mode());
         dciImage->setSourceSize(QSize(icon.width(), icon.height()));
-        dciImage->setType(icon.type());
+        dciImage->setPalette(icon.palette());
         dciImage->setTheme(icon.theme());
     } else {
         image->setName(icon.name());
-        image->setColor(icon.color());
+        image->setColor(icon.palette().foreground());
         image->setSourceSize(QSize(icon.width(), icon.height()));
     }
 

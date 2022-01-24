@@ -33,8 +33,7 @@ Control {
     hoverEnabled: true
     contentItem: D.DciIcon {
         property D.Palette textColor: D.Palette {
-            normal: Qt.rgba(0, 0, 0, 0.29)
-            normalDark: Qt.rgba(0, 0, 0, 0.29)
+            normal: control.palette.windowText
             pressed: control.palette.highlight
         }
 

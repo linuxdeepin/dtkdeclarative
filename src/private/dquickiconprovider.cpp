@@ -108,38 +108,6 @@ public:
         DQuickIconProvider iconProvider;
         return iconProvider.requestImage(id, size, requestedSize);
     }
-
-    int autoChooseDciType(DDciIcon &dciIcon, const QColor &foreground)
-    {
-        /*
-         * no type: {
-         *     has foreground:
-         *              text > action > icon
-         *     no foreground:
-         *              icon > action > text
-         * }
-         */
-        auto _chooser = [&](const QVector<int> &order) {
-            for (const int i : order) {
-                if (dciIcon.isNull(DDciIcon::Type(i)))
-                    continue;
-                return i;
-            }
-
-            return int(DQuickDciIconImage::UnknowType);
-        };
-
-        QVector<int> typeOrder = {
-            DDciIcon::TextType,
-            DDciIcon::ActionType,
-            DDciIcon::IconType
-        };
-        if (!foreground.isValid() || (foreground.alpha() <= 0)) {
-            std::reverse(typeOrder.begin(), typeOrder.end());
-        }
-
-        return _chooser(typeOrder);
-    }
 };
 
 DQuickDciIconProvider::DQuickDciIconProvider()
@@ -168,41 +136,26 @@ DQuickDciIconProvider::~DQuickDciIconProvider()
 QImage DQuickDciIconProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
 {
     QUrlQuery urlQuery(id);
-
     if (!urlQuery.hasQueryItem("name"))
         return QImage();
 
     QString name = urlQuery.queryItemValue("name");
-
     if (name.isEmpty())
         return QImage();
 
     QString iconPath;
     if (auto cached = DIconTheme::cached()) {
-         iconPath = cached->findDciIconFile(name, DGuiApplicationHelper::instance()
-                                            ->applicationTheme()->iconThemeName());
+        iconPath = cached->findDciIconFile(name, DGuiApplicationHelper::instance()->applicationTheme()->iconThemeName());
     } else {
-        iconPath = DIconTheme::findDciIconFile(name, DGuiApplicationHelper::instance()
-                                               ->applicationTheme()->iconThemeName());
+        iconPath = DIconTheme::findDciIconFile(name, DGuiApplicationHelper::instance()->applicationTheme()->iconThemeName());
     }
 
     if (Q_UNLIKELY(iconPath.isEmpty())) {
         // Fallback to normal qicon.
        return d->requestImageFromIconProvider(id, size, requestedSize);
     }
-
     DDciIcon dciIcon(iconPath);
-
-    QColor color(urlQuery.queryItemValue("color"));
-
-    int type = DQuickDciIconImage::UnknowType;
-    if (urlQuery.hasQueryItem("type"))
-        type = static_cast<DDciIcon::Type>(urlQuery.queryItemValue("type").toInt());
-
-    if (type == DQuickDciIconImage::UnknowType)
-        type = d->autoChooseDciType(dciIcon, color);
-
-    if (type == DQuickDciIconImage::UnknowType)  // No available type found, fallback to qicon.
+    if (dciIcon.isNull())
         return d->requestImageFromIconProvider(id, size, requestedSize);
 
     DDciIcon::Mode mode = DDciIcon::Normal;
@@ -243,23 +196,22 @@ QImage DQuickDciIconProvider::requestImage(const QString &id, QSize *size, const
             devicePixelRatio = 1.0;
     }
 
+    DDciIconPalette palette;
+    if (urlQuery.hasQueryItem("palette")) {
+        palette = DDciIconPalette::convertFromString(urlQuery.queryItemValue("palette"));
+    }
+
     // If the target mode icon didn't found, we should find the normal mode icon
     // and decorate to the target mode.
     int boundingSize = qMax(requestedSize.width(), requestedSize.height());
-    auto iconPtr = dciIcon.findIcon(boundingSize, DDciIcon::Theme(theme), mode, DDciIcon::Type(type));
-    if (!iconPtr)
-        iconPtr = dciIcon.findIcon(boundingSize, DDciIcon::Theme(theme), DDciIcon::Normal, DDciIcon::Type(type));
+    QPixmap pixmap = dciIcon.pixmap(devicePixelRatio, boundingSize, DDciIcon::Theme(theme), mode, palette);
+    if (pixmap.isNull())
+        pixmap = dciIcon.pixmap(devicePixelRatio, boundingSize, DDciIcon::Theme(theme), DDciIcon::Normal, palette);
 
-    if (!iconPtr)
+    if (pixmap.isNull())
         return QImage();
 
-    QBrush foreground;
-    if (color.isValid() && color.alpha() > 0)
-        foreground = color;
-
-    QImage image = DDciIcon::generatePixmap(iconPtr, mode, boundingSize,
-                                            devicePixelRatio, foreground).toImage();
-
+    QImage image = pixmap.toImage();
     if (size)
         *size = image.size();
     return image;

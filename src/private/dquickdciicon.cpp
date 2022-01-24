@@ -28,10 +28,9 @@ public:
     int width = -1;
     int height = -1;
     QString name;
-    QColor color = Qt::transparent;
-    DQuickDciIconImage::Type type = DQuickDciIconImage::UnknowType;
     DQMLGlobalObject::ControlState mode = DQMLGlobalObject::NormalState;
     DQuickDciIconImage::Theme theme = DQuickDciIconImage::Light;
+    DDciIconPalette palette;
 };
 
 /*!
@@ -98,8 +97,9 @@ bool DQuickDciIcon::operator==(const DQuickDciIcon &other) const
     return d == other.d || (d->name == other.name()
                             && d->width == other.width()
                             && d->height == other.height()
-                            && d->color == other.color()
-                            && d->type == other.type());
+                            && d->mode == other.mode()
+                            && d->theme == other.theme()
+                            && d->palette == other.palette());
 }
 
 bool DQuickDciIcon::operator!=(const DQuickDciIcon &other) const
@@ -183,48 +183,6 @@ void DQuickDciIcon::resetHeight()
 }
 
 /*!
-    \property Dtk::Quick::DQuickDciIcon::color
-
-    \brief Represents the color of the icon.
- */
-
-QColor DQuickDciIcon::color() const
-{
-    return d->color;
-}
-
-void DQuickDciIcon::setColor(const QColor &color)
-{
-    d->color = color;
-}
-
-void DQuickDciIcon::resetColor()
-{
-    d->color = Qt::transparent;
-}
-
-/*!
-    \property Dtk::Quick::DQuickDciIcon::type
-
-    \brief Represents the type of the icon.
- */
-
-DQuickDciIconImage::Type DQuickDciIcon::type() const
-{
-    return d->type;
-}
-
-void DQuickDciIcon::setType(DQuickDciIconImage::Type type)
-{
-    d->type = type;
-}
-
-void DQuickDciIcon::resetType()
-{
-    d->type = DQuickDciIconImage::TextType;
-}
-
-/*!
     \property Dtk::Quick::DQuickDciIcon::mode
 
     \brief Represents the mode of the icon.
@@ -264,6 +222,27 @@ void DQuickDciIcon::setTheme(DQuickDciIconImage::Theme theme)
 void DQuickDciIcon::resetTheme()
 {
     d->theme = DQuickDciIconImage::Light;
+}
+
+/*!
+    \property Dtk::Quick::DQuickDciIcon::palette
+
+    \brief Represents the palette of the icon.
+ */
+
+DDciIconPalette DQuickDciIcon::palette() const
+{
+    return d->palette;
+}
+
+void DQuickDciIcon::setPalette(const DDciIconPalette &palette)
+{
+    d->palette = palette;
+}
+
+void DQuickDciIcon::resetPalette()
+{
+    d->palette = DDciIconPalette();
 }
 
 DQUICK_END_NAMESPACE

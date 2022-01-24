@@ -247,7 +247,6 @@ void DQuickIconImage::setMode(Mode mode)
 QColor DQuickIconImage::color() const
 {
     D_DC(DQuickIconImage);
-
     return d->color;
 }
 
@@ -258,7 +257,6 @@ QColor DQuickIconImage::color() const
 void DQuickIconImage::setColor(const QColor &color)
 {
     D_D(DQuickIconImage);
-
     if (d->color == color)
         return;
 

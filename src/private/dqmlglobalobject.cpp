@@ -315,19 +315,32 @@ DQuickDciIcon DQMLGlobalObject::makeIcon(const QJSValue &qicon, const QJSValue &
     int height = qicon.property("height").toInt();
     const QColor &color = qicon.property("color").toVariant().value<QColor>();
 
-    int type = iconExtra.property("type").toInt();
     int mode = iconExtra.property("mode").toInt();
     int theme = iconExtra.property("theme").toInt();
+
+    DDciIconPalette palette;
+    palette.setForeground(color);
+    auto paletteProp = iconExtra.property("palette");
+    if (paletteProp.isObject()) {
+        QColor foreground = qvariant_cast<QColor>(paletteProp.property("foreground").toVariant());
+        if (!foreground.isValid())
+            foreground = color;
+        QColor background = qvariant_cast<QColor>(paletteProp.property("background").toVariant());
+        QColor highlight = qvariant_cast<QColor>(paletteProp.property("highlight").toVariant());
+        QColor highlightForeground = qvariant_cast<QColor>(paletteProp.property("highlightForeground").toVariant());
+        palette.setForeground(foreground);
+        palette.setBackground(background);
+        palette.setHighlightForeground(highlightForeground);
+        palette.setHighlight(highlight);
+    }
 
     DQuickDciIcon dciIcon;
     dciIcon.setName(name);
     dciIcon.setWidth(width);
     dciIcon.setHeight(height);
-    dciIcon.setColor(color);
-    dciIcon.setType(DQuickDciIconImage::Type(type));
     dciIcon.setMode(ControlState(mode));
     dciIcon.setTheme(DQuickDciIconImage::Theme(theme));
-
+    dciIcon.setPalette(palette);
     return dciIcon;
 }
 

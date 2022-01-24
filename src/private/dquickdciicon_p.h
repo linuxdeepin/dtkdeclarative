@@ -24,6 +24,7 @@
 #include <dtkdeclarative_global.h>
 
 #include <DObject>
+#include <DDciIconPalette>
 
 #include <QString>
 #include <QSharedData>
@@ -31,6 +32,7 @@
 #include "dquickdciiconimage_p.h"
 
 DQUICK_BEGIN_NAMESPACE
+DGUI_USE_NAMESPACE
 
 class DQuickDciIconPrivate;
 class DQuickDciIcon
@@ -39,10 +41,9 @@ class DQuickDciIcon
     Q_PROPERTY(QString name READ name WRITE setName RESET resetName FINAL)
     Q_PROPERTY(int width READ width WRITE setWidth RESET resetWidth FINAL)
     Q_PROPERTY(int height READ height WRITE setHeight RESET resetHeight FINAL)
-    Q_PROPERTY(QColor color READ color WRITE setColor RESET resetColor FINAL)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickDciIconImage::Type type READ type WRITE setType RESET resetType FINAL)
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DQMLGlobalObject::ControlState mode READ mode WRITE setMode RESET resetMode FINAL)
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickDciIconImage::Theme theme READ theme WRITE setTheme RESET resetTheme FINAL)
+    Q_PROPERTY(DTK_GUI_NAMESPACE::DDciIconPalette palette READ palette WRITE setPalette RESET resetTheme FINAL)
 
 public:
     DQuickDciIcon();
@@ -67,14 +68,6 @@ public:
     void setHeight(int height);
     void resetHeight();
 
-    QColor color() const;
-    void setColor(const QColor &color);
-    void resetColor();
-
-    DQuickDciIconImage::Type type() const;
-    void setType(DQuickDciIconImage::Type type);
-    void resetType();
-
     DQMLGlobalObject::ControlState mode() const;
     void setMode(DQMLGlobalObject::ControlState mode);
     void resetMode();
@@ -82,6 +75,10 @@ public:
     DQuickDciIconImage::Theme theme() const;
     void setTheme(DQuickDciIconImage::Theme theme);
     void resetTheme();
+
+    DDciIconPalette palette() const;
+    void setPalette(const DDciIconPalette &palette);
+    void resetPalette();
 
 private:
     QSharedDataPointer<DQuickDciIconPrivate> d;
