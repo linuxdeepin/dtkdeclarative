@@ -287,7 +287,6 @@ void DQuickShadowImagePrivate::calculateRects(const QSize &sourceSize,
                                               QRectF *subSourceRect)
 {
     Q_UNUSED(devicePixelRatio)
-    Q_Q(DQuickShadowImage);
 
     *innerSourceRect = QRectF(0, 0, 1, 1);
     *targetRect = QRectF(0, 0, targetSize.width(), targetSize.height());
@@ -337,10 +336,10 @@ QImage ShadowTextureCache::qt_image_convolute_filter(const QImage &src, const QV
     int w = src.width();
     int h = src.height();
 
-    const QRgb *sr = (const QRgb *)(src.constBits());
+    const QRgb *sr = reinterpret_cast<const QRgb *>(src.constBits());
     int srcStride = src.bytesPerLine() / 4;
 
-    QRgb *dr = (QRgb*)dst.bits();
+    QRgb *dr = reinterpret_cast<QRgb *>(dst.bits());
     int dstStride = dst.bytesPerLine() / 4;
 
     for (int y = 0; y < h; ++y) {
@@ -440,7 +439,7 @@ ShadowTextureCache::TextureData ShadowTextureCache::getShadowTexture(const Shado
                 innerPixel = pixel - config.shadowBlur * 2.0;
             }
 
-            QImage image(pixel, pixel, QImage::Format_ARGB32_Premultiplied);
+            QImage image(static_cast<int>(pixel), static_cast<int>(pixel), QImage::Format_ARGB32_Premultiplied);
             image.fill(config.shadowColor);
 
             QPainter shadowPainter(&image);
@@ -458,9 +457,9 @@ ShadowTextureCache::TextureData ShadowTextureCache::getShadowTexture(const Shado
             shadowPainter.end();
 
             qt_image_boxblur(image, qMax(1, qRound(config.shadowBlur / 3 - 3.0)), true);
-            shadowImage = new QImage(innerPixel, innerPixel, QImage::Format_ARGB32_Premultiplied);
-            *shadowImage = image.copy(config.shadowBlur, config.shadowBlur,
-                                     innerPixel, innerPixel);
+            shadowImage = new QImage(static_cast<int>(innerPixel), static_cast<int>(innerPixel), QImage::Format_ARGB32_Premultiplied);
+            *shadowImage = image.copy(static_cast<int>(config.shadowBlur), static_cast<int>(config.shadowBlur),
+                                     static_cast<int>(innerPixel), static_cast<int>(innerPixel));
 
             QPainter scissor(shadowImage);
             scissor.setRenderHint(QPainter::Antialiasing, true);
@@ -502,7 +501,7 @@ ShadowTextureCache::TextureData ShadowTextureCache::getShadowTexture(const Shado
                 innerPixel = pixel - config.shadowBlur * 2.0;
             }
 
-            shadowImage = new QImage(pixel, pixel, QImage::Format_ARGB32_Premultiplied);
+            shadowImage = new QImage(static_cast<int>(pixel), static_cast<int>(pixel), QImage::Format_ARGB32_Premultiplied);
             shadowImage->fill(Qt::transparent);
 
             QPainter shadowPainter(shadowImage);
