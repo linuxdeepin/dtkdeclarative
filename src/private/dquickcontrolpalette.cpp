@@ -539,10 +539,15 @@ void DQuickControlColorSelector::doResetFamily()
     doSetFamily(colorFamily);
 }
 
-void DQuickControlColorSelector::destroyPalette(DQuickControlPalette *palette)
+void DQuickControlColorSelector::tryDestroyPalette(DQuickControlPalette *palette)
 {
     if (!palette)
         return;
+
+    // This palette is used by the multi properties, we must ensure destroy it in last ref is freed.
+    if (!findPalettePropertyName(palette).isEmpty()) {
+        return;
+    }
 
     palette->disconnect(this);
     if (palette->parent() == this)
@@ -800,27 +805,6 @@ QColor DQuickControlColorSelector::getColorOf(const DQuickControlPalette *palett
         targetColor = QColor(255 - r, 255 - g, 255 - b, a);
     }
 
-    if (!targetColor.isValid())
-        return targetColor;
-
-    if (state->controlState == DQMLGlobalObject::InactiveState && state->owner->m_control
-            && DGuiApplicationHelper::testAttribute(DGuiApplicationHelper::Attribute::UseInactiveColorGroup)) {
-        const QPalette pa = qvariant_cast<QPalette>(state->owner->m_control->property("palette"));
-        const QColor windowColor = pa.color(QPalette::Window);
-        if (!windowColor.isValid())
-            return targetColor;
-
-        QColor inactive_mask_color = windowColor;
-
-        if (state->controlTheme == DGuiApplicationHelper::DarkType) {
-            inactive_mask_color.setAlphaF(0.6);
-        } else {
-            inactive_mask_color.setAlphaF(0.4);
-        }
-
-        targetColor = DGuiApplicationHelper::blendColor(targetColor, inactive_mask_color);
-    }
-
     return targetColor;
 }
 
@@ -869,11 +853,11 @@ void DQuickControlColorSelector::setPalette(const QByteArray &name, DQuickContro
     if (index < 0) {
         m_palettes << qMakePair(name, palette);
     } else {
-        auto pal = m_palettes[index].second;
-        if (pal == palette)
+        auto oldPal = m_palettes[index].second;
+        if (oldPal == palette)
             return;
-        destroyPalette(pal);
         m_palettes[index].second = palette;
+        tryDestroyPalette(oldPal);
     }
 
     if (palette) {
@@ -994,10 +978,12 @@ void DQuickControlColorSelector::recvPaletteColorChanged()
 {
     auto palette = qobject_cast<DQuickControlPalette*>(sender());
     Q_ASSERT(palette);
-    QByteArray palName = findPalettePropertyName(palette);
-    if (palName.isEmpty())
-        return;
-    updatePropertyFromName(palName, palette);
+    // Maybe the multiple properties is use a same palette.
+    for (const auto &i : qAsConst(m_palettes)) {
+        if (i.second != palette)
+            continue;
+        updatePropertyFromName(i.first, palette);
+    }
 }
 
 void DQuickControlColorSelector::updateControlWindow()
