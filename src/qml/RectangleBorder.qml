@@ -37,11 +37,11 @@ Item {
         color: "transparent"
     }
 
-    // TODO(Chen Bin): Replace it to Dtk DropShadow
-//    RectangularShadow {
-//        anchors.fill: _border
-//        color: borderColor
-//        glowRadius: 4
-//        fill: true
-//    }
+    BoxShadow {
+        anchors.fill: _border
+        shadowColor: borderColor
+        cornerRadius: _border.radius
+        shadowBlur: 4
+        hollow: true
+    }
 }

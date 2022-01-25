@@ -27,8 +27,6 @@ ToolTip {
     id: control
     property Item target
 
-    x: 0
-    y: target.height + DS.Style.control.spacing
     topPadding: DS.Style.alertToolTip.verticalPadding
     bottomPadding: DS.Style.alertToolTip.verticalPadding
     leftPadding: DS.Style.alertToolTip.horizontalPadding
@@ -64,6 +62,16 @@ ToolTip {
         verticalAlignment: Text.AlignVCenter
         text: control.text
         color: D.ColorSelector.warningColor
+    }
+
+    enter: Transition {
+        NumberAnimation { properties: "opacity"; from: 0.0; to: 1.0; duration: 200 }
+        NumberAnimation { properties: "y"; from: control.target.height; to: control.target.height + DS.Style.control.spacing; duration: 200 }
+    }
+
+    exit: Transition {
+        NumberAnimation { properties: "opacity"; from: 1.0; to: 0.0 }
+        NumberAnimation { properties: "y"; from: control.target.height + DS.Style.control.spacing ; to: control.target.height }
     }
 
     BoxShadow {
