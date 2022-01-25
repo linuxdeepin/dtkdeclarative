@@ -19,7 +19,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick.Controls 2.15
 import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
