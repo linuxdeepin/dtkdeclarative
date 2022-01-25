@@ -35,5 +35,76 @@ Column {
             text: "button disabled"
             enabled: false
         }
+
+        // break row
+        Item {width: parent.width; height: 1}
+
+        WarningButton {
+            text: "warning"
+        }
+        WarningButton {
+            ColorSelector.hovered: true
+            ColorSelector.pressed: false
+            ColorSelector.disabled: false
+            text: "warning hover"
+            enabled: false
+        }
+        WarningButton {
+            ColorSelector.pressed: true
+            text: "warning pressed"
+        }
+        WarningButton {
+            text: "warning disabled"
+            enabled: false
+        }
+
+        // break row
+        Item {width: parent.width; height: 1}
+
+        RecommandButton {
+            text: "recommand"
+        }
+        RecommandButton {
+            ColorSelector.hovered: true
+            ColorSelector.pressed: false
+            ColorSelector.disabled: false
+            text: "recommand hover"
+            enabled: false
+        }
+        RecommandButton {
+            ColorSelector.pressed: true
+            text: "recommand pressed"
+        }
+        RecommandButton {
+            text: "recommand disabled"
+            enabled: false
+        }
+
+        // break row
+        Item {width: parent.width; height: 1}
+
+        Button {
+            text: "button"
+            checkable: true
+            checked: true
+        }
+        Button {
+            ColorSelector.hovered: true
+            ColorSelector.pressed: false
+            ColorSelector.disabled: false
+            text: "button hover"
+            enabled: false
+            checked: true
+        }
+        Button {
+            ColorSelector.pressed: true
+            text: "button pressed"
+            checked: true
+        }
+        Button {
+            text: "button disabled"
+            enabled: false
+            checked: true
+        }
     }
 }
