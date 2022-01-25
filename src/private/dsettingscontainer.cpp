@@ -311,7 +311,6 @@ void SettingsOption::setValue(QVariant value)
     if (value == m_value)
         return;
 
-    qDebug() << "setValue" << m_key << value;
     m_value = value;
     if (m_config)
         m_config->setValue(m_key, value);

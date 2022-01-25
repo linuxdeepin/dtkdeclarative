@@ -22,7 +22,6 @@
 #include "private/dblitframebuffernode_p.h"
 #include <DObjectPrivate>
 
-#include <QDebug>
 #include <private/qquickwindow_p.h>
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
 #include <private/qsgtexture_p.h>

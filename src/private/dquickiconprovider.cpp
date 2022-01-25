@@ -18,7 +18,6 @@
 #include <QIcon>
 #include <QUrlQuery>
 #include <QPainter>
-#include <QDebug>
 #include <DIconTheme>
 #include <DDciIcon>
 #include <DGuiApplicationHelper>
