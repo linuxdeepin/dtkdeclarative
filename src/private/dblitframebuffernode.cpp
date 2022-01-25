@@ -80,7 +80,6 @@ public:
         if (fboIndex == globalFBOList.cend()) {
             fbo = new CachedFBO(size);
             globalFBOList.append(CacheData(size, fbo));
-            qDebug() << "create fbo for size:" << size << allowedGreaterSize;
         } else {
             fbo = (*fboIndex).second;
         }
