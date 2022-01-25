@@ -373,7 +373,7 @@ private:
     bool doSetFamily(DQuickControlPalette::ColorFamily newFamily);
     void doResetFamily();
 
-    void destroyPalette(DQuickControlPalette *palette);
+    void tryDestroyPalette(DQuickControlPalette *palette);
     static int palette_count(QQmlListProperty<DQuickControlPalette> *property);
     static DQuickControlPalette *palette_at(QQmlListProperty<DQuickControlPalette> *property, int index);
 

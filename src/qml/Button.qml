@@ -29,8 +29,8 @@ import org.deepin.dtk.style 1.0 as DS
 T.Button {
     id: control
 
-    property D.Palette color1: checked ? checkedColor1 : (highlighted ? DS.Style.highlightedButton1 : DS.Style.button1)
-    property D.Palette color2: highlighted ? DS.Style.highlightedButton2 : DS.Style.button2
+    property D.Palette color1: checked ? checkedColor : (highlighted ? DS.Style.highlightedButton1 : DS.Style.button1)
+    property D.Palette color2: checked ? checkedColor : (highlighted ? DS.Style.highlightedButton2 : DS.Style.button2)
     property D.Palette textColor: checked ? checkedTextColor : (highlighted ? DS.Style.highlightedButtonText : DS.Style.buttonText)
     property D.Palette borderColor: highlighted ? DS.Style.highlightedButtonBorder : DS.Style.buttonBorder
     property D.Palette dropShadowColor: highlighted ? DS.Style.highlightedButtonDropShadow : DS.Style.buttonDropShadow
@@ -38,7 +38,7 @@ T.Button {
     property D.Palette innerShadowColor2: highlighted ? DS.Style.highlightedButtonInnerShadow2 : DS.Style.buttonInnerShadow2
 
     D.Palette {
-        id: checkedColor1
+        id: checkedColor
         normal: control.palette.highlight
         hovered: D.DTK.adjustColor(control.palette.highlight, 0, 0, +10, 0, 0, 0, 0)
         pressed: D.DTK.adjustColor(control.palette.highlight, 0, 0, -10, 0, 0, 0, 0)
