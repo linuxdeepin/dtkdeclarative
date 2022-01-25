@@ -50,6 +50,8 @@ public:
         bool inner;
         ShapeType shapeType = ShapeType::Rectangle;
         qreal spread = 0.0;
+        qreal offsetX = 0.0;
+        qreal offsetY = 0.0;
 
         bool operator==(ShadowConfig &other) {
             return (qFuzzyCompare(cornerRadius, other.cornerRadius)
@@ -89,9 +91,10 @@ public:
 
     QString buildShadowCacheKey(const ShadowConfig &config)
     {
-        return QString("%1.%2.%3.%4.%5.%6").arg(config.cornerRadius)
+        return QString("%1.%2.%3.%4.%5.%6.%7.%8").arg(config.cornerRadius)
                 .arg(config.shadowBlur).arg(config.shadowColor.name(QColor::HexArgb))
-                .arg(config.inner).arg(config.shapeType).arg(config.spread);
+                .arg(config.inner).arg(config.shapeType).arg(config.spread)
+                .arg(config.offsetX).arg(config.offsetY);
     }
 
     QImage qt_image_convolute_filter(const QImage& src, const QVector<qreal>& weights, int radius = 0);
@@ -251,8 +254,11 @@ private:
         config.inner = isInner;
         config.shapeType = shapeIsCircular() ? ShadowTextureCache::Circular
                                              : ShadowTextureCache::Rectangle;
-        if (isInner)
+        if (isInner) {
             config.spread = spread;
+            config.offsetX = offsetX;
+            config.offsetY = offsetY;
+        }
         return config;
     }
 

@@ -458,7 +458,8 @@ ShadowTextureCache::TextureData ShadowTextureCache::getShadowTexture(const Shado
 
             qt_image_boxblur(image, qMax(1, qRound(config.shadowBlur / 3 - 3.0)), true);
             shadowImage = new QImage(static_cast<int>(innerPixel), static_cast<int>(innerPixel), QImage::Format_ARGB32_Premultiplied);
-            *shadowImage = image.copy(static_cast<int>(config.shadowBlur), static_cast<int>(config.shadowBlur),
+            *shadowImage = image.copy(static_cast<int>(config.shadowBlur + config.offsetX),
+                                      static_cast<int>(config.shadowBlur + config.offsetY),
                                      static_cast<int>(innerPixel), static_cast<int>(innerPixel));
 
             QPainter scissor(shadowImage);
