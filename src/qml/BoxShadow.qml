@@ -36,8 +36,8 @@ Item {
     D.ShadowImage {
         id: shadow
 
-        x: parent.shadowOffsetX + (isInner ? 0 : -parent.shadowBlur)
-        y: parent.shadowOffsetY + (isInner ? 0 : -parent.shadowBlur)
+        x: isInner ? 0 : -parent.shadowBlur + parent.shadowOffsetX
+        y: isInner ? 0 : -parent.shadowBlur + parent.shadowOffsetY
         width: isInner ? parent.width : parent.width ? (parent.width + parent.shadowBlur * 2)
                                                      : parent.width
         height: isInner ? parent.height : parent.height ? (parent.height + parent.shadowBlur * 2)
