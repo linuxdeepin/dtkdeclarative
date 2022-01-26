@@ -35,6 +35,16 @@ Control {
         implicitWidth: DS.Style.floatingPanel.width
         implicitHeight: DS.Style.floatingPanel.height
         radius: control.radius
+        offscreen: true
+
+        D.ItemViewport {
+            anchors.fill: parent
+            fixed: true
+            sourceItem: parent
+            radius: control.radius
+            hideSource: false
+        }
+
         BoxShadow {
             anchors.fill: backgroundRect
             shadowOffsetX: 0
