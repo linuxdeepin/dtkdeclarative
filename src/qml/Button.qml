@@ -122,7 +122,7 @@ T.Button {
             inner: true
             anchors.fill: backgroundRect
             shadowBlur: 2
-            shadowOffsetY: innerShadow2.shadowColor !== "transparent" ? -3 : -1
+            shadowOffsetY: innerShadow2.shadowColor.a !== 0 ? -3 : -1
             spread: 1
             shadowColor: control.D.ColorSelector.innerShadowColor1
             cornerRadius: backgroundRect.radius
