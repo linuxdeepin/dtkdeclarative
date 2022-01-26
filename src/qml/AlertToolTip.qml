@@ -27,6 +27,7 @@ ToolTip {
     id: control
     property Item target
 
+    x: 0
     topPadding: DS.Style.alertToolTip.verticalPadding
     bottomPadding: DS.Style.alertToolTip.verticalPadding
     leftPadding: DS.Style.alertToolTip.horizontalPadding
