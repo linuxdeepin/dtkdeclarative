@@ -20,7 +20,7 @@
  */
 
 import QtQuick 2.11
-import QtQuick.Controls 2.15
+import QtQuick.Controls 2.4
 // 确保在最后引入
 import org.deepin.dtk 1.0
 
@@ -118,7 +118,6 @@ ApplicationWindow {
         section {
             property: "modelData"
             delegate: GroupTitle {
-                required property string section
                 text: section
                 width: parent.width
                 onViewSource: {
