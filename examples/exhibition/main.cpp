@@ -54,7 +54,7 @@ int main(int argc, char **argv)
     QGuiApplication app(argc, argv);
     app.setApplicationName("dtk-exhibition");
 
-#if QT_NO_DEBUG
+#ifdef QT_NO_DEBUG
     QQuickStyle::setStyle("Chameleon");
 #else
     QQuickStyle::setStyle(CHAMELEON_PATH"/Chameleon");
@@ -71,8 +71,6 @@ int main(int argc, char **argv)
         return -1;
 
     return app.exec();
-
-    return 0;
 }
 
 #include "main.moc"
