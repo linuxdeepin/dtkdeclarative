@@ -49,7 +49,7 @@ LineEdit {
         palette {
             button: D.DTK.themeType === D.ApplicationHelper.LightType ?
                                         control.palette.highlight :
-                                        D.DTK.adjustColor(control.palette.highlight, 0, 0, +10, 0, 0, 0, 0)
+                                        D.DTK.makeColor(control.palette.highlight).lightness(+10).color()
             text: control.palette.highlightedText
         }
         onClicked: {

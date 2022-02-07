@@ -6,8 +6,9 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dblurimagenode_p.h \
     $$PWD/dhandlecontextmenuwindow_p.h \
     $$PWD/dmaskeffectnode_p.h \
-    $$PWD/dqmlglobalobject_p.h \
     $$PWD/dplatformthemeproxy_p.h \
+    $$PWD/dqmlglobalobject_p.h \
+    $$PWD/dqmlglobalobject_p_p.h \
     $$PWD/dquickglow_p.h \
     $$PWD/dquickglow_p_p.h \
     $$PWD/dquickiconprovider_p.h \
@@ -41,6 +42,7 @@ SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dblurimagenode.cpp \
     $$PWD/dhandlecontextmenuwindow.cpp \
     $$PWD/dmaskeffectnode.cpp \
+    $$PWD/dqmlglobalobject.cpp \
     $$PWD/dquickglow.cpp \
     $$PWD/dquickiconlabel.cpp \
     $$PWD/dquickbusyindicator.cpp \

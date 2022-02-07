@@ -22,7 +22,7 @@
 #define DQUICKCONTROLPALETTE_P_H
 
 #include <dtkdeclarative_global.h>
-#include <DQMLGlobalObject>
+#include "dqmlglobalobject_p.h"
 
 #include <QColor>
 #include <QObject>
@@ -41,12 +41,12 @@ class DQuickControlColor
 {
     friend class DQuickControlPalette;
     Q_GADGET
-    Q_PROPERTY(QColor common READ common WRITE setCommon FINAL)
-    Q_PROPERTY(QColor crystal READ crystal WRITE setCrystal FINAL)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DColor common READ common WRITE setCommon FINAL)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DColor crystal READ crystal WRITE setCrystal FINAL)
 
 public:
     DQuickControlColor();
-    DQuickControlColor(const QColor &color);
+    DQuickControlColor(const DColor &color);
     DQuickControlColor(DQuickControlColor &&other)
         {data = std::move(other.data); other.data = nullptr;
          changed = std::move(other.changed);
@@ -54,7 +54,7 @@ public:
     DQuickControlColor(const DQuickControlColor &other) {
         isSingleColor = other.isSingleColor;
         if (other.isSingleColor) {
-            data = new QColor(*other.data);
+            data = new DColor(*other.data);
         } else {
             data = other.data;
             changed = other.changed;
@@ -74,7 +74,7 @@ public:
                 if (data) {
                     setCommon(*other.data);
                 } else {
-                    data = new QColor(*other.data);
+                    data = new DColor(*other.data);
                 }
             } else {
                 data = other.data;
@@ -96,15 +96,15 @@ public:
     }
     ~DQuickControlColor();
 
-    const QColor &common() const;
-    void setCommon(const QColor &newCommon);
-    const QColor &crystal() const;
-    void setCrystal(const QColor &newCrystal);
+    const DColor &common() const;
+    void setCommon(const DColor &newCommon);
+    const DColor &crystal() const;
+    void setCrystal(const DColor &newCrystal);
 
 private:
-    DQuickControlColor(QColor *colors);
+    DQuickControlColor(DColor *colors);
 
-    QColor *data = nullptr;
+    DColor *data = nullptr;
     bool changed = false;
     bool isSingleColor = false;
 };
@@ -154,7 +154,7 @@ public:
     bool enabled() const;
     void setEnabled(bool newEnabled);
 
-    inline QColor *colorPointer(int colorPropertyIndex) {
+    inline DColor *colorPointer(int colorPropertyIndex) {
         return colors.data() + colorPropertyIndex * ColorFamilyCount;
     }
     inline bool setTo(const DQuickControlColor &color, int colorPropertyIndex) {
@@ -258,7 +258,7 @@ Q_SIGNALS:
     void changed();
 
 public:
-    QVector<QColor> colors;
+    QVector<DColor> colors;
 
 private:
     bool m_enabled = true;
@@ -346,8 +346,8 @@ private:
     void ensureMetaObject();
     void setupMetaPropertyPalettes(QQuickItem *object);
     struct PaletteState;
-    static QColor getColorOf(const DQuickControlPalette *palette, const PaletteState *state);
-    QColor getColorOf(const QByteArray &propertyName, const PaletteState *state);
+    QColor getColorOf(const DQuickControlPalette *palette, const PaletteState *state) const;
+    QColor getColorOf(const QByteArray &propertyName, const PaletteState *state) const;
 
     int indexOfPalette(const QByteArray &name) const;
     void setPalette(const QByteArray &name, DQuickControlPalette *palette);
@@ -368,7 +368,7 @@ private:
     Q_SLOT void resolveMetaPropertyChanged();
     Q_SLOT void notifyColorPropertyChanged();
 
-    void setControlTheme(DGuiApplicationHelper::ColorType theme);
+    bool setControlTheme(DGuiApplicationHelper::ColorType theme);
     bool setControlState(DQMLGlobalObject::ControlState state);
     bool doSetFamily(DQuickControlPalette::ColorFamily newFamily);
     void doResetFamily();

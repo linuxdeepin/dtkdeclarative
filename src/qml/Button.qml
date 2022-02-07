@@ -29,33 +29,21 @@ import org.deepin.dtk.style 1.0 as DS
 T.Button {
     id: control
 
-    property D.Palette color1: checked ? checkedColor : (highlighted ? DS.Style.highlightedButton1 : DS.Style.button1)
-    property D.Palette color2: checked ? checkedColor : (highlighted ? DS.Style.highlightedButton2 : DS.Style.button2)
-    property D.Palette textColor: checked ? checkedTextColor : (highlighted ? DS.Style.highlightedButtonText : DS.Style.buttonText)
-    property D.Palette borderColor: highlighted ? DS.Style.highlightedButtonBorder : DS.Style.buttonBorder
-    property D.Palette dropShadowColor: highlighted ? DS.Style.highlightedButtonDropShadow : DS.Style.buttonDropShadow
-    property D.Palette innerShadowColor1: highlighted ? DS.Style.highlightedButtonInnerShadow1 : DS.Style.buttonInnerShadow1
-    property D.Palette innerShadowColor2: highlighted ? DS.Style.highlightedButtonInnerShadow2 : DS.Style.buttonInnerShadow2
-
-    D.Palette {
-        id: checkedColor
-        normal: control.palette.highlight
-        hovered: D.DTK.adjustColor(control.palette.highlight, 0, 0, +10, 0, 0, 0, 0)
-        pressed: D.DTK.adjustColor(control.palette.highlight, 0, 0, -10, 0, 0, 0, 0)
-    }
-
-    D.Palette {
-        id: checkedTextColor
-        normal: control.palette.highlightedText
-        hovered: D.DTK.adjustColor(control.palette.highlightedText, 0, 0, +10, 0, 0, 0, 0)
-        pressed: D.DTK.adjustColor(control.palette.highlightedText, 0, 0, -20, 0, 0, 0, 0)
-    }
+    property D.Palette color1: checked ? DS.Style.checkedButton : (highlighted ? DS.Style.highlightedButton1 : DS.Style.button1)
+    property D.Palette color2: checked ? DS.Style.checkedButton : (highlighted ? DS.Style.highlightedButton2 : DS.Style.button2)
+    property D.Palette textColor: checked ? DS.Style.checkedButtonText : (highlighted ? DS.Style.highlightedButtonText : DS.Style.buttonText)
+    property D.Palette borderColor: checked ? null : (highlighted ? DS.Style.highlightedButtonBorder : DS.Style.buttonBorder)
+    property D.Palette dropShadowColor: checked ? DS.Style.checkedButtonDropShadow : (highlighted ? DS.Style.highlightedButtonDropShadow : DS.Style.buttonDropShadow)
+    property D.Palette innerShadowColor1: checked ? DS.Style.checkedButtonInnerShadow : (highlighted ? DS.Style.highlightedButtonInnerShadow1 : DS.Style.buttonInnerShadow1)
+    property D.Palette innerShadowColor2: checked ? null : (highlighted ? DS.Style.highlightedButtonInnerShadow2 : DS.Style.buttonInnerShadow2)
 
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
 
-    topPadding: DS.Style.control.vPadding
-    bottomPadding: DS.Style.control.vPadding
+    topPadding: DS.Style.button.vPadding
+    bottomPadding: DS.Style.button.vPadding
+    leftPadding: DS.Style.button.hPadding
+    rightPadding: DS.Style.button.hPadding
     spacing: DS.Style.control.spacing
     opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
     D.DciIcon.mode: D.ColorSelector.controlState
@@ -122,11 +110,11 @@ T.Button {
             inner: true
             anchors.fill: backgroundRect
             shadowBlur: 2
-            shadowOffsetY: innerShadow2.shadowColor.a !== 0 ? -3 : -1
+            shadowOffsetY: innerShadow2.visible ? -3 : -1
             spread: 1
             shadowColor: control.D.ColorSelector.innerShadowColor1
             cornerRadius: backgroundRect.radius
-            visible: control.D.ColorSelector.controlState !== D.DTK.PressedState
+            visible: innerShadowColor1 && control.D.ColorSelector.controlState !== D.DTK.PressedState
                      && control.D.ColorSelector.family === D.Palette.CommonColor
         }
 
@@ -138,13 +126,14 @@ T.Button {
             shadowOffsetY: 2
             shadowColor: control.D.ColorSelector.innerShadowColor2
             cornerRadius: backgroundRect.radius
-            visible: control.D.ColorSelector.family === D.Palette.CommonColor
+            visible: innerShadowColor2 && shadowColor.a !== 0 && control.D.ColorSelector.family === D.Palette.CommonColor
         }
 
         Rectangle {
             anchors.fill: backgroundRect
             color: "transparent"
             radius: backgroundRect.radius
+            visible: borderColor
             border {
                 width: DS.Style.control.borderWidth
                 color: control.D.ColorSelector.borderColor

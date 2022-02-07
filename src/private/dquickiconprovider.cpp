@@ -26,7 +26,7 @@
 #include <private/dquickdciiconimage_p.h>
 
 #include "dquickiconprovider_p.h"
-#include "dqmlglobalobject.h"
+#include "dqmlglobalobject_p.h"
 
 DQUICK_BEGIN_NAMESPACE
 DGUI_USE_NAMESPACE

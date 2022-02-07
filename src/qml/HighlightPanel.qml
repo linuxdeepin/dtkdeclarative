@@ -26,22 +26,9 @@ import org.deepin.dtk.style 1.0 as DS
 Item {
     id: panel
 
-    property var __control: D.ColorSelector.control
-    property D.Palette backgroundColor:  D.Palette {
-        normal: "transparent"
-        hovered: __control.palette.highlight
-        pressed: __control.palette.highlight
-    }
-    property D.Palette outerShadowColor:  D.Palette {
-        normal: "transparent"
-        hovered: D.DTK.adjustColor(__control.palette.highlight, 0, 0, 20, 0, 0, 0, 0)
-        pressed: D.DTK.adjustColor(__control.palette.highlight, 0, 0, 20, 0, 0, 0, 0)
-    }
-    property D.Palette innerShadowColor:  D.Palette {
-        normal: "transparent"
-        hovered: D.DTK.adjustColor(__control.palette.highlight, 0, 0, -20, 0, 0, 0, 0)
-        pressed: D.DTK.adjustColor(__control.palette.highlight, 0, 0, -20, 0, 0, 0, 0)
-    }
+    property D.Palette backgroundColor: DS.Style.highlightPanelBackground
+    property D.Palette outerShadowColor: DS.Style.highlightPanelDropShadow
+    property D.Palette innerShadowColor: DS.Style.highlightPanelInnerShadow
 
     implicitWidth: DS.Style.highlightPanel.width
     implicitHeight: DS.Style.highlightPanel.height
