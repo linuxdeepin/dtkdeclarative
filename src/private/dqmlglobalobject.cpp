@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 ~ 2021 deepin Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2022 deepin Technology Co., Ltd.
  *
  * Author:     JiDe Zhang <zhangjide@deepin.org>
  *
@@ -19,11 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "dqmlglobalobject.h"
-#include "private/dqmlglobalobject_p.h"
-#include "private/dquickcontrolpalette_p.h"
-#include "private/dquickdciicon_p.h"
-#include "private/dmessagemanager_p.h"
+#include "dqmlglobalobject_p.h"
+#include "dqmlglobalobject_p_p.h"
+#include "dquickcontrolpalette_p.h"
+#include "dquickdciicon_p.h"
+#include "dmessagemanager_p.h"
 
 #include <DObjectPrivate>
 #include <DObject>
@@ -40,6 +40,73 @@
 DGUI_USE_NAMESPACE
 
 DQUICK_BEGIN_NAMESPACE
+
+// ###(zccrs): The offset must greater than QColor::Spec
+#define VARIANT_COLOR_TYPE_OFFSET 100
+DColor::DColor(Type type)
+{
+    data.color.type = type + VARIANT_COLOR_TYPE_OFFSET;
+}
+
+bool DColor::isValid() const noexcept
+{
+    return isTypedColor() ? data.color.type > VARIANT_COLOR_TYPE_OFFSET : data.color.value.isValid();
+}
+
+bool DColor::isTypedColor() const noexcept
+{
+    return data.color.type >= VARIANT_COLOR_TYPE_OFFSET;
+}
+
+static inline QPalette::ColorRole toPaletteColorRole(quint8 type)
+{
+    auto color = static_cast<DColor::Type>(type - VARIANT_COLOR_TYPE_OFFSET);
+    if (color == DColor::Highlight)
+        return QPalette::Highlight;
+    if (color == DColor::HighlightedText)
+        return QPalette::HighlightedText;
+    return QPalette::NoRole;
+}
+
+bool DColor::operator==(const DColor &c) const noexcept
+{
+    if (data.color.type != c.data.color.type)
+        return false;
+    if (!isTypedColor() && data.color.value != c.data.color.value)
+        return false;
+    return data.lightness == c.data.lightness && data.opacity == c.data.opacity;
+}
+
+bool DColor::operator!=(const DColor &c) const noexcept
+{
+    return !operator ==(c);
+}
+
+QColor DColor::toColor(const QPalette &palette) const
+{
+    QColor color = isTypedColor() ? palette.color(toPaletteColorRole(data.color.type)) : data.color.value;
+    return DGuiApplicationHelper::adjustColor(color, 0, 0, data.lightness, 0, 0, 0, data.opacity);
+}
+
+QColor DColor::color() const
+{
+    Q_ASSERT(!isTypedColor());
+    return DGuiApplicationHelper::adjustColor(data.color.value, 0, 0, data.lightness, 0, 0, 0, data.opacity);
+}
+
+DColor DColor::lightness(qint8 floatValue) const
+{
+    DColor newColor = *this;
+    newColor.data.lightness += floatValue;
+    return newColor;
+}
+
+DColor DColor::opacity(qint8 floatValue) const
+{
+    DColor newColor = *this;
+    newColor.data.opacity += floatValue;
+    return newColor;
+}
 
 DQMLGlobalObjectPrivate::DQMLGlobalObjectPrivate(DQMLGlobalObject *qq)
     : DTK_CORE_NAMESPACE::DObjectPrivate(qq)
@@ -60,12 +127,13 @@ void DQMLGlobalObjectPrivate::ensurePalette()
 void DQMLGlobalObjectPrivate::updatePalettes()
 {
     palette = DGuiApplicationHelper::instance()->applicationPalette();
-    inactivePalette = palette;
 
     for (int i = 0; i < QPalette::NColorRoles; ++i) {
         QPalette::ColorRole role = static_cast<QPalette::ColorRole>(i);
-        const QBrush &brush = palette.brush(QPalette::Inactive, role);
-        inactivePalette.setBrush(QPalette::Active, role, brush);
+        inactivePalette.setBrush(QPalette::All, role, palette.brush(QPalette::Inactive, role));
+        // The QML control will set the opacity property to 0.4 on the disabled state
+        // The palette don't need set color for the QPalette::Disabled group.
+        palette.setBrush(QPalette::All, role, palette.brush(QPalette::Active, role));
     }
 }
 
@@ -171,14 +239,19 @@ QPalette DQMLGlobalObject::inactivePalette() const
     return d->inactivePalette;
 }
 
-QColor DQMLGlobalObject::adjustColor(const QColor &base, qint8 hueFloat, qint8 saturationFloat, qint8 lightnessFloat, qint8 redFloat, qint8 greenFloat, qint8 blueFloat, qint8 alphaFloat)
-{
-    return DGuiApplicationHelper::adjustColor(base, hueFloat, saturationFloat, lightnessFloat, redFloat, greenFloat, blueFloat, alphaFloat);
-}
-
 QColor DQMLGlobalObject::blendColor(const QColor &substrate, const QColor &superstratum)
 {
     return DGuiApplicationHelper::blendColor(substrate, superstratum);
+}
+
+DColor DQMLGlobalObject::makeColor(DColor::Type type)
+{
+    return DColor(type);
+}
+
+DColor DQMLGlobalObject::makeColor(const QColor &color)
+{
+    return DColor(color);
 }
 
 DGuiApplicationHelper::ColorType DQMLGlobalObject::toColorType(const QColor &color)
@@ -321,4 +394,4 @@ void DQMLGlobalObject::closeMessage(QQuickWindow *target, const QString &msgId)
 
 DQUICK_END_NAMESPACE
 
-#include "moc_dqmlglobalobject.cpp"
+#include "moc_dqmlglobalobject_p.cpp"

@@ -13,14 +13,19 @@ Column {
 
     spacing: 10
 
+    readonly property int buttonMinWidth: 204
+
     Flow {
         spacing: 10
         width: parent.width
 
+
         Button {
+            width: Math.max(implicitWidth, buttonMinWidth)
             text: "button"
         }
         Button {
+            width: Math.max(implicitWidth, buttonMinWidth)
             ColorSelector.hovered: true
             ColorSelector.pressed: false
             ColorSelector.disabled: false
@@ -28,10 +33,12 @@ Column {
             enabled: false
         }
         Button {
+            width: Math.max(implicitWidth, buttonMinWidth)
             ColorSelector.pressed: true
             text: "button pressed"
         }
         Button {
+            width: Math.max(implicitWidth, buttonMinWidth)
             text: "button disabled"
             enabled: false
         }
@@ -40,9 +47,11 @@ Column {
         Item {width: parent.width; height: 1}
 
         WarningButton {
+            width: Math.max(implicitWidth, buttonMinWidth)
             text: "warning"
         }
         WarningButton {
+            width: Math.max(implicitWidth, buttonMinWidth)
             ColorSelector.hovered: true
             ColorSelector.pressed: false
             ColorSelector.disabled: false
@@ -50,10 +59,12 @@ Column {
             enabled: false
         }
         WarningButton {
+            width: Math.max(implicitWidth, buttonMinWidth)
             ColorSelector.pressed: true
             text: "warning pressed"
         }
         WarningButton {
+            width: Math.max(implicitWidth, buttonMinWidth)
             text: "warning disabled"
             enabled: false
         }
@@ -62,9 +73,11 @@ Column {
         Item {width: parent.width; height: 1}
 
         RecommandButton {
+            width: Math.max(implicitWidth, buttonMinWidth)
             text: "recommand"
         }
         RecommandButton {
+            width: Math.max(implicitWidth, buttonMinWidth)
             ColorSelector.hovered: true
             ColorSelector.pressed: false
             ColorSelector.disabled: false
@@ -72,10 +85,12 @@ Column {
             enabled: false
         }
         RecommandButton {
+            width: Math.max(implicitWidth, buttonMinWidth)
             ColorSelector.pressed: true
             text: "recommand pressed"
         }
         RecommandButton {
+            width: Math.max(implicitWidth, buttonMinWidth)
             text: "recommand disabled"
             enabled: false
         }
@@ -84,25 +99,29 @@ Column {
         Item {width: parent.width; height: 1}
 
         Button {
-            text: "button"
+            width: Math.max(implicitWidth, buttonMinWidth)
+            text: "checked"
             checkable: true
             checked: true
         }
         Button {
+            width: Math.max(implicitWidth, buttonMinWidth)
             ColorSelector.hovered: true
             ColorSelector.pressed: false
             ColorSelector.disabled: false
-            text: "button hover"
+            text: "checked hover"
             enabled: false
             checked: true
         }
         Button {
+            width: Math.max(implicitWidth, buttonMinWidth)
             ColorSelector.pressed: true
-            text: "button pressed"
+            text: "checked pressed"
             checked: true
         }
         Button {
-            text: "button disabled"
+            width: Math.max(implicitWidth, buttonMinWidth)
+            text: "checked disabled"
             enabled: false
             checked: true
         }

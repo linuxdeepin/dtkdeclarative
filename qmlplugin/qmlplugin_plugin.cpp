@@ -21,7 +21,6 @@
 
 #include "qmlplugin_plugin.h"
 #include "dquickwindow.h"
-#include "dqmlglobalobject.h"
 #include "dquickitemviewport.h"
 #include "dquickblitframebuffer.h"
 #include "private/dhandlecontextmenuwindow_p.h"
@@ -32,6 +31,7 @@
 #include "private/dquickrectangle_p.h"
 #include "private/dquickbehindwindowblur_p.h"
 
+#include "private/dqmlglobalobject_p.h"
 #include "private/dconfigwrapper_p.h"
 #include "private/dquickiconimage_p.h"
 #include "private/dquickdciiconimage_p.h"
@@ -109,8 +109,25 @@ static QVariant quickColorTypeConverter(const QString &data)
     return QVariant::fromValue(DQuickControlColor(QColor(data)));
 }
 
+static QVariant dcolorTypeConverter(const QString &data)
+{
+    return QVariant::fromValue(DColor(QColor(data)));
+}
+
 template <typename ReturnType>
 ReturnType convertColorToQuickColorType(const QColor &value)
+{
+    return DQuickControlColor(value);
+}
+
+template <typename ReturnType>
+ReturnType convertColorToDColorType(const QColor &value)
+{
+    return DColor(value);
+}
+
+template <typename ReturnType>
+ReturnType convertDColorToQuickColorType(const DColor &value)
 {
     return DQuickControlColor(value);
 }
@@ -160,9 +177,12 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterUncreatableType<DQuickWindow>(uri, implUri, 1, 0, "Window", "DQuickWindow Attached");
     dtkRegisterUncreatableType<DQuickControlColorSelector>(uri, implUri, 1, 0, "ColorSelector",
                                                            QStringLiteral("ColorSelector is only available as an attached property."));
+    dtkRegisterUncreatableType<DColor>(uri, implUri, 1, 0, "Color",
+                                       QStringLiteral("Color is only available as enums."));
 
     qRegisterMetaType<DQUICK_NAMESPACE::DQuickDciIcon>();
     qRegisterMetaType<DQuickControlColor>("ControlColor");
+    qRegisterMetaType<DColor::Type>();
 
     //DQMLGlobalObject 依赖 DWindowManagerHelper中枚举的定义，所以需要先注册
     dtkRegisterSingletonType<DWindowManagerHelper>(uri, implUri, 1, 0, "WindowManagerHelper",
@@ -251,7 +271,10 @@ void QmlpluginPlugin::registerTypes(const char *uri)
 
     // for custom type
     QMetaType::registerConverter<QColor, DQuickControlColor>(convertColorToQuickColorType<DQuickControlColor>);
+    QMetaType::registerConverter<QColor, DColor>(convertColorToDColorType<DColor>);
+    QMetaType::registerConverter<DColor, DQuickControlColor>(convertDColorToQuickColorType<DQuickControlColor>);
     QQmlMetaType::registerCustomStringConverter(qMetaTypeId<DQuickControlColor>(), quickColorTypeConverter);
+    QQmlMetaType::registerCustomStringConverter(qMetaTypeId<DColor>(), dcolorTypeConverter);
 }
 
 void QmlpluginPlugin::initializeEngine(QQmlEngine *engine, const char *uri)

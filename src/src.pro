@@ -26,7 +26,6 @@ includes.files += \
     $$PWD/DQuickWindow \
     $$PWD/DAppLoader \
     $$PWD/DQmlAppPluginInterface \
-    $$PWD/DQMLGlobalObject \
     $$PWD/DPlatformThemeProxy \
     $$PWD/DQuickItemViewport \
     $$PWD/DQuickBlitFramebuffer

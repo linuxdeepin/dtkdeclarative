@@ -98,14 +98,14 @@ DQuickControlColor::DQuickControlColor()
 
 }
 
-DQuickControlColor::DQuickControlColor(const QColor &color)
-    : data(new QColor(color))
+DQuickControlColor::DQuickControlColor(const DColor &color)
+    : data(new DColor(color))
     , isSingleColor(true)
 {
 
 }
 
-DQuickControlColor::DQuickControlColor(QColor *colors)
+DQuickControlColor::DQuickControlColor(DColor *colors)
     : data(colors)
     , isSingleColor(false)
 {
@@ -119,13 +119,13 @@ DQuickControlColor::~DQuickControlColor()
     }
 }
 
-const QColor &DQuickControlColor::common() const
+const DColor &DQuickControlColor::common() const
 {
     Q_ASSERT(data && !isSingleColor);
     return data[DQuickControlPalette::CommonColor];
 }
 
-void DQuickControlColor::setCommon(const QColor &newCommon)
+void DQuickControlColor::setCommon(const DColor &newCommon)
 {
     Q_ASSERT(data && !isSingleColor);
     if (common() == newCommon)
@@ -134,13 +134,13 @@ void DQuickControlColor::setCommon(const QColor &newCommon)
     data[DQuickControlPalette::CommonColor] = newCommon;
 }
 
-const QColor &DQuickControlColor::crystal() const
+const DColor &DQuickControlColor::crystal() const
 {
     Q_ASSERT(data && !isSingleColor);
     return data[DQuickControlPalette::CrystalColor];
 }
 
-void DQuickControlColor::setCrystal(const QColor &newCrystal)
+void DQuickControlColor::setCrystal(const DColor &newCrystal)
 {
     Q_ASSERT(data && !isSingleColor);
     if (crystal() == newCrystal)
@@ -151,7 +151,7 @@ void DQuickControlColor::setCrystal(const QColor &newCrystal)
 
 DQuickControlPalette::DQuickControlPalette(QObject *parent)
     : QObject(parent)
-    , colors(ThemeTypeCount * ColorTypeCount * ColorFamilyCount, QColor())
+    , colors(ThemeTypeCount * ColorTypeCount * ColorFamilyCount, DColor())
 {
 
 }
@@ -252,7 +252,10 @@ public:
         };
         auto qmlObj = qobject_cast<QQuickItem*>(owner()->parent());
         if (qmlObj && static_cast<FakerItem*>(qmlObj)->isComponentComplete() && !value(id).value<QColor>().isValid()) {
-            qWarning() << "ColorSelector: The" << name(id) << "is an invalid color on the" << qmlObj;
+            const auto pname = name(id);
+            int palIndex  = owner()->indexOfPalette(pname);
+            if (palIndex >= 0 && owner()->m_palettes.at(palIndex).second)
+                qWarning() << "ColorSelector: The" << pname << "is an invalid color on the" << qmlObj;
         }
         QQmlOpenMetaObject::propertyRead(id);
     }
@@ -499,14 +502,15 @@ DQMLGlobalObject::ControlState DQuickControlColorSelector::controlState() const
     return m_state->controlState;
 }
 
-void DQuickControlColorSelector::setControlTheme(DGuiApplicationHelper::ColorType theme)
+bool DQuickControlColorSelector::setControlTheme(DGuiApplicationHelper::ColorType theme)
 {
     if (m_state->controlTheme == theme)
-        return;
+        return false;
 
     m_state->controlTheme = theme;
     Q_EMIT controlThemeChanged();
     updateAllColorProperties();
+    return true;
 }
 
 bool DQuickControlColorSelector::setControlState(DQMLGlobalObject::ControlState controlState)
@@ -750,8 +754,8 @@ void DQuickControlColorSelector::doSetInactived(bool newInactived, bool isUserSe
     updateControlState();
 }
 
-static inline QColor getColor(const DQuickControlPalette *palette, int themeIndex, int familyIndex, int stateIndex) {
-    QColor color = palette->colors.at(themeIndex + familyIndex + stateIndex);
+static inline DColor getColor(const DQuickControlPalette *palette, int themeIndex, int familyIndex, int stateIndex) {
+    DColor color = palette->colors.at(themeIndex + familyIndex + stateIndex);
 
     if (!color.isValid() && familyIndex > 0 && stateIndex > 0) {
         // fallback to normal state
@@ -771,9 +775,9 @@ static inline QColor getColor(const DQuickControlPalette *palette, int themeInde
     return color;
 }
 
-QColor DQuickControlColorSelector::getColorOf(const DQuickControlPalette *palette, const PaletteState *state)
+QColor DQuickControlColorSelector::getColorOf(const DQuickControlPalette *palette, const PaletteState *state) const
 {
-    QColor targetColor;
+    DColor targetColor;
 
     int themeIndex = DQuickControlPalette::Light;
     if (state->controlTheme == DGuiApplicationHelper::DarkType) {
@@ -783,32 +787,47 @@ QColor DQuickControlColorSelector::getColorOf(const DQuickControlPalette *palett
     const int familyIndex = state->family;
 
     int stateIndex = DQuickControlPalette::Normal;
-    bool disabled = state->controlState == DQMLGlobalObject::DisabledState;
-    if (disabled) {
-        targetColor = palette->colors.at(themeIndex + DQuickControlPalette::Disabled);
-        if (targetColor.isValid()) // Don't process the disabled's color, should direct uses it.
-            return targetColor;
-        // fallback to normal color
-    } else if (state->controlState == DQMLGlobalObject::PressedState) {
-        stateIndex = DQuickControlPalette::Pressed;
-    } else if (state->controlState == DQMLGlobalObject::HoveredState) {
-        stateIndex = DQuickControlPalette::Hovered;
+    const bool disabled = state->controlState == DQMLGlobalObject::DisabledState;
+    bool shouldInverseColor = false;
+    do {
+        if (disabled) {
+            targetColor = palette->colors.at(themeIndex + DQuickControlPalette::Disabled);
+            if (targetColor.isValid()) // Don't process the disabled's color, should direct uses it.
+                break;
+            // fallback to normal color
+        } else if (state->controlState == DQMLGlobalObject::PressedState) {
+            stateIndex = DQuickControlPalette::Pressed;
+        } else if (state->controlState == DQMLGlobalObject::HoveredState) {
+            stateIndex = DQuickControlPalette::Hovered;
+        }
+
+        targetColor = getColor(palette, themeIndex, familyIndex, stateIndex);
+        if (!targetColor.isValid() && state->controlTheme == DGuiApplicationHelper::DarkType) {
+            // create the dark color from the light theme
+            targetColor = getColor(palette, DQuickControlPalette::Light, familyIndex, stateIndex);
+            // inverse the color to dark
+            shouldInverseColor = true;
+        }
+    } while (false);
+
+    QColor colorValue;
+    if (targetColor.isTypedColor()) {
+        if (m_control)
+            colorValue = targetColor.toColor(qvariant_cast<QPalette>(m_control->property("palette")));
+    } else {
+        colorValue = targetColor.color();
     }
 
-    targetColor = getColor(palette, themeIndex, familyIndex, stateIndex);
-    if (!targetColor.isValid() && state->controlTheme == DGuiApplicationHelper::DarkType) {
-        // create the dark color from the light theme
-        targetColor = getColor(palette, DQuickControlPalette::Light, familyIndex, stateIndex);
-        // inverse the color to dark
+    if (shouldInverseColor) {
         int r, g, b, a;
-        targetColor.getRgb(&r, &g, &b, &a);
-        targetColor = QColor(255 - r, 255 - g, 255 - b, a);
+        colorValue.getRgb(&r, &g, &b, &a);
+        colorValue = QColor(255 - r, 255 - g, 255 - b, a);
     }
 
-    return targetColor;
+    return colorValue;
 }
 
-QColor DQuickControlColorSelector::getColorOf(const QByteArray &propertyName, const PaletteState *state)
+QColor DQuickControlColorSelector::getColorOf(const QByteArray &propertyName, const PaletteState *state) const
 {
     // Ensure that only the last palette is used, other palettes with the same
     // name property are ignored.
@@ -816,8 +835,7 @@ QColor DQuickControlColorSelector::getColorOf(const QByteArray &propertyName, co
     if (paletteIndex != -1) {
         auto pal = this->m_palettes.at(paletteIndex).second;
         if (pal && pal->enabled()) {
-            const QColor color = getColorOf(pal, state);
-            return color;
+            return getColorOf(pal, state);
         }
     }
 
@@ -936,14 +954,22 @@ void DQuickControlColorSelector::updateControlTheme()
     if (!m_control)
         return;
 
-    const QPalette pa = qvariant_cast<QPalette>(m_control->property("palette"));
+    const QVariant &palette = m_control->property("palette");
+    const QPalette pa = qvariant_cast<QPalette>(palette);
     const QColor windowColor = pa.color(QPalette::Window);
 
-    if (!windowColor.isValid())
+    if (!windowColor.isValid()) {
+        // When the palette changed, should update the properties if it's DColor type is variant color.
+        updateAllColorProperties();
         return;
+    }
 
     const auto themeType = DGuiApplicationHelper::toColorType(windowColor);
-    setControlTheme(themeType);
+
+    if (!setControlTheme(themeType)) {
+        // When the palette changed, should update the properties if it's DColor type is variant color.
+        updateAllColorProperties();
+    }
 }
 
 bool DQuickControlColorSelector::updateControlState()

@@ -77,10 +77,7 @@ QtObject {
             common: Qt.rgba(0, 0, 0, 0.7)
             crystal: Qt.rgba(0, 0, 0, 0.9)
         }
-        pressed {
-            common: "#0081ff"
-            crystal: "#0081ff"
-        }
+        pressed: D.DTK.makeColor(D.Color.Highlight)
     }
     property D.Palette warningButtonText: D.Palette {
         normal: "#ff5736"
@@ -97,6 +94,30 @@ QtObject {
     property D.Palette highlightedButtonBorder: D.Palette {
         normal: Qt.rgba(0, 0.581, 1, 0.2)
     }
+
+    property D.Palette checkedButton : D.Palette {
+        normal: D.DTK.makeColor(D.Color.Highlight)
+        hovered: D.DTK.makeColor(D.Color.Highlight).lightness(+10)
+        pressed: D.DTK.makeColor(D.Color.Highlight).lightness(-10)
+    }
+
+    property D.Palette checkedButtonText : D.Palette {
+        normal: D.DTK.makeColor(D.Color.HighlightedText)
+        hovered: D.DTK.makeColor(D.Color.HighlightedText).lightness(+10)
+        pressed: D.DTK.makeColor(D.Color.HighlightedText).opacity(-20)
+    }
+
+    property D.Palette checkedButtonDropShadow : D.Palette {
+        normal: D.DTK.makeColor(D.Color.Highlight)
+        pressed: D.DTK.makeColor(D.Color.Highlight).opacity(-20)
+    }
+
+    property D.Palette checkedButtonInnerShadow : D.Palette {
+        normal: D.DTK.makeColor(D.Color.Highlight).lightness(-10)
+        hovered: D.DTK.makeColor(D.Color.Highlight)
+        pressed: D.DTK.makeColor(D.Color.Highlight).lightness(-20)
+    }
+
     property QtObject windowButton: QtObject {
         property int width: 45
         property int height: 45
@@ -126,6 +147,22 @@ QtObject {
     }
     property D.Palette alertBackground: D.Palette {
         normal: Qt.rgba(0.95, 0.22, 0.20, 0.15)
+    }
+
+    property D.Palette highlightPanelBackground: D.Palette {
+        normal: "transparent"
+        hovered: D.DTK.makeColor(D.Color.Highlight)
+        pressed: D.DTK.makeColor(D.Color.Highlight)
+    }
+    property D.Palette highlightPanelDropShadow:  D.Palette {
+        normal: "transparent"
+        hovered: D.DTK.makeColor(D.Color.Highlight).lightness(+20)
+        pressed: D.DTK.makeColor(D.Color.Highlight).lightness(+20)
+    }
+    property D.Palette highlightPanelInnerShadow:  D.Palette {
+        normal: "transparent"
+        hovered: D.DTK.makeColor(D.Color.Highlight).lightness(-20)
+        pressed: D.DTK.makeColor(D.Color.Highlight).lightness(-20)
     }
 
     // PixelMetric

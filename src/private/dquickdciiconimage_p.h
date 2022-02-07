@@ -22,7 +22,7 @@
 #define DQUICKDCIICONIMAGE_P_H
 
 #include "dquickiconimage_p.h"
-#include "dqmlglobalobject.h"
+#include "dqmlglobalobject_p.h"
 
 #include <dtkdeclarative_global.h>
 #include <DObject>

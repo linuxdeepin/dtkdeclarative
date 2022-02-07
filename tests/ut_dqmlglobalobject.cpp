@@ -22,9 +22,10 @@
 
 #include <DPalette>
 #include <DFontManager>
-#include <DQMLGlobalObject>
 #include <DWindowManagerHelper>
 #include <DGuiApplicationHelper>
+
+#include <private/dqmlglobalobject_p.h>
 
 DQUICK_USE_NAMESPACE
 DGUI_USE_NAMESPACE
@@ -100,7 +101,12 @@ TEST_F(ut_DQMLGlobalObject, fontManager)
 
 TEST_F(ut_DQMLGlobalObject, palette)
 {
-    ASSERT_EQ(pAppIns->applicationPalette(), pObj->palette());
+    DPalette expected = pAppIns->applicationPalette();
+    DPalette actual = pObj->palette();
+    for (int i = 0; i < QPalette::NColorRoles; ++i) {
+        QPalette::ColorRole role = static_cast<QPalette::ColorRole>(i);
+        ASSERT_EQ(expected.color(QPalette::Active, role), actual.color(QPalette::Active, role));
+    }
 }
 
 TEST_F(ut_DQMLGlobalObject, inactivePalette)
