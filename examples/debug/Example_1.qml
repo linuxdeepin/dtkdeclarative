@@ -3,7 +3,6 @@ import QtQuick.Controls 2.4
 import org.deepin.dtk 1.0 as D
 
 Rectangle {
-
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
@@ -232,5 +231,28 @@ Rectangle {
         anchors.left: plusMinusSpinBox.right
         anchors.topMargin: 20
         anchors.leftMargin: 20
+    }
+
+    Row {
+        anchors {
+            top: lineEdit.bottom
+            topMargin: 20
+        }
+        spacing: 10
+        D.Switch {
+            checked: true
+        }
+
+        D.Switch {
+        }
+
+        D.Switch {
+            checked: true
+            enabled: false
+        }
+
+        D.Switch {
+            enabled: false
+        }
     }
 }

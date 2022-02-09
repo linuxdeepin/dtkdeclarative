@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 2020 ~ 2020 Deepin Technology Co., Ltd.
+ * Copyright (C) 2022 UnionTech Technology Co., Ltd.
  *
- * Author:     liuyang <liuyang@uniontech.com>
+ * Author:     xiaoyaobing <xiaoyaobing@uniontech.com>
  *
- * Maintainer: liuyang <liuyang@uniontech.com>
+ * Maintainer: xiaoyaobing <xiaoyaobing@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,61 +16,11 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.11
-import QtQuick.Controls 2.4
-import QtQuick.Controls.impl 2.4
-import QtQuick.Templates 2.4 as T
-import "PixelMetric.js" as PM
+import org.deepin.dtk.controls 1.0 as D
 
+D.Switch {
 
-T.Switch {
-    id: control
-
-    implicitWidth: Math.max(background ? background.implicitWidth : 0,
-                            contentItem.implicitWidth + leftPadding + rightPadding)
-    implicitHeight: Math.max(background ? background.implicitHeight : 0,
-                             Math.max(contentItem.implicitHeight,
-                                      indicator ? indicator.implicitHeight : 0) + topPadding + bottomPadding)
-    baselineOffset: contentItem.y + contentItem.baselineOffset
-
-    padding: PM.ControlPadding
-    spacing: PM.ControlSpacing
-
-    indicator: Rectangle {
-        implicitWidth: PM.Switch_Indicator_Width
-        implicitHeight: PM.Switch_Indicator_Height
-
-        x: text ? (control.mirrored ? control.width - width - control.rightPadding : control.leftPadding) : control.leftPadding + (control.availableWidth - width) / 2
-        y: control.topPadding + (control.availableHeight - height) / 2
-        radius: PM.Switch_Radius
-        color: control.palette.button
-
-        Rectangle {
-            x: Math.max(0, Math.min(parent.width - width, control.visualPosition * parent.width - (width / 2)))
-            y: (parent.height - height) / 2
-            width: PM.Switch_Button_Width
-            height: PM.Switch_Button_Height
-            radius: PM.Switch_Radius
-            antialiasing: true
-            color: control.checked ? control.palette.highlight : control.palette.buttonText
-
-            Behavior on x {
-                enabled: !control.down
-                SmoothedAnimation { velocity: 200 }
-            }
-        }
-    }
-
-    contentItem: Text {
-        leftPadding: control.indicator && !control.mirrored ? control.indicator.width + control.spacing : 0
-        rightPadding: control.indicator && control.mirrored ? control.indicator.width + control.spacing : 0
-
-        text: control.text
-        font: control.font
-        color: control.palette.windowText
-        verticalAlignment: Text.AlignVCenter
-    }
 }
