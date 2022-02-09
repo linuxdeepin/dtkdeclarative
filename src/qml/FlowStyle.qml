@@ -165,6 +165,17 @@ QtObject {
         pressed: D.DTK.makeColor(D.Color.Highlight).lightness(-20)
     }
 
+    property D.Palette switchBackground: D.Palette {
+        normal: Qt.rgba(50 / 255, 50 / 255, 50 / 255, 0.2)
+        normalDark: "#1A1A1A"
+    }
+
+    // TODO(Xiao Yao Bing): Replace handle with dci icon. delete this code
+    property D.Palette switchHandle: D.Palette {
+        normal: "#8c8c8c"
+        normalDark: "#444444"
+    }
+
     // PixelMetric
     property QtObject control: QtObject {
         property int radius: 8
@@ -319,5 +330,12 @@ QtObject {
         property color lightNoBlurColor: Qt.rgba(235 / 255.0, 235 / 255.0, 235 / 255.0, 1.0)
         property color darkColor: "#55000000"
         property color darkNoBlurColor: Qt.rgba(35 / 255.0, 35 / 255.0, 35 / 255.0, 1.0)
+    }
+
+    property QtObject switchButton: QtObject {
+        property int indicatorWidth: 50
+        property int indicatorHeight: 24
+        property int buttonWidth: 30
+        property int buttonHeight: 24
     }
 }

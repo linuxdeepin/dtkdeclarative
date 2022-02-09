@@ -58,5 +58,6 @@
         <file>qml/StyledBehindWindowBlur.qml</file>
         <file>qml/Popup.qml</file>
         <file>qml/PopupWindow.qml</file>
+        <file>qml/Switch.qml</file>
     </qresource>
 </RCC>
