@@ -35,7 +35,6 @@ RowLayout {
         visible: leftVisible
         text: SettingsOption.name
         verticalAlignment: Text.AlignVCenter
-        Layout.fillHeight: true
     }
     Item {
         visible: leftVisible

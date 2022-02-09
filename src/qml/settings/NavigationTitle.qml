@@ -20,44 +20,67 @@
  */
 
 import QtQuick 2.11
+import QtQuick.Controls 2.4
 import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.settings 1.0 as Settings
 import org.deepin.dtk.style 1.0 as DS
 import ".."
 
-Button {
+Control {
     id: control
-    property var __view: control.ListView
-    height: 40
-    width: parent.width
-    text: Settings.SettingsGroup.name
-    font: __getFont(Settings.SettingsGroup.level)
-    leftPadding: __getMargin(Settings.SettingsGroup.level)
-    anchors.left: parent.left
+    signal clicked()
+    property bool checked: false
+    property D.Palette backgroundColor: DS.Style.settings.background
+    property D.Palette checkedTextColor: DS.Style.checkedButtonText
 
-    checkable: true
-    checked: __view.isCurrentItem
+    palette.windowText: checked ? D.ColorSelector.checkedTextColor : undefined
+    contentItem: Label {
+        text: Settings.SettingsGroup.name
+        font: __getFont(Settings.SettingsGroup.level)
+        leftPadding: __getMargin(Settings.SettingsGroup.level)
+        topPadding: DS.Style.settings.navigationTextVPadding
+        bottomPadding: DS.Style.settings.navigationTextVPadding
+        anchors.left: parent.left
+        verticalAlignment: Qt.AlignVCenter
+        elide: Text.ElideRight
 
-    onClicked: {
-        __view.view.currentIndex = Settings.SettingsGroup.index
+        function __getFont(level) {
+            switch(level) {
+            case 0:
+                return D.DTK.fontManager.t4
+            case 1:
+                return D.DTK.fontManager.t5
+            }
+            return D.DTK.fontManager.t6
+        }
+        function __getMargin(level) {
+            switch(level) {
+            case 0:
+                return DS.Style.settings.titleMarginL1
+            case 1:
+                return DS.Style.settings.titleMarginL2
+            }
+            return DS.Style.settings.titleMarginLOther
+        }
     }
 
-    function __getFont(level) {
-        switch(level) {
-        case 0:
-            return D.DTK.fontManager.t4
-        case 1:
-            return D.DTK.fontManager.t5
+    background: Item {
+        implicitHeight: DS.Style.settings.navigationHeight
+        implicitWidth: DS.Style.settings.navigationWidth
+        Rectangle {
+            anchors.fill: parent
+            visible: !control.checked
+            color: control.D.ColorSelector.backgroundColor
+            radius: DS.Style.control.radius
         }
-        return D.DTK.fontManager.t6
+        HighlightPanel {
+            anchors.fill: parent
+            visible: control.checked
+        }
     }
-    function __getMargin(level) {
-        switch(level) {
-        case 0:
-            return DS.Style.settings.titleMarginL1
-        case 1:
-            return DS.Style.settings.titleMarginL2
-        }
-        return DS.Style.settings.titleMarginLOther
+
+    MouseArea {
+        anchors.fill: parent
+        Component.onCompleted: clicked.connect(control.clicked)
     }
 }

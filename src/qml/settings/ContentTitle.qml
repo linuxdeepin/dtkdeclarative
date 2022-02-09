@@ -21,17 +21,17 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
-import QtQuick.Layouts 1.11
-import QtQuick.Window 2.11
-import org.deepin.dtk 1.0 as D
+import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.settings 1.0 as Settings
 import org.deepin.dtk.style 1.0 as DS
 
 Label {
-    height: 40
     text: Settings.SettingsGroup.name
     font: __getFont(Settings.SettingsGroup.level)
     textFormat: Text.PlainText
+    verticalAlignment: Qt.AlignVCenter
+    topPadding: DS.Style.settings.navigationTextVPadding
+    bottomPadding: DS.Style.settings.navigationTextVPadding
     anchors {
         left: parent.left
         leftMargin: __getMargin(Settings.SettingsGroup.level)

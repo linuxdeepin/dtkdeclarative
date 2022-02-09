@@ -73,7 +73,7 @@ Rectangle {
         //                groups: __groups
         //            }
         container.contentBackground: Settings.ContentBackground {
-            color: "blue"
+            border.color: "blue"
         }
 
         groups: [
@@ -82,8 +82,7 @@ Rectangle {
                 name: "group1"
                 visible: true
                 background: Settings.ContentBackground {
-                    border.color: "red"
-                    color: "green"
+                    border.color: "green"
                     radius: 8
                 }
 
@@ -94,7 +93,6 @@ Rectangle {
                         visible: true
                         background: Settings.ContentBackground {
                             border.color: "red"
-                            color: "red"
                             radius: 8
                         }
                         Settings.SettingsOption {
