@@ -145,11 +145,6 @@ public:
 
     }
 
-    ~DQuickShadowImagePrivate() override
-    {
-        delete cacheShadow;
-    }
-
     /**
      * @brief textureForShadow Call function on the rendering thread
      * @return
