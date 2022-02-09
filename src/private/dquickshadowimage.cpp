@@ -292,9 +292,8 @@ void DQuickShadowImagePrivate::calculateRects(const QSize &sourceSize,
     *targetRect = QRectF(0, 0, targetSize.width(), targetSize.height());
     *innerTargetRect = *targetRect;
 
-    qreal border = isInner ? ((shadowBlur + spread) >= calculateCornerRadius()
-                              ? calculateCornerRadius() : (shadowBlur + spread))
-                              : (calculateCornerRadius() + shadowBlur);
+    qreal border = isInner ? qMax(shadowBlur + spread, calculateCornerRadius())
+                                  : (calculateCornerRadius() + shadowBlur);
 
     qreal borderLeft = border;
     qreal borderRight = border;
