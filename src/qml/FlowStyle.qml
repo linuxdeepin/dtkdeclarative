@@ -108,8 +108,8 @@ QtObject {
     }
 
     property D.Palette checkedButtonDropShadow : D.Palette {
-        normal: D.DTK.makeColor(D.Color.Highlight)
-        pressed: D.DTK.makeColor(D.Color.Highlight).opacity(-20)
+        normal: D.DTK.makeColor(D.Color.Highlight).opacity(-60)
+        pressed: D.DTK.makeColor(D.Color.Highlight).opacity(-80)
     }
 
     property D.Palette checkedButtonInnerShadow : D.Palette {
