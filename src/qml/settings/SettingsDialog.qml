@@ -22,29 +22,34 @@
 import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
-import org.deepin.dtk 1.0
+import org.deepin.dtk.impl 1.0 as D
+import org.deepin.dtk.style 1.0 as DS
 import org.deepin.dtk.settings 1.0 as Settings
+import ".."
 
 DialogWindow {
     id: control
 
     property list<Settings.SettingsGroup> groups
-    property Config config
-
+    property D.Config config
     property Settings.SettingsContainer container : Settings.SettingsContainer {
         id: settingsContainer
         config: control.config
-        navigationTitle: Settings.NavigationTitle {}
+        navigationTitle: Settings.NavigationTitle {
+            width: navigationView.width - navigationView.leftMargin - navigationView.rightMargin
+            checked: navigationView.currentIndex === Settings.SettingsGroup.index
+            onClicked: navigationView.currentIndex = Settings.SettingsGroup.index
+        }
         contentTitle: Settings.ContentTitle {}
         contentBackground: Settings.ContentBackground {}
-
         groups: control.groups
     }
+    property alias navigationView: navigationView
+    property alias contentView: contentView
 
     ScrollView {
         id: navigationBg
-        width: 190
-        contentWidth: width
+        width: DS.Style.settings.navigationWidth
         background: Rectangle {
             anchors.fill: parent
             color: palette.base
@@ -53,6 +58,8 @@ DialogWindow {
         ListView {
             id: navigationView
             model: container.navigationModel
+            leftMargin: DS.Style.settings.navigationMargin
+            rightMargin: DS.Style.settings.navigationMargin
             currentIndex: 0
             onCurrentIndexChanged: {
                 contentView.currentIndex = currentIndex
@@ -63,18 +70,18 @@ DialogWindow {
     ScrollView {
         id: contentBg
         width: control.width - navigationBg.width
-        contentWidth: width
         anchors {
             right: parent.right
             top: control.top
         }
+        padding: DS.Style.settings.contentMargin
         background: Rectangle {
             anchors.fill: parent
             color: palette.base
         }
 
         ListView {
-            id: contentView; objectName: "contentView"
+            id: contentView
             model: container.contentModel
             highlightRangeMode: ListView.StrictlyEnforceRange
             currentIndex: 0

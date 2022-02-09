@@ -69,6 +69,7 @@ MouseArea {
             id: separatorTop
             width: control.width
             height: 1
+            visible: !__dwindow.enabled
             color: "transparent"
         }
 

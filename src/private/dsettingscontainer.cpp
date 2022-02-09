@@ -853,7 +853,6 @@ const QByteArray SettingsContentModel::groupComponentData()
 {
     const QByteArray comData("import QtQuick 2.11\n"
                              "Column {\n"
-                             "  spacing: 10\n"
                              "  anchors {\n"
                              "      left: parent.left\n"
                              "      right: parent.right\n"
@@ -897,8 +896,7 @@ QObject *SettingsNavigationModel::object(int index, QQmlIncubator::IncubationMod
     SettingsGroup *group = d->groups()[index];
 
     auto titleDelegate = d->container->navigationTitle();
-    auto groupContext = d->container->creationContext();
-    auto titleItem = qobject_cast<QQuickItem*>(titleDelegate->beginCreate(groupContext));
+    auto titleItem = qobject_cast<QQuickItem*>(titleDelegate->beginCreate(titleDelegate->creationContext()));
     titleItem->setProperty(settingsGroupObjectName, QVariant::fromValue(group));
 
     d->compositor.setObject(index, titleItem);

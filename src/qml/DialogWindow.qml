@@ -40,6 +40,7 @@ Window {
     D.Window.enableBlurWindow: true
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.MSWindowsFixedSizeDialogHint
     D.ColorSelector.family: D.Palette.CrystalColor
+    color: active ? D.DTK.palette.window : D.DTK.inactivePalette.window
 
     readonly property int maxDialogWindowHeight: PM.DialogWindow_MaximumHeight
     readonly property int maxContentHeight: maxDialogWindowHeight - titleBar.height
@@ -55,7 +56,9 @@ Window {
         Loader {
             id: titleBar
             z: D.DTK.TopOrder
-            sourceComponent: DialogTitleBar {}
+            sourceComponent: DialogTitleBar {
+                enableInWindowBlendBlur: true
+            }
         }
 
         Item {

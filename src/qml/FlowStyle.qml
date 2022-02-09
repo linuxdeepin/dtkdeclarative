@@ -150,19 +150,14 @@ QtObject {
     }
 
     property D.Palette highlightPanelBackground: D.Palette {
-        normal: "transparent"
-        hovered: D.DTK.makeColor(D.Color.Highlight)
-        pressed: D.DTK.makeColor(D.Color.Highlight)
+        normal: D.DTK.makeColor(D.Color.Highlight)
+        hovered: D.DTK.makeColor(D.Color.Highlight).lightness(+10)
     }
     property D.Palette highlightPanelDropShadow:  D.Palette {
-        normal: "transparent"
-        hovered: D.DTK.makeColor(D.Color.Highlight).lightness(+20)
-        pressed: D.DTK.makeColor(D.Color.Highlight).lightness(+20)
+        normal: D.DTK.makeColor(D.Color.Highlight).lightness(+20)
     }
     property D.Palette highlightPanelInnerShadow:  D.Palette {
-        normal: "transparent"
-        hovered: D.DTK.makeColor(D.Color.Highlight).lightness(-20)
-        pressed: D.DTK.makeColor(D.Color.Highlight).lightness(-20)
+        normal: D.DTK.makeColor(D.Color.Highlight).lightness(-20)
     }
 
     property D.Palette switchBackground: D.Palette {
@@ -240,9 +235,18 @@ QtObject {
         property int titleMarginL1: 10
         property int titleMarginL2: 30
         property int titleMarginLOther: 50
+        property int contentMargin: 10
         property int contentMarginL1: 10
         property int contentMarginL2: 30
         property int contentMarginOther: 50
+        property int navigationWidth: 190
+        property int navigationHeight: 20
+        property int navigationMargin: 10
+        property int navigationTextVPadding: 10
+        property D.Palette background: D.Palette {
+            normal: "transparent"
+            hovered: Qt.rgba(0, 0, 0, 0.1)
+        }
     }
 
     property QtObject edit: QtObject {
