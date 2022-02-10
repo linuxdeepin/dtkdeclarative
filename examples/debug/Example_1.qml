@@ -286,7 +286,8 @@ Rectangle {
             to: 60
             tickCount: 7
             tickPosition: D.Slider.TickPosition.TicksAbove
-            tips: [qsTr("1m"), qsTr("5m"), qsTr("10m"), qsTr("15m"), qsTr("30m"), qsTr("1h"), qsTr("Never")]
+            tips: [qsTr("1m111111111111111111"), qsTr("5m11111111111111111"), qsTr("10m"), qsTr("15m111111111111111111111")
+                , qsTr("30m"), qsTr("1h1111111111111111111"), qsTr("Never111111111111111111111")]
             bothSidesTextHorizontalAlign: false
             width: 400
         }
