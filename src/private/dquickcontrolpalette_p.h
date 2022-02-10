@@ -282,7 +282,6 @@ public:
     Q_PROPERTY(bool pressed READ pressed WRITE setPressed RESET resetPressed NOTIFY pressedChanged)
     Q_PROPERTY(bool disabled READ disabled WRITE setDisabled RESET resetDisabled NOTIFY disabledChanged)
     Q_PROPERTY(bool inactived READ inactived WRITE setInactived RESET resetInactived NOTIFY inactivedChanged)
-    Q_PROPERTY(QQmlListProperty<DTK_QUICK_NAMESPACE::DQuickControlPalette> palettes READ palettes NOTIFY palettesChanged FINAL)
     Q_CLASSINFO("DefaultProperty", "palettes")
 
     explicit DQuickControlColorSelector(QQuickItem *parent);
@@ -315,9 +314,6 @@ public:
     void setInactived(bool newInactived);
     void resetInactived();
 
-    QQmlListProperty<DQuickControlPalette> palettes();
-    DQuickControlPalette *paletteAt(int index) const;
-    int paletteCount() const;
     static QStringList specialObjectNameItems();
 
 Q_SIGNALS:
@@ -328,7 +324,6 @@ Q_SIGNALS:
     void pressedChanged();
     void disabledChanged();
     void inactivedChanged();
-    void palettesChanged();
     void colorPropertyChanged(const QByteArray &name);
     void colorPropertiesChanged();
     void familyChanged();
@@ -358,12 +353,13 @@ private:
 
     void findAndSetControlParent();
     QByteArray findPalettePropertyName(const DQuickControlPalette *palette) const;
-    void clearAndSetParentProperties();
+    void clearAndInheritParentProperties();
 
     Q_SLOT void updateControlTheme();
     Q_SLOT bool updateControlState();
     Q_SLOT void updateAllColorProperties();
     Q_SLOT void recvPaletteColorChanged();
+    Q_SLOT void onPaletteDestroyed();
     Q_SLOT void updateControlWindow();
     Q_SLOT void resolveMetaPropertyChanged();
     Q_SLOT void notifyColorPropertyChanged();
@@ -374,9 +370,6 @@ private:
     void doResetFamily();
 
     void tryDestroyPalette(DQuickControlPalette *palette);
-    static int palette_count(QQmlListProperty<DQuickControlPalette> *property);
-    static DQuickControlPalette *palette_at(QQmlListProperty<DQuickControlPalette> *property, int index);
-
     void setSuperColorSelector(DQuickControlColorSelector *parent);
     void setFamilyPropertyParent(DQuickControlColorSelector *parent);
 
