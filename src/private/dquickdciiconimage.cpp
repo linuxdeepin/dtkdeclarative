@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     Chen Bin <chenbin@uniontech.com>
  *
@@ -18,10 +18,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "dquickdciiconimage_p.h"
-#include "dquickiconimage_p_p.h"
+#include "dquickdciiconimage_p_p.h"
 
-#include <dobject_p.h>
 #include <DIconTheme>
 #include <DGuiApplicationHelper>
 #include <DPlatformTheme>
@@ -36,24 +34,16 @@ static QString appIconThemeName()
     return DGuiApplicationHelper::instance()->applicationTheme()->iconThemeName();
 }
 
-class DQuickDciIconImagePrivate : public DQuickIconImagePrivate
+DQuickDciIconImageItemPrivate::DQuickDciIconImageItemPrivate(DQuickDciIconImagePrivate *pqq)
+    : parentPriv(pqq)
 {
-    Q_DECLARE_PUBLIC(DQuickDciIconImage)
 
-public:
-    void maybeUpdateUrl();
-    QUrlQuery getUrlQuery();
+}
 
-    QString name;
-    DQMLGlobalObject::ControlState mode = DQMLGlobalObject::NormalState;
-    DQuickDciIconImage::Theme theme = DQuickDciIconImage::Light;
-    DDciIconPalette palette;
-};
-
-void DQuickDciIconImagePrivate::maybeUpdateUrl()
+void DQuickDciIconImageItemPrivate::maybeUpdateUrl()
 {
-    Q_Q(DQuickDciIconImage);
-    if (name.isEmpty()) {
+    Q_Q(DQuickIconImage);
+    if (parentPriv->name.isEmpty()) {
         q->setSource(QUrl());
         return;
     }
@@ -65,14 +55,14 @@ void DQuickDciIconImagePrivate::maybeUpdateUrl()
     q->setSource(url);
 }
 
-QUrlQuery DQuickDciIconImagePrivate::getUrlQuery()
+QUrlQuery DQuickDciIconImageItemPrivate::getUrlQuery()
 {
     QUrlQuery query;
-    query.addQueryItem(QLatin1String("name"), name);
-    query.addQueryItem(QLatin1String("mode"), QString::number(mode));
-    query.addQueryItem(QLatin1String("theme"), QString::number(theme));
-    DDciIconPalette pal = palette;
-    if (!palette.foreground().isValid() && q_func()->color().isValid()) {
+    query.addQueryItem(QLatin1String("name"), parentPriv->name);
+    query.addQueryItem(QLatin1String("mode"), QString::number(parentPriv->mode));
+    query.addQueryItem(QLatin1String("theme"), QString::number(parentPriv->theme));
+    DDciIconPalette pal = parentPriv->palette;
+    if (!parentPriv->palette.foreground().isValid() && q_func()->color().isValid()) {
         pal.setForeground(q_func()->color());
     }
     query.addQueryItem(QLatin1String("palette"), DDciIconPalette::convertToString(pal));
@@ -81,85 +71,146 @@ QUrlQuery DQuickDciIconImagePrivate::getUrlQuery()
     return query;
 }
 
-DQuickDciIconImage::DQuickDciIconImage(QQuickItem *parent)
-    : DQuickIconImage(*(new DQuickDciIconImagePrivate), parent)
+DQuickDciIconImagePrivate::DQuickDciIconImagePrivate(DQuickDciIconImage *qq)
+    : DObjectPrivate(qq)
+    , imageItem(new DQuickIconImage(*new DQuickDciIconImageItemPrivate(this), qq))
 {
+}
+
+void DQuickDciIconImagePrivate::layout()
+{
+    auto dd = QQuickItemPrivate::get(imageItem);
+    dd->anchors()->setCenterIn(imageItem->parentItem());
+}
+
+void DQuickDciIconImagePrivate::updateImageSourceUrl()
+{
+    imageItem->d_func()->maybeUpdateUrl();
+}
+
+DQuickDciIconImage::DQuickDciIconImage(QQuickItem *parent)
+    : QQuickItem(parent)
+    , DObject(*new DQuickDciIconImagePrivate(this))
+{
+
 }
 
 DQuickDciIconImage::~DQuickDciIconImage()
 {
+
 }
 
 QString DQuickDciIconImage::name() const
 {
-    Q_D(const DQuickDciIconImage);
-
+    D_DC(DQuickDciIconImage);
     return d->name;
-}
-
-DQMLGlobalObject::ControlState DQuickDciIconImage::mode() const
-{
-    Q_D(const DQuickDciIconImage);
-
-    return d->mode;
-}
-
-DQuickDciIconImage::Theme DQuickDciIconImage::theme() const
-{
-    Q_D(const DQuickDciIconImage);
-
-    return d->theme;
 }
 
 void DQuickDciIconImage::setName(const QString &name)
 {
-    Q_D(DQuickDciIconImage);
+    D_D(DQuickDciIconImage);
+    if (d->name == name)
+        return;
+
     d->name = name;
-    d->maybeUpdateUrl();
+    d->updateImageSourceUrl();
     Q_EMIT nameChanged();
+}
+
+DQMLGlobalObject::ControlState DQuickDciIconImage::mode() const
+{
+    D_DC(DQuickDciIconImage);
+    return d->mode;
 }
 
 void DQuickDciIconImage::setMode(DQMLGlobalObject::ControlState mode)
 {
-    Q_D(DQuickDciIconImage);
+    D_D(DQuickDciIconImage);
+    if (d->mode == mode)
+        return;
+
     d->mode = mode;
-    d->maybeUpdateUrl();
+    d->updateImageSourceUrl();
     Q_EMIT modeChanged();
+}
+
+DQuickDciIconImage::Theme DQuickDciIconImage::theme() const
+{
+    D_DC(DQuickDciIconImage);
+    return d->theme;
 }
 
 void DQuickDciIconImage::setTheme(DQuickDciIconImage::Theme theme)
 {
-    Q_D(DQuickDciIconImage);
-    d->theme = theme;
-    d->maybeUpdateUrl();
-    Q_EMIT themeChanged();
-}
+    D_D(DQuickDciIconImage);
+    if (d->theme == theme)
+        return;
 
-void DQuickDciIconImage::setPalette(const DDciIconPalette &palette)
-{
-    Q_D(DQuickDciIconImage);
-    d->palette = palette;
-    d->maybeUpdateUrl();
-    Q_EMIT paletteChanged();
+    d->theme = theme;
+    d->updateImageSourceUrl();
+    Q_EMIT themeChanged();
 }
 
 DDciIconPalette DQuickDciIconImage::palette() const
 {
-    Q_D(const DQuickDciIconImage);
+    D_DC(DQuickDciIconImage);
     return d->palette;
 }
 
-bool DQuickDciIconImage::isNull(const QString &iconName) const
+void DQuickDciIconImage::setPalette(const DDciIconPalette &palette)
+{
+    D_D(DQuickDciIconImage);
+    if (d->palette == palette)
+        return;
+
+    d->palette = palette;
+    d->updateImageSourceUrl();
+    Q_EMIT paletteChanged();
+}
+
+QSize DQuickDciIconImage::sourceSize() const
+{
+    D_DC(DQuickDciIconImage);
+    return d->imageItem->sourceSize();
+}
+
+void DQuickDciIconImage::setSourceSize(const QSize &size)
+{
+    D_D(DQuickDciIconImage);
+    this->setImplicitWidth(size.width());
+    this->setImplicitHeight(size.height());
+    d->imageItem->setSourceSize(size);
+    Q_EMIT sourceSizeChanged();
+}
+
+void DQuickDciIconImage::setMirror(bool mirror)
+{
+    D_D(DQuickDciIconImage);
+    d->imageItem->setMirror(mirror);
+}
+
+bool DQuickDciIconImage::mirror() const
+{
+    D_DC(DQuickDciIconImage);
+    return d->imageItem->mirror();
+}
+
+Dtk::Quick::DQuickIconImage *DQuickDciIconImage::imageItem() const
+{
+    D_DC(DQuickDciIconImage);
+    return d->imageItem;
+}
+
+bool DQuickDciIconImage::isNull(const QString &iconName)
 {
     QString iconPath;
     auto cached = DIconTheme::cached();
 
     if (cached) {
-        iconPath = cached->findDciIconFile(iconName.isEmpty() ? name() : iconName, appIconThemeName());
+        iconPath = cached->findDciIconFile(iconName, appIconThemeName());
     } else {
-        iconPath = DIconTheme::findDciIconFile(iconName.isEmpty() ? name() : iconName, appIconThemeName());
+        iconPath = DIconTheme::findDciIconFile(iconName, appIconThemeName());
     }
-
     return iconPath.isEmpty();
 }
 
@@ -171,6 +222,21 @@ DQuickIconAttached *DQuickDciIconImage::qmlAttachedProperties(QObject *object)
         return nullptr;
 
     return new DQuickIconAttached(item);
+}
+
+void DQuickDciIconImage::classBegin()
+{
+    D_D(DQuickDciIconImage);
+    QQmlEngine::setContextForObject(d->imageItem, QQmlEngine::contextForObject(this));
+    QQuickItem::classBegin();
+}
+
+void DQuickDciIconImage::componentComplete()
+{
+    D_D(DQuickDciIconImage);
+    d->imageItem->componentComplete();
+    QQuickItem::componentComplete();
+    d->layout();
 }
 
 class DQuickIconAttachedPrivate : public DCORE_NAMESPACE::DObjectPrivate

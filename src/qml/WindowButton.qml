@@ -29,16 +29,13 @@ Control {
     property alias icon: iconLoader
     property alias pressed: mouseArea.pressed
     signal clicked
+    property D.Palette textColor: DS.Style.buttonText
 
+    palette.windowText: pressed ? D.ColorSelector.textColor : undefined
     hoverEnabled: true
     contentItem: D.DciIcon {
-        property D.Palette textColor: D.Palette {
-            normal: control.palette.windowText
-            pressed: control.palette.highlight
-        }
-
         id: iconLoader
-        color: D.ColorSelector.textColor
+        palette: D.DTK.makeIconPalette(control.palette)
         sourceSize.width: DS.Style.titleBar.buttonWidth
         sourceSize.height: DS.Style.titleBar.buttonHeight
     }

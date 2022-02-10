@@ -333,6 +333,8 @@ QtObject {
 
     property QtObject titleBar: QtObject {
         property int height: 45
+        property int buttonWidth: 50
+        property int buttonHeight: 50
     }
 
     property QtObject behindWindowBlur: QtObject {

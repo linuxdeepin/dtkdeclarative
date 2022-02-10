@@ -27,6 +27,7 @@
 #include <DPlatformThemeProxy>
 #include <DWindowManagerHelper>
 #include <DGuiApplicationHelper>
+#include <DDciIconPalette>
 #include <DObject>
 
 #include <QQuickWindow>
@@ -184,6 +185,7 @@ public:
     Q_INVOKABLE QPoint cursorPosition() const;
 
     Q_INVOKABLE DTK_QUICK_NAMESPACE::DQuickDciIcon makeIcon(const QJSValue &qicon, const QJSValue &iconExtra);
+    Q_INVOKABLE DTK_GUI_NAMESPACE::DDciIconPalette makeIconPalette(const QPalette &palette);
 
     Q_INVOKABLE bool sendMessage(QQuickItem *target, const QString &content, const QString &iconName = QString(), int duration = 4000, const QString &msgId = QString());
     Q_INVOKABLE bool sendMessage(QQuickWindow *target, const QString &content, const QString &iconName = QString(), int duration = 4000, const QString &msgId = QString());

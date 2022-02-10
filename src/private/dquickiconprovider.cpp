@@ -203,7 +203,8 @@ QImage DQuickDciIconProvider::requestImage(const QString &id, QSize *size, const
 
     // If the target mode icon didn't found, we should find the normal mode icon
     // and decorate to the target mode.
-    int boundingSize = qMax(requestedSize.width(), requestedSize.height());
+    // This boundingSize always contains devicePixelRatio.
+    int boundingSize = qRound(qMax(requestedSize.width(), requestedSize.height()) / devicePixelRatio);
     QPixmap pixmap = dciIcon.pixmap(devicePixelRatio, boundingSize, DDciIcon::Theme(theme), mode, palette);
     if (pixmap.isNull())
         pixmap = dciIcon.pixmap(devicePixelRatio, boundingSize, DDciIcon::Theme(theme), DDciIcon::Normal, palette);
