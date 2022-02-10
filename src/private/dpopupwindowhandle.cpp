@@ -196,10 +196,12 @@ DPopupWindowHandleImpl::DPopupWindowHandleImpl(QQuickWindow *window, QObject *pa
 DPopupWindowHandleImpl::~DPopupWindowHandleImpl()
 {
     QQuickItem *item = popupItem();
-    // reset original virtual function.
-    DVtableHook::resetVfptrFun(item, &QQuickItem::geometryChanged);
-    DVtableHook::resetVfptrFun(item, &QQuickItem::updatePolish);
-    disconnect(item, nullptr, this, nullptr);
+    if (item) {
+        // reset original virtual function.
+        DVtableHook::resetVfptrFun(item, &QQuickItem::geometryChanged);
+        DVtableHook::resetVfptrFun(item, &QQuickItem::updatePolish);
+        disconnect(item, nullptr, this, nullptr);
+    }
     disconnect(popup(), nullptr, this, nullptr);
     disconnect(m_window, nullptr, this, nullptr);
 
@@ -252,6 +254,7 @@ void DPopupWindowHandleImpl::reposition()
     m_window->show();
     m_window->requestActivate();
 }
+
 void DPopupWindowHandleImpl::close()
 {
     if (!m_window->isActive() || !popup()->property("visible").toBool()) {
