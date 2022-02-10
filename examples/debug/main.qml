@@ -184,14 +184,15 @@ D.ApplicationWindow {
     D.StyledBehindWindowBlur {
         control: root
         anchors {
-            horizontalCenter: parent.horizontalCenter
+            right: parent.right
+            rightMargin: 100
             bottom: parent.bottom
-            bottomMargin: 130
+            bottomMargin: 160
         }
         width: 200
         height: 200
         cornerRadius: 30
-        Text {
+        V2.Label {
             anchors.centerIn: parent
             text: qsTr("WMBlur")
         }

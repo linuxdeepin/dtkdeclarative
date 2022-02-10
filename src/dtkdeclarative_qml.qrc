@@ -59,5 +59,7 @@
         <file>qml/Popup.qml</file>
         <file>qml/PopupWindow.qml</file>
         <file>qml/Switch.qml</file>
+        <file>qml/Slider.qml</file>
+        <file>qml/SliderHandle.qml</file>
     </qresource>
 </RCC>

@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 2020 ~ 2020 Deepin Technology Co., Ltd.
+ * Copyright (C) 2022 UnionTech Technology Co., Ltd.
  *
- * Author:     liuyang <liuyang@uniontech.com>
+ * Author:     xiaoyaobing <xiaoyaobing@uniontech.com>
  *
- * Maintainer: liuyang <liuyang@uniontech.com>
+ * Maintainer: xiaoyaobing <xiaoyaobing@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,19 +16,21 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Shapes 1.11
-import "PixelMetric.js" as PM
+import org.deepin.dtk 1.0 as D
 
+// TODO(Xiao Yao Bing): Replace it with dci icon.
 Item {
     id: control
 
     property color color: "red"
     property int arrowPosition: 0
+    property real radius
 
     enum ArrowPosition {
         NoArrow = 0,
@@ -38,28 +40,22 @@ Item {
         ArrowRight = 4
     }
 
-    // 多重采样抗锯齿
     layer.enabled: true
-    layer.samples: 8
-
-    //平滑处理
+    layer.samples: 4
     smooth: true
 
-    // 使用抗锯齿
-    antialiasing: true
-
-    // 无尖角
+    // NoArrow
     Rectangle {
         visible: SliderHandle.ArrowPosition.NoArrow === control.arrowPosition ? true : false
         x: 0
         y: 0
         width: control.width
         height: control.height
-        radius: PM.ControlRadius
+        radius: control.radius
         color: control.color
     }
 
-    // 尖角向上
+    // ArrowAbove
     Shape {
         visible: SliderHandle.ArrowPosition.ArrowAbove === control.arrowPosition ? true : false
         ShapePath {
@@ -70,31 +66,31 @@ Item {
             startY: 0
             PathLine {
                 x: control.width
-                y: PM.ControlRadius
+                y: control.radius
             }
             PathLine {
                 x: control.width
-                y: control.height - PM.ControlRadius
+                y: control.height - control.radius
             }
             PathArc {
-                x: control.width - PM.ControlRadius
+                x: control.width - control.radius
                 y: control.height
-                radiusX: PM.ControlRadius
-                radiusY: PM.ControlRadius
+                radiusX: control.radius
+                radiusY: control.radius
             }
             PathLine {
-                x: PM.ControlRadius
+                x: control.radius
                 y: control.height
             }
             PathArc {
                 x: 0
-                y: control.height - PM.ControlRadius
-                radiusX: PM.ControlRadius
-                radiusY: PM.ControlRadius
+                y: control.height - control.radius
+                radiusX: control.radius
+                radiusY: control.radius
             }
             PathLine {
                 x: 0
-                y: PM.ControlRadius
+                y: control.radius
             }
             PathLine {
                 x: control.width / 2
@@ -103,28 +99,28 @@ Item {
         }
     }
 
-    // 尖角向下
+    // ArrowBelow
     Shape {
         visible: SliderHandle.ArrowPosition.ArrowBelow === control.arrowPosition ? true : false
         ShapePath {
             strokeColor: control.color
             fillColor: control.color
             fillRule: ShapePath.WindingFill
-            startX: PM.ControlRadius
+            startX: control.radius
             startY: 0
             PathLine {
-                x: control.width - PM.ControlRadius
+                x: control.width - control.radius
                 y: 0
             }
             PathArc {
                 x: control.width
-                y: PM.ControlRadius
-                radiusX: PM.ControlRadius
-                radiusY: PM.ControlRadius
+                y: control.radius
+                radiusX: control.radius
+                radiusY: control.radius
             }
             PathLine {
                 x: control.width
-                y: control.height - PM.ControlRadius
+                y: control.height - control.radius
             }
             PathLine {
                 x: control.width / 2
@@ -132,52 +128,52 @@ Item {
             }
             PathLine {
                 x: 0
-                y: control.height - PM.ControlRadius
+                y: control.height - control.radius
             }
             PathLine {
                 x: 0
-                y: PM.ControlRadius
+                y: control.radius
             }
             PathArc {
-                x: PM.ControlRadius
+                x: control.radius
                 y: 0
-                radiusX: PM.ControlRadius
-                radiusY: PM.ControlRadius
+                radiusX: control.radius
+                radiusY: control.radius
             }
         }
     }
 
-    // 尖角向左
+    // ArrowLeft
     Shape {
         visible: SliderHandle.ArrowPosition.ArrowLeft === control.arrowPosition ? true : false
         ShapePath {
             strokeColor: control.color
             fillColor: control.color
             fillRule: ShapePath.WindingFill
-            startX: PM.ControlRadius
+            startX: control.radius
             startY: 0
             PathLine {
-                x: control.width - PM.ControlRadius
+                x: control.width - control.radius
                 y: 0
             }
             PathArc {
                 x: control.width
-                y: PM.ControlRadius
-                radiusX: PM.ControlRadius
-                radiusY: PM.ControlRadius
+                y: control.radius
+                radiusX: control.radius
+                radiusY: control.radius
             }
             PathLine {
                 x: control.width
-                y: control.height - PM.ControlRadius
+                y: control.height - control.radius
             }
             PathArc {
-                x: control.width - PM.ControlRadius
+                x: control.width - control.radius
                 y: control.height
-                radiusX: PM.ControlRadius
-                radiusY: PM.ControlRadius
+                radiusX: control.radius
+                radiusY: control.radius
             }
             PathLine {
-                x: PM.ControlRadius
+                x: control.radius
                 y: control.height
             }
             PathLine {
@@ -185,23 +181,23 @@ Item {
                 y: control.height / 2
             }
             PathLine {
-                x: PM.ControlRadius
+                x: control.radius
                 y: 0
             }
         }
     }
 
-    // 尖角向右
+    // ArrowRight
     Shape {
         visible: SliderHandle.ArrowPosition.ArrowRight === control.arrowPosition ? true : false
         ShapePath {
             strokeColor: control.color
             fillColor: control.color
             fillRule: ShapePath.WindingFill
-            startX: PM.ControlRadius
+            startX: control.radius
             startY: 0
             PathLine {
-                x: control.width - PM.ControlRadius
+                x: control.width - control.radius
                 y: 0
             }
             PathLine {
@@ -209,28 +205,28 @@ Item {
                 y: control.height / 2
             }
             PathLine {
-                x: control.width - PM.ControlRadius
+                x: control.width - control.radius
                 y: control.height
             }
             PathLine {
-                x: PM.ControlRadius
+                x: control.radius
                 y: control.height
             }
             PathArc {
                 x: 0
-                y: control.height - PM.ControlRadius
-                radiusX: PM.ControlRadius
-                radiusY: PM.ControlRadius
+                y: control.height - control.radius
+                radiusX: control.radius
+                radiusY: control.radius
             }
             PathLine {
                 x: 0
-                y: PM.ControlRadius
+                y: control.radius
             }
             PathArc {
-                x: PM.ControlRadius
+                x: control.radius
                 y: 0
-                radiusX: PM.ControlRadius
-                radiusY: PM.ControlRadius
+                radiusX: control.radius
+                radiusY: control.radius
             }
         }
     }

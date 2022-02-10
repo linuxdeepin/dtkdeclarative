@@ -234,9 +234,84 @@ Rectangle {
     }
 
     Row {
+        id: sliderRow
         anchors {
             top: lineEdit.bottom
             topMargin: 20
+        }
+
+        spacing: 60
+        D.Slider {
+            highlightPassArea: true
+            orientation: Qt.Vertical
+            height: 350
+        }
+
+        D.Slider {
+            stepSize: 10
+            from: 0
+            to: 60
+            tickCount: 7
+            tickPosition: D.Slider.TickPosition.TicksLeft
+            tips: [qsTr("1m"), qsTr("5m"), qsTr("10m"), qsTr("15m"), qsTr("30m"), qsTr("1h"), qsTr("Never")]
+            bothSidesTextHorizontalAlign: false
+            height: 350
+            orientation: Qt.Vertical
+        }
+    }
+
+    Column {
+        id: sliderColum
+        anchors {
+            top: lineEdit.bottom
+            topMargin: 40
+            left: sliderRow.right
+            leftMargin: 30
+        }
+        spacing: 50
+
+        D.Slider {
+            highlightPassArea: true
+            width: 400
+        }
+
+        D.Slider {
+            width: 400
+            tickPosition: Slider.TickPosition.TicksBelow
+        }
+
+        D.Slider {
+            stepSize: 10
+            from: 0
+            to: 60
+            tickCount: 7
+            tickPosition: D.Slider.TickPosition.TicksAbove
+            tips: [qsTr("1m"), qsTr("5m"), qsTr("10m"), qsTr("15m"), qsTr("30m"), qsTr("1h"), qsTr("Never")]
+            bothSidesTextHorizontalAlign: false
+            width: 400
+        }
+
+        D.Slider {
+            width: 400
+            tickCount: 9
+            tickPosition: D.Slider.TickPosition.TicksBelow
+            tips: [qsTr("Fast"), "", "", "", "", "", "", "", qsTr("Slow")]
+        }
+
+        D.Slider {
+            width: 400
+            tickCount: 9
+            tickPosition: D.Slider.TickPosition.TicksBelow
+            tips: ["", "", "", "", "", "", "", "", ""]
+        }
+    }
+
+    Row {
+        anchors {
+            top: lineEdit.bottom
+            left: sliderColum.right
+            topMargin: 20
+            leftMargin: 40
         }
         spacing: 10
         D.Switch {

@@ -8,7 +8,6 @@ QML_FILES += \
     $$PWD/RadioButton.qml \
     $$PWD/Switch.qml \
     $$PWD/Slider.qml \
-    $$PWD/SliderHandle.qml \
     $$PWD/ToolTip.qml \
     $$PWD/ProgressBar.qml \
     $$PWD/PageIndicator.qml \
