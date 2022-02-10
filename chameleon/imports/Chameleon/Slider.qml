@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 2020 ~ 2020 Deepin Technology Co., Ltd.
+ * Copyright (C) 2022 UnionTech Technology Co., Ltd.
  *
- * Author:     liuyang <liuyang@uniontech.com>
+ * Author:     xiaoyaobing <xiaoyaobing@uniontech.com>
  *
- * Maintainer: liuyang <liuyang@uniontech.com>
+ * Maintainer: xiaoyaobing <xiaoyaobing@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,146 +16,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.11
-import QtQuick.Shapes 1.11
-import QtQuick.Controls 2.4
-import QtQuick.Controls.impl 2.4
-import QtQuick.Templates 2.4 as T
-import "PixelMetric.js" as PM
+import org.deepin.dtk.controls 1.0 as D
 
-T.Slider {
-    id: control
+D.Slider {
 
-    enum TickPosition {
-        NoTicks = 0,
-        TicksAbove = 1,
-        TicksLeft = 1,
-        TicksBelow = 2,
-        TicksRight = 2,
-        TicksBothSides = 3
-    }
-
-    property int tickPosition: (Slider.TickPosition.NoTicks)
-    property int tickCount: ((to - from) / stepSize)
-
-    function getSliderHandlePosition() {
-        if (Slider.TickPosition.NoTicks === tickPosition) {
-            return SliderHandle.ArrowPosition.NoArrow;
-        }
-
-        if (horizontal) {
-            if (Slider.TickPosition.TicksAbove === tickPosition) {
-                return SliderHandle.ArrowPosition.ArrowAbove;
-            } else if (Slider.TickPosition.TicksBelow === tickPosition) {
-                return SliderHandle.ArrowPosition.ArrowBelow;
-            }
-        } else {
-            if (Slider.TickPosition.TicksLeft === tickPosition) {
-                return SliderHandle.ArrowPosition.ArrowLeft;
-            } else if (Slider.TickPosition.TicksRight === tickPosition) {
-                return SliderHandle.ArrowPosition.ArrowRight;
-            }
-        }
-    }
-
-    implicitWidth: Math.max(background ? background.implicitWidth : 0,
-                            (handle ? handle.implicitWidth : 0) + leftPadding + rightPadding)
-    implicitHeight: Math.max(background ? background.implicitHeight : 0,
-                             (handle ? handle.implicitHeight : 0) + topPadding + bottomPadding)
-
-    // 绘制滑块（handle）
-    handle: SliderHandle {
-        x: control.leftPadding + (control.horizontal ? control.visualPosition * (control.availableWidth - width) : (control.availableWidth - width) / 2)
-        y: control.topPadding + (control.horizontal ? (control.availableHeight - height) / 2 : control.visualPosition * (control.availableHeight - height))
-        width: horizontal ? PM.Slider_Handle_Width : PM.Slider_Handle_Height
-        height: horizontal ? PM.Slider_Handle_Height : PM.Slider_Handle_Width
-        color: control.palette.highlight
-        arrowPosition: getSliderHandlePosition()
-    }
-
-    // 绘制面板（panel）
-    background: Rectangle {
-        x: control.leftPadding + (control.horizontal ? 0 : (control.availableWidth - width) / 2)
-        y: control.topPadding + (control.horizontal ? (control.availableHeight - height) / 2 : 0)
-        implicitWidth: control.horizontal ? PM.Slider_Width : PM.Slider_Height
-        implicitHeight: control.horizontal ? PM.Slider_Height : PM.Slider_Width
-        scale: control.horizontal && control.mirrored ? -1 : 1
-
-        // 绘制滑槽（groove）
-        Rectangle {
-            id: sliderGroove
-            x: control.horizontal ? handle.width / 2 : (parent.width - width) / 2
-            y: control.horizontal ? (parent.height - height) / 2 : handle.height / 2
-            width: control.horizontal ? parent.width - handle.width : PM.Slider_Groove_height
-            height: control.horizontal ? PM.Slider_Groove_height : parent.height - handle.height
-            Shape {
-                // 绘制滑块滑动未经过的滑槽
-                ShapePath {
-                    capStyle: ShapePath.FlatCap
-                    strokeStyle: ShapePath.DashLine
-                    strokeColor: control.palette.button
-                    strokeWidth: control.horizontal ? sliderGroove.height : sliderGroove.width
-                    dashOffset: 0
-                    dashPattern: [0.5, 0.25]
-                    startX: control.horizontal ? 0 : sliderGroove.width / 2
-                    startY: control.horizontal ? sliderGroove.height / 2 : 0
-                    PathLine {
-                        x: control.horizontal ? sliderGroove.width : sliderGroove.width / 2
-                        y: control.horizontal ? sliderGroove.height / 2 : sliderGroove.height
-                    }
-                }
-                // 绘制滑块滑动经过的滑槽
-                ShapePath {
-                    capStyle: ShapePath.FlatCap
-                    strokeStyle: ShapePath.DashLine
-                    strokeColor: control.palette.highlight
-                    strokeWidth: control.horizontal ? sliderGroove.height : sliderGroove.width
-                    dashOffset: 0
-                    dashPattern: [0.5, 0.25]
-                    startX: control.horizontal ? 0 : sliderGroove.width / 2
-                    startY: control.horizontal ? sliderGroove.height / 2 : 0
-                    PathLine {
-                        x: control.horizontal ? control.handle.x : sliderGroove.width / 2
-                        y: control.horizontal ? sliderGroove.height / 2 : control.handle.y
-                    }
-                }
-            }
-        }
-
-        // 绘制刻度线（tickmarks）
-        Repeater {
-            id: repeaterTop
-            visible: false
-            model: (Slider.TickPosition.TicksBothSides === tickPosition) ? (tickCount + 1) : 0
-            width: horizontal ? sliderGroove.width : (parent.width - handle.width) / 2
-            height: horizontal ? (parent.height - handle.height) / 2 : sliderGroove.height
-            Rectangle {
-                x: horizontal ? sliderGroove.x + index * (repeaterTop.width / (repeaterTop.count - 1)) : 0
-                y: horizontal ? 0 : sliderGroove.y + index * (repeaterTop.height / (repeaterTop.count - 1))
-                width: horizontal ? 1 : repeaterTop.width
-                height: horizontal ? repeaterTop.height : 1
-                color: control.palette.text
-            }
-        }
-        Repeater {
-            id: repeaterBottom
-            visible: false
-            model: (Slider.TickPosition.NoTicks === tickPosition) ? 0 : (tickCount + 1)
-            width: repeaterTop.width
-            height: repeaterTop.height
-            Rectangle {
-                x: horizontal ? sliderGroove.x + index * (repeaterBottom.width / (repeaterBottom.count - 1)) :
-                                repeaterBottom.width + handle.width
-                y: horizontal ? repeaterBottom.height + handle.height :
-                                sliderGroove.y + index * (repeaterBottom.height / (repeaterBottom.count - 1))
-                width: horizontal ? 1 : repeaterBottom.width
-                height: horizontal ? repeaterBottom.height : 1
-                color: control.palette.text
-            }
-        }
-    }
 }
 

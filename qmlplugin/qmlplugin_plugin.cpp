@@ -259,6 +259,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "StyledBehindWindowBlur");
     dtkRegisterType(uri, controlsUri, 1, 0, "PopupWindow");
     dtkRegisterType(uri, controlsUri, 1, 0, "Switch");
+    dtkRegisterType(uri, controlsUri, 1, 0, "Slider");
 
     // for org.deepin.dtk.style(allowed to override)
     dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");

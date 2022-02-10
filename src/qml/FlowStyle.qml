@@ -176,6 +176,16 @@ QtObject {
         normalDark: "#444444"
     }
 
+    property D.Palette sliderGroove: D.Palette {
+        normal: Qt.rgba(0, 0, 0, 0.2)
+        normalDark: Qt.rgba(1, 1, 1, 0.2)
+    }
+
+    property D.Palette sliderTick: D.Palette {
+        normal: Qt.rgba(0, 0, 0, 0.4)
+        normalDark: Qt.rgba(1, 1, 1, 0.4)
+    }
+
     // PixelMetric
     property QtObject control: QtObject {
         property int radius: 8
@@ -337,5 +347,22 @@ QtObject {
         property int indicatorHeight: 24
         property int buttonWidth: 30
         property int buttonHeight: 24
+    }
+    
+    property QtObject slider: QtObject {
+        property int handleWidth: 20
+        property int handleHeight: 24
+        property int tickWidth: 1
+        property int tickHeight: 12
+        property int grooveWidth: 100
+        property int grooveHeight: 4
+        property int sliderWidth: handleWidth + grooveWidth
+        property int sliderHeight: 60
+        property int tickRadius: 8
+        property int handleRadius: tickRadius
+        property int highlightMargin: -4
+        property int tickTextMargin: 2
+        property int tickTextSize: 11
+        property int tickTextHeight: 20
     }
 }
