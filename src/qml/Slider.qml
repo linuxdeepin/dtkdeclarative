@@ -217,6 +217,8 @@ T.Slider {
     // horizontal Ticks
     Row {
         id: horizontalRow
+        property real perCellWidth: sliderGroove.width / tickCount
+
         x: handle.width / 2
         y: control.horizontal ? (Slider.TickPosition.TicksBelow === control.tickPosition ?
                                      (handle.y + handle.height) : (handle.y - height)) : 0
@@ -253,6 +255,10 @@ T.Slider {
                         right: index === control.tips.length - 1 && !control.bothSidesTextHorizontalAlign ? parent.right : undefined
                     }
                     height: DS.Style.slider.tickTextHeight
+                    width: bothSidesTextHorizontalAlign ? Math.min(implicitWidth, horizontalRow.perCellWidth)
+                                                        : ((index === 0 || index === control.tips.length - 1)
+                                                           ? Math.min(implicitWidth, horizontalRow.perCellWidth / 2)
+                                                           : Math.min(implicitWidth, horizontalRow.perCellWidth))
                     text: tips[index]
                     elide: control.bothSidesTextHorizontalAlign ? Text.ElideMiddle : ((index === 0 || index === control.tips.length - 1)
                                                                                  ? (index === 0 ? Text.ElideRight: Text.ElideLeft)
