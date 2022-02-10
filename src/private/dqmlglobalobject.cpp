@@ -345,6 +345,16 @@ DQuickDciIcon DQMLGlobalObject::makeIcon(const QJSValue &qicon, const QJSValue &
     return dciIcon;
 }
 
+DDciIconPalette DQMLGlobalObject::makeIconPalette(const QPalette &palette)
+{
+    DDciIconPalette iconPalette;
+    iconPalette.setForeground(palette.color(QPalette::WindowText));
+    iconPalette.setBackground(palette.color(QPalette::Window));
+    iconPalette.setHighlight(palette.color(QPalette::Highlight));
+    iconPalette.setHighlightForeground(palette.color(QPalette::HighlightedText));
+    return iconPalette;
+}
+
 bool DQMLGlobalObject::sendMessage(QQuickItem *target, const QString &content, const QString &iconName, int duration, const QString &msgId)
 {
     Q_ASSERT(target);

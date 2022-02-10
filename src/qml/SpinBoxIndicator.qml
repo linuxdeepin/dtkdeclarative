@@ -38,6 +38,7 @@ Control {
     property bool pressed
     property alias iconName: icon.name
 
+    palette.windowText: D.ColorSelector.indicatorColor
     implicitWidth: DS.Style.spinBox.indicatorWidth
     implicitHeight: singleIndicator ? DS.Style.spinBox.indicatorHeight : DS.Style.spinBox.indicatorWidth
     hoverEnabled: true
@@ -75,6 +76,6 @@ Control {
         id: icon
         anchors.centerIn: parent
         sourceSize.width: DS.Style.spinBox.indicatorIconSize
-        color: control.D.ColorSelector.indicatorColor
+        palette: D.DTK.makeIconPalette(control.palette)
     }
 }

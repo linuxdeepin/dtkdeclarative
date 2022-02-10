@@ -39,10 +39,10 @@ T.MenuItem {
         width: DS.Style.menu.itemIconSize.height
     }
 
-    property D.Palette itemColor:  D.Palette {
-        normal: control.palette.text
-        hovered: control.palette.base
+    property D.Palette itemColor: D.Palette {
+        hovered: D.DTK.makeColor(D.Color.HighlightedText)
     }
+    palette.windowText: hovered ? D.ColorSelector.itemColor : undefined
     contentItem: D.IconLabel {
         property bool existsChecked: {
             for (var i = 0; i < menu.count; ++i) {
@@ -63,7 +63,7 @@ T.MenuItem {
         alignment: Qt.AlignLeft
         text: control.text
         font: control.font
-        color: control.D.ColorSelector.itemColor
+        color: control.palette.windowText
         icon: D.DTK.makeIcon(control.icon, D.DciIcon)
     }
 
@@ -87,7 +87,7 @@ T.MenuItem {
         visible: control.subMenu
         mirror: control.mirrored
         name: control.subMenu ? "go-next" : ""
-        color: control.D.ColorSelector.itemColor
+        palette: D.DTK.makeIconPalette(control.palette)
     }
 
     background:  HighlightPanel {

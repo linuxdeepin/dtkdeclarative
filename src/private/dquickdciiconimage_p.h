@@ -32,16 +32,19 @@
 DQUICK_BEGIN_NAMESPACE
 DGUI_USE_NAMESPACE
 
+class DQuickDciIconImageItem;
 class DQuickIconAttached;
 class DQuickDciIconImagePrivate;
-class DQuickDciIconImage : public DQuickIconImage
+class DQuickDciIconImage : public QQuickItem, DCORE_NAMESPACE::DObject
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(DQuickDciIconImage)
+    D_DECLARE_PRIVATE(DQuickDciIconImage)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged FINAL)
     Q_PROPERTY(DQMLGlobalObject::ControlState mode READ mode WRITE setMode NOTIFY modeChanged FINAL)
     Q_PROPERTY(Theme theme READ theme WRITE setTheme NOTIFY themeChanged FINAL)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DDciIconPalette palette READ palette WRITE setPalette NOTIFY paletteChanged)
+    Q_PROPERTY(QSize sourceSize READ sourceSize WRITE setSourceSize NOTIFY sourceSizeChanged)
+    Q_PROPERTY(bool mirror READ mirror WRITE setMirror NOTIFY mirrorChanged)
 
 public:
     enum Theme {
@@ -60,13 +63,21 @@ public:
     DQMLGlobalObject::ControlState mode() const;
     void setMode(DQMLGlobalObject::ControlState mode);
 
-    Theme theme() const;
-    void setTheme(Theme theme);
+    DQuickDciIconImage::Theme theme() const;
+    void setTheme(DQuickDciIconImage::Theme theme);
 
     DDciIconPalette palette() const;
     void setPalette(const DDciIconPalette &palette);
 
-    bool isNull(const QString &iconName = QString()) const;
+    QSize sourceSize() const;
+    void setSourceSize(const QSize &size);
+
+    void setMirror(bool mirror);
+    bool mirror() const;
+
+    DQuickIconImage *imageItem() const;
+
+    static bool isNull(const QString &iconName);
     static DQuickIconAttached *qmlAttachedProperties(QObject *object);
 
 Q_SIGNALS:
@@ -74,6 +85,12 @@ Q_SIGNALS:
     void modeChanged();
     void themeChanged();
     void paletteChanged();
+    void sourceSizeChanged();
+    void mirrorChanged();
+
+protected:
+    void classBegin() override;
+    void componentComplete() override;
 };
 
 class DQuickIconAttachedPrivate;

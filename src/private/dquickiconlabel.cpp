@@ -18,6 +18,7 @@
 #include "dquickdciiconimage_p.h"
 #include "dquickiconlabel_p.h"
 #include "dquickiconlabel_p_p.h"
+#include "dquickdciiconimage_p_p.h"
 
 #include <DGuiApplicationHelper>
 #include <DPlatformTheme>
@@ -53,8 +54,9 @@ bool DQuickIconLabelPrivate::hasText() const
 void DQuickIconLabelPrivate::createIconImage()
 {
     Q_Q(DQuickIconLabel);
-    DQuickDciIconImage *dciImage = new DQuickDciIconImage(q);
-    if (!dciImage->isNull(icon.name())) {
+    if (!DQuickDciIconImage::isNull(icon.name())) {
+        DQuickDciIconImage *dciImage = new DQuickDciIconImage(q);
+        QQmlEngine::setContextForObject(dciImage, QQmlEngine::contextForObject(q));
         watchChanges(dciImage);
         beginClass(dciImage);
         dciImage->setObjectName(QStringLiteral("image"));
@@ -63,10 +65,10 @@ void DQuickIconLabelPrivate::createIconImage()
         dciImage->setPalette(icon.palette());
         dciImage->setSourceSize(QSize(icon.width(), icon.height()));
         dciImage->setMode(icon.mode());
-        image = dciImage;
+        image = dciImage->imageItem();
     } else {
-        delete dciImage;
         image = new DQuickIconImage(q);
+        QQmlEngine::setContextForObject(image, qmlContext(q));
         watchChanges(image);
         beginClass(image);
         image->setName(icon.name());
@@ -82,7 +84,6 @@ bool DQuickIconLabelPrivate::createImage()
         return false;
 
     createIconImage();
-    QQmlEngine::setContextForObject(image, qmlContext(q));
     if (componentComplete)
         completeComponent(image);
     return true;
