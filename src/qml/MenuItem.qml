@@ -90,10 +90,19 @@ T.MenuItem {
         palette: D.DTK.makeIconPalette(control.palette)
     }
 
-    background:  HighlightPanel {
+    background: Item {
         implicitWidth: DS.Style.menu.itemWidth
         implicitHeight: DS.Style.menu.itemHeight
-        backgroundColor.normal: (!control.hovered && control.subMenu && control.subMenu.opened)
-                                ? DS.Style.menu.subMenuOpendBackground : "transparent"
+        Rectangle {
+            anchors.fill: parent
+            visible: !control.hovered && control.subMenu && control.subMenu.opened
+            color: DS.Style.menu.subMenuOpendBackground
+            radius: DS.Style.control.radius
+        }
+
+        HighlightPanel {
+            anchors.fill: parent
+            visible: control.hovered
+        }
     }
 }
