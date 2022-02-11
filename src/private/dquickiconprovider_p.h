@@ -24,10 +24,8 @@
 
 DQUICK_BEGIN_NAMESPACE
 
-class DQuickDciIconProviderPrivate;
 class DQuickIconProvider : public QQuickImageProvider
 {
-    friend DQuickDciIconProviderPrivate;
 public:
     DQuickIconProvider();
 
@@ -39,13 +37,9 @@ class DQuickDciIconProvider : public QQuickImageProvider
 {
 public:
     DQuickDciIconProvider();
-    ~DQuickDciIconProvider() override;
 
 protected:
     QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize) override;
-
-private:
-    DQuickDciIconProviderPrivate *d;
 };
 
 DQUICK_END_NAMESPACE
