@@ -31,26 +31,19 @@
 DQUICK_BEGIN_NAMESPACE
 DGUI_USE_NAMESPACE
 
-DQuickIconProvider::DQuickIconProvider()
-    : QQuickImageProvider(QQuickImageProvider::Image, QQuickImageProvider::ForceAsynchronousImageLoading)
-{
-
-}
-
-QImage DQuickIconProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
-{
+static QImage requestImageFromQIcon(const QString &id, QSize *size, const QSize &requestedSize) {
     QUrlQuery urlQuery(id);
-
-    if (!urlQuery.hasQueryItem("name"))
-        return QImage();
-
     QString name = urlQuery.queryItemValue("name");
 
     if (name.isEmpty())
         return QImage();
 
-    QIcon icon = QIcon::fromTheme(name);
-
+    QIcon icon;
+    if (auto cached = DIconTheme::cached()) {
+        icon = cached->findQIcon(name);
+    } else {
+        icon = DIconTheme::findQIcon(name);
+    }
     if (icon.isNull())
         return QImage();
 
@@ -100,26 +93,21 @@ QImage DQuickIconProvider::requestImage(const QString &id, QSize *size, const QS
     return image;
 }
 
-class DQuickDciIconProviderPrivate
+DQuickIconProvider::DQuickIconProvider()
+    : QQuickImageProvider(QQuickImageProvider::Image, QQuickImageProvider::ForceAsynchronousImageLoading)
 {
-public:
-    QImage requestImageFromIconProvider(const QString &id, QSize *size, const QSize &requestedSize)
-    {
-        DQuickIconProvider iconProvider;
-        return iconProvider.requestImage(id, size, requestedSize);
-    }
-};
+
+}
+
+QImage DQuickIconProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
+{
+    return requestImageFromQIcon(id, size, requestedSize);
+}
 
 DQuickDciIconProvider::DQuickDciIconProvider()
     : QQuickImageProvider(QQuickImageProvider::Image,
                           QQuickImageProvider::ForceAsynchronousImageLoading)
-    , d(new DQuickDciIconProviderPrivate)
 {
-}
-
-DQuickDciIconProvider::~DQuickDciIconProvider()
-{
-    delete d;
 }
 
 /*!
@@ -136,9 +124,6 @@ DQuickDciIconProvider::~DQuickDciIconProvider()
 QImage DQuickDciIconProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
 {
     QUrlQuery urlQuery(id);
-    if (!urlQuery.hasQueryItem("name"))
-        return QImage();
-
     QString name = urlQuery.queryItemValue("name");
     if (name.isEmpty())
         return QImage();
@@ -152,11 +137,11 @@ QImage DQuickDciIconProvider::requestImage(const QString &id, QSize *size, const
 
     if (Q_UNLIKELY(iconPath.isEmpty())) {
         // Fallback to normal qicon.
-       return d->requestImageFromIconProvider(id, size, requestedSize);
+       return requestImageFromQIcon(id, size, requestedSize);
     }
     DDciIcon dciIcon(iconPath);
     if (dciIcon.isNull())
-        return d->requestImageFromIconProvider(id, size, requestedSize);
+        return requestImageFromQIcon(id, size, requestedSize);
 
     DDciIcon::Mode mode = DDciIcon::Normal;
     if (urlQuery.hasQueryItem("mode")) {
