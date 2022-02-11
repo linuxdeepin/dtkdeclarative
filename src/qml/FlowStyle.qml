@@ -364,7 +364,5 @@ QtObject {
         property int handleRadius: tickRadius
         property int highlightMargin: -4
         property int tickTextMargin: 2
-        property int tickTextSize: 11
-        property int tickTextHeight: 20
     }
 }
