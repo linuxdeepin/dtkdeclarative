@@ -77,19 +77,26 @@ T.Slider {
         return control.tips.length === control.tickCount && control.tips.length > 0 ? true : false
     }
 
-    implicitWidth: Math.max(background ? background.implicitWidth : 0,
-                            (handle ? handle.implicitWidth : 0) + leftPadding + rightPadding)
-    implicitHeight: Math.max(background ? background.implicitHeight : 0,
-                             (handle ? handle.implicitHeight : 0) + topPadding + bottomPadding)
+    function fistTickTextIsValid() {
+        return control.tips.length > 0 && control.tips[0]
+    }
+
+    implicitWidth:  leftPadding + rightPadding + (control.horizontal ? DS.Style.slider.grooveWidth : (DS.Style.slider.handleHeight
+                                                                       + (tickTextIsValid() ? Math.max(verticalRepeater.itemAt(verticalRepeater.count - 1).childrenRect.width, DS.Style.slider.tickHeight)
+                                                                      : 0) + (fistTickTextIsValid() ? verticalRepeater.itemAt(verticalRepeater.count - 1).childrenRect.height : 0)))
+    implicitHeight: topPadding + bottomPadding + (control.horizontal ? (DS.Style.slider.handleHeight
+                                         + (tickTextIsValid() ? DS.Style.slider.tickHeight : 0)
+                                         + (fistTickTextIsValid() ? horizontalRepeater.itemAt(horizontalRepeater.count - 1).childrenRect.height : 0))
+                                       : DS.Style.slider.grooveWidth)
 
     // draw handle
     handle: SliderHandle {
-        id: sliderHandle
-        x: control.leftPadding + (control.horizontal ? control.visualPosition * (control.availableWidth - width) : (control.availableWidth - width) / 2)
-        y: control.topPadding + (control.horizontal ? (control.availableHeight - height) / 2
+        x: control.leftPadding + (control.horizontal ? control.visualPosition * (control.availableWidth - width)
+                                                     : (Slider.TickPosition.TicksLeft === tickPosition && tickTextIsValid() ? control.width - width : 0))
+        y: control.topPadding + (control.horizontal ? (Slider.TickPosition.TicksAbove === tickPosition && tickTextIsValid() ? control.height - height : 0)
                                                     : control.visualPosition * (control.availableHeight - height))
-        width: horizontal ? DS.Style.slider.handleWidth : DS.Style.slider.handleHeight
-        height: horizontal ? DS.Style.slider.handleHeight : DS.Style.slider.handleWidth
+        width: control.horizontal ? DS.Style.slider.handleWidth : DS.Style.slider.handleHeight
+        height: control.horizontal ? DS.Style.slider.handleHeight : DS.Style.slider.handleWidth
         color: control.palette.highlight
         arrowPosition: getSliderHandlePosition()
         radius: DS.Style.slider.handleRadius
@@ -97,8 +104,11 @@ T.Slider {
 
     // draw panel
     background: Item {
-        x: control.leftPadding + (control.horizontal ? 0 : (control.availableWidth - width) / 2)
-        y: control.topPadding + (control.horizontal ? (control.availableHeight - height) / 2 : 0)
+        anchors {
+            horizontalCenter: !control.horizontal ? control.handle.horizontalCenter : undefined
+            verticalCenter: control.horizontal ? control.handle.verticalCenter : undefined
+        }
+
         implicitWidth: control.horizontal ? DS.Style.slider.sliderWidth : handle.width
         implicitHeight: control.horizontal ? handle.height : DS.Style.slider.sliderHeight
 
@@ -174,10 +184,11 @@ T.Slider {
         x: control.horizontal ? 0 : (Slider.TickPosition.TicksRight === control.tickPosition ?
                                          (handle.x + handle.width) : (handle.x - width))
         y: handle.height / 2
-        width: horizontal ? 0 : DS.Style.slider.tickHeight
-        height: horizontal ? 0 : (background.height - handle.height)
+        width: !horizontal && tickCount > 0 ? DS.Style.slider.tickHeight : 0
+        height: !horizontal && tickCount > 0 ? (background.height - handle.height) : 0
         spacing: tickCount > 1 ? height / (tickCount - 1) - DS.Style.slider.tickWidth : 0
         Repeater {
+            id: verticalRepeater
             model: control.horizontal ? 0 : (tickTextIsValid() ? tickCount : 0)
             Rectangle {
                 width: DS.Style.slider.tickHeight
@@ -205,7 +216,6 @@ T.Slider {
                     }
                     text: tips[tips.length - index - 1]
                     color: control.tickIndex === tips.length - index - 1 ? control.palette.highlightedText : control.palette.windowText
-                    font.pixelSize: DS.Style.slider.tickTextSize
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     elide: Text.ElideMiddle
@@ -222,10 +232,11 @@ T.Slider {
         x: handle.width / 2
         y: control.horizontal ? (Slider.TickPosition.TicksBelow === control.tickPosition ?
                                      (handle.y + handle.height) : (handle.y - height)) : 0
-        width: horizontal ? background.width - handle.width : 0
-        height: horizontal ? DS.Style.slider.tickHeight : 0
+        width: horizontal && tickCount > 0 ? background.width - handle.width : 0
+        height: horizontal && tickCount > 0 ? DS.Style.slider.tickHeight : 0
         spacing: tickCount > 1 ? width / (tickCount - 1) - DS.Style.slider.tickWidth : 0
         Repeater {
+            id: horizontalRepeater
             model: control.horizontal ? (tickTextIsValid() ? tickCount : 0) : 0
             Rectangle {
                 width: DS.Style.slider.tickWidth
@@ -254,7 +265,6 @@ T.Slider {
                         left: index === 0 && !control.bothSidesTextHorizontalAlign ? parent.left : undefined
                         right: index === control.tips.length - 1 && !control.bothSidesTextHorizontalAlign ? parent.right : undefined
                     }
-                    height: DS.Style.slider.tickTextHeight
                     width: bothSidesTextHorizontalAlign ? Math.min(implicitWidth, horizontalRow.perCellWidth)
                                                         : ((index === 0 || index === control.tips.length - 1)
                                                            ? Math.min(implicitWidth, horizontalRow.perCellWidth / 2)
@@ -268,7 +278,6 @@ T.Slider {
                                                                                  ? (index === 0 ? Text.AlignLeft: Text.AlignRight)
                                                                                  : Text.AlignHCenter)
                     verticalAlignment: Text.AlignVCenter
-                    font.pixelSize: DS.Style.slider.tickTextSize
                 }
             }
         }

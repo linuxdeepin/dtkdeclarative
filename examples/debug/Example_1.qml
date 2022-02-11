@@ -240,11 +240,26 @@ Rectangle {
             topMargin: 20
         }
 
-        spacing: 60
+        spacing: 10
+        height: 350
+
         D.Slider {
             highlightPassArea: true
             orientation: Qt.Vertical
-            height: 350
+            height: parent.height
+        }
+
+        D.Slider {
+            height: parent.height
+            orientation: Qt.Vertical
+            tickPosition: D.Slider.TickPosition.TicksLeft
+        }
+
+        D.Slider {
+            height: parent.height
+            highlightPassArea: true
+            orientation: Qt.Vertical
+            tickPosition: D.Slider.TickPosition.TicksRight
         }
 
         D.Slider {
@@ -252,11 +267,39 @@ Rectangle {
             from: 0
             to: 60
             tickCount: 7
+            height: parent.height
+            orientation: Qt.Vertical
+            bothSidesTextHorizontalAlign: false
             tickPosition: D.Slider.TickPosition.TicksLeft
             tips: [qsTr("1m"), qsTr("5m"), qsTr("10m"), qsTr("15m"), qsTr("30m"), qsTr("1h"), qsTr("Never")]
-            bothSidesTextHorizontalAlign: false
-            height: 350
+        }
+
+        D.Slider {
+            stepSize: 10
+            from: 0
+            to: 60
+            tickCount: 7
+            height: parent.height
             orientation: Qt.Vertical
+            bothSidesTextHorizontalAlign: false
+            tickPosition: D.Slider.TickPosition.TicksRight
+            tips: [qsTr("1m"), qsTr("5m"), qsTr("10m"), qsTr("15m"), qsTr("30m"), qsTr("1h"), qsTr("Never")]
+        }
+
+        D.Slider {
+            tickCount: 9
+            height: parent.height
+            orientation: Qt.Vertical
+            tickPosition: D.Slider.TickPosition.TicksRight
+            tips: ["", "", "", "", "", "", "", "", ""]
+        }
+
+        D.Slider {
+            tickCount: 9
+            height: parent.height
+            orientation: Qt.Vertical
+            tickPosition: D.Slider.TickPosition.TicksLeft
+            tips: ["", "", "", "", "", "", "", "", ""]
         }
     }
 
@@ -266,42 +309,87 @@ Rectangle {
             top: lineEdit.bottom
             topMargin: 40
             left: sliderRow.right
-            leftMargin: 30
+            leftMargin: 60
         }
-        spacing: 50
+        spacing: 10
+        width: 400
 
         D.Slider {
             highlightPassArea: true
-            width: 400
+            width: parent.width
         }
 
         D.Slider {
-            width: 400
+            width: parent.width
             tickPosition: Slider.TickPosition.TicksBelow
         }
 
         D.Slider {
+            width: parent.width
+            highlightPassArea: true
+            tickPosition: Slider.TickPosition.TicksAbove
+        }
+
+        D.Slider {
+            id: testSlider
+
             stepSize: 10
             from: 0
             to: 60
             tickCount: 7
+            width: parent.width
+            bothSidesTextHorizontalAlign: false
             tickPosition: D.Slider.TickPosition.TicksAbove
             tips: [qsTr("1m111111111111111111"), qsTr("5m11111111111111111"), qsTr("10m"), qsTr("15m111111111111111111111")
                 , qsTr("30m"), qsTr("1h1111111111111111111"), qsTr("Never111111111111111111111")]
-            bothSidesTextHorizontalAlign: false
-            width: 400
+
+            // test end Indicator
+            Rectangle {
+                width: 30
+                height: 30
+                color: "blue"
+                anchors {
+                    left: parent.right
+                    leftMargin: 20
+                    verticalCenter: parent.handle.verticalCenter
+                }
+
+                Text {
+                    anchors.centerIn: parent
+                    text: testSlider.value
+                    color: "white"
+                }
+            }
+
+            // test start Indicator
+            Rectangle {
+                width: 30
+                height: 30
+                color: "red"
+                anchors {
+                    right: parent.left
+                    rightMargin: 20
+                    verticalCenter: parent.handle.verticalCenter
+                }
+
+                Text {
+                    anchors.centerIn: parent
+                    text: "S"
+                    color: "white"
+                }
+            }
         }
 
         D.Slider {
-            width: 400
             tickCount: 9
+            width: parent.width
             tickPosition: D.Slider.TickPosition.TicksBelow
             tips: [qsTr("Fast"), "", "", "", "", "", "", "", qsTr("Slow")]
         }
 
         D.Slider {
-            width: 400
             tickCount: 9
+            width: parent.width
             tickPosition: D.Slider.TickPosition.TicksBelow
             tips: ["", "", "", "", "", "", "", "", ""]
         }
@@ -309,9 +397,9 @@ Rectangle {
 
     Row {
         anchors {
-            top: lineEdit.bottom
-            left: sliderColum.right
-            topMargin: 20
+            top: sliderColum.bottom
+            left: sliderRow.right
+            topMargin: 30
             leftMargin: 40
         }
         spacing: 10
