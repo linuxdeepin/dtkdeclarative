@@ -88,7 +88,8 @@ void OpaqueTextureMaterialShader::updateState(const RenderState &state, QSGMater
 
     // TODO：一直刷新数据浪费性能，需要优化
     QSGTexture *t = newMaterial->texture();
-    Q_ASSERT(t);
+    if (Q_UNLIKELY(!t))
+        return;
     t->setFiltering(newMaterial->filtering());
     t->setHorizontalWrapMode(newMaterial->horizontalWrapMode());
     t->setVerticalWrapMode(newMaterial->verticalWrapMode());
@@ -180,6 +181,7 @@ MaskEffectNode::MaskEffectNode()
 
 MaskEffectNode::~MaskEffectNode()
 {
+    QObject::disconnect(m_textureDestroy);
     if (m_ownsTexture)
         delete m_material.texture();
 }
@@ -302,18 +304,31 @@ QRectF MaskEffectNode::sourceRect() const
 void MaskEffectNode::setTexture(QSGTexture *texture)
 {
     Q_ASSERT(texture);
+    DirtyState dirty = DirtyMaterial;
+    if (m_material.texture() == texture) {
+        markDirty(dirty);
+        return;
+    }
+
+    QObject::disconnect(m_textureDestroy);
     if (m_ownsTexture)
         delete m_material.texture();
     m_material.setTexture(texture);
     m_opaque_material.setTexture(texture);
     rebuildGeometry(&m_geometry, texture, m_rect, m_sourceRect, m_texCoordMode);
 
-    DirtyState dirty = DirtyMaterial;
     bool wasAtlas = m_isAtlasTexture;
     m_isAtlasTexture = texture->isAtlasTexture();
     if (wasAtlas || m_isAtlasTexture)
         dirty |= DirtyGeometry;
     markDirty(dirty);
+
+    m_textureDestroy = QObject::connect(texture, &QSGTexture::destroyed, [this] {
+        if (!m_ownsTexture) {
+            m_material.setTexture(nullptr);
+            m_opaque_material.setTexture(nullptr);
+        }
+    });
 }
 
 QSGTexture *MaskEffectNode::texture() const
