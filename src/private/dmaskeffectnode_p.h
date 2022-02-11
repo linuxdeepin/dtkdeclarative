@@ -109,6 +109,7 @@ private:
     TextureCoordinatesTransformMode m_texCoordMode;
     uint m_isAtlasTexture : 1;
     uint m_ownsTexture : 1;
+    QMetaObject::Connection m_textureDestroy;
 };
 
 DQUICK_END_NAMESPACE

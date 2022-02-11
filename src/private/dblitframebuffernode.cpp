@@ -107,6 +107,9 @@ public:
         if (!QOpenGLFramebufferObject::hasOpenGLFramebufferBlit())
             return;
 
+        if (Q_UNLIKELY(!m_item))
+            return;
+
         const qreal scale = m_item->window() ? m_item->window()->effectiveDevicePixelRatio() : 1;
         QRectF sourceRect = matrix()->mapRect(m_rect);
         sourceRect.moveTopLeft(sourceRect.topLeft() * scale);

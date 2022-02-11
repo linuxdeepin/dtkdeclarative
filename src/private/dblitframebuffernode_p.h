@@ -25,6 +25,7 @@
 
 #include <QSGTextureProvider>
 #include <QSGRenderNode>
+#include <QPointer>
 
 QT_BEGIN_NAMESPACE
 class QSGPlainTexture;
@@ -66,7 +67,7 @@ public:
 protected:
     DBlitFramebufferNode(QQuickItem *item);
 
-    QQuickItem *m_item;
+    QPointer<QQuickItem> m_item;
     QSizeF m_size;
     QMarginsF m_margins;
     QRectF m_rect;

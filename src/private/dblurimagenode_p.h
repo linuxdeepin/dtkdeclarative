@@ -24,6 +24,7 @@
 #include <dtkdeclarative_global.h>
 #include <QSGRenderNode>
 #include <QImage>
+#include <QPointer>
 
 QT_BEGIN_NAMESPACE
 class QQuickItem;
@@ -77,7 +78,7 @@ protected:
     void *m_callbackData = nullptr;
     bool m_offscreen = false;
 
-    QQuickItem *m_item;
+    QPointer<QQuickItem> m_item;
     QSGTexture *m_texture = nullptr;
     qreal m_radius = 0;
     QRectF m_sourceRect;

@@ -471,7 +471,7 @@ void DOpenGLBlurEffectNode::render(const QSGRenderNode::RenderState *state)
     if (Q_UNLIKELY(!m_sourceRect.isValid() || !m_texture))
         return;
 
-    if (!m_item->window())
+    if (Q_UNLIKELY(!m_item || !m_item->window()))
         return;
 
 #if(QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
