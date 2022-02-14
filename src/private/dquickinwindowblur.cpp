@@ -61,7 +61,7 @@ DQuickInWindowBlur::DQuickInWindowBlur(QQuickItem *parent)
 
 DQuickInWindowBlur::~DQuickInWindowBlur()
 {
-
+    DQuickInWindowBlur::releaseResources();
 }
 
 qreal DQuickInWindowBlur::radius() const
@@ -102,9 +102,9 @@ QSGTextureProvider *DQuickInWindowBlur::textureProvider() const
     }
 
     if (!m_tp) {
-        m_tp.reset(new TextureProvider());
+        m_tp = new TextureProvider();
     }
-    return m_tp.data();
+    return m_tp;
 }
 
 static void updateBlurNodeTexture(DBlitFramebufferNode *node, void *blurNode) {
@@ -118,7 +118,7 @@ void onRender(DSGBlurNode *node, void *data) {
         return;
     node->writeToTexture(that->m_tp->plainTexture());
     // Don't direct emit the signal, must ensure the signal emit on current render loop after.
-    that->m_tp->metaObject()->invokeMethod(that->m_tp.data(), &TextureProvider::textureChanged, Qt::QueuedConnection);
+    that->m_tp->metaObject()->invokeMethod(that->m_tp, &TextureProvider::textureChanged, Qt::QueuedConnection);
 }
 
 QSGNode *DQuickInWindowBlur::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *data)
@@ -157,7 +157,7 @@ QSGNode *DQuickInWindowBlur::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeDa
     }
 
     if (!m_tp) {
-        m_tp.reset(new TextureProvider());
+        m_tp = new TextureProvider();
     }
 
     node->resize(size());
@@ -181,6 +181,20 @@ void DQuickInWindowBlur::itemChange(ItemChange type, const ItemChangeData &data)
     }
 
     QQuickItem::itemChange(type, data);
+}
+
+void DQuickInWindowBlur::releaseResources()
+{
+    if (m_tp) {
+        QQuickWindowQObjectCleanupJob::schedule(window(), m_tp);
+        m_tp = nullptr;
+    }
+}
+
+void DQuickInWindowBlur::invalidateSceneGraph()
+{
+    delete m_tp;
+    m_tp = nullptr;
 }
 
 DQUICK_END_NAMESPACE

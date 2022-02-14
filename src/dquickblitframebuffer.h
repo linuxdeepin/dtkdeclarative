@@ -34,13 +34,18 @@ class Q_DECL_EXPORT DQuickBlitFramebuffer : public QQuickItem, public DCORE_NAME
     D_DECLARE_PRIVATE(DQuickBlitFramebuffer)
 public:
     explicit DQuickBlitFramebuffer(QQuickItem *parent = nullptr);
+    ~DQuickBlitFramebuffer();
 
     bool isTextureProvider() const override;
     QSGTextureProvider *textureProvider() const override;
 
+private Q_SLOTS:
+    void invalidateSceneGraph();
+
 private:
     QSGNode *updatePaintNode(QSGNode *, UpdatePaintNodeData *) override;
     void itemChange(ItemChange, const ItemChangeData &) override;
+    void releaseResources() override;
 };
 
 DQUICK_END_NAMESPACE

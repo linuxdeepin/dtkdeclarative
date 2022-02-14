@@ -60,7 +60,7 @@ public:
 
     }
 
-    mutable QScopedPointer<TextureProvider> tp;
+    mutable TextureProvider *tp = nullptr;
 };
 
 DQuickBlitFramebuffer::DQuickBlitFramebuffer(QQuickItem *parent)
@@ -68,6 +68,11 @@ DQuickBlitFramebuffer::DQuickBlitFramebuffer(QQuickItem *parent)
     , DObject(*new DQuickBlitFramebufferPrivate(this))
 {
     setFlag(ItemHasContents);
+}
+
+DQuickBlitFramebuffer::~DQuickBlitFramebuffer()
+{
+    DQuickBlitFramebuffer::releaseResources();
 }
 
 bool DQuickBlitFramebuffer::isTextureProvider() const
@@ -87,10 +92,17 @@ QSGTextureProvider *DQuickBlitFramebuffer::textureProvider() const
     }
 
     if (!d->tp) {
-        d->tp.reset(new TextureProvider());
+        d->tp = new TextureProvider();
     }
 
-    return d->tp.data();
+    return d->tp;
+}
+
+void DQuickBlitFramebuffer::invalidateSceneGraph()
+{
+    D_D(DQuickBlitFramebuffer);
+    delete d->tp;
+    d->tp = nullptr;
 }
 
 static void onRender(DBlitFramebufferNode *node, void *data) {
@@ -99,7 +111,7 @@ static void onRender(DBlitFramebufferNode *node, void *data) {
         return;
     d->tp->setTexture(node->texture());
     // Don't direct emit the signal, must ensure the signal emit on current render loop after.
-    d->tp->metaObject()->invokeMethod(d->tp.data(), &TextureProvider::textureChanged, Qt::QueuedConnection);
+    d->tp->metaObject()->invokeMethod(d->tp, &TextureProvider::textureChanged, Qt::QueuedConnection);
 }
 
 QSGNode *DQuickBlitFramebuffer::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *oldData)
@@ -144,6 +156,15 @@ void DQuickBlitFramebuffer::itemChange(ItemChange type, const ItemChangeData &da
     }
 
     QQuickItem::itemChange(type, data);
+}
+
+void DQuickBlitFramebuffer::releaseResources()
+{
+    D_D(DQuickBlitFramebuffer);
+    if (d->tp) {
+        QQuickWindowQObjectCleanupJob::schedule(window(), d->tp);
+        d->tp = nullptr;
+    }
 }
 
 DQUICK_END_NAMESPACE
