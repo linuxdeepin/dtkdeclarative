@@ -18,9 +18,10 @@
         <file alias="window_quit_full.dci">icons/bloom/window_quit_full.dci</file>
         <file alias="window_close.dci">icons/bloom/window_close.dci</file>
         <file alias="window_menu.dci">icons/bloom/window_menu.dci</file>
-	 <file alias="slider_point_down.dci">icons/bloom/slider_point_down.dci</file>
-	 <file alias="slider_point_left.dci">icons/bloom/slider_point_left.dci</file>
-	 <file alias="slider_round_hor.dci">icons/bloom/slider_round_hor.dci</file>
-	 <file alias="slider_round_ver.dci">icons/bloom/slider_round_ver.dci</file>
+        <file alias="slider_point_down.dci">icons/bloom/slider_point_down.dci</file>
+        <file alias="slider_point_left.dci">icons/bloom/slider_point_left.dci</file>
+        <file alias="slider_round_hor.dci">icons/bloom/slider_round_hor.dci</file>
+        <file alias="slider_round_ver.dci">icons/bloom/slider_round_ver.dci</file>
+        <file alias="switch_button.dci">icons/bloom/switch_button.dci</file>
     </qresource>
 </RCC>
