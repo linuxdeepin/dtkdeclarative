@@ -165,7 +165,6 @@ QtObject {
         normalDark: "#1A1A1A"
     }
 
-    // TODO(Xiao Yao Bing): Replace handle with dci icon. delete this code
     property D.Palette switchHandle: D.Palette {
         normal: "#8c8c8c"
         normalDark: "#444444"
@@ -351,10 +350,11 @@ QtObject {
     property QtObject switchButton: QtObject {
         property int indicatorWidth: 50
         property int indicatorHeight: 24
-        property int buttonWidth: 30
-        property int buttonHeight: 24
+        property int handleWidth: 30
+        property int handleHeight: 24
+        property string iconNmae: "switch_button"
     }
-    
+
     property QtObject slider: QtObject {
         property int handleWidth: 20
         property int handleHeight: 24

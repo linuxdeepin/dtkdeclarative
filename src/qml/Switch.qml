@@ -30,7 +30,6 @@ T.Switch {
     id: control
 
     property D.Palette backgroundColor: DS.Style.switchBackground
-    // TODO(Xiao Yao Bing): Replace handle with dci icon. delete this code
     property D.Palette handleColor: DS.Style.switchHandle
 
     implicitWidth: DS.Style.control.implicitWidth(control)
@@ -51,17 +50,15 @@ T.Switch {
         color: control.D.ColorSelector.backgroundColor
         opacity: control.D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
 
-        // TODO(Xiao Yao Bing): Replace it with dci icon.
-        Rectangle {
+        D.DciIcon {
             id: handle
             x: Math.max(0, Math.min(parent.width - width, control.visualPosition * parent.width - (width / 2)))
             y: (parent.height - height) / 2
-            width: DS.Style.switchButton.buttonWidth
-            height: DS.Style.switchButton.buttonHeight
-            radius: DS.Style.control.radius
-            antialiasing: true
-            color: control.checked ? control.palette.highlight : control.D.ColorSelector.handleColor
+            sourceSize.width: DS.Style.switchButton.handleWidth
+            sourceSize.height: DS.Style.switchButton.handleHeight
+            name: DS.Style.switchButton.iconNmae
             opacity: control.D.ColorSelector.controlState === D.DTK.DisabledState ? (control.checked ? 0.4 : 1) : 1
+            palette.highlight: control.checked ? control.palette.highlight : control.D.ColorSelector.handleColor
 
             Behavior on x {
                 enabled: !control.down
