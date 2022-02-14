@@ -181,7 +181,6 @@ MaskEffectNode::MaskEffectNode()
 
 MaskEffectNode::~MaskEffectNode()
 {
-    QObject::disconnect(m_textureDestroy);
     if (m_ownsTexture)
         delete m_material.texture();
 }
@@ -310,7 +309,6 @@ void MaskEffectNode::setTexture(QSGTexture *texture)
         return;
     }
 
-    QObject::disconnect(m_textureDestroy);
     if (m_ownsTexture)
         delete m_material.texture();
     m_material.setTexture(texture);
@@ -322,13 +320,6 @@ void MaskEffectNode::setTexture(QSGTexture *texture)
     if (wasAtlas || m_isAtlasTexture)
         dirty |= DirtyGeometry;
     markDirty(dirty);
-
-    m_textureDestroy = QObject::connect(texture, &QSGTexture::destroyed, [this] {
-        if (!m_ownsTexture) {
-            m_material.setTexture(nullptr);
-            m_opaque_material.setTexture(nullptr);
-        }
-    });
 }
 
 QSGTexture *MaskEffectNode::texture() const

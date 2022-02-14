@@ -63,11 +63,15 @@ Q_SIGNALS:
 protected:
     QSGNode *updatePaintNode(QSGNode *, UpdatePaintNodeData *) override;
     void itemChange(ItemChange, const ItemChangeData &) override;
+    void releaseResources() override;
+
+private Q_SLOTS:
+    void invalidateSceneGraph();
 
 private:
     qreal m_radius = 20;
     bool m_offscreen = false;
-    mutable QScopedPointer<TextureProvider> m_tp;
+    mutable TextureProvider *m_tp = nullptr;
     friend void onRender(DSGBlurNode *, void *);
 };
 
