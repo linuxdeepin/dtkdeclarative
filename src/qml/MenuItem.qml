@@ -43,8 +43,13 @@ T.MenuItem {
         hovered: D.DTK.makeColor(D.Color.HighlightedText)
     }
     palette.windowText: hovered ? D.ColorSelector.itemColor : undefined
+    D.DciIcon.mode: D.ColorSelector.controlState
+    D.DciIcon.palette: D.DTK.makeIconPalette(palette)
     contentItem: D.IconLabel {
         property bool existsChecked: {
+            if (menu === undefined || menu === null) // not used in menu, alway reserve the checked space
+                return true
+
             for (var i = 0; i < menu.count; ++i) {
                 var item = menu.itemAt(i)
                 if (item && item.checked)
@@ -64,7 +69,7 @@ T.MenuItem {
         text: control.text
         font: control.font
         color: control.palette.windowText
-        icon: D.DTK.makeIcon(control.icon, D.DciIcon)
+        icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
     }
 
     indicator: D.QtIcon {
@@ -87,7 +92,7 @@ T.MenuItem {
         visible: control.subMenu
         mirror: control.mirrored
         name: control.subMenu ? "go-next" : ""
-        palette: D.DTK.makeIconPalette(control.palette)
+        palette: control.D.DciIcon.palette
     }
 
     background: Item {

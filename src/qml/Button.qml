@@ -29,14 +29,7 @@ import org.deepin.dtk.style 1.0 as DS
 T.Button {
     id: control
 
-    property D.Palette color1: checked ? DS.Style.checkedButton : (highlighted ? DS.Style.highlightedButton1 : DS.Style.button1)
-    property D.Palette color2: checked ? DS.Style.checkedButton : (highlighted ? DS.Style.highlightedButton2 : DS.Style.button2)
     property D.Palette textColor: checked ? DS.Style.checkedButtonText : (highlighted ? DS.Style.highlightedButtonText : DS.Style.buttonText)
-    property D.Palette borderColor: checked ? null : (highlighted ? DS.Style.highlightedButtonBorder : DS.Style.buttonBorder)
-    property D.Palette dropShadowColor: checked ? DS.Style.checkedButtonDropShadow : (highlighted ? DS.Style.highlightedButtonDropShadow : DS.Style.buttonDropShadow)
-    property D.Palette innerShadowColor1: checked ? DS.Style.checkedButtonInnerShadow : (highlighted ? DS.Style.highlightedButtonInnerShadow1 : DS.Style.buttonInnerShadow1)
-    property D.Palette innerShadowColor2: checked ? null : (highlighted ? DS.Style.highlightedButtonInnerShadow2 : DS.Style.buttonInnerShadow2)
-
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
 
@@ -53,105 +46,10 @@ T.Button {
         color: D.ColorSelector.textColor
     }
 
-    background: Item {
-        id: backgroundItem
+    background: ButtonPanel {
         implicitWidth: DS.Style.button.width
         implicitHeight: DS.Style.button.height
-        visible: !control.flat || control.down || control.checked || control.highlighted || control.visualFocus || control.hovered
-
-        BoxShadow {
-            anchors.fill: backgroundRect
-            shadowBlur: 6
-            shadowOffsetY: 4
-            shadowColor: control.D.ColorSelector.dropShadowColor
-            cornerRadius: backgroundRect.radius
-            visible: control.D.ColorSelector.family === D.Palette.CommonColor
-        }
-
-        Rectangle {
-            id: backgroundRect
-            objectName: "ColorSelectorMaster"
-            D.ColorSelector.hovered: false
-
-            Gradient {
-                id: backgroundGradient
-                // Use the backgroundItem's colorselecor can filter the hovered state.
-                GradientStop { position: 0.0; color: backgroundRect.D.ColorSelector.color1}
-                GradientStop { position: 0.96; color: backgroundRect.D.ColorSelector.color2}
-            }
-
-            anchors.fill: parent
-            radius: DS.Style.control.radius
-            gradient: D.ColorSelector.color1 === D.ColorSelector.color2 ? null : backgroundGradient
-            color: D.ColorSelector.color1
-        }
-
-        Gradient {
-            id: hoverBackgroundGradient
-            GradientStop { position: 0.0; color: control.D.ColorSelector.color1 }
-            GradientStop { position: 0.96; color: control.D.ColorSelector.color2 }
-        }
-
-        CicleSpreadAnimation {
-            id: hoverAnimation
-            anchors.fill: backgroundRect
-            visible: control.D.ColorSelector.controlState === D.DTK.HoveredState
-                     && control.D.ColorSelector.family === D.Palette.CommonColor
-
-            Rectangle {
-                anchors.fill: parent
-                radius: backgroundRect.radius
-                gradient: control.D.ColorSelector.color1 === control.D.ColorSelector.color2 ? null : hoverBackgroundGradient
-                color: control.D.ColorSelector.color1
-            }
-        }
-
-        BoxShadow {
-            inner: true
-            anchors.fill: backgroundRect
-            shadowBlur: 2
-            shadowOffsetY: innerShadow2.visible ? -3 : -1
-            spread: 1
-            shadowColor: control.D.ColorSelector.innerShadowColor1
-            cornerRadius: backgroundRect.radius
-            visible: innerShadowColor1 && control.D.ColorSelector.controlState !== D.DTK.PressedState
-                     && control.D.ColorSelector.family === D.Palette.CommonColor
-        }
-
-        BoxShadow {
-            id: innerShadow2
-            inner: true
-            anchors.fill: backgroundRect
-            shadowBlur: 1
-            shadowOffsetY: 2
-            shadowColor: control.D.ColorSelector.innerShadowColor2
-            cornerRadius: backgroundRect.radius
-            visible: innerShadowColor2 && shadowColor.a !== 0 && control.D.ColorSelector.family === D.Palette.CommonColor
-        }
-
-        Rectangle {
-            anchors.fill: backgroundRect
-            color: "transparent"
-            radius: backgroundRect.radius
-            visible: borderColor
-            border {
-                width: DS.Style.control.borderWidth
-                color: control.D.ColorSelector.borderColor
-            }
-        }
-    }
-
-    onHoveredChanged: {
-        if (!hoverAnimation)
-            return
-
-        if (hovered) {
-            var pos = D.DTK.cursorPosition()
-            hoverAnimation.centerPoint = hoverAnimation.mapFromGlobal(pos.x, pos.y)
-            hoverAnimation.start()
-        } else {
-            hoverAnimation.stop()
-        }
+        button: control
     }
 
     contentItem: D.IconLabel {
