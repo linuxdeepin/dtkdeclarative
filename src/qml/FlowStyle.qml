@@ -385,4 +385,14 @@ QtObject {
         property int hidePauseDuration: 450
         property int hideDuration: 1500
     }
+
+    property QtObject comboBox: QtObject {
+        property int width: 240
+        property int height: 36
+        property int padding: 8
+        property int spacing: 10
+        property int iconSize: 16
+        property color editableLineColor: Qt.rgba(0, 0, 0, 0.05)
+        property int editableIndicatorSize: 22
+    }
 }

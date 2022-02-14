@@ -396,6 +396,7 @@ Rectangle {
     }
 
     Row {
+        id: switchBtnRow
         anchors {
             top: sliderColum.bottom
             left: sliderRow.right
@@ -417,6 +418,53 @@ Rectangle {
 
         D.Switch {
             enabled: false
+        }
+    }
+
+    Row {
+        anchors {
+            top: sliderColum.bottom
+            left: switchBtnRow.right
+            topMargin: 30
+            leftMargin: 20
+        }
+
+        spacing: 10
+
+        D.ComboBox {
+            id: nonEditComboBox
+            model: ["Banana", "Apple", "Coconut"]
+        }
+
+        D.ComboBox {
+            id: editableComboBox
+            editable: true
+            model: ["Banana", "Apple", "Coconut"]
+        }
+
+        D.ComboBox {
+            id: nonEditComboBoxWithIcon
+            textRole: "text"
+            iconNameRole: "icon"
+
+            model: ListModel {
+                ListElement { text: "Banana"; icon: "go-previous" }
+                ListElement { text: "Apple"; icon: "go-down" }
+                ListElement { text: "Coconut"; icon: "go-next" }
+            }
+        }
+
+        D.ComboBox {
+            id: editableComboBoxWithIcon
+            editable: true
+            textRole: "text"
+            iconNameRole: "icon"
+
+            model: ListModel {
+                ListElement { text: "Banana"; icon: "go-previous" }
+                ListElement { text: "Apple"; icon: "go-down" }
+                ListElement { text: "Coconut"; icon: "go-next" }
+            }
         }
     }
 }
