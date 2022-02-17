@@ -65,6 +65,9 @@ Column {
     Menu {
         id: normalMenu
 //            width: 300
+        header: D.SearchEdit {
+            placeholder: qsTr("搜索")
+        }
         maxVisibleItems: 4
         MenuItem {
             icon.name: "music"
