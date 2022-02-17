@@ -35,7 +35,12 @@ D.FloatingMessageContainer {
         elide: Text.ElideRight
         maximumLineCount: 1
     }
-    property Component button: FloatingMessageCloseButton {
+    property Component button: ActionButton {
+        icon {
+            name: "view-close"
+            width: DS.Style.floatingMessage.closeButtonSize
+            height: DS.Style.floatingMessage.closeButtonSize
+        }
         onClicked: D.DTK.closeMessage(control)
     }
 

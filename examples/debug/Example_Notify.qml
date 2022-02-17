@@ -42,7 +42,7 @@ Column {
                 D.DTK.sendMessage(Window.window, "message" + count, "music", 4000, "type1")
                 D.DTK.sendMessage(Window.window, "message" + count, "video", -1)
             } else {
-                D.DTK.sendMessage(Window.window, floatingMsgCom, {content: shortMessage}, -1)
+                D.DTK.sendMessage(control, floatingMsgCom, {content: shortMessage}, -1)
                 D.DTK.sendMessage(Window.window, floatingMsgCom, {content: longMessage, iconName: "music"}, -1)
             }
             count++

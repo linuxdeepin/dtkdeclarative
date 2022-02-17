@@ -48,7 +48,6 @@
         <file>qml/BoxShadow.qml</file>
         <file>qml/FloatingPanel.qml</file>
         <file>qml/FloatingMessage.qml</file>
-        <file>qml/FloatingMessageCloseButton.qml</file>
         <file>qml/Menu.qml</file>
         <file>qml/MenuItem.qml</file>
         <file>qml/MenuSeparator.qml</file>
@@ -64,5 +63,6 @@
         <file>qml/ScrollBar.qml</file>
         <file>qml/ComboBox.qml</file>
         <file>qml/ButtonPanel.qml</file>
+        <file>qml/ActionButton.qml</file>
     </qresource>
 </RCC>

@@ -355,39 +355,38 @@ DDciIconPalette DQMLGlobalObject::makeIconPalette(const QPalette &palette)
     return iconPalette;
 }
 
-bool DQMLGlobalObject::sendMessage(QQuickItem *target, const QString &content, const QString &iconName, int duration, const QString &msgId)
+bool DQMLGlobalObject::sendMessage(QObject *target, const QString &content, const QString &iconName, int duration, const QString &msgId)
 {
     Q_ASSERT(target);
 
-    if (auto window = target->window())
-        return sendMessage(window, content, iconName, duration, msgId);
-
-    return false;
-}
-
-bool DQMLGlobalObject::sendMessage(QQuickWindow *target, const QString &content, const QString &iconName, int duration, const QString &msgId)
-{
-    if (auto manager = qobject_cast<MessageManager *>(qmlAttachedPropertiesObject<MessageManager>(target))) {
-        return manager->sendMessage(content, iconName, duration, msgId);
+    QQuickWindow *window = nullptr;
+    if (auto item = qobject_cast<QQuickItem *>(target)) {
+        window = item->window();
+    } else {
+        window = qobject_cast<QQuickWindow *>(target);
+    }
+    if (window) {
+        if (auto manager = qobject_cast<MessageManager *>(qmlAttachedPropertiesObject<MessageManager>(window))) {
+            return manager->sendMessage(content, iconName, duration, msgId);
+        }
     }
     return false;
 }
 
-bool DQMLGlobalObject::sendMessage(QQuickItem *target, QQmlComponent *delegate, const QVariant &message, int duration, const QString &msgId)
+bool DQMLGlobalObject::sendMessage(QObject *target, QQmlComponent *delegate, const QVariant &message, int duration, const QString &msgId)
 {
     Q_ASSERT(target);
 
-    if (auto window = target->window())
-        return sendMessage(window, delegate, message, duration, msgId);
-
-    return false;
-}
-
-bool DQMLGlobalObject::sendMessage(QQuickWindow *target, QQmlComponent *delegate, const QVariant &message, int duration, const QString &msgId)
-{
-    if (auto manager = qobject_cast<MessageManager *>(qmlAttachedPropertiesObject<MessageManager>(target)))
-        return manager->sendMessage(delegate, message, duration, msgId);
-
+    QQuickWindow *window = nullptr;
+    if (auto item = qobject_cast<QQuickItem *>(target)) {
+        window = item->window();
+    } else {
+        window = qobject_cast<QQuickWindow *>(target);
+    }
+    if (window) {
+        if (auto manager = qobject_cast<MessageManager *>(qmlAttachedPropertiesObject<MessageManager>(target)))
+            return manager->sendMessage(delegate, message, duration, msgId);
+    }
     return false;
 }
 
@@ -398,21 +397,22 @@ void DQMLGlobalObject::closeMessage(FloatingMessageContainer *message)
     message->close();
 }
 
-void DQMLGlobalObject::closeMessage(QQuickItem *target, const QString &msgId)
+void DQMLGlobalObject::closeMessage(QObject *target, const QString &msgId)
 {
     Q_ASSERT(target);
 
-    if (auto window = target->window())
-        closeMessage(window, msgId);
-}
-
-void DQMLGlobalObject::closeMessage(QQuickWindow *target, const QString &msgId)
-{
     if (msgId.isEmpty())
         return;
 
-    if (auto manager = qobject_cast<MessageManager *>(qmlAttachedPropertiesObject<MessageManager>(target))) {
-        manager->close(msgId);
+    QQuickWindow *window = nullptr;
+    if (auto item = qobject_cast<QQuickItem *>(target)) {
+        window = item->window();
+    } else {
+        window = qobject_cast<QQuickWindow *>(target);
+    }
+    if (window) {
+        if (auto manager = qobject_cast<MessageManager *>(qmlAttachedPropertiesObject<MessageManager>(window)))
+            manager->close(msgId);
     }
 }
 

@@ -287,6 +287,7 @@ QtObject {
     property QtObject floatingMessage: QtObject {
         property int maximumWidth: 450
         property int minimumHeight: 40
+        property int closeButtonSize: 22
     }
 
     property QtObject alertToolTip: QtObject {
