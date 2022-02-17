@@ -252,14 +252,14 @@ Rectangle {
         D.Slider {
             height: parent.height
             orientation: Qt.Vertical
-            tickPosition: D.Slider.TickPosition.TicksLeft
+            tickPosition: D.Slider.TickPosition.FrontTick
         }
 
         D.Slider {
             height: parent.height
             highlightPassArea: true
             orientation: Qt.Vertical
-            tickPosition: D.Slider.TickPosition.TicksRight
+            tickPosition: D.Slider.TickPosition.BackTick
         }
 
         D.Slider {
@@ -270,7 +270,7 @@ Rectangle {
             height: parent.height
             orientation: Qt.Vertical
             bothSidesTextHorizontalAlign: false
-            tickPosition: D.Slider.TickPosition.TicksLeft
+            tickPosition: D.Slider.TickPosition.FrontTick
             tips: [qsTr("1m"), qsTr("5m"), qsTr("10m"), qsTr("15m"), qsTr("30m"), qsTr("1h"), qsTr("Never")]
         }
 
@@ -282,7 +282,7 @@ Rectangle {
             height: parent.height
             orientation: Qt.Vertical
             bothSidesTextHorizontalAlign: false
-            tickPosition: D.Slider.TickPosition.TicksRight
+            tickPosition: D.Slider.TickPosition.BackTick
             tips: [qsTr("1m"), qsTr("5m"), qsTr("10m"), qsTr("15m"), qsTr("30m"), qsTr("1h"), qsTr("Never")]
         }
 
@@ -290,7 +290,7 @@ Rectangle {
             tickCount: 9
             height: parent.height
             orientation: Qt.Vertical
-            tickPosition: D.Slider.TickPosition.TicksRight
+            tickPosition: D.Slider.TickPosition.BackTick
             tips: ["", "", "", "", "", "", "", "", ""]
         }
 
@@ -298,7 +298,7 @@ Rectangle {
             tickCount: 9
             height: parent.height
             orientation: Qt.Vertical
-            tickPosition: D.Slider.TickPosition.TicksLeft
+            tickPosition: D.Slider.TickPosition.FrontTick
             tips: ["", "", "", "", "", "", "", "", ""]
         }
     }
@@ -321,13 +321,13 @@ Rectangle {
 
         D.Slider {
             width: parent.width
-            tickPosition: Slider.TickPosition.TicksBelow
+            tickPosition: Slider.TickPosition.BackTick
         }
 
         D.Slider {
             width: parent.width
             highlightPassArea: true
-            tickPosition: Slider.TickPosition.TicksAbove
+            tickPosition: Slider.TickPosition.FrontTick
         }
 
         D.Slider {
@@ -339,7 +339,7 @@ Rectangle {
             tickCount: 7
             width: parent.width
             bothSidesTextHorizontalAlign: false
-            tickPosition: D.Slider.TickPosition.TicksAbove
+            tickPosition: D.Slider.TickPosition.FrontTick
             tips: [qsTr("1m111111111111111111"), qsTr("5m11111111111111111"), qsTr("10m"), qsTr("15m111111111111111111111")
                 , qsTr("30m"), qsTr("1h1111111111111111111"), qsTr("Never111111111111111111111")]
 
@@ -383,14 +383,14 @@ Rectangle {
         D.Slider {
             tickCount: 9
             width: parent.width
-            tickPosition: D.Slider.TickPosition.TicksBelow
+            tickPosition: D.Slider.TickPosition.BackTick
             tips: [qsTr("Fast"), "", "", "", "", "", "", "", qsTr("Slow")]
         }
 
         D.Slider {
             tickCount: 9
             width: parent.width
-            tickPosition: D.Slider.TickPosition.TicksBelow
+            tickPosition: D.Slider.TickPosition.BackTick
             tips: ["", "", "", "", "", "", "", "", ""]
         }
     }
