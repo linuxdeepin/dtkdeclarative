@@ -28,6 +28,8 @@ T.Menu {
     id: control
 
     property int maxVisibleItems : DS.Style.arrowListView.maxVisibleItems
+    property Component header
+    property Component footer
 
     implicitHeight: DS.Style.control.implicitHeight(control)
     implicitWidth: DS.Style.control.implicitWidth(control)
@@ -42,39 +44,53 @@ T.Menu {
         blurControl: control
     }
 
-    contentItem: ArrowListView {
-        id: contentView
-        property int count: contentView.view.count
-        property bool __ImplicitWidthInitialized: false
-
-        view.model: control.contentModel
-        view.currentIndex: control.currentIndex
-        maxVisibleItems: control.maxVisibleItems
-        itemHeight: DS.Style.menu.itemHeight
-
-        function maxItemWith()
-        {
-            var maxWidth = 0
-            for (var i = 0; i < view.count; i++) {
-                var item = view.model.get(i)
-                maxWidth = Math.max(item.implicitWidth, maxWidth)
+    contentItem: FocusScope {
+        implicitHeight: childrenRect.height
+        implicitWidth: childrenRect.width
+        Column {
+            Loader {
+                width: parent.width
+                sourceComponent: control.header
             }
-            return maxWidth
-        }
-        function refreshContentItemWidth()
-        {
-            for (var i = 0; i < view.count; ++i) {
-                var item = view.model.get(i)
-                item.width = view.width
-            }
-        }
+            ArrowListView {
+                id: contentView
+                property int count: contentView.view.count
+                property bool __ImplicitWidthInitialized: false
 
-        onCountChanged: {
-            if (!__ImplicitWidthInitialized) {
-                view.implicitWidth = Math.max(maxItemWith(), DS.Style.menu.itemWidth)
-                __ImplicitWidthInitialized = true
+                view.model: control.contentModel
+                view.currentIndex: control.currentIndex
+                maxVisibleItems: control.maxVisibleItems
+                itemHeight: DS.Style.menu.itemHeight
+
+                function maxItemWith()
+                {
+                    var maxWidth = 0
+                    for (var i = 0; i < view.count; i++) {
+                        var item = view.model.get(i)
+                        maxWidth = Math.max(item.implicitWidth, maxWidth)
+                    }
+                    return maxWidth
+                }
+                function refreshContentItemWidth()
+                {
+                    for (var i = 0; i < view.count; ++i) {
+                        var item = view.model.get(i)
+                        item.width = view.width
+                    }
+                }
+
+                onCountChanged: {
+                    if (!__ImplicitWidthInitialized) {
+                        view.implicitWidth = Math.max(maxItemWith(), DS.Style.menu.itemWidth)
+                        __ImplicitWidthInitialized = true
+                    }
+                    refreshContentItemWidth()
+                }
             }
-            refreshContentItemWidth()
+            Loader {
+                width: parent.width
+                sourceComponent: control.footer
+            }
         }
     }
 
