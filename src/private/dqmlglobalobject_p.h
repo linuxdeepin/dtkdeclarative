@@ -187,13 +187,10 @@ public:
     Q_INVOKABLE DTK_QUICK_NAMESPACE::DQuickDciIcon makeIcon(const QJSValue &qicon, const QJSValue &iconExtra);
     Q_INVOKABLE DTK_GUI_NAMESPACE::DDciIconPalette makeIconPalette(const QPalette &palette);
 
-    Q_INVOKABLE bool sendMessage(QQuickItem *target, const QString &content, const QString &iconName = QString(), int duration = 4000, const QString &msgId = QString());
-    Q_INVOKABLE bool sendMessage(QQuickWindow *target, const QString &content, const QString &iconName = QString(), int duration = 4000, const QString &msgId = QString());
-    Q_INVOKABLE bool sendMessage(QQuickItem *target, QQmlComponent *delegate, const QVariant &message, int duration = 4000, const QString &msgId = QString());
-    Q_INVOKABLE bool sendMessage(QQuickWindow *target, QQmlComponent *delegate, const QVariant &message, int duration = 4000, const QString &msgId = QString());
+    Q_INVOKABLE bool sendMessage(QObject *target, const QString &content, const QString &iconName = QString(), int duration = 4000, const QString &msgId = QString());
+    Q_INVOKABLE bool sendMessage(QObject *target, QQmlComponent *delegate, const QVariant &message, int duration = 4000, const QString &msgId = QString());
     Q_INVOKABLE void closeMessage(DTK_QUICK_NAMESPACE::FloatingMessageContainer *message);
-    Q_INVOKABLE void closeMessage(QQuickItem *target, const QString &msgId);
-    Q_INVOKABLE void closeMessage(QQuickWindow *target, const QString &msgId);
+    Q_INVOKABLE void closeMessage(QObject *target, const QString &msgId);
 
     static void setPopupMode(const PopupMode mode);
 

@@ -254,7 +254,6 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "PlusMinusSpinBox");
     dtkRegisterType(uri, controlsUri, 1, 0, "FloatingPanel");
     dtkRegisterType(uri, controlsUri, 1, 0, "FloatingMessage");
-    dtkRegisterType(uri, controlsUri, 1, 0, "FloatingMessageCloseButton");
     dtkRegisterType(uri, controlsUri, 1, 0, "HighlightPanel");
     dtkRegisterType(uri, controlsUri, 1, 0, "ArrowListView");
     dtkRegisterType(uri, controlsUri, 1, 0, "StyledBehindWindowBlur");
@@ -262,6 +261,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "Switch");
     dtkRegisterType(uri, controlsUri, 1, 0, "Slider");
     dtkRegisterType(uri, controlsUri, 1, 0, "ComboBox");
+    dtkRegisterType(uri, controlsUri, 1, 0, "ActionButton");
 
     // for org.deepin.dtk.style(allowed to override)
     dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");

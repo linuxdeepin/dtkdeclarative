@@ -20,21 +20,22 @@
  */
 
 import QtQuick 2.11
+import QtQuick.Templates 2.4 as T
 import org.deepin.dtk.impl 1.0 as D
+import org.deepin.dtk.style 1.0 as DS
 
-D.DciIcon {
+T.Button {
     id: control
+    property D.Palette textColor: DS.Style.buttonText
 
-    name: "window-close_round"
-    sourceSize {
-        width: 22
-        height: 22
+    palette.windowText: pressed ? D.ColorSelector.textColor : undefined
+    implicitWidth: DS.Style.control.implicitWidth(control)
+    implicitHeight: DS.Style.control.implicitHeight(control)
+    contentItem: D.DciIcon {
+        palette: D.DTK.makeIconPalette(control.palette)
+        mode: control.D.ColorSelector.controlState
+        name: control.icon.name
+        sourceSize: Qt.size(control.icon.width, control.icon.height)
     }
-
-    signal clicked()
-
-    MouseArea {
-        anchors.fill: parent
-        Component.onCompleted: clicked.connect(control.clicked)
-    }
+    background: null
 }
