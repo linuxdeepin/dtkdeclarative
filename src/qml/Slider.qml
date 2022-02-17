@@ -32,10 +32,8 @@ T.Slider {
 
     enum TickPosition {
         NoTicks = 0,
-        TicksAbove = 1,
-        TicksLeft = 2,
-        TicksBelow = 3,
-        TicksRight = 4
+        FrontTick = 1,
+        BackTick = 2
     }
 
     property D.Palette grooveColor: DS.Style.sliderGroove
@@ -51,26 +49,24 @@ T.Slider {
 
     readonly property real tickIndex: tickTextIsValid() ? control.position * (tips.length - 1) : 0
 
-    function getSliderHandlePosition() {
+    function getSliderHandleType() {
         if (Slider.TickPosition.NoTicks === tickPosition) {
-            return SliderHandle.ArrowPosition.NoArrow
+            return control.horizontal ? SliderHandle.HandleType.NoArrowHorizontal : SliderHandle.HandleType.NoArrowVertical
         }
 
         if (horizontal) {
-            if (Slider.TickPosition.TicksAbove === tickPosition) {
-                return SliderHandle.ArrowPosition.ArrowAbove
-            } else if (Slider.TickPosition.TicksBelow === tickPosition) {
-                return SliderHandle.ArrowPosition.ArrowBelow
+            if (Slider.TickPosition.FrontTick === tickPosition) {
+                return SliderHandle.HandleType.ArrowUp
+            } else if (Slider.TickPosition.BackTick === tickPosition) {
+                return SliderHandle.HandleType.ArrowBottom
             }
         } else {
-            if (Slider.TickPosition.TicksLeft === tickPosition) {
-                return SliderHandle.ArrowPosition.ArrowLeft
-            } else if (Slider.TickPosition.TicksRight === tickPosition) {
-                return SliderHandle.ArrowPosition.ArrowRight
+            if (Slider.TickPosition.FrontTick === tickPosition) {
+                return SliderHandle.HandleType.ArrowLeft
+            } else if (Slider.TickPosition.BackTick === tickPosition) {
+                return SliderHandle.HandleType.ArrowRight
             }
         }
-
-        return SliderHandle.ArrowPosition.NoArrow
     }
 
     function tickTextIsValid() {
@@ -88,18 +84,20 @@ T.Slider {
                                          + (tickTextIsValid() ? DS.Style.slider.tickHeight : 0)
                                          + (fistTickTextIsValid() ? horizontalRepeater.itemAt(horizontalRepeater.count - 1).childrenRect.height : 0))
                                        : DS.Style.slider.grooveWidth)
+    opacity: control.D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
 
     // draw handle
     handle: SliderHandle {
         x: control.leftPadding + (control.horizontal ? control.visualPosition * (control.availableWidth - width)
-                                                     : (Slider.TickPosition.TicksLeft === tickPosition && tickTextIsValid() ? control.width - width : 0))
-        y: control.topPadding + (control.horizontal ? (Slider.TickPosition.TicksAbove === tickPosition && tickTextIsValid() ? control.height - height : 0)
+                                                     : (Slider.TickPosition.FrontTick === tickPosition && tickTextIsValid() ? control.width - width : 0))
+        y: control.topPadding + (control.horizontal ? (Slider.TickPosition.FrontTick === tickPosition && tickTextIsValid() ? control.height - height : 0)
                                                     : control.visualPosition * (control.availableHeight - height))
         width: control.horizontal ? DS.Style.slider.handleWidth : DS.Style.slider.handleHeight
         height: control.horizontal ? DS.Style.slider.handleHeight : DS.Style.slider.handleWidth
         color: control.palette.highlight
-        arrowPosition: getSliderHandlePosition()
+        type: getSliderHandleType()
         radius: DS.Style.slider.handleRadius
+        palette: D.DTK.makeIconPalette(control.palette)
     }
 
     // draw panel
@@ -181,7 +179,7 @@ T.Slider {
 
     // vertical Ticks
     Column {
-        x: control.horizontal ? 0 : (Slider.TickPosition.TicksRight === control.tickPosition ?
+        x: control.horizontal ? 0 : (Slider.TickPosition.BackTick === control.tickPosition ?
                                          (handle.x + handle.width) : (handle.x - width))
         y: handle.height / 2
         width: !horizontal && tickCount > 0 ? DS.Style.slider.tickHeight : 0
@@ -208,10 +206,10 @@ T.Slider {
                 Label {
                     id: vTickText
                     anchors {
-                        right: Slider.TickPosition.TicksRight === control.tickPosition ? undefined : parent.left
-                        rightMargin: Slider.TickPosition.TicksRight === control.tickPosition ? undefined : DS.Style.slider.tickTextMargin
-                        left: Slider.TickPosition.TicksRight === control.tickPosition ? parent.right : undefined
-                        leftMargin: Slider.TickPosition.TicksRight === control.tickPosition ? DS.Style.slider.tickTextMargin : undefined
+                        right: Slider.TickPosition.BackTick === control.tickPosition ? undefined : parent.left
+                        rightMargin: Slider.TickPosition.BackTick === control.tickPosition ? undefined : DS.Style.slider.tickTextMargin
+                        left: Slider.TickPosition.BackTick === control.tickPosition ? parent.right : undefined
+                        leftMargin: Slider.TickPosition.BackTick === control.tickPosition ? DS.Style.slider.tickTextMargin : undefined
                         verticalCenter: parent.verticalCenter
                     }
                     text: tips[tips.length - index - 1]
@@ -230,7 +228,7 @@ T.Slider {
         property real perCellWidth: sliderGroove.width / tickCount
 
         x: handle.width / 2
-        y: control.horizontal ? (Slider.TickPosition.TicksBelow === control.tickPosition ?
+        y: control.horizontal ? (Slider.TickPosition.BackTick === control.tickPosition ?
                                      (handle.y + handle.height) : (handle.y - height)) : 0
         width: horizontal && tickCount > 0 ? background.width - handle.width : 0
         height: horizontal && tickCount > 0 ? DS.Style.slider.tickHeight : 0
@@ -255,10 +253,10 @@ T.Slider {
                 Label {
                     id: hTickText
                     anchors {
-                        top: Slider.TickPosition.TicksBelow === control.tickPosition ? parent.bottom : undefined
-                        topMargin: Slider.TickPosition.TicksBelow === control.tickPosition ? DS.Style.slider.tickTextMargin : undefined
-                        bottom: Slider.TickPosition.TicksAbove === control.tickPosition ? parent.top : undefined
-                        bottomMargin: Slider.TickPosition.TicksAbove === control.tickPosition ? DS.Style.slider.tickTextMargin : undefined
+                        top: Slider.TickPosition.BackTick === control.tickPosition ? parent.bottom : undefined
+                        topMargin: Slider.TickPosition.BackTick === control.tickPosition ? DS.Style.slider.tickTextMargin : undefined
+                        bottom: Slider.TickPosition.FrontTick === control.tickPosition ? parent.top : undefined
+                        bottomMargin: Slider.TickPosition.FrontTick === control.tickPosition ? DS.Style.slider.tickTextMargin : undefined
                         horizontalCenter: control.bothSidesTextHorizontalAlign ? parent.horizontalCenter
                                                                           : ((index === 0 || index === control.tips.length - 1)
                                                                              ? undefined : parent.horizontalCenter)

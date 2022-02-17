@@ -23,5 +23,6 @@
         <file alias="slider_round_hor.dci">icons/bloom/slider_round_hor.dci</file>
         <file alias="slider_round_ver.dci">icons/bloom/slider_round_ver.dci</file>
         <file alias="switch_button.dci">icons/bloom/switch_button.dci</file>
+        <file alias="slider_point_up.dci">icons/bloom/slider_point_up.dci</file>
     </qresource>
 </RCC>
