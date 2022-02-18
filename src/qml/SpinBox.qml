@@ -33,7 +33,15 @@ T.SpinBox {
     property alias alertDuration: panel.alertDuration
     property alias showAlert: panel.showAlert
 
-    implicitWidth: DS.Style.control.implicitWidth(control)
+    implicitWidth: {
+        var content = control.implicitContentWidth !== undefined
+                ? control.implicitContentWidth
+                : (control.contentItem ? control.contentItem.implicitWidth : 0)
+        content += 2 * control.padding +
+                (up.indicator ? up.indicator.implicitWidth : 0) +
+                (down.indicator ? down.indicator.implicitWidth : 0)
+        return Math.max(DS.Style.control.backgroundImplicitWidth(control), content)
+    }
     implicitHeight:  Math.max(DS.Style.control.implicitHeight(control),
                              up.indicator ? up.indicator.implicitHeight : 0,
                              down.indicator ? down.indicator.implicitHeight : 0)

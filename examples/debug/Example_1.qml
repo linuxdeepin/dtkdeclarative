@@ -206,6 +206,23 @@ Rectangle {
         showAlert: focus
     }
 
+    SpinBox {
+        id: customSpinBox
+        anchors.left: spinBox.right
+        anchors.top: spinBox.bottom
+        anchors.leftMargin: 20
+        editable: true
+        value: 1
+
+        up.indicator: Rectangle {
+            border.color: "green"
+            anchors.right: customSpinBox.right
+            anchors.rightMargin: 5
+            width: 20
+            height: 15
+        }
+    }
+
     D.PlusMinusSpinBox {
         id: plusMinusSpinBox
         anchors.left: spinBox.right
