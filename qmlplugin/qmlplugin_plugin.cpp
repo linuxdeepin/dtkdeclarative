@@ -262,6 +262,8 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "Slider");
     dtkRegisterType(uri, controlsUri, 1, 0, "ComboBox");
     dtkRegisterType(uri, controlsUri, 1, 0, "ActionButton");
+    dtkRegisterType(uri, controlsUri, 1, 0, "ItemDelegate");
+    dtkRegisterType(uri, controlsUri, 1, 0, "CheckDelegate");
 
     // for org.deepin.dtk.style(allowed to override)
     dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");
