@@ -43,4 +43,35 @@ Column {
             border.color: "green"
         }
     }
+    D.IpV4LineEdit {
+
+    }
+    D.IpV4LineEdit {
+        width: 300
+        height: 40
+        showAlert: true
+        alertText: "alert tips"
+    }
+    D.IpV4LineEdit {
+        width: 300
+        height: 40
+        text: "10.20.52.57"
+    }
+    Row {
+        spacing: 10
+        D.IpV4LineEdit {
+            id: idLineEditSetValueByText
+            width: 300
+            height: 40
+        }
+
+        Button {
+            text: "set IP by Text"
+            onClicked: idLineEditSetValueByText.text = "10.20.52.57"
+        }
+        Text {
+            text: idLineEditSetValueByText.text
+        }
+    }
+
 }

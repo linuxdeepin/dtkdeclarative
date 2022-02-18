@@ -266,6 +266,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "TipsSlider");
     dtkRegisterType(uri, controlsUri, 1, 0, "SliderTipItem");
     dtkRegisterType(uri, controlsUri, 1, 0, "CheckBox");
+    dtkRegisterType(uri, controlsUri, 1, 0, "IpV4LineEdit");
 
     // for org.deepin.dtk.style(allowed to override)
     dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");

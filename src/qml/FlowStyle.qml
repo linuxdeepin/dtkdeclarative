@@ -424,4 +424,8 @@ QtObject {
         property int iconSize: 16
         property int focusRadius: 4
     }
+
+    property QtObject ipLineEdit: QtObject {
+        property int fieldWidth: 40
+    }
 }
