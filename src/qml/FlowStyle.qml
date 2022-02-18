@@ -402,4 +402,18 @@ QtObject {
         property color editableLineColor: Qt.rgba(0, 0, 0, 0.05)
         property int editableIndicatorSize: 22
     }
+
+    property QtObject itemDelegate: QtObject {
+        property int width: 204
+        property int height: 40
+        property color normalColor: Qt.rgba(0, 0, 0, 0.05)
+        property color cascadeColor: Qt.rgba(0, 0, 0, 0.15)
+        property int iconSize: 22
+        property int checkIndicatorIconSize: 22
+        property D.Palette checkBackgroundColor: D.Palette {
+            hovered: Qt.rgba(0, 0, 0, 0.1)
+            normal: Qt.rgba(0, 0, 0, 0.05)
+        }
+        property color checkedColor: Qt.rgba(0, 0, 0, 0.15)
+    }
 }
