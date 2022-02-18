@@ -70,5 +70,6 @@
         <file>qml/SliderTipItem.qml</file>
         <file>qml/BoxInsetShadow.qml</file>
         <file>qml/CheckBox.qml</file>
+        <file>qml/IpV4LineEdit.qml</file>
     </qresource>
 </RCC>

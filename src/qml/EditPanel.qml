@@ -32,12 +32,14 @@ Rectangle {
     property alias alertText: _alert.text
     property alias alertDuration: _alert.timeout
     property alias showAlert: _alert.visible
+    property alias showBorder: _border.visible
 
     radius: DS.Style.control.radius
     color: showAlert ? D.ColorSelector.alertBackgroundColor
                      : D.ColorSelector.backgroundColor
 
     RectangleBorder {
+        id: _border
         visible: control.activeFocus
         borderColor: control.palette.highlight
     }
