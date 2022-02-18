@@ -8,5 +8,7 @@
     <qresource prefix="/examples">
         <file>Button.qml</file>
         <file>ListControl.qml</file>
+        <file>Menu.qml</file>
+        <file>Notify.qml</file>
     </qresource>
 </RCC>

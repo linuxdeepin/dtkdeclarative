@@ -53,6 +53,7 @@ int main(int argc, char **argv)
 
     QGuiApplication app(argc, argv);
     app.setApplicationName("dtk-exhibition");
+    qputenv("D_POPUP_MODE", "embed");
 
 #ifdef QT_NO_DEBUG
     QQuickStyle::setStyle("Chameleon");
