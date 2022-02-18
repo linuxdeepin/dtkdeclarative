@@ -191,19 +191,7 @@ QtObject {
         property int focusBorderWidth: 2
 
         function implicitWidth(control) {
-            var background = control.implicitBackgroundWidth !== undefined
-                    ? control.implicitBackgroundWidth
-                    : (control.background ? control.background.implicitWidth : 0)
-
-            if (control.leftInset !== undefined)
-                background += (control.leftInset + control.rightInset)
-
-            var content = control.implicitContentWidth !== undefined
-                    ? control.implicitContentWidth
-                    : (control.contentItem ? control.contentItem.implicitWidth : 0)
-            content += (control.leftPadding + control.rightPadding)
-
-            return Math.max(background, content)
+            return Math.max(backgroundImplicitWidth(control), contentImplicitWidth(control))
         }
         function implicitHeight(control) {
             var background = control.implicitBackgroundHeight !== undefined
@@ -219,6 +207,24 @@ QtObject {
             content += (control.topPadding + control.bottomPadding)
 
             return Math.max(background, content)
+        }
+        function backgroundImplicitWidth(control) {
+            var background = control.implicitBackgroundWidth !== undefined
+                    ? control.implicitBackgroundWidth
+                    : (control.background ? control.background.implicitWidth : 0)
+
+            if (control.leftInset !== undefined)
+                background += (control.leftInset + control.rightInset)
+
+            return background
+        }
+        function contentImplicitWidth(control) {
+            var content = control.implicitContentWidth !== undefined
+                    ? control.implicitContentWidth
+                    : (control.contentItem ? control.contentItem.implicitWidth : 0)
+            content += (control.leftPadding + control.rightPadding)
+
+            return content
         }
     }
 
