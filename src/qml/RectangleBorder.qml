@@ -23,7 +23,9 @@ import QtQuick 2.11
 import org.deepin.dtk.style 1.0 as DS
 
 Item {
+    id: control
     property color borderColor: "transparent"
+    property alias radius: _border.radius
 
     anchors.centerIn: parent
     width: parent.width + 2 * DS.Style.control.focusBorderWidth
