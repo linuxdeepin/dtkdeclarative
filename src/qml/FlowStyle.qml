@@ -416,4 +416,12 @@ QtObject {
         }
         property color checkedColor: Qt.rgba(0, 0, 0, 0.15)
     }
+
+    property QtObject checkBox: QtObject {
+        property int indicatorWidth: 16
+        property int indicatorHeight: 16
+        property int padding: 2
+        property int iconSize: 16
+        property int focusRadius: 4
+    }
 }

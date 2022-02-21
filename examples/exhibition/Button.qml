@@ -125,5 +125,85 @@ Column {
             enabled: false
             checked: true
         }
+
+        Item {width: parent.width; height: 1}
+
+        CheckBox {
+        }
+        CheckBox {
+            ColorSelector.hovered: true
+        }
+        CheckBox {
+            ColorSelector.pressed: true
+        }
+        CheckBox {
+            enabled: false
+        }
+
+        Item {width: parent.width; height: 1}
+
+        CheckBox {
+            checked: true
+        }
+        CheckBox {
+            checked: true
+            ColorSelector.hovered: true
+        }
+        CheckBox {
+            checked: true
+            ColorSelector.pressed: true
+        }
+        CheckBox {
+            checked: true
+            enabled: false
+        }
+
+        Item {width: parent.width; height: 1}
+
+        CheckBox {
+            checkState: Qt.PartiallyChecked
+        }
+        CheckBox {
+            checkState: Qt.PartiallyChecked
+            ColorSelector.hovered: true
+        }
+        CheckBox {
+            checkState: Qt.PartiallyChecked
+            ColorSelector.pressed: true
+        }
+        CheckBox {
+            checkState: Qt.PartiallyChecked
+            enabled: false
+        }
+        CheckBox {
+            text: "复选按钮选项"
+        }
+
+        Item {width: parent.width; height: 1}
+
+        Row {
+            ActionButton { icon.name: "go-down" }
+            Column {
+                ButtonGroup {
+                    id: childGroup
+                    exclusive: false
+                    checkState: parentBox.checkState
+                }
+                CheckBox {
+                    id: parentBox
+                    text: "父级复选选项"
+                    checkState: childGroup.checkState
+                }
+                Repeater {
+                    model: 4
+                    delegate: CheckBox {
+                        checked: index < 2
+                        text: "子级复选选项"
+                        leftPadding: indicator.width
+                        ButtonGroup.group: childGroup
+                    }
+                }
+            }
+        }
     }
 }
