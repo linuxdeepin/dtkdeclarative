@@ -29,28 +29,19 @@ D.DciIcon {
     property int type: 0
     property real radius
 
-    enum HandleType {
-        NoArrowHorizontal = 0,
-        NoArrowVertical = 1,
-        ArrowUp = 2,
-        ArrowLeft = 3,
-        ArrowBottom = 4,
-        ArrowRight = 5
-    }
-
     function getIconNameByType(handleType) {
         switch(handleType) {
-        case SliderHandle.HandleType.NoArrowHorizontal:
+        case Slider.HandleType.NoArrowHorizontal:
             return "slider_round_hor"
-        case SliderHandle.HandleType.NoArrowVertical:
+        case Slider.HandleType.NoArrowVertical:
             return "slider_round_ver"
-        case SliderHandle.HandleType.ArrowUp:
+        case Slider.HandleType.ArrowUp:
             return "slider_point_up"
-        case SliderHandle.HandleType.ArrowBottom:
+        case Slider.HandleType.ArrowBottom:
             return "slider_point_down"
-        case SliderHandle.HandleType.ArrowLeft:
+        case Slider.HandleType.ArrowLeft:
             return "slider_point_left"
-        case SliderHandle.HandleType.ArrowRight:
+        case Slider.HandleType.ArrowRight:
             return "slider_point_left"
         }
     }
@@ -58,5 +49,5 @@ D.DciIcon {
     sourceSize.width: control.width
     sourceSize.height: control.height
     name: getIconNameByType(control.type)
-    mirror: SliderHandle.HandleType.ArrowRight === control.type ? true : false
+    mirror: Slider.HandleType.ArrowRight === control.type
 }
