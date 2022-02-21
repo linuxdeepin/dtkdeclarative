@@ -261,62 +261,23 @@ Rectangle {
         height: 350
 
         D.Slider {
-            highlightPassArea: true
+            highlightedPassedGroove: true
             orientation: Qt.Vertical
             height: parent.height
+            handleType: D.Slider.HandleType.NoArrowVertical
         }
 
         D.Slider {
             height: parent.height
             orientation: Qt.Vertical
-            tickPosition: D.Slider.TickPosition.FrontTick
+            handleType: D.Slider.HandleType.ArrowLeft
         }
 
         D.Slider {
             height: parent.height
-            highlightPassArea: true
+            highlightedPassedGroove: true
             orientation: Qt.Vertical
-            tickPosition: D.Slider.TickPosition.BackTick
-        }
-
-        D.Slider {
-            stepSize: 10
-            from: 0
-            to: 60
-            tickCount: 7
-            height: parent.height
-            orientation: Qt.Vertical
-            bothSidesTextHorizontalAlign: false
-            tickPosition: D.Slider.TickPosition.FrontTick
-            tips: [qsTr("1m"), qsTr("5m"), qsTr("10m"), qsTr("15m"), qsTr("30m"), qsTr("1h"), qsTr("Never")]
-        }
-
-        D.Slider {
-            stepSize: 10
-            from: 0
-            to: 60
-            tickCount: 7
-            height: parent.height
-            orientation: Qt.Vertical
-            bothSidesTextHorizontalAlign: false
-            tickPosition: D.Slider.TickPosition.BackTick
-            tips: [qsTr("1m"), qsTr("5m"), qsTr("10m"), qsTr("15m"), qsTr("30m"), qsTr("1h"), qsTr("Never")]
-        }
-
-        D.Slider {
-            tickCount: 9
-            height: parent.height
-            orientation: Qt.Vertical
-            tickPosition: D.Slider.TickPosition.BackTick
-            tips: ["", "", "", "", "", "", "", "", ""]
-        }
-
-        D.Slider {
-            tickCount: 9
-            height: parent.height
-            orientation: Qt.Vertical
-            tickPosition: D.Slider.TickPosition.FrontTick
-            tips: ["", "", "", "", "", "", "", "", ""]
+            handleType: D.Slider.HandleType.ArrowRight
         }
     }
 
@@ -332,33 +293,103 @@ Rectangle {
         width: 400
 
         D.Slider {
-            highlightPassArea: true
+            highlightedPassedGroove: true
             width: parent.width
         }
 
         D.Slider {
             width: parent.width
-            tickPosition: Slider.TickPosition.BackTick
+            handleType: D.Slider.HandleType.ArrowBottom
         }
 
         D.Slider {
             width: parent.width
-            highlightPassArea: true
-            tickPosition: Slider.TickPosition.FrontTick
+            highlightedPassedGroove: true
+            handleType: D.Slider.HandleType.ArrowUp
         }
 
-        D.Slider {
-            id: testSlider
-
-            stepSize: 10
-            from: 0
-            to: 60
-            tickCount: 7
+        D.TipsSlider {
             width: parent.width
-            bothSidesTextHorizontalAlign: false
-            tickPosition: D.Slider.TickPosition.FrontTick
-            tips: [qsTr("1m111111111111111111"), qsTr("5m11111111111111111"), qsTr("10m"), qsTr("15m111111111111111111111")
-                , qsTr("30m"), qsTr("1h1111111111111111111"), qsTr("Never111111111111111111111")]
+            tickDirection: D.TipsSlider.TickDirection.Back
+            slider.highlightedPassedGroove: true
+            slider.handleType: D.Slider.HandleType.ArrowBottom
+
+            ticks: [D.SliderTipItem {
+                },
+                D.SliderTipItem {
+                },
+                D.SliderTipItem {
+                },
+                D.SliderTipItem {
+                }]
+        }
+
+        D.TipsSlider {
+            id: sliderTickTip2
+            readonly property var tips: [qsTr("Fast"), qsTr("Slow")]
+            width: parent.width
+            tickDirection: D.TipsSlider.TickDirection.Back
+            slider.handleType: D.Slider.HandleType.ArrowBottom
+
+            ticks: [D.SliderTipItem {
+                    text: sliderTickTip2.tips[0]
+                },
+                D.SliderTipItem {
+                    text: sliderTickTip2.tips[1]
+                }]
+
+            // test highlight Text
+            D.HighlightPanel {
+                id: __highlight
+                readonly property real highlightMargin: 20
+                anchors.bottom: parent.bottom
+                x: parent.slider.value * (parent.width - parent.slider.handle.width) - width / 2
+                   + parent.slider.handle.width / 2
+                width: __text.implicitWidth
+                height: __text.implicitHeight
+                Text {
+                    id: __text
+                    text: sliderTickTip2.tips[0]
+                    color: palette.highlightedText
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                }
+            }
+        }
+
+        D.TipsSlider {
+            id: sliderTickTip3
+            readonly property var tips: [qsTr("1m"), qsTr("5m"), qsTr("10m"), qsTr("15m"), qsTr("30m"), qsTr("1h"), qsTr("Never")]
+            width: parent.width
+            tickDirection: D.TipsSlider.TickDirection.Back
+            slider.handleType: D.Slider.HandleType.ArrowBottom
+            slider.stepSize: 10
+            slider.from: 0
+            slider.to: 60
+
+            ticks: [D.SliderTipItem {
+                    text: sliderTickTip3.tips[0]
+                    textHorizontalAlignment: Text.AlignLeft
+                },
+                D.SliderTipItem {
+                    text: sliderTickTip3.tips[1]
+                },
+                D.SliderTipItem {
+                    text: sliderTickTip3.tips[2]
+                },
+                D.SliderTipItem {
+                    text: sliderTickTip3.tips[3]
+                },
+                D.SliderTipItem {
+                    text: sliderTickTip3.tips[4]
+                },
+                D.SliderTipItem {
+                    text: sliderTickTip3.tips[5]
+                },
+                D.SliderTipItem {
+                    text: sliderTickTip3.tips[6]
+                    textHorizontalAlignment: Text.AlignRight
+                }]
 
             // test end Indicator
             Rectangle {
@@ -368,12 +399,12 @@ Rectangle {
                 anchors {
                     left: parent.right
                     leftMargin: 20
-                    verticalCenter: parent.handle.verticalCenter
+                    verticalCenter: parent.slider.verticalCenter
                 }
 
                 Text {
                     anchors.centerIn: parent
-                    text: testSlider.value
+                    text: sliderTickTip3.slider.value.toFixed(1)
                     color: "white"
                 }
             }
@@ -386,7 +417,7 @@ Rectangle {
                 anchors {
                     right: parent.left
                     rightMargin: 20
-                    verticalCenter: parent.handle.verticalCenter
+                    verticalCenter: parent.slider.verticalCenter
                 }
 
                 Text {
@@ -395,20 +426,6 @@ Rectangle {
                     color: "white"
                 }
             }
-        }
-
-        D.Slider {
-            tickCount: 9
-            width: parent.width
-            tickPosition: D.Slider.TickPosition.BackTick
-            tips: [qsTr("Fast"), "", "", "", "", "", "", "", qsTr("Slow")]
-        }
-
-        D.Slider {
-            tickCount: 9
-            width: parent.width
-            tickPosition: D.Slider.TickPosition.BackTick
-            tips: ["", "", "", "", "", "", "", "", ""]
         }
     }
 
