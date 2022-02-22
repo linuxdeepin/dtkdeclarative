@@ -27,6 +27,12 @@
 
 DQUICK_BEGIN_NAMESPACE
 
+#ifndef QT_DEBUG
+Q_LOGGING_CATEGORY(cfLog, "dtk.quick.core" , QtInfoMsg);
+#else
+Q_LOGGING_CATEGORY(cfLog, "dtk.quick.core");
+#endif
+
 template<class DataType>
 class Compositor
 {
@@ -133,6 +139,9 @@ public:
 
         QQmlChangeSet changeSet;
         const auto engine = qmlEngine(q);
+        if (!engine)
+            return;
+
         for (auto item :compositor.datas) {
             auto argu1 = engine->newQObject(item);
             const bool accept = filterAcceptsItem.call({argu1}).toBool();
@@ -157,7 +166,12 @@ public:
         for (auto item :compositor.datas) {
             const bool exists = objects.contains(item);
             auto argu1 = engine->newQObject(item);
-            const bool accept = filterAcceptsItem.call({argu1}).toBool();
+            const auto &result = filterAcceptsItem.call({argu1});
+            if (result.isError()) {
+                qCWarning(cfLog) << "ObjectModelProxy::update() failed: can't call filterAcceptsItem." << result.toString();
+                continue;
+            }
+            const bool accept = result.toBool();
             if (accept && !exists) {
                 auto currIndex = compositor.insert(item);
                 changeSet.insert(currIndex, 1);

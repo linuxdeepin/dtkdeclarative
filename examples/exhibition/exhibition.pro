@@ -29,7 +29,8 @@ SOURCES += \
     main.cpp
 
 RESOURCES += \
-    qml.qrc
+    qml.qrc \
+    assets.qrc
 
 target.path = /usr/bin
 desktop.files += $$PWD/dtk-exhibition.desktop
