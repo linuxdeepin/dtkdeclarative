@@ -31,10 +31,17 @@ T.Menu {
     property var model: control.contentModel
     property Component header
     property Component footer
+    readonly property bool existsChecked: {
+        for (var i = 0; i < count; ++i) {
+            var item = itemAt(i)
+            if (item && item.checked)
+                return true
+        }
+        return false
+    }
 
     implicitHeight: DS.Style.control.implicitHeight(control)
     implicitWidth: DS.Style.control.implicitWidth(control)
-
     margins: DS.Style.menu.margins
     overlap: DS.Style.menu.overlap
     padding: DS.Style.menu.padding
@@ -49,6 +56,7 @@ T.Menu {
         implicitHeight: childrenRect.height
         implicitWidth: childrenRect.width
         Column {
+            width: parent.width
             Loader {
                 width: parent.width
                 sourceComponent: control.header
@@ -56,22 +64,13 @@ T.Menu {
             ArrowListView {
                 id: contentView
                 property int count: contentView.view.count
-                property bool __ImplicitWidthInitialized: false
 
                 view.model: control.model
+                width: parent.width
                 view.currentIndex: control.currentIndex
                 maxVisibleItems: control.maxVisibleItems
                 itemHeight: DS.Style.menu.itemHeight
 
-                function maxItemWith()
-                {
-                    var maxWidth = 0
-                    for (var i = 0; i < view.count; i++) {
-                        var item = view.model.get(i)
-                        maxWidth = Math.max(item.implicitWidth, maxWidth)
-                    }
-                    return maxWidth
-                }
                 function refreshContentItemWidth()
                 {
                     for (var i = 0; i < view.count; ++i) {
@@ -81,10 +80,6 @@ T.Menu {
                 }
 
                 onCountChanged: {
-                    if (!__ImplicitWidthInitialized) {
-                        view.implicitWidth = Math.max(maxItemWith(), DS.Style.menu.itemWidth)
-                        __ImplicitWidthInitialized = true
-                    }
                     refreshContentItemWidth()
                 }
             }

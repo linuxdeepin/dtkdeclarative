@@ -33,6 +33,7 @@ FocusScope {
     implicitWidth: childrenRect.width
 
     Column {
+        width: parent.width
         Button {
             height: DS.Style.arrowListView.stepButtonSize.height
             width: DS.Style.arrowListView.stepButtonSize.width
@@ -46,9 +47,9 @@ FocusScope {
 
         ListView {
             id: itemsView
+            width: parent.width
             implicitHeight: Math.min(contentHeight, maxVisibleItems * DS.Style.arrowListView.itemHeight)
             interactive: Window.window ? (contentHeight > Window.window.height || model.count > maxVisibleItems) : false
-            clip: true
             ScrollIndicator.vertical: ScrollIndicator { }
         }
 

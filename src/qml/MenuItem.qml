@@ -27,13 +27,12 @@ import org.deepin.dtk.style 1.0 as DS
 T.MenuItem {
     id: control
 
+    property bool useIndicatorPadding: menu && menu.existsChecked
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
     baselineOffset: contentItem.y + contentItem.baselineOffset
-
     padding: DS.Style.control.padding
     spacing: DS.Style.control.spacing
-
     icon {
         height: DS.Style.menu.itemIconSize.height
         width: DS.Style.menu.itemIconSize.height
@@ -46,22 +45,11 @@ T.MenuItem {
     D.DciIcon.mode: D.ColorSelector.controlState
     D.DciIcon.palette: D.DTK.makeIconPalette(palette)
     contentItem: D.IconLabel {
-        property bool existsChecked: {
-            if (menu === undefined || menu === null) // not used in menu, alway reserve the checked space
-                return true
-
-            for (var i = 0; i < menu.count; ++i) {
-                var item = menu.itemAt(i)
-                if (item && item.checked)
-                    return true
-            }
-            return false
-        }
         readonly property real arrowPadding: control.subMenu && control.arrow ? control.arrow.width + control.spacing : 0
-        readonly property real indicatorPadding: existsChecked && control.indicator ? control.indicator.width + control.spacing : 0
+        readonly property real indicatorPadding: control.useIndicatorPadding && control.indicator ? control.indicator.width + control.spacing : 0
+
         leftPadding: !control.mirrored ? indicatorPadding : arrowPadding
         rightPadding: control.mirrored ? indicatorPadding : arrowPadding
-
         spacing: control.spacing
         mirrored: control.mirrored
         display: control.display

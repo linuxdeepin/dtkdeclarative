@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/">
+        <file>assets/menu/cancle.svg</file>
+        <file>assets/menu/font.svg</file>
+        <file>assets/menu/language.svg</file>
+        <file>assets/menu/music.svg</file>
+        <file>assets/menu/new1-1.svg</file>
+        <file>assets/menu/new1.svg</file>
+        <file>assets/menu/new2-1.svg</file>
+        <file>assets/menu/new2.svg</file>
+        <file>assets/menu/projects1.svg</file>
+        <file>assets/menu/projects2.svg</file>
+        <file>assets/menu/projects3.svg</file>
+        <file>assets/menu/rightclick.svg</file>
+        <file>assets/menu/voice2.svg</file>
+        <file>assets/menu/voice1.svg</file>
+    </qresource>
+</RCC>

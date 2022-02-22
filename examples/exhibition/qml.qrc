@@ -4,6 +4,7 @@
         <file>ColorButton.qml</file>
         <file>GroupTitle.qml</file>
         <file>ViewQMLSource.qml</file>
+        <file>ImageCell.qml</file>
     </qresource>
     <qresource prefix="/examples">
         <file>Button.qml</file>

@@ -27,7 +27,7 @@ import org.deepin.dtk 1.0
 ApplicationWindow {
     id: root
     visible: true
-    width: Math.max(contentList.contentWidth, 900)
+    width: Math.max(contentList.contentWidth, 1000)
     height: 600
     title: qsTr("DTK Exhibition")
 
