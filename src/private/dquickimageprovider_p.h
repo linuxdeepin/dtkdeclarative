@@ -78,7 +78,7 @@ public:
             return type & Circular;
         }
         inline QString toString() const {
-            return QString("%1.%2.%3.%4").arg(type).arg(cornerRadius).arg(blurRadius).arg(spread);
+            return QString("%1.%2.%3.%4.%5").arg(type).arg(cornerRadius).arg(blurRadius).arg(spread).arg(boxSize);
         }
 
         inline ShadowConfig &operator=(const ShadowConfig &other) {

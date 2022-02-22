@@ -551,6 +551,8 @@ static inline void mirrorTopLeftQuadrant(QImage &image, bool horizontal = true, 
     }
 }
 
+static void cleanFunction(void *image) { delete static_cast<QImage*>(image); }
+
 ShadowImage *DQuickShadowProvider::getRawShadow(const ShadowConfig &config)
 {
     if (Q_UNLIKELY(qIsNull(config.blurRadius))) {
@@ -563,7 +565,9 @@ ShadowImage *DQuickShadowProvider::getRawShadow(const ShadowConfig &config)
 
     const QString path = getShadowFilePath(config);
     if (QFile::exists(path)) {
-        image = new ShadowImage(this, config, QImage(path));
+        QImage *tmp = new QImage(path);
+        QImage target(tmp->bits(), tmp->width(), tmp->height(), tmp->bytesPerLine(), QImage::Format_Alpha8, cleanFunction, tmp);
+        image = new ShadowImage(this, config, target);
     }
 
     if (!image) {
@@ -595,6 +599,11 @@ ShadowImage *DQuickShadowProvider::getRawShadow(const ShadowConfig &config)
         const QRect blurRect(0, 0, qCeil(imageSize * 0.5), qCeil(imageSize * 0.5));
         doBoxShdowBlur(source, static_cast<int>(config.blurRadius), blurRect);
         mirrorTopLeftQuadrant(source);
+
+        // you can save the source to the local directory here and add it to the qrc,
+        // prevent repeated drawing of shadow pictures.
+        // auto alpha = QImage(source.bits(), source.width(), source.height(), source.bytesPerLine(), QImage::Format_Grayscale8);
+        // alpha.save("...." + config.toString() + ".png", "PNG");
 
         image = new ShadowImage(this, config, source);
     }
