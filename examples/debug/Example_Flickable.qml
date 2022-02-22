@@ -49,7 +49,7 @@ Column {
     D.IpV4LineEdit {
         width: 300
         height: 40
-        showAlert: true
+        showAlert: focus
         alertText: "alert tips"
     }
     D.IpV4LineEdit {
