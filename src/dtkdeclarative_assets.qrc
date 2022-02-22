@@ -10,6 +10,27 @@
         <file>shaders/dualkawaseup.vert</file>
         <file>shaders/noise.vert</file>
         <file>shaders/noise.frag</file>
+        <file>shadow/0.0.4.0.9.png</file>
+        <file>shadow/0.4.4.0.17.png</file>
+        <file>shadow/0.5.10.1.31.png</file>
+        <file>shadow/0.8.4.0.25.png</file>
+        <file>shadow/0.8.6.0.29.png</file>
+        <file>shadow/0.8.10.1.37.png</file>
+        <file>shadow/0.8.20.0.57.png</file>
+        <file>shadow/0.10.4.0.29.png</file>
+        <file>shadow/0.14.20.0.69.png</file>
+        <file>shadow/0.18.20.0.77.png</file>
+        <file>shadow/2.5.10.1.11.png</file>
+        <file>shadow/2.5.10.1.32.png</file>
+        <file>shadow/2.5.10.1.35.png</file>
+        <file>shadow/2.8.1.0.17.png</file>
+        <file>shadow/2.8.1.0.18.png</file>
+        <file>shadow/2.8.2.1.17.png</file>
+        <file>shadow/2.8.2.1.22.png</file>
+        <file>shadow/2.8.2.1.23.png</file>
+        <file>shadow/2.8.2.1.24.png</file>
+        <file>shadow/2.8.10.1.35.png</file>
+        <file>shadow/2.8.10.1.38.png</file>
     </qresource>
     <qresource prefix="/dsg/built-in-icons">
         <file alias="window_maximize.dci">icons/bloom/window_maximize.dci</file>
