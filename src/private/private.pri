@@ -11,12 +11,10 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dqmlglobalobject_p_p.h \
     $$PWD/dquickglow_p.h \
     $$PWD/dquickglow_p_p.h \
-    $$PWD/dquickiconprovider_p.h \
+    $$PWD/dquickimageprovider_p.h \
     $$PWD/dquickinwindowblur_p.h \
     $$PWD/dquickrectangle_p.h \
     $$PWD/dquickrectangle_p_p.h \
-    $$PWD/dquickshadowimage_p.h \
-    $$PWD/dquickshadowimage_p_p.h \
     $$PWD/dquicksystempalette_p.h \
     $$PWD/dquickiconimage_p.h \
     $$PWD/dquickiconimage_p_p.h \
@@ -48,10 +46,9 @@ SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dquickglow.cpp \
     $$PWD/dquickiconlabel.cpp \
     $$PWD/dquickbusyindicator.cpp \
-    $$PWD/dquickiconprovider.cpp \
+    $$PWD/dquickimageprovider.cpp \
     $$PWD/dquickinwindowblur.cpp \
     $$PWD/dquickrectangle.cpp \
-    $$PWD/dquickshadowimage.cpp \
     $$PWD/drectanglenode.cpp \
     $$PWD/dshadownode_p.cpp \
     $$PWD/dconfigwrapper.cpp \

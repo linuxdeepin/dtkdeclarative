@@ -174,6 +174,9 @@ public:
     Q_INVOKABLE QColor blendColor(const QColor &substrate, const QColor &superstratum);
     Q_INVOKABLE DTK_QUICK_NAMESPACE::DColor makeColor(DTK_QUICK_NAMESPACE::DColor::Type type);
     Q_INVOKABLE DTK_QUICK_NAMESPACE::DColor makeColor(const QColor &color);
+    Q_INVOKABLE QUrl makeShadowImageUrl(qreal boxSize, qreal cornerRadius, qreal shadowBlur,
+                                        QColor color, qreal xOffset, qreal yOffset, qreal spread,
+                                        bool hollow, bool inner);
 
     Q_INVOKABLE DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType toColorType(const QColor &color);
     Q_INVOKABLE QColor selectColor(const QColor &windowColor, const QColor &light, const QColor &dark);

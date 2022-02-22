@@ -24,10 +24,9 @@
 #include "dquickitemviewport.h"
 #include "dquickblitframebuffer.h"
 #include "private/dhandlecontextmenuwindow_p.h"
-#include "private/dquickiconprovider_p.h"
+#include "private/dquickimageprovider_p.h"
 #include "private/dquickglow_p.h"
 #include "private/dquickinwindowblur_p.h"
-#include "private/dquickshadowimage_p.h"
 #include "private/dquickrectangle_p.h"
 #include "private/dquickbehindwindowblur_p.h"
 
@@ -166,7 +165,6 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType<DConfigWrapper>(uri, implUri, 1, 0, "Config");
     dtkRegisterType<DQuickInWindowBlur>(uri, implUri, 1, 0, "InWindowBlur");
     dtkRegisterType<DQuickControlPalette>(uri, implUri, 1, 0, "Palette");
-    dtkRegisterType<DQuickShadowImage>(uri, implUri, 1, 0, "ShadowImage");
     dtkRegisterType<FloatingMessageContainer>(uri, implUri, 1, 0, "FloatingMessageContainer");
     dtkRegisterUncreatableType<MessageManager>(uri, implUri, 1, 0, "MessageManager", "Window Attached");
     dtkRegisterType<DQuickRectangle>(uri, implUri, 1, 0, "RoundRectangle");
@@ -213,6 +211,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, nullptr, 1, 0, "RectangleBorder");
     dtkRegisterType(uri, nullptr, 1, 0, "CicleSpreadAnimation");
     dtkRegisterType(uri, nullptr, 1, 0, "BoxShadow");
+    dtkRegisterType(uri, nullptr, 1, 0, "BoxInsetShadow");
 
     // for org.deepin.dtk.controls
     // QtQuick Controls
@@ -295,6 +294,7 @@ void QmlpluginPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
 {
     engine->addImageProvider("dtk.icon", new DQuickIconProvider);
     engine->addImageProvider("dtk.dci.icon", new DQuickDciIconProvider);
+    engine->addImageProvider("dtk.shadow", new DQuickShadowProvider);
     QQmlExtensionPlugin::initializeEngine(engine, uri);
 }
 

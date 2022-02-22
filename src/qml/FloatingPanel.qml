@@ -53,7 +53,6 @@ Control {
             shadowBlur: 20
             cornerRadius: backgroundRect.radius
             spread: 0
-            inner: false
             hollow: true
         }
         Rectangle {

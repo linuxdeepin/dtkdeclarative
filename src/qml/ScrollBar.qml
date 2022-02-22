@@ -102,12 +102,11 @@ T.ScrollBar {
             border.width: DS.Style.control.borderWidth
         }
 
-        BoxShadow {
+        BoxInsetShadow {
             anchors.fill: backgroundRect
             shadowColor: DS.Style.scrollBar.innerShadowColor
             spread: 1
             cornerRadius: backgroundRect.radius
-            inner: true
         }
     }
 }

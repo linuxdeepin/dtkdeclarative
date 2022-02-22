@@ -23,6 +23,7 @@
 #include "dqmlglobalobject_p_p.h"
 #include "dquickcontrolpalette_p.h"
 #include "dquickdciicon_p.h"
+#include "dquickimageprovider_p.h"
 #include "dmessagemanager_p.h"
 #include "dpopupwindowhandle_p.h"
 
@@ -253,6 +254,12 @@ DColor DQMLGlobalObject::makeColor(DColor::Type type)
 DColor DQMLGlobalObject::makeColor(const QColor &color)
 {
     return DColor(color);
+}
+
+QUrl DQMLGlobalObject::makeShadowImageUrl(qreal boxSize, qreal cornerRadius, qreal shadowBlur, QColor color,
+                                          qreal xOffset, qreal yOffset, qreal spread, bool hollow, bool inner)
+{
+    return DQuickShadowProvider::toUrl(boxSize, cornerRadius, shadowBlur, color, xOffset, yOffset, spread, hollow, inner);
 }
 
 DGuiApplicationHelper::ColorType DQMLGlobalObject::toColorType(const QColor &color)

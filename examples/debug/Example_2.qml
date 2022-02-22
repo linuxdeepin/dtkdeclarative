@@ -170,7 +170,7 @@ Rectangle {
     }
 
     // test like InnerShadow
-    D.BoxShadow {
+    D.BoxInsetShadow {
         anchors.fill: boxShadowSource
 
         shadowBlur : 20
@@ -178,7 +178,6 @@ Rectangle {
         shadowOffsetX : 0
         shadowOffsetY : 0
         cornerRadius: boxShadowSource.radius
-        inner: true
     }
 
     ListView {

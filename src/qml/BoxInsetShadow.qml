@@ -31,26 +31,15 @@ Item {
     property real shadowOffsetY: 0
     property color shadowColor: "black"
     property real spread: 0
-    property bool hollow: false
-    readonly property real __offsetX: hollow ? shadowOffsetX : 0
-    readonly property real __offsetY: hollow ? shadowOffsetY : 0
-    readonly property real __spread: hollow ? spread : 0
-    readonly property real __borderBase: cornerRadius + spread + shadowBlur * 2
-    readonly property real __minImageSize: 2 * __borderBase
-    readonly property real __boxSize: __minImageSize - 2 * shadowBlur - 2 * __spread + 1
+    readonly property real __borderBase: cornerRadius + spread + shadowBlur / 2.0
+    readonly property real __minImageSize: Math.max(image.border.left + image.border.right, image.border.top + image.border.bottom)
+    readonly property real __boxSize: Math.max(__minImageSize - shadowBlur, cornerRadius * 2 + 1)
 
     BorderImage {
         id: image
 
-        anchors {
-            centerIn: parent
-            horizontalCenterOffset:  shadowOffsetX
-            verticalCenterOffset: shadowOffsetY
-        }
-        width: parent.width + (shadowBlur + spread) * 2
-        height: parent.height + (shadowBlur + spread) * 2
-
-        source: D.DTK.makeShadowImageUrl(__boxSize, cornerRadius, shadowBlur, shadowColor, __offsetX, __offsetY, __spread, hollow, false)
+        anchors.fill: parent
+        source: D.DTK.makeShadowImageUrl(__boxSize, cornerRadius, shadowBlur, shadowColor, shadowOffsetX, shadowOffsetY, spread, false, true)
 
         function bound(min, val, max) {
             if (val <= min)
@@ -61,10 +50,10 @@ Item {
         }
 
         border {
-            left: Math.min(width / 2, __borderBase - __offsetX)
-            right: Math.min(width / 2, __borderBase + __offsetX)
-            top: Math.min(height / 2, __borderBase - __offsetY)
-            bottom: Math.min(height / 2, __borderBase + __offsetY)
+            left: __borderBase + bound(0, shadowBlur + shadowOffsetX, width - 2 * __borderBase)
+            right: __borderBase + bound(0, shadowBlur - shadowOffsetX, width - 2 * __borderBase)
+            top: __borderBase + bound(0, shadowBlur + shadowOffsetY, height - 2 * __borderBase)
+            bottom: __borderBase + bound(0, shadowBlur - shadowOffsetY, height - 2 * __borderBase)
         }
     }
 }
