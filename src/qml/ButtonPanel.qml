@@ -94,8 +94,7 @@ Item {
         }
     }
 
-    BoxShadow {
-        inner: true
+    BoxInsetShadow {
         anchors.fill: backgroundRect
         shadowBlur: 2
         shadowOffsetY: innerShadow2.visible ? -3 : -1
@@ -106,9 +105,8 @@ Item {
                  && control.D.ColorSelector.family === D.Palette.CommonColor
     }
 
-    BoxShadow {
+    BoxInsetShadow {
         id: innerShadow2
-        inner: true
         anchors.fill: backgroundRect
         shadowBlur: 1
         shadowOffsetY: 2

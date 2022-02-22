@@ -47,13 +47,12 @@ Item {
         radius: DS.Style.control.radius
     }
 
-    BoxShadow {
+    BoxInsetShadow {
         anchors.fill: backgroundRect
         shadowColor: panel.D.ColorSelector.innerShadowColor
         shadowOffsetY: -1
         shadowBlur: 2
         spread: 1
         cornerRadius: backgroundRect.radius
-        inner: true
     }
 }
