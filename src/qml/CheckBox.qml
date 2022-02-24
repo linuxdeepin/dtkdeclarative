@@ -54,10 +54,11 @@ T.CheckBox {
             sourceSize: Qt.size(control.icon.width, control.icon.height)
         }
 
-        RectangleBorder {
+        FocusBoxBorder {
             visible: control.activeFocus
-            borderColor: control.palette.highlight
+            color: control.palette.highlight
             radius: DS.Style.checkBox.focusRadius
+            anchors.fill: parent
         }
     }
 

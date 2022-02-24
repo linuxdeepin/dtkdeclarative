@@ -76,9 +76,11 @@ T.DelayButton {
         radius: PM.ControlRadius
         color: control.palette.button
 
-       D.RectangleBorder {
+       D.FocusBoxBorder {
             visible: control.visualFocus
-            borderColor: control.palette.highlight
+            color: control.palette.highlight
+            radius: parent.radius
+            anchors.fill: parent
         }
 
         Item {

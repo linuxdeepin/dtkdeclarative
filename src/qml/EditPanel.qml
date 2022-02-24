@@ -38,10 +38,11 @@ Rectangle {
     color: showAlert ? D.ColorSelector.alertBackgroundColor
                      : D.ColorSelector.backgroundColor
 
-    RectangleBorder {
+    FocusBoxBorder {
         id: _border
         visible: control.activeFocus
-        borderColor: control.palette.highlight
+        color: control.palette.highlight
+        radius: parent.radius
     }
 
     AlertToolTip {

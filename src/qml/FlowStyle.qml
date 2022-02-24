@@ -40,7 +40,7 @@ QtObject {
         pressed: "#cdd6e0"
     }
     property D.Palette buttonDropShadow: D.Palette {
-        normal: Qt.rgba(0, 0, 0, 0.08)
+        normal: Qt.rgba(0, 0, 0, 0.05)
         hovered: Qt.rgba(0, 0, 0, 0.1)
     }
     property D.Palette buttonInnerShadow1: D.Palette {
@@ -48,8 +48,9 @@ QtObject {
         pressed: "transparent"
     }
     property D.Palette buttonInnerShadow2: D.Palette {
-        normal: "transparent"
+        normal: Qt.rgba(1, 1, 1, 0.2)
         hovered: Qt.rgba(1, 1, 1, 0.5)
+        pressed: "transparent"
     }
     property D.Palette highlightedButton1: D.Palette {
         normal: "#00aaff"
@@ -87,12 +88,18 @@ QtObject {
         hovered: "white"
         pressed: Qt.rgba(1, 1, 1, 0.6)
     }
-    property D.Palette buttonBorder: D.Palette {
-        normal: Qt.rgba(0, 0, 0, 0.03)
-        hovered: Qt.rgba(0, 0, 0, 0.15)
+    property D.Palette buttonInsideBorder: D.Palette {
+        normal: Qt.rgba(1, 1, 1, 0.1)
+        hovered: Qt.rgba(1, 1, 1, 0.2)
+        pressed: Qt.rgba(0, 0, 0, 0.03)
+    }
+    property D.Palette buttonOutsideBorder: D.Palette {
+        normal: Qt.rgba(0, 0, 0, 0.08)
+        hovered: Qt.rgba(0, 0, 0, 0.2)
+        pressed: "transparent"
     }
     property D.Palette highlightedButtonBorder: D.Palette {
-        normal: Qt.rgba(0, 0.581, 1, 0.2)
+        normal: Qt.rgba(0, 129 / 255.0, 1, 0.2)
     }
 
     property D.Palette checkedButton : D.Palette {
@@ -188,7 +195,8 @@ QtObject {
         property int borderWidth: 1
         property color lightBorder: Qt.rgba(0, 0, 0, 0.05)
         property color darkBorder: Qt.rgba(0, 0, 0, 0.05)
-        property int focusBorderWidth: 2
+        property real focusBorderWidth: 2
+        property real focusBorderPaddings: 1
 
         function implicitWidth(control) {
             return Math.max(backgroundImplicitWidth(control), contentImplicitWidth(control))

@@ -208,10 +208,12 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     // 自定义的 QML 控件可以通过把 QML 文件注册到环境中的方式来实现
     // for org.deepin.dtk
     dtkRegisterType(uri, nullptr, 1, 0, "RectangularShadow");
-    dtkRegisterType(uri, nullptr, 1, 0, "RectangleBorder");
+    dtkRegisterType(uri, nullptr, 1, 0, "FocusBoxBorder");
     dtkRegisterType(uri, nullptr, 1, 0, "CicleSpreadAnimation");
     dtkRegisterType(uri, nullptr, 1, 0, "BoxShadow");
     dtkRegisterType(uri, nullptr, 1, 0, "BoxInsetShadow");
+    dtkRegisterType(uri, nullptr, 1, 0, "InsideBoxBorder");
+    dtkRegisterType(uri, nullptr, 1, 0, "OutsideBoxBorder");
 
     // for org.deepin.dtk.controls
     // QtQuick Controls
