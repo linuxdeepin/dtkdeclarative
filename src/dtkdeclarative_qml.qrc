@@ -11,7 +11,7 @@
         <file>qml/RecommandButton.qml</file>
         <file>qml/ToolButton.qml</file>
         <file>qml/WarningButton.qml</file>
-        <file>qml/RectangleBorder.qml</file>
+        <file>qml/FocusBoxBorder.qml</file>
         <file alias="qml/PixelMetric.js">../chameleon/imports/Chameleon/PixelMetric.js</file>
         <file>qml/CicleSpreadAnimation.qml</file>
         <file>qml/TitleBar.qml</file>
@@ -71,5 +71,7 @@
         <file>qml/BoxInsetShadow.qml</file>
         <file>qml/CheckBox.qml</file>
         <file>qml/IpV4LineEdit.qml</file>
+        <file>qml/OutsideBoxBorder.qml</file>
+        <file>qml/InsideBoxBorder.qml</file>
     </qresource>
 </RCC>

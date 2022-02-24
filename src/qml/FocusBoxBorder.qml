@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     Chen Bin <chenbin@uniontech.com>
  *
@@ -20,30 +20,35 @@
  */
 
 import QtQuick 2.11
+import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
 Item {
     id: control
-    property color borderColor: "transparent"
-    property alias radius: _border.radius
-
-    anchors.centerIn: parent
-    width: parent.width + 2 * DS.Style.control.focusBorderWidth
-    height: parent.height + 2 * DS.Style.control.focusBorderWidth
-
-    Rectangle {
-        id: _border
-        anchors.fill: parent
-        radius: DS.Style.control.radius + DS.Style.control.focusBorderWidth
-        border { width: DS.Style.control.focusBorderWidth; color: borderColor }
-        color: "transparent"
-    }
+    property color color: "transparent"
+    property real borderWidth: DS.Style.control.focusBorderWidth
+    property real radius: 0
 
     BoxShadow {
         anchors.fill: _border
-        shadowColor: borderColor
+        shadowColor: D.DTK.makeColor(parent.color).opacity(-50).color()
         cornerRadius: _border.radius
         shadowBlur: 4
         hollow: true
+    }
+
+    Rectangle {
+        id: _border
+
+        readonly property real paddings: borderWidth + DS.Style.control.focusBorderPaddings
+
+        anchors {
+            fill: parent
+            margins: -paddings
+        }
+
+        radius: parent.radius + paddings
+        border { width: borderWidth; color: parent.color }
+        color: "transparent"
     }
 }
