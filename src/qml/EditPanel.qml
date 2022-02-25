@@ -40,6 +40,7 @@ Rectangle {
 
     FocusBoxBorder {
         id: _border
+        anchors.fill: parent
         visible: control.activeFocus
         color: control.palette.highlight
         radius: parent.radius

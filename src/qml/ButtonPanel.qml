@@ -116,7 +116,7 @@ Item {
         id: innerShadow2
         anchors.fill: backgroundRect
         shadowBlur: 1
-        shadowOffsetY: 2
+        shadowOffsetY: 1
         shadowColor: control.D.ColorSelector.innerShadowColor2
         cornerRadius: backgroundRect.radius
         visible: innerShadowColor2 && shadowColor.a !== 0 && control.D.ColorSelector.family === D.Palette.CommonColor
