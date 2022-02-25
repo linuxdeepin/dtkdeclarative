@@ -35,6 +35,21 @@
 DQUICK_BEGIN_NAMESPACE
 DGUI_USE_NAMESPACE
 
+static inline QImage invalidIcon(QSize *size) {
+#ifdef QT_NO_DEBUG
+    static QImage invalid(10, 10, QImage::Format_Grayscale8);
+    invalid.fill(Qt::black);
+    if (size) {
+        size->rwidth() = invalid.width();
+        size->rheight() = invalid.height();
+    }
+    return invalid;
+#else
+    Q_UNUSED(size);
+    return QImage();
+#endif
+}
+
 static QImage requestImageFromQIcon(const QString &id, QSize *size, const QSize &requestedSize) {
     QUrlQuery urlQuery(id);
     QString name = urlQuery.queryItemValue("name");
@@ -49,7 +64,7 @@ static QImage requestImageFromQIcon(const QString &id, QSize *size, const QSize 
         icon = DIconTheme::findQIcon(name);
     }
     if (icon.isNull())
-        return QImage();
+        return invalidIcon(size);
 
     QIcon::Mode qMode = QIcon::Normal;
     QIcon::State qState = QIcon::Off;
@@ -199,7 +214,7 @@ QImage DQuickDciIconProvider::requestImage(const QString &id, QSize *size, const
         pixmap = dciIcon.pixmap(devicePixelRatio, boundingSize, DDciIcon::Theme(theme), DDciIcon::Normal, palette);
 
     if (pixmap.isNull())
-        return QImage();
+        return invalidIcon(size);
 
     QImage image = pixmap.toImage();
     if (size)
