@@ -57,7 +57,7 @@ T.ComboBox {
         Component {
             id: editableIndicator
             RowLayout {
-                spacing: 0
+                spacing: DS.Style.comboBox.editableIndicatorSpacing
                 Rectangle {
                     width: 1
                     height: control.height
@@ -70,7 +70,7 @@ T.ComboBox {
                         height: DS.Style.comboBox.editableIndicatorSize
                     }
                     palette: D.DTK.makeIconPalette(control.palette)
-                    name: "combobox_arrow"
+                    name: "entry_option_arrow_down"
                     mode: control.D.ColorSelector.controlState
                 }
             }
@@ -78,10 +78,14 @@ T.ComboBox {
 
         Component {
             id: normalIndicator
-            // TODO(Chen Bin): Replace it with DciIcon
-            D.QtIcon {
-               name: "combobox_arrow"
-               color: control.palette.buttonText
+            D.DciIcon {
+                sourceSize {
+                    width: DS.Style.comboBox.iconSize
+                    height: DS.Style.comboBox.iconSize
+                }
+                palette: D.DTK.makeIconPalette(control.palette)
+                name: "arrow_ordinary_down"
+                mode: control.D.ColorSelector.controlState
             }
         }
     }

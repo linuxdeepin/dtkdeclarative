@@ -91,7 +91,7 @@ T.MenuItem {
         }
         visible: control.subMenu
         mirror: control.mirrored
-        name: control.subMenu ? "go-next" : ""
+        name: control.subMenu ? "menu_arrow" : ""
         palette: control.D.DciIcon.palette
     }
 

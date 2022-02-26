@@ -264,6 +264,7 @@ QtObject {
 
     property QtObject edit: QtObject {
         property int width: 180
+        property int actionIconSize: 22
         property int textFieldHeight: 36
         property int textAreaHeight: 100
     }
@@ -407,6 +408,7 @@ QtObject {
         property int padding: 8
         property int spacing: 10
         property int iconSize: 16
+        property int editableIndicatorSpacing: 7
         property color editableLineColor: Qt.rgba(0, 0, 0, 0.05)
         property int editableIndicatorSize: 22
     }
