@@ -27,7 +27,7 @@ TextField {
     rightPadding: clearBtn.visible ? (clearBtn.width + clearBtn.anchors.rightMargin) : 0
     selectByMouse: true
 
-    ToolButton {
+    ActionButton {
         id: clearBtn
         width: height
         height: control.background.implicitHeight
@@ -35,18 +35,15 @@ TextField {
             right: control.right
             verticalCenter: control.verticalCenter
         }
-        background: null
         visible: control.text.length !== 0
         focusPolicy: Qt.NoFocus
-
+        icon {
+            name: "entry_clear"
+            width: DS.Style.edit.actionIconSize
+            height: DS.Style.edit.actionIconSize
+        }
         onClicked: {
             control.clear()
-        }
-
-        D.QtIcon {
-            //###(Chen Bin): Use the Action control instead later or processes the icon of the press state.
-            anchors.centerIn: parent
-            name: "window-close_round"
         }
     }
 }
