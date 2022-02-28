@@ -26,6 +26,7 @@
 
 #include <QOpenGLFunctions>
 #include <QQuickImageProvider>
+#include <QtMath>
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -157,6 +158,24 @@ void DQuickItemViewportPrivate::updateUsePreprocess() const
     }
 }
 
+void DQuickItemViewportPrivate::ensureTexture()
+{
+    D_Q(DQuickItemViewport);
+    if (texture)
+        return;
+
+    Q_ASSERT_X(QQuickItemPrivate::get(q)->window
+               && QQuickItemPrivate::get(q)->sceneGraphRenderContext()
+               && QThread::currentThread() == QQuickItemPrivate::get(q)->sceneGraphRenderContext()->thread(),
+               "DQuickItemViewport",
+               "Cannot be used outside the rendering thread");
+
+    QSGRenderContext *rc = QQuickItemPrivate::get(q)->sceneGraphRenderContext();
+    texture = rc->sceneGraphContext()->createLayer(rc);
+    QObject::connect(QQuickItemPrivate::get(q)->window, SIGNAL(sceneGraphInvalidated()), texture, SLOT(invalidated()), Qt::DirectConnection);
+    QObject::connect(texture, SIGNAL(updateRequested()), q, SLOT(update()));
+}
+
 /*!
  * \~chinese \class DQuickItemViewport
  * \~chinese \brief DQuickItemViewport 类是根据 \a sourceItem 属性设定的 \a QQuickItem
@@ -183,7 +202,11 @@ DQuickItemViewport::DQuickItemViewport(QQuickItem *parent)
 
 DQuickItemViewport::~DQuickItemViewport()
 {
-
+    D_D(DQuickItemViewport);
+    if (window()) {
+        window()->scheduleRenderJob(new DQuickViewportCleanup(d->texture, d->provider),
+                                    QQuickWindow::AfterSynchronizingStage);
+    }
 }
 
 QQuickItem *DQuickItemViewport::sourceItem() const
@@ -240,17 +263,43 @@ void DQuickItemViewport::setHideSource(bool newHideSource)
     Q_EMIT hideSourceChanged();
 }
 
+QSGTextureProvider *DQuickItemViewport::textureProvider() const
+{
+    D_DC(DQuickItemViewport);
+    if (!d->sourceItem)
+        return nullptr;
+
+    auto provider = d->sourceItem->textureProvider();
+    if (provider)
+        return provider;
+
+    if (!d->provider) {
+        const_cast<DQuickItemViewport *>(this)->d_func()->provider = new DQuickViewportTextureProvider();
+        const_cast<DQuickItemViewport *>(this)->d_func()->ensureTexture();
+        connect(d->texture, SIGNAL(updateRequested()), d->provider, SIGNAL(textureChanged()));
+        d->provider->sourceTexture = d->texture;
+    }
+
+    return d->provider;
+}
+
+void DQuickItemViewport::invalidateSceneGraph()
+{
+    D_D(DQuickItemViewport);
+    if (d->texture)
+        delete d->texture;
+    if (d->provider)
+        delete d->provider;
+    d->texture = nullptr;
+    d->provider = nullptr;
+}
+
 void DQuickItemViewport::setSourceItem(QQuickItem *sourceItem)
 {
     D_D(DQuickItemViewport);
 
     if (d->sourceItem == sourceItem)
         return;
-
-    if (sourceItem && !sourceItem->isTextureProvider()) {
-        qWarning() << "DQuickItemViewport: sourceItem is missing or not a texture provider";
-        return;
-    }
 
     if (isComponentComplete()) {
         d->initSourceItem(d->sourceItem, sourceItem);
@@ -342,11 +391,33 @@ QSGNode *DQuickItemViewport::updatePaintNode(QSGNode *old, QQuickItem::UpdatePai
         return nullptr;
     }
 
-    const auto tp = d->sourceItem->textureProvider();
-
+    const auto tp = this->textureProvider();
     if (Q_LIKELY(!tp)) {
         delete old;
         return nullptr;
+    }
+
+    if (auto texture = qobject_cast<QSGLayer *>(tp->texture())) {
+        texture->setItem(QQuickItemPrivate::get(d->sourceItem)->itemNode());
+        QRectF sourceRect = d->sourceRect.width() == 0 || d->sourceRect.height() == 0
+                          ? QRectF(0, 0, d->sourceItem->width(), d->sourceItem->height())
+                          : d->sourceRect;
+        texture->setRect(sourceRect);
+        QSize textureSize = QSize(qCeil(qAbs(sourceRect.width())), qCeil(qAbs(sourceRect.height())));
+        QQuickItemPrivate *item_d = static_cast<QQuickItemPrivate *>(QObjectPrivate::get(this));
+
+        if (d->sourceItem)
+            textureSize *= item_d->window->effectiveDevicePixelRatio();
+
+        const QSize minTextureSize = item_d->sceneGraphContext()->minimumFBOSize();
+
+        while (textureSize.width() < minTextureSize.width())
+            textureSize.rwidth() *= 2;
+        while (textureSize.height() < minTextureSize.height())
+            textureSize.rheight() *= 2;
+        texture->setDevicePixelRatio(item_d->window->effectiveDevicePixelRatio());
+        texture->setSize(textureSize);
+        texture->updateTexture();
     }
 
     PreprocessNode *preNode = static_cast<PreprocessNode*>(old);
@@ -381,9 +452,10 @@ QSGNode *DQuickItemViewport::updatePaintNode(QSGNode *old, QQuickItem::UpdatePai
                 }
             };
 
-            d->textureChangedConnection = QObject::connect(tp,
-                                                           &QSGTextureProvider::textureChanged,
-                                                           this, onTextureChanged, Qt::DirectConnection);
+            if (tp)
+                d->textureChangedConnection = QObject::connect(tp,
+                                                               &QSGTextureProvider::textureChanged,
+                                                               this, onTextureChanged, Qt::DirectConnection);
         }
     }
 
@@ -455,6 +527,17 @@ void DQuickItemViewport::componentComplete()
         d->initSourceItem(nullptr, d->sourceItem);
 
     return QQuickItem::componentComplete();
+}
+
+void DQuickItemViewport::releaseResources()
+{
+    D_D(DQuickItemViewport);
+    if (d->texture || d->provider) {
+        window()->scheduleRenderJob(new DQuickViewportCleanup(d->texture, d->provider),
+                                    QQuickWindow::AfterSynchronizingStage);
+        d->texture = nullptr;
+        d->provider = nullptr;
+    }
 }
 
 DQUICK_END_NAMESPACE
