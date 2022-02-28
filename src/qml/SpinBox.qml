@@ -21,7 +21,6 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
-import QtQuick.Shapes 1.11
 import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.4 as T
 import org.deepin.dtk.style 1.0 as DS
@@ -87,10 +86,10 @@ T.SpinBox {
             topMargin: control.height / 2 - (down.indicator ? height : height / 2)
         }
 
-        singleIndicator: down.indicator
         direction: SpinBoxIndicator.IndicatorDirection.UpIndicator
-        iconName: "go-up"
+        singleIndicator: down.indicator
         pressed: up.pressed
+        spinBox: control
     }
 
     down.indicator: SpinBoxIndicator {
@@ -101,9 +100,9 @@ T.SpinBox {
             bottomMargin: control.height / 2 - (up.indicator ? height : height / 2)
         }
 
-        singleIndicator: up.indicator
         direction: SpinBoxIndicator.IndicatorDirection.DownIndicator
-        iconName: "go-down"
+        singleIndicator: up.indicator
         pressed: down.pressed
+        spinBox: control
     }
 }
