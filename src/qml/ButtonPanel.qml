@@ -28,6 +28,7 @@ import org.deepin.dtk.style 1.0 as DS
 Item {
     id: control
     property Item button
+    property int radius: DS.Style.control.radius
     property D.Palette color1: selectValue(DS.Style.button1, DS.Style.checkedButton, DS.Style.highlightedButton1)
     property D.Palette color2: selectValue(DS.Style.button2, DS.Style.checkedButton, DS.Style.highlightedButton2)
     property D.Palette insideBorderColor: selectValue(DS.Style.buttonInsideBorder, null, DS.Style.highlightedButtonBorder)
@@ -77,7 +78,7 @@ Item {
         }
 
         anchors.fill: parent
-        radius: DS.Style.control.radius
+        radius: control.radius
         gradient: D.ColorSelector.color1 === D.ColorSelector.color2 ? null : backgroundGradient
         color: D.ColorSelector.color1
     }

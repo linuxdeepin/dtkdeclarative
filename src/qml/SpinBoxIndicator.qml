@@ -25,57 +25,91 @@ import org.deepin.dtk.style 1.0 as DS
 
 Control {
     id: control
-
     enum IndicatorDirection {
         UpIndicator = 0,
         DownIndicator = 1
     }
 
-    property D.Palette indicatorBackgroundColor: DS.Style.spinBoxIndicatorBackground
-    property D.Palette indicatorColor: DS.Style.spinBoxIndicator
-    property int direction: IndicatorDirection.UpIndicator
-    property bool singleIndicator: false
+    property Item spinBox
     property bool pressed
-    property alias iconName: icon.name
+    property bool singleIndicator: false
+    property int direction
+    property D.Palette inactiveBackgroundColor: DS.Style.spinBoxIndicatorBackground
 
-    palette.windowText: D.ColorSelector.indicatorColor
-    implicitWidth: DS.Style.spinBox.indicatorWidth
-    implicitHeight: singleIndicator ? DS.Style.spinBox.indicatorHeight : DS.Style.spinBox.indicatorWidth
     hoverEnabled: true
+    implicitWidth: DS.Style.spinBox.indicatorWidth
+    implicitHeight: spinBox.activeFocus ? spinBox.implicitHeight / 2 : DS.Style.spinBox.indicatorHeight
+    opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
 
-    Item {
-        anchors.left: parent.left
-        anchors.bottom: (direction === SpinBoxIndicator.IndicatorDirection.UpIndicator) ? undefined : parent.bottom
-        anchors.top: (direction === SpinBoxIndicator.IndicatorDirection.UpIndicator) ? parent.top : undefined
-        implicitWidth: DS.Style.spinBox.indicatorWidth
-        implicitHeight: singleIndicator ? DS.Style.spinBox.indicatorWidth / 2 : DS.Style.spinBox.indicatorWidth
-        clip: singleIndicator
-
-        Rectangle {
-            anchors.left: parent.left
-            anchors.bottom: (direction === SpinBoxIndicator.IndicatorDirection.UpIndicator) ? undefined : parent.bottom
-            anchors.top: (direction === SpinBoxIndicator.IndicatorDirection.UpIndicator) ? parent.top : undefined
-            implicitWidth: DS.Style.spinBox.indicatorWidth
-            implicitHeight: DS.Style.spinBox.indicatorWidth
-            radius: parent.width / 2
-            color: control.D.ColorSelector.indicatorBackgroundColor
+    Component {
+        id: inactiveComponent
+        D.DciIcon {
+            id: icon
+            sourceSize.width: DS.Style.spinBox.indicatorIconSize
+            palette.foreground: control.D.ColorSelector.inactiveBackgroundColor
+            name: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? "entry_spinbox_up" : "entry_spinbox_down"
         }
     }
 
-    Rectangle {
-        visible: singleIndicator
-        anchors.left: parent.left
-        anchors.bottom: (direction === SpinBoxIndicator.IndicatorDirection.UpIndicator) ? parent.bottom : undefined
-        anchors.top: (direction === SpinBoxIndicator.IndicatorDirection.UpIndicator) ? undefined : parent.top
-        implicitWidth: parent.implicitWidth
-        implicitHeight: DS.Style.spinBox.indicatorHeight - DS.Style.spinBox.indicatorWidth / 2
-        color: control.D.ColorSelector.indicatorBackgroundColor
+    Component {
+        id: activeComponent
+        Item {
+            Item {
+                id: btnBackground
+                width: parent.width + DS.Style.control.radius
+                height: parent.height + DS.Style.control.radius
+                anchors {
+                    right: parent.right
+                    top: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? parent.top : undefined
+                    bottom: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? undefined : parent.bottom
+                }
+
+                Button {
+                    id: btn
+                    anchors {
+                        right: parent.right
+                        top: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? parent.top : undefined
+                        bottom: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? undefined : parent.bottom
+                    }
+                    width: DS.Style.spinBox.indicatorWidth
+                    height: spinBox.implicitHeight / 2
+                    icon.name: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? "go-up" : "go-down"
+                    activeFocusOnTab: false
+                    opacity: 1
+                    background: ButtonPanel {
+                        button: btn
+                        radius: 0
+                    }
+                    onClicked: {
+                        if (direction === SpinBoxIndicator.IndicatorDirection.UpIndicator) {
+                            spinBox.increase()
+                        } else {
+                            spinBox.decrease()
+                        }
+                    }
+                }
+            }
+
+            D.ItemViewport {
+                id: viewport
+                sourceItem: btnBackground
+                radius: DS.Style.control.radius
+                fixed: true
+                width: btnBackground.width
+                height: btnBackground.height
+                anchors {
+                    right: parent.right
+                    top: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? parent.top : undefined
+                    bottom: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? undefined : parent.bottom
+                }
+                hideSource: true
+            }
+        }
+
     }
 
-    D.DciIcon {
-        id: icon
-        anchors.centerIn: parent
-        sourceSize.width: DS.Style.spinBox.indicatorIconSize
-        palette: D.DTK.makeIconPalette(control.palette)
+    Loader {
+        anchors.fill: parent
+        sourceComponent: spinBox.activeFocus ? activeComponent : inactiveComponent
     }
 }

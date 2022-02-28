@@ -139,12 +139,10 @@ QtObject {
     property D.Palette editBackground: D.Palette {
         normal: Qt.rgba(0, 0, 0, 0.08)
     }
-    property D.Palette spinBoxIndicator: D.Palette {
-        normal: "white"
-        pressed: Qt.rgba(1, 1, 1, 0.6)
-    }
     property D.Palette spinBoxIndicatorBackground: D.Palette {
         normal: Qt.rgba(0, 0, 0, 0.7)
+        hovered: Qt.rgba(0, 0, 0, 0.6)
+        pressed: Qt.rgba(0, 0, 0, 0.8)
     }
     property D.Palette warningText: D.Palette {
         normal: "#e15736"
@@ -279,10 +277,9 @@ QtObject {
         property int width : 300
         property int height: 36
         property int spacing: 10
-        property int indicatorSpacing: 4
         property int indicatorWidth: 24
         property int indicatorHeight: 14
-        property int indicatorIconSize: 10
+        property int indicatorIconSize: 24
     }
 
     property QtObject plusMinusSpinBox: QtObject {
