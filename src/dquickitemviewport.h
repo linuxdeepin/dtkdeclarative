@@ -58,6 +58,9 @@ public:
     bool hideSource() const;
     void setHideSource(bool newHideSource);
 
+    bool isTextureProvider() const override { return true; }
+    QSGTextureProvider *textureProvider() const override;
+
 Q_SIGNALS:
     void sourceItemChanged();
     void sourceRectChanged();
@@ -65,11 +68,15 @@ Q_SIGNALS:
     void fixedChanged();
     void hideSourceChanged();
 
+private Q_SLOTS:
+    void invalidateSceneGraph();
+
 protected:
     void itemChange(ItemChange, const ItemChangeData &) override;
     void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry) override;
     QSGNode *updatePaintNode(QSGNode *old, UpdatePaintNodeData *) override;
     void componentComplete() override;
+    void releaseResources() override;
 };
 
 DQUICK_END_NAMESPACE

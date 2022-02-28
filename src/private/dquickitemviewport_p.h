@@ -119,6 +119,38 @@ private:
 };
 
 DQUICK_BEGIN_NAMESPACE
+class DQuickViewportTextureProvider : public QSGTextureProvider
+{
+    Q_OBJECT
+public:
+    DQuickViewportTextureProvider()
+        : sourceTexture(nullptr)
+    {
+    }
+
+    QSGTexture *texture() const override
+    {
+       return sourceTexture;
+    }
+
+    QSGLayer *sourceTexture;
+};
+
+class DQuickViewportCleanup : public QRunnable
+{
+public:
+    DQuickViewportCleanup(QSGLayer *t, DQuickViewportTextureProvider *p)
+        : texture(t)
+        , provider(p)
+    {}
+    void run() override {
+        delete texture;
+        delete provider;
+    }
+    QSGLayer *texture;
+    DQuickViewportTextureProvider *provider;
+};
+
 class PreprocessNode;
 class Q_DECL_HIDDEN DQuickItemViewportPrivate : public DCORE_NAMESPACE::DObjectPrivate, public QQuickItemChangeListener
 {
@@ -245,6 +277,7 @@ public:
     void setPreprocessNode(PreprocessNode *newNode);
     void clearPreprocessNode(PreprocessNode *oldNode);
     void updateUsePreprocess() const;
+    void ensureTexture();
 
     D_DECLARE_PUBLIC(DQuickItemViewport)
 
@@ -268,6 +301,8 @@ public:
     float radius = 0;
     bool fixed = false;
     bool hideSource = false;
+    QSGLayer *texture = nullptr;
+    DQuickViewportTextureProvider *provider = nullptr;
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(DQuickItemViewportPrivate::DirtyState)
 DQUICK_END_NAMESPACE
