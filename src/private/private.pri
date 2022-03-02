@@ -36,6 +36,7 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dquickbehindwindowblur_p.h \
     $$PWD/dpopupwindowhandle_p.h \
     $$PWD/dquickdciiconimage_p_p.h \
+    $$PWD/dobjectmodelproxy_p.h \
 
 SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dblitframebuffernode.cpp \
@@ -60,3 +61,4 @@ SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dsoftwareroundedimagenode.cpp \
     $$PWD/dquickbehindwindowblur.cpp \
     $$PWD/dpopupwindowhandle.cpp \
+    $$PWD/dobjectmodelproxy.cpp \
