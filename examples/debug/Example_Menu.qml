@@ -61,6 +61,19 @@ Column {
             }
         }
     }
+    Row {
+        D.SearchEdit {
+            id: filterSearchEdit
+            placeholder: qsTr("搜索")
+            onTextChanged: {
+                objectModelFilter.update()
+            }
+        }
+        Button {
+            text: "open menu"
+            onClicked: searchAndArrowMenu.popup()
+        }
+    }
 
     Menu {
         id: normalMenu
@@ -109,5 +122,23 @@ Column {
             Action { text: "Find Previous" }
             Action { text: "Replace" }
         }
+    }
+
+    Menu {
+        id: searchAndArrowMenu
+        closePolicy: Popup.NoAutoClose
+        model: D.ObjectModelProxy {
+            id: objectModelFilter
+            filterAcceptsItem: function(item) {
+                return item.text.includes(filterSearchEdit.text)
+            }
+            sourceModel: searchAndArrowMenu.contentModel
+        }
+        MenuItem { text: qsTr("Greek(cp869)") }
+        MenuItem { text: qsTr("Cyrillic (ISO 8859-5)") }
+        MenuItem { text: qsTr("Cyrillic(KOI8-R)") }
+        MenuItem { text: qsTr("Devanagari(x-mac-davanagari)") }
+        MenuItem { text: qsTr("Gurmukhi(x-mac-gurmukhi)") }
+        MenuItem { text: qsTr("Thai (ISO 8859-11)") }
     }
 }

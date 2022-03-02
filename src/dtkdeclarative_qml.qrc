@@ -73,5 +73,6 @@
         <file>qml/IpV4LineEdit.qml</file>
         <file>qml/OutsideBoxBorder.qml</file>
         <file>qml/InsideBoxBorder.qml</file>
+        <file>qml/SortFilterModel.qml</file>
     </qresource>
 </RCC>

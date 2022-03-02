@@ -40,10 +40,12 @@
 #include "private/dsettingscontainer_p.h"
 #include "private/dmessagemanager_p.h"
 #include "private/dpopupwindowhandle_p.h"
+#include "private/dobjectmodelproxy_p.h"
 
 #include <DFontManager>
 
 #include <QQmlEngine>
+#include <QSortFilterProxyModel>
 #include <qqml.h>
 
 DGUI_USE_NAMESPACE
@@ -169,6 +171,8 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterUncreatableType<MessageManager>(uri, implUri, 1, 0, "MessageManager", "Window Attached");
     dtkRegisterType<DQuickRectangle>(uri, implUri, 1, 0, "RoundRectangle");
     dtkRegisterType<DQuickBehindWindowBlur>(uri, implUri, 1, 0, "BehindWindowBlur");
+    dtkRegisterType<QSortFilterProxyModel>(uri, implUri, 1, 0, "SortFilterProxyModel");
+    dtkRegisterType<ObjectModelProxy>(uri, implUri, 1, 0, "ObjectModelProxy");
 
     dtkRegisterAnonymousType<DQUICK_NAMESPACE::DQuickDciIcon>(uri, implUri, 1);
     dtkRegisterAnonymousType<DQuickControlColor>(uri, implUri, 1);
@@ -214,6 +218,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, nullptr, 1, 0, "BoxInsetShadow");
     dtkRegisterType(uri, nullptr, 1, 0, "InsideBoxBorder");
     dtkRegisterType(uri, nullptr, 1, 0, "OutsideBoxBorder");
+    dtkRegisterType(uri, nullptr, 1, 0, "SortFilterModel");
 
     // for org.deepin.dtk.controls
     // QtQuick Controls

@@ -28,6 +28,7 @@ T.Menu {
     id: control
 
     property int maxVisibleItems : DS.Style.arrowListView.maxVisibleItems
+    property var model: control.contentModel
     property Component header
     property Component footer
 
@@ -57,7 +58,7 @@ T.Menu {
                 property int count: contentView.view.count
                 property bool __ImplicitWidthInitialized: false
 
-                view.model: control.contentModel
+                view.model: control.model
                 view.currentIndex: control.currentIndex
                 maxVisibleItems: control.maxVisibleItems
                 itemHeight: DS.Style.menu.itemHeight

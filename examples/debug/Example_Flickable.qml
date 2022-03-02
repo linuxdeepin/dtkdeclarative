@@ -23,9 +23,8 @@ import QtQuick 2.0
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 import org.deepin.dtk 1.0 as D
-import org.deepin.dtk.style 1.0 as DS
 
-Column {
+Flow {
     id: control
 
     ScrollView {
@@ -43,35 +42,90 @@ Column {
             border.color: "green"
         }
     }
-    D.IpV4LineEdit {
-
-    }
-    D.IpV4LineEdit {
-        width: 300
-        height: 40
-        showAlert: focus
-        alertText: "alert tips"
-    }
-    D.IpV4LineEdit {
-        width: 300
-        height: 40
-        text: "10.20.52.57"
-    }
-    Row {
+    Column {
         spacing: 10
         D.IpV4LineEdit {
-            id: idLineEditSetValueByText
+
+        }
+        D.IpV4LineEdit {
             width: 300
             height: 40
+            showAlert: focus
+            alertText: "alert tips"
+        }
+        D.IpV4LineEdit {
+            width: 300
+            height: 40
+            text: "10.20.52.57"
         }
 
-        Button {
-            text: "set IP by Text"
-            onClicked: idLineEditSetValueByText.text = "10.20.52.57"
-        }
-        Text {
-            text: idLineEditSetValueByText.text
+        Row {
+            spacing: 10
+            D.IpV4LineEdit {
+                id: idLineEditSetValueByText
+                width: 300
+                height: 40
+            }
+
+            Button {
+                text: "set IP by Text"
+                onClicked: idLineEditSetValueByText.text = "10.20.52.57"
+            }
+            Text {
+                text: idLineEditSetValueByText.text
+            }
         }
     }
 
+    Column {
+        width: 340
+        height: 280
+
+        RowLayout {
+            TextField {
+                id: nameFilter
+                placeholderText: qsTr("Search by name...")
+                Layout.fillWidth: true
+                onTextChanged: sortFilterModel.update()
+            }
+            RadioButton {
+                id: sortByName
+                checked: true
+                text: qsTr("Sort by name")
+                onCheckedChanged: sortFilterModel.update()
+            }
+            RadioButton {
+                text: qsTr("Sort by team")
+                onCheckedChanged: sortFilterModel.update()
+            }
+        }
+
+        D.SortFilterModel {
+            id: sortFilterModel
+            model: ListModel {
+                ListElement { name: "Alice"; team: "Crypto" }
+                ListElement { name: "Bob"; team: "Crypto" }
+                ListElement { name: "Jane"; team: "QA" }
+                ListElement { name: "Victor"; team: "QA" }
+                ListElement { name: "Wendy"; team: "Graphics" }
+            }
+            delegate: Text {
+                text: name + " (" + team + ")"
+            }
+            filterAcceptsItem: function(item) {
+                return item.name.includes(nameFilter.text)
+            }
+            lessThan: function(left, right) {
+                var leftVal = sortByName.checked ? left.name : left.team;
+                var rightVal = sortByName.checked ? right.name : right.team;
+                return leftVal < rightVal ? -1 : 1;
+            }
+        }
+
+        ListView {
+            height: 100
+            width: parent.width
+            model: sortFilterModel
+        }
+    }
 }
