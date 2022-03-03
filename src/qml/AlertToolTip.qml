@@ -51,8 +51,8 @@ ToolTip {
             id: _background
             anchors.fill: parent
             color: D.ColorSelector.backgroundColor
-            border.color: D.DTK.selectColor(control.palette.window, DS.Style.control.lightBorder,
-                                            DS.Style.control.darkBorder)
+            border.color: DS.Style.selectColor(control.palette.window, DS.Style.control.lightBorder,
+                                               DS.Style.control.darkBorder)
             radius: DS.Style.control.radius
         }
     }
@@ -89,8 +89,8 @@ ToolTip {
         width: DS.Style.alertToolTip.connectorWidth
         height: DS.Style.alertToolTip.connectorHeight
         color: _background.color
-        border.color: D.DTK.selectColor(control.palette.window, DS.Style.control.lightBorder,
-                                        DS.Style.control.darkBorder)
+        border.color: DS.Style.selectColor(control.palette.window, DS.Style.control.lightBorder,
+                                           DS.Style.control.darkBorder)
         border.width: 1
     }
 }

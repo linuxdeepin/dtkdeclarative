@@ -98,7 +98,8 @@ T.ScrollBar {
             id: backgroundRect
             anchors.fill: parent
             radius: control.width / 2
-            color: D.DTK.selectColor(control.palette.window, DS.Style.scrollBar.lightBackground, DS.Style.scrollBar.darkBackground)
+            color: DS.Style.selectColor(control.palette.window, DS.Style.scrollBar.lightBackground,
+                                        DS.Style.scrollBar.darkBackground)
             border.width: DS.Style.control.borderWidth
         }
 
