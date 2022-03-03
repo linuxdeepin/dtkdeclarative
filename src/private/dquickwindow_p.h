@@ -50,6 +50,7 @@ public:
     void removeBlur(DQuickBehindWindowBlur *blur);
     void updateBlurAreaFor(DQuickBehindWindowBlur *blur);
     void _q_updateBlurAreaForWindow();
+    void _q_updateClipPath();
 
     DPlatformHandle *handle = nullptr;
 
@@ -59,6 +60,7 @@ public:
     bool explicitEnable;
 
     QList<DQuickBehindWindowBlur*> blurList;
+    QQuickPath *clipPath = nullptr;
 private:
     D_DECLARE_PUBLIC(DQuickWindowAttached)
 };

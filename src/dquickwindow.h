@@ -24,6 +24,10 @@
 #include <DWindowManagerHelper>
 #include <DPlatformHandle>
 
+QT_BEGIN_NAMESPACE
+class QQuickPath;
+QT_END_NAMESPACE
+
 DQUICK_BEGIN_NAMESPACE
 
 class DQuickWindowPrivate;
@@ -61,6 +65,7 @@ class DQuickWindowAttached : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(bool enableSystemMove READ enableSystemMove WRITE setEnableSystemMove NOTIFY enableSystemMoveChanged)
     Q_PROPERTY(bool enableBlurWindow READ enableBlurWindow WRITE setEnableBlurWindow NOTIFY enableBlurWindowChanged)
     Q_PROPERTY(int alphaBufferSize READ alphaBufferSize WRITE setAlphaBufferSize NOTIFY alphaBufferSizeChanged)
+    Q_PROPERTY(QQuickPath *clipPath READ clipPath WRITE setClipPath NOTIFY clipPathChanged)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes READ wmWindowTypes WRITE setWmWindowTypes NOTIFY wmWindowTypesChanged)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifFunctions motifFunctions READ motifFunctions WRITE setMotifFunctions NOTIFY motifFunctionsChanged)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifDecorations motifDecorations READ motifDecorations WRITE setMotifDecorations NOTIFY motifDecorationsChanged)
@@ -87,6 +92,8 @@ public:
     bool enableSystemMove() const;
     bool enableBlurWindow() const;
     int alphaBufferSize() const;
+
+    QQuickPath *clipPath() const;
 
     DTK_GUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes() const;
     DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifFunctions motifFunctions() const;
@@ -119,6 +126,9 @@ public Q_SLOTS:
     bool setWindowBlurAreaByWM(const QVector<DPlatformHandle::WMBlurArea> &area);
     bool setWindowBlurAreaByWM(const QList<QPainterPath> &area);
 
+    void setClipPathByWM(const QPainterPath &clipPath);
+    void setClipPath(QQuickPath *path);
+
 Q_SIGNALS:
     void enabledChanged();
     void windowRadiusChanged();
@@ -135,11 +145,13 @@ Q_SIGNALS:
     void motifFunctionsChanged();
     void motifDecorationsChanged();
     void alphaBufferSizeChanged();
+    void clipPathChanged();
 
 private:
     D_DECLARE_PRIVATE(DQuickWindowAttached)
     D_PRIVATE_SLOT(void _q_onWindowMotifHintsChanged(quint32))
     D_PRIVATE_SLOT(void _q_updateBlurAreaForWindow())
+    D_PRIVATE_SLOT(void _q_updateClipPath())
 
     friend class DQuickBehindWindowBlur;
     friend class DQuickBehindWindowBlurPrivate;

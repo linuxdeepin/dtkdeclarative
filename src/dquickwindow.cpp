@@ -20,6 +20,9 @@
 #include "private/dquickbehindwindowblur_p.h"
 #include "private/dquickbehindwindowblur_p_p.h"
 
+#include <private/qquickpath_p.h>
+#include <private/qquickpath_p_p.h>
+
 DQUICK_BEGIN_NAMESPACE
 
 DQuickWindowPrivate::DQuickWindowPrivate(DQuickWindow *qq)
@@ -187,6 +190,14 @@ void DQuickWindowAttachedPrivate::_q_updateBlurAreaForWindow()
     }
 }
 
+void DQuickWindowAttachedPrivate::_q_updateClipPath()
+{
+    Q_Q(DQuickWindowAttached);
+
+    Q_ASSERT(clipPath);
+    q->setClipPathByWM(clipPath->path());
+}
+
 DQuickWindowAttached::DQuickWindowAttached(QWindow *window)
     : QObject(window)
     , DObject(*new DQuickWindowAttachedPrivate(this))
@@ -318,6 +329,13 @@ QRegion DQuickWindowAttached::frameMask() const
 int DQuickWindowAttached::alphaBufferSize() const
 {
     return window()->format().alphaBufferSize();
+}
+
+QQuickPath *DQuickWindowAttached::clipPath() const
+{
+    D_DC(DQuickWindowAttached);
+
+    return d->clipPath;
 }
 
 /*!
@@ -630,6 +648,41 @@ bool DQuickWindowAttached::setWindowBlurAreaByWM(const QList<QPainterPath> &area
     }
 
     return false;
+}
+
+void DQuickWindowAttached::setClipPathByWM(const QPainterPath &clipPath)
+{
+    D_D(DQuickWindowAttached);
+
+    d->updatePlatformHandle();
+    if (d->handle)
+        d->handle->setClipPath(clipPath);
+}
+
+void DQuickWindowAttached::setClipPath(QQuickPath *path)
+{
+    D_D(DQuickWindowAttached);
+
+    if (path == d->clipPath)
+        return;
+
+    if (d->clipPath)
+        disconnect(d->clipPath, nullptr, this, nullptr);
+
+    d->clipPath = path;
+    Q_EMIT clipPathChanged();
+
+    if (d->clipPath) {
+        QQuickPathPrivate *pathPrivate = QQuickPathPrivate::get(d->clipPath);
+        Q_ASSERT(pathPrivate);
+
+        if (pathPrivate->componentComplete)
+            setClipPathByWM(d->clipPath->path());
+
+        connect(d->clipPath, SIGNAL(changed()), this, SLOT(_q_updateClipPath()));
+    } else {
+        setClipPathByWM(QPainterPath());
+    }
 }
 
 void DQuickWindowAttached::setAlphaBufferSize(int size)

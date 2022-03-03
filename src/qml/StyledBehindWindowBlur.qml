@@ -28,12 +28,14 @@ D.BehindWindowBlur {
 
     blendColor: {
         if (valid) {
-            return D.DTK.selectColor(control.palette.window,
-                                     DS.Style.behindWindowBlur.lightColor,
-                                     DS.Style.behindWindowBlur.darkColor)
+            if (valid) {
+                return DS.Style.selectColor((control ? control.palette.window : undefined),
+                                            DS.Style.behindWindowBlur.lightColor,
+                                            DS.Style.behindWindowBlur.darkColor)
+            }
+            return DS.Style.selectColor((control ? control.palette.window : undefined),
+                                        DS.Style.behindWindowBlur.lightNoBlurColor,
+                                        DS.Style.behindWindowBlur.darkNoBlurColor)
         }
-        return D.DTK.selectColor(control.palette.window,
-                                 DS.Style.behindWindowBlur.lightNoBlurColor,
-                                 DS.Style.behindWindowBlur.darkNoBlurColor)
     }
 }
