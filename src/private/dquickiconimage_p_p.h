@@ -51,6 +51,7 @@ private:
     DQuickIconImage::State state = DQuickIconImage::State::Off;
     DQuickIconImage::Mode mode = DQuickIconImage::Mode::Invalid;
     QColor color;
+    QUrl fallbackSource;
 
     enum IconType : qint8 {
         ThemeIconName, // 图标名称

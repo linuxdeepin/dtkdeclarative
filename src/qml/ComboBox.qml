@@ -73,6 +73,8 @@ T.ComboBox {
                     palette: D.DTK.makeIconPalette(control.palette)
                     name: "entry_option_arrow_down"
                     mode: control.D.ColorSelector.controlState
+                    theme: control.D.ColorSelector.controlTheme
+                    fallbackToQIcon: false
                 }
             }
         }
@@ -87,6 +89,8 @@ T.ComboBox {
                 palette: D.DTK.makeIconPalette(control.palette)
                 name: "arrow_ordinary_down"
                 mode: control.D.ColorSelector.controlState
+                theme: control.D.ColorSelector.controlTheme
+                fallbackToQIcon: false
             }
         }
     }
@@ -96,11 +100,15 @@ T.ComboBox {
         D.DciIcon {
             palette: D.DTK.makeIconPalette(control.palette)
             mode: control.D.ColorSelector.controlState
+            theme: control.D.ColorSelector.controlTheme
             name: (control.iconNameRole && model.get(control.currentIndex)[control.iconNameRole] !== undefined)
                   ? model.get(control.currentIndex)[control.iconNameRole] : null
             visible: name
-            sourceSize.width: DS.Style.comboBox.iconSize
-            sourceSize.height: DS.Style.comboBox.iconSize
+            sourceSize {
+                width: DS.Style.comboBox.iconSize
+                height: DS.Style.comboBox.iconSize
+            }
+            fallbackToQIcon: false
         }
 
         T.TextField {

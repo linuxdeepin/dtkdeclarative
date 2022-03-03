@@ -42,6 +42,7 @@ class DQuickIconImage : public QQuickImage
     Q_PROPERTY(Mode mode READ mode WRITE setMode NOTIFY modeChanged FINAL)
     Q_PROPERTY(State state READ state WRITE setState NOTIFY stateChanged FINAL)
     Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged FINAL)
+    Q_PROPERTY(QUrl fallbackSource READ fallbackSource WRITE setFallbackSource NOTIFY fallbackSourceChanged FINAL)
 
 public:
     enum class Mode {
@@ -69,17 +70,21 @@ public:
     Mode mode() const;
     QColor color() const;
 
+    const QUrl &fallbackSource() const;
+
 public Q_SLOTS:
     void setName(const QString &name);
     void setState(State state);
     void setMode(Mode mode);
     void setColor(const QColor &color);
+    void setFallbackSource(const QUrl &newSource);
 
 Q_SIGNALS:
     void nameChanged();
     void stateChanged();
     void modeChanged();
     void colorChanged();
+    void fallbackSourceChanged();
 
 protected:
     DQuickIconImage(DQuickIconImagePrivate &dd, QQuickItem *parent);

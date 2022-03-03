@@ -69,7 +69,8 @@ void DQuickIconImagePrivate::maybeUpdateUrl()
 
     // 当图标名为空视为清理图片内容
     if (name.isEmpty()) {
-        q->setSource(QUrl());
+        if (fallbackSource.isValid())
+            q->setSource(fallbackSource);
         return;
     }
 
@@ -267,6 +268,24 @@ void DQuickIconImage::setColor(const QColor &color)
     d->maybeUpdateUrl();
 }
 
+const QUrl &DQuickIconImage::fallbackSource() const
+{
+    D_DC(DQuickIconImage);
+    return d->fallbackSource;
+}
+
+void DQuickIconImage::setFallbackSource(const QUrl &newSource)
+{
+    D_D(DQuickIconImage);
+    if (d->fallbackSource == newSource)
+        return;
+    d->fallbackSource = newSource;
+    Q_EMIT fallbackSourceChanged();
+
+    // 尝试重设图标的url地址
+    d->maybeUpdateUrl();
+}
+
 DQuickIconImage::DQuickIconImage(DQuickIconImagePrivate &dd, QQuickItem *parent)
     : QQuickImage(dd, parent)
 {
@@ -305,6 +324,11 @@ void DQuickIconImage::pixmapChange()
         d->updateDevicePixelRatio(1.0);
 
     QQuickImage::pixmapChange();
+
+    if (status() == Error && d->fallbackSource.isValid()) {
+        // fallback to source property
+        setSource(d->fallbackSource);
+    }
 }
 
 DQUICK_END_NAMESPACE

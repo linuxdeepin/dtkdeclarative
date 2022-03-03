@@ -66,6 +66,9 @@ D.FloatingMessageContainer {
                 Layout.alignment: Qt.AlignVCenter
                 name: control.message.iconName || ""
                 visible: name != ""
+                mode: control.D.ColorSelector.controlState
+                theme: control.D.ColorSelector.controlTheme
+                palette: D.DTK.makeIconPalette(control.palette)
             }
 
             Loader {

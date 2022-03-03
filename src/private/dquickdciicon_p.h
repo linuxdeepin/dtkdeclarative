@@ -42,8 +42,11 @@ class DQuickDciIcon
     Q_PROPERTY(int width READ width WRITE setWidth RESET resetWidth FINAL)
     Q_PROPERTY(int height READ height WRITE setHeight RESET resetHeight FINAL)
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DQMLGlobalObject::ControlState mode READ mode WRITE setMode RESET resetMode FINAL)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickDciIconImage::Theme theme READ theme WRITE setTheme RESET resetTheme FINAL)
+    Q_PROPERTY(DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType theme READ theme WRITE setTheme RESET resetTheme FINAL)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DDciIconPalette palette READ palette WRITE setPalette RESET resetTheme FINAL)
+    // for Qt icon
+    Q_PROPERTY(QUrl source READ source WRITE setSource RESET resetSource FINAL)
+    Q_PROPERTY(bool fallbackToQIcon READ fallbackToQIcon WRITE setFallbackToQIcon RESET resetFallbackToQIcon)
 
 public:
     DQuickDciIcon();
@@ -72,13 +75,21 @@ public:
     void setMode(DQMLGlobalObject::ControlState mode);
     void resetMode();
 
-    DQuickDciIconImage::Theme theme() const;
-    void setTheme(DQuickDciIconImage::Theme theme);
+    DGuiApplicationHelper::ColorType theme() const;
+    void setTheme(DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType theme);
     void resetTheme();
 
     DDciIconPalette palette() const;
     void setPalette(const DDciIconPalette &palette);
     void resetPalette();
+
+    const QUrl &source() const;
+    void setSource(const QUrl &newSource);
+    void resetSource();
+
+    bool fallbackToQIcon() const;
+    void setFallbackToQIcon(bool newFallbackToQIcon);
+    void resetFallbackToQIcon();
 
 private:
     QSharedDataPointer<DQuickDciIconPrivate> d;

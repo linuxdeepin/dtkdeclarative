@@ -50,8 +50,10 @@ T.CheckDelegate {
         visible: control.checked
         palette: control.D.DTK.makeIconPalette(control.palette)
         mode: control.D.ColorSelector.controlState
+        theme: control.D.ColorSelector.controlTheme
         name: "mark_indicator"
         sourceSize: Qt.size(DS.Style.itemDelegate.checkIndicatorIconSize, DS.Style.itemDelegate.checkIndicatorIconSize)
+        fallbackToQIcon: false
     }
 
     contentItem: RowLayout {
@@ -59,6 +61,7 @@ T.CheckDelegate {
         D.DciIcon {
             palette: D.DTK.makeIconPalette(control.palette)
             mode: control.D.ColorSelector.controlState
+            theme: control.D.ColorSelector.controlTheme
             name: control.icon.name
             sourceSize: Qt.size(control.icon.width, control.icon.height)
         }

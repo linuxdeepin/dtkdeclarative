@@ -129,6 +129,9 @@ DQuickDciIconProvider::DQuickDciIconProvider()
 {
 }
 
+static inline DDciIcon::Theme toDciTheme(DGuiApplicationHelper::ColorType type) {
+    return type == DGuiApplicationHelper::DarkType ? DDciIcon::Dark : DDciIcon::Light;
+}
 /*!
     \internal
     \brief A function that handles DCI icon for use in QML.
@@ -154,13 +157,20 @@ QImage DQuickDciIconProvider::requestImage(const QString &id, QSize *size, const
         iconPath = DIconTheme::findDciIconFile(name, DGuiApplicationHelper::instance()->applicationTheme()->iconThemeName());
     }
 
+    const bool fallbackToQIcon = urlQuery.queryItemValue("fallbackToQIcon").toInt();
+
     if (Q_UNLIKELY(iconPath.isEmpty())) {
+        if (!fallbackToQIcon)
+            return invalidIcon(size);
         // Fallback to normal qicon.
        return requestImageFromQIcon(id, size, requestedSize);
     }
     DDciIcon dciIcon(iconPath);
-    if (dciIcon.isNull())
+    if (dciIcon.isNull()) {
+        if (!fallbackToQIcon)
+            return invalidIcon(size);
         return requestImageFromQIcon(id, size, requestedSize);
+    }
 
     DDciIcon::Mode mode = DDciIcon::Normal;
     if (urlQuery.hasQueryItem("mode")) {
@@ -183,11 +193,11 @@ QImage DQuickDciIconProvider::requestImage(const QString &id, QSize *size, const
         }
     }
 
-    int theme = DQuickDciIconImage::UnknowTheme;
+    auto theme = DGuiApplicationHelper::ColorType::UnknownType;
     if (urlQuery.hasQueryItem("theme"))
-        theme = static_cast<DDciIcon::Theme>(urlQuery.queryItemValue("theme").toInt());
+        theme = static_cast<DGuiApplicationHelper::ColorType>(urlQuery.queryItemValue("theme").toInt());
 
-    if (theme == DQuickDciIconImage::UnknowTheme) {
+    if (theme == DGuiApplicationHelper::ColorType::UnknownType) {
         QColor window = DGuiApplicationHelper::instance()->applicationPalette().window().color();
         theme = DGuiApplicationHelper::toColorType(window);
     }
@@ -209,9 +219,9 @@ QImage DQuickDciIconProvider::requestImage(const QString &id, QSize *size, const
     // and decorate to the target mode.
     // This boundingSize always contains devicePixelRatio.
     int boundingSize = qRound(qMax(requestedSize.width(), requestedSize.height()) / devicePixelRatio);
-    QPixmap pixmap = dciIcon.pixmap(devicePixelRatio, boundingSize, DDciIcon::Theme(theme), mode, palette);
+    QPixmap pixmap = dciIcon.pixmap(devicePixelRatio, boundingSize, toDciTheme(theme), mode, palette);
     if (pixmap.isNull())
-        pixmap = dciIcon.pixmap(devicePixelRatio, boundingSize, DDciIcon::Theme(theme), DDciIcon::Normal, palette);
+        pixmap = dciIcon.pixmap(devicePixelRatio, boundingSize, toDciTheme(theme), DDciIcon::Normal, palette);
 
     if (pixmap.isNull())
         return invalidIcon(size);

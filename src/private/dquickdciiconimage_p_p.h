@@ -57,7 +57,8 @@ public:
     DDciIconPalette palette;
     DQuickIconImage *imageItem;
     DQMLGlobalObject::ControlState mode = DQMLGlobalObject::NormalState;
-    DQuickDciIconImage::Theme theme = DQuickDciIconImage::Light;
+    DGuiApplicationHelper::ColorType theme = DGuiApplicationHelper::ColorType::LightType;
+    bool fallbackToQIcon = true;
 };
 
 DQUICK_END_NAMESPACE

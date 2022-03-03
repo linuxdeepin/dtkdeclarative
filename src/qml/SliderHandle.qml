@@ -25,9 +25,7 @@ import org.deepin.dtk.impl 1.0 as D
 D.DciIcon {
     id: control
 
-    property color color: "red"
-    property int type: 0
-    property real radius
+    property int type: Slider.HandleType.NoArrowHorizontal
 
     function getIconNameByType(handleType) {
         switch(handleType) {
@@ -48,6 +46,7 @@ D.DciIcon {
 
     sourceSize.width: control.width
     sourceSize.height: control.height
-    name: getIconNameByType(control.type)
+    name: getIconNameByType(type)
     mirror: Slider.HandleType.ArrowRight === control.type
+    fallbackToQIcon: false
 }

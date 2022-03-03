@@ -40,6 +40,8 @@ T.Button {
     spacing: DS.Style.control.spacing
     opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
     D.DciIcon.mode: D.ColorSelector.controlState
+    D.DciIcon.theme: D.ColorSelector.controlTheme
+    D.DciIcon.palette: D.DTK.makeIconPalette(palette)
     icon {
         width: DS.Style.button.iconSize
         height: DS.Style.button.iconSize

@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "dquickcontrolpalette_p.h"
+#include "dquickglobal_p.h"
 
 #include <DGuiApplicationHelper>
 
@@ -33,17 +34,6 @@
 
 DGUI_USE_NAMESPACE
 DQUICK_BEGIN_NAMESPACE
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
-#define ThrowError(obj, message) {\
-    auto e = qmlEngine(obj);\
-    if (e) e->throwError(message);\
-    else qCritical().noquote() << message.toLocal8Bit();\
-}
-#else
-#define ThrowError(obj, message) \
-    qCritical().noquote() << message.toLocal8Bit()
-#endif
 
 #define METAPROPERTYCHANGEFUNC "resolveMetaPropertyChanged()"
 #define COLORPROPERTYCHANGEFUNC "notifyColorPropertyChanged()"

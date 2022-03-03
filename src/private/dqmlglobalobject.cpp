@@ -26,6 +26,7 @@
 #include "dquickimageprovider_p.h"
 #include "dmessagemanager_p.h"
 #include "dpopupwindowhandle_p.h"
+#include "dquickglobal_p.h"
 
 #include <DObjectPrivate>
 #include <DObject>
@@ -315,16 +316,24 @@ QPoint DQMLGlobalObject::cursorPosition() const
 
 DQuickDciIcon DQMLGlobalObject::makeIcon(const QJSValue &qicon, const QJSValue &iconExtra)
 {
-    if (!qicon.isObject() || !iconExtra.isObject())
+    if (!qicon.isObject() || !iconExtra.isObject()) {
+        ThrowError(this, QStringLiteral("The arguments is not valid JavaScript object"));
         return {};
+    }
 
     const QString &name = qicon.property("name").toString();
     int width = qicon.property("width").toInt();
     int height = qicon.property("height").toInt();
     const QColor &color = qicon.property("color").toVariant().value<QColor>();
+    const QUrl &source = qicon.property("source").toVariant().value<QUrl>();
 
+    DQuickDciIcon dciIcon;
     int mode = iconExtra.property("mode").toInt();
     int theme = iconExtra.property("theme").toInt();
+    const auto fallbackToQIcon = iconExtra.property("fallbackToQIcon");
+    if (fallbackToQIcon.isBool()) {
+        dciIcon.setFallbackToQIcon(fallbackToQIcon.toBool());
+    }
 
     DDciIconPalette palette;
     palette.setForeground(color);
@@ -342,13 +351,13 @@ DQuickDciIcon DQMLGlobalObject::makeIcon(const QJSValue &qicon, const QJSValue &
         palette.setHighlight(highlight);
     }
 
-    DQuickDciIcon dciIcon;
     dciIcon.setName(name);
     dciIcon.setWidth(width);
     dciIcon.setHeight(height);
     dciIcon.setMode(ControlState(mode));
-    dciIcon.setTheme(DQuickDciIconImage::Theme(theme));
+    dciIcon.setTheme(DGuiApplicationHelper::ColorType(theme));
     dciIcon.setPalette(palette);
+    dciIcon.setSource(source);
     return dciIcon;
 }
 

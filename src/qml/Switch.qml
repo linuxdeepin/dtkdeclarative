@@ -58,7 +58,15 @@ T.Switch {
             sourceSize.height: DS.Style.switchButton.handleHeight
             name: DS.Style.switchButton.iconNmae
             opacity: control.D.ColorSelector.controlState === D.DTK.DisabledState ? (control.checked ? 0.4 : 1) : 1
-            palette.highlight: control.checked ? control.palette.highlight : control.D.ColorSelector.handleColor
+            palette {
+                highlight: control.checked ? control.palette.highlight : control.D.ColorSelector.handleColor
+                highlightForeground: control.palette.highlightedText
+                foreground: control.palette.foreground
+                background: control.palette.background
+            }
+            mode: control.D.ColorSelector.controlState
+            theme: control.D.ColorSelector.controlTheme
+            fallbackToQIcon: false
 
             Behavior on x {
                 enabled: !control.down

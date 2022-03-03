@@ -43,6 +43,7 @@ T.MenuItem {
     }
     palette.windowText: hovered ? D.ColorSelector.itemColor : undefined
     D.DciIcon.mode: D.ColorSelector.controlState
+    D.DciIcon.theme: D.ColorSelector.controlTheme
     D.DciIcon.palette: D.DTK.makeIconPalette(palette)
     contentItem: D.IconLabel {
         readonly property real arrowPadding: control.subMenu && control.arrow ? control.arrow.width + control.spacing : 0
@@ -81,6 +82,9 @@ T.MenuItem {
         mirror: control.mirrored
         name: control.subMenu ? "menu_arrow" : ""
         palette: control.D.DciIcon.palette
+        mode: control.D.ColorSelector.controlState
+        theme: control.D.ColorSelector.controlTheme
+        fallbackToQIcon: false
     }
 
     background: Item {
