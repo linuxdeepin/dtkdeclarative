@@ -28,9 +28,11 @@ public:
     int width = -1;
     int height = -1;
     QString name;
+    QUrl source;
     DQMLGlobalObject::ControlState mode = DQMLGlobalObject::NormalState;
-    DQuickDciIconImage::Theme theme = DQuickDciIconImage::Light;
+    DGuiApplicationHelper::ColorType theme = DGuiApplicationHelper::ColorType::LightType;
     DDciIconPalette palette;
+    bool fallbackToQIcon = true;
 };
 
 /*!
@@ -114,7 +116,7 @@ bool DQuickDciIcon::operator!=(const DQuickDciIcon &other) const
  */
 bool DQuickDciIcon::isEmpty() const
 {
-    return d->name.isEmpty();
+    return d->name.isEmpty() && d->source.isEmpty();
 }
 
 /*!
@@ -209,19 +211,19 @@ void DQuickDciIcon::resetMode()
     \brief Represents the theme of the icon.
  */
 
-DQuickDciIconImage::Theme DQuickDciIcon::theme() const
+DGuiApplicationHelper::ColorType DQuickDciIcon::theme() const
 {
     return d->theme;
 }
 
-void DQuickDciIcon::setTheme(DQuickDciIconImage::Theme theme)
+void DQuickDciIcon::setTheme(DGuiApplicationHelper::ColorType theme)
 {
     d->theme  = theme;
 }
 
 void DQuickDciIcon::resetTheme()
 {
-    d->theme = DQuickDciIconImage::Light;
+    d->theme = DGuiApplicationHelper::ColorType::LightType;
 }
 
 /*!
@@ -243,6 +245,36 @@ void DQuickDciIcon::setPalette(const DDciIconPalette &palette)
 void DQuickDciIcon::resetPalette()
 {
     d->palette = DDciIconPalette();
+}
+
+const QUrl &DQuickDciIcon::source() const
+{
+    return d->source;
+}
+
+void DQuickDciIcon::setSource(const QUrl &newSource)
+{
+    d->source = newSource;
+}
+
+void DQuickDciIcon::resetSource()
+{
+    d->source.clear();
+}
+
+bool DQuickDciIcon::fallbackToQIcon() const
+{
+    return d->fallbackToQIcon;
+}
+
+void DQuickDciIcon::setFallbackToQIcon(bool newFallbackToQIcon)
+{
+    d->fallbackToQIcon = newFallbackToQIcon;
+}
+
+void DQuickDciIcon::resetFallbackToQIcon()
+{
+    d->fallbackToQIcon = true;
 }
 
 DQUICK_END_NAMESPACE

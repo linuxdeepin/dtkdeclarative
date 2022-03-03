@@ -378,7 +378,6 @@ QtObject {
         property int sliderWidth: handleWidth + grooveWidth
         property int sliderHeight: 60
         property int tickRadius: 8
-        property int handleRadius: tickRadius
         property int highlightMargin: -4
         property int tickTextMargin: 2
     }

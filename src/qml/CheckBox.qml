@@ -42,6 +42,7 @@ T.CheckBox {
     spacing: DS.Style.control.spacing
     opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
     D.DciIcon.mode: D.ColorSelector.controlState
+    D.DciIcon.theme: D.ColorSelector.controlTheme
     indicator: Item {
         x: control.text ? (!control.mirrored ? control.leftPadding : control.width - width - control.rightPadding) : control.leftPadding + (control.availableWidth - width) / 2
         y: control.topPadding + (control.availableHeight - height) / 2
@@ -50,8 +51,10 @@ T.CheckBox {
         D.DciIcon {
             palette: control.D.DTK.makeIconPalette(control.palette)
             mode: control.D.ColorSelector.controlState
+            theme: control.D.ColorSelector.controlTheme
             name: control.checkState === Qt.Checked ? "checkbox_checked" : control.checkState === Qt.Unchecked ? "checkbox_unchecked" : "checkbox_mix"
             sourceSize: Qt.size(control.icon.width, control.icon.height)
+            fallbackToQIcon: false
         }
 
         FocusBoxBorder {

@@ -44,12 +44,18 @@ T.ItemDelegate {
     autoExclusive: true
     palette.windowText: checked && !control.cascadeSelected ? D.ColorSelector.checkedTextColor : undefined
 
+    D.DciIcon.mode: D.ColorSelector.controlState
+    D.DciIcon.theme: D.ColorSelector.controlTheme
+    D.DciIcon.palette: D.DTK.makeIconPalette(palette)
+
     indicator: D.DciIcon {
         x: control.text ? (control.mirrored ? control.leftPadding : control.width - width - control.rightPadding) : control.leftPadding + (control.availableWidth - width) / 2
         y: control.topPadding + (control.availableHeight - height) / 2
         visible: control.indicatorVisible && control.checked
-        palette: control.D.DTK.makeIconPalette(control.palette)
+        palette: D.DTK.makeIconPalette(control.palette)
         mode: control.D.ColorSelector.controlState
+        theme: control.D.ColorSelector.controlTheme
+        fallbackToQIcon: false
         name: "mark_indicator"
         sourceSize: Qt.size(DS.Style.itemDelegate.checkIndicatorIconSize, DS.Style.itemDelegate.checkIndicatorIconSize)
     }

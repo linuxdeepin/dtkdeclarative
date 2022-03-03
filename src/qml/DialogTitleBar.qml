@@ -26,7 +26,7 @@ import QtQuick.Layouts 1.11
 import org.deepin.dtk.impl 1.0 as D
 import "PixelMetric.js" as PM
 
-MouseArea {
+Control {
     id: control
     z: D.DTK.TopOrder
     width: Window.window.width
@@ -40,17 +40,20 @@ MouseArea {
 
     property var __dwindow: Window.window.D.Window
 
-    acceptedButtons: Qt.AllButtons
-    propagateComposedEvents: true
-    onPressed: {
-        if (mouse.button === Qt.RightButton) {
-            if (mouse.x < control.width - closeBtn.width) {
-                __dwindow.popupSystemWindowMenu()
-                mouse.accepted = true
-                return
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.AllButtons
+        propagateComposedEvents: true
+        onPressed: {
+            if (mouse.button === Qt.RightButton) {
+                if (mouse.x < control.width - closeBtn.width) {
+                    __dwindow.popupSystemWindowMenu()
+                    mouse.accepted = true
+                    return
+                }
             }
+            mouse.accepted = false
         }
-        mouse.accepted = false
     }
 
     D.InWindowBlur {
@@ -82,6 +85,9 @@ MouseArea {
                 width: 32
                 height: 32
                 visible: name !== ""
+                mode: control.D.ColorSelector.controlState
+                theme: control.D.ColorSelector.controlTheme
+                palette: D.DTK.makeIconPalette(control.palette)
             }
 
             // center custom area

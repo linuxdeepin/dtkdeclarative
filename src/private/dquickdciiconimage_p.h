@@ -41,19 +41,13 @@ class DQuickDciIconImage : public QQuickItem, DCORE_NAMESPACE::DObject
     D_DECLARE_PRIVATE(DQuickDciIconImage)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged FINAL)
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DQMLGlobalObject::ControlState mode READ mode WRITE setMode NOTIFY modeChanged FINAL)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickDciIconImage::Theme theme READ theme WRITE setTheme NOTIFY themeChanged FINAL)
+    Q_PROPERTY(DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType theme READ theme WRITE setTheme NOTIFY themeChanged FINAL)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DDciIconPalette palette READ palette WRITE setPalette NOTIFY paletteChanged)
     Q_PROPERTY(QSize sourceSize READ sourceSize WRITE setSourceSize NOTIFY sourceSizeChanged)
     Q_PROPERTY(bool mirror READ mirror WRITE setMirror NOTIFY mirrorChanged)
+    Q_PROPERTY(bool fallbackToQIcon READ fallbackToQIcon WRITE setFallbackToQIcon NOTIFY fallbackToQIconChanged)
 
 public:
-    enum Theme {
-        UnknowTheme = -1,
-        Light = DDciIcon::Light,
-        Dark = DDciIcon::Dark
-    };
-
-    Q_ENUM(Theme)
     explicit DQuickDciIconImage(QQuickItem *parent = nullptr);
     ~DQuickDciIconImage() override;
 
@@ -63,8 +57,8 @@ public:
     DQMLGlobalObject::ControlState mode() const;
     void setMode(DQMLGlobalObject::ControlState mode);
 
-    DQuickDciIconImage::Theme theme() const;
-    void setTheme(DQuickDciIconImage::Theme theme);
+    DGuiApplicationHelper::ColorType theme() const;
+    void setTheme(DGuiApplicationHelper::ColorType theme);
 
     DDciIconPalette palette() const;
     void setPalette(const DDciIconPalette &palette);
@@ -74,6 +68,9 @@ public:
 
     void setMirror(bool mirror);
     bool mirror() const;
+
+    bool fallbackToQIcon() const;
+    void setFallbackToQIcon(bool newFallbackToQIcon);
 
     DQuickIconImage *imageItem() const;
 
@@ -87,6 +84,7 @@ Q_SIGNALS:
     void paletteChanged();
     void sourceSizeChanged();
     void mirrorChanged();
+    void fallbackToQIconChanged();
 
 protected:
     void classBegin() override;
@@ -99,8 +97,10 @@ class DQuickIconAttached : public QObject, DCORE_NAMESPACE::DObject
     Q_OBJECT
     D_DECLARE_PRIVATE(DQuickIconAttached)
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DQMLGlobalObject::ControlState mode READ mode WRITE setMode NOTIFY modeChanged)
-    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickDciIconImage::Theme theme READ theme WRITE setTheme NOTIFY themeChanged)
+    Q_PROPERTY(DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType theme READ theme WRITE setTheme NOTIFY themeChanged)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DDciIconPalette palette READ palette WRITE setPalette NOTIFY paletteChanged)
+    Q_PROPERTY(bool fallbackToQIcon READ fallbackToQIcon WRITE setFallbackToQIcon NOTIFY fallbackToQIconChanged)
+
 public:
     explicit DQuickIconAttached(QQuickItem *parent);
     ~DQuickIconAttached();
@@ -108,16 +108,20 @@ public:
     DQMLGlobalObject::ControlState mode() const;
     void setMode(DQMLGlobalObject::ControlState mode);
 
-    DQuickDciIconImage::Theme theme() const;
-    void setTheme(DQuickDciIconImage::Theme theme);
+    DGuiApplicationHelper::ColorType theme() const;
+    void setTheme(DGuiApplicationHelper::ColorType theme);
 
     DDciIconPalette palette() const;
     void setPalette(const DDciIconPalette &palette);
+
+    bool fallbackToQIcon() const;
+    void setFallbackToQIcon(bool newFallbackToQIcon);
 
 Q_SIGNALS:
     void modeChanged();
     void themeChanged();
     void paletteChanged();
+    void fallbackToQIconChanged();
 };
 
 DQUICK_END_NAMESPACE

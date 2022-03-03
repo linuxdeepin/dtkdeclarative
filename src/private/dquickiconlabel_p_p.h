@@ -33,7 +33,7 @@ public:
     bool hasText() const;
 
     void createIconImage();
-    bool createImage();
+    bool ensureImage();
     bool destroyImage();
     bool updateImage();
     void syncImage();
@@ -69,7 +69,7 @@ public:
     QFont font;
     QColor color;
     QString text;
-    DQuickIconImage *image = nullptr;
+    DQuickDciIconImage *image = nullptr;
     QQuickText *label = nullptr;
     DQuickDciIcon icon;
 };

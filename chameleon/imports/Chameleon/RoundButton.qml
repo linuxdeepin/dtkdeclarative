@@ -36,6 +36,8 @@ T.RoundButton {
     baselineOffset: contentItem.y + contentItem.baselineOffset
 
     D.DciIcon.mode: D.ColorSelector.controlState
+    D.DciIcon.theme: D.ColorSelector.controlTheme
+    D.DciIcon.palette: D.DTK.makeIconPalette(palette)
     padding: PM.ControlPadding
     spacing: PM.ControlSpacing
 

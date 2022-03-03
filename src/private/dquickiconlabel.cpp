@@ -54,32 +54,22 @@ bool DQuickIconLabelPrivate::hasText() const
 void DQuickIconLabelPrivate::createIconImage()
 {
     Q_Q(DQuickIconLabel);
-    if (!DQuickDciIconImage::isNull(icon.name())) {
-        DQuickDciIconImage *dciImage = new DQuickDciIconImage(q);
-        QQmlEngine::setContextForObject(dciImage, QQmlEngine::contextForObject(q));
-        watchChanges(dciImage);
-        beginClass(dciImage);
-        dciImage->setObjectName(QStringLiteral("image"));
-        dciImage->setName(icon.name());
-        dciImage->setTheme(icon.theme());
-        dciImage->setPalette(icon.palette());
-        dciImage->setSourceSize(QSize(icon.width(), icon.height()));
-        dciImage->setMode(icon.mode());
-        image = dciImage->imageItem();
-    } else {
-        image = new DQuickIconImage(q);
-        QQmlEngine::setContextForObject(image, qmlContext(q));
-        watchChanges(image);
-        beginClass(image);
-        image->setName(icon.name());
-        image->setColor(icon.palette().foreground());
-        image->setSourceSize(QSize(icon.width(), icon.height()));
-    }
+    image = new DQuickDciIconImage(q);
+    QQmlEngine::setContextForObject(image, QQmlEngine::contextForObject(q));
+    watchChanges(image);
+    beginClass(image);
+    image->setObjectName(QStringLiteral("DciIconImage"));
+    image->setName(icon.name());
+    image->setTheme(icon.theme());
+    image->setPalette(icon.palette());
+    image->setSourceSize(QSize(icon.width(), icon.height()));
+    image->setMode(icon.mode());
+    image->setFallbackToQIcon(icon.fallbackToQIcon());
+    image->imageItem()->setFallbackSource(icon.source());
 }
 
-bool DQuickIconLabelPrivate::createImage()
+bool DQuickIconLabelPrivate::ensureImage()
 {
-    Q_Q(DQuickIconLabel);
     if (image)
         return false;
 
@@ -104,7 +94,7 @@ bool DQuickIconLabelPrivate::updateImage()
 {
     if (!hasIcon())
         return destroyImage();
-    return createImage();
+    return ensureImage();
 }
 
 void DQuickIconLabelPrivate::syncImage()
@@ -112,22 +102,18 @@ void DQuickIconLabelPrivate::syncImage()
     if (!image || !hasIcon())
         return;
 
-    if (auto dciImage = qobject_cast<DQuickDciIconImage *>(image)) {
-        dciImage->setName(icon.name());
-        dciImage->setMode(icon.mode());
-        dciImage->setSourceSize(QSize(icon.width(), icon.height()));
-        dciImage->setPalette(icon.palette());
-        dciImage->setTheme(icon.theme());
-    } else {
-        image->setName(icon.name());
-        image->setColor(icon.palette().foreground());
-        image->setSourceSize(QSize(icon.width(), icon.height()));
-    }
+    image->setName(icon.name());
+    image->setMode(icon.mode());
+    image->setSourceSize(QSize(icon.width(), icon.height()));
+    image->setPalette(icon.palette());
+    image->setTheme(icon.theme());
+    image->setFallbackToQIcon(icon.fallbackToQIcon());
+    image->imageItem()->setFallbackSource(icon.source());
 
     const int valign = static_cast<int>(alignment & Qt::AlignVertical_Mask);
-    image->setVerticalAlignment(static_cast<QQuickImage::VAlignment>(valign));
+    image->imageItem()->setVerticalAlignment(static_cast<QQuickImage::VAlignment>(valign));
     const int halign = static_cast<int>(alignment & Qt::AlignHorizontal_Mask);
-    image->setHorizontalAlignment(static_cast<QQuickImage::HAlignment>(halign));
+    image->imageItem()->setHorizontalAlignment(static_cast<QQuickImage::HAlignment>(halign));
 }
 
 void DQuickIconLabelPrivate::updateOrSyncImage()
@@ -565,8 +551,8 @@ void DQuickIconLabel::setAlignment(Qt::Alignment alignment)
         d->label->setHAlign(static_cast<QQuickText::HAlignment>(halign));
     }
     if (d->image) {
-        d->image->setVerticalAlignment(static_cast<QQuickImage::VAlignment>(valign));
-        d->image->setHorizontalAlignment(static_cast<QQuickImage::HAlignment>(halign));
+        d->image->imageItem()->setVerticalAlignment(static_cast<QQuickImage::VAlignment>(valign));
+        d->image->imageItem()->setHorizontalAlignment(static_cast<QQuickImage::HAlignment>(halign));
     }
     d->layout();
 }

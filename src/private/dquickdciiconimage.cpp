@@ -67,6 +67,7 @@ QUrlQuery DQuickDciIconImageItemPrivate::getUrlQuery()
     }
     query.addQueryItem(QLatin1String("palette"), DDciIconPalette::convertToString(pal));
     query.addQueryItem(QLatin1String("devicePixelRatio"), QString::number(devicePixelRatio));
+    query.addQueryItem(QLatin1String("fallbackToQIcon"), QString::number(parentPriv->fallbackToQIcon));
 
     return query;
 }
@@ -134,13 +135,13 @@ void DQuickDciIconImage::setMode(DQMLGlobalObject::ControlState mode)
     Q_EMIT modeChanged();
 }
 
-DQuickDciIconImage::Theme DQuickDciIconImage::theme() const
+DGuiApplicationHelper::ColorType DQuickDciIconImage::theme() const
 {
     D_DC(DQuickDciIconImage);
     return d->theme;
 }
 
-void DQuickDciIconImage::setTheme(DQuickDciIconImage::Theme theme)
+void DQuickDciIconImage::setTheme(DGuiApplicationHelper::ColorType theme)
 {
     D_D(DQuickDciIconImage);
     if (d->theme == theme)
@@ -193,6 +194,22 @@ bool DQuickDciIconImage::mirror() const
 {
     D_DC(DQuickDciIconImage);
     return d->imageItem->mirror();
+}
+
+bool DQuickDciIconImage::fallbackToQIcon() const
+{
+    D_DC(DQuickDciIconImage);
+    return d->fallbackToQIcon;
+}
+
+void DQuickDciIconImage::setFallbackToQIcon(bool newFallbackToQIcon)
+{
+    D_D(DQuickDciIconImage);
+    if (d->fallbackToQIcon == newFallbackToQIcon)
+        return;
+    d->fallbackToQIcon = newFallbackToQIcon;
+    Q_EMIT fallbackToQIconChanged();
+    d->updateImageSourceUrl();
 }
 
 Dtk::Quick::DQuickIconImage *DQuickDciIconImage::imageItem() const
@@ -248,8 +265,9 @@ public:
     {}
 
     DQMLGlobalObject::ControlState mode = DQMLGlobalObject::NormalState;
-    DQuickDciIconImage::Theme theme = DQuickDciIconImage::Light;
+    DGuiApplicationHelper::ColorType theme = DGuiApplicationHelper::ColorType::LightType;
     DDciIconPalette palette;
+    bool fallbackToQIcon = true;
 };
 
 DQuickIconAttached::DQuickIconAttached(QQuickItem *parent)
@@ -278,13 +296,13 @@ void DQuickIconAttached::setMode(DQMLGlobalObject::ControlState mode)
     Q_EMIT modeChanged();
 }
 
-DQuickDciIconImage::Theme DQuickIconAttached::theme() const
+DGuiApplicationHelper::ColorType DQuickIconAttached::theme() const
 {
     D_DC(DQuickIconAttached);
     return d->theme;
 }
 
-void DQuickIconAttached::setTheme(DQuickDciIconImage::Theme theme)
+void DQuickIconAttached::setTheme(DGuiApplicationHelper::ColorType theme)
 {
     D_D(DQuickIconAttached);
     if (d->theme == theme)
@@ -308,6 +326,21 @@ void DQuickIconAttached::setPalette(const DDciIconPalette &palette)
 
     d->palette = palette;
     Q_EMIT paletteChanged();
+}
+
+bool DQuickIconAttached::fallbackToQIcon() const
+{
+    D_DC(DQuickIconAttached);
+    return d->fallbackToQIcon;
+}
+
+void DQuickIconAttached::setFallbackToQIcon(bool newFallbackToQIcon)
+{
+    D_D(DQuickIconAttached);
+    if (d->fallbackToQIcon == newFallbackToQIcon)
+        return;
+    d->fallbackToQIcon = newFallbackToQIcon;
+    Q_EMIT fallbackToQIconChanged();
 }
 
 DQUICK_END_NAMESPACE

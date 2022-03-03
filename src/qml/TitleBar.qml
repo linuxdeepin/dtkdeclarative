@@ -27,16 +27,13 @@ import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 import "PixelMetric.js" as PM
 
-MouseArea {
+Control {
     id: control
     z: D.DTK.TopOrder
     width: Window.window.width
     // it's binding `height` instead of `visible` property,
     // because MouseArea should accept event keeping visible.
     implicitHeight: (!__isFullScreen || __isVisible) ? DS.Style.titleBar.height : 0
-    hoverEnabled: __isFullScreen && autoHideOnFullscreen
-    acceptedButtons: Qt.AllButtons
-    propagateComposedEvents: true
 
     property string title: Window.window.title
     property alias icon: iconLabel
@@ -65,27 +62,34 @@ MouseArea {
 
     property alias enableInWindowBlendBlur: background.visible
 
-    onPressed: {
-        if (mouse.button === Qt.RightButton) {
-            if (mouse.x < __includedAreaX) {
-                __dwindow.popupSystemWindowMenu()
+    MouseArea {
+        anchors.fill: parent
+        hoverEnabled: __isFullScreen && autoHideOnFullscreen
+        acceptedButtons: Qt.AllButtons
+        propagateComposedEvents: true
+
+        onPressed: {
+            if (mouse.button === Qt.RightButton) {
+                if (mouse.x < __includedAreaX) {
+                    __dwindow.popupSystemWindowMenu()
+                    mouse.accepted = true
+                    return
+                }
+            }
+            mouse.accepted = false
+        }
+        onDoubleClicked: {
+            // Windowed or Maximized
+            if (mouse.button == Qt.LeftButton) {
+                control.toggleWindowState()
                 mouse.accepted = true
                 return
             }
+            mouse.accepted = false
         }
-        mouse.accepted = false
+        onReleased: mouse.accepted = false
+        onClicked: mouse.accepted = false
     }
-    onDoubleClicked: {
-        // Windowed or Maximized
-        if (mouse.button == Qt.LeftButton) {
-            control.toggleWindowState()
-            mouse.accepted = true
-            return
-        }
-        mouse.accepted = false
-    }
-    onReleased: mouse.accepted = false
-    onClicked: mouse.accepted = false
 
     D.InWindowBlur {
         id: background
@@ -120,6 +124,9 @@ MouseArea {
                 Layout.alignment: Qt.AlignLeft
                 Layout.leftMargin: 2
                 visible: control.iconName !== ""
+                palette: D.DTK.makeIconPalette(control.palette)
+                mode: control.D.ColorSelector.controlState
+                theme: control.D.ColorSelector.controlTheme
             }
 
             // center custom area

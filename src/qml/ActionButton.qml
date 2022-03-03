@@ -38,6 +38,7 @@ T.Button {
     contentItem: D.DciIcon {
         palette: D.DTK.makeIconPalette(control.palette)
         mode: control.D.ColorSelector.controlState
+        theme: control.D.ColorSelector.controlTheme
         name: control.icon.name
         sourceSize: Qt.size(control.icon.width, control.icon.height)
     }

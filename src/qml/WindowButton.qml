@@ -36,8 +36,12 @@ Control {
     contentItem: D.DciIcon {
         id: iconLoader
         palette: D.DTK.makeIconPalette(control.palette)
-        sourceSize.width: DS.Style.titleBar.buttonWidth
-        sourceSize.height: DS.Style.titleBar.buttonHeight
+        sourceSize {
+            width: DS.Style.titleBar.buttonWidth
+            height: DS.Style.titleBar.buttonHeight
+        }
+        mode: control.D.ColorSelector.controlState
+        theme: control.D.ColorSelector.controlTheme
     }
     MouseArea {
         id: mouseArea

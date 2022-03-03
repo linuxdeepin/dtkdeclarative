@@ -59,9 +59,9 @@ T.Slider {
         y: control.topPadding + (control.horizontal ? 0 : control.visualPosition * (control.availableHeight - height))
         width: control.horizontal ? DS.Style.slider.handleWidth : DS.Style.slider.handleHeight
         height: control.horizontal ? DS.Style.slider.handleHeight : DS.Style.slider.handleWidth
-        color: control.palette.highlight
-        radius: DS.Style.slider.handleRadius
         palette: D.DTK.makeIconPalette(control.palette)
+        mode: control.D.ColorSelector.controlState
+        theme: control.D.ColorSelector.controlTheme
     }
 
     // draw panel
