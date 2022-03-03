@@ -95,6 +95,7 @@ T.Menu {
         implicitWidth: DS.Style.menu.itemWidth
         implicitHeight: DS.Style.menu.itemHeight
         radius: DS.Style.menu.radius
-        backgroundColor: D.DTK.selectColor(palette.window, DS.Style.menu.lightBackground, DS.Style.menu.lightBackground)
+        backgroundColor: DS.Style.selectColor(palette.window, DS.Style.menu.lightBackground,
+                                              DS.Style.menu.lightBackground)
     }
 }

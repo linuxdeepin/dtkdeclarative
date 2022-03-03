@@ -28,7 +28,8 @@ Control {
 
     padding: DS.Style.floatingPanel.radius / 2
 
-    property color backgroundColor: D.DTK.selectColor(control.palette.window, DS.Style.floatingPanel.lightBackground, DS.Style.floatingPanel.darkBackground)
+    property color backgroundColor: DS.Style.selectColor(control.palette.window, DS.Style.floatingPanel.lightBackground,
+                                                         DS.Style.floatingPanel.darkBackground)
     property int radius: DS.Style.floatingPanel.radius
 
     background: D.InWindowBlur {
@@ -49,7 +50,8 @@ Control {
             anchors.fill: backgroundRect
             shadowOffsetX: 0
             shadowOffsetY: 4
-            shadowColor: D.DTK.selectColor(control.palette.window, DS.Style.floatingPanel.lightShadowBackground, DS.Style.floatingPanel.darkShadowBackground)
+            shadowColor: DS.Style.selectColor(control.palette.window, DS.Style.floatingPanel.lightShadowBackground,
+                                              DS.Style.floatingPanel.darkShadowBackground)
             shadowBlur: 20
             cornerRadius: backgroundRect.radius
             spread: 0
@@ -61,7 +63,8 @@ Control {
             radius: control.radius
             color: control.backgroundColor
             border {
-                color: D.DTK.selectColor(control.palette.window, DS.Style.control.lightBorder, DS.Style.control.darkBorder)
+                color: DS.Style.selectColor(control.palette.window, DS.Style.control.lightBorder,
+                                            DS.Style.control.darkBorder)
                 width: DS.Style.control.borderWidth
             }
         }
