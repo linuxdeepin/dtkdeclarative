@@ -74,5 +74,12 @@
         <file>qml/OutsideBoxBorder.qml</file>
         <file>qml/InsideBoxBorder.qml</file>
         <file>qml/SortFilterModel.qml</file>
+        <file>qml/ArrowShapeWindow.qml</file>
+        <file>qml/private/LeftArrowShapePath.qml</file>
+        <file>qml/private/UpArrowShapePath.qml</file>
+        <file>qml/private/RightArrowShapePath.qml</file>
+        <file>qml/private/DownArrowShapePath.qml</file>
+        <file>qml/private/AbstractArrowShapePath.qml</file>
+        <file>qml/StyledArrowShapeWindow.qml</file>
     </qresource>
 </RCC>

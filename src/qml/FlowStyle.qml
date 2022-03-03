@@ -434,4 +434,18 @@ QtObject {
     property QtObject ipLineEdit: QtObject {
         property int fieldWidth: 40
     }
+
+    property QtObject arrowRectangleBlur: QtObject {
+        property int arrowHeightFactor: 10
+        property color lightBorderColor: Qt.rgba(0, 0, 0, 0.05)
+        property color darkBorderColor: Qt.rgba(1, 1, 1, 0.05)
+    }
+
+    function selectColor(conditionColor, lightColor, darkColor) {
+        if (conditionColor) {
+            return D.DTK.selectColor(conditionColor, lightColor, darkColor)
+        }
+
+        return D.DTK.themeType === D.ApplicationHelper.LightType ? lightColor : darkColor
+    }
 }
