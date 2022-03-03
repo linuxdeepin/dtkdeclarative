@@ -386,6 +386,7 @@ int OpaqueTextureMaterial::compare(const QSGMaterial *o) const
 
 void OpaqueTextureMaterial::setMaskTexture(QSGTexture *texture)
 {
+    Q_ASSERT(texture);
     if (!m_maskTexture) {
         m_maskTexture = texture;
         return;

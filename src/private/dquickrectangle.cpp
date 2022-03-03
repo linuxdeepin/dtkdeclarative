@@ -31,6 +31,13 @@ DQuickRectangle::DQuickRectangle(QQuickItem *parent)
     setFlag(ItemHasContents);
 }
 
+DQuickRectangle::~DQuickRectangle()
+{
+    if (window()) {
+        DQuickRectangle::releaseResources();
+    }
+}
+
 QColor DQuickRectangle::color() const
 {
     Q_D(const DQuickRectangle);
@@ -88,6 +95,12 @@ void DQuickRectangle::setCorners(Corners corners)
     Q_EMIT cornersChanged();
 }
 
+void DQuickRectangle::invalidateSceneGraph()
+{
+    Q_D(DQuickRectangle);
+    d->maskTexture.reset();
+}
+
 QSGNode *DQuickRectangle::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *data)
 {
     Q_UNUSED(data);
@@ -131,6 +144,28 @@ QSGNode *DQuickRectangle::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePa
 DQuickRectangle::DQuickRectangle(DQuickRectanglePrivate &dd, QQuickItem *parent)
     : QQuickItem (dd, parent)
 {
+}
+
+class Q_DECL_HIDDEN DQuickRectangleCleanup : public QRunnable
+{
+public:
+    DQuickRectangleCleanup(MaskTextureCache::TextureData maskTexture)
+        : maskTexture(maskTexture)
+    {}
+    void run() override {
+        maskTexture.reset();
+    }
+    MaskTextureCache::TextureData maskTexture;
+};
+
+void DQuickRectangle::releaseResources()
+{
+    Q_D(DQuickRectangle);
+    if (d->maskTexture) {
+        window()->scheduleRenderJob(new DQuickRectangleCleanup(d->maskTexture),
+                                    QQuickWindow::AfterSynchronizingStage);
+        d->maskTexture.reset();
+    }
 }
 
 DQUICK_END_NAMESPACE

@@ -48,6 +48,7 @@ public:
     Q_FLAG(Corners)
 
     explicit DQuickRectangle(QQuickItem *parent = nullptr);
+    ~DQuickRectangle();
 
     QColor color() const;
     void setColor(const QColor &color);
@@ -57,6 +58,9 @@ public:
 
     DQuickRectangle::Corners corners() const;
     void setCorners(Corners corners);
+
+private Q_SLOTS:
+    void invalidateSceneGraph();
 
 Q_SIGNALS:
     void colorChanged();
@@ -72,6 +76,8 @@ protected:
 private:
     Q_DISABLE_COPY(DQuickRectangle)
     Q_DECLARE_PRIVATE(DQuickRectangle)
+
+    void releaseResources() override;
 };
 
 DQUICK_END_NAMESPACE

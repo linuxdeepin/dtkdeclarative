@@ -202,10 +202,8 @@ DQuickItemViewport::DQuickItemViewport(QQuickItem *parent)
 
 DQuickItemViewport::~DQuickItemViewport()
 {
-    D_D(DQuickItemViewport);
     if (window()) {
-        window()->scheduleRenderJob(new DQuickViewportCleanup(d->texture, d->provider),
-                                    QQuickWindow::AfterSynchronizingStage);
+        DQuickItemViewport::releaseResources();
     }
 }
 
@@ -291,6 +289,7 @@ void DQuickItemViewport::invalidateSceneGraph()
     if (d->provider)
         delete d->provider;
     d->texture = nullptr;
+    d->maskTexture.reset();
     d->provider = nullptr;
 }
 
@@ -532,11 +531,12 @@ void DQuickItemViewport::componentComplete()
 void DQuickItemViewport::releaseResources()
 {
     D_D(DQuickItemViewport);
-    if (d->texture || d->provider) {
-        window()->scheduleRenderJob(new DQuickViewportCleanup(d->texture, d->provider),
+    if (d->texture || d->provider || d->maskTexture) {
+        window()->scheduleRenderJob(new DQuickViewportCleanup(d->texture, d->maskTexture, d->provider),
                                     QQuickWindow::AfterSynchronizingStage);
         d->texture = nullptr;
         d->provider = nullptr;
+        d->maskTexture.reset();
     }
 }
 

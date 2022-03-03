@@ -51,7 +51,7 @@ public:
     QVector2D sourceScale() const { return m_sourceScale; }
 
 private:
-    QPointer<QSGTexture> m_maskTexture;
+    QSGTexture *m_maskTexture = nullptr;
     QVector2D m_maskScale;
     QVector2D m_maskOffset;
     QVector2D m_sourceScale;

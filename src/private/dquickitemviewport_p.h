@@ -136,18 +136,22 @@ public:
     QSGLayer *sourceTexture;
 };
 
-class DQuickViewportCleanup : public QRunnable
+class Q_DECL_HIDDEN DQuickViewportCleanup : public QRunnable
 {
 public:
-    DQuickViewportCleanup(QSGLayer *t, DQuickViewportTextureProvider *p)
-        : texture(t)
-        , provider(p)
+    DQuickViewportCleanup(QSGLayer *texture, MaskTextureCache::TextureData maskTexture,
+                          DQuickViewportTextureProvider *provider)
+        : texture(texture)
+        , maskTexture(maskTexture)
+        , provider(provider)
     {}
     void run() override {
         delete texture;
         delete provider;
+        maskTexture.reset();
     }
     QSGLayer *texture;
+    MaskTextureCache::TextureData maskTexture;
     DQuickViewportTextureProvider *provider;
 };
 
