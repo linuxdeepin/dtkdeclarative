@@ -61,8 +61,8 @@ T.Switch {
             palette {
                 highlight: control.checked ? control.palette.highlight : control.D.ColorSelector.handleColor
                 highlightForeground: control.palette.highlightedText
-                foreground: control.palette.foreground
-                background: control.palette.background
+                foreground: control.palette.windowText
+                background: control.palette.window
             }
             mode: control.D.ColorSelector.controlState
             theme: control.D.ColorSelector.controlTheme

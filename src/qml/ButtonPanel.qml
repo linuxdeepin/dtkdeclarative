@@ -101,6 +101,18 @@ Item {
             gradient: control.D.ColorSelector.color1 === control.D.ColorSelector.color2 ? null : hoverBackgroundGradient
             color: control.D.ColorSelector.color1
         }
+
+        Component.onCompleted: {
+            button.hoveredChanged.connect(function () {
+                if (button.hovered) {
+                    var pos = D.DTK.cursorPosition()
+                    hoverAnimation.centerPoint = hoverAnimation.mapFromGlobal(pos.x, pos.y)
+                    hoverAnimation.start()
+                } else {
+                    hoverAnimation.stop()
+                }
+            })
+        }
     }
 
     BoxInsetShadow {
@@ -139,20 +151,4 @@ Item {
         borderWidth: DS.Style.control.borderWidth
     }
 
-    Connections {
-        target: button
-
-        onHoveredChanged: {
-            if (!hoverAnimation)
-                return
-
-            if (button.hovered) {
-                var pos = D.DTK.cursorPosition()
-                hoverAnimation.centerPoint = hoverAnimation.mapFromGlobal(pos.x, pos.y)
-                hoverAnimation.start()
-            } else {
-                hoverAnimation.stop()
-            }
-        }
-    }
 }
