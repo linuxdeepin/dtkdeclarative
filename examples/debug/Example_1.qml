@@ -106,7 +106,6 @@ Rectangle {
         anchors.leftMargin: 20 // @disable-check M16
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20 // @disable-check M16
-        circle: true // @disable-check M16
         icon.name: "test/button_add"  // @disable-check M16
     }
 
@@ -128,7 +127,6 @@ Rectangle {
         anchors.leftMargin: 20 // @disable-check M16
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20 // @disable-check M16
-        circle: true // @disable-check M16
         icon.name: "button_add"
     }
 

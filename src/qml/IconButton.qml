@@ -1,9 +1,10 @@
 /*
- * Copyright (C) 2021 ~ 2021 UnionTech Software Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Software Technology Co., Ltd.
  *
  * Author:     wangfei <wangfeia@uniontech.com>
  *
  * Maintainer: wangfei <wangfeia@uniontech.com>
+ *             yeshanshan <yeshanshan@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -20,11 +21,36 @@
  */
 
 import QtQuick 2.11
-import QtQuick.Controls 2.4
-import "PixelMetric.js" as PM
+import org.deepin.dtk.impl 1.0 as D
+import org.deepin.dtk.style 1.0 as DS
 
 Button {
     id: control
-    property bool circle: false
-}
 
+    implicitWidth: Math.max(DS.Style.control.implicitWidth(control), DS.Style.control.implicitHeight(control))
+    implicitHeight: implicitWidth
+
+    topPadding: DS.Style.iconButton.padding
+    bottomPadding: DS.Style.iconButton.padding
+    leftPadding: DS.Style.iconButton.padding
+    rightPadding: DS.Style.iconButton.padding
+    icon {
+        width: DS.Style.iconButton.iconSize
+        height: DS.Style.iconButton.iconSize
+        color: D.ColorSelector.textColor
+    }
+
+    contentItem: D.DciIcon {
+        name: control.icon.name
+        palette: D.DTK.makeIconPalette(control.palette)
+        mode: control.D.ColorSelector.controlState
+        theme: control.D.ColorSelector.controlTheme
+        sourceSize: Qt.size(control.icon.width, control.icon.height)
+    }
+
+    background: ButtonPanel {
+        implicitWidth: DS.Style.iconButton.backgroundSize
+        implicitHeight: DS.Style.iconButton.backgroundSize
+        button: control
+    }
+}

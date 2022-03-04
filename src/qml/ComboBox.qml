@@ -139,6 +139,7 @@ T.ComboBox {
         implicitHeight: DS.Style.comboBox.height
         Loader {
             anchors.fill: parent
+            active: !control.flat
             sourceComponent: control.editable ? editableComponent : floatingComponent
             property alias comboBox: control
             Component {
