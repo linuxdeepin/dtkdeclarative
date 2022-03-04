@@ -26,18 +26,30 @@ QtObject {
     property D.Palette button1: D.Palette {
         normal {
             common: "#f7f7f7"
-            crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.1)
+            crystal: Qt.rgba(0, 0, 0, 0.1)
         }
-        hovered: "#e1e1e1"
-        pressed: "#bcc4d0"
+        hovered {
+            common: "#e1e1e1"
+            crystal:  Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.2)
+        }
+        pressed {
+            common: "#bcc4d0"
+            crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.15)
+        }
     }
     property D.Palette button2: D.Palette {
         normal {
             common: "#f0f0f0"
-            crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.1)
+            crystal: Qt.rgba(0, 0, 0, 0.1)
         }
-        hovered: "#d2d2d2"
-        pressed: "#cdd6e0"
+        hovered {
+            common: "#d2d2d2"
+            crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.2)
+        }
+        pressed {
+            common: "#cdd6e0"
+            crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.15)
+        }
     }
     property D.Palette buttonDropShadow: D.Palette {
         normal: Qt.rgba(0, 0, 0, 0.05)
@@ -53,14 +65,33 @@ QtObject {
         pressed: "transparent"
     }
     property D.Palette highlightedButton1: D.Palette {
-        normal: "#00aaff"
-        hovered: "#24b6ff"
-        pressed: "#005bcb"
+        normal {
+            common: "#00aaff"
+            crystal: Qt.rgba(0, 0, 0, 0.1)
+        }
+        hovered {
+            common: "#24b6ff"
+            crystal: "red"//Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.2)
+        }
+        pressed {
+            common: "#005bcb"
+            crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.15)
+        }
     }
     property D.Palette highlightedButton2: D.Palette {
-        normal: "#006eff"
-        hovered: "#3586ff"
-        pressed: "#0067ff"
+        normal {
+            common: "#006eff"
+            crystal: Qt.rgba(0, 0, 0, 0.1)
+        }
+        hovered {
+            common: "#3586ff"
+            crystal: "red"//Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.2)
+        }
+        pressed {
+            common: "#0067ff"
+            crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.15)
+        }
+
     }
     property D.Palette highlightedButtonDropShadow: D.Palette {
         normal: Qt.rgba(0, 112 / 255.0, 1, 0.3)
@@ -78,28 +109,43 @@ QtObject {
             common: Qt.rgba(0, 0, 0, 0.7)
             crystal: Qt.rgba(0, 0, 0, 0.9)
         }
-        pressed: D.DTK.makeColor(D.Color.Highlight)
+        pressed {
+            common: D.DTK.makeColor(D.Color.Highlight)
+            crystal: D.DTK.makeColor(D.Color.Highlight)
+        }
     }
     property D.Palette warningButtonText: D.Palette {
         normal: "#ff5736"
     }
     property D.Palette highlightedButtonText: D.Palette {
-        normal: Qt.rgba(1, 1, 1, 0.9)
+        normal {
+            common: Qt.rgba(1, 1, 1, 0.9)
+            crystal: D.DTK.makeColor(D.Color.Highlight)
+        }
         hovered: "white"
         pressed: Qt.rgba(1, 1, 1, 0.6)
     }
     property D.Palette buttonInsideBorder: D.Palette {
-        normal: Qt.rgba(1, 1, 1, 0.1)
+        normal {
+            common: Qt.rgba(1, 1, 1, 0.1)
+            crystal: Qt.rgba(1, 1, 1, 0.1)
+        }
         hovered: Qt.rgba(1, 1, 1, 0.2)
         pressed: Qt.rgba(0, 0, 0, 0.03)
     }
     property D.Palette buttonOutsideBorder: D.Palette {
-        normal: Qt.rgba(0, 0, 0, 0.08)
+        normal {
+            common: Qt.rgba(0, 0, 0, 0.08)
+            crystal: Qt.rgba(0, 0, 0, 0.08)
+        }
         hovered: Qt.rgba(0, 0, 0, 0.2)
         pressed: "transparent"
     }
     property D.Palette highlightedButtonBorder: D.Palette {
-        normal: Qt.rgba(0, 129 / 255.0, 1, 0.2)
+        normal {
+            common: Qt.rgba(0, 129 / 255.0, 1, 0.2)
+            crystal: Qt.rgba(1, 1, 1, 0.1)
+        }
     }
 
     property D.Palette checkedButton : D.Palette {
@@ -447,5 +493,15 @@ QtObject {
         }
 
         return D.DTK.themeType === D.ApplicationHelper.LightType ? lightColor : darkColor
+    }
+
+    property QtObject floatingButton: QtObject {
+        property int size: 24
+    }
+
+    property QtObject iconButton: QtObject {
+        property int backgroundSize: 36
+        property int iconSize: 18
+        property int padding: 9
     }
 }
