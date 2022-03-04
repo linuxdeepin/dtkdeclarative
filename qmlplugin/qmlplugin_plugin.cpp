@@ -29,6 +29,7 @@
 #include "private/dquickinwindowblur_p.h"
 #include "private/dquickrectangle_p.h"
 #include "private/dquickbehindwindowblur_p.h"
+#include "private/dquickopacitymask_p.h"
 
 #include "private/dqmlglobalobject_p.h"
 #include "private/dconfigwrapper_p.h"
@@ -51,6 +52,9 @@
 DGUI_USE_NAMESPACE
 
 DQUICK_BEGIN_NAMESPACE
+
+
+static const QString softwareBackend = "software";
 
 template<typename T>
 inline void dtkRegisterType(const char *uri1, const char *uri2, int versionMajor, int versionMinor, const char *qmlName) {
@@ -84,13 +88,22 @@ inline void dtkRegisterSingletonType(const char *uri1, const char *uri2, int ver
     if (uri2)
         qmlRegisterSingletonType<T>(uri2, versionMajor, versionMinor, qmlName, callback);
 }
-inline void dtkRegisterType(const char *uri1, const char *uri2, int versionMajor, int versionMinor, const char *qmlName) {
-    static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml/%1.qml");
-    const QUrl url(urlTemplate.arg(qmlName));
+inline void dtkRegisterType(const char *uri1, const char *uri2, int versionMajor, int versionMinor, const char *qmlName, const char *subdir = "") {
+    static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml/%1%2.qml");
+    const QUrl url(urlTemplate.arg(subdir).arg(qmlName));
     qmlRegisterType(url, uri1, versionMajor, versionMinor, qmlName);
     if (uri2)
         qmlRegisterType(url, uri2, versionMajor, versionMinor, qmlName);
 }
+
+inline void dtkRegisterTypeAlias(const char *uri1, const char *uri2, int versionMajor, int versionMinor, const char *qmlFileName, const char *alias, const char *subdir = "") {
+    static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml/%1%2.qml");
+    const QUrl url(urlTemplate.arg(subdir).arg(qmlFileName));
+    qmlRegisterType(url, uri1, versionMajor, versionMinor, alias);
+    if (uri2)
+        qmlRegisterType(url, uri2, versionMajor, versionMinor, alias);
+}
+
 inline void dtkStyleRegisterSingletonType(const char *uri1, const char *uri2, int versionMajor, int versionMinor, const char *qmlName) {
     static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml/style/%1.qml");
     QUrl url(urlTemplate.arg(qmlName));
@@ -173,6 +186,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType<DQuickBehindWindowBlur>(uri, implUri, 1, 0, "BehindWindowBlur");
     dtkRegisterType<QSortFilterProxyModel>(uri, implUri, 1, 0, "SortFilterProxyModel");
     dtkRegisterType<ObjectModelProxy>(uri, implUri, 1, 0, "ObjectModelProxy");
+    dtkRegisterType<DQuickOpacityMask>(uri, implUri, 1, 0, "SoftwareOpacityMask");
 
     dtkRegisterAnonymousType<DQUICK_NAMESPACE::DQuickDciIcon>(uri, implUri, 1);
     dtkRegisterAnonymousType<DQuickControlColor>(uri, implUri, 1);
@@ -276,6 +290,11 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "IpV4LineEdit");
     dtkRegisterType(uri, controlsUri, 1, 0, "ArrowShapeWindow");
     dtkRegisterType(uri, controlsUri, 1, 0, "StyledArrowShapeWindow");
+    if (softwareBackend == QQuickWindow::sceneGraphBackend()) {
+        dtkRegisterTypeAlias(uri, implUri, 1, 0, "SoftwareOpacityMask", "OpacityMask", "private/");
+    } else {
+        dtkRegisterType(uri, implUri, 1, 0, "OpacityMask", "private/");
+    }
 
     // for org.deepin.dtk.style(allowed to override)
     dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");

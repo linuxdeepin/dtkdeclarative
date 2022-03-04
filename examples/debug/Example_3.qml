@@ -28,6 +28,37 @@ Item {
         source: "file:///usr/share/wallpapers/deepin/desktop.jpg"
     }
 
+    Rectangle {
+        id: source
+        y: 50
+        x: 50
+        width: 200
+        height: 200
+        radius: 30
+        color: "red"
+        visible: false
+    }
+
+    Item {
+        id: maskSource
+        anchors.fill: source
+        visible: false
+        Rectangle {
+            anchors.centerIn: parent
+            width: 100
+            height: 100
+            radius: 40
+            color: "blue"
+        }
+    }
+
+    D.OpacityMask {
+        anchors.fill: source
+        source: source
+        maskSource: maskSource
+        invert: true
+    }
+
     ListView {
         id: testView
 
