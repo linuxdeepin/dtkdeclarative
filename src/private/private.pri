@@ -38,6 +38,9 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dpopupwindowhandle_p.h \
     $$PWD/dquickdciiconimage_p_p.h \
     $$PWD/dobjectmodelproxy_p.h \
+    $$PWD/dquickopacitymask_p.h \
+    $$PWD/dquickopacitymask_p_p.h \
+    $$PWD/dopacitymasknode.h \
 
 SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dblitframebuffernode.cpp \
@@ -63,3 +66,5 @@ SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dquickbehindwindowblur.cpp \
     $$PWD/dpopupwindowhandle.cpp \
     $$PWD/dobjectmodelproxy.cpp \
+    $$PWD/dquickopacitymask.cpp \
+    $$PWD/dopacitymasknode.cpp \

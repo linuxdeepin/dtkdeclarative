@@ -81,5 +81,7 @@
         <file>qml/private/DownArrowShapePath.qml</file>
         <file>qml/private/AbstractArrowShapePath.qml</file>
         <file>qml/StyledArrowShapeWindow.qml</file>
+        <file>qml/private/OpacityMask.qml</file>
+        <file>qml/private/SoftwareOpacityMask.qml</file>
     </qresource>
 </RCC>
