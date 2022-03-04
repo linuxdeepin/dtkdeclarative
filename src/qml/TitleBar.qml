@@ -57,12 +57,13 @@ Control {
 
     property var __dwindow: Window.window.D.Window
     property bool __isFullScreen: Window.window.visibility === Window.FullScreen
-    property bool __isVisible: control.containsMouse
+    property bool __isVisible: mouseArea.containsMouse
     readonly property int __includedAreaX: control.width - optionMenuBtn.width - windowButtonsLoader.width
 
     property alias enableInWindowBlendBlur: background.visible
 
     MouseArea {
+        id: mouseArea
         anchors.fill: parent
         hoverEnabled: __isFullScreen && autoHideOnFullscreen
         acceptedButtons: Qt.AllButtons
@@ -80,7 +81,7 @@ Control {
         }
         onDoubleClicked: {
             // Windowed or Maximized
-            if (mouse.button == Qt.LeftButton) {
+            if (mouse.button === Qt.LeftButton) {
                 control.toggleWindowState()
                 mouse.accepted = true
                 return
