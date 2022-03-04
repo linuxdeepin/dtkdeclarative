@@ -32,6 +32,9 @@ T.ComboBox {
     id: control
 
     property string iconNameRole
+    property string alertText
+    property int alertDuration
+    property bool showAlert
 
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
@@ -142,6 +145,9 @@ T.ComboBox {
                 id: editableComponent
                 EditPanel {
                     control: comboBox
+                    alertText: comboBox.alertText
+                    alertDuration: comboBox.alertDuration
+                    showAlert: comboBox.showAlert
                 }
             }
 

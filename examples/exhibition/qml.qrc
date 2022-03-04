@@ -11,5 +11,6 @@
         <file>ListControl.qml</file>
         <file>Menu.qml</file>
         <file>Notify.qml</file>
+        <file>EditControl.qml</file>
     </qresource>
 </RCC>
