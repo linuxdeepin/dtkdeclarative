@@ -290,6 +290,9 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "IpV4LineEdit");
     dtkRegisterType(uri, controlsUri, 1, 0, "ArrowShapeWindow");
     dtkRegisterType(uri, controlsUri, 1, 0, "StyledArrowShapeWindow");
+    // TODO(xiaoyaobing): software rendering has not been completed
+    dtkRegisterType(uri, controlsUri, 1, 0, "ArrowShapeBlur");
+    dtkRegisterType(uri, controlsUri, 1, 0, "StyledArrowShapeBlur");
     if (softwareBackend == QQuickWindow::sceneGraphBackend()) {
         dtkRegisterTypeAlias(uri, implUri, 1, 0, "SoftwareOpacityMask", "OpacityMask", "private/");
     } else {

@@ -19,16 +19,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
-ArrowShapeWindow {
-    property alias control: blur.control
-    D.Window.borderColor: DS.Style.selectColor((control ? control.palette.window : undefined),
-                                               DS.Style.arrowRectangleBlur.borderColor,
-                                               DS.Style.arrowRectangleBlur.darkBorderColor)
-    StyledBehindWindowBlur {
-        id: blur
-        anchors.fill: parent
-    }
+ArrowShapeBlur {
+    property var control
+    blendColor: DS.Style.selectColor((control ? control.palette.window : undefined),
+                                     DS.Style.arrowRectangleBlur.backgroundColor,
+                                     DS.Style.arrowRectangleBlur.darkBackgroundColor)
+    borderColor: DS.Style.selectColor((control ? control.palette.window : undefined),
+                                      DS.Style.arrowRectangleBlur.borderColor,
+                                      DS.Style.arrowRectangleBlur.darkBorderColor)
+    shadowColor: DS.Style.selectColor((control ? control.palette.window : undefined),
+                                      DS.Style.arrowRectangleBlur.shadowColor,
+                                      DS.Style.arrowRectangleBlur.darkShadowColor)
 }
