@@ -19,7 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtGraphicalEffects 1.15
+import QtGraphicalEffects 1.0
 
 /*!
     The Qt Graphical Effects module provides a set of QML types.The effects cover functional areas

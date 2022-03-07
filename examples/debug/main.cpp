@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
     QGuiApplication app(argc, argv);
+    app.setOrganizationName("deepin");
     app.setApplicationName("Example");
 
     QQuickStyle::setStyle(CHAMELEON_PATH"/Chameleon");

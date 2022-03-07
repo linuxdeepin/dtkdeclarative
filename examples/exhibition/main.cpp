@@ -52,6 +52,7 @@ int main(int argc, char **argv)
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
     QGuiApplication app(argc, argv);
+    app.setOrganizationName("deepin");
     app.setApplicationName("dtk-exhibition");
     qputenv("D_POPUP_MODE", "embed");
 
