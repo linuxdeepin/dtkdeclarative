@@ -1,5 +1,9 @@
 /*
- * Copyright (C) 2020 ~ 2020 Deepin Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2022 Deepin Technology Co., Ltd.
+ *
+ * Author:     JiDe Zhang <zhangjide@deepin.org>
+ *
+ * Maintainer: JiDe Zhang <zhangjide@deepin.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,26 +18,28 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "dqmlglobalobject_p.h"
+#include "dquickimageprovider_p.h"
 
-#include <QIcon>
-#include <QUrlQuery>
-#include <QPainter>
 #include <DIconTheme>
 #include <DDciIcon>
 #include <DGuiApplicationHelper>
 #include <DPlatformTheme>
+#include <DSGApplication>
+
+#include <QIcon>
+#include <QUrlQuery>
+#include <QPainter>
 #include <QPainterPath>
 #include <QtMath>
 
 #include <private/dquickdciiconimage_p.h>
 
-#include "dquickimageprovider_p.h"
-#include "dqmlglobalobject_p.h"
-
 #include <cmath>
 
 DQUICK_BEGIN_NAMESPACE
 DGUI_USE_NAMESPACE
+DCORE_USE_NAMESPACE
 
 static inline QImage invalidIcon(QSize *size) {
 #ifdef QT_NO_DEBUG
@@ -149,6 +155,11 @@ QImage DQuickDciIconProvider::requestImage(const QString &id, QSize *size, const
     QString name = urlQuery.queryItemValue("name");
     if (name.isEmpty())
         return QImage();
+
+    if (!DSGApplication::id().isEmpty()) {
+        // allow the icon theme to override the icon for a given application
+        name.prepend(DSGApplication::id() + "/");
+    }
 
     QString iconPath;
     if (auto cached = DIconTheme::cached()) {
