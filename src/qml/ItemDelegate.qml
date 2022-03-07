@@ -47,6 +47,10 @@ T.ItemDelegate {
     D.DciIcon.mode: D.ColorSelector.controlState
     D.DciIcon.theme: D.ColorSelector.controlTheme
     D.DciIcon.palette: D.DTK.makeIconPalette(palette)
+    icon {
+        width: DS.Style.itemDelegate.iconSize
+        height: DS.Style.itemDelegate.iconSize
+    }
 
     indicator: D.DciIcon {
         x: control.text ? (control.mirrored ? control.leftPadding : control.width - width - control.rightPadding) : control.leftPadding + (control.availableWidth - width) / 2

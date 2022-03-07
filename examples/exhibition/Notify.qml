@@ -84,5 +84,86 @@ Column {
                 }
             }
         }
+
+        Item {width: parent.width; height: 1}
+
+        Row {
+            spacing: 150
+            Loader {
+                sourceComponent: appBadgeCom
+                property int number: 1
+                property string appName: "deepin-app-store"
+            }
+            Loader {
+                sourceComponent: appBadgeCom
+                property int number: 99
+                property string appName: "deepin-browser"
+            }
+            Loader {
+                sourceComponent: appBadgeCom
+                property int number: 100
+                property string appName: "deepin-editor"
+            }
+            Loader {
+                sourceComponent: appBadgeCom
+                property int number: 1000
+                property string appName: "deepin-diskmanager"
+            }
+            Component {
+                id: appBadgeCom
+
+                QtIcon {
+                    name: appName
+                    sourceSize {
+                        width: 128
+                        height: width
+                    }
+                    Label {
+                        height: 20
+                        width: Math.max(20, implicitWidth)
+                        z: DTK.AboveOrder
+                        anchors {
+                            right: parent.right
+                            rightMargin: 4
+                            top: parent.top
+                            topMargin: 4
+                        }
+                        topPadding: 5
+                        rightPadding: 7
+                        leftPadding: 7
+                        text: {
+                            if (number >= 0 && number < 100) {
+                                return number
+                            } else if (number >= 100 && number < 1000) {
+                                return number + "+"
+                            }
+                            return "!"
+                        }
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        font: DTK.fontManager.t5
+                        color: palette.window
+                        background: Rectangle {
+                            implicitHeight: 20
+                            implicitWidth: 20
+                            radius: 10
+                            BoxShadow {
+                                anchors.fill: parent
+                                shadowBlur: 3
+                                shadowOffsetY: 2
+                                shadowColor: Qt.rgba(255, 113, 113, 0.3)
+                                cornerRadius: 0
+                            }
+                            gradient: Gradient {
+                                GradientStop { position: 0.0; color: "#ff674a" }
+                                GradientStop { position: 1.0; color: "#ec5783" }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        Item {width: parent.width; height: 1}
     }
 }
