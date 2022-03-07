@@ -483,8 +483,14 @@ QtObject {
 
     property QtObject arrowRectangleBlur: QtObject {
         property int arrowHeightFactor: 10
-        property color lightBorderColor: Qt.rgba(0, 0, 0, 0.05)
+        property int borderWidth: 1
+        property int blurRadius: 20
+        property color borderColor: Qt.rgba(0, 0, 0, 0.05)
         property color darkBorderColor: Qt.rgba(1, 1, 1, 0.05)
+        property color backgroundColor: "#55ffffff"
+        property color darkBackgroundColor: "#55000000"
+        property color shadowColor: Qt.rgba(0, 0, 0, 0.4)
+        property color darkShadowColor: Qt.rgba(1, 1, 1, 0.4)
     }
 
     function selectColor(conditionColor, lightColor, darkColor) {

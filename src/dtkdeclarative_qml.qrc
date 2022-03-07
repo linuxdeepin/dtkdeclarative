@@ -83,5 +83,7 @@
         <file>qml/StyledArrowShapeWindow.qml</file>
         <file>qml/private/OpacityMask.qml</file>
         <file>qml/private/SoftwareOpacityMask.qml</file>
+        <file>qml/ArrowShapeBlur.qml</file>
+        <file>qml/StyledArrowShapeBlur.qml</file>
     </qresource>
 </RCC>

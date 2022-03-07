@@ -118,4 +118,10 @@ Item {
                 testView.foreground = "#55000000"
         }
     }
+
+    D.StyledArrowShapeBlur {
+        anchors.centerIn: parent
+        width: 100
+        height: 200
+    }
 }
