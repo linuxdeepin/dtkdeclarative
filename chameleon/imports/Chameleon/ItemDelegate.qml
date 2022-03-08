@@ -22,6 +22,5 @@
 import org.deepin.dtk 1.0 as D
 
 D.ItemDelegate {
-    id: control
 
 }

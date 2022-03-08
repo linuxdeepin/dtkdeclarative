@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 ~ 2020 Deepin Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2022 Deepin Technology Co., Ltd.
  *
  * Author:     sunkang <sunkang@uniontech.com>
  *
@@ -16,43 +16,11 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.11
-import QtQuick.Templates 2.4 as T
-import QtQuick.Controls 2.4
-import QtQuick.Controls.impl 2.4
-import "PixelMetric.js" as PM
+import org.deepin.dtk.controls 1.0 as D
 
-T.PageIndicator {
-    id: control
+D.PageIndicator {
 
-    implicitWidth: Math.max(background ? background.implicitWidth : 0,
-                            contentItem.implicitWidth + leftPadding + rightPadding)
-    implicitHeight: Math.max(background ? background.implicitHeight : 0,
-                             contentItem.implicitHeight + topPadding + bottomPadding)
-
-    padding: PM.ControlPadding
-    spacing: PM.ControlPadding
-
-    delegate: Rectangle {
-        implicitWidth: PM.PageIndicator_ImplicitWidth
-        implicitHeight: PM.PageIndicator_ImplicitHeight
-
-        radius: width / 2
-        color: control.enabled ? control.palette.highlight : "gray"
-
-        opacity: index === currentIndex ? 0.95 : pressed ? 0.7 : 0.45
-        Behavior on opacity { OpacityAnimator { duration: 100 } }
-    }
-
-    contentItem: Row {
-        spacing: control.spacing
-
-        Repeater {
-            model: control.count
-            delegate: control.delegate
-        }
-    }
 }

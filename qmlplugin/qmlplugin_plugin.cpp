@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "qmlplugin_plugin.h"
@@ -298,7 +298,31 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     } else {
         dtkRegisterType(uri, implUri, 1, 0, "OpacityMask", "private/");
     }
-
+    dtkRegisterType(uri, controlsUri, 1, 0, "Action");
+    dtkRegisterType(uri, controlsUri, 1, 0, "ActionGroup");
+    dtkRegisterType(uri, controlsUri, 1, 0, "Label");
+    dtkRegisterType(uri, controlsUri, 1, 0, "Container");
+    dtkRegisterType(uri, controlsUri, 1, 0, "ButtonGroup");
+    dtkRegisterType(uri, controlsUri, 1, 0, "ScrollView");
+    dtkRegisterType(uri, controlsUri, 1, 0, "MenuBar");
+    dtkRegisterType(uri, controlsUri, 1, 0, "AbstractButton");
+    dtkRegisterType(uri, controlsUri, 1, 0, "TabBar");
+    dtkRegisterType(uri, controlsUri, 1, 0, "SwipeDelegate");
+    dtkRegisterType(uri, controlsUri, 1, 0, "SwipeView");
+    dtkRegisterType(uri, controlsUri, 1, 0, "Drawer");
+    dtkRegisterType(uri, controlsUri, 1, 0, "Dial");
+    dtkRegisterType(uri, controlsUri, 1, 0, "Dialog");
+    dtkRegisterType(uri, controlsUri, 1, 0, "DelayButton");
+    dtkRegisterType(uri, controlsUri, 1, 0, "RoundButton");
+    dtkRegisterType(uri, controlsUri, 1, 0, "RadioButton");
+    dtkRegisterType(uri, controlsUri, 1, 0, "ToolTip");
+    dtkRegisterType(uri, controlsUri, 1, 0, "DialogButtonBox");
+    dtkRegisterType(uri, controlsUri, 1, 0, "Frame");
+    dtkRegisterType(uri, controlsUri, 1, 0, "GroupBox");
+    dtkRegisterType(uri, controlsUri, 1, 0, "PageIndicator");
+    dtkRegisterType(uri, controlsUri, 1, 0, "StackView");
+    dtkRegisterType(uri, controlsUri, 1, 0, "BusyIndicator");
+    dtkRegisterType(uri, controlsUri, 1, 0, "ProgressBar");
     // for org.deepin.dtk.style(allowed to override)
     dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");
 

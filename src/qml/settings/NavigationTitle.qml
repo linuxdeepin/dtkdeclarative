@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     yeshanshan <yeshanshan@uniontech.com>
  *
@@ -16,11 +16,10 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 import QtQuick 2.11
-import QtQuick.Controls 2.4
 import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.settings 1.0 as Settings
 import org.deepin.dtk.style 1.0 as DS

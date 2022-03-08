@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     yeshanshan <yeshanshan@uniontech.com>
  *
@@ -20,8 +20,6 @@
  */
 
 import QtQuick 2.0
-import QtQuick.Controls 2.4
-import org.deepin.dtk.controls 1.0
 import org.deepin.dtk 1.0
 import org.deepin.dtk.settings 1.0 as Settings
 

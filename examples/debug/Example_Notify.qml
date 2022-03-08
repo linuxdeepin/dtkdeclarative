@@ -16,16 +16,13 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 import QtQuick 2.0
-import QtQuick 2.6
 import QtQuick.Window 2.11
-import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
-import org.deepin.dtk 1.0 as D
-import org.deepin.dtk.style 1.0 as DS
+import org.deepin.dtk 1.0
 
 Column {
     id: control
@@ -38,12 +35,12 @@ Column {
         property int count: 0
         onClicked: {
             if (count % 2) {
-                D.DTK.sendMessage(control, "message" + count)
-                D.DTK.sendMessage(Window.window, "message" + count, "music", 4000, "type1")
-                D.DTK.sendMessage(Window.window, "message" + count, "video", -1)
+                DTK.sendMessage(control, "message" + count)
+                DTK.sendMessage(Window.window, "message" + count, "music", 4000, "type1")
+                DTK.sendMessage(Window.window, "message" + count, "video", -1)
             } else {
-                D.DTK.sendMessage(control, floatingMsgCom, {content: shortMessage}, -1)
-                D.DTK.sendMessage(Window.window, floatingMsgCom, {content: longMessage, iconName: "music"}, -1)
+                DTK.sendMessage(control, floatingMsgCom, {content: shortMessage}, -1)
+                DTK.sendMessage(Window.window, floatingMsgCom, {content: longMessage, iconName: "music"}, -1)
             }
             count++
         }
@@ -51,7 +48,7 @@ Column {
 
     Component {
         id: floatingMsgCom
-        D.FloatingMessage {
+        FloatingMessage {
             id: floatMsg
             contentItem: RowLayout {
                 anchors.fill: parent
@@ -64,7 +61,7 @@ Column {
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignLeft
                     Layout.alignment: Qt.AlignVCenter
-                    font: D.DTK.fontManager.t6
+                    font: DTK.fontManager.t6
                     wrapMode: Text.Wrap
                     elide: Text.ElideRight
                     maximumLineCount: 1
@@ -72,7 +69,7 @@ Column {
 
                 Button {
                     text: "reload"
-                    font: D.DTK.fontManager.t5
+                    font: DTK.fontManager.t5
                     Layout.alignment: Qt.AlignVCenter
                 }
             }
@@ -80,7 +77,7 @@ Column {
 //                text: "close"
 //                onClicked: {
 //                    console.log("close clicked")
-//                    D.DTK.closeMessage(floatMsg)
+//                    DTK.closeMessage(floatMsg)
 //                }
 //            }
         }

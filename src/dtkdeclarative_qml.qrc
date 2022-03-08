@@ -85,5 +85,30 @@
         <file>qml/private/SoftwareOpacityMask.qml</file>
         <file>qml/ArrowShapeBlur.qml</file>
         <file>qml/StyledArrowShapeBlur.qml</file>
+        <file>qml/Action.qml</file>
+        <file>qml/ActionGroup.qml</file>
+        <file>qml/Label.qml</file>
+        <file>qml/Container.qml</file>
+        <file>qml/ButtonGroup.qml</file>
+        <file>qml/ScrollView.qml</file>
+        <file>qml/MenuBar.qml</file>
+        <file>qml/AbstractButton.qml</file>
+        <file>qml/TabBar.qml</file>
+        <file>qml/SwipeDelegate.qml</file>
+        <file>qml/SwipeView.qml</file>
+        <file>qml/Drawer.qml</file>
+        <file>qml/Dial.qml</file>
+        <file>qml/Dialog.qml</file>
+        <file>qml/DelayButton.qml</file>
+        <file>qml/RoundButton.qml</file>
+        <file>qml/RadioButton.qml</file>
+        <file>qml/ToolTip.qml</file>
+        <file>qml/DialogButtonBox.qml</file>
+        <file>qml/Frame.qml</file>
+        <file>qml/GroupBox.qml</file>
+        <file>qml/PageIndicator.qml</file>
+        <file>qml/StackView.qml</file>
+        <file>qml/BusyIndicator.qml</file>
+        <file>qml/ProgressBar.qml</file>
     </qresource>
 </RCC>

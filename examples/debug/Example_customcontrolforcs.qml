@@ -18,18 +18,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 import QtQuick 2.0
-import QtQuick.Controls 2.4
-import org.deepin.dtk 1.0 as D
+import org.deepin.dtk 1.0
 
 Control {
     id: control
     hoverEnabled: true
-    property D.Palette backgroundColor: D.Palette {
+    property Palette backgroundColor: Palette {
         normal: Qt.hsla(Math.random(), 0.2, 0.5, 0.9)
         hovered: Qt.hsla(Math.random(), 0.1, 0.1, 0.9)
     }
-    property D.Palette textColor: D.Palette {
+    property Palette textColor: Palette {
         normal: Qt.hsla(Math.random(), 0.5, 0.2, 0.4)
         hovered: Qt.hsla(Math.random(), 0.6, 0.6, 0.9)
     }
@@ -37,7 +37,7 @@ Control {
     property string text
 
     background: Rectangle {
-        color: control.D.ColorSelector.backgroundColor
+        color: control.ColorSelector.backgroundColor
         Behavior on color {
             ColorAnimation {
                 duration: 300
@@ -51,7 +51,7 @@ Control {
         horizontalAlignment: Qt.AlignHCenter
         verticalAlignment: Qt.AlignVCenter
         text: control.text
-        color: control.D.ColorSelector.textColor
+        color: control.ColorSelector.textColor
 
         Behavior on color {
             ColorAnimation {

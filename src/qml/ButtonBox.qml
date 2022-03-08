@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 ~ 2021 UnionTech Software Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Software Technology Co., Ltd.
  *
  * Author:     wangfei <wangfeia@uniontech.com>
  *
@@ -20,9 +20,6 @@
  */
 
 import QtQuick 2.11
-import QtQuick.Controls 2.4
-import QtQuick.Controls.impl 2.4
-import QtQuick.Layouts 1.11
 
 Row {
     id: control

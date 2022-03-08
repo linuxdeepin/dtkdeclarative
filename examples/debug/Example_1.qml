@@ -1,6 +1,5 @@
 import QtQuick 2.11
-import QtQuick.Controls 2.4
-import org.deepin.dtk 1.0 as D
+import org.deepin.dtk 1.0
 
 Rectangle {
     MouseArea {
@@ -25,7 +24,7 @@ Rectangle {
             MenuItem {
                 text: "Copy"
                 icon.name: "edit-copy"
-                display: D.IconLabel.IconBesideText
+                display: IconLabel.IconBesideText
             }
             MenuItem {
                 text: "Paste"
@@ -62,17 +61,17 @@ Rectangle {
         text: "Button"
     }
 
-    D.WarningButton {
+    WarningButton {
         id: warningBtn
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20 // @disable-check M16
         anchors.left: btn.right // @disable-check M16
         anchors.leftMargin: 20 // @disable-check M16
         text: "Warning" // @disable-check M16
-        onPressed: console.log("D.WarningButton pressed") // @disable-check M16
+        onPressed: console.log("WarningButton pressed") // @disable-check M16
     }
 
-    D.RecommandButton {
+    RecommandButton {
         id: highlightedionBtn
         anchors.left: warningBtn.right // @disable-check M16
         anchors.leftMargin: 20 // @disable-check M16
@@ -81,7 +80,7 @@ Rectangle {
         text: "Recommand" // @disable-check M16
     }
 
-    D.ToolButton {
+    ToolButton {
         id: toolButton
         anchors.left: highlightedionBtn.right // @disable-check M16
         anchors.leftMargin: 20 // @disable-check M16
@@ -89,7 +88,7 @@ Rectangle {
         anchors.topMargin: 20 // @disable-check M16
     }
 
-    D.IconButton {
+    IconButton {
         id: iconButton
         width: 36  // @disable-check M16
         anchors.left: toolButton.right // @disable-check M16
@@ -99,7 +98,7 @@ Rectangle {
         icon.name: "org.deepin.Example/test/button_add"
     }
 
-    D.IconButton {
+    IconButton {
         id: iconButton1
         width: 36  // @disable-check M16
         anchors.left: iconButton.right // @disable-check M16
@@ -109,7 +108,7 @@ Rectangle {
         icon.name: "test/button_add"  // @disable-check M16
     }
 
-    D.IconButton {
+    IconButton {
         id: iconButton2
         width: 36  // @disable-check M16
         anchors.left: iconButton1.right // @disable-check M16
@@ -120,7 +119,7 @@ Rectangle {
         icon.name: "button_add"  // @disable-check M16
     }
 
-    D.FloatingButton {
+    FloatingButton {
         id: floatingButton
         width: 36  // @disable-check M16
         anchors.left: iconButton2.right // @disable-check M16
@@ -156,25 +155,25 @@ Rectangle {
         icon.name: "button_add"
     }
 
-    D.ButtonBox {
+    ButtonBox {
         id: buttonBox
         anchors.left: roundButton.right // @disable-check M16
         anchors.leftMargin: 20 // @disable-check M16
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20  // @disable-check M16
 
-        D.ButtonBoxButton {
+        ButtonBoxButton {
             icon.name: "go-previous" // @disable-check M16
         }
-        D.ButtonBoxButton {
+        ButtonBoxButton {
             icon.name: "go-down" // @disable-check M16
         }
-        D.ButtonBoxButton {
+        ButtonBoxButton {
             icon.name: "go-next" // @disable-check M16
         }
     }
 
-    D.LineEdit {
+    LineEdit {
         id: lineEdit
         anchors.left: parent.left
         anchors.top: btnLabel.bottom
@@ -186,7 +185,7 @@ Rectangle {
         showAlert: focus
     }
 
-    D.SearchEdit {
+    SearchEdit {
         id: searcherEdit
         anchors.left: lineEdit.right
         anchors.top: lineEdit.top
@@ -221,7 +220,7 @@ Rectangle {
         }
     }
 
-    D.PlusMinusSpinBox {
+    PlusMinusSpinBox {
         id: plusMinusSpinBox
         anchors.left: spinBox.right
         anchors.top: spinBox.top
@@ -258,24 +257,24 @@ Rectangle {
         spacing: 10
         height: 350
 
-        D.Slider {
+        Slider {
             highlightedPassedGroove: true
             orientation: Qt.Vertical
             height: parent.height
-            handleType: D.Slider.HandleType.NoArrowVertical
+            handleType: Slider.HandleType.NoArrowVertical
         }
 
-        D.Slider {
+        Slider {
             height: parent.height
             orientation: Qt.Vertical
-            handleType: D.Slider.HandleType.ArrowLeft
+            handleType: Slider.HandleType.ArrowLeft
         }
 
-        D.Slider {
+        Slider {
             height: parent.height
             highlightedPassedGroove: true
             orientation: Qt.Vertical
-            handleType: D.Slider.HandleType.ArrowRight
+            handleType: Slider.HandleType.ArrowRight
         }
     }
 
@@ -290,54 +289,54 @@ Rectangle {
         spacing: 10
         width: 400
 
-        D.Slider {
+        Slider {
             highlightedPassedGroove: true
             width: parent.width
         }
 
-        D.Slider {
+        Slider {
             width: parent.width
-            handleType: D.Slider.HandleType.ArrowBottom
+            handleType: Slider.HandleType.ArrowBottom
         }
 
-        D.Slider {
+        Slider {
             width: parent.width
             highlightedPassedGroove: true
-            handleType: D.Slider.HandleType.ArrowUp
+            handleType: Slider.HandleType.ArrowUp
         }
 
-        D.TipsSlider {
+        TipsSlider {
             width: parent.width
-            tickDirection: D.TipsSlider.TickDirection.Back
+            tickDirection: TipsSlider.TickDirection.Back
             slider.highlightedPassedGroove: true
-            slider.handleType: D.Slider.HandleType.ArrowBottom
+            slider.handleType: Slider.HandleType.ArrowBottom
 
-            ticks: [D.SliderTipItem {
+            ticks: [SliderTipItem {
                 },
-                D.SliderTipItem {
+                SliderTipItem {
                 },
-                D.SliderTipItem {
+                SliderTipItem {
                 },
-                D.SliderTipItem {
+                SliderTipItem {
                 }]
         }
 
-        D.TipsSlider {
+        TipsSlider {
             id: sliderTickTip2
             readonly property var tips: [qsTr("Fast"), qsTr("Slow")]
             width: parent.width
-            tickDirection: D.TipsSlider.TickDirection.Back
-            slider.handleType: D.Slider.HandleType.ArrowBottom
+            tickDirection: TipsSlider.TickDirection.Back
+            slider.handleType: Slider.HandleType.ArrowBottom
 
-            ticks: [D.SliderTipItem {
+            ticks: [SliderTipItem {
                     text: sliderTickTip2.tips[0]
                 },
-                D.SliderTipItem {
+                SliderTipItem {
                     text: sliderTickTip2.tips[1]
                 }]
 
             // test highlight Text
-            D.HighlightPanel {
+            HighlightPanel {
                 id: __highlight
                 readonly property real highlightMargin: 20
                 anchors.bottom: parent.bottom
@@ -355,36 +354,36 @@ Rectangle {
             }
         }
 
-        D.TipsSlider {
+        TipsSlider {
             id: sliderTickTip3
             readonly property var tips: [qsTr("1m"), qsTr("5m"), qsTr("10m"), qsTr("15m"), qsTr("30m"), qsTr("1h"), qsTr("Never")]
             width: parent.width
-            tickDirection: D.TipsSlider.TickDirection.Back
-            slider.handleType: D.Slider.HandleType.ArrowBottom
+            tickDirection: TipsSlider.TickDirection.Back
+            slider.handleType: Slider.HandleType.ArrowBottom
             slider.stepSize: 10
             slider.from: 0
             slider.to: 60
 
-            ticks: [D.SliderTipItem {
+            ticks: [SliderTipItem {
                     text: sliderTickTip3.tips[0]
                     textHorizontalAlignment: Text.AlignLeft
                 },
-                D.SliderTipItem {
+                SliderTipItem {
                     text: sliderTickTip3.tips[1]
                 },
-                D.SliderTipItem {
+                SliderTipItem {
                     text: sliderTickTip3.tips[2]
                 },
-                D.SliderTipItem {
+                SliderTipItem {
                     text: sliderTickTip3.tips[3]
                 },
-                D.SliderTipItem {
+                SliderTipItem {
                     text: sliderTickTip3.tips[4]
                 },
-                D.SliderTipItem {
+                SliderTipItem {
                     text: sliderTickTip3.tips[5]
                 },
-                D.SliderTipItem {
+                SliderTipItem {
                     text: sliderTickTip3.tips[6]
                     textHorizontalAlignment: Text.AlignRight
                 }]
@@ -436,19 +435,19 @@ Rectangle {
             leftMargin: 40
         }
         spacing: 10
-        D.Switch {
+        Switch {
             checked: true
         }
 
-        D.Switch {
+        Switch {
         }
 
-        D.Switch {
+        Switch {
             checked: true
             enabled: false
         }
 
-        D.Switch {
+        Switch {
             enabled: false
         }
     }
@@ -463,18 +462,18 @@ Rectangle {
 
         spacing: 10
 
-        D.ComboBox {
+        ComboBox {
             id: nonEditComboBox
             model: ["Banana", "Apple", "Coconut"]
         }
 
-        D.ComboBox {
+        ComboBox {
             id: editableComboBox
             editable: true
             model: ["Banana", "Apple", "Coconut"]
         }
 
-        D.ComboBox {
+        ComboBox {
             id: nonEditComboBoxWithIcon
             textRole: "text"
             iconNameRole: "icon"
@@ -486,7 +485,7 @@ Rectangle {
             }
         }
 
-        D.ComboBox {
+        ComboBox {
             id: editableComboBoxWithIcon
             editable: true
             textRole: "text"
