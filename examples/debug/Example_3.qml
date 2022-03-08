@@ -16,10 +16,11 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 import QtQuick 2.0
-import org.deepin.dtk 1.0 as D
+import org.deepin.dtk 1.0
 
 Item {
     Image {
@@ -52,7 +53,7 @@ Item {
         }
     }
 
-    D.OpacityMask {
+    OpacityMask {
         anchors.fill: source
         source: source
         maskSource: maskSource
@@ -78,14 +79,14 @@ Item {
             width: 300
             anchors.horizontalCenter: parent.horizontalCenter
 
-            D.InWindowBlur {
+            InWindowBlur {
                 id: blur
                 anchors.fill: parent
                 radius: 20
                 offscreen: true
             }
 
-            D.ItemViewport {
+            ItemViewport {
                 id: roundBlur
                 anchors.fill: blur
                 fixed: true
@@ -109,7 +110,7 @@ Item {
         }
     }
 
-    D.Button {
+    Button {
         text: "深浅切换"
         onClicked: {
             if (testView.foreground == "#55000000")
@@ -119,7 +120,7 @@ Item {
         }
     }
 
-    D.StyledArrowShapeBlur {
+    StyledArrowShapeBlur {
         anchors.centerIn: parent
         width: 100
         height: 200

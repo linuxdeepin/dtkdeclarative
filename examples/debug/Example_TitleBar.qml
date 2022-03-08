@@ -16,16 +16,15 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 import QtQuick 2.0
-import QtQuick.Controls 2.4
 import QtQuick.Window 2.11
 import QtQuick.Layouts 1.11
-import org.deepin.dtk 1.0 as D
+import org.deepin.dtk 1.0
 
-D.TitleBar {
+TitleBar {
     id: titleBar
     icon.name: "music"
     title: "title custom"
@@ -38,7 +37,7 @@ D.TitleBar {
 //            icon.name: "emblem-checked"
 //            icon.color: palette.highlight
 //        }
-//        D.ThemeMenu {}
+//        ThemeMenu {}
 
 //        MenuSeparator {
 //            contentItem: Rectangle {
@@ -46,9 +45,9 @@ D.TitleBar {
 //                color: "black"
 //            }
 //        }
-//        D.HelpAction {}
-//        D.AboutAction {}
-//        D.QuitAction {}
+//        HelpAction {}
+//        AboutAction {}
+//        QuitAction {}
 
 //        Action {
 //            text: qsTr("custom action")
@@ -58,13 +57,13 @@ D.TitleBar {
 //            onTriggered: toggleWindowState()
 //        }
 //    }
-    aboutDialog: D.AboutDialog {
+    aboutDialog: AboutDialog {
         modality: Qt.NonModal
         version: qsTr(String("Version: %1").arg(Qt.application.version))
         productName: qsTr(appProductName)
-        companyLogo: "file://" + D.DTK.deepinDistributionOrgLogo
-        websiteName: D.DTK.deepinWebsiteName
-        websiteLink: D.DTK.deepinWebsiteLink
+        companyLogo: "file://" + DTK.deepinDistributionOrgLogo
+        websiteName: DTK.deepinWebsiteName
+        websiteLink: DTK.deepinWebsiteLink
         license: appLicense === "" ? "" : qsTr(String("%1 is released under %2").arg(appProductName).arg(appLicense))
     }
 
@@ -74,10 +73,10 @@ D.TitleBar {
 //    menuDisabled: true
 
 //    content: RowLayout {
-//        D.LineEdit {
+//        LineEdit {
 //            text: "label2"
 //        }
-//        D.LineEdit {
+//        LineEdit {
 //            text: "center"
 //            Layout.alignment: Qt.AlignCenter
 //        }

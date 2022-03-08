@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 ~ 2019 Deepin Technology Co., Ltd.
+ * Copyright (C) 2019 ~ 2022 Deepin Technology Co., Ltd.
  *
  * Author:     sunkang <sunkang@uniontech.com>
  *
@@ -16,30 +16,11 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.11
-import QtQuick.Templates 2.4 as T
-import QtQuick.Controls 2.4
-import QtQuick.Controls.impl 2.4
-import org.deepin.dtk 1.0 as D
-import "PixelMetric.js" as PM
+import org.deepin.dtk.controls 1.0 as D
 
-T.BusyIndicator {
-    id: control
+D.BusyIndicator {
 
-    implicitWidth: contentItem.implicitWidth + leftPadding + rightPadding
-    implicitHeight: contentItem.implicitHeight + topPadding + bottomPadding
-
-    padding: PM.ControlPadding
-
-    contentItem: D.BusyIndicator {
-        implicitWidth: PM.BusyIndicator_ItemWidth
-        implicitHeight: PM.BusyIndicator_ItemHeight
-        anchors.fill: parent
-
-        fill: control.palette.highlight
-        running: control.running
-    }
 }

@@ -52,5 +52,4 @@ Button {
             }
         }
     }
-    contentItem: null
 }

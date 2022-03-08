@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2021 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     yeshanshan <yeshanshan@uniontech.com>
  *
@@ -20,7 +20,6 @@
  */
 
 import QtQuick 2.11
-import QtQuick.Controls 2.4
 import org.deepin.dtk.impl 1.0 as D
 
 Menu {

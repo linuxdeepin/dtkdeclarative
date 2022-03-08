@@ -19,8 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.11
-import QtQuick.Controls 2.4
-import org.deepin.dtk 1.0 as D
+import org.deepin.dtk 1.0
 
 Rectangle {
     Label {
@@ -41,19 +40,19 @@ Rectangle {
         width: 500
         height: 50
 
-        property D.Palette backgroundColor: D.Palette {
+        property Palette backgroundColor: Palette {
             normal: "black"
         }
-        property D.Palette backgroundColorClicked: D.Palette {
+        property Palette backgroundColorClicked: Palette {
             normal: "blue"
         }
 
-        property D.Palette textColorClicked: D.Palette {
+        property Palette textColorClicked: Palette {
             normal: "yellow"
         }
 
         Rectangle {
-            property D.Palette borderColor: D.Palette {
+            property Palette borderColor: Palette {
                 normal: "red"
             }
             id: rect1
@@ -61,19 +60,19 @@ Rectangle {
             anchors.top: control1.top
             width: 250
             height: 50
-            color: D.ColorSelector.backgroundColor
+            color: ColorSelector.backgroundColor
             border.width: 1
-            border.color: D.ColorSelector.borderColor
+            border.color: ColorSelector.borderColor
 
             Text {
-                property D.Palette textColor: D.Palette {
+                property Palette textColor: Palette {
                     normal: "white"
                 }
 
                 id: rect1Text
                 anchors.fill: parent
                 text: "Use it's control parent's palette.\n(Click to change.)"
-                color: D.ColorSelector.textColor
+                color: ColorSelector.textColor
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
 
@@ -90,13 +89,13 @@ Rectangle {
 
         Rectangle {
             id: rect2
-            property D.Palette borderColor: D.Palette {
+            property Palette borderColor: Palette {
                 normal: "red"
             }
-            property D.Palette backgroundColor: D.Palette {
+            property Palette backgroundColor: Palette {
                 normal: "black"
             }
-            property D.Palette backgroundColorClicked: D.Palette {
+            property Palette backgroundColorClicked: Palette {
                 normal: "magenta"
             }
 
@@ -105,33 +104,33 @@ Rectangle {
             anchors.top: control1.top
             width: 250
             height: 50
-            color: D.ColorSelector.backgroundColor
+            color: ColorSelector.backgroundColor
             border.width: 1
-            border.color: D.ColorSelector.borderColor
+            border.color: ColorSelector.borderColor
 
             Text {
                 id: rect2Text
-                property D.Palette textColor: D.Palette {
+                property Palette textColor: Palette {
                     normal: "yellow"
                 }
 
-                property D.Palette textColorClicked: D.Palette {
+                property Palette textColorClicked: Palette {
                     normal: "blue"
                 }
 
                 anchors.fill: parent
                 text: "Overwrite it's control parent palette.\n(Click to change.)"
-                color: D.ColorSelector.textColor
+                color: ColorSelector.textColor
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
 
                 MouseArea {
                     anchors.fill: parent
-                    D.Palette {
+                    Palette {
                         id: otherBackgroundColor
                         normal: "darkRed"
                     }
-                    D.Palette {
+                    Palette {
                         id: othertextColor
                         normal: "darkBlue"
                     }
@@ -163,19 +162,19 @@ Rectangle {
         width: 500
         height: 50
 
-        property D.Palette backgroundColor: D.Palette {
+        property Palette backgroundColor: Palette {
             normal: "black"
         }
-        property D.Palette backgroundColorClicked: D.Palette {
+        property Palette backgroundColorClicked: Palette {
             normal: "blue"
         }
 
-        property D.Palette textColorClicked: D.Palette {
+        property Palette textColorClicked: Palette {
             normal: "cyan"
         }
 
         Rectangle {
-            property D.Palette borderColor: D.Palette {
+            property Palette borderColor: Palette {
                 normal: "red"
             }
             id: rect3
@@ -183,18 +182,18 @@ Rectangle {
             anchors.top: control2.top
             width: 250
             height: 50
-            color: D.ColorSelector.backgroundColor
+            color: ColorSelector.backgroundColor
             border.width: 1
-            border.color: D.ColorSelector.borderColor
+            border.color: ColorSelector.borderColor
 
             Text {
-                property D.Palette textColor: D.Palette {
+                property Palette textColor: Palette {
                     normal: "white"
                 }
                 id: rect3Text
                 anchors.fill: parent
                 text: "Use it's color seletor to change palette.\n(Click to change, double click restore)"
-                color: D.ColorSelector.textColor
+                color: ColorSelector.textColor
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
 
@@ -202,13 +201,13 @@ Rectangle {
                     anchors.fill: parent
 
                     onClicked: {
-                        rect3.D.ColorSelector.backgroundColor = control2.backgroundColorClicked
-                        rect3Text.D.ColorSelector.textColor = control2.textColorClicked
+                        rect3.ColorSelector.backgroundColor = control2.backgroundColorClicked
+                        rect3Text.ColorSelector.textColor = control2.textColorClicked
                     }
 
                     onDoubleClicked: {
-                        rect3.D.ColorSelector.backgroundColor = undefined
-                        rect3Text.D.ColorSelector.textColor = undefined
+                        rect3.ColorSelector.backgroundColor = undefined
+                        rect3Text.ColorSelector.textColor = undefined
                     }
                 }
             }
@@ -221,27 +220,27 @@ Rectangle {
             anchors.leftMargin: 20
             width: 250
             height: 50
-            color: D.ColorSelector.backgroundColor
-            property D.Palette backgroundColor: D.Palette {
+            color: ColorSelector.backgroundColor
+            property Palette backgroundColor: Palette {
                 normal: "black"
             }
-            property D.Palette backgroundColorClicked: D.Palette {
+            property Palette backgroundColorClicked: Palette {
                 normal: "magenta"
             }
 
             Text {
                 id: rect4Text
-                property D.Palette textColor: D.Palette {
+                property Palette textColor: Palette {
                     normal: "yellow"
                 }
 
-                property D.Palette textColorClicked: D.Palette {
+                property Palette textColorClicked: Palette {
                     normal: "blue"
                 }
 
                 anchors.fill: parent
                 text: "Use CS to replace it's own palette.\n(Click to change, double click restore)"
-                color: D.ColorSelector.textColor
+                color: ColorSelector.textColor
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
 
@@ -249,13 +248,13 @@ Rectangle {
                     anchors.fill: parent
 
                     onClicked: {
-                        rect4.D.ColorSelector.backgroundColor = rect4.backgroundColorClicked
-                        rect4Text.D.ColorSelector.textColor = control2  .textColorClicked
+                        rect4.ColorSelector.backgroundColor = rect4.backgroundColorClicked
+                        rect4Text.ColorSelector.textColor = control2  .textColorClicked
                     }
 
                     onDoubleClicked: {
-                        rect4.D.ColorSelector.backgroundColor = undefined
-                        rect4Text.D.ColorSelector.textColor = undefined
+                        rect4.ColorSelector.backgroundColor = undefined
+                        rect4Text.ColorSelector.textColor = undefined
                     }
                 }
             }
@@ -285,28 +284,28 @@ Rectangle {
                 height: 50
                 anchors.left: parent.left
                 anchors.top: parent.top
-                property D.Palette backgroundColor: D.Palette {
+                property Palette backgroundColor: Palette {
                     normal: "gray"
                 }
 
                 Rectangle {
-                    property D.Palette borderColor: D.Palette {
+                    property Palette borderColor: Palette {
                         normal: "red"
                     }
                     id: reparentRect1
                     width: 50
                     height: 50
-                    color: D.ColorSelector.backgroundColor
+                    color: ColorSelector.backgroundColor
                     border.width: 1
-                    border.color: D.ColorSelector.borderColor
+                    border.color: ColorSelector.borderColor
 
                     Text {
-                        property D.Palette textColor: D.Palette {
+                        property Palette textColor: Palette {
                             normal: "blue"
                         }
                         anchors.fill: parent
                         text: "Rect1"
-                        color: D.ColorSelector.textColor
+                        color: ColorSelector.textColor
                         horizontalAlignment: Qt.AlignHCenter
                         verticalAlignment: Qt.AlignVCenter
 
@@ -352,28 +351,28 @@ Rectangle {
                 anchors.leftMargin: 10
                 anchors.top: parent.top
 
-                property D.Palette backgroundColor: D.Palette {
+                property Palette backgroundColor: Palette {
                     normal: "red"
                 }
 
                 Rectangle {
-                    property D.Palette borderColor: D.Palette {
+                    property Palette borderColor: Palette {
                         normal: "gray"
                     }
                     id: reparentRect2
                     width: 50
                     height: 50
-                    color: D.ColorSelector.backgroundColor
+                    color: ColorSelector.backgroundColor
                     border.width: 1
-                    border.color: D.ColorSelector.borderColor
+                    border.color: ColorSelector.borderColor
 
                     Text {
-                        property D.Palette textColor: D.Palette {
+                        property Palette textColor: Palette {
                             normal: "yellow"
                         }
                         anchors.fill: parent
                         text: "Rect2"
-                        color: D.ColorSelector.textColor
+                        color: ColorSelector.textColor
                         horizontalAlignment: Qt.AlignHCenter
                         verticalAlignment: Qt.AlignVCenter
 
@@ -453,7 +452,7 @@ Rectangle {
             Repeater {
                 model: 5
                 Example_customcontrolforcs {
-                    backgroundColor: D.Palette {
+                    backgroundColor: Palette {
                         normal: Qt.hsla(Math.random(), 0.6, 0.6, 0.9)
                         hovered: Qt.hsla(Math.random(), 0.2, 0.2, 0.9)
                     }

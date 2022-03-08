@@ -18,6 +18,5 @@
 import org.deepin.dtk 1.0 as D
 
 D.CheckDelegate {
-    id: control
 
 }

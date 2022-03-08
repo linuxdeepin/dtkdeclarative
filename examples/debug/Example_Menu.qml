@@ -16,14 +16,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 import QtQuick 2.0
-import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
-import org.deepin.dtk 1.0 as D
-import org.deepin.dtk.style 1.0 as DS
+import org.deepin.dtk 1.0
 
 Column {
     id: control
@@ -62,7 +60,7 @@ Column {
         }
     }
     Row {
-        D.SearchEdit {
+        SearchEdit {
             id: filterSearchEdit
             placeholder: qsTr("搜索")
             onTextChanged: {
@@ -78,7 +76,7 @@ Column {
     Menu {
         id: normalMenu
 //            width: 300
-        header: D.SearchEdit {
+        header: SearchEdit {
             placeholder: qsTr("搜索")
         }
         maxVisibleItems: 4
@@ -98,7 +96,7 @@ Column {
         MenuItem {
             icon.name: "music"
             text: "icon right"
-            display: D.IconLabel.IconBesideText
+            display: IconLabel.IconBesideText
         }
         Action { text: "Action" ; /*checkable: true;*/ /*checked: true*/}
 
@@ -127,7 +125,7 @@ Column {
     Menu {
         id: searchAndArrowMenu
         closePolicy: Popup.NoAutoClose
-        model: D.ObjectModelProxy {
+        model: ObjectModelProxy {
             id: objectModelFilter
             filterAcceptsItem: function(item) {
                 return item.text.includes(filterSearchEdit.text)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 ~ 2020 Deepin Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2022 Deepin Technology Co., Ltd.
  *
  * Author:     sunkang <sunkang@uniontech.com>
  *
@@ -16,30 +16,11 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program, If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.11
-import QtQuick.Controls 2.4
-import QtQuick.Controls.impl 2.4
-import QtQuick.Templates 2.4 as T
-import "PixelMetric.js" as PM
+import org.deepin.dtk.controls 1.0 as D
 
-T.Frame {
-    id: control
+D.Frame {
 
-    implicitWidth: Math.max(background ? background.implicitWidth : 0, contentWidth + leftPadding + rightPadding)
-    implicitHeight: Math.max(background ? background.implicitHeight : 0, contentHeight + topPadding + bottomPadding)
-
-    contentWidth: contentItem.implicitWidth || (contentChildren.length === 1 ? contentChildren[0].implicitWidth : 0)
-    contentHeight: contentItem.implicitHeight || (contentChildren.length === 1 ? contentChildren[0].implicitHeight : 0)
-
-    padding: PM.ControlPadding
-    property int radius: PM.ControlRadius
-
-    background: Rectangle {
-        color: "transparent"
-        border.color: control.palette.mid
-        radius: control.radius
-    }
 }

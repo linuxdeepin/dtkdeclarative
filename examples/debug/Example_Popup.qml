@@ -16,14 +16,13 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 import QtQuick 2.0
-import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 import QtQuick.Window 2.11
-import org.deepin.dtk 1.0 as D
+import org.deepin.dtk 1.0
 
 Column {
     id: control
@@ -37,10 +36,10 @@ Column {
 
     //            popupWindow.width = 400
                 popupWindow.open()
-    //            popupWindow.D.PopupWindow.window.hide()
+    //            popupWindow.PopupWindow.window.hide()
     //            Window.window.hide()
-    //            popup.D.PopupWindow.window.show()
-    //            popupWindow.D.PopupWindow.close()
+    //            popup.PopupWindow.window.show()
+    //            popupWindow.PopupWindow.close()
             }
     //        Component.onCompleted: popupWindow.open()
         }
@@ -88,11 +87,11 @@ Column {
     Button {
         text: "handle forceWindowMode"
         onClicked: {
-            popupWindow.D.PopupHandle.forceWindowMode = !popupWindow.D.PopupHandle.forceWindowMode
+            popupWindow.PopupHandle.forceWindowMode = !popupWindow.PopupHandle.forceWindowMode
         }
     }
 
-    D.Popup {
+    Popup {
         id: popupWindow; objectName: "pupup window"
         visible: false
         x: 100
@@ -102,8 +101,8 @@ Column {
 //        width: 300
 //        height: 300
 //        margins: 100
-        D.PopupHandle.forceWindowMode: true
-        D.PopupHandle.delegate: D.PopupWindow {
+        PopupHandle.forceWindowMode: true
+        PopupHandle.delegate: PopupWindow {
             blurControl: popupWindow
         }
         contentItem: Column {
@@ -118,7 +117,7 @@ Column {
             }
         }
     }
-    D.Popup {
+    Popup {
         id: popup;  objectName: "pupup"
         x: 100
         y: 20
@@ -143,6 +142,6 @@ Column {
         id: menuPopup
         MenuItem { text: "Text" }
 
-        D.PopupHandle.forceWindowMode: true
+        PopupHandle.forceWindowMode: true
     }
 }

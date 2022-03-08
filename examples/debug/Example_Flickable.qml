@@ -16,13 +16,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 import QtQuick 2.0
-import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
-import org.deepin.dtk 1.0 as D
+import org.deepin.dtk 1.0
 
 Flow {
     id: control
@@ -44,16 +43,16 @@ Flow {
     }
     Column {
         spacing: 10
-        D.IpV4LineEdit {
+        IpV4LineEdit {
 
         }
-        D.IpV4LineEdit {
+        IpV4LineEdit {
             width: 300
             height: 40
             showAlert: focus
             alertText: "alert tips"
         }
-        D.IpV4LineEdit {
+        IpV4LineEdit {
             width: 300
             height: 40
             text: "10.20.52.57"
@@ -61,7 +60,7 @@ Flow {
 
         Row {
             spacing: 10
-            D.IpV4LineEdit {
+            IpV4LineEdit {
                 id: idLineEditSetValueByText
                 width: 300
                 height: 40
@@ -100,7 +99,7 @@ Flow {
             }
         }
 
-        D.SortFilterModel {
+        SortFilterModel {
             id: sortFilterModel
             model: ListModel {
                 ListElement { name: "Alice"; team: "Crypto" }
