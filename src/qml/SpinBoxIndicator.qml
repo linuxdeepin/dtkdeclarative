@@ -77,7 +77,11 @@ Control {
                     }
                     width: DS.Style.spinBox.indicatorWidth
                     height: spinBox.implicitHeight / 2
-                    icon.name: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? "go-up" : "go-down"
+                    icon {
+                        name: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? "arrow_ordinary_up" : "arrow_ordinary_down"
+                        width: DS.Style.spinBox.focusIndicatorIconSize
+                        height: DS.Style.spinBox.focusIndicatorIconSize
+                    }
                     activeFocusOnTab: false
                     opacity: 1
                     background: ButtonPanel {

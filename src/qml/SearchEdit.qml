@@ -40,10 +40,14 @@ LineEdit {
             spacing: DS.Style.control.spacing
 
             // Search Icon
-            D.QtIcon {
-                // TODO(Chen Bin): Replace it to Dci Icon
+            D.DciIcon {
                 id: searchIcon
-                name: "search"
+                name: "action_search"
+                sourceSize.width: DS.Style.searchEdit.iconSize
+                palette: D.DTK.makeIconPalette(control.palette)
+                mode: control.D.ColorSelector.controlState
+                theme: control.D.ColorSelector.controlTheme
+                fallbackToQIcon: false
             }
 
             Text {
