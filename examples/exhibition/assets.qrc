@@ -14,5 +14,11 @@
         <file>assets/menu/rightclick.svg</file>
         <file>assets/menu/voice2.svg</file>
         <file>assets/menu/voice1.svg</file>
+        <file>assets/popup/nointeractive.svg</file>
+        <file>assets/popup/interactive.svg</file>
+        <file>assets/popup/popup-menu-1.svg</file>
+        <file>assets/popup/popup-menu-2.svg</file>
+        <file>assets/popup/popup-menu-3.svg</file>
+        <file>assets/popup/popup-menu-4.svg</file>
     </qresource>
 </RCC>

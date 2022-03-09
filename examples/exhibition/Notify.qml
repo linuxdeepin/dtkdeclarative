@@ -20,17 +20,17 @@
  */
 
 import QtQuick 2.0
-import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 import QtQuick.Window 2.11
 import org.deepin.dtk 1.0
+import ".."
 
 Column {
     id: control
     Label {
         width: parent.width
         wrapMode: Text.WordWrap
-        text: "应用内通知。"
+        text: "通知类控件， 包括系统通知、应用内通知、角标等形式。"
         horizontalAlignment: Qt.AlignHCenter
     }
 
@@ -40,15 +40,15 @@ Column {
         spacing: 10
         width: parent.width
 
-        Button {
-            text: "send buildin type message"
+        ImageCell {
+            source: "qrc:/assets/popup/nointeractive.svg"
             onClicked: {
                 DTK.sendMessage(control, "成功添加到＂校园名谣＂", "checked")
             }
         }
 
-        Button {
-            text: "send custom type message"
+        ImageCell {
+            source: "qrc:/assets/popup/interactive.svg"
             onClicked: DTK.sendMessage(Window.window, floatingMsgCom, {
                                            content: "磁盘中的原文件已被修改，是否重新载入？",
                                            iconName: "music"
@@ -75,10 +75,10 @@ Column {
                     }
 
                     Button {
-                        text: "reload"
-                        font: DTK.fontManager.t5
+                        text: "重新载入"
+                        font: DTK.fontManager.t6
                         Layout.alignment: Qt.AlignVCenter
-                        Layout.preferredWidth: 72
+                        Layout.preferredWidth: 92
                         Layout.preferredHeight: 28
                     }
                 }

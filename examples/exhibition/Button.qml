@@ -1,5 +1,4 @@
 import QtQuick 2.0
-import QtQuick.Controls 2.0
 // 确保dtk的模块在最后被引入
 import org.deepin.dtk 1.0
 

@@ -20,7 +20,6 @@
  */
 
 import QtQuick 2.0
-import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.11
 import org.deepin.dtk 1.0
 
@@ -51,6 +50,7 @@ Column {
                 text: "Nth " + index
                 icon.name: "music"
                 checked: index === ListView.view.count - 1
+                backgroundVisible: index % 2 === 0
             }
         }
 
@@ -71,6 +71,7 @@ Column {
                     icon.name: "music"
                     checked: index === ListView.view.count - 1
                     cascadeSelected: !leftNode
+                    backgroundVisible: index % 2 === 0
                     Loader {
                         active: !leftNode
 
@@ -86,6 +87,7 @@ Column {
                                 text: "Nth " + index
                                 icon.name: "music"
                                 checked: index === ListView.view.count - 1
+                                backgroundVisible: index % 2 === 0
                             }
                         }
                 }
@@ -98,13 +100,14 @@ Column {
             implicitHeight: contentHeight
             width: itemDelegateMinWidth
             model: 4
+            spacing: 2
             delegate: ItemDelegate {
                 text: "Nth " + index
                 icon.name: "music"
                 checked: index === ListView.view.count - 1
                 indicatorVisible: true
-                alternateHighlight: false
-
+                backgroundVisible: true
+                corners: getCornersForBackground(index, ListView.view.count)
             }
         }
 
@@ -118,6 +121,8 @@ Column {
                 icon.name: "music"
                 checked: index === ListView.view.count - 1
                 indicatorVisible: true
+                backgroundVisible: index % 2 === 0
+                corners: getCornersForBackground(index, ListView.view.count)
             }
         }
 
@@ -141,6 +146,7 @@ Column {
                 text: fileName
                 icon.name: iconName
                 checked: index === ListView.view.count - 1
+                backgroundVisible: index % 2 === 0
 
                 contentFlow: true
                 content: RowLayout {
@@ -161,6 +167,7 @@ Column {
                 text: fileName
                 icon.name: iconName
                 checked: index === ListView.view.count - 1
+                backgroundVisible: index % 2 === 0
 
                 content: RowLayout {
                     Label { text: createDate }
