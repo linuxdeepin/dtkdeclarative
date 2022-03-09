@@ -28,11 +28,22 @@ import org.deepin.dtk.style 1.0 as DS
 T.ItemDelegate {
     id: control
     property bool indicatorVisible
-    property bool alternateHighlight: true
+    property bool backgroundVisible: true
     property bool cascadeSelected
     property bool contentFlow
     property Component content
     property D.Palette checkedTextColor: DS.Style.checkedButtonText
+    property int corners: D.RoundRectangle.TopLeftCorner | D.RoundRectangle.TopRightCorner | D.RoundRectangle.BottomLeftCorner | D.RoundRectangle.BottomRightCorner
+    function getCornersForBackground(index, count) {
+        if (count <= 1)
+            return D.RoundRectangle.TopLeftCorner | D.RoundRectangle.TopRightCorner | D.RoundRectangle.BottomLeftCorner | D.RoundRectangle.BottomRightCorner
+        if (index === 0) {
+            return D.RoundRectangle.TopLeftCorner | D.RoundRectangle.TopRightCorner
+        } else if (index === count - 1) {
+            return D.RoundRectangle.BottomLeftCorner | D.RoundRectangle.BottomRightCorner
+        }
+        return 0
+    }
 
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
@@ -68,7 +79,7 @@ T.ItemDelegate {
             spacing: control.spacing
             mirrored: control.mirrored
             display: control.display
-            alignment: control.display === D.IconLabel.IconOnly || control.display === D.IconLabel.TextUnderIcon ? Qt.AlignCenter : Qt.AlignLeft
+            alignment: control.display === D.IconLabel.IconOnly || control.display === D.IconLabel.TextUnderIcon ? Qt.AlignCenter : Qt.AlignLeft | Qt.AlignVCenter
             text: control.text
             font: control.font
             color: control.palette.windowText
@@ -89,17 +100,19 @@ T.ItemDelegate {
             anchors.fill: parent
             visible: checked && !control.cascadeSelected
         }
-        Rectangle {
+        D.RoundRectangle {
             anchors.fill: parent
             visible: checked && control.cascadeSelected
             color: DS.Style.itemDelegate.cascadeColor
             radius: DS.Style.control.radius
+            corners: control.corners
         }
-        Rectangle {
+        D.RoundRectangle {
             anchors.fill: parent
-            visible: !checked && (control.alternateHighlight ? index % 2 === 0 : true)
+            visible: !checked && control.backgroundVisible
             color: DS.Style.itemDelegate.normalColor
             radius: DS.Style.control.radius
+            corners: control.corners
         }
     }
 }

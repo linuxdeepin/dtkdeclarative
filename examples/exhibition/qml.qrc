@@ -12,5 +12,6 @@
         <file>Menu.qml</file>
         <file>Notify.qml</file>
         <file>EditControl.qml</file>
+        <file>Popup.qml</file>
     </qresource>
 </RCC>

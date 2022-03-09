@@ -20,7 +20,6 @@
  */
 
 import QtQuick 2.0
-import QtQuick.Controls 2.0
 import QtQml 2.11
 import org.deepin.dtk 1.0
 import ".."
@@ -121,7 +120,7 @@ Column {
         }
 
         ImageCell {
-            x: 0; y: 330
+            x: 0; y: 400
             source: "qrc:/assets/menu/cancle.svg"
             Menu {
                 MenuItem { icon.name: "music"; text: qsTr("撤销") }

@@ -44,9 +44,11 @@ DelegateModel {
         }
 
         // Step 2: Sort the list of visible items
-        visible.sort(function(a, b) {
-            return lessThan(a.model, b.model) ? -1 : 1;
-        });
+        if (lessThan) {
+            visible.sort(function(a, b) {
+                return lessThan(a.model, b.model) ? -1 : 1;
+            });
+        }
 
         // Step 3: Add all items to the visible group:
         for (i = 0; i < visible.length; ++i) {
