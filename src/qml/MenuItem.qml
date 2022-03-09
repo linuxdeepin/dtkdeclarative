@@ -61,15 +61,19 @@ T.MenuItem {
         icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
     }
 
-    indicator: D.QtIcon {
+    indicator: D.DciIcon {
         anchors {
             left: control.left
             leftMargin: control.mirrored ? control.width - width - control.rightPadding : control.leftPadding
             verticalCenter: parent.verticalCenter
         }
+        sourceSize.width: DS.Style.menu.itemIconSize.height
         visible: control.checked
-        name: "mark_indicator"
-        color: control.D.ColorSelector.itemColor
+        name: "menu_select"
+        palette: control.D.DciIcon.palette
+        mode: control.D.ColorSelector.controlState
+        theme: control.D.ColorSelector.controlTheme
+        fallbackToQIcon: false
     }
 
     arrow: D.DciIcon {
@@ -78,6 +82,7 @@ T.MenuItem {
             rightMargin: control.mirrored ? control.width - width - control.rightPadding : control.rightPadding
             verticalCenter: parent.verticalCenter
         }
+        sourceSize.width: DS.Style.menu.itemIconSize.height
         visible: control.subMenu
         mirror: control.mirrored
         name: control.subMenu ? "menu_arrow" : ""

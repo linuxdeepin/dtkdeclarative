@@ -84,5 +84,6 @@
         <file alias="built-in-icons/menu_arrow.dci">icons/bloom/menu_arrow.dci</file>
         <file alias="built-in-icons/menu_select.dci">icons/bloom/menu_select.dci</file>
         <file alias="built-in-icons/window_sidebar.dci">icons/bloom/window_sidebar.dci</file>
+        <file alias="built-in-icons/action_add.dci">icons/bloom/action_add.dci</file>
     </qresource>
 </RCC>

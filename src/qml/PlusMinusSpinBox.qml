@@ -53,7 +53,7 @@ FocusScope {
             implicitHeight: DS.Style.spinBox.height
             focusPolicy: Qt.NoFocus
 
-            icon.name: "button_add"  // TODO(Chen Bin): Replace it with dci icon.
+            icon.name: "action_add"
             icon.width: 16
             onClicked: {
                 spinBoxControl.increase()
@@ -67,7 +67,7 @@ FocusScope {
             implicitHeight: DS.Style.spinBox.height
             focusPolicy: Qt.NoFocus
 
-            icon.name: "button_reduce"  // TODO(Chen Bin): Replace it with dci icon.
+            icon.name: "action_reduce"
             icon.width: 16
             onClicked: {
                 spinBoxControl.decrease()

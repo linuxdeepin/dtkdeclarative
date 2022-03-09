@@ -314,6 +314,7 @@ QtObject {
     }
 
     property QtObject searchEdit: QtObject {
+        property int iconSize: 16
         property int iconLeftMargin: 10
         property int iconRightMargin: 7
         property int animationDuration: 200
@@ -323,6 +324,7 @@ QtObject {
         property int width : 300
         property int height: 36
         property int spacing: 10
+        property int focusIndicatorIconSize: 10
         property int indicatorWidth: 24
         property int indicatorHeight: 14
         property int indicatorIconSize: 24

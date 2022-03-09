@@ -60,7 +60,7 @@ T.ItemDelegate {
         mode: control.D.ColorSelector.controlState
         theme: control.D.ColorSelector.controlTheme
         fallbackToQIcon: false
-        name: "mark_indicator"
+        name: "menu_select"
         sourceSize: Qt.size(DS.Style.itemDelegate.checkIndicatorIconSize, DS.Style.itemDelegate.checkIndicatorIconSize)
     }
 
