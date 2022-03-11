@@ -1,0 +1,41 @@
+/*!
+    \qmltype MenuSeparator(FlowStyle)
+    \inherits MenuSeparator
+    \inqmlmodule org.deepin.dtk
+    \ingroup QML_TYPES
+    \brief 提供一种行云设计风格的 MenuSeparator 控件.
+
+    \l {MenuSeparator(FlowStyle)}{MenuSeparator} 控件被用做 Menu 控件的菜单分隔符控件。
+    行云设计提供的 \l {MenuSeparator(FlowStyle)}{MenuSeparator} 控件不光能够作为分隔符，
+    还能够添加自定义文本当作分隔描述。
+
+    例如，可以使用如下方式添加自定义文本的菜单分隔符：
+    \qml
+    Menu {
+        MenuSeparator { text: qsTr("单曲")} // 创建带文本的菜单分隔符
+        MenuItem { icon.name: "folder-music-symbolic"; text: qsTr("Tomorrow-Fly By Midnight") }
+        MenuItem { icon.name: "folder-music-symbolic"; text: qsTr("Tomorrow With You (EN]ABA)- Senpai Kondor") }
+        MenuItem { icon.name: "folder-music-symbolic"; text: qsTr("Tomorrow will be fine. - Sodagreen") }
+        MenuItem { icon.name: "folder-music-symbolic"; text: qsTr("CROWN - TOMORROW X TOGETHER") }
+        MenuSeparator { text: qsTr("歌手")}
+        MenuItem { icon.name: "music"; text: qsTr("Tomorrow - Fly By Midnight") }
+        MenuSeparator { text: qsTr("专辑")}
+        MenuItem { icon.name: "music"; text: qsTr("DTK-Menu-Menuitem-ICON-Right-Light") }
+        MenuItem { icon.name: "music"; text: qsTr("CROWN - TOMORROW X TOGETHER") }
+    }
+    \endqml
+ */
+
+/*!
+    \qmlproperty string org.deepin.dtk::MenuSeparator(FlowStyle)::text
+
+    \c text 属性控制 \l {MenuSeparator(FlowStyle)}{MenuSeparator} 是否带文本，
+    如果未添加 \c text 属性，  \l {MenuSeparator(FlowStyle)}{MenuSeparator} 只是一个带
+    水平线的菜单项。
+ */
+
+/*!
+    \qmlproperty Palette org.deepin.dtk::MenuSeparator(FlowStyle)::textColor
+
+    \c textColor 属性用于控制文本和水平线的颜色。
+ */

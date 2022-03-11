@@ -1,0 +1,118 @@
+/*!
+    \qmltype ComboBox(FlowStyle)
+    \inherits ComboBox
+    \inqmlmodule org.deepin.dtk
+    \ingroup QML_TYPES
+    \brief 提供一种行云设计风格的 ComboBox 控件.
+
+
+    \l {ComboBox(FlowStyle)}{ComboBox} 控件提供了行云设计风格的组合框控件，
+    其背景使用跟按钮相似的背景，弹出框使用 Popup 控件实现，相比于默认的 ComboBox
+    控件，行云设计风格的 \l {ComboBox(FlowStyle)}{ComboBox} 实现了自定义图标，
+    并且在编辑和非编辑状态下，能够不同的风格展现。
+
+    \l {ComboBox(FlowStyle)}{ComboBox} 的效果如下图所示：
+    \table
+        \row
+            \li 编辑状态
+            \li \image images/ComboBoxEditable.png
+        \row
+            \li 非编辑状态
+            \li \image images/ComboBoxNotEdit.png
+        \row
+            \li 弹出状态
+            \li \image images/ComboBoxPopup.png
+    \endtable
+
+    \l {ComboBox(FlowStyle)}{ComboBox} 默认的文字添加方式可以通过正常的 model 进行添加，
+    如下代码所示：
+    \qml
+    ComboBox {
+        anchors.centerIn: parent
+        model: ["Banana", "Apple", "Coconut"]
+    }
+    \endqml
+
+    如果想要在每项上添加图标进行展示，可以通过 ListModel 实现，如下代码所示：
+    \target CombobBox icon usage
+    \qml
+    ComboBox {
+        textRole: "text"
+        iconNameRole: "icon"
+
+        model: ListModel {
+            ListElement { text: "Banana"; icon: "action_setting" }
+            ListElement { text: "Apple"; icon: "action_newfolder" }
+            ListElement { text: "Coconut"; icon: "action_share" }
+        }
+    }
+    \endqml
+ */
+
+/*!
+    \qmlproperty string org.deepin.dtk::ComboBox(FlowStyle)::iconNameRole
+
+    \c iconNameRole 属性用于控制图标名称。由于默认的 ComboBox 只支持使用文字，而不支持添加图标，因此这里为
+    了进行 ComboBox 的拓展，方便程序使用 ComboBox 时能够快速的添加图标。
+    \warning 请注意，该属性需要配合 ListModel 中进行使用
+    \l {CombobBox icon usage} {ComboBox Icon 的用法}
+ */
+
+/*!
+    \qmlproperty string org.deepin.dtk::ComboBox(FlowStyle)::alertText
+
+    \c alertText 属性用于表示 ComboBox 提示的警告信息。用于提示用户输入的信息有误。
+
+    请注意，当 ComboBox 的 editable 属性打开时， alertText 属性才能生效。而在非编辑
+    状态下，该属性无效。
+
+    其用法如下所示：
+    \qml
+    ComboBox {
+        anchors.centerIn: parent
+        textRole: "text"
+        iconNameRole: "icon"
+        alertText: "Only for strings."
+        showAlert: true
+        editable: true
+
+        model: ListModel {
+            ListElement { text: "Banana"; icon: "action_setting" }
+            ListElement { text: "Apple"; icon: "action_newfolder" }
+            ListElement { text: "Coconut"; icon: "action_share" }
+        }
+    }
+    \endqml
+
+    效果如下图所示：
+    \image images/ComboBoxAlert.png
+ */
+
+/*!
+    \qmlproperty int org.deepin.dtk::ComboBox(FlowStyle)::alertDuration
+
+    \c alertDuration 属性表示警告信息的提示时长。默认情况下，如果不设置时长，将会一致显示。
+    \c alertDuration 的单位是 毫秒(ms)。
+ */
+
+/*!
+    \qmlproperty bool org.deepin.dtk::ComboBox(FlowStyle)::showAlert
+
+    \c showAlert 属性用于决定是否显示警告信息。一般情况下，显示警告信息的条件需要满足错误的输入情况。
+    当 \c alertDuration 属性的时间结束时， showAlert 将自动更改为 false否则，\c showAlert 属
+    性需要手动控制为 false。
+ */
+
+/*!
+    \qmlproperty int org.deepin.dtk::ComboBox(FlowStyle)::maxVisibleItems
+
+    \c maxVisibleItems 属性用于控制 Popup 窗口显示的最大条目数。默认情况下，该最大值为 16，当超过
+    该值时，Popup 窗口开始变成滚动状态，访问其余项需要通过滚动完成。
+ */
+
+/*!
+    \qmlproperty Palette org.deepin.dtk::ComboBox(FlowStyle)::separatorColor
+
+    \c separatorColor 属性用于控制 \l {ComboBox(FlowStyle)}{ComboBox} 在编辑状态下，左侧输入框和
+    右侧下拉按钮中间分隔部分的颜色。
+ */

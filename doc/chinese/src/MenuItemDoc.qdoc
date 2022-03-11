@@ -1,0 +1,38 @@
+/*!
+    \qmltype MenuItem(FlowStyle)
+    \inherits MenuItem
+    \inqmlmodule org.deepin.dtk
+    \ingroup QML_TYPES
+    \brief 提供一种行云设计风格的 MenuItem 控件.
+
+    \l {MenuItem(FlowStyle)}{MenuItem} 控件是 \l {Menu(FlowStyle)}{Menu} 中的基础
+    菜单项控件。 \l {MenuItem(FlowStyle)}{MenuItem} 可以实现添加文字，图标，子菜单等等。
+    并且，MenuItem 目前实现了对 QtIcon 和 DciIcon 的兼容。
+
+    DTK 实现的 \l {MenuItem(FlowStyle)}{MenuItem} 能够使用原始的所有接口，为了更加兼容
+    行云设计风格，DTK 也为其提供了自定义开发属性，用于更加自定义的控制控件的状态。
+
+    其使用方式，可以参考 \l {Menu(FlowStyle)}{Menu} 中的示例。
+ */
+
+/*!
+    \qmlproperty bool org.deepin.dtk::MenuItem(FlowStyle)::useIndicatorPadding
+
+    \c useIndicatorPadding 属性控制 indicator 的 padding 属性， 当 \c useIndicatorPadding 属性
+    开启时，选中情况下会默认对 indicator 添加 padding。默认情况下，该属性会根据当前 MenuItem 的状态自动
+    发生变化。
+ */
+
+/*!
+    \qmlproperty Palette org.deepin.dtk::MenuItem(FlowStyle)::textColor
+
+    \c textColor 属性控制 \l {MenuItem(FlowStyle)}{MenuItem} 控件的前景颜色。包含文字和图标的
+    颜色。
+ */
+
+/*!
+    \qmlproperty Palette org.deepin.dtk::MenuItem(FlowStyle)::subMenuBackgroundColor
+
+    \c subMenuBackgroundColor 属性控制 \l {MenuItem(FlowStyle)}{MenuItem} 控件子菜单的背景
+    颜色。
+ */

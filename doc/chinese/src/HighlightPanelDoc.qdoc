@@ -1,0 +1,27 @@
+/*!
+    \qmltype HighlightPanel
+    \inherits Item
+    \inqmlmodule org.deepin.dtk
+    \ingroup QML_TYPES
+    \brief 提供一种高亮显示背景面板.
+
+    HighlightPanel 属性控制高亮显示的背景面板，它被广泛用于 ListView 或 MenuItem 中当做鼠标选中时的高亮背景。
+ */
+
+/*!
+    \qmlproperty Palette org.deepin.dtk::HighlightPanel::backgroundColor
+
+    \c backgroundColor 属性用于控制 HighlightPanel 的背景颜色。
+ */
+
+/*!
+    \qmlproperty Palette org.deepin.dtk::HighlightPanel::outerShadowColor
+
+    \c outerShadowColor 属性用于控制 HighlightPanel 的外阴影颜色。
+ */
+
+/*!
+    \qmlproperty Palette org.deepin.dtk::HighlightPanel::innerShadowColor
+
+    \c backgroundColor 属性用于控制 HighlightPanel 的内阴影颜色。
+ */

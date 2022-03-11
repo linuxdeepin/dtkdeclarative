@@ -1,0 +1,37 @@
+/*!
+    \qmltype ToolButton(FlowStyle)
+    \inherits ToolButton
+    \inqmlmodule org.deepin.dtk
+    \ingroup QML_TYPES
+    \brief 提供一种行云设计风格的 ToolButton 控件.
+
+    \l {ToolButton(FlowStyle)}{ToolButton} 是一种工具型按钮，其经常被放置于
+    ToolBar 这类工具栏中，\l {ToolButton(FlowStyle)}{ToolButton}支持图标和
+    文字的高级排列，也具备普通 Button 的所有特性。
+
+    可以是普通的按钮，如下效果：
+    \image images/ToolButtonNormal.png
+
+    可以是复杂的文字和图标排列按钮，如下效果：
+    \image images/oolButtonIconLabel.png
+
+    它也能被放置于 FloatingPanel 或者 ButtonBox 中，如下效果：
+    \image images/ToolButtonFloatingPanel.png
+
+    其使用代码如下所示：
+    \qml
+    ButtonBox {
+        ToolButton { icon.name: "action_newfolder"; text: "文件夹";}
+        ToolButton { icon.name: "action_copy"; text: "复制" }
+        ToolButton { icon.name: "action_share"; text: "分享" }
+        ToolButton { icon.name: "action_compress"; text: "压缩" }
+    }
+    \endqml
+ */
+
+/*!
+    \qmlproperty Palette org.deepin.dtk::ToolButton(FlowStyle)::textColor
+
+    \c textColor 控制 \l {ToolButton(FlowStyle)}{ToolButton} 的前景颜色，如图标和
+    文本的颜色。
+ */

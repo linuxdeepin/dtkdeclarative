@@ -1,0 +1,11 @@
+/*!
+    \qmltype ThemeMenu
+    \inherits Menu(FlowStyle)
+    \inqmlmodule org.deepin.dtk
+    \ingroup QML_TYPES
+    \brief 提供默认主题菜单.
+
+    ThemeMenu 控件用于提供默认的主题菜单，自带亮色主题、暗色主题和系统主题三种主题菜单。
+    其效果如下图所示：
+    \image images/ThemeMenuExample.png
+ */

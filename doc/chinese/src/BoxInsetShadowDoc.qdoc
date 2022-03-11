@@ -1,0 +1,98 @@
+/*!
+    \qmltype BoxInsetShadow
+    \inherits Item
+    \inqmlmodule org.deepin.dtk
+    \ingroup QML_TYPES
+    \brief 提供一种内阴影控件.
+
+    BoxInsetShadow 是一种用于实现控件的内阴影特效的实现，内阴影不会占用控件之外的区域
+    ，当内阴影的颜色存在透明度时，会根据阴影效果渐变填充。
+
+    内阴影推荐使用 anchors 进行锚布局填充，手动指定宽度和高度为固定值可能无法跟随宿主控件
+    的款高变化发生改变。
+
+    内阴影和外阴影一致，可以控制：圆角系数、模糊大小、偏移量大小、扩散大小和阴影颜色等属性。
+    其使用方式如下所示：
+    \snippet snippets/dtkdeclarative_boxinsetshadow.qml 0
+
+    效果如下所示：
+    \image images/BoxInsetShadowExample1.png
+
+    圆角系数当不指定时默认为直角效果。
+    模糊大小越大，其模糊范围越广，模糊程度越高，例如下表效果比较：
+    \table
+        \header
+            \li 模糊系数
+            \li 代码
+            \li 效果展示
+        \row
+            \li 2
+            \li \snippet snippets/dtkdeclarative_boxinsetshadow.qml 0
+            \li \image images/BoxInsetShadowExample1.png
+        \row
+            \li 20
+            \li \snippet snippets/dtkdeclarative_boxinsetshadow.qml 1
+            \li \image images/BoxInsetShadowExample2.png
+        \row
+            \li 40
+            \li \snippet snippets/dtkdeclarative_boxinsetshadow.qml 2
+            \li \image images/BoxInsetShadowExample3.png
+    \endtable
+    扩散大小越大，阴影范围越广，如下表效果比较：
+    \table
+        \header
+            \li 扩散系数
+            \li 代码
+            \li 效果展示
+        \row
+            \li 1
+            \li \snippet snippets/dtkdeclarative_boxinsetshadow.qml 1
+            \li \image images/BoxInsetShadowExample1.png
+        \row
+            \li 10
+            \li \snippet snippets/dtkdeclarative_boxinsetshadow.qml 3
+            \li \image images/BoxInsetShadowExample4.png
+        \row
+            \li 20
+            \li \snippet snippets/dtkdeclarative_boxinsetshadow.qml 4
+            \li \image images/BoxInsetShadowExample5.png
+    \endtable
+ */
+
+/*!
+    \qmlproperty real org.deepin.dtk::BoxInsetShadow::cornerRadius
+
+    cornerRadius 属性表示内阴影控件的圆角大小，当内阴影控件的宿主控件是一个具有圆角的
+    控件时，该属性能够和宿主控件的圆角大小保持一致。
+ */
+
+/*!
+    \qmlproperty real org.deepin.dtk::BoxInsetShadow::shadowBlur
+
+    shadowBlur 系数表示内阴影控件的模糊系数，该值越大表示边界区域的模糊大小越大。默认值为 10。
+ */
+
+/*!
+    \qmlproperty real org.deepin.dtk::BoxInsetShadow::shadowOffsetX
+
+    shadowOffsetX 属性表示内阴影控件的 X 轴偏移量。默认值为 0
+ */
+
+/*!
+    \qmlproperty real org.deepin.dtk::BoxInsetShadow::shadowOffsetY
+
+    shadowOffsetY 属性表示内阴影控件的 Y 轴偏移量。默认值为 0
+ */
+
+/*!
+    \qmlproperty color org.deepin.dtk::BoxInsetShadow::shadowColor
+
+    shadowColor 属性表示内阴影控件的阴影颜色，默认为 "black"
+ */
+
+/*!
+    \qmlproperty real org.deepin.dtk::BoxInsetShadow::spread
+
+    spread 属性表示内阴影控件的扩散大小，该值越大表示扩散距离越深。
+ */
+

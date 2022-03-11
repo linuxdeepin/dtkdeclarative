@@ -1,0 +1,167 @@
+/*!
+    \qmltype BoxShadow
+    \inherits Item
+    \inqmlmodule org.deepin.dtk
+    \ingroup QML_TYPES
+    \brief 提供一种盒子阴影控件.
+
+    BoxShadow 是 DTK 提供的一种兼容软件渲染和硬件渲染的盒子阴影控件。无论应用处在哪种环境（软件和硬件）
+    应用所表现出来的效果一致。
+
+    BoxShadow 控件通常使用 anchors 对目标控件进行填充。根据内部的模糊系数、阴影颜色等等，作用在
+    目标控件中。当然由于 QML 绘制项的层级关系，应当将 BoxShadow 放在目标控件之前创建，或手动修改
+    BoxShadow 的 z 属性，以便保证 BoxShadow 控件在目标控件的底部，防止目标控件被阴影控件覆盖。
+
+    BoxShadow 的简单用法如下所示：
+    \qml
+    BoxShadow {
+        anchors.fill: boxShadowSource
+        shadowBlur : 20
+        shadowColor : Qt.rgba(0, 0, 0, 0.5)
+        shadowOffsetX : 0
+        shadowOffsetY : 0
+        cornerRadius: boxShadowSource.radius
+    }
+
+    Rectangle {
+        id: boxShadowSource
+        width: 200
+        height: 200
+        color: "#D2691E"
+        radius: 20
+    }
+    \endqml
+
+    效果如下图所示：
+    \image images/BoxShadowExample1.png
+
+    当目标控件是一个带有不透明颜色的控件时，通常我们需要打开 hollow 属性，是为了带有透明
+    部分的目标控件所在区域和底部的 BoxShadow 区域颜色混合的情况，例如以下代码：
+    \qml
+    BoxShadow {
+        anchors.fill: boxShadowSource
+        shadowBlur : 20
+        shadowColor : Qt.rgba(0, 0, 0, 0.5)
+        shadowOffsetX : 0
+        shadowOffsetY : 0
+        cornerRadius: boxShadowSource.radius
+        hollow: true
+    }
+
+    Rectangle {
+        id: boxShadowSource
+        width: 200
+        height: 200
+        color: Qt.rgba(0.82, 0.71, 0, 0.6)
+        radius: 20
+    }
+    \endqml
+
+    控件使用 hollow 属性和未使用 hollow 属性的效果对比如下：
+
+    \table
+        \header
+            \li hollow
+            \li 效果
+        \row
+            \li false
+            \li \image images/BoxShadowExampleNoHollow.png
+        \row
+            \li true
+            \li \image images/BoxShadowExampleWithHollow.png
+    \endtable
+ */
+
+/*!
+    \qmlproperty real org.deepin.dtk::BoxShadow::cornerRadius
+
+    \c cornerRadius 属性表示 BoxShadow 的圆角大小。通常情况下，该大小需要与
+    目标控件的圆角大小保持一致。
+ */
+
+/*!
+    \qmlproperty real org.deepin.dtk::BoxShadow::shadowBlur
+
+    \c shadowBlur 属性表示 BoxShadow 的阴影模糊系数，模糊系数越大，阴影的模糊程度越高。
+    默认情况下，该属性的值为 10。
+
+    例如下述效果展示，其他属性保持一致的情况下，只修改 shadowBlur 值的大小，会发现 BoxShaow
+    的阴影大小会随之增加。
+
+    \table
+    \header
+        \li shadowBlur 系数
+        \li 效果
+
+    \row
+        \li 2
+        \li \image images/BoxShadowExampleBlur2.png
+
+    \row
+        \li 10
+        \li \image images/BoxShadowExampleBlur10.png
+
+    \row
+        \li 20
+        \li \image images/BoxShadowExample1.png
+
+    \row
+        \li 40
+        \li \image images/BoxShadowExampleBlur40.png
+
+    \endtable
+ */
+
+
+/*!
+    \qmlproperty real org.deepin.dtk::BoxShadow::shadowOffsetX
+
+    \c shadowOffsetX 属性表示 BoxShadow 的 x 坐标偏移大小。 默认情况下，该值为 0
+ */
+
+/*!
+    \qmlproperty real org.deepin.dtk::BoxShadow::shadowOffsetY
+
+    \c shadowOffsetY 属性表示 BoxShadow 的 y 坐标偏移大小。 默认情况下，该值为 0
+ */
+
+/*!
+    \qmlproperty color org.deepin.dtk::BoxShadow::shadowColor
+
+    \c shadowColor 属性表示 BoxShadow 的阴影颜色。默认情况下，该颜色为 "black"
+ */
+
+/*!
+    \qmlproperty real org.deepin.dtk::BoxShadow::spread
+
+    \c spread 属性表示 BoxShadow 的阴影扩散系数，扩散系数越大，表示阴影越
+    能向外扩散，通常情况下，spread 的值为 0。
+
+    扩散距离的效果展示如下表所示：
+    \table
+        \header
+            \li spread 系数
+            \li 效果
+
+        \row
+            \li 0
+            \li \image images/BoxShadowExample1.png
+        \row
+            \li 2
+            \li \image images/BoxShadowExampleSpread2.png
+        \row
+            \li 5
+            \li \image images/BoxShadowExampleSpread5.png
+        \row
+            \li 10
+            \li \image images/BoxShadowExampleSpread10.png
+
+    \endtable
+ */
+
+/*!
+    \qmlproperty bool org.deepin.dtk::BoxShadow::hollow
+
+    \c hollow 属性表示 BoxShadow 是否指定为空洞属性，当 hollow 属性为 true 时
+    BoxShadow 会去掉和目标控件重合的部分。默认情况下，该值为 false.
+ */

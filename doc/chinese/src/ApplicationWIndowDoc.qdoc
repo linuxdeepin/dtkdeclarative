@@ -1,0 +1,126 @@
+/*!
+    \qmltype ApplicationWindow(FlowStyle)
+    \inherits ApplicationWindow
+    \inqmlmodule org.deepin.dtk
+    \ingroup QML_TYPES
+    \brief QML 应用程序的主程序窗口.
+
+    这是 DTK 继承 Qt Quick Control2 实现的程序主窗口控件，该控件添加了行云设计风格的调色板属性，DTK 的字体
+    绑定属性和窗口的标准颜色等。但请注意，该窗口并未自动做无标题和圆角等属性的处理，如需设置该窗口效果，请使用
+    DWindow 附加属性。
+
+    当未指定无标题和圆角等属性时，ApplicationWindow 的效果如下图所示：
+    \image images/ApplicationWindowNormal.png
+
+    如下代码：
+    \qml
+    import org.deepin.dtk 1.0
+
+    ApplicationWindow {
+        title: "qml-demo"
+        visible: true
+        width: 800
+        height: 600
+    }
+    \endqml
+
+    当指定窗口特效后， ApplicationWindow 的效果如下：
+    \image images/ApplicationWindowUseDWindow.png
+    如下代码：
+    \qml
+    import org.deepin.dtk 1.0
+
+    ApplicationWindow {
+        title: "qml-demo"
+        visible: true
+        width: 800
+        height: 600
+
+        DWindow.enabled: true
+        DWindow.windowRadius: 16
+    }
+    \endqml
+
+    ApplicationWindow 能够使用 DWindow 附加属性中的全部属性并能得到效果，下表列出了 DWindow 中存在的属性：
+    \table
+        \header
+            \li 属性名
+            \li 描述
+        \row
+            \li enabled
+            \li 开启窗口特效
+
+        \row
+            \li window
+            \li 当前所在的窗口实例
+
+        \row
+            \li windowRadius
+            \li 窗口圆角大小
+
+        \row
+            \li borderWidth
+            \li 窗口边框宽度
+
+        \row
+            \li borderColor
+            \li 窗口边框颜色
+
+        \row
+            \li shadowRadius
+            \li 窗口阴影半径
+
+        \row
+            \li shadowOffset
+            \li 窗口阴影的偏移距离，包含水平偏移和竖直偏移
+
+        \row
+            \li shadowColor
+            \li 窗口阴影颜色
+
+        \row
+            \li translucentBackground
+            \li 窗口背景透明
+
+        \row
+            \li enableSystemResize
+            \li 开启窗口更改大小功能
+
+        \row
+            \li enableSystemMove
+            \li 开启窗口移动功能
+
+        \row
+            \li enableBlurWindow
+            \li 开启窗口模糊功能
+
+        \row
+            \li alphaBufferSize
+            \li 窗口的 alpha 缓冲大小
+
+        \row
+            \li clipPath
+            \li 窗口的剪切路径
+
+        \row
+            \li wmWindowTypes
+            \li 窗管控制下的窗口类型
+
+        \row
+            \li motifFunctions
+            \li 窗管控制下的窗口功能函数
+
+        \row
+            \li overlayExited
+            \li Preload 加速框架中的加载完成退出动画
+
+        \row
+            \li loadingOverlay
+            \li Preload 正在加载中的自定义等待控件
+
+        \row
+            \li appLoader
+            \li Preload 框架中的主组件实例
+    \endtable
+ */
+
