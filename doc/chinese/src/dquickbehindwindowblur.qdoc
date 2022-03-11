@@ -1,0 +1,280 @@
+/*!
+    \qmltype BehindWindowBlur
+    \inherits Item
+    \inqmlmodule org.deepin.dtk
+    \keyword DQuickBehindWindowBlur
+    \brief 提供一个能使窗口背景模糊的控件.
+
+    DTK 中窗口可以实现模糊特效，当设置该特效后，窗口的特定区域将会对窗口后面的背景进行模糊填充。使用模糊特效能够丰富窗口的视觉内容
+    ，使窗口更加具备层次感和立体感。 BehindWindowBlur 控件能够很容易的实现该效果，其效果与 dtkwidget 中 DBlurEffectWidget 类
+    的效果类似，但在实现方式上有很大不同，在 QML 中使用 BehindWindowBlur 将更加灵活可控，例如 BehindWindowBlur 可以指定特殊区域
+    模糊，而另外的区域不模糊， 且模糊背景的颜色能与特定的颜色进行混色显示。
+
+    BehindWindowBlur 在使用方式上非常简单，它能够直接用在 Window 控件上，例如下述代码，其属性的设置和添加都更加方便和简单：
+
+    \qml
+    import QtQuick.Window 2.11
+    import org.deepin.dtk 1.0
+
+    Window {
+        id: root
+        DWindow.enabled: true  // 开启 DTK 中窗口的圆角和无边框等特殊属性
+        DWindow.alphaBufferSize: 8  // 设置 DTK 窗口 alpha 通道的缓冲区大小
+
+        BehindWindowBlur {
+            control: root
+            anchors.fill: parent
+            blendColor: Qt.rgba(1, 0, 0, 0.3)
+        ]
+    }
+    \endqml
+
+    其最终的效果如下图所示：
+    \image images/behindwindowblur.png
+
+    模糊特效分为窗口内模糊和窗口外模糊，窗口内模糊即对窗口内部控件所使用到的背景进行模糊；窗口外模糊即对窗口外部背景进行模糊。当前类进行
+    的模糊操作为窗口外模糊，其大多数情况下使用在窗口控件，对窗口的背景进行模糊渲染，并填充到窗口中。 BehindWindowBlur 类对模糊进行了
+    基本封装，可用于更灵活的场景中，例如一些特殊的混合填充色， StyledBehindWindowBlur 类同样也能对窗口进行模糊，但不同的是该类针对
+    行云设计中的模糊背景色对混合填充色进行了具体设置。用户在使用 StyledBehindWindowBlur 类时无需关心需要混合那种颜色。
+ */
+
+/*!
+    \qmlproperty real org.deepin.dtk::BehindWindowBlur::cornerRadius
+
+    该属性表示模糊矩形的半径大小。模糊区域作为一个矩形大小的控件进行展示，因此该属性被用于指定矩形的圆角大小。
+ */
+
+/*!
+    \qmlproperty color org.deepin.dtk::BehindWindowBlur::blendColor
+
+    该属性表示与目标区域混合的颜色，当不指定颜色时，该背景模糊后直接展示到控件上；当指定颜色时，会将颜色与模糊背景进行混合，使模糊背景的色
+    调呈现出与混合颜色相似的色调。
+ */
+
+/*!
+    \qmlproperty bool org.deepin.dtk::BehindWindowBlur::valid
+
+    该属性为只读属性，用于判断当前窗口状态是否支持窗口外模糊。如果支持窗口外模糊，返回 true，否则返回 false。
+    该属性在窗口管理器层访问其是否支持模糊效果。
+ */
+
+/*!
+    \qmltype StyledBehindWindowBlur
+    \inherits org.deepin.dtk::BehindWindowBlur
+    \inqmlmodule org.deepin.dtk
+    \brief 提供一个 DTK 统一的窗口外模糊控件.
+
+    StyledBehindWindowBlur 控件继承于 BehindWindowBlur 控件， 其在 BehindWindowBlur 控件的基础上指定了特定的
+    混色渲染颜色。 当应用进行 DTK 程序开发时，推荐使用 StyledBehindWindowBlur 控件，能够保证应用模糊的混色颜色一致。
+
+    通常情况下，其混色颜色如下表所示：
+    \table
+    \header
+        \li 模式
+        \li 颜色
+    \row
+    \li 亮色-支持模糊
+    \li rgba(235, 235, 235, 0.6)
+    \row
+    \li 亮色-不支持模糊
+    \li rgba(235, 235, 235, 1.0)
+    \row
+    \li 暗色-支持模糊
+    \li rgba(0, 0, 0, 0.3)
+    \row
+    \li 暗色-不支持模糊
+    \li Qt.rgba(35, 35, 35, 1.0)
+    \endtable
+ */
+
+/*!
+    \qmlproperty var org.deepin.dtk::StyledBehindWindowBlur::control
+
+    该属性用于指定 StyledBehindWindowBlur 控件作用于那个控件之上，其目的用户获取该控件的调色板颜色值
+    用于判定当前处于那种主题下，用于选择合适的混合填充色。
+
+    该属性使用 Control 和 ApplicationWindow 都符合要求。
+ */
+
+/*!
+    \qmltype InWindowBlur
+    \inherits Item
+    \inqmlmodule org.deepin.dtk
+    \keyword DQuickInWindowBlur
+    \brief 提供一个使目标控件在窗口内模糊的特效控件.
+
+    该控件用于在窗口内对某些控件背景进行模糊操作，例如一个 ListView 的背景如果是一个图片，如果其 Item 需要
+    进行模糊处理，对 ListView 的背景进行模糊处理，就能够用 InWindowBlur 控件对 delegate 进行模糊处理。
+    例如以下代码
+
+    \qml
+    import org.deepin.dtk
+
+    Item {
+        Image {
+            anchors.fill: parent
+            source: "file:///usr/share/wallpapers/deepin/desktop.jpg"
+        }
+
+        ListView {
+            id: testView
+
+            model: 10
+            spacing: 30
+            clip: true
+            anchors {
+                fill: parent
+                margins: 10
+            }
+
+            delegate: Item {
+                height: 50
+                width: 300
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                InWindowBlur {
+                    id: blur
+                    anchors.fill: parent
+                    radius: 20
+                    offscreen: true
+                }
+
+                ItemViewport {
+                    id: roundBlur
+                    anchors.fill: blur
+                    fixed: true
+                    sourceItem: blur
+                    radius: blur.radius
+                    hideSource: false
+                }
+
+                Rectangle {
+                    radius: roundBlur.radius
+                    anchors.fill: roundBlur
+                    color: Qt.rgba(1, 0, 0, 0.2)
+                }
+
+                Text {
+                    anchors.centerIn: parent
+                    text: "InWindowBlur" + index
+                    color: "white"
+                    font.pixelSize: 22
+                }
+            }
+        }
+    }
+    \endqml
+
+    其效果展示如下：
+    \image images/inwindowblur.png
+
+    如上述示例代码， InWindowBlur 控件需要配合 ItemViewport 控件才能完成与 BehindWindowBlur 控件
+    类似的混色效果。 其中 ItemViewport 主要完成圆角效果和混色填充的功能。 由于 InWindowBlur 控件本身
+    不支持圆角功能，因此在使用 ItemViewport 是需要隐藏其非圆角的效果， offscreen 属性就需要设置为 true 状
+    态，让 ItemViewport 能够展示 InWindowBlur 控件的内容但不现实 InWindowBlur 本身，该功能与 ItemViewport
+    中的 hideSource 类似，但该属性与 InWindowBlur 控件的绘制发生冲突，无法正确渲染其模糊图像，因此建议使用
+    InWindowBlur 控件的 offscreen 属性而非 ItemViewport 控件的 hideSource 属性。
+ */
+
+/*!
+    \qmlproperty real org.deepin.dtk::InWindowBlur::radius
+
+    该属性用于指定窗口内模糊程度系数大小，其并非控件的圆角大小。当模糊程度超过了背景的渲染程度时，其模糊效果会
+    呈现出一个黑色。
+ */
+
+/*!
+    \qmlproperty bool org.deepin.dtk::InWindowBlur::offscreen
+
+    该属性用于指定其模糊特效是否需要渲染在屏幕之外，即离屏渲染，该属性默认为 false，当 InWindowBlur 控件与
+    ItemViewport 控件配合使用时，多数情况下会将其设置为 true。
+ */
+
+/*!
+    \qmltype ArrowShapeBlur
+    \inherits org.deepin.dtk::InWindowBlur
+    \inqmlmodule org.deepin.dtk
+    \brief 提供一个带模糊效果的箭头窗口控件.
+
+    该控件在 InWindowBlur 的基础上，增加了可以自定义上下左右四种方向的箭头圆角矩形。该控件
+    放置在应用程序内部，而非一个独立窗口。通常用于应用程序内特殊的箭头控件，如音乐中的音乐调
+    节控件，如下图所示：
+    \image images/musicvoice.png
+
+    ArrowShapeBlur 控件作为 InWindowBlur 类的拓展，在属性和功能上也有部分新增，除基础的
+    箭头宽度 \c arrowWidth 箭头高度 \c arrowHeight 箭头位置 \c arrowPosition 以及
+    箭头方向 \c arrowDirection 之外，在模糊方面其增加了与 BehindWindowBlur 控件类似的
+    混合填充色的属性 \c blendColor ，和边框圆角以及边框颜色等等，用于提供更加丰富的属性设置。
+ */
+
+/*!
+    \qmlproperty color org.deepin.dtk::ArrowShapeBlur::blendColor
+
+    该属性用于指定箭头模糊窗口的混合填充色，混合后的模糊窗口，其色调会偏向于给定的混合填充色
+    的颜色。当不指定该颜色时，窗口呈现出全黑色。
+ */
+
+/*!
+    \qmlproperty color org.deepin.dtk::ArrowShapeBlur::borderColor
+
+    该属性用于指定箭头模糊窗口的边框颜色，未指定时使用全黑色。
+ */
+
+/*!
+    \qmlproperty real org.deepin.dtk::ArrowShapeBlur::borderWidth
+
+    该属性用于指定箭头模糊窗口的边框宽度，默认的边框宽度为1。
+ */
+
+/*!
+    \qmlproperty real org.deepin.dtk::ArrowShapeBlur::roundJoinRadius
+
+    该属性用于指定箭头模糊窗口的箭头连接处圆角大小。
+ */
+
+/*!
+    \qmlproperty real org.deepin.dtk::ArrowShapeBlur::arrowWidth
+
+    该属性用于指定箭头模糊窗口的箭头宽度
+ */
+
+/*!
+    \qmlproperty real org.deepin.dtk::ArrowShapeBlur::arrowHeight
+
+    该属性用于指定箭头模糊窗口的箭头高度
+ */
+
+/*!
+    \qmlproperty point org.deepin.dtk::ArrowShapeBlur::arrowPosition
+
+    该属性用于指定箭头模糊窗口的箭头位置
+ */
+
+/*!
+    \qmlproperty int org.deepin.dtk::ArrowShapeBlur::arrowDirection
+
+    该属性用于指定箭头模糊窗口的箭头方向枚举。方向分为上、下、左、右四种，如下表所示：
+    \table
+    \header
+        \li 方向
+        \li 枚举
+    \row
+    \li 上
+    \li DTK.UpArrow
+    \row
+    \li 下
+    \li DTK.DownArrow
+    \row
+    \li 左
+    \li DTK.LeftArrow
+    \row
+    \li 右
+    \li DTK.RightArrow
+    \endtable
+ */
+
+/*!
+    \qmlproperty color org.deepin.dtk::ArrowShapeBlur::shadowColor
+
+    该属性用于指定箭头模糊窗口的阴影颜色
+ */

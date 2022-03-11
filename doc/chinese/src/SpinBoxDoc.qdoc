@@ -1,0 +1,56 @@
+/*!
+    \qmltype SpinBox(FlowStyle)
+    \inherits SpinBox
+    \inqmlmodule org.deepin.dtk
+    \ingroup QML_TYPES
+    \brief 提供一种行云设计风格的 SpinBox 控件.
+
+    \l {SpinBox(FlowStyle)}{SpinBox} 控件一种行云设计风格的数字轮选框控件。
+    \l {SpinBox(FlowStyle)}{SpinBox} 提供了视图组件和编辑组件 2 种，当处于
+    视图组件时， \l {SpinBox(FlowStyle)}{SpinBox}控件的轮选器变成平面的可视化
+    形状，当处于编辑组件时，\l {SpinBox(FlowStyle)}{SpinBox}将轮选器修改为类似
+    于按钮的形状。
+
+    除此之外， \l {SpinBox(FlowStyle)}{SpinBox} 提供了水平带“+”，“-”符号的数字轮选框
+    ，可查看 PlusMinusSpinBox 控件。
+
+    \l {SpinBox(FlowStyle)}{SpinBox} 的使用方式如下所示：
+    \qml
+    SpinBox {
+        from: 0
+        to: 23
+        value: 8
+    }
+    \endqml
+
+    \l {SpinBox(FlowStyle)}{SpinBox} 在视图组件下的效果如下图所示：
+    \image images/SpinBoxExample.png
+    \l {SpinBox(FlowStyle)}{SpinBox} 在编辑组件下的效果如下图所示：
+    \image images/SpinBoxEdit.png
+ */
+
+/*!
+    \qmlproperty string org.deepin.dtk::SpinBox(FlowStyle)::alertText
+
+    \c alertText 属性表示 \l {SpinBox(FlowStyle)}{SpinBox} 的警告文本。
+    默认情况下，不显示任何警告提示。
+
+    \l {SpinBox(FlowStyle)}{SpinBox} 显示警告的效果如下图所示：
+    \image images/SpinBoxAlert.png
+ */
+
+/*!
+    \qmlproperty int org.deepin.dtk::SpinBox(FlowStyle)::alertDuration
+
+    \c alertDuration 属性表示 \l {SpinBox(FlowStyle)}{SpinBox} 的警告时常，
+    警告信息会在警告时常结束后自动隐藏，当 alertDuration 为 -1 或不设置时，警告信息
+    会根据 \c showAlert 属性进行显示和隐藏。
+ */
+
+/*!
+    \qmlproperty bool org.deepin.dtk::SpinBox(FlowStyle)::showAlert
+
+    \c showAlert 属性控制警告信息的显示和隐藏，当 \c showAlert 为 true 时，
+    警告信息会在 \c alertDuration 结束后，\c showAlert 会自动置为 false。
+ */
+

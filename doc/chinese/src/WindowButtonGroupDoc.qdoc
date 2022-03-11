@@ -1,0 +1,46 @@
+/*!
+    \qmltype WindowButtonGroup
+    \inherits RowLayout
+    \inqmlmodule org.deepin.dtk
+    \ingroup QML_TYPES
+    \brief 提供用于放置在 Titlebar 中的窗口按钮组.
+
+    WindowButtonGroup 被用于添加到 Titlebar 中作为
+    通用的窗口按钮组
+
+    默认情况下， WindowButtonGroup 包含了 最大化按钮;
+    最小化按钮;还原按钮;全屏按钮;退出全屏按钮;关闭按钮等等。
+
+    如果需要添加新的按钮可以直接在 WindowButtonGroup 进行
+    添加，被添加的组件需要使用 Layout 进行布局排列。
+
+    例如下述代码：
+    \qml
+    WindowButtonGroup {
+        WindowButton {
+            icon.name: "action_add"
+        }
+    }
+    \endqml
+ */
+
+/*!
+    \qmlproperty Palette org.deepin.dtk::WindowButtonGroup::textColor
+
+    \c textColor 属性控制组内所有 WindowButton 的前景色，如文本和图标的颜色。
+ */
+
+/*!
+    \qmlproperty bool org.deepin.dtk::WindowButtonGroup::fullScreenButtonVisible
+
+    \c fullScreenButtonVisible 属性控制是否在全屏下对按钮仍可见。默认为 true。
+ */
+
+/*!
+    \qmlproperty bool org.deepin.dtk::WindowButtonGroup::embedMode
+
+    \c embedMode 属性控制是否处于嵌入模式下，嵌入模式下的按钮将按照系统标题栏
+    进行控制。默认该属性跟随是否启用 DWindow.enabled 开启。
+
+    \sa DWindow
+ */

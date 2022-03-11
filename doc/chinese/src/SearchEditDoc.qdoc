@@ -1,0 +1,37 @@
+/*!
+    \qmltype SearchEdit
+    \inherits LineEdit
+    \inqmlmodule org.deepin.dtk
+    \ingroup QML_TYPES
+    \brief 提供一种带搜索的输入框控件.
+
+    SearchEdit 控件是一种用于搜索的输入框控件， SearchEdit 自带了搜索图标，并且在搜索和
+    未搜索时具有动画过渡效果。
+
+    SearchEdit 继承自 LineEdit ，具备 LineEdit 的几乎所有特性。SearchEdit 除了可以被
+    使用在主窗口的任何位置，同样也能被使用在 Menu, PopupWindow 等控件上，当作复合控件存在。
+
+    SearchEdit 的效果如下图所示：
+    \image images/SeachEditNoFocus.png
+
+    SearchedEdit 在焦点状态下的效果如下图所示：
+    \image images/SearchEditFocus.png
+
+    SearchedEdit 的整体运行效果如下：
+    \image images/SearchEditRunning.gif
+ */
+
+/*!
+    \qmlproperty string org.deepin.dtk::SearchEdit::placeholder
+
+    \c placeholder 属性是当 SearchEdit 处于未搜索状态时，用于显示提示的文本。默认情况下，
+    该文本为翻译后的“搜索”字符串。可通过重新设置该属性调整显示文本。
+ */
+
+/*!
+    \qmlproperty bool org.deepin.dtk::SearchEdit::editting
+    \readonly
+
+    \c editting 属性用于判断当前控件是否处于正在编辑的状态。 SearchEdit 存在两种状态：正在编辑
+    的状态和非编辑状态。 当处于正在编辑的状态时，用于可直接键入文本。
+ */

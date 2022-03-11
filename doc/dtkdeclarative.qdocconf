@@ -1,0 +1,42 @@
+include($QT_INSTALL_DOCS/global/qt-module-defaults.qdocconf)
+
+project                 = DtkDeclarative
+description             = Dtk QML Reference Documentation
+version                 = 1.0.0
+
+outputformats = HTML
+
+qhp.projects            = dtkdeclarative
+
+qhp.dtkdeclarative.file                = dtkdeclarative.qhp
+qhp.dtkdeclarative.namespace           = org.dtk.deepin.dtkdeclarative.$QT_VERSION_TAG
+qhp.dtkdeclarative.virtualFolder       = dtkdeclarative
+qhp.dtkdeclarative.indexTitle          = Dtk Declarative Documentation
+qhp.dtkdeclarative.indexRoot           =
+
+qhp.dtkdeclarative.filterAttributes    = dtkdeclarative $QT_VERSION qtrefdoc
+qhp.dtkdeclarative.customFilters.Qt.name = DtkDeclarative $QT_VERSION
+qhp.dtkdeclarative.customFilters.Qt.filterAttributes = dtkdeclarative $QT_VERSION
+
+qhp.dtkdeclarative.subprojects         = qmltypes
+qhp.dtkdeclarative.subprojects.qmltypes.title = QML Types
+qhp.dtkdeclarative.subprojects.qmltypes.indexTitle = QML Types
+qhp.dtkdeclarative.subprojects.qmltypes.selectors = qmlclass
+qhp.dtkdeclarative.subprojects.qmltypes.sortPages = true
+
+depends = qtcore qtgui qtqml qtquick qtquickcontrols qtlabscalendar qtlabsplatform
+
+headerdirs  += chinese \
+
+sourcedirs  += \
+	chinese \
+	chinese/src \
+	chinese/src/navigation
+		
+exampledirs += \
+	chinese
+
+imagedirs += chinese \
+
+navigation.landingpage = "DtkDeclarative Reference Documentation"
+navigation.qmltypespage = "Dtk Declarative QML Types"

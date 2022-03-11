@@ -1,0 +1,42 @@
+//! [grouped-properties]
+\table
+\header
+    \li Name
+    \li Description
+\row
+    \li foreground
+    \li 该属性用于设置图标的前景色颜色
+
+    适用于图标的前景色颜色，当图标的颜色需要和其背景颜色
+    不一致时，需要设置该图标的前景色颜色。例如侧边栏或工
+    具栏中使用的图标
+
+    \note 其对应于 QPalette 中的 WindowText 调色板颜色
+
+\row
+    \li background
+    \li 该属性用于设置图标的背景色颜色
+
+    背景色通常在图标调色板中使用场景较少，当图标的颜色需要和背景保持一致时，
+    可以设置该图标调色板的背景色颜色。
+
+    \note 其对应于 QPalette 中的 Window 调色板颜色
+\row
+    \li highlight
+    \li 该属性用于设置图标的高亮色颜色
+
+    高亮色颜色通常用于指定某些需要跟随高亮色改变的图标，例如 CheckBox 控件 Checked
+    状态下的颜色。通常高亮色能够跟随系统高亮色的变化而发生改变。
+
+    \note 其对应于 QPalette 中的 Highlight 调色板颜色
+\row
+    \li highlightForeground
+    \li 该属性用于设置调色板高亮前景色的颜色
+
+    高亮前景色又可被称为活动色上的前景色，主要用于运行在活动色的背景下，前景部分需要显示的颜色
+    目前系统上的高亮前景色基本都是白色。例如圆形高亮状态下的图标，其颜色可以用高亮前景色指定。
+
+    \note 其对应于 QPalette 中的 HightlightText 调色板颜色
+
+\endtable
+//! [grouped-properties]

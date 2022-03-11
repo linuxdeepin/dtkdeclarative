@@ -1,0 +1,120 @@
+/*!
+    \qmltype ItemDelegate(FlowStyle)
+    \inherits ItemDelegate
+    \inqmlmodule org.deepin.dtk
+    \ingroup QML_TYPES
+    \brief 提供行云设计风格的 ItemDelegate 控件.
+
+    \l {ItemDelegate(FlowStyle)}{ItemDelegate} 是一个多被用于 ListView 中
+    当作视图项绘制的控件。在 QML 中 \l {ItemDelegate(FlowStyle)}{ItemDelegate}
+    不再担任绘制的工作，它是一个基础控件，他的创建和释放;显示和隐藏都由 ListView 控制。
+    行云设计中， \l {ItemDelegate(FlowStyle)}{ItemDelegate} 不仅兼容其原有的接口，
+    还添加了用于自定义的额外属性，这些属性在非行云设计的其他风格上可能无法正常使用。
+
+    \l {ItemDelegate(FlowStyle)}{ItemDelegate} 的使用方式如下：
+    \qml
+    ListView {
+        implicitHeight: contentHeight
+        width: 200
+        model: 4
+        delegate: ItemDelegate {
+            text: "Nth " + index
+            checked: index === ListView.view.count - 1
+            backgroundVisible: index % 2 === 0
+        }
+    }
+    \endqml
+ */
+
+/*!
+    \qmlproperty bool org.deepin.dtk::ItemDelegate(FlowStyle)::indicatorVisible
+
+    \c indicatorVisible 用于控制 \l {ItemDelegate(FlowStyle)}{ItemDelegate} 中的
+    indicator 是否显示，默认为 false。
+
+    \l {ItemDelegate(FlowStyle)}{ItemDelegate} 中的 indicator 是用于展示视图项被
+    选中时的“已选中”图标样式。
+ */
+
+/*!
+    \qmlproperty bool org.deepin.dtk::ItemDelegate(FlowStyle)::backgroundVisible
+
+    \c backgroundVisible 用于控制 \l {ItemDelegate(FlowStyle)}{ItemDelegate} 中的
+    背景是否可见，默认情况下，该值是 true。
+
+    当需要某种情况下，显示视图项背景，其他情况不显示视图项背景时，可以使用该属性控制。
+ */
+
+/*!
+    \qmlproperty bool org.deepin.dtk::ItemDelegate(FlowStyle)::cascadeSelected
+
+    \c cascadeSelected 属性用于控制 \l {ItemDelegate(FlowStyle)}{ItemDelegate} 是否
+    进行多选。默认情况下 cascadeSelected 为 false，即只能进行单选。当 \c cascadeSelected
+    属性为 true 时，被多选的视图项无法显示高亮背景。
+ */
+
+/*!
+    \qmlproperty bool org.deepin.dtk::ItemDelegate(FlowStyle)::contentFlow
+
+    \c contentFlow 属性用于控制 \c content 属性的填充方式，当 \c content 存在且需要让其
+    全部填充整个视图项时，将该属性设置为 true 是一个不错的选择。默认情况下， \c contentFlow
+    为 false。
+ */
+
+/*!
+    \qmlproperty Component org.deepin.dtk::ItemDelegate(FlowStyle)::content
+
+    \c content 属性用于控制 \l {ItemDelegate(FlowStyle)}{ItemDelegate} 的自定义部件。
+    \c content 是除左侧图标和文本之外的，额外的自定义部件区域。
+ */
+
+/*!
+    \qmlproperty Palette org.deepin.dtk::ItemDelegate(FlowStyle)::checkedTextColor
+
+    \c checkedTextColor 属性用于控制 \l {ItemDelegate(FlowStyle)}{ItemDelegate} 选中文字
+    的颜色调色板。默认情况下，该属性会根据其所处场景自动发生变化。
+ */
+
+/*!
+    \qmlproperty enumeration org.deepin.dtk::ItemDelegate(FlowStyle)::corners
+
+    \c corners 属性用于控制 \l {ItemDelegate(FlowStyle)}{ItemDelegate} 背景的圆角方式。
+
+    \c corners 可从以下枚举取值，也能混合取值。
+    \table
+        \header
+            \li 枚举值
+            \li 描述
+        \row
+            \li RoundRectangle.NoneCorner
+            \li 无圆角，即直角矩形。
+        \row
+            \li RoundRectangle.TopLeftCorner
+            \li 指定左上角为圆角。
+        \row
+            \li RoundRectangle.TopRightCorner
+            \li 指定右上角为圆角。
+        \row
+            \li RoundRectangle.BottomLeftCorner
+            \li 指定左下角为圆角。
+        \row
+            \li RoundRectangle.BottomRightCorner
+            \li 指定右下角为圆角。
+        \row
+            \li RoundRectangle.TopCorner
+            \li 指定矩形上部分为圆角，即左上角和右上角。
+        \row
+            \li RoundRectangle.BottomCorner
+            \li 指定矩形下部分为圆角，即左下角和右下角。
+        \row
+            \li RoundRectangle.LeftCorner
+            \li 指定矩形左边部分为圆角，即左上角和左下角。
+        \row
+            \li RoundRectangle.RightCorner
+            \li 指定矩形右边部分为圆角，即右上角和右下角。
+        \row
+            \li RoundRectangle.AllCorner
+            \li 指定矩形为全圆角矩形。
+    \endtable
+    \sa RoundRectangle
+ */

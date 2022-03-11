@@ -1,0 +1,45 @@
+/*!
+    \qmltype ProgressBar(FlowStyle)
+    \inherits ProgressBar
+    \inqmlmodule org.deepin.dtk
+    \ingroup QML_TYPES
+    \brief 提供一种行云设计风格的进度条控件.
+
+    \l {ProgressBar(FlowStyle)}{ProgressBar} 控件提供行云设计风格的进度条控件。
+    根据使用场景不同，\l {ProgressBar(FlowStyle)}{ProgressBar} 的样式也会跟随
+    发生变化。
+
+    \l {ProgressBar(FlowStyle)}{ProgressBar} 根据 \c indeterminate 属性的不同
+    样式也跟随不同。 \c indeterminate 属性为 true 时，进度条被设置成“无进度”模式，
+    即无法确定当前进去情况下的进度条样式。
+
+    例如以下效果：
+    \image images/ProgressBarIn.png
+
+    同样的， \l {ProgressBar(FlowStyle)}{ProgressBar} 在设置文本和未设置文本时样式
+    也不一样，未设置文本时， \l {ProgressBar(FlowStyle)}{ProgressBar}处于无法控制的
+    状态，其背景会呈现出淡灰色样式，而在设置文本属性后，背景变成可以操作的按钮样式，即指示
+    用于当前的 \l {ProgressBar(FlowStyle)}{ProgressBar} 是可以进行操作暂停或者停止
+    的。
+
+    例如以下效果：
+    \image images/ProgressBarText.png
+ */
+
+/*!
+    \qmlproperty string org.deepin.dtk::ProgressBar(FlowStyle)::formatText
+
+    \c formatText 属性控制 \l {ProgressBar(FlowStyle)}{ProgressBar} 是否使用
+    格式化文本添加当前进度，例如下图的场景：
+
+    \image images/ProgressBarFormatText.png
+ */
+
+/*!
+    \qmlproperty bool org.deepin.dtk::ProgressBar(FlowStyle)::animationStop
+
+    \c animationStop 属性控制 \l {ProgressBar(FlowStyle)}{ProgressBar} 正在进行的
+    进度动画是否停止，默认情况在为 false。
+
+    \warning 请注意，该属性只在 \c indeterminate 属性为 true 时才有效。
+ */

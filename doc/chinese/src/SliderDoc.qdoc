@@ -1,0 +1,126 @@
+/*!
+    \qmltype Slider(FlowStyle)
+    \inherits Slider
+    \inqmlmodule org.deepin.dtk
+    \ingroup QML_TYPES
+    \brief 提供一种行云设计风格的滑动条控件.
+
+    Slider 控件被用于通过控制滑块选择指定值或者代表某一进度。
+    Slider 在行云设计中增加了许多用于额外控制的方式和布局，例如增加了用于指示进度的提示文本;
+    提供了上下左右四个方向的滑块;
+
+    Slider 的用法如下代码所示：
+    \qml
+    Slider {
+        width: parent.width
+        handleType: Slider.HandleType.ArrowBottom
+    }
+    \endqml
+
+    Slider 的效果如下图所示：
+    \table
+        \header
+            \li 方向
+            \li 效果
+        \row
+            \li 横向
+            \li 无滑块方向： \image images/SliderNormalHor.png
+        \row
+            \li 纵向
+            \li 滑块朝下： \image images/SliderNormalVer.png
+    \endtable
+ */
+
+/*!
+    \qmlproperty Palette org.deepin.dtk::Slider(FlowStyle)::grooveColor
+
+    \c grooveColor 属性控制滑槽的颜色， \c grooveColor 并非控制滑槽划过区域的颜色，
+    而是整个滑槽的默认颜色。
+ */
+
+/*!
+    \qmlproperty enumeration org.deepin.dtk::Slider(FlowStyle)::handleType
+
+    \c handleType 属性表示滑块的方向，默认情况下，滑块无任何方向。
+    handleType 可供使用的枚举为：
+    \table
+        \header
+            \li 枚举
+            \li 含义
+
+        \row
+            \li Slider.NoArrowHorizontal
+            \li 水平无方向。请注意，水平无方向和竖直无方向，在滑动条的水平和数值方向时，滑块的图标
+            也不一样，水平无方向时，滑块宽度高于高度，显得更加扁平，竖直无方向时，滑块高度高于宽度，
+            显得更加修长。
+        \row
+            \li Slider.NoArrowVertical
+            \li 竖直无方向。
+        \row
+            \li Slider.ArrowUp
+            \li 滑块箭头朝上，一般用于滑动条为水平方向时。
+        \row
+            \li Slider.ArrowLeft
+            \li 滑块箭头朝左，一般用于滑动条为竖直方向时。
+        \row
+            \li Slider.ArrowBottom
+            \li 滑块箭头朝下，一般用于滑动条为水平方向时。
+        \row
+            \li Slider.ArrowRight
+            \li 滑块箭头朝右，一般用于滑动条为竖直方向时。
+    \endtable
+ */
+
+/*!
+    \qmlproperty real org.deepin.dtk::Slider(FlowStyle)::dashOffset
+
+    \c dashOffset 属性是绘制滑块时，画笔的起始位置偏移量。
+    \image images/SliderDashOffset.png
+
+    如上图所示，当 \c dashOffset 不为0时，绘制滑槽的位置将根据绘制位置发生
+    偏移，例如下述示例，\c dashOffset 为 0 和 dashOffset 为 20 的比较。
+    \image images/SliderDashOffsetCompare.png
+
+    上图中，上层 Slider 调整了 dashOffset 而 Slider 未调整，但从上图可以看出
+    并不是 Slider 设置 dashOffset 值，绘制就会在偏移 dashOffset 大小后开始，它
+    还受绘制的间距影响，例如下图所示：
+    \image images/SliderDashOffsetCompareWithPattern.png
+ */
+
+/*!
+    \qmlproperty var org.deepin.dtk::Slider(FlowStyle)::dashPattern
+
+    \c dashPattern 表示绘制点和间距的距离，默认值为[0.5, 0.25]，即可以理解为，每绘制
+    0.5 像素的滑条样式，就绘制 0.25 像素的间距。将其中值变大，会起到其代表的那一部分的区域
+    变大的效果。
+
+    例如以下代码：
+    \qml
+    Slider {
+        dashPattern: [0.5, 5] // 每绘制0.5像素的滑块，就绘制5像素的间距
+        width: 200
+    }
+    \endqml
+    效果如下图所示：
+    \image images/SliderDashPattern.png
+ */
+
+/*!
+    \qmlproperty bool org.deepin.dtk::Slider(FlowStyle)::highlightedPassedGroove
+
+    \c highlightedPassedGroove 属性控制是否高亮滑块移动过的区域，默认情况下 highlightedPassedGroove
+    为 false。
+
+    效果如下所示：
+    \table
+        \header
+            \li highlightedPassedGroove
+            \li 效果
+        \row
+            \li false
+            \li \image images/SliderNormalHor.png
+        \row
+            \li true
+            \li \image images/SliderHighlighted.png
+    \endtable
+ */

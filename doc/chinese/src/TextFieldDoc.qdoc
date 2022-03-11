@@ -1,0 +1,53 @@
+/*!
+    \qmltype TextField(FlowStyle)
+    \inherits TextField
+    \inqmlmodule org.deepin.dtk
+    \ingroup QML_TYPES
+    \brief 提供一种行云设计风格的 TextField 控件.
+
+    \l {TextField(FlowStyle)}{TextField} 是一个单行文本输入框。\l {TextField(FlowStyle)}{TextField}
+    拓展了原生的 TextField 控件，增加了部分自定义属性用于提高拓展性。例如，适配了警告提示;调整了风格样式。
+    但 \l {TextField(FlowStyle)}{TextField} 和 LineEdit 相比，  \l {TextField(FlowStyle)}{TextField}
+    未添加文本清除按钮。
+
+    \l {TextField(FlowStyle)}{TextField} 的样式如下所示：
+    \table
+        \row
+            \li \image images/TextFieldNormal.png
+            \li Normal 状态
+        \row
+            \li \image images/TextFieldFocus.png
+            \li Focus 状态
+        \row
+            \li \image images/TextFieldDisabled.png
+            \li Disabled 状态
+    \endtable
+ */
+
+/*!
+    \qmlproperty Palette org.deepin.dtk::TextField(FlowStyle)::backgroundColor
+
+    \c backgroundColor 属性控制 \l {TextField(FlowStyle)}{TextField} 的背景颜色。
+ */
+
+/*!
+    \qmlproperty string org.deepin.dtk::TextField(FlowStyle)::alertText
+
+    \c backgroundColor 属性控制警告信息的文本。
+ */
+
+/*!
+    \qmlproperty int org.deepin.dtk::TextField(FlowStyle)::alertDuration
+
+    \c alertDuration 属性控制警告信息的显示时常，默认情况下，不设置显示时常警告信息会
+    在 \c showAlert 属性为 false 时隐藏，设置后会在 \c alertDuration 结束后隐藏，
+    \c alertDuration 为 -1 时，表示一直显示。
+ */
+
+/*!
+    \qmlproperty bool org.deepin.dtk::TextField(FlowStyle)::showAlert
+
+    \c showAlert 属性控制警告信息是否显示， \c showAlert 为 true 时，警告信息
+    会在 \c alertDuration 结束后自动隐藏，\c showAlert 会跟随变为 false，否则
+    需要手动控制 \c showAlert 属性隐藏。
+ */

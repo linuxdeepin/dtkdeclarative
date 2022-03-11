@@ -3,7 +3,8 @@ SUBDIRS += \
     chameleon \
     src \
     qmlplugin \
-    tests
+    tests \
+    doc \
 
 SUBDIRS += examples
 examples.depends += chameleon src qmlplugin
