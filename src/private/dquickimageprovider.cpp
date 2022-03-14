@@ -385,9 +385,7 @@ QImage DQuickShadowProvider::requestImage(const QString &id, QSize *size, const 
         }
 
         QPointF offset(xOffset, yOffset);
-        // clear the corners
         if (config.isInner()) {
-            painter.fillRect(image.rect(), color);
             shadowRect.translate(-offset);
         }
 
