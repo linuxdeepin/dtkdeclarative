@@ -86,6 +86,20 @@ DialogWindow {
             onCurrentIndexChanged: {
                 navigationView.currentIndex = currentIndex
             }
+            footer: Item {
+                width: parent.width
+                height: DS.Style.settings.content.resetButtonHeight
+
+                Button {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.bottom: parent.bottom
+                    text: qsTr("Restore Defaults")
+
+                    onClicked: {
+                        settingsContainer.resetSettings();
+                    }
+                }
+            }
         }
     }
 }

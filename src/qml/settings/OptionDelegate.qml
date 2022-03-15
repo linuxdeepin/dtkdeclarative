@@ -26,7 +26,6 @@ import ".."
 
 RowLayout {
     id: control
-    height: 40
     width: parent.width - parent.leftPadding - parent.rightPadding
 
     property bool leftVisible: true

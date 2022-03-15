@@ -417,7 +417,7 @@ bool DQMLGlobalObject::sendMessage(QObject *target, QQmlComponent *delegate, con
         window = qobject_cast<QQuickWindow *>(target);
     }
     if (window) {
-        if (auto manager = qobject_cast<MessageManager *>(qmlAttachedPropertiesObject<MessageManager>(target)))
+        if (auto manager = qobject_cast<MessageManager *>(qmlAttachedPropertiesObject<MessageManager>(window)))
             return manager->sendMessage(delegate, message, duration, msgId);
     }
     return false;

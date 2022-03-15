@@ -109,7 +109,7 @@ T.ComboBox {
                 width: DS.Style.comboBox.iconSize
                 height: DS.Style.comboBox.iconSize
             }
-            fallbackToQIcon: false
+            fallbackToQIcon: true
         }
 
         T.TextField {

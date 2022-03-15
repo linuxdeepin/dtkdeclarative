@@ -35,7 +35,7 @@ class SettingsOption : public QObject
     Q_OBJECT
     Q_PROPERTY(QString key READ key WRITE setKey NOTIFY keyChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
-    Q_PROPERTY(QVariant value READ value WRITE setValue NOTIFY valueChanged)
+    Q_PROPERTY(QVariant value READ value WRITE setValue RESET resetValue NOTIFY valueChanged)
     Q_PROPERTY(QQmlComponent *delegate READ delegate WRITE setDelegate NOTIFY delegateChanged)
     Q_CLASSINFO("DefaultProperty", "delegate")
 
@@ -49,6 +49,8 @@ public:
     void setName(QString name);
     QVariant value() ;
     void setValue(QVariant value);
+    void resetValue();
+
     QQmlComponent *delegate() const;
     void setDelegate(QQmlComponent *delegate);
     void setConfig(DConfigWrapper *config);
@@ -229,6 +231,7 @@ public:
 public Q_SLOTS:
     void setGroupVisible(const QString &key, bool visible);
     bool groupVisible(const QString &key) const;
+    void resetSettings();
 
 private Q_SLOTS:
     void onGroupVisibleChanged(bool visible);
