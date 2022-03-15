@@ -24,9 +24,9 @@ import org.deepin.dtk.style 1.0 as DS
 
 ArrowShapeWindow {
     property alias control: blur.control
-    D.Window.borderColor: DS.Style.selectColor((control ? control.palette.window : undefined),
-                                               DS.Style.arrowRectangleBlur.borderColor,
-                                               DS.Style.arrowRectangleBlur.darkBorderColor)
+    D.DWindow.borderColor: DS.Style.selectColor((control ? control.palette.window : undefined),
+                                                DS.Style.arrowRectangleBlur.borderColor,
+                                                DS.Style.arrowRectangleBlur.darkBorderColor)
     StyledBehindWindowBlur {
         id: blur
         anchors.fill: parent

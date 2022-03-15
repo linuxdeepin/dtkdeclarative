@@ -32,7 +32,7 @@ ApplicationWindow {
     title: qsTr("DTK Exhibition")
 
     // 开启“圆角窗口&无系统标题栏”模式
-    Window.enabled: true
+    DWindow.enabled: true
 
     ButtonGroup {
         id: activeColorSelector
