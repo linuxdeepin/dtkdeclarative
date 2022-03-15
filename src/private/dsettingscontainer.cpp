@@ -184,6 +184,26 @@ bool SettingsContainer::groupVisible(const QString &key) const
     return false;
 }
 
+void SettingsContainer::resetSettings()
+{
+    for (auto group : qAsConst(m_groups)) {
+        QList<SettingsGroup *> gs;
+        gs.append(group);
+
+        while (!gs.isEmpty()) {
+            auto g = gs.takeFirst();
+            // Push child groups into the list.
+            auto childrenGroups = *static_cast<QList<SettingsGroup*>*>(g->children().data);
+            gs.append(childrenGroups);
+            // Reset all child options.
+            auto childrenOptions = *static_cast<QList<SettingsOption*>*>(g->options().data);
+            for (auto opt : childrenOptions) {
+                opt->resetValue();
+            }
+        }
+    }
+}
+
 void SettingsContainer::setContentBackground(QQmlComponent *contentBackground)
 {
     if (m_contentBackground == contentBackground)
@@ -316,6 +336,11 @@ void SettingsOption::setValue(QVariant value)
         m_config->setValue(m_key, value);
 
     Q_EMIT valueChanged(value);
+}
+
+void SettingsOption::resetValue()
+{
+    m_config->resetValue(m_key);
 }
 
 void SettingsOption::setKey(QString key)

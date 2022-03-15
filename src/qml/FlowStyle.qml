@@ -95,6 +95,7 @@ QtObject {
             property int marginL1: 10
             property int marginL2: 30
             property int marginOther: 50
+            property int resetButtonHeight: 90
         }
 
         property QtObject navigation: QtObject {
@@ -727,8 +728,6 @@ QtObject {
         }
     }
 
-
-    // Other
     property QtObject titleBar: QtObject {
         property int height: 50
         property int buttonWidth: 50
@@ -736,6 +735,7 @@ QtObject {
         property int iconSize: 32
     }
 
+    // Other
     property QtObject slider: QtObject {
         property int width: 120
         property int height: 60

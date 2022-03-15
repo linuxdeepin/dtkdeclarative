@@ -95,7 +95,7 @@ Rectangle {
         anchors.leftMargin: 20 // @disable-check M16
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20 // @disable-check M16
-        icon.name: "org.deepin.Example/test/button_add"
+        icon.name: "org.deepin.Example/test/action_add"
     }
 
     IconButton {
@@ -105,7 +105,7 @@ Rectangle {
         anchors.leftMargin: 20 // @disable-check M16
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20 // @disable-check M16
-        icon.name: "test/button_add"  // @disable-check M16
+        icon.name: "test/action_add"  // @disable-check M16
     }
 
     IconButton {
@@ -116,7 +116,7 @@ Rectangle {
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20 // @disable-check M16
         flat: true // @disable-check M16
-        icon.name: "button_add"  // @disable-check M16
+        icon.name: "action_add"  // @disable-check M16
     }
 
     FloatingButton {
@@ -126,7 +126,7 @@ Rectangle {
         anchors.leftMargin: 20 // @disable-check M16
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20 // @disable-check M16
-        icon.name: "button_add"
+        icon.name: "action_add"
     }
 
     DelayButton {
@@ -152,7 +152,7 @@ Rectangle {
         anchors.leftMargin: 20
         anchors.topMargin: 20
 
-        icon.name: "button_add"
+        icon.name: "action_add"
     }
 
     ButtonBox {
@@ -238,7 +238,7 @@ Rectangle {
         delegate: CheckDelegate {
             text: index;
 
-            icon.name: "button_add"
+            icon.name: "action_add"
         }
 
         anchors.top: btnLabel.bottom

@@ -87,6 +87,14 @@ protected:
         // But If `impl->value(proName)` is returned, blocking has a performance problem.
         return value;
     }
+    int metaCall(QObject *o, QMetaObject::Call _c, int _id, void **_a) override
+    {
+        if (_c == QMetaObject::ResetProperty) {
+            owner->impl->reset(name(_id - type()->propertyOffset()));
+        }
+
+        return QQmlOpenMetaObject::metaCall(o, _c, _id, _a);
+    }
 };
 
 DConfigWrapperMetaObject::~DConfigWrapperMetaObject()
@@ -196,6 +204,14 @@ void DConfigWrapper::setValue(const QString &key, const QVariant &value)
         return;
 
     impl->setValue(key, value);
+}
+
+void DConfigWrapper::resetValue(const QString &key)
+{
+    if (!impl)
+        return;
+
+    impl->reset(key);
 }
 
 void DConfigWrapper::classBegin()

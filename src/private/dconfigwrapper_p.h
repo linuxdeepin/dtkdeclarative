@@ -49,6 +49,7 @@ public:
 public Q_SLOTS:
     QVariant value(const QString &key, const QVariant &fallback = QVariant()) const;
     void setValue(const QString &key, const QVariant &value);
+    void resetValue(const QString &key);
     QStringList keyList() const;
     bool isValid() const;
 
