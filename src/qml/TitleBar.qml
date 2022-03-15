@@ -54,7 +54,7 @@ Control {
     property bool embedMode: !__dwindow.enabled
     property bool separatorVisible: true
 
-    property var __dwindow: Window.window.D.Window
+    property var __dwindow: Window.window.D.DWindow
     property bool __isFullScreen: Window.window.visibility === Window.FullScreen
     property bool __isVisible: mouseArea.containsMouse
     readonly property int __includedAreaX: control.width - optionMenuBtn.width - windowButtonsLoader.width

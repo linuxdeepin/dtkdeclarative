@@ -192,7 +192,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterAnonymousType<DQuickControlColor>(uri, implUri, 1);
     dtkRegisterAnonymousType<DDciIconPalette>(uri, implUri, 1);
 
-    dtkRegisterUncreatableType<DQuickWindow>(uri, implUri, 1, 0, "Window", "DQuickWindow Attached");
+    dtkRegisterUncreatableType<DQuickWindow>(uri, implUri, 1, 0, "DWindow", "DQuickWindow Attached");
     dtkRegisterUncreatableType<DQuickControlColorSelector>(uri, implUri, 1, 0, "ColorSelector",
                                                            QStringLiteral("ColorSelector is only available as an attached property."));
     dtkRegisterUncreatableType<DColor>(uri, implUri, 1, 0, "Color",

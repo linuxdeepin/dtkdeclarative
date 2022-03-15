@@ -26,5 +26,5 @@ ApplicationWindow {
     height: 480
 
     // 设置 dtk 风格窗口
-    D.Window.enabled: true
+    D.DWindow.enabled: true
 }

@@ -34,10 +34,10 @@ Window {
     property point arrowPosition: Qt.point(__getArrowX(), __getArrowY())
     property int arrowDirection: D.DTK.DownArrow
 
-    D.Window.enabled: true
-    D.Window.clipPath: loader.item
-    D.Window.enableBlurWindow: true
-    D.Window.alphaBufferSize: D.DTK.hasBlurWindow ? 8 : 0
+    D.DWindow.enabled: true
+    D.DWindow.clipPath: loader.item
+    D.DWindow.enableBlurWindow: true
+    D.DWindow.alphaBufferSize: D.DTK.hasBlurWindow ? 8 : 0
 
     function __arrowVertical() {
         return D.DTK.UpArrow === __window.arrowDirection

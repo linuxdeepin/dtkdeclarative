@@ -37,7 +37,7 @@ Control {
     property alias icon: iconLabel
     property alias enableInWindowBlendBlur: background.visible
 
-    property var __dwindow: Window.window.D.Window
+    property var __dwindow: Window.window.D.DWindow
 
     MouseArea {
         anchors.fill: parent

@@ -27,8 +27,8 @@ Window {
     property alias blurControl: behindBlur.control
 
     flags: Qt.Popup
-    D.Window.enabled: true
-    D.Window.enableBlurWindow: true
+    D.DWindow.enabled: true
+    D.DWindow.enableBlurWindow: true
 
     StyledBehindWindowBlur {
         id: behindBlur

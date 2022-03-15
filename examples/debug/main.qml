@@ -32,17 +32,17 @@ D.ApplicationWindow {
     title: qsTr("dtkdeclarative")
     x:(Screen.desktopAvailableWidth - width) / 2
     y:(Screen.desktopAvailableHeight - height) / 2
-//    D.Window.wmWindowTypes: D.WindowManagerHelper.DesktopType
+//    D.DWindow.wmWindowTypes: D.WindowManagerHelper.DesktopType
     header: Example_TitleBar{}
     flags: Qt.Window | Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-//    D.Window.motifFunctions: D.Window.motifFunctions & ~D.WindowManagerHelper.FUNC_MINIMIZE
+//    D.DWindow.motifFunctions: D.DWindow.motifFunctions & ~D.WindowManagerHelper.FUNC_MINIMIZE
 
-    // 测试D.Window的属性
-    D.Window.enabled: true
-    D.Window.windowRadius: 16
-    D.Window.borderColor: palette.highlight
-    D.Window.borderWidth: 1
-    D.Window.alphaBufferSize: 8
+    // 测试D.DWindow的属性
+    D.DWindow.enabled: true
+    D.DWindow.windowRadius: 16
+    D.DWindow.borderColor: palette.highlight
+    D.DWindow.borderWidth: 1
+    D.DWindow.alphaBufferSize: 8
 
     D.FontManager {
         id: font_manager
@@ -76,8 +76,8 @@ D.ApplicationWindow {
 //    }
 
     Component.onCompleted: {
-        console.log(D.Window.wmWindowTypes)
-        console.log(D.Window.enabled ? "DPlatformHandle有效" : "DPlatformHandle无效!!!!");
+        console.log(D.DWindow.wmWindowTypes)
+        console.log(D.DWindow.enabled ? "DPlatformHandle有效" : "DPlatformHandle无效!!!!");
         console.log("hasBlurWindow : ", D.DTK.hasBlurWindow ? "true" : "false");
         console.log("windowManagerNameString : ", D.DTK.windowManagerNameString);
 

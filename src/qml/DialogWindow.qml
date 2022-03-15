@@ -34,9 +34,9 @@ Window {
     maximumHeight: height
     minimumWidth: maximumWidth
     minimumHeight: maximumHeight
-    D.Window.enabled: true
-    D.Window.enableSystemResize: false
-    D.Window.enableBlurWindow: true
+    D.DWindow.enabled: true
+    D.DWindow.enableSystemResize: false
+    D.DWindow.enableBlurWindow: true
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.MSWindowsFixedSizeDialogHint
     D.ColorSelector.family: D.Palette.CrystalColor
     color: active ? D.DTK.palette.window : D.DTK.inactivePalette.window

@@ -32,7 +32,7 @@ RowLayout {
     property bool embedMode: false
     signal maxOrWinded()
 
-    property var __dwindow: Window.window.D.Window
+    property var __dwindow: Window.window.D.DWindow
     property bool __forceHind: !__dwindow.enabled || embedMode || Window.window.visibility === Window.FullScreen
 
     onMaxOrWinded: {
