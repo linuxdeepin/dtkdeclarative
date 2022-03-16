@@ -451,5 +451,32 @@ Column {
                 }
             }
         }
+
+        Item {width: parent.width; height: 1}
+
+        Row {
+            spacing: 30
+            ButtonBox {
+                ButtonBoxButton { text: "日" ; checked: true}
+                ButtonBoxButton { text: "周" }
+                ButtonBoxButton { text: "月" }
+                ButtonBoxButton { text: "年" }
+            }
+
+            ButtonBox {
+                ButtonBoxButton { width: 50; text: "日"}
+                ButtonBoxButton { width: 50; text: "周"; checked: true}
+                ButtonBoxButton {
+                    width: 50; text: "月"
+                    ColorSelector.hovered: true
+                }
+                ButtonBoxButton { width: 50; text: "年"}
+            }
+
+            ButtonBox {
+                ButtonBoxButton { width: 50; text: "设置"}
+                ButtonBoxButton { width: 100; text: "更新设置"; checked: true}
+            }
+        }
     }
 }

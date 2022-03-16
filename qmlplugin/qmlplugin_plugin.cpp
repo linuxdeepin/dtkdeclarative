@@ -323,6 +323,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "StackView");
     dtkRegisterType(uri, controlsUri, 1, 0, "BusyIndicator");
     dtkRegisterType(uri, controlsUri, 1, 0, "ProgressBar");
+    dtkRegisterType(uri, controlsUri, 1, 0, "BoxPanel");
     // for org.deepin.dtk.style(allowed to override)
     dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");
 

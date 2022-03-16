@@ -163,7 +163,7 @@ Rectangle {
         anchors.topMargin: 20  // @disable-check M16
 
         ButtonBoxButton {
-            icon.name: "go-previous" // @disable-check M16
+            icon.name: "go-previous"; checked: true // @disable-check M16
         }
         ButtonBoxButton {
             icon.name: "go-down" // @disable-check M16
