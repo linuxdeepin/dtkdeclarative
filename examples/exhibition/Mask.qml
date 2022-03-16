@@ -39,28 +39,28 @@ Column {
         spacing: 30
         width: parent.width
 
-        StyledArrowShapeBlur {
-            width: 100
-            height: 200
-            Label {
-                anchors.centerIn: parent
-                text: "箭头模糊控件"
-            }
-        }
+//        StyledArrowShapeBlur {
+//            width: 100
+//            height: 200
+//            Label {
+//                anchors.centerIn: parent
+//                text: "箭头模糊控件"
+//            }
+//        }
 
-        Button {
-            text: "箭头异形窗口"
-            onClicked: shapeWindow1.show()
-            StyledArrowShapeWindow {
-                id: shapeWindow1
-                width: 100
-                height: 200
-                Label {
-                    anchors.centerIn: parent
-                    text: "箭头异形窗口"
-                }
-            }
-        }
+//        Button {
+//            text: "箭头异形窗口"
+//            onClicked: shapeWindow1.show()
+//            StyledArrowShapeWindow {
+//                id: shapeWindow1
+//                width: 100
+//                height: 200
+//                Label {
+//                    anchors.centerIn: parent
+//                    text: "箭头异形窗口"
+//                }
+//            }
+//        }
 
         Button {
             text: "自定义异形窗口"

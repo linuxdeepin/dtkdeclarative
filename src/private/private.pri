@@ -9,6 +9,7 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dplatformthemeproxy_p.h \
     $$PWD/dqmlglobalobject_p.h \
     $$PWD/dqmlglobalobject_p_p.h \
+    $$PWD/dquickarrowboxpath_p.h \
     $$PWD/dquickglobal_p.h \
     $$PWD/dquickglow_p.h \
     $$PWD/dquickglow_p_p.h \
@@ -49,6 +50,7 @@ SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dhandlecontextmenuwindow.cpp \
     $$PWD/dmaskeffectnode.cpp \
     $$PWD/dqmlglobalobject.cpp \
+    $$PWD/dquickarrowboxpath.cpp \
     $$PWD/dquickglow.cpp \
     $$PWD/dquickiconlabel.cpp \
     $$PWD/dquickbusyindicator.cpp \

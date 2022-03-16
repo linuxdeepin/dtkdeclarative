@@ -22,6 +22,7 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.11
 import QtQuick.Window 2.11
+import QtQuick.Shapes 1.10
 import org.deepin.dtk 1.0
 
 Column {
@@ -144,4 +145,90 @@ Column {
 
         PopupHandle.forceWindowMode: true
     }
+    ArrowShapePopup {
+        id: arrow
+        x: 50
+        y: 50
+        width: 100
+        height: 100
+    }
+
+    Row {
+        Button {
+            text: "Up"
+            onClicked: {
+                arrow.arrowDirection = ArrowBoxPath.Up
+                arrow.arrowX = arrow.width / 2 + 10
+                arrow.arrowY = 10
+                arrow.open()
+            }
+        }
+        Button {
+            text: "Down"
+            onClicked: {
+                arrow.arrowDirection = ArrowBoxPath.Down
+                arrow.arrowX = arrow.width / 2 + 10
+                arrow.arrowY = arrow.height - 10
+                arrow.open()
+            }
+        }
+        Button {
+            text: "Left"
+            onClicked: {
+                arrow.arrowDirection = ArrowBoxPath.Left
+                arrow.arrowX = 10
+                arrow.arrowY = arrow.height / 2 + 10
+                arrow.open()
+            }
+        }
+        Button {
+            text: "Right"
+            onClicked: {
+                arrow.arrowDirection = ArrowBoxPath.Right
+                arrow.arrowX = arrow.width - 10
+                arrow.arrowY = arrow.height / 2 + 10
+                arrow.open()
+            }
+        }
+    }
+//    Shape {
+//        x: 20
+//        y: 20
+//        ShapePath {
+//            fillColor: "red"
+//            strokeColor: "transparent"
+//            ArrowBoxPath {
+//                id: arrow
+//                width: 60
+//                height: 150
+//                arrowX: 0
+//                arrowY: 0
+//                arrowWidth: 50
+//                arrowHeight: 30
+//                roundedRadius: 8
+//                spread: -5
+//            }
+//        }
+//    }
+
+//    Shape {
+//        x: 20
+//        y: 20
+////        visible: false
+//        ShapePath {
+//            fillColor: "green"
+//            strokeColor: "transparent"
+//            ArrowBoxPath {
+//                width: arrow.width
+//                height: arrow.height
+//                arrowDirection: arrow.arrowDirection
+//                arrowX: arrow.arrowX
+//                arrowY: arrow.arrowY
+//                arrowWidth: arrow.arrowWidth
+//                arrowHeight: arrow.arrowHeight
+//                roundedRadius: arrow.roundedRadius
+////                spread: 15
+//            }
+//        }
+//    }
 }

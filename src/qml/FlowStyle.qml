@@ -600,15 +600,16 @@ QtObject {
     }
 
     property QtObject arrowRectangleBlur: QtObject {
-        property int arrowHeightFactor: 10
         property int borderWidth: 1
-        property int blurRadius: 20
-        property color borderColor: Qt.rgba(0, 0, 0, 0.05)
-        property color darkBorderColor: Qt.rgba(1, 1, 1, 0.05)
-        property color backgroundColor: "#55ffffff"
-        property color darkBackgroundColor: "#55000000"
-        property color shadowColor: Qt.rgba(0, 0, 0, 0.4)
-        property color darkShadowColor: Qt.rgba(1, 1, 1, 0.4)
+        property int roundJoinRadius: 8
+        property color outBorderColor: Qt.rgba(0, 0, 0, 0.06)
+        property color darkOutBorderColor: Qt.rgba(0, 0, 0, 0.8)
+        property color inBorderColor: Qt.rgba(1, 1, 1, 0.1)
+        property color darkInBorderColor: Qt.rgba(1, 1, 1, 0.8)
+        property color backgroundColor: Qt.rgba(238.0 / 255, 238.0 / 255, 238.0 / 255, 0.8)
+        property color darkBackgroundColor: Qt.rgba(20.0 / 255, 20.0 / 255, 20.0 / 255, 0.8)
+        property color shadowColor: Qt.rgba(0, 0, 0, 0.2)
+        property color darkShadowColor: Qt.rgba(0, 0, 0, 0.2)
     }
 
     property QtObject arrowListView: QtObject {

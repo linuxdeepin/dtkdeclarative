@@ -73,17 +73,11 @@
         <file>qml/OutsideBoxBorder.qml</file>
         <file>qml/InsideBoxBorder.qml</file>
         <file>qml/SortFilterModel.qml</file>
-        <file>qml/ArrowShapeWindow.qml</file>
-        <file>qml/private/LeftArrowShapePath.qml</file>
-        <file>qml/private/UpArrowShapePath.qml</file>
-        <file>qml/private/RightArrowShapePath.qml</file>
-        <file>qml/private/DownArrowShapePath.qml</file>
-        <file>qml/private/AbstractArrowShapePath.qml</file>
+        <file>qml/ArrowShapePopupWindow.qml</file>
         <file>qml/StyledArrowShapeWindow.qml</file>
         <file>qml/private/OpacityMask.qml</file>
         <file>qml/private/SoftwareOpacityMask.qml</file>
-        <file>qml/ArrowShapeBlur.qml</file>
-        <file>qml/StyledArrowShapeBlur.qml</file>
+        <file>qml/ArrowShapePopup.qml</file>
         <file>qml/Action.qml</file>
         <file>qml/ActionGroup.qml</file>
         <file>qml/Label.qml</file>
