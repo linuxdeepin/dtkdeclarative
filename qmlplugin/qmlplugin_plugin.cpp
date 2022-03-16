@@ -44,6 +44,7 @@
 #include "private/dpopupwindowhandle_p.h"
 #include "private/dobjectmodelproxy_p.h"
 #include "private/dquickwaterprogressattribute_p.h"
+#include "private/dquickarrowboxpath_p.h"
 
 #include <DFontManager>
 
@@ -191,6 +192,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType<DQuickOpacityMask>(uri, implUri, 1, 0, "SoftwareOpacityMask");
     dtkRegisterType<DQuickKeyListener>(uri, implUri, 1, 0, "KeySequenceListener");
     dtkRegisterType<DQuickWaterProgressAttribute>(uri, implUri, 1, 0, "WaterProgressAttribute");
+    dtkRegisterType<DQuickArrowBoxPath>(uri, implUri, 1, 0, "ArrowBoxPath");
 
     dtkRegisterAnonymousType<DQUICK_NAMESPACE::DQuickDciIcon>(uri, implUri, 1);
     dtkRegisterAnonymousType<DQuickControlColor>(uri, implUri, 1);
@@ -292,11 +294,9 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "SliderTipItem");
     dtkRegisterType(uri, controlsUri, 1, 0, "CheckBox");
     dtkRegisterType(uri, controlsUri, 1, 0, "IpV4LineEdit");
-    dtkRegisterType(uri, controlsUri, 1, 0, "ArrowShapeWindow");
     dtkRegisterType(uri, controlsUri, 1, 0, "StyledArrowShapeWindow");
     // TODO(xiaoyaobing): software rendering has not been completed
-    dtkRegisterType(uri, controlsUri, 1, 0, "ArrowShapeBlur");
-    dtkRegisterType(uri, controlsUri, 1, 0, "StyledArrowShapeBlur");
+    dtkRegisterType(uri, controlsUri, 1, 0, "ArrowShapePopup");
     if (softwareBackend == QQuickWindow::sceneGraphBackend()) {
         dtkRegisterTypeAlias(uri, implUri, 1, 0, "SoftwareOpacityMask", "OpacityMask", "private/");
     } else {

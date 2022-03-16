@@ -161,14 +161,6 @@ public:
     };
     Q_ENUM(PopupMode)
 
-    enum ArrowDirection {
-        UpArrow,
-        DownArrow,
-        LeftArrow,
-        RightArrow
-    };
-    Q_ENUM(ArrowDirection)
-
     bool hasBlurWindow() const;
     bool hasComposite() const;
     bool hasNoTitlebar() const;

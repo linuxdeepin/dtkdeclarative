@@ -120,9 +120,10 @@ Item {
         }
     }
 
-    StyledArrowShapeBlur {
-        anchors.centerIn: parent
-        width: 100
-        height: 200
-    }
+//    StyledArrowShapeBlur {
+//        anchors.centerIn: parent
+//        width: 100
+//        height: 200
+//        roundJoinRadius: 20
+//    }
 }
