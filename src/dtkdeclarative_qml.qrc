@@ -110,5 +110,6 @@
         <file>qml/StackView.qml</file>
         <file>qml/BusyIndicator.qml</file>
         <file>qml/ProgressBar.qml</file>
+        <file>qml/BoxPanel.qml</file>
     </qresource>
 </RCC>

@@ -512,4 +512,13 @@ QtObject {
         property int iconSize: 18
         property int padding: 9
     }
+
+    property QtObject buttonBox: QtObject {
+        property int width: 80
+        property int height: 36
+        property int buttonWidth: 30
+        property int buttonHeight: 30
+        property int padding: 3
+        property int spacing: 6
+    }
 }

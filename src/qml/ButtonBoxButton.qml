@@ -20,49 +20,18 @@
  */
 
 import QtQuick 2.11
-import QtGraphicalEffects 1.0
 import org.deepin.dtk.impl 1.0 as D
-import "PixelMetric.js" as PM
+import org.deepin.dtk.style 1.0 as DS
 
 Button {
     id: control
     checkable: true
-    enum Position {
-        Beginning,
-        Middle,
-        End,
-        OnlyOne
-    }
-    property int position: ButtonBoxButton.Position.OnlyOne
-    property color color : control.palette.button
+    flat: true
+    D.ColorSelector.family: D.Palette.CrystalColor
 
-    background: Item {
-        implicitWidth: control.text.length ? PM.Button_MiniSize + (4 * PM.ControlRadius) : PM.Button_MiniSize + (2 * PM.ControlRadius)
-        implicitHeight: PM.Button_MiniSize
-        DropShadow {
-            anchors.fill: backgroundRect
-            horizontalOffset: 0
-            verticalOffset: 4
-            radius: 4
-            samples: 9
-            color: palette.shadow
-            source: backgroundRect
-        }
-
-        Rectangle {
-            id: backgroundRect
-            anchors.fill: parent
-            radius: position === ButtonBoxButton.Position.Middle ? 0 : PM.ControlRadius
-            //TODO(Chen Bin): add checked state color
-
-            Rectangle {
-                id: cliped
-                width: position === ButtonBoxButton.Position.OnlyOne ? 0 : parent.radius
-                height: position === ButtonBoxButton.Position.OnlyOne ? 0 : parent.height
-                x: position === ButtonBoxButton.Position.Beginning ? parent.width - cliped.width : parent.x
-                y: parent.y
-                color: parent.color
-            }
-        }
+    background: ButtonPanel {
+        implicitWidth: DS.Style.buttonBox.buttonWidth
+        implicitHeight: DS.Style.buttonBox.buttonHeight
+        button: control
     }
 }

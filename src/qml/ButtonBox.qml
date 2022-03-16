@@ -20,34 +20,30 @@
  */
 
 import QtQuick 2.11
+import QtQuick.Layouts 1.11
+import org.deepin.dtk.impl 1.0 as D
+import org.deepin.dtk.style 1.0 as DS
 
-Row {
+Control {
     id: control
 
+    default property list<AbstractButton> buttons
+    property alias group: btnGroup
+
+    D.ColorSelector.hovered: false
+    padding: DS.Style.buttonBox.padding
+
     ButtonGroup {
-        id: group
-        buttons: __buttons
+        id: btnGroup
+        buttons: control.buttons
+    }
+    contentItem: RowLayout {
+        spacing: DS.Style.buttonBox.spacing
+        children: control.buttons
     }
 
-    default property alias __buttons: control.children
-
-    onPositioningComplete: {
-        __updateButtonsPosition()
-    }
-
-    // TODO js code
-    function __updateButtonsPosition() {
-        for (var i = 0; i < group.buttons.length; ++i)
-        {
-            if (group.buttons.length === 1) {
-                group.buttons[i].position = ButtonBoxButton.Position.OnlyOne
-            } else if (i == 0) {
-                group.buttons[i].position = ButtonBoxButton.Position.Beginning
-            } else if (i == group.buttons.length - 1) {
-                group.buttons[i].position = ButtonBoxButton.Position.End
-            } else {
-                group.buttons[i].position = ButtonBoxButton.Position.Middle
-            }
-        }
+    background: BoxPanel {
+        implicitWidth: DS.Style.buttonBox.width
+        implicitHeight: DS.Style.buttonBox.height
     }
 }
