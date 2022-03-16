@@ -78,7 +78,6 @@ T.Switch {
         rightPadding: control.indicator && control.mirrored ? control.indicator.width + control.spacing : 0
 
         text: control.text
-        font: control.font
         verticalAlignment: Text.AlignVCenter
     }
 }

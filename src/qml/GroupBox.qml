@@ -40,7 +40,6 @@ T.GroupBox {
     label: Label {
         x: PM.ControlRadius
         text: control.title
-        font: control.font
         color: control.palette.windowText
         elide: Text.ElideRight
         verticalAlignment: Text.AlignLeft

@@ -29,7 +29,6 @@ T.CheckDelegate {
     id: control
     property Component content: Label {
         text: control.text
-        font: control.font
     }
     property D.Palette backgroundColor: DS.Style.itemDelegate.checkBackgroundColor
 
