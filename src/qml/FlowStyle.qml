@@ -500,7 +500,7 @@ QtObject {
             return D.DTK.selectColor(conditionColor, lightColor, darkColor)
         }
 
-        return D.DTK.themeType === D.ApplicationHelper.LightType ? lightColor : darkColor
+        return D.DTK.themeType === D.ApplicationHelper.DarkType ? darkColor  : lightColor
     }
 
     property QtObject floatingButton: QtObject {

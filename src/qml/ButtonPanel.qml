@@ -36,7 +36,7 @@ BoxPanel {
     boxShadowBlur: selectValue(control.D.ColorSelector.controlState === D.DTK.PressedState ? 4 : 6, 6, 4)
     boxShadowOffsetY: selectValue(control.D.ColorSelector.controlState === D.DTK.PressedState ? 2 : 4, 4, 4)
     innerShadowOffsetY1: selectValue(control.D.ColorSelector.controlState === D.DTK.HoveredState ? -3 : -1, -1, -1)
-    visible: !button.flat || button.down || button.checked || button.highlighted || button.visualFocus || button.hovered
+    visible: !button.flat || button.checked || button.highlighted || button.visualFocus || control.D.ColorSelector.controlState === D.DTK.PressedState || control.D.ColorSelector.controlState === D.DTK.HoveredState
 
     function selectValue(normal, checked, highlighted) {
         if (button.checked) {
