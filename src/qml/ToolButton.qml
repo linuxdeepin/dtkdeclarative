@@ -20,51 +20,71 @@
  */
 
 import QtQuick 2.11
-import QtQuick.Controls 2.4
-import QtGraphicalEffects 1.0
-import "PixelMetric.js" as PM
+import QtQuick.Templates 2.4 as T
+import org.deepin.dtk.impl 1.0 as D
+import org.deepin.dtk.style 1.0 as DS
 
-ToolButton {
+T.ToolButton {
     id: control
+    property D.Palette textColor: checked ? DS.Style.checkedButtonText : (highlighted ? DS.Style.highlightedButtonText : DS.Style.buttonText)
 
-    implicitWidth: 36
-    implicitHeight: 36
+    implicitWidth: DS.Style.control.implicitWidth(control)
+    implicitHeight: DS.Style.control.implicitHeight(control)
+    topPadding: DS.Style.button.vPadding
+    bottomPadding: DS.Style.button.vPadding
+    leftPadding: DS.Style.button.hPadding
+    rightPadding: DS.Style.button.hPadding
+    spacing: DS.Style.control.spacing
+    opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
+    D.DciIcon.mode: D.ColorSelector.controlState
+    D.DciIcon.theme: D.ColorSelector.controlTheme
+    D.DciIcon.palette: D.DTK.makeIconPalette(palette)
+    palette.windowText: D.ColorSelector.textColor
+    D.ColorSelector.family: D.Palette.CrystalColor
+    display: D.IconLabel.TextUnderIcon
+    font: icon.name ? D.DTK.fontManager.t10: undefined
+    flat: true
 
-    background: Item {
-        implicitWidth: control.text.length ? PM.Button_MiniSize + (4 * PM.ControlRadius) : PM.Button_MiniSize + (2 * PM.ControlRadius)
-        implicitHeight: PM.Button_MiniSize
+    icon {
+        width: DS.Style.toolButton.iconSize
+        height: DS.Style.toolButton.iconSize
+        color: D.ColorSelector.textColor
+    }
 
-        Rectangle {
-            id: rect
-            anchors.fill: parent
-            radius: PM.ControlRadius
-            color: {
-                var backgroundColor = "transparent"
-
-                if (flat)
-                    return backgroundColor
-
-                if (hovered) {
-                    backgroundColor = Qt.rgba(0, 0, 0, 0.05)
-                }
-
-                if (down || highlighted || checked) {
-                    backgroundColor = Qt.rgba(0, 0, 0, 0.1)
-                }
-
-                return backgroundColor
-            }
+    contentItem: Item {
+        implicitWidth: content.implicitWidth + (indicator ? indicator.width : 0)
+        implicitHeight: content.implicitHeight
+        D.IconLabel {
+            id: content
+            height: parent.height
+            width: parent.width - (indicator ? indicator.width : 0)
+            spacing: control.spacing
+            mirrored: control.mirrored
+            display: control.display
+            alignment: indicator ? Qt.AlignLeft | Qt.AlignVCenter : Qt.AlignCenter
+            text: control.text
+            font: control.font
+            color: control.D.ColorSelector.textColor
+            icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
         }
+        function updateIndicatorAnchors()
+        {
+            if (!indicator)
+                return
 
-        DropShadow {
-            anchors.fill: rect
-            horizontalOffset: 0
-            verticalOffset: 2
-            radius: 4
-            samples: 9
-            color: palette.shadow
-            source: rect
+            indicator.anchors.verticalCenter = control.verticalCenter
+            indicator.anchors.right = control.right
+            indicator.anchors.rightMargin = DS.Style.toolButton.indicatorRightMargin
+        }
+        Component.onCompleted: {
+            updateIndicatorAnchors()
+            control.indicatorChanged.connect(updateIndicatorAnchors)
         }
     }
-}
 
+    background: ButtonPanel {
+        implicitWidth: DS.Style.toolButton.width
+        implicitHeight: DS.Style.toolButton.height
+        button: control
+    }
+}

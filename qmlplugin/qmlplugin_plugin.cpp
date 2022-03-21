@@ -255,7 +255,6 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "ToolButton");
     dtkRegisterType(uri, controlsUri, 1, 0, "IconButton");
     dtkRegisterType(uri, controlsUri, 1, 0, "FloatingButton");
-    dtkRegisterType(uri, controlsUri, 1, 0, "ButtonBoxButton");
     dtkRegisterType(uri, controlsUri, 1, 0, "ButtonBox");
     dtkRegisterType(uri, controlsUri, 1, 0, "TitleBar");
     dtkRegisterType(uri, controlsUri, 1, 0, "DialogTitleBar");
@@ -328,6 +327,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "ProgressBar");
     dtkRegisterType(uri, controlsUri, 1, 0, "BoxPanel");
     dtkRegisterType(uri, controlsUri, 1, 0, "KeySequenceEdit");
+    dtkRegisterType(uri, controlsUri, 1, 0, "ButtonIndicator");
     // for org.deepin.dtk.style(allowed to override)
     dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");
 
