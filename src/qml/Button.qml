@@ -40,6 +40,7 @@ T.Button {
     D.DciIcon.mode: D.ColorSelector.controlState
     D.DciIcon.theme: D.ColorSelector.controlTheme
     D.DciIcon.palette: D.DTK.makeIconPalette(palette)
+    palette.windowText: D.ColorSelector.textColor
     icon {
         width: DS.Style.button.iconSize
         height: DS.Style.button.iconSize
@@ -52,13 +53,33 @@ T.Button {
         button: control
     }
 
-    contentItem: D.IconLabel {
-        spacing: control.spacing
-        mirrored: control.mirrored
-        display: control.display
-        text: control.text
-        font: control.font
-        color: control.D.ColorSelector.textColor
-        icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
+    contentItem: Item {
+        implicitWidth: content.implicitWidth + (indicator ? indicator.width : 0)
+        implicitHeight: content.implicitHeight
+        D.IconLabel {
+            id: content
+            height: parent.height
+            width: parent.width - (indicator ? indicator.width : 0)
+            spacing: control.spacing
+            mirrored: control.mirrored
+            display: control.display
+            alignment: indicator ? Qt.AlignLeft | Qt.AlignVCenter : Qt.AlignCenter
+            text: control.text
+            font: control.font
+            color: control.D.ColorSelector.textColor
+            icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
+         }
+        function updateIndicatorAnchors()
+        {
+            if (!indicator)
+                return
+
+            indicator.anchors.verticalCenter = control.verticalCenter
+            indicator.anchors.right = control.right
+        }
+        Component.onCompleted: {
+            updateIndicatorAnchors()
+            control.indicatorChanged.connect(updateIndicatorAnchors)
+        }
     }
 }

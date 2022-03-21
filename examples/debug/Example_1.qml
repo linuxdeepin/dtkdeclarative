@@ -162,14 +162,14 @@ Rectangle {
         anchors.top: parent.top // @disable-check M16
         anchors.topMargin: 20  // @disable-check M16
 
-        ButtonBoxButton {
-            icon.name: "go-previous"; checked: true // @disable-check M16
+        ToolButton {
+            checkable: true; icon.name: "go-previous"; checked: true // @disable-check M16
         }
-        ButtonBoxButton {
-            icon.name: "go-down" // @disable-check M16
+        ToolButton {
+            checkable: true; icon.name: "go-down" // @disable-check M16
         }
-        ButtonBoxButton {
-            icon.name: "go-next" // @disable-check M16
+        ToolButton {
+            checkable: true; icon.name: "go-next" // @disable-check M16
         }
     }
 

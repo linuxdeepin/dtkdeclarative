@@ -518,8 +518,6 @@ QtObject {
     property QtObject buttonBox: QtObject {
         property int width: 80
         property int height: 36
-        property int buttonWidth: 30
-        property int buttonHeight: 30
         property int padding: 3
         property int spacing: 6
     }
@@ -537,6 +535,21 @@ QtObject {
         property int paddingFactor: 16
         property D.Palette fillColor: D.Palette {
             normal: D.DTK.makeColor(D.Color.Highlight)
+        }
+    }
+
+    property QtObject toolButton: QtObject {
+        property int width: 36
+        property int height: 36
+        property int iconSize: 14
+        property int indicatorRightMargin: 6
+    }
+
+    property QtObject buttonIndicator: QtObject {
+        property int size: 16
+        property int iconSize: 12
+        property D.Palette background: D.Palette {
+            normal: Qt.rgba(1, 1, 1, 0.2)
             normalDark: "#ffffff"
         }
     }

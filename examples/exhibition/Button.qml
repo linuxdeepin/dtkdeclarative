@@ -268,14 +268,21 @@ Column {
                 width: 80
                 text: "复制"
                 ColorSelector.family: Palette.CrystalColor
-                icon.name: "folder-copy"
+                icon {
+                    name: "action_copy"
+                    width: 16
+                    height: 16
+                }
             }
             Button {
                 width: 80
                 text: "复制"
                 ColorSelector.family: Palette.CrystalColor
-                icon.name: "folder-copy"
-                display: IconLabel.IconBesideText
+                icon {
+                    name: "action_copy"
+                    width: 16
+                    height: 16
+                }
                 ColorSelector.hovered: true
                 ColorSelector.pressed: false
                 ColorSelector.disabled: false
@@ -284,8 +291,11 @@ Column {
                 width: 80
                 text: "复制"
                 ColorSelector.family: Palette.CrystalColor
-                icon.name: "folder-copy"
-                display: IconLabel.IconBesideText
+                icon {
+                    name: "action_copy"
+                    width: 16
+                    height: 16
+                }
                 ColorSelector.hovered: false
                 ColorSelector.pressed: true
                 ColorSelector.disabled: false
@@ -294,7 +304,11 @@ Column {
                 width: 80
                 text: "复制"
                 ColorSelector.family: Palette.CrystalColor
-                icon.name: "folder-copy"
+                icon {
+                    name: "action_copy"
+                    width: 16
+                    height: 16
+                }
                 checked: true
             }
         }
@@ -309,20 +323,18 @@ Column {
                 spacing: 0
                 text: "复制"
                 ColorSelector.family: Palette.CrystalColor
-                icon.name: "combobox_arrow"
-                icon.width: 16
-                icon.height: 16
-                display: IconLabel.IconBesideText
+                indicator: ButtonIndicator {
+                    color: "transparent"
+                }
             }
             Button {
                 width: 60
                 spacing: 0
                 text: "复制"
                 ColorSelector.family: Palette.CrystalColor
-                icon.name: "combobox_arrow"
-                icon.width: 16
-                icon.height: 16
-                display: IconLabel.IconBesideText
+                indicator: ButtonIndicator {
+                    color: "transparent"
+                }
                 ColorSelector.hovered: true
                 ColorSelector.pressed: false
                 ColorSelector.disabled: false
@@ -332,10 +344,9 @@ Column {
                 spacing: 0
                 text: "复制"
                 ColorSelector.family: Palette.CrystalColor
-                icon.name: "combobox_arrow"
-                icon.width: 16
-                icon.height: 16
-                display: IconLabel.IconBesideText
+                indicator: ButtonIndicator {
+                    color: "transparent"
+                }
                 ColorSelector.hovered: false
                 ColorSelector.pressed: true
                 ColorSelector.disabled: false
@@ -501,27 +512,113 @@ Column {
         Item {width: parent.width; height: 1}
 
         Row {
+            spacing: 20
+            ToolButton { icon.name: "action_search" }
+            ToolButton { icon.name: "action_search"; ColorSelector.hovered: true }
+            ToolButton { icon.name: "action_search"; ColorSelector.pressed: true }
+            ToolButton { icon.name: "action_search"; checked: true }
+        }
+        Item {width: 50; height: 1}
+        Row {
+            spacing: 20
+            ToolButton { icon.name: "action_newfolder" }
+            ToolButton { icon.name: "action_newfolder"; ColorSelector.hovered: true }
+            ToolButton { icon.name: "action_newfolder"; ColorSelector.pressed: true }
+            ToolButton { icon.name: "action_newfolder"; checked: true }
+        }
+        Item {width: 50; height: 1}
+        Row {
+            spacing: 20
+            ToolButton { icon.name: "action_edit" }
+            ToolButton { icon.name: "action_edit"; ColorSelector.hovered: true }
+            ToolButton { icon.name: "action_edit"; ColorSelector.pressed: true }
+            ToolButton { icon.name: "action_edit"; checked: true }
+        }
+        Item {width: 50; height: 1}
+        ButtonBox {
+            ToolButton { icon.name: "search" }
+            ToolButton { icon.name: "search"; checked: true }
+            ToolButton { icon.name: "search" }
+            ToolButton { icon.name: "search" }
+            ToolButton { icon.name: "search" }
+            ToolButton { icon.name: "search" }
+        }
+
+        Item {width: parent.width; height: 1}
+
+        Row {
+            spacing: 20
+            ToolButton { icon.name: "action_copy" ;text: "复制" }
+            ToolButton { icon.name: "action_copy" ;text: "复制"; ColorSelector.hovered: true}
+            ToolButton { icon.name: "action_copy" ;text: "复制"; ColorSelector.pressed: true}
+            ToolButton { icon.name: "action_copy" ;text: "复制"; checked: true}
+        }
+        Item {width: 50; height: 1}
+        Row {
+            spacing: 20
+            ToolButton { icon.name: "action_setting" ;text: "设置" }
+            ToolButton { icon.name: "action_setting" ;text: "设置"; ColorSelector.hovered: true}
+            ToolButton { icon.name: "action_setting" ;text: "设置"; ColorSelector.pressed: true}
+            ToolButton { icon.name: "action_setting" ;text: "设置"; checked: true}
+        }
+        Item {width: 50; height: 1}
+        Row {
+            spacing: 20
+            ToolButton { icon.name: "action_newfolder" ;text: "文件夹" }
+            ToolButton { icon.name: "action_newfolder" ;text: "文件夹"; ColorSelector.hovered: true}
+            ToolButton { icon.name: "action_newfolder" ;text: "文件夹"; ColorSelector.pressed: true}
+            ToolButton { icon.name: "action_newfolder" ;text: "文件夹"; checked: true}
+        }
+        Item {width: 50; height: 1}
+        ButtonBox {
+            ToolButton { icon.name: "action_newfolder"; text: "文件夹"; ColorSelector.hovered: true }
+            ToolButton { icon.name: "action_copy"; text: "复制" }
+            ToolButton { icon.name: "action_share"; text: "分享" }
+            ToolButton { icon.name: "action_compress"; text: "压缩" }
+        }
+
+        Item {width: parent.width; height: 1}
+
+        ToolButton {
+            icon.name: "action_newfolder"
+            indicator: ButtonIndicator { }
+        }
+        ToolButton {
+            id: control
+            icon.name: "action_newfolder"
+            ColorSelector.hovered: true
+            indicator: ButtonIndicator { }
+        }
+        ToolButton {
+            icon.name: "action_newfolder"
+            ColorSelector.pressed: true
+            indicator: ButtonIndicator { }
+        }
+
+        Item {width: parent.width; height: 1}
+
+        Row {
             spacing: 30
             ButtonBox {
-                ButtonBoxButton { text: "日" ; checked: true}
-                ButtonBoxButton { text: "周" }
-                ButtonBoxButton { text: "月" }
-                ButtonBoxButton { text: "年" }
+                ToolButton { checkable: true; text: "日" ; checked: true}
+                ToolButton { checkable: true; text: "周" }
+                ToolButton { checkable: true; text: "月" }
+                ToolButton { checkable: true; text: "年" }
             }
 
             ButtonBox {
-                ButtonBoxButton { width: 50; text: "日"}
-                ButtonBoxButton { width: 50; text: "周"; checked: true}
-                ButtonBoxButton {
-                    width: 50; text: "月"
+                ToolButton { checkable: true; width: 50; text: "日"}
+                ToolButton { checkable: true; width: 50; text: "周"; checked: true}
+                ToolButton {
+                    checkable: true; width: 50; text: "月"
                     ColorSelector.hovered: true
                 }
-                ButtonBoxButton { width: 50; text: "年"}
+                ToolButton { checkable: true;width: 50; text: "年"}
             }
 
             ButtonBox {
-                ButtonBoxButton { width: 50; text: "设置"}
-                ButtonBoxButton { width: 100; text: "更新设置"; checked: true}
+                ToolButton { checkable: true; width: 50; text: "设置"}
+                ToolButton { checkable: true; width: 100; text: "更新设置"; checked: true}
             }
         }
     }

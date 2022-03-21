@@ -5,7 +5,6 @@
         <file>qml/ControlBackground.qml</file>
         <file>qml/PasswordEdit.qml</file>
         <file>qml/ButtonBox.qml</file>
-        <file>qml/ButtonBoxButton.qml</file>
         <file>qml/FloatingButton.qml</file>
         <file>qml/IconButton.qml</file>
         <file>qml/RecommandButton.qml</file>
@@ -114,5 +113,6 @@
         <file>qml/Pane.qml</file>
         <file>qml/KeySequenceEdit.qml</file>
         <file>qml/private/KeySequenceLabel.qml</file>
+        <file>qml/ButtonIndicator.qml</file>
     </qresource>
 </RCC>
