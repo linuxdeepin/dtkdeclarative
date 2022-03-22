@@ -56,11 +56,14 @@ T.CheckBox {
             fallbackToQIcon: false
         }
 
-        FocusBoxBorder {
+        D.DciIcon {
             visible: control.activeFocus
-            color: control.palette.highlight
-            radius: DS.Style.checkBox.focusRadius
-            anchors.fill: parent
+            palette: control.D.DTK.makeIconPalette(control.palette)
+            mode: control.D.ColorSelector.controlState
+            theme: control.D.ColorSelector.controlTheme
+            name: control.checkState === Qt.Checked ? "checkbox_focus_checked" : "checkbox_focus"
+            sourceSize: Qt.size(control.icon.width, control.icon.height)
+            fallbackToQIcon: false
         }
     }
 

@@ -523,4 +523,12 @@ QtObject {
         property int padding: 3
         property int spacing: 6
     }
+
+    property QtObject radioButton: QtObject {
+        property int indicatorSize: 16
+        property int iconSize: 16
+        property int spacing: 8
+        property int topPadding: 12
+        property int bottomPadding: 12
+    }
 }

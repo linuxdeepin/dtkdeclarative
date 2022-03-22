@@ -386,6 +386,25 @@ Column {
             enabled: false
         }
 
+        Row {
+            spacing: 20
+            RadioButton {
+                autoExclusive: false
+            }
+            RadioButton {
+                autoExclusive: false
+                ColorSelector.hovered: true
+            }
+            RadioButton {
+                autoExclusive: false
+                ColorSelector.pressed: true
+            }
+            RadioButton {
+                autoExclusive: false
+                enabled: false
+            }
+        }
+
         Item {width: parent.width; height: 1}
 
         CheckBox {
@@ -402,6 +421,29 @@ Column {
         CheckBox {
             checked: true
             enabled: false
+        }
+
+        Row {
+            spacing: 20
+            RadioButton {
+                autoExclusive: false
+                checked: true
+            }
+            RadioButton {
+                autoExclusive: false
+                checked: true
+                ColorSelector.hovered: true
+            }
+            RadioButton {
+                autoExclusive: false
+                checked: true
+                ColorSelector.pressed: true
+            }
+            RadioButton {
+                autoExclusive: false
+                checked: true
+                enabled: false
+            }
         }
 
         Item {width: parent.width; height: 1}
@@ -423,6 +465,10 @@ Column {
         }
         CheckBox {
             text: "复选按钮选项"
+        }
+
+        RadioButton {
+            text: "单选按钮选项"
         }
 
         Item {width: parent.width; height: 1}
