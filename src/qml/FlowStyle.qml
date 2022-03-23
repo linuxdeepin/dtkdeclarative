@@ -428,6 +428,8 @@ QtObject {
         property int tickRadius: 8
         property int highlightMargin: -4
         property int tickTextMargin: 2
+        property int tipHPadding: 10
+        property int tipVPadding: 2
     }
 
     property QtObject scrollBar: QtObject {

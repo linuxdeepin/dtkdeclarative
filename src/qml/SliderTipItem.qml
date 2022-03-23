@@ -30,11 +30,13 @@ Control {
     property int textHorizontalAlignment: Text.AlignHCenter
     readonly property int direction: parent.parent.tickDirection
     readonly property bool horizontal: parent.parent.children[0].horizontal
+    property bool highlight
 
     property D.Palette tickColor: DS.Style.sliderTick
+    property D.Palette textColor: highlight ? DS.Style.checkedButtonText: DS.Style.buttonText
 
-    implicitWidth: horizontal ? DS.Style.slider.tickWidth : __rect.width + __label.width
-    implicitHeight: horizontal ? __rect.height + __label.height : DS.Style.slider.tickWidth
+    implicitWidth: horizontal ? DS.Style.slider.tickWidth : __rect.width + (__label.visible ? __label.width: 0)
+    implicitHeight: horizontal ? __rect.height + (__label.visible ? __label.height : 0) : DS.Style.slider.tickWidth
 
     Rectangle {
         id: __rect
@@ -48,6 +50,7 @@ Control {
 
     Label {
         id: __label
+        visible: text
         anchors {
             top: horizontal ? (TipsSlider.TickDirection.Back === direction ? __rect.bottom : undefined) : undefined
             bottom: horizontal ? (TipsSlider.TickDirection.Front === direction ? __rect.top : undefined) : undefined
@@ -56,9 +59,15 @@ Control {
             horizontalCenter: horizontal && Text.AlignHCenter === textHorizontalAlignment ? __rect.horizontalCenter : undefined
             verticalCenter: horizontal ? undefined : __rect.verticalCenter
         }
-        width: text ? implicitWidth : 0
-        height: text ? implicitHeight : 0
+        rightPadding: DS.Style.slider.tipHPadding
+        leftPadding: DS.Style.slider.tipHPadding
+        topPadding: DS.Style.slider.tipVPadding
+        bottomPadding: DS.Style.slider.tipVPadding
         horizontalAlignment: textHorizontalAlignment
         verticalAlignment: Text.AlignVCenter
+        palette.windowText: control.D.ColorSelector.textColor
+        background: HighlightPanel {
+            visible: highlight
+        }
     }
 }
