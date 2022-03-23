@@ -34,9 +34,12 @@ const char *CornerColorShader::vertexShader() const
     return "uniform highp mat4 qt_Matrix;                      \n"
            "attribute highp vec4 qt_VertexPosition;            \n"
            "attribute highp vec2 qt_VertexTexCoord;            \n"
+           "attribute highp vec4 vertexColor;                  \n"
            "varying highp vec2 qt_TexCoord;                    \n"
+           "varying lowp vec4 color;                           \n"
            "void main() {                                      \n"
            "    qt_TexCoord = qt_VertexTexCoord;               \n"
+           "    color = vertexColor;                           \n"
            "    gl_Position = qt_Matrix * qt_VertexPosition;   \n"
            "}";
 }
@@ -44,7 +47,7 @@ const char *CornerColorShader::vertexShader() const
 const char *CornerColorShader::fragmentShader() const
 {
     return "varying highp vec2 qt_TexCoord;                                               \n"
-           "uniform vec4 color;                                                           \n"
+           "varying lowp vec4 color;                                                      \n"
            "uniform lowp float qt_Opacity;                                                \n"
            "uniform sampler2D qt_Texture;                                                 \n"
            "void main() {                                                                 \n"
@@ -57,6 +60,7 @@ const char * const *CornerColorShader::attributeNames() const
     static const char *attributes[] = {
         "qt_VertexPosition",
         "qt_VertexTexCoord",
+        "vertexColor",
         nullptr
     };
     return attributes;
@@ -72,8 +76,6 @@ void CornerColorShader::updateState(const QSGMaterialShader::RenderState &state,
     if (state.isOpacityDirty()) {
         program->setUniformValue(m_idQtOpacity, state.opacity());
     }
-
-    program->setUniformValue("color", newSurface->color());
 }
 
 void CornerColorShader::initialize()
@@ -110,7 +112,7 @@ int CornerColorMaterial::compare(const QSGMaterial *other) const
 
 DRectangleNode::DRectangleNode()
     : m_geometry(QSGGeometry::defaultAttributes_ColoredPoint2D(), 8)
-    , m_cornerGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 0)
+    , m_maskTexture(nullptr)
 {
     setGeometry(&m_geometry);
     setMaterial(&m_material);
@@ -125,19 +127,21 @@ void DRectangleNode::setRect(const QRectF &r)
     if (m_rect == r)
         return;
 
-    m_geometryChanged |= true;
+    m_geometryChanged = true;
     m_rect = r;
 }
 
 void DRectangleNode::setRadius(qreal radius)
 {
-    qreal cornorRadius = m_cornerMaterial.radius();
-    m_geometryChanged = !qFuzzyCompare(cornorRadius, radius);
+    if (qFuzzyCompare(m_radius, radius))
+        return;
 
-    if (m_geometryChanged)
-        m_cornerMaterial.setRadius(std::min({rect().width() / 2.0, rect().height() / 2.0, radius}));
+    m_radius = std::min({rect().width() / 2.0, rect().height() / 2.0, radius});
+    m_cornerMaterial.setRadius(m_radius);
+    m_cornerMaterial.setColor(color());
+    m_geometryChanged = true;
 
-    const bool needCornerNode = radius > 0;
+    const bool needCornerNode = m_radius > 0;
     const bool existsCornerNode = childCount() > 0;
     if (needCornerNode == existsCornerNode)
         return;
@@ -147,33 +151,33 @@ void DRectangleNode::setRadius(qreal radius)
     } else {
         removeChildNode(&m_cornerNode);
     }
-
     m_cornerNode.markDirty(DirtyMaterial);
 }
 
 void DRectangleNode::setColor(const QColor &color)
 {
-    if (m_cornerMaterial.color() == color)
+    if (color == m_color)
         return;
 
+    m_color = color;
     m_cornerMaterial.setColor(color);
-    markDirty(DirtyMaterial);
-    m_cornerNode.markDirty(DirtyMaterial);
+    m_geometryChanged = true;
 }
 
 void DRectangleNode::setMakTexture(QSGTexture *texture)
 {
-    if (m_cornerMaterial.texture() == texture)
+    if (texture == m_maskTexture)
         return;
 
-    texture->setFiltering(QSGTexture::Linear);
-    texture->setVerticalWrapMode(QSGTexture::ClampToEdge);
-    texture->setHorizontalWrapMode(QSGTexture::ClampToEdge);
-    if (!texture->hasAlphaChannel())
+    m_maskTexture = texture;
+    m_maskTexture->setFiltering(QSGTexture::Linear);
+    m_maskTexture->setVerticalWrapMode(QSGTexture::ClampToEdge);
+    m_maskTexture->setHorizontalWrapMode(QSGTexture::ClampToEdge);
+    if (!m_maskTexture->hasAlphaChannel())
         qWarning() << "The mask material does not contain an alpha channel";
 
-    m_cornerMaterial.setTexture(texture);
-    m_cornerNode.markDirty(DirtyMaterial);
+    m_cornerMaterial.setTexture(m_maskTexture);
+    m_geometryChanged = true;
 }
 
 void DRectangleNode::setCorners(DQuickRectangle::Corners corners)
@@ -181,7 +185,7 @@ void DRectangleNode::setCorners(DQuickRectangle::Corners corners)
     if (m_coners == corners)
         return;
 
-    m_geometryChanged |= true;
+    m_geometryChanged = true;
     m_coners = corners;
 }
 
@@ -195,7 +199,7 @@ void DRectangleNode::update()
 
 void DRectangleNode::updateGeometry()
 {
-    qreal cornorRadius = m_cornerMaterial.radius();
+    qreal cornorRadius = m_radius;
     uchar r = uchar(qRound(color().redF() * color().alphaF() * 255));
     uchar g = uchar(qRound(color().greenF() * color().alphaF() * 255));
     uchar b = uchar(qRound(color().blueF() * color().alphaF() * 255));
@@ -254,7 +258,7 @@ void DRectangleNode::updateGeometry()
             num += 3;
 
         m_cornerGeometry.allocate(num);
-        QSGGeometry::TexturedPoint2D *corners = m_cornerGeometry.vertexDataAsTexturedPoint2D();
+        ColoredCornerPoint2D *corners = static_cast<ColoredCornerPoint2D *>(m_cornerGeometry.vertexData());
         int vertexNum = 0;
         // Bottom left
         //      (1)*
@@ -263,9 +267,9 @@ void DRectangleNode::updateGeometry()
         //         *   *
         //      (0)******(2)
         if (bottomLeft) {
-            corners[0].set(outerL, outerB, 0, 0);
-            corners[1].set(outerL, innerB, 0, 1);
-            corners[2].set(innerL, outerB, 1, 0);
+            corners[0].set(outerL, outerB, 0, 0, r, g, b, a);
+            corners[1].set(outerL, innerB, 0, 1, r, g, b, a);
+            corners[2].set(innerL, outerB, 1, 0, r, g, b, a);
             vertexNum += 3;
         }
 
@@ -276,9 +280,9 @@ void DRectangleNode::updateGeometry()
         //         **
         //         *(4)
         if (topLeft) {
-            corners[vertexNum + 0].set(outerL, outerT, 0, 0);
-            corners[vertexNum + 1].set(outerL, innerT, 0, 1);
-            corners[vertexNum + 2].set(innerL, outerT, 1, 0);
+            corners[vertexNum + 0].set(outerL, outerT, 0, 0, r, g, b, a);
+            corners[vertexNum + 1].set(outerL, innerT, 0, 1, r, g, b, a);
+            corners[vertexNum + 2].set(innerL, outerT, 1, 0, r, g, b, a);
             vertexNum += 3;
         }
 
@@ -289,9 +293,9 @@ void DRectangleNode::updateGeometry()
         //            *  *
         //        (8)*****(6)
         if (bottomRight) {
-            corners[vertexNum + 0].set(outerR, outerB, 0, 0);
-            corners[vertexNum + 1].set(outerR, innerB, 0, 1);
-            corners[vertexNum + 2].set(innerR, outerB, 1, 0);
+            corners[vertexNum + 0].set(outerR, outerB, 0, 0, r, g, b, a);
+            corners[vertexNum + 1].set(outerR, innerB, 0, 1, r, g, b, a);
+            corners[vertexNum + 2].set(innerR, outerB, 1, 0, r, g, b, a);
             vertexNum += 3;
         }
 
@@ -302,9 +306,9 @@ void DRectangleNode::updateGeometry()
         //            **
         //             *(10)
         if (topRight) {
-            corners[vertexNum + 0].set(outerR, outerT, 0, 0);
-            corners[vertexNum + 1].set(outerR, innerT, 0, 1);
-            corners[vertexNum + 2].set(innerR, outerT, 1, 0);
+            corners[vertexNum + 0].set(outerR, outerT, 0, 0, r, g, b, a);
+            corners[vertexNum + 1].set(outerR, innerT, 0, 1, r, g, b, a);
+            corners[vertexNum + 2].set(innerR, outerT, 1, 0, r, g, b, a);
         }
 
         m_cornerNode.markDirty(DirtyGeometry);

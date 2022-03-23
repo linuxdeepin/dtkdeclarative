@@ -55,7 +55,6 @@ class CornerColorMaterial : public QSGOpaqueTextureMaterial
 public:
     CornerColorMaterial();
 
-    qreal radius() const { return m_radius; }
     void setRadius(qreal radius) { m_radius = radius; }
 
     QColor color() const { return  m_color; }
@@ -71,6 +70,21 @@ private:
     QColor m_color;
 };
 
+struct ColoredCornerPoint2D
+{
+    float m_x;
+    float m_y;
+    float m_tx;
+    float m_ty;
+    unsigned char r, g, b, a;
+    void set(float x, float y, float tx, float ty, uchar nr, uchar ng, uchar nb, uchar na)
+    {
+        m_x = x; m_y = y;
+        m_tx = tx; m_ty = ty;
+        r = nr; g = ng; b = nb; a = na;
+    }
+};
+
 class DRectangleNode : public QSGRectangleNode
 {
 public:
@@ -80,7 +94,7 @@ public:
     QRectF rect() const override { return m_rect; }
     void setRadius(qreal radius);
     void setColor(const QColor &color) override;
-    QColor color() const override { return m_cornerMaterial.color(); }
+    QColor color() const override { return m_color; }
     void setMakTexture(QSGTexture *texture);
     void setCorners(DQuickRectangle::Corners);
     void update();
@@ -89,16 +103,31 @@ protected:
     void updateGeometry();
 
 private:
+    const QSGGeometry::AttributeSet &ColoredCornerAttributes()
+    {
+        static QSGGeometry::Attribute data[] = {
+            QSGGeometry::Attribute::create(0, 2, GL_FLOAT, true),
+            QSGGeometry::Attribute::create(1, 2, GL_FLOAT),
+            QSGGeometry::Attribute::create(2, 4, GL_UNSIGNED_BYTE)
+        };
+        static QSGGeometry::AttributeSet attributes = { 3, sizeof(ColoredCornerPoint2D), data };
+        return attributes;
+    }
+
+private:
     QSGVertexColorMaterial m_material;
     QSGGeometry m_geometry;
 
     CornerColorMaterial m_cornerMaterial;
-    QSGGeometry m_cornerGeometry;
+    QSGGeometry m_cornerGeometry { ColoredCornerAttributes(), 0 };
     QSGGeometryNode m_cornerNode;
 
     QRectF m_rect;
     bool m_geometryChanged;
     DQuickRectangle::Corners m_coners;
+    qreal m_radius;
+    QColor m_color;
+    QSGTexture *m_maskTexture;
 };
 
 class DSoftRectangleNode : public QSGRenderNode
