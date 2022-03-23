@@ -35,8 +35,9 @@ class Q_DECL_HIDDEN MaskTextureCache {
 public:
     class Texture : public QSharedData {
     public:
-        Texture(QSGTexture *t)
-            : texture(t)
+        Texture(QSGTexture *t, const qint8 key)
+            : cacheKey(key)
+            , texture(t)
         {
             MaskTextureCache::instance()->m_cache[cacheKey] = this;
         }
@@ -93,7 +94,7 @@ public:
             pa.fillPath(path, maskColor);
             pa.end();
 
-            texture = new Texture(context->createTexture(mask));
+            texture = new Texture(context->createTexture(mask), to_cache_key_key);
             texture->texture->setFiltering(QSGTexture::Nearest);
             texture->texture->setVerticalWrapMode(QSGTexture::ClampToEdge);
             texture->texture->setHorizontalWrapMode(QSGTexture::ClampToEdge);
