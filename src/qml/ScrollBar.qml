@@ -89,6 +89,7 @@ T.ScrollBar {
         BoxShadow {
             anchors.fill: backgroundRect
             shadowColor: DS.Style.scrollBar.outerShadowColor
+            shadowBlur: 1
             spread: 1
             cornerRadius: backgroundRect.radius
             hollow: true
@@ -106,6 +107,7 @@ T.ScrollBar {
         BoxInsetShadow {
             anchors.fill: backgroundRect
             shadowColor: DS.Style.scrollBar.innerShadowColor
+            shadowBlur: 1
             spread: 1
             cornerRadius: backgroundRect.radius
         }

@@ -434,16 +434,16 @@ QtObject {
 
     property QtObject scrollBar: QtObject {
         property int padding: 2
-        property int width: 6
+        property int width: 4
         property int activeWidth: 12
         property color lightBackground: "black"
         property color darkBackground: "black"
         property color innerShadowColor: Qt.rgba(0, 0, 0, 0.5)
         property color outerShadowColor: Qt.rgba(1, 1, 1, 0.1)
         property real hideOpacity: 0.0
-        property real normalOpacity: 0.4
+        property real normalOpacity: 0.5
         property real hoverOpacity: 0.7
-        property real activeOpacity: 0.5
+        property real activeOpacity: 0.4
         property int hidePauseDuration: 450
         property int hideDuration: 1500
     }
@@ -530,5 +530,14 @@ QtObject {
         property int spacing: 8
         property int topPadding: 12
         property int bottomPadding: 12
+    }
+
+    property QtObject busyIndicator: QtObject {
+        property int size: 16
+        property int paddingFactor: 16
+        property D.Palette fillColor: D.Palette {
+            normal: D.DTK.makeColor(D.Color.Highlight)
+            normalDark: "#ffffff"
+        }
     }
 }

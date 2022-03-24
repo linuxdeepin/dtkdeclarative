@@ -40,7 +40,7 @@ public:
 public Q_SLOTS:
     void maybeRotate();
     void maybeUpdate();
-    void setFill(const QColor &fill);
+    void setFillColor(const QColor &color);
 
 private:
     int updateIndicatorColors(const QColor &fill);
@@ -56,27 +56,30 @@ private:
 class DQuickBusyIndicator : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(QColor fill READ fill WRITE setFill FINAL)
+    Q_PROPERTY(QColor fillColor READ fillColor WRITE setFillColor NOTIFY fillColorChanged)
     Q_PROPERTY(bool running READ isRunning WRITE setRunning)
 
 public:
     explicit DQuickBusyIndicator(QQuickItem *parent = nullptr);
 
-    QColor fill() const;
+    QColor fillColor() const;
     bool isRunning() const;
 
 public Q_SLOTS:
-    void setFill(const QColor &fill);
+    void setFillColor(const QColor &color);
     void setRunning(bool running);
 
 protected:
     void itemChange(ItemChange change, const ItemChangeData &data) override;
     QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) override;
 
+Q_SIGNALS:
+    void fillColorChanged();
+
 private:
-    QColor m_fill;
+    QColor m_fillColor;
     bool m_isRunning;
-    bool m_fillIsChanged;
+    bool m_fillColorIsChanged;
 };
 
 DQUICK_END_NAMESPACE

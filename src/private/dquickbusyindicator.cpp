@@ -48,7 +48,7 @@ DQuickBusyIndicatorNode::DQuickBusyIndicatorNode(DQuickBusyIndicator *item)
     connect(item->window(), &QQuickWindow::beforeRendering, this, &DQuickBusyIndicatorNode::maybeRotate, Qt::DirectConnection);
     connect(item->window(), &QQuickWindow::frameSwapped, this, &DQuickBusyIndicatorNode::maybeUpdate, Qt::DirectConnection);
 
-    int totalCircleCount = updateIndicatorColors(item->fill());
+    int totalCircleCount = updateIndicatorColors(item->fillColor());
     // 为每个 indicator 创建一个 QSGTransformNode
     for (int i = 0; i < totalCircleCount; ++i) {
         QSGTransformNode *transformNode = new QSGTransformNode;
@@ -135,9 +135,9 @@ void DQuickBusyIndicatorNode::maybeUpdate()
         m_window->update();
 }
 
-void DQuickBusyIndicatorNode::setFill(const QColor &fill)
+void DQuickBusyIndicatorNode::setFillColor(const QColor &color)
 {
-    updateIndicatorColors(fill);
+    updateIndicatorColors(color);
 }
 
 int DQuickBusyIndicatorNode::updateIndicatorColors(const QColor &fill)
@@ -155,24 +155,25 @@ int DQuickBusyIndicatorNode::updateIndicatorColors(const QColor &fill)
 
 DQuickBusyIndicator::DQuickBusyIndicator(QQuickItem *parent)
     : QQuickItem(parent)
-    , m_fill(QColor::fromRgb(TransparentColor))
+    , m_fillColor(QColor::fromRgb(TransparentColor))
     , m_isRunning(false)
 {
     setFlag(ItemHasContents);
 }
 
-QColor DQuickBusyIndicator::fill() const
+QColor DQuickBusyIndicator::fillColor() const
 {
-    return m_fill;
+    return m_fillColor;
 }
 
-void DQuickBusyIndicator::setFill(const QColor &fill)
+void DQuickBusyIndicator::setFillColor(const QColor &color)
 {
-    if (fill == m_fill)
+    if (color == m_fillColor)
         return;
 
-    m_fill = fill;
-    m_fillIsChanged = true;
+    m_fillColor = color;
+    m_fillColorIsChanged = true;
+    Q_EMIT fillColorChanged();
     update();
 }
 
@@ -209,12 +210,12 @@ QSGNode *DQuickBusyIndicator::updatePaintNode(QSGNode *oldNode, QQuickItem::Upda
     if (width() > 0 && height() > 0) {
         if (!node) {
             node = new DQuickBusyIndicatorNode(this);
-            m_fillIsChanged = false;
+            m_fillColorIsChanged = false;
         }
 
-        if (m_fillIsChanged) {
-            node->setFill(m_fill);
-            m_fillIsChanged = false;
+        if (m_fillColorIsChanged) {
+            node->setFillColor(m_fillColor);
+            m_fillColorIsChanged = false;
         }
 
         node->setSpinning(m_isRunning);
