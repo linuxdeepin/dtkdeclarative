@@ -15,5 +15,7 @@
         <file>Popup.qml</file>
         <file>Slider.qml</file>
         <file>Mask.qml</file>
+        <file>ScrollBar.qml</file>
+        <file>Spinner.qml</file>
     </qresource>
 </RCC>

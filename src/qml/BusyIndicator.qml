@@ -22,22 +22,20 @@
 import QtQuick 2.11
 import QtQuick.Templates 2.4 as T
 import org.deepin.dtk.impl 1.0 as D
-import "PixelMetric.js" as PM
+import org.deepin.dtk.style 1.0 as DS
 
 T.BusyIndicator {
     id: control
 
-    implicitWidth: contentItem.implicitWidth + leftPadding + rightPadding
-    implicitHeight: contentItem.implicitHeight + topPadding + bottomPadding
+    property D.Palette fillColor: DS.Style.busyIndicator.fillColor
 
-    padding: PM.ControlPadding
-
+    implicitWidth: DS.Style.busyIndicator.size
+    implicitHeight: implicitWidth
+    padding: width / DS.Style.busyIndicator.paddingFactor
     contentItem: D.BusyIndicator {
-        implicitWidth: PM.BusyIndicator_ItemWidth
-        implicitHeight: PM.BusyIndicator_ItemHeight
-        anchors.fill: parent
-
-        fill: control.palette.highlight
+        implicitWidth: DS.Style.busyIndicator.size
+        implicitHeight: implicitWidth
+        fillColor: control.D.ColorSelector.fillColor
         running: control.running
     }
 }
