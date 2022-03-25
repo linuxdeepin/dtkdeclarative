@@ -21,5 +21,6 @@
         <file>SideBar.qml</file>
         <file>KeySequenceEdit.qml</file>
         <file>ToolBar.qml</file>
+        <file>Dialog.qml</file>
     </qresource>
 </RCC>

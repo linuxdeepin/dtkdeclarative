@@ -25,5 +25,14 @@
         <file>assets/toolbar/toolbar-3.svg</file>
         <file>assets/toolbar/toolbar-4.png</file>
         <file>assets/toolbar/toolbar-4-2.png</file>
+        <file>assets/dialog/Authorized-Light.svg</file>
+        <file>assets/dialog/dialog-1.svg</file>
+        <file>assets/dialog/dialog-2.svg</file>
+        <file>assets/dialog/Notify-Light.svg</file>
+        <file>assets/dialog/Notify-with2Buttons-Light.svg</file>
+        <file>assets/dialog/Notify-withMSG-Light.svg</file>
+        <file>assets/dialog/Warning-Light.svg</file>
+        <file>assets/dialog/Wifi-Connection-Light.svg</file>
+        <file>assets/dialog/About-Light.svg</file>
     </qresource>
 </RCC>

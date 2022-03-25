@@ -600,4 +600,20 @@ QtObject {
             normal: Qt.rgba(0, 0, 0, 0.3)
         }
     }
+
+    property QtObject dialogWindow: QtObject {
+        property int width: 380
+        property int height: 120
+        property int contentHMargin: 10
+        property int footerMargin: 10
+        property int titleBarHeight: 45
+        property int iconSize: 32
+    }
+
+    property QtObject aboutDialog: QtObject {
+        property int width: 200
+        property int height: 380
+        property int topPadding: 20
+        property int bottomPadding: 10
+    }
 }

@@ -23,18 +23,19 @@ import QtQuick 2.11
 import QtQuick.Window 2.11
 import QtQuick.Layouts 1.11
 import org.deepin.dtk.impl 1.0 as D
-import "PixelMetric.js" as PM
+import org.deepin.dtk.style 1.0 as DS
 
 Control {
     id: control
     z: D.DTK.TopOrder
     width: Window.window.width
-    height: PM.TitleBar_Height
+    height: DS.Style.dialogWindow.titleBarHeight
 
     // custom control
     property alias content: customCenter.sourceComponent
     // dialog icon
     property alias icon: iconLabel
+    property string title
     property alias enableInWindowBlendBlur: background.visible
 
     property var __dwindow: Window.window.D.DWindow
@@ -81,12 +82,14 @@ Control {
             Layout.fillHeight: true
             D.DciIcon {
                 id: iconLabel
-                width: 32
-                height: 32
                 visible: name !== ""
                 mode: control.D.ColorSelector.controlState
                 theme: control.D.ColorSelector.controlTheme
                 palette: D.DTK.makeIconPalette(control.palette)
+                sourceSize {
+                    width: DS.Style.dialogWindow.iconSize
+                    height: DS.Style.dialogWindow.iconSize
+                }
             }
 
             // center custom area
@@ -95,6 +98,7 @@ Control {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillHeight: true
                 Layout.fillWidth: true
+                sourceComponent: titleCenterCom
             }
 
             WindowButton {
@@ -116,6 +120,16 @@ Control {
             height: 1
             color: "transparent"
             Layout.alignment: Qt.AlignBottom
+        }
+    }
+
+    Component {
+        id: titleCenterCom
+        Label {
+            textFormat: Text.PlainText
+            text: control.title
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
     }
 }
