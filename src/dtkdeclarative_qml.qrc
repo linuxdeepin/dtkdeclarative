@@ -112,5 +112,7 @@
         <file>qml/ProgressBar.qml</file>
         <file>qml/BoxPanel.qml</file>
         <file>qml/Pane.qml</file>
+        <file>qml/KeySequenceEdit.qml</file>
+        <file>qml/private/KeySequenceLabel.qml</file>
     </qresource>
 </RCC>

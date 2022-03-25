@@ -540,4 +540,50 @@ QtObject {
             normalDark: "#ffffff"
         }
     }
+
+    property QtObject keySequenceEdit: QtObject {
+        property int width: 200
+        property int height: 36
+        property int margin: 10
+        property int labelLeftRightPadding: 6
+        property int labelTopbottomPadding: 3
+
+
+        property D.Palette editBackgroundColor: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.05)
+            normalDark: Qt.rgba(255, 255, 255, 0.05)
+        }
+
+        property D.Palette placeholderTextColor: D.Palette {
+            normal: Qt.rgba(85 / 255, 85 / 255, 85 / 255, 0.4)
+            normalDark: Qt.rgba(192 / 255, 198 / 255, 212 / 255, 0.4)
+        }
+
+        property D.Palette labelTextColor: D.Palette {
+            normal: "black"
+        }
+
+        property D.Palette labelBackgroundColor1: D.Palette {
+            normal: "#c3c3c3"
+            normalDark: "#3e3e3e"
+        }
+
+        property D.Palette labelBackgroundColor2: D.Palette {
+            normal: "#d8d8d8"
+            normalDark: "#525252"
+        }
+
+        property D.Palette labelShadowInner1: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.1)
+            normalDark: Qt.rgba(0, 0, 0, 0.2)
+        }
+
+        property D.Palette labelShadowInner2: D.Palette {
+            normalDark: Qt.rgba(1, 1, 1, 0.1)
+        }
+
+        property D.Palette labelShadowOuter: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.3)
+        }
+    }
 }

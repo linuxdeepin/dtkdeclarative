@@ -30,6 +30,7 @@
 #include "private/dquickrectangle_p.h"
 #include "private/dquickbehindwindowblur_p.h"
 #include "private/dquickopacitymask_p.h"
+#include "private/dquickkeylistener_p.h"
 
 #include "private/dqmlglobalobject_p.h"
 #include "private/dconfigwrapper_p.h"
@@ -187,6 +188,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType<QSortFilterProxyModel>(uri, implUri, 1, 0, "SortFilterProxyModel");
     dtkRegisterType<ObjectModelProxy>(uri, implUri, 1, 0, "ObjectModelProxy");
     dtkRegisterType<DQuickOpacityMask>(uri, implUri, 1, 0, "SoftwareOpacityMask");
+    dtkRegisterType<DQuickKeyListener>(uri, implUri, 1, 0, "KeySequenceListener");
 
     dtkRegisterAnonymousType<DQUICK_NAMESPACE::DQuickDciIcon>(uri, implUri, 1);
     dtkRegisterAnonymousType<DQuickControlColor>(uri, implUri, 1);
@@ -325,6 +327,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "BusyIndicator");
     dtkRegisterType(uri, controlsUri, 1, 0, "ProgressBar");
     dtkRegisterType(uri, controlsUri, 1, 0, "BoxPanel");
+    dtkRegisterType(uri, controlsUri, 1, 0, "KeySequenceEdit");
     // for org.deepin.dtk.style(allowed to override)
     dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");
 
