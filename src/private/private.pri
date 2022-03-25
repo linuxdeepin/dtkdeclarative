@@ -40,6 +40,7 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dquickopacitymask_p.h \
     $$PWD/dquickopacitymask_p_p.h \
     $$PWD/dopacitymasknode.h \
+    $$PWD/dquickkeylistener_p.h \
 
 SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dblitframebuffernode.cpp \
@@ -67,3 +68,4 @@ SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dobjectmodelproxy.cpp \
     $$PWD/dquickopacitymask.cpp \
     $$PWD/dopacitymasknode.cpp \
+    $$PWD/dquickkeylistener.cpp \

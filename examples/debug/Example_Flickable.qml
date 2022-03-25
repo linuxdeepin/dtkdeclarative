@@ -127,4 +127,29 @@ Flow {
             model: sortFilterModel
         }
     }
+
+    Column {
+        KeySequenceEdit {
+            width: 504
+            height: 36
+            text: "切换键盘布局"
+            placeholderText: "请重新输入快捷键"
+            keys: ["CTRL", "SHIFT"]
+        }
+
+        KeySequenceEdit {
+            width: 504
+            height: 36
+            text: "关闭窗口"
+            placeholderText: "请重新输入快捷键"
+            keys: ["ALT", "F4"]
+        }
+
+        KeySequenceEdit {
+            width: 504
+            height: 36
+            text: "关闭窗口"
+            placeholderText: "请重新输入快捷键"
+        }
+    }
 }

@@ -19,5 +19,6 @@
         <file>ScrollBar.qml</file>
         <file>Spinner.qml</file>
         <file>SideBar.qml</file>
+        <file>KeySequenceEdit.qml</file>
     </qresource>
 </RCC>
