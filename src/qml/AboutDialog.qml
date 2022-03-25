@@ -23,10 +23,10 @@ import QtQuick 2.11
 import QtQuick.Layouts 1.11
 import QtQuick.Window 2.11
 import org.deepin.dtk.impl 1.0 as D
+import org.deepin.dtk.style 1.0 as DS
 
 DialogWindow {
     id: control
-    width: 380
 
     property alias windowTitle: control.title
     property alias productName: productNameLabel.text
@@ -43,17 +43,11 @@ DialogWindow {
 
     ScrollView {
         id: contentView
-        width: control.width
-        anchors {
-            leftMargin: 11
-            topMargin: 20
-            rightMargin: 11
-            bottomMargin: 10
-        }
-
-        implicitHeight: Math.min(control.maxContentHeight, contentLayout.childrenRect.height)
+        width: parent.width
+        implicitHeight: contentLayout.implicitHeight
+        topPadding: DS.Style.aboutDialog.topMargin
+        bottomPadding: DS.Style.aboutDialog.bottomMargin
         palette.window: "transparent"
-
         ColumnLayout {
             id: contentLayout
             spacing: 0
@@ -89,6 +83,7 @@ DialogWindow {
             }
             Label {
                 id: descriptionLabel
+                Layout.fillWidth: true
                 Layout.alignment: Qt.AlignHCenter
                 Layout.topMargin: 12
                 wrapMode: Text.Wrap
