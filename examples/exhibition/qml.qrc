@@ -6,6 +6,8 @@
         <file>ViewQMLSource.qml</file>
         <file>ImageCell.qml</file>
         <file>SideBarItem.qml</file>
+        <file>PropertyItemDelegate.qml</file>
+        <file>PropertyItem.qml</file>
     </qresource>
     <qresource prefix="/examples">
         <file>Button.qml</file>

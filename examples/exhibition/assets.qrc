@@ -34,5 +34,9 @@
         <file>assets/dialog/Warning-Light.svg</file>
         <file>assets/dialog/Wifi-Connection-Light.svg</file>
         <file>assets/dialog/About-Light.svg</file>
+        <file>assets/property/property-1.svg</file>
+        <file>assets/property/property-2.svg</file>
+        <file>assets/property/property-3.svg</file>
+        <file>assets/property/property-4.svg</file>
     </qresource>
 </RCC>
