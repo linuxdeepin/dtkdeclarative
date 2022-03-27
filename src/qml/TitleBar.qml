@@ -38,6 +38,7 @@ Control {
     property alias icon: iconLabel
 
     // custom control
+    property alias leftContent: customLeft.sourceComponent
     property alias content: customCenter.sourceComponent
 
     // menu access
@@ -61,6 +62,8 @@ Control {
 
     property alias enableInWindowBlendBlur: background.visible
 
+    property D.Palette textColor: DS.Style.buttonText
+    palette.windowText: D.ColorSelector.textColor
     MouseArea {
         id: mouseArea
         anchors.fill: parent
@@ -116,23 +119,31 @@ Control {
             spacing: 0
             Layout.alignment: Qt.AlignHCenter
             Layout.fillHeight: true
+            Layout.fillWidth: true
 
             D.DciIcon {
                 id: iconLabel
-                sourceSize.width: 32
-                sourceSize.height: 32
+                sourceSize {
+                    width: DS.Style.titleBar.iconSize
+                    height: DS.Style.titleBar.iconSize
+                }
                 Layout.alignment: Qt.AlignLeft
                 Layout.leftMargin: 2
-                visible: control.iconName !== ""
+                visible: name
                 palette: D.DTK.makeIconPalette(control.palette)
                 mode: control.D.ColorSelector.controlState
                 theme: control.D.ColorSelector.controlTheme
             }
 
+            // left custom area
+            Loader {
+                id: customLeft
+            }
+
             // center custom area
             Loader {
                 id: customCenter
-                Layout.leftMargin: (optionMenuBtn.width + windowButtonsLoader.width - iconLabel.width)
+                Layout.leftMargin: (optionMenuBtn.width + windowButtonsLoader.width - iconLabel.width - customLeft.width)
                 Layout.fillWidth: true
                 sourceComponent: titleCenterCom
             }
@@ -141,6 +152,7 @@ Control {
             WindowButton {
                 id: optionMenuBtn
                 icon.name: "window_menu"
+                textColor: control.textColor
                 enabled: !menuDisabled
                 Layout.alignment: Qt.AlignRight
                 onClicked: {
@@ -178,6 +190,7 @@ Control {
                     Layout.alignment: Qt.AlignRight
                     Layout.fillHeight: true
                     embedMode: control.embedMode
+                    textColor: control.textColor
                     fullScreenButtonVisible: control.fullScreenButtonVisible
                     Component.onCompleted: {
                         control.toggleWindowState.connect(maxOrWinded)
