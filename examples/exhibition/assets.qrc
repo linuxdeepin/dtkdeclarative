@@ -20,5 +20,10 @@
         <file>assets/popup/popup-menu-2.svg</file>
         <file>assets/popup/popup-menu-3.svg</file>
         <file>assets/popup/popup-menu-4.svg</file>
+        <file>assets/toolbar/toolbar-1.svg</file>
+        <file>assets/toolbar/toolbar-2.svg</file>
+        <file>assets/toolbar/toolbar-3.svg</file>
+        <file>assets/toolbar/toolbar-4.png</file>
+        <file>assets/toolbar/toolbar-4-2.png</file>
     </qresource>
 </RCC>

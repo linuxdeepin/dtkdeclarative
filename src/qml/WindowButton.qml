@@ -30,7 +30,7 @@ Control {
     signal clicked
     property D.Palette textColor: DS.Style.buttonText
 
-    palette.windowText: pressed ? D.ColorSelector.textColor : undefined
+    palette.windowText: D.ColorSelector.textColor
     hoverEnabled: true
     contentItem: D.DciIcon {
         id: iconLoader

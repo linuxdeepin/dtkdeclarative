@@ -28,6 +28,7 @@ RowLayout {
     id: control
     spacing: 0
 
+    property D.Palette textColor: DS.Style.buttonText
     property bool fullScreenButtonVisible: true
     property bool embedMode: false
     signal maxOrWinded()
@@ -50,6 +51,7 @@ RowLayout {
 
     WindowButton {
         icon.name: "window_minimize"
+        textColor: control.textColor
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowMinimizeButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowMinimizeButtonHint)
 
@@ -61,6 +63,7 @@ RowLayout {
 
     WindowButton {
         icon.name: "window_quit_full"
+        textColor: control.textColor
         visible: !(!control.fullScreenButtonVisible ||
                     !__dwindow.enabled ||
                     Window.window.visibility !== Window.FullScreen)
@@ -79,6 +82,7 @@ RowLayout {
         property bool isMaximized: Window.window.visibility === Window.Maximized
         icon.name: isMaximized ? "window_restore" : "window_maximize"
 
+        textColor: control.textColor
         onClicked: maxOrWinded()
 
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowMaximizeButtonHint)*/
@@ -96,6 +100,7 @@ RowLayout {
 
     WindowButton {
         icon.name: "window_close"
+        textColor: control.textColor
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowCloseButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowCloseButtonHint)
 

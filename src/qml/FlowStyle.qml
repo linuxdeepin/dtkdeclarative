@@ -396,9 +396,10 @@ QtObject {
     }
 
     property QtObject titleBar: QtObject {
-        property int height: 45
+        property int height: 50
         property int buttonWidth: 50
         property int buttonHeight: 50
+        property int iconSize: 32
     }
 
     property QtObject behindWindowBlur: QtObject {
