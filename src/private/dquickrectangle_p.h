@@ -39,10 +39,16 @@ class Q_DECL_EXPORT DQuickRectangle : public QQuickItem
 
 public:
     enum Corner {
+        NoneCorner = 0x0,
         TopLeftCorner = 0x1,
         TopRightCorner = 0x2,
         BottomLeftCorner = 0x4,
-        BottomRightCorner = 0x8
+        BottomRightCorner = 0x8,
+        TopCorner = TopLeftCorner | TopRightCorner,
+        BottomCorner = BottomLeftCorner| BottomRightCorner,
+        LeftCorner = TopLeftCorner| BottomLeftCorner,
+        RightCorner = TopRightCorner| BottomRightCorner,
+        AllCorner = TopCorner | BottomCorner
     };
     Q_DECLARE_FLAGS(Corners, Corner)
     Q_FLAG(Corners)
