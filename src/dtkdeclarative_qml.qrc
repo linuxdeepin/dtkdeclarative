@@ -111,5 +111,6 @@
         <file>qml/BusyIndicator.qml</file>
         <file>qml/ProgressBar.qml</file>
         <file>qml/BoxPanel.qml</file>
+        <file>qml/Pane.qml</file>
     </qresource>
 </RCC>

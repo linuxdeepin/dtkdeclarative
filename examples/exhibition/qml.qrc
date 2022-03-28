@@ -5,6 +5,7 @@
         <file>GroupTitle.qml</file>
         <file>ViewQMLSource.qml</file>
         <file>ImageCell.qml</file>
+        <file>SideBarItem.qml</file>
     </qresource>
     <qresource prefix="/examples">
         <file>Button.qml</file>
@@ -17,5 +18,6 @@
         <file>Mask.qml</file>
         <file>ScrollBar.qml</file>
         <file>Spinner.qml</file>
+        <file>SideBar.qml</file>
     </qresource>
 </RCC>
