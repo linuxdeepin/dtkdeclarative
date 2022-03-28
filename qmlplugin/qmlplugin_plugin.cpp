@@ -320,6 +320,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "Frame");
     dtkRegisterType(uri, controlsUri, 1, 0, "GroupBox");
     dtkRegisterType(uri, controlsUri, 1, 0, "PageIndicator");
+    dtkRegisterType(uri, controlsUri, 1, 0, "Pane");
     dtkRegisterType(uri, controlsUri, 1, 0, "StackView");
     dtkRegisterType(uri, controlsUri, 1, 0, "BusyIndicator");
     dtkRegisterType(uri, controlsUri, 1, 0, "ProgressBar");
