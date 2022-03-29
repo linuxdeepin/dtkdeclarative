@@ -20,6 +20,7 @@
  */
 
 import QtQuick 2.11
+import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.4
 // 确保在最后引入
 import org.deepin.dtk 1.0
@@ -27,8 +28,8 @@ import org.deepin.dtk 1.0
 ApplicationWindow {
     id: root
     visible: true
-    width: Math.max(contentList.contentWidth, 1100)
-    height: 600
+    width: Math.max(contentList.contentWidth + navigation.width, 1300)
+    height: 800
     title: qsTr("DTK Exhibition")
 
     // 开启“圆角窗口&无系统标题栏”模式
@@ -98,31 +99,72 @@ ApplicationWindow {
         }
     }
 
-    ListView {
-        id: contentList
-        anchors {
-            fill: parent
-            margins: 10
-        }
-
-        spacing: 10
-        model: examplesFiles
-        delegate: Column {
-            width: contentList.width
-
-            Loader {
-                source: "qrc:/examples/" + modelData
-                width: parent.width
+    RowLayout {
+        anchors.fill: parent
+        ListView {
+            id: navigation
+            Layout.preferredWidth: 220
+            Layout.fillHeight: true
+            Layout.margins: 10
+            model: examplesFiles
+            delegate: ItemDelegate {
+                text: modelData.substring(0, modelData.indexOf(".qml"))
+                backgroundVisible: false
+                onClicked: navigation.currentIndex = index
+                checked: navigation.currentIndex === index
+            }
+            currentIndex: 0
+            onCurrentIndexChanged: {
+                contentList.currentIndex = currentIndex
             }
         }
-        section {
-            property: "modelData"
-            delegate: GroupTitle {
-                text: section
-                width: parent.width
-                onViewSource: {
-                    sourceViewer.url = "qrc:/examples/" + section
-                    sourceViewerDialog.open()
+
+        ScrollView {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            padding: 10
+            ListView {
+                id: contentList
+                spacing: 10
+                model: examplesFiles
+                leftMargin: 10
+                rightMargin: 10
+                clip: true
+                delegate: Column {
+                    width: contentList.width - contentList.leftMargin - contentList.rightMargin
+                    Loader {
+                        source: "qrc:/examples/" + modelData
+                        width: parent.width
+                        asynchronous: false
+                    }
+                }
+                currentIndex: 0
+                onCurrentIndexChanged: {
+                    navigation.currentIndex = currentIndex
+                }
+                section {
+                    property: "modelData"
+                    delegate: GroupTitle {
+                        text: section
+                        width: contentList.width - contentList.leftMargin - contentList.rightMargin
+                        onViewSource: {
+                            sourceViewer.url = "qrc:/examples/" + section
+                            sourceViewerDialog.open()
+                        }
+                    }
+                }
+            }
+            background: Rectangle {
+                implicitWidth: 600
+                implicitHeight: 800
+                color:  Qt.rgba(0, 0, 0, 0.3)
+                Rectangle {
+                    anchors {
+                        fill: parent
+                        margins: 10
+                    }
+                    radius: 6
+                    color: root.palette.window
                 }
             }
         }
