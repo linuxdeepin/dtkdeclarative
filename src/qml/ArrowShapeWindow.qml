@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Window 2.15
+import QtQuick 2.4
+import QtQuick.Window 2.11
 import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 import "private"

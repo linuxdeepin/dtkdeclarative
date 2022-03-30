@@ -14,5 +14,6 @@
         <file>EditControl.qml</file>
         <file>Popup.qml</file>
         <file>Slider.qml</file>
+        <file>Mask.qml</file>
     </qresource>
 </RCC>
