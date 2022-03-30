@@ -41,6 +41,86 @@ Column {
         width: parent.width
 
         ImageCell {
+            imageScale: 0.5
+            source: "qrc:/assets/system-notification/Temporary-SimpleInfo-Light-1.png"
+            onClicked: DTK.sendSystemMessage("相册", "已成功导入825张照片到相册", "music")
+        }
+
+        ImageCell {
+            imageScale: 0.5
+            source: "qrc:/assets/system-notification/Temporary-SimpleInfo-Light-3.png"
+            onClicked: DTK.sendSystemMessage("相册", "已成功导入825张照片到相册", "music", ["_action", "关闭"])
+        }
+
+        Item { width: parent.width; height: 1}
+
+        ImageCell {
+            imageScale: 0.5
+            source: "qrc:/assets/system-notification/Temporary-SimpleInfo-Light-2.png"
+            onClicked: DTK.sendSystemMessage("解压缩", "压缩文件“XXXXXXXX.zip”解压失败！", "music")
+        }
+
+        ImageCell {
+            imageScale: 0.5
+            source: "qrc:/assets/system-notification/Temporary-SimpleInfo-Light-4.png"
+            onClicked: DTK.sendSystemMessage("解压缩", "压缩文件“XXXXXXXX.zip”解压失败！", "music", ["_action", "关闭"])
+        }
+
+        Item { width: parent.width; height: 1}
+
+        ImageCell {
+            imageScale: 0.5
+            source: "qrc:/assets/system-notification/Temporary-MultiInfo-Light-5.png"
+            onClicked: DTK.sendSystemMessage("舒乐", "大家好，V23设计已经进行了一段时间，附件里包含部分V23设计图，简要向大家汇报一下", "music")
+        }
+
+        ImageCell {
+            imageScale: 0.5
+            source: "qrc:/assets/system-notification/Temporary-MultiInfo-Light-7.png"
+            onClicked: DTK.sendSystemMessage("舒乐", "大家好，V23设计已经进行了一段时间，附件里包含部分V23设计图，简要向大家汇报一下", "music", ["_action", "回复", "_select", "已读"])
+        }
+
+        Item { width: parent.width; height: 1}
+
+        ImageCell {
+            imageScale: 0.5
+            source: "qrc:/assets/system-notification/Temporary-MultiInfo-Light-6.png"
+            onClicked: DTK.sendSystemMessage("舒乐", "Copyright 2014-2019 Adobe (http://www.adobe.com/), with Reserved FontName 'Source'. Source is a trademark of Adobe in the United States and/or other countries."
+                                             , "music")
+        }
+
+        ImageCell {
+            imageScale: 0.5
+            source: "qrc:/assets/system-notification/Temporary-MultiInfo-Light-8.png"
+            onClicked: DTK.sendSystemMessage("舒乐", "Copyright 2014-2019 Adobe (http://www.adobe.com/), with Reserved FontName 'Source'. Source is a trademark of Adobe in the United States and/or other countries."
+                                                           , "music", ["_action", "回复", "_select", "已读"])
+        }
+
+        Item { width: parent.width; height: 1}
+
+        ImageCell {
+            imageScale: 0.5
+            source: "qrc:/assets/system-notification/Interactive-SimpleInfo-Light-9.png"
+            onClicked: DTK.sendSystemMessage("相册", "发送文件“UOS桌面操作系统使用说明书.pdf ”等3个文件给您，是否接收？"
+                                                           , "music", ["_action", "拒绝", "_select", "接收"])
+        }
+
+        ImageCell {
+            imageScale: 0.5
+            source: "qrc:/assets/system-notification/Interactive-SimpleInfo-Light-11.png"
+            onClicked: DTK.sendSystemMessage("相册", "发送文件“UOS桌面操作系统使用说明书.pdf ”等3个文件给您，是否接收？"
+                                                           , "music", ["_action", "拒绝", "_select", "接收"])
+        }
+
+        Item { width: parent.width; height: 1}
+
+        ImageCell {
+            imageScale: 0.5
+            source: "qrc:/assets/system-notification/Interactive-SimpleInfo-Light-10.png"
+            onClicked: DTK.sendSystemMessage("相册", "已成功导入825张照片到相册", "music")
+        }
+
+        ImageCell {
             source: "qrc:/assets/popup/nointeractive.svg"
             onClicked: {
                 DTK.sendMessage(control, "成功添加到＂校园名谣＂", "checked")

@@ -202,6 +202,9 @@ public:
     Q_INVOKABLE bool sendMessage(QObject *target, QQmlComponent *delegate, const QVariant &message, int duration = 4000, const QString &msgId = QString());
     Q_INVOKABLE void closeMessage(DTK_QUICK_NAMESPACE::FloatingMessageContainer *message);
     Q_INVOKABLE void closeMessage(QObject *target, const QString &msgId);
+    Q_INVOKABLE void sendSystemMessage(const QString &summary, const QString &body = QString(),
+                                       const QString &appIcon = QString(), const QStringList &actions = QStringList(),
+                                       const QVariantMap hints = QVariantMap(), const int timeout = 3000, const uint replaceId = 0);
 
     static void setPopupMode(const PopupMode mode);
 
