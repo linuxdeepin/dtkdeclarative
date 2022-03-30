@@ -38,5 +38,16 @@
         <file>assets/property/property-2.svg</file>
         <file>assets/property/property-3.svg</file>
         <file>assets/property/property-4.svg</file>
+        <file>assets/system-notification/Interactive-SimpleInfo-Light-9.png</file>
+        <file>assets/system-notification/Interactive-SimpleInfo-Light-10.png</file>
+        <file>assets/system-notification/Interactive-SimpleInfo-Light-11.png</file>
+        <file>assets/system-notification/Temporary-MultiInfo-Light-5.png</file>
+        <file>assets/system-notification/Temporary-MultiInfo-Light-6.png</file>
+        <file>assets/system-notification/Temporary-MultiInfo-Light-7.png</file>
+        <file>assets/system-notification/Temporary-MultiInfo-Light-8.png</file>
+        <file>assets/system-notification/Temporary-SimpleInfo-Light-1.png</file>
+        <file>assets/system-notification/Temporary-SimpleInfo-Light-2.png</file>
+        <file>assets/system-notification/Temporary-SimpleInfo-Light-3.png</file>
+        <file>assets/system-notification/Temporary-SimpleInfo-Light-4.png</file>
     </qresource>
 </RCC>

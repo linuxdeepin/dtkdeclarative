@@ -33,6 +33,7 @@
 #include <DGuiApplicationHelper>
 #include <DFontManager>
 #include <DSysInfo>
+#include <DNotifySender>
 #include <QQuickItem>
 
 #ifdef Q_OS_UNIX
@@ -430,6 +431,26 @@ void DQMLGlobalObject::closeMessage(QObject *target, const QString &msgId)
         if (auto manager = qobject_cast<MessageManager *>(qmlAttachedPropertiesObject<MessageManager>(window)))
             manager->close(msgId);
     }
+}
+
+void DQMLGlobalObject::sendSystemMessage(const QString &summary, const QString &body, const QString &appIcon, const QStringList &actions, const QVariantMap hints, const int timeout, const uint replaceId)
+{
+    QDBusPendingCall reply = DTK_CORE_NAMESPACE::DUtil::DNotifySender(summary)
+            .appName(qAppName())
+            .appIcon(appIcon)
+            .appBody(body)
+            .actions(actions)
+            .hints(hints)
+            .replaceId(replaceId)
+            .timeOut(timeout)
+            .call();
+    auto watcher = new QDBusPendingCallWatcher(reply, this);
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, [](QDBusPendingCallWatcher* watcher){
+        if (watcher->isError())
+            qWarning() << "DQMLGlobalObject::sendSystemMessage: send system message error" << watcher->error();
+
+        watcher->deleteLater();
+    });
 }
 
 void DQMLGlobalObject::setPopupMode(const PopupMode mode)
