@@ -298,10 +298,9 @@ Column {
             source: "qrc:/assets/property/property-1.svg"
             DialogWindow {
                 width: 280
-                height: contentHeight.height + 50
                 minimumHeight: 100
                 maximumHeight: 1920
-                titleBar: DialogTitleBar {
+                header: DialogTitleBar {
                     enableInWindowBlendBlur: true
                     content: Loader {
                         sourceComponent: propertyTitleContentCom
@@ -481,10 +480,9 @@ Column {
             source: "qrc:/assets/property/property-2.svg"
             DialogWindow {
                 width: 280
-                height: contentHeight2.height + 50
                 minimumHeight: 100
                 maximumHeight: 1920
-                titleBar: DialogTitleBar {
+                header: DialogTitleBar {
                     enableInWindowBlendBlur: true
                     content: Loader {
                         sourceComponent: propertyTitleContentCom
@@ -640,215 +638,215 @@ Column {
             }
         }
 
-        ImageCell {
-            source: "qrc:/assets/property/property-3.svg"
-            DialogWindow {
-                width: 280
-                height: contentHeight3.height + 50
-                minimumHeight: 100
-                maximumHeight: 1920
-                titleBar: DialogTitleBar {
-                    enableInWindowBlendBlur: true
-                    content: Loader {
-                        sourceComponent: propertyTitleContentCom
-                        property string title: "RO-aj8924"
+        Column {
+            ImageCell {
+                source: "qrc:/assets/property/property-3.svg"
+                DialogWindow {
+                    width: 280
+                    minimumHeight: 100
+                    maximumHeight: 1920
+                    header: DialogTitleBar {
+                        enableInWindowBlendBlur: true
+                        content: Loader {
+                            sourceComponent: propertyTitleContentCom
+                            property string title: "RO-aj8924"
+                        }
                     }
-                }
-                ColumnLayout {
-                    id: contentHeight3
-                    anchors {
-                        horizontalCenter: parent.horizontalCenter
-                        margins: 10
-                    }
-                    Image {
-                        source: "qrc:/assets/popup/nointeractive.svg"
-                    }
-                    PropertyItem {
-                        title: "基本信息"
-                        ColumnLayout {
-                            spacing: 1
-                            PropertyItemDelegate {
-                                Layout.fillWidth: true
-                                title: "容量"
-                                description: "8G"
-                                corners: RoundRectangle.TopCorner
-                            }
-                            RowLayout {
-                                Layout.fillWidth: true
+                    ColumnLayout {
+                        id: contentHeight3
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            margins: 10
+                        }
+                        Image {
+                            source: "qrc:/assets/popup/nointeractive.svg"
+                        }
+                        PropertyItem {
+                            title: "基本信息"
+                            ColumnLayout {
                                 spacing: 1
                                 PropertyItemDelegate {
-                                    title: "容量"
-                                    description: "186.5M"
-                                    corners: RoundRectangle.BottomLeftCorner
-                                }
-                                PropertyItemDelegate {
-                                    title: "文件数量"
-                                    description: "1235项"
                                     Layout.fillWidth: true
+                                    title: "容量"
+                                    description: "8G"
+                                    corners: RoundRectangle.TopCorner
                                 }
+                                RowLayout {
+                                    Layout.fillWidth: true
+                                    spacing: 1
+                                    PropertyItemDelegate {
+                                        title: "容量"
+                                        description: "186.5M"
+                                        corners: RoundRectangle.BottomLeftCorner
+                                    }
+                                    PropertyItemDelegate {
+                                        title: "文件数量"
+                                        description: "1235项"
+                                        Layout.fillWidth: true
+                                    }
+                                    PropertyItemDelegate {
+                                        title: "类型"
+                                        description: "只读光盘"
+                                        corners: RoundRectangle.BottomRightCorner
+                                    }
+                                }
+                            }
+                            ColumnLayout {
+                                spacing: 1
                                 PropertyItemDelegate {
-                                    title: "类型"
-                                    description: "只读光盘"
-                                    corners: RoundRectangle.BottomRightCorner
+                                    Layout.fillWidth: true
+                                    title: "添加日期"
+                                    description: "2014年4月23日 下午5：28"
+                                    corners: RoundRectangle.TopCorner
                                 }
-                            }
-                        }
-                        ColumnLayout {
-                            spacing: 1
-                            PropertyItemDelegate {
-                                Layout.fillWidth: true
-                                title: "添加日期"
-                                description: "2014年4月23日 下午5：28"
-                                corners: RoundRectangle.TopCorner
-                            }
 
-                            PropertyItemDelegate {
-                                Layout.fillWidth: true
-                                title: "图型"
-                                description: "2016年8月27日 下午5：28"
-                                corners: RoundRectangle.BottomCorner
+                                PropertyItemDelegate {
+                                    Layout.fillWidth: true
+                                    title: "图型"
+                                    description: "2016年8月27日 下午5：28"
+                                    corners: RoundRectangle.BottomCorner
+                                }
                             }
                         }
                     }
                 }
             }
-        }
 
-        ImageCell {
-            source: "qrc:/assets/property/property-4.svg"
-            DialogWindow {
-                width: 280
-                height: contentHeight4.height + 50
-                minimumHeight: 100
-                maximumHeight: 1920
-                titleBar: DialogTitleBar {
-                    enableInWindowBlendBlur: true
-                    content: Loader {
-                        sourceComponent: propertyTitleContentCom
-                        property string title: "IMG1234.jpg"
+            ImageCell {
+                source: "qrc:/assets/property/property-4.svg"
+                DialogWindow {
+                    width: 280
+                    minimumHeight: 100
+                    maximumHeight: 1920
+                    header: DialogTitleBar {
+                        enableInWindowBlendBlur: true
+                        content: Loader {
+                            sourceComponent: propertyTitleContentCom
+                            property string title: "IMG1234.jpg"
+                        }
                     }
-                }
-                ColumnLayout {
-                    id: contentHeight4
-                    anchors {
-                        horizontalCenter: parent.horizontalCenter
-                        margins: 10
-                    }
-                    Image {
-                        source: "qrc:/assets/popup/nointeractive.svg"
-                    }
-                    PropertyItem {
-                        title: "基本信息"
-                        ColumnLayout {
-                            spacing: 1
-                            PropertyItemDelegate {
-                                Layout.fillWidth: true
-                                title: "文件名"
-                                description: "IMG1234.jpg"
-                                iconName: "action_edit"
-                            }
-                            RowLayout {
-                                Layout.fillWidth: true
+                    ColumnLayout {
+                        id: contentHeight4
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            margins: 10
+                        }
+                        Image {
+                            source: "qrc:/assets/popup/nointeractive.svg"
+                        }
+                        PropertyItem {
+                            title: "基本信息"
+                            ColumnLayout {
                                 spacing: 1
                                 PropertyItemDelegate {
-                                    title: "光圈"
-                                    description: "f2.8"
-                                }
-                                PropertyItemDelegate {
-                                    title: "快门"
-                                    description: "1/500s"
                                     Layout.fillWidth: true
+                                    title: "文件名"
+                                    description: "IMG1234.jpg"
+                                    iconName: "action_edit"
                                 }
-                                PropertyItemDelegate {
-                                    title: "ISO"
-                                    description: "200"
+                                RowLayout {
+                                    Layout.fillWidth: true
+                                    spacing: 1
+                                    PropertyItemDelegate {
+                                        title: "光圈"
+                                        description: "f2.8"
+                                    }
+                                    PropertyItemDelegate {
+                                        title: "快门"
+                                        description: "1/500s"
+                                        Layout.fillWidth: true
+                                    }
+                                    PropertyItemDelegate {
+                                        title: "ISO"
+                                        description: "200"
+                                    }
+                                }
+                                RowLayout {
+                                    Layout.fillWidth: true
+                                    spacing: 1
+                                    PropertyItemDelegate {
+                                        title: "大小"
+                                        description: "16.8M"
+                                        corners: RoundRectangle.BottomLeftCorner
+                                    }
+                                    PropertyItemDelegate {
+                                        title: "分辨率"
+                                        description: "8000X6000"
+                                        Layout.fillWidth: true
+                                    }
+                                    PropertyItemDelegate {
+                                        title: "自平衡"
+                                        description: "自动"
+                                        corners: RoundRectangle.BottomRightCorner
+                                    }
                                 }
                             }
-                            RowLayout {
-                                Layout.fillWidth: true
+                            ColumnLayout {
                                 spacing: 1
                                 PropertyItemDelegate {
-                                    title: "大小"
-                                    description: "16.8M"
-                                    corners: RoundRectangle.BottomLeftCorner
-                                }
-                                PropertyItemDelegate {
-                                    title: "分辨率"
-                                    description: "8000X6000"
                                     Layout.fillWidth: true
+                                    title: "拍摄日期"
+                                    description: "2014年4月23日 下午5：28"
+                                    corners: RoundRectangle.TopCorner
                                 }
+
                                 PropertyItemDelegate {
-                                    title: "自平衡"
-                                    description: "自动"
-                                    corners: RoundRectangle.BottomRightCorner
+                                    Layout.fillWidth: true
+                                    title: "修改日期"
+                                    description: "2016年8月27日 下午5：28"
+                                    corners: RoundRectangle.BottomCorner
                                 }
                             }
                         }
-                        ColumnLayout {
-                            spacing: 1
-                            PropertyItemDelegate {
-                                Layout.fillWidth: true
-                                title: "拍摄日期"
-                                description: "2014年4月23日 下午5：28"
-                                corners: RoundRectangle.TopCorner
+                        PropertyItem {
+                            title: "详细信息"
+                            ColumnLayout {
+                                spacing: 1
+                                RowLayout {
+                                    Layout.fillWidth: true
+                                    spacing: 1
+                                    PropertyItemDelegate {
+                                        title: "曝光"
+                                        description: "自动"
+                                        corners: RoundRectangle.TopLeftCorner
+                                    }
+                                    PropertyItemDelegate {
+                                        title: "曝光程序"
+                                        description: "光圈优先"
+                                        Layout.fillWidth: true
+                                        corners: RoundRectangle.TopRightCorner
+                                    }
+                                    PropertyItemDelegate {
+                                        title: "曝光补偿"
+                                        description: "-2"
+                                    }
+                                }
+                                RowLayout {
+                                    Layout.fillWidth: true
+                                    spacing: 1
+                                    PropertyItemDelegate {
+                                        title: "焦距"
+                                        description: "55mm"
+                                        corners: RoundRectangle.BottomLeftCorner
+                                    }
+                                    PropertyItemDelegate {
+                                        title: "闪光灯"
+                                        description: "TTL"
+                                        Layout.fillWidth: true
+                                    }
+                                    PropertyItemDelegate {
+                                        title: "测光模式"
+                                        description: "点测光"
+                                        corners: RoundRectangle.BottomRightCorner
+                                    }
+                                }
                             }
 
                             PropertyItemDelegate {
-                                Layout.fillWidth: true
-                                title: "修改日期"
-                                description: "2016年8月27日 下午5：28"
-                                corners: RoundRectangle.BottomCorner
+                                title: "镜头型号"
+                                description: "AF-S DX VR ZOOM      19-105mm f/2 5.5 6G"
+                                corners: RoundRectangle.AllCorner
                             }
-                        }
-                    }
-                    PropertyItem {
-                        title: "详细信息"
-                        ColumnLayout {
-                            spacing: 1
-                            RowLayout {
-                                Layout.fillWidth: true
-                                spacing: 1
-                                PropertyItemDelegate {
-                                    title: "曝光"
-                                    description: "自动"
-                                    corners: RoundRectangle.TopLeftCorner
-                                }
-                                PropertyItemDelegate {
-                                    title: "曝光程序"
-                                    description: "光圈优先"
-                                    Layout.fillWidth: true
-                                    corners: RoundRectangle.TopRightCorner
-                                }
-                                PropertyItemDelegate {
-                                    title: "曝光补偿"
-                                    description: "-2"
-                                }
-                            }
-                            RowLayout {
-                                Layout.fillWidth: true
-                                spacing: 1
-                                PropertyItemDelegate {
-                                    title: "焦距"
-                                    description: "55mm"
-                                    corners: RoundRectangle.BottomLeftCorner
-                                }
-                                PropertyItemDelegate {
-                                    title: "闪光灯"
-                                    description: "TTL"
-                                    Layout.fillWidth: true
-                                }
-                                PropertyItemDelegate {
-                                    title: "测光模式"
-                                    description: "点测光"
-                                    corners: RoundRectangle.BottomRightCorner
-                                }
-                            }
-                        }
-
-                        PropertyItemDelegate {
-                            title: "镜头型号"
-                            description: "AF-S DX VR ZOOM      19-105mm f/2 5.5 6G"
-                            corners: RoundRectangle.AllCorner
                         }
                     }
                 }

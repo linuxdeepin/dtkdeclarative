@@ -23,36 +23,41 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.0
 import org.deepin.dtk 1.0
 
-Item {
+ColumnLayout {
     property url url
 
     onUrlChanged: {
         edit.text = globalObject.readFile(url)
     }
 
-    ColumnLayout {
+    Text {
+        id: errorMessage
+        visible: text
+        color: "#ff5736"
+        font: DTK.fontManager.t6
+        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+        horizontalAlignment: Qt.AlignCenter
+        Layout.fillWidth: true
+    }
+
+    RowLayout {
         id: layout
-        anchors.fill: parent
-        spacing: 10
+        Layout.fillWidth: true
+        Layout.fillHeight: true
 
-        Item {id: guest}
-
-        Text {
-            id: errorMessage
-
-            Layout.fillWidth: true
-
-            color: "#ff5736"
-            font: DTK.fontManager.t6
-            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-            horizontalAlignment: Qt.AlignCenter
+        ScrollView {
+            id: codePreview
+            Layout.fillHeight:  true
+            Layout.preferredWidth: parent.width * 0.6
+            clip: true
+            Item {id: guest;}
         }
 
-        Flickable {
+        ScrollView {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            TextArea.flickable: TextArea {
+            TextArea {
                 id: edit
 
                 property Item lastPreview: guest
@@ -63,10 +68,10 @@ Item {
 
                 onTextChanged: {
                     try {
-                        var obj = Qt.createQmlObject(edit.text, layout)
+                        var obj = Qt.createQmlObject(edit.text, codePreview,  url.toString().replace(".qml", "_temporary.qml"))
                         globalObject.replace(lastPreview, obj)
                         lastPreview = obj
-                        obj.Layout.fillWidth = true
+                        obj.width = codePreview.width
                         errorMessage.text = ""
                     } catch (error) {
                         errorMessage.text = String(error.lineNumber ? error.lineNumber : "未知") + "行，"
