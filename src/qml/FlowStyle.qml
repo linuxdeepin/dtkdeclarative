@@ -602,7 +602,7 @@ QtObject {
     }
 
     property QtObject dialogWindow: QtObject {
-        property int width: 380
+        property int width: 120
         property int height: 120
         property int contentHMargin: 10
         property int footerMargin: 10

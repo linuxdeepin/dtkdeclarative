@@ -95,6 +95,7 @@ Control {
             // center custom area
             Loader {
                 id: customCenter
+                Layout.leftMargin: closeBtn.width - iconLabel.width
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillHeight: true
                 Layout.fillWidth: true

@@ -40,7 +40,6 @@ public:
     }
     Q_INVOKABLE void replace(QQuickItem *oldItem, QQuickItem *newItem) const {
         newItem->setParentItem(oldItem->parentItem());
-        newItem->stackBefore(oldItem);
         oldItem->setParentItem(nullptr);
         QQmlEngine::setObjectOwnership(oldItem, QQmlEngine::CppOwnership);
         oldItem->deleteLater();

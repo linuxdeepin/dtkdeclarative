@@ -170,6 +170,8 @@ Column {
             }
         }
 
+        Item { width: parent.width; height: 1}
+
         FloatingPanel {
             contentItem: RowLayout {
                 spacing: 10
