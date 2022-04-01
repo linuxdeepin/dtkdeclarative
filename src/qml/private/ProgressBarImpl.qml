@@ -108,7 +108,7 @@ Item {
                 x: limitWidth
                 implicitHeight: DS.Style.progressBar.indeterminateProgressBarWidth
                 width: progressBar.height
-                shadowOffsetX: 4
+                shadowOffsetX: -4
                 shadowBlur: 6
                 cornerRadius: DS.Style.control.radius
                 shadowColor: control.D.ColorSelector.shadowPaletteColor
@@ -133,7 +133,7 @@ Item {
                         property: "x"
                         from: -indeterminateProgressContent.y
                         to: progressBar.width - indeterminateProgressContent.limitWidth - indeterminateProgressContent.width
-                        duration: DS.Style.progressBar.indeterminateProgressBarAnimationDuration
+                        duration: DS.Style.progressBar.indeterminateProgressBarAnimationDuration * progressBar.width / DS.Style.progressBar.width
                         onFromChanged: if (!delayAnimationTimer.running) delayAnimationTimer.start()
                         onToChanged:  if (!delayAnimationTimer.running) delayAnimationTimer.start()
                     }
@@ -142,7 +142,7 @@ Item {
                         target: indeterminateProgressContent
                         property: "x"
                         to: -indeterminateProgressContent.y
-                        duration: DS.Style.progressBar.indeterminateProgressBarAnimationDuration
+                        duration: DS.Style.progressBar.indeterminateProgressBarAnimationDuration * progressBar.width / DS.Style.progressBar.width
                         onFromChanged: if (!delayAnimationTimer.running) delayAnimationTimer.start()
                         onToChanged: if (!delayAnimationTimer.running) delayAnimationTimer.start()
                     }

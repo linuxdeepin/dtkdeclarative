@@ -114,7 +114,6 @@
         <file>qml/KeySequenceEdit.qml</file>
         <file>qml/private/KeySequenceLabel.qml</file>
         <file>qml/ButtonIndicator.qml</file>
-        <file>qml/ProgressBar.qml</file>
         <file>qml/EmbeddedProgressBar.qml</file>
         <file>qml/WaterProgressBar.qml</file>
         <file>qml/private/ProgressBarImpl.qml</file>
