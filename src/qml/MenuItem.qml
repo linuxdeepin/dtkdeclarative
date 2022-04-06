@@ -34,8 +34,8 @@ T.MenuItem {
     padding: DS.Style.control.padding
     spacing: DS.Style.control.spacing
     icon {
-        height: DS.Style.menu.itemIconSize.height
-        width: DS.Style.menu.itemIconSize.height
+        height: DS.Style.menu.item.iconSize.height
+        width: DS.Style.menu.item.iconSize.height
     }
 
     property D.Palette itemColor: D.Palette {
@@ -67,7 +67,7 @@ T.MenuItem {
             leftMargin: control.mirrored ? control.width - width - control.rightPadding : control.leftPadding
             verticalCenter: parent.verticalCenter
         }
-        sourceSize.width: DS.Style.menu.itemIconSize.height
+        sourceSize.width: DS.Style.menu.item.iconSize.height
         visible: control.checked
         name: "menu_select"
         palette: control.D.DciIcon.palette
@@ -82,7 +82,7 @@ T.MenuItem {
             rightMargin: control.mirrored ? control.width - width - control.rightPadding : control.rightPadding
             verticalCenter: parent.verticalCenter
         }
-        sourceSize.width: DS.Style.menu.itemIconSize.height
+        sourceSize.width: DS.Style.menu.item.iconSize.height
         visible: control.subMenu
         mirror: control.mirrored
         name: control.subMenu ? "menu_arrow" : ""
@@ -93,12 +93,13 @@ T.MenuItem {
     }
 
     background: Item {
-        implicitWidth: DS.Style.menu.itemWidth
-        implicitHeight: DS.Style.menu.itemHeight
+        implicitWidth: DS.Style.menu.item.width
+        implicitHeight: DS.Style.menu.item.height
         Rectangle {
+            property D.Palette backgroundColor: DS.Style.menu.subMenuOpendBackground
             anchors.fill: parent
             visible: !control.hovered && control.subMenu && control.subMenu.opened
-            color: DS.Style.menu.subMenuOpendBackground
+            color: D.ColorSelector.backgroundColor
             radius: DS.Style.control.radius
         }
 

@@ -47,22 +47,22 @@ ToolTip {
         }
 
         Rectangle {
-            property D.Palette backgroundColor: DS.Style.tooltipBase
+            property D.Palette backgroundColor: DS.Style.alertToolTip.background
+            property D.Palette borderColor: DS.Style.control.border
             id: _background
             anchors.fill: parent
             color: D.ColorSelector.backgroundColor
-            border.color: DS.Style.selectColor(control.palette.window, DS.Style.control.lightBorder,
-                                               DS.Style.control.darkBorder)
+            border.color: D.ColorSelector.borderColor
             radius: DS.Style.control.radius
         }
     }
 
     contentItem: Text {
-        property D.Palette warningColor: DS.Style.warningText
+        property D.Palette textColor: DS.Style.alertToolTip.text
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
         text: control.text
-        color: D.ColorSelector.warningColor
+        color: D.ColorSelector.textColor
     }
 
     enter: Transition {
@@ -76,21 +76,20 @@ ToolTip {
     }
 
     BoxShadow {
-        anchors.fill: _connector
-        shadowBlur: 4
-        shadowOffsetY: 2
-        shadowColor: Qt.rgba(0, 0, 0, 0.1)
-        cornerRadius: _background.radius
-    }
-
-    Rectangle {
-        id: _connector
+        property D.Palette dropShadowColor: DS.Style.alertToolTip.dropShadow
         y: - height * (0.75) - control.topMargin - control.topPadding
         width: DS.Style.alertToolTip.connectorWidth
         height: DS.Style.alertToolTip.connectorHeight
-        color: _background.color
-        border.color: DS.Style.selectColor(control.palette.window, DS.Style.control.lightBorder,
-                                           DS.Style.control.darkBorder)
-        border.width: 1
+        shadowBlur: 4
+        shadowOffsetY: 2
+        shadowColor: D.ColorSelector.dropShadowColor
+        cornerRadius: _background.radius
+
+        Rectangle {
+            anchors.fill: parent
+            color: _background.color
+            border.color: _background.D.ColorSelector.borderColor
+            border.width: 1
+        }
     }
 }

@@ -25,11 +25,16 @@ import org.deepin.dtk.style 1.0 as DS
 Control {
     id: control
     property int value /*0~100*/
+    property D.Palette backgroundColor1: DS.Style.waterProgressBar.background1
+    property D.Palette backgroundColor2: DS.Style.waterProgressBar.background2
+    property D.Palette dropShadowColor: DS.Style.waterProgressBar.dropShadow
+    property D.Palette popBackgroundColor: DS.Style.waterProgressBar.popBackground
+    property D.Palette textColor: DS.Style.waterProgressBar.textColor
 
     background: BoxShadow {
-        implicitWidth: DS.Style.progressBar.water.width
-        implicitHeight: DS.Style.progressBar.water.height
-        shadowColor: DS.Style.progressBar.water.shadowColor
+        implicitWidth: DS.Style.waterProgressBar.width
+        implicitHeight: DS.Style.waterProgressBar.height
+        shadowColor: control.D.ColorSelector.dropShadowColor
         shadowOffsetY: 6
         shadowBlur: 6
         cornerRadius: width / 2
@@ -38,8 +43,8 @@ Control {
             anchors.fill: parent
             radius: parent.cornerRadius
             gradient: Gradient {
-                GradientStop { position: 0.0; color: DS.Style.progressBar.water.backgroundColor1 }
-                GradientStop { position: 1; color: DS.Style.progressBar.water.backgroundColor2 }
+                GradientStop { position: 0.0; color: control.D.ColorSelector.backgroundColor1 }
+                GradientStop { position: 1; color: control.D.ColorSelector.backgroundColor2 }
             }
         }
     }
@@ -60,8 +65,8 @@ Control {
                 model: 4
                 Image {
                     readonly property real xoffset: index < 2 ? attribute.backXOffset : attribute.frontXOffset
-                    source: index < 2 ? DS.Style.progressBar.water.waterBackImagePath
-                                      : DS.Style.progressBar.water.waterFrontImagePath
+                    source: index < 2 ? DS.Style.waterProgressBar.waterBackImagePath
+                                      : DS.Style.waterProgressBar.waterFrontImagePath
                     x: index % 2 ? xoffset - width : xoffset
                     y: (90 - control.value) * control.height / 100
                     width: attribute.imageWidth
@@ -73,7 +78,7 @@ Control {
                 model: attribute.pops
 
                 Rectangle {
-                    color: DS.Style.progressBar.water.popBackgroundColor
+                    color: control.D.ColorSelector.popBackgroundColor
                     visible: control.value > 30
                     x: model.x
                     y: model.y
@@ -91,7 +96,7 @@ Control {
                 font {
                     pixelSize: control.height * 0.4
                 }
-                color: DS.Style.progressBar.water.textColor
+                color: control.D.ColorSelector.textColor
             }
         }
 

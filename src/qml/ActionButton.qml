@@ -26,7 +26,7 @@ import org.deepin.dtk.style 1.0 as DS
 
 T.Button {
     id: control
-    property D.Palette textColor: DS.Style.buttonText
+    property D.Palette textColor: DS.Style.button.text
 
     palette.windowText: pressed ? D.ColorSelector.textColor : undefined
     implicitWidth: DS.Style.control.implicitWidth(control)

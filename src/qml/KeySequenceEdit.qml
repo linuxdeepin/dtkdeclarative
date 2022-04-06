@@ -30,8 +30,8 @@ Control {
     property string text
     property string placeholderText
     property alias keys: listener.keys
-    property D.Palette backgroundColor: DS.Style.keySequenceEdit.editBackgroundColor
-    property D.Palette placeholderTextColor: DS.Style.keySequenceEdit.placeholderTextColor
+    property D.Palette backgroundColor: DS.Style.keySequenceEdit.background
+    property D.Palette placeholderTextColor: DS.Style.keySequenceEdit.placeholderText
 
     background: Rectangle {
         implicitWidth: DS.Style.keySequenceEdit.width

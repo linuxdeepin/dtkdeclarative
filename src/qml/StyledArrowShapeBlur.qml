@@ -23,13 +23,13 @@ import org.deepin.dtk.style 1.0 as DS
 
 ArrowShapeBlur {
     property var control
-    blendColor: DS.Style.selectColor((control ? control.palette.window : undefined),
+    blendColor: DS.Style.control.selectColor((control ? control.palette.window : undefined),
                                      DS.Style.arrowRectangleBlur.backgroundColor,
                                      DS.Style.arrowRectangleBlur.darkBackgroundColor)
-    borderColor: DS.Style.selectColor((control ? control.palette.window : undefined),
+    borderColor: DS.Style.control.selectColor((control ? control.palette.window : undefined),
                                       DS.Style.arrowRectangleBlur.borderColor,
                                       DS.Style.arrowRectangleBlur.darkBorderColor)
-    shadowColor: DS.Style.selectColor((control ? control.palette.window : undefined),
+    shadowColor: DS.Style.control.selectColor((control ? control.palette.window : undefined),
                                       DS.Style.arrowRectangleBlur.shadowColor,
                                       DS.Style.arrowRectangleBlur.darkShadowColor)
 }

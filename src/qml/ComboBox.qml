@@ -32,6 +32,7 @@ T.ComboBox {
     property string alertText
     property int alertDuration
     property bool showAlert
+    property D.Palette separatorColor: DS.Style.comboBox.edit.separator
 
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
@@ -58,17 +59,17 @@ T.ComboBox {
         Component {
             id: editableIndicator
             RowLayout {
-                spacing: DS.Style.comboBox.editableIndicatorSpacing
+                spacing: DS.Style.comboBox.edit.indicatorSpacing
                 Rectangle {
                     width: 1
                     height: control.height
-                    color: DS.Style.comboBox.editableLineColor
+                    color: control.D.ColorSelector.separatorColor
                 }
 
                 D.DciIcon {
                     sourceSize {
-                        width: DS.Style.comboBox.editableIndicatorSize
-                        height: DS.Style.comboBox.editableIndicatorSize
+                        width: DS.Style.comboBox.edit.indicatorSize
+                        height: DS.Style.comboBox.edit.indicatorSize
                     }
                     palette: D.DTK.makeIconPalette(control.palette)
                     name: "entry_option_arrow_down"
@@ -171,11 +172,10 @@ T.ComboBox {
         }
 
         background: FloatingPanel {
-            implicitWidth: DS.Style.menu.itemWidth
-            implicitHeight: DS.Style.menu.itemHeight
+            implicitWidth: DS.Style.menu.item.width
+            implicitHeight: DS.Style.menu.item.height
             radius: DS.Style.menu.radius
-            backgroundColor: DS.Style.selectColor(palette.window, DS.Style.menu.lightBackground,
-                                                  DS.Style.menu.lightBackground)
+            backgroundColor: DS.Style.menu.background
         }
     }
 }

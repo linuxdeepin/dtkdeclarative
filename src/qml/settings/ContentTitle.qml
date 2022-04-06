@@ -30,8 +30,8 @@ Label {
     font: __getFont(Settings.SettingsGroup.level)
     textFormat: Text.PlainText
     verticalAlignment: Qt.AlignVCenter
-    topPadding: DS.Style.settings.navigationTextVPadding
-    bottomPadding: DS.Style.settings.navigationTextVPadding
+    topPadding: DS.Style.settings.navigation.textVPadding
+    bottomPadding: DS.Style.settings.navigation.textVPadding
     anchors {
         left: parent.left
         leftMargin: __getMargin(Settings.SettingsGroup.level)
@@ -51,10 +51,10 @@ Label {
     function __getMargin(level) {
         switch(level) {
         case 0:
-            return DS.Style.settings.titleMarginL1
+            return DS.Style.settings.title.marginL1
         case 1:
-            return DS.Style.settings.titleMarginL2
+            return DS.Style.settings.title.marginL2
         }
-        return DS.Style.settings.titleMarginLOther
+        return DS.Style.settings.title.marginLOther
     }
 }

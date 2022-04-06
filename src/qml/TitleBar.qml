@@ -62,7 +62,7 @@ Control {
 
     property alias enableInWindowBlendBlur: background.visible
 
-    property D.Palette textColor: DS.Style.buttonText
+    property D.Palette textColor: DS.Style.button.text
     palette.windowText: D.ColorSelector.textColor
     MouseArea {
         id: mouseArea

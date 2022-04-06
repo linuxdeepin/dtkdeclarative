@@ -26,7 +26,7 @@ import org.deepin.dtk.style 1.0 as DS
 
 T.ToolButton {
     id: control
-    property D.Palette textColor: checked ? DS.Style.checkedButtonText : (highlighted ? DS.Style.highlightedButtonText : DS.Style.buttonText)
+    property D.Palette textColor: checked ? DS.Style.checkedButton.text : (highlighted ? DS.Style.highlightedButton.text : DS.Style.button.text)
 
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)

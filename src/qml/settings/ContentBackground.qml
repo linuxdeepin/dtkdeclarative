@@ -37,10 +37,10 @@ Rectangle {
     function __getMargin(level) {
         switch(level) {
         case 0:
-            return DS.Style.settings.contentMarginL1
+            return DS.Style.settings.content.marginL1
         case 1:
-            return DS.Style.settings.contentMarginL2
+            return DS.Style.settings.content.marginL2
         }
-        return DS.Style.settings.contentMarginOther
+        return DS.Style.settings.content.marginOther
     }
 }

@@ -26,15 +26,16 @@ import org.deepin.dtk.style 1.0 as DS
 Control {
     id: control
 
-    padding: DS.Style.floatingPanel.radius / 2
+    padding: DS.Style.floatingMessage.panel.radius / 2
 
-    property color backgroundColor: DS.Style.selectColor(control.palette.window, DS.Style.floatingPanel.lightBackground,
-                                                         DS.Style.floatingPanel.darkBackground)
-    property int radius: DS.Style.floatingPanel.radius
+    property D.Palette backgroundColor: DS.Style.floatingMessage.panel.background
+    property D.Palette dropShadowColor: DS.Style.floatingMessage.panel.dropShadow
+    property D.Palette borderColor: DS.Style.control.border
+    property int radius: DS.Style.floatingMessage.panel.radius
 
     background: D.InWindowBlur {
-        implicitWidth: DS.Style.floatingPanel.width
-        implicitHeight: DS.Style.floatingPanel.height
+        implicitWidth: DS.Style.floatingMessage.panel.width
+        implicitHeight: DS.Style.floatingMessage.panel.height
         radius: control.radius
         offscreen: true
 
@@ -50,8 +51,7 @@ Control {
             anchors.fill: backgroundRect
             shadowOffsetX: 0
             shadowOffsetY: 4
-            shadowColor: DS.Style.selectColor(control.palette.window, DS.Style.floatingPanel.lightShadowBackground,
-                                              DS.Style.floatingPanel.darkShadowBackground)
+            shadowColor: control.D.ColorSelector.dropShadowColor
             shadowBlur: 20
             cornerRadius: backgroundRect.radius
             spread: 0
@@ -61,10 +61,9 @@ Control {
             id: backgroundRect
             anchors.fill: parent
             radius: control.radius
-            color: control.backgroundColor
+            color: control.D.ColorSelector.backgroundColor
             border {
-                color: DS.Style.selectColor(control.palette.window, DS.Style.control.lightBorder,
-                                            DS.Style.control.darkBorder)
+                color: control.D.ColorSelector.borderColor
                 width: DS.Style.control.borderWidth
             }
         }

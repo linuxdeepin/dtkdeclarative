@@ -32,19 +32,19 @@ Control {
     readonly property bool horizontal: parent.parent.children[0].horizontal
     property bool highlight
 
-    property D.Palette tickColor: DS.Style.sliderTick
-    property D.Palette textColor: highlight ? DS.Style.checkedButtonText: DS.Style.buttonText
+    property D.Palette tickColor: DS.Style.slider.tick.background
+    property D.Palette textColor: highlight ? DS.Style.checkedButton.text: DS.Style.button.text
 
-    implicitWidth: horizontal ? DS.Style.slider.tickWidth : __rect.width + (__label.visible ? __label.width: 0)
-    implicitHeight: horizontal ? __rect.height + (__label.visible ? __label.height : 0) : DS.Style.slider.tickWidth
+    implicitWidth: horizontal ? DS.Style.slider.tick.width : __rect.width + (__label.visible ? __label.width: 0)
+    implicitHeight: horizontal ? __rect.height + (__label.visible ? __label.height : 0) : DS.Style.slider.tick.width
 
     Rectangle {
         id: __rect
         anchors.bottom: horizontal ? (TipsSlider.TickDirection.Front === direction ? parent.bottom : undefined) : undefined
         anchors.right: horizontal ? undefined : (TipsSlider.TickDirection.Front === direction ? parent.right : undefined)
         anchors.left: horizontal ? undefined : (TipsSlider.TickDirection.Back === direction ? parent.left : undefined)
-        width: horizontal ? DS.Style.slider.tickWidth : DS.Style.slider.tickHeight
-        height: horizontal ? DS.Style.slider.tickHeight : DS.Style.slider.tickWidth
+        width: horizontal ? DS.Style.slider.tick.wWidth : DS.Style.slider.tick.height
+        height: horizontal ? DS.Style.slider.tick.height : DS.Style.slider.tick.width
         color: control.D.ColorSelector.tickColor
     }
 
@@ -59,10 +59,10 @@ Control {
             horizontalCenter: horizontal && Text.AlignHCenter === textHorizontalAlignment ? __rect.horizontalCenter : undefined
             verticalCenter: horizontal ? undefined : __rect.verticalCenter
         }
-        rightPadding: DS.Style.slider.tipHPadding
-        leftPadding: DS.Style.slider.tipHPadding
-        topPadding: DS.Style.slider.tipVPadding
-        bottomPadding: DS.Style.slider.tipVPadding
+        rightPadding: DS.Style.slider.tick.hPadding
+        leftPadding: DS.Style.slider.tick.hPadding
+        topPadding: DS.Style.slider.tick.vPadding
+        bottomPadding: DS.Style.slider.tick.vPadding
         horizontalAlignment: textHorizontalAlignment
         verticalAlignment: Text.AlignVCenter
         palette.windowText: control.D.ColorSelector.textColor

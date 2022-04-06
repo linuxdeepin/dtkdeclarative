@@ -32,7 +32,7 @@ T.ItemDelegate {
     property bool cascadeSelected
     property bool contentFlow
     property Component content
-    property D.Palette checkedTextColor: DS.Style.checkedButtonText
+    property D.Palette checkedTextColor: DS.Style.checkedButton.text
     property int corners: D.RoundRectangle.TopLeftCorner | D.RoundRectangle.TopRightCorner | D.RoundRectangle.BottomLeftCorner | D.RoundRectangle.BottomRightCorner
     function getCornersForBackground(index, count) {
         if (count <= 1)

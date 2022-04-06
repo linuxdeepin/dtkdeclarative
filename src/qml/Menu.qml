@@ -69,7 +69,7 @@ T.Menu {
                 width: parent.width
                 view.currentIndex: control.currentIndex
                 maxVisibleItems: control.maxVisibleItems
-                itemHeight: DS.Style.menu.itemHeight
+                itemHeight: DS.Style.menu.item.height
 
                 function refreshContentItemWidth()
                 {
@@ -92,10 +92,9 @@ T.Menu {
 
     background: FloatingPanel {
         visible: !control.D.PopupHandle.window
-        implicitWidth: DS.Style.menu.itemWidth
-        implicitHeight: DS.Style.menu.itemHeight
+        implicitWidth: DS.Style.menu.item.width
+        implicitHeight: DS.Style.menu.item.height
         radius: DS.Style.menu.radius
-        backgroundColor: DS.Style.selectColor(palette.window, DS.Style.menu.lightBackground,
-                                              DS.Style.menu.lightBackground)
+        backgroundColor: DS.Style.menu.background
     }
 }

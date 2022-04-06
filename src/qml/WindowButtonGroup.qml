@@ -28,7 +28,7 @@ RowLayout {
     id: control
     spacing: 0
 
-    property D.Palette textColor: DS.Style.buttonText
+    property D.Palette textColor: DS.Style.button.text
     property bool fullScreenButtonVisible: true
     property bool embedMode: false
     signal maxOrWinded()

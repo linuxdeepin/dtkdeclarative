@@ -47,7 +47,7 @@ DialogWindow {
 
     ScrollView {
         id: navigationBg
-        width: DS.Style.settings.navigationWidth
+        width: DS.Style.settings.navigation.width
         background: Rectangle {
             anchors.fill: parent
             color: palette.base
@@ -56,8 +56,8 @@ DialogWindow {
         ListView {
             id: navigationView
             model: container.navigationModel
-            leftMargin: DS.Style.settings.navigationMargin
-            rightMargin: DS.Style.settings.navigationMargin
+            leftMargin: DS.Style.settings.navigation.margin
+            rightMargin: DS.Style.settings.navigation.margin
             currentIndex: 0
             onCurrentIndexChanged: {
                 contentView.currentIndex = currentIndex
@@ -72,7 +72,7 @@ DialogWindow {
             right: parent.right
             top: control.top
         }
-        padding: DS.Style.settings.contentMargin
+        padding: DS.Style.settings.content.margin
         background: Rectangle {
             anchors.fill: parent
             color: palette.base

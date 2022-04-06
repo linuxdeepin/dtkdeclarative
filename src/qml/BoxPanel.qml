@@ -27,13 +27,13 @@ Item {
     id: control
 
     property int radius: DS.Style.control.radius
-    property D.Palette color1: DS.Style.button1
-    property D.Palette color2: DS.Style.button2
-    property D.Palette insideBorderColor: DS.Style.buttonInsideBorder
-    property D.Palette outsideBorderColor: DS.Style.buttonOutsideBorder
-    property D.Palette dropShadowColor: DS.Style.buttonDropShadow
-    property D.Palette innerShadowColor1: DS.Style.buttonInnerShadow1
-    property D.Palette innerShadowColor2: DS.Style.buttonInnerShadow2
+    property D.Palette color1: DS.Style.button.background1
+    property D.Palette color2: DS.Style.button.background2
+    property D.Palette insideBorderColor: DS.Style.button.insideBorder
+    property D.Palette outsideBorderColor: DS.Style.button.outsideBorder
+    property D.Palette dropShadowColor: DS.Style.button.dropShadow
+    property D.Palette innerShadowColor1: DS.Style.button.innerShadow1
+    property D.Palette innerShadowColor2: DS.Style.button.innerShadow2
     property int boxShadowBlur: 6
     property int boxShadowOffsetY: 4
     property int innerShadowOffsetY1: -1

@@ -27,8 +27,8 @@ import org.deepin.dtk.style 1.0 as DS
 Rectangle {
     id: panel
     property Item control
-    property D.Palette backgroundColor: DS.Style.editBackground
-    property D.Palette alertBackgroundColor: DS.Style.alertBackground
+    property D.Palette backgroundColor: DS.Style.edit.background
+    property D.Palette alertBackgroundColor: DS.Style.edit.alertBackground
     property alias alertText: _alert.text
     property alias alertDuration: _alert.timeout
     property alias showAlert: _alert.visible

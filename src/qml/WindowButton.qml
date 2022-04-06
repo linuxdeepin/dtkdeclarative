@@ -28,7 +28,7 @@ Control {
     property alias icon: iconLoader
     property alias pressed: mouseArea.pressed
     signal clicked
-    property D.Palette textColor: DS.Style.buttonText
+    property D.Palette textColor: DS.Style.button.text
 
     palette.windowText: D.ColorSelector.textColor
     hoverEnabled: true
