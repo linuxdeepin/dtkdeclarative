@@ -36,7 +36,7 @@ public:
     virtual void TearDown();
 
     static void SetUpTestCase() {
-        const QString &target = QString("%1/opt/apps/%2/files/schemas/configs/%3.json").arg(LocalPrefix, APP_ID, FILE_NAME);
+        const QString &target = QString("%1/usr/share/dsg/configs/%2/%3.json").arg(LocalPrefix, APP_ID, FILE_NAME);
 
         if (!QFile::exists(QFileInfo(target).path()))
             QDir().mkpath(QFileInfo(target).path());
@@ -45,6 +45,7 @@ public:
 
         qputenv("DSG_DCONFIG_FILE_BACKEND_LOCAL_PREFIX", LocalPrefix);
         qputenv("DSG_DCONFIG_BACKEND_TYPE", "FileBackend");
+        qputenv("DSG_DATA_DIRS", "/usr/share/dsg");
     }
     static void TearDownTestCase() {
         QDir(LocalPrefix).removeRecursively();
