@@ -27,15 +27,15 @@ import ".."
 Control {
     id: control
     property string text
-    property D.Palette textColor: DS.Style.keySequenceEdit.labelTextColor
-    property D.Palette backgroundColor1: DS.Style.keySequenceEdit.labelBackgroundColor1
-    property D.Palette backgroundColor2: DS.Style.keySequenceEdit.labelBackgroundColor2
-    property D.Palette shadowInnerColor1: DS.Style.keySequenceEdit.labelShadowInner1
-    property D.Palette shadowInnerColor2: DS.Style.keySequenceEdit.labelShadowInner2
-    property D.Palette shadowOuterColor: DS.Style.keySequenceEdit.labelShadowOuter
+    property D.Palette textColor: DS.Style.keySequenceEdit.label.text
+    property D.Palette backgroundColor1: DS.Style.keySequenceEdit.label.background1
+    property D.Palette backgroundColor2: DS.Style.keySequenceEdit.label.background2
+    property D.Palette shadowInnerColor1: DS.Style.keySequenceEdit.label.shadowInner1
+    property D.Palette shadowInnerColor2: DS.Style.keySequenceEdit.label.shadowInner2
+    property D.Palette shadowOuterColor: DS.Style.keySequenceEdit.label.shadowOuter
 
-    leftPadding: DS.Style.keySequenceEdit.labelLeftRightPadding
-    topPadding: DS.Style.keySequenceEdit.labelTopbottomPadding
+    leftPadding: DS.Style.keySequenceEdit.label.leftRightPadding
+    topPadding: DS.Style.keySequenceEdit.label.topBottomPadding
     rightPadding: leftPadding
     bottomPadding: topPadding
 

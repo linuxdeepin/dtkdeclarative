@@ -27,28 +27,30 @@ import org.deepin.dtk.style 1.0 as DS
 
 T.ProgressBar {
     id: control
+
+    property D.Palette backgroundColor: DS.Style.embeddedProgressBar.background
+    property D.Palette progressBackgroundColor: DS.Style.embeddedProgressBar.progressBackground
+
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
     padding: 1
 
     background: Rectangle {
-        implicitWidth: DS.Style.progressBar.embedded.width
-        implicitHeight: DS.Style.progressBar.embedded.height
-        radius: DS.Style.progressBar.embedded.backgroundRadius
-        color: D.DTK.selectColor(palette.window, DS.Style.progressBar.embedded.lightBackgroundColor,
-                                 DS.Style.progressBar.embedded.darkBackgroundColor)
+        implicitWidth: DS.Style.embeddedProgressBar.width
+        implicitHeight: DS.Style.embeddedProgressBar.height
+        radius: DS.Style.embeddedProgressBar.backgroundRadius
+        color: control.D.ColorSelector.backgroundColor
     }
 
     contentItem: Item {
         Item {
             width: control.visualPosition * control.width
-            height: DS.Style.progressBar.embedded.contentHeight
+            height: DS.Style.embeddedProgressBar.contentHeight
             clip: true
 
             Rectangle {
-                color: D.DTK.selectColor(palette.window, DS.Style.progressBar.embedded.lightProgressColor,
-                                         DS.Style.progressBar.embedded.darkProgressColor)
-                radius: DS.Style.progressBar.embedded.contentRadius
+                color: control.D.ColorSelector.progressBackgroundColor
+                radius: DS.Style.embeddedProgressBar.contentRadius
                 width: background.width
                 height: parent.height
             }

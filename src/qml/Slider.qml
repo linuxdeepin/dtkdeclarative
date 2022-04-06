@@ -37,7 +37,7 @@ T.Slider {
         ArrowRight = 5
     }
 
-    property D.Palette grooveColor: DS.Style.sliderGroove
+    property D.Palette grooveColor: DS.Style.slider.groove.background
 
     property alias handleType: __handle.type
     property real dashOffset: 0.0
@@ -55,8 +55,8 @@ T.Slider {
         id: __handle
         x: control.leftPadding + (control.horizontal ? control.visualPosition * (control.availableWidth - width) : 0)
         y: control.topPadding + (control.horizontal ? 0 : control.visualPosition * (control.availableHeight - height))
-        width: control.horizontal ? DS.Style.slider.handleWidth : DS.Style.slider.handleHeight
-        height: control.horizontal ? DS.Style.slider.handleHeight : DS.Style.slider.handleWidth
+        width: control.horizontal ? DS.Style.slider.handle.width : DS.Style.slider.handle.height
+        height: control.horizontal ? DS.Style.slider.handle.height : DS.Style.slider.handle.width
         palette: D.DTK.makeIconPalette(control.palette)
         mode: control.D.ColorSelector.controlState
         theme: control.D.ColorSelector.controlTheme
@@ -69,16 +69,16 @@ T.Slider {
             verticalCenter: control.horizontal ? control.handle.verticalCenter : undefined
         }
 
-        implicitWidth: control.horizontal ? DS.Style.slider.sliderWidth : handle.width
-        implicitHeight: control.horizontal ? handle.height : DS.Style.slider.sliderHeight
+        implicitWidth: control.horizontal ? DS.Style.slider.width : handle.width
+        implicitHeight: control.horizontal ? handle.height : DS.Style.slider.height
 
         // draw groove
         Item {
             id: sliderGroove
             x: control.horizontal ? 0 : (parent.width - width) / 2
             y: control.horizontal ? (parent.height - height) / 2 : 0
-            width: control.horizontal ? parent.width : DS.Style.slider.grooveHeight
-            height: control.horizontal ? DS.Style.slider.grooveHeight : parent.height
+            width: control.horizontal ? parent.width : DS.Style.slider.groove.height
+            height: control.horizontal ? DS.Style.slider.groove.height : parent.height
             Shape {
                 ShapePath {
                     capStyle: ShapePath.FlatCap
@@ -121,9 +121,9 @@ T.Slider {
 
                     Item {
                         id: passItem
-                        y: control.horizontal ? -DS.Style.slider.grooveHeight / 2 : control.handle.y + control.handle.height / 2
-                        height: control.horizontal ? DS.Style.slider.grooveHeight : sliderGroove.height - control.handle.y - control.handle.height / 2
-                        width: control.horizontal ? control.handle.x : DS.Style.slider.grooveHeight
+                        y: control.horizontal ? -DS.Style.slider.groove.height / 2 : control.handle.y + control.handle.height / 2
+                        height: control.horizontal ? DS.Style.slider.groove.height : sliderGroove.height - control.handle.y - control.handle.height / 2
+                        width: control.horizontal ? control.handle.x : DS.Style.slider.groove.height
                     }
 
                     BoxShadow {

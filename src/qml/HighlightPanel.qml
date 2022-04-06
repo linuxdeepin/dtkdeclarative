@@ -26,9 +26,9 @@ import org.deepin.dtk.style 1.0 as DS
 Item {
     id: panel
 
-    property D.Palette backgroundColor: DS.Style.highlightPanelBackground
-    property D.Palette outerShadowColor: DS.Style.highlightPanelDropShadow
-    property D.Palette innerShadowColor: DS.Style.highlightPanelInnerShadow
+    property D.Palette backgroundColor: DS.Style.highlightPanel.background
+    property D.Palette outerShadowColor: DS.Style.highlightPanel.dropShadow
+    property D.Palette innerShadowColor: DS.Style.highlightPanel.innerShadow
 
     implicitWidth: DS.Style.highlightPanel.width
     implicitHeight: DS.Style.highlightPanel.height

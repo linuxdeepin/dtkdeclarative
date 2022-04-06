@@ -33,8 +33,8 @@ T.MenuSeparator {
     implicitWidth: Math.max(background ? background.implicitWidth : 0, contentItem.implicitWidth + leftPadding + rightPadding)
     implicitHeight: Math.max(background ? background.implicitHeight : 0, contentItem.implicitHeight + topPadding + bottomPadding)
 
-    topPadding: __lineStyle ? DS.Style.menu.separatorLineTopPadding : DS.Style.menu.separatorTopPadding
-    bottomPadding: __lineStyle ? DS.Style.menu.separatorLineBottomPadding : DS.Style.menu.separatorBottomPadding
+    topPadding: __lineStyle ? DS.Style.menu.separator.lineTopPadding : DS.Style.menu.separator.topPadding
+    bottomPadding: __lineStyle ? DS.Style.menu.separator.lineBottomPadding : DS.Style.menu.separator.bottomPadding
 
     contentItem: Loader {
         sourceComponent: __lineStyle ? lineCom : titleCom
@@ -42,9 +42,10 @@ T.MenuSeparator {
         Component {
             id: lineCom
             Rectangle {
+                property D.Palette separatorColor: DS.Style.menu.separator.lineColor
                 width: control.parent.width
-                implicitHeight: DS.Style.menu.DS.Style.menu.separatorLineHeight
-                color: DS.Style.menu.separatorLineColor
+                implicitHeight: DS.Style.menu.separator.lineHeight
+                color: D.ColorSelector.separatorColor
             }
         }
 

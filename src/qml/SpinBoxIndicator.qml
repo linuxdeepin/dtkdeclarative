@@ -34,19 +34,19 @@ Control {
     property bool pressed
     property bool singleIndicator: false
     property int direction
-    property D.Palette inactiveBackgroundColor: DS.Style.spinBoxIndicatorBackground
+    property D.Palette inactiveBackgroundColor: DS.Style.spinBox.indicator.background
 
     palette.windowText: control.D.ColorSelector.inactiveBackgroundColor
     hoverEnabled: true
-    implicitWidth: DS.Style.spinBox.indicatorWidth
-    implicitHeight: spinBox.activeFocus ? spinBox.implicitHeight / 2 : DS.Style.spinBox.indicatorHeight
+    implicitWidth: DS.Style.spinBox.indicator.width
+    implicitHeight: spinBox.activeFocus ? spinBox.implicitHeight / 2 : DS.Style.spinBox.indicator.height
     opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
 
     Component {
         id: inactiveComponent
         D.DciIcon {
             id: icon
-            sourceSize.width: DS.Style.spinBox.indicatorIconSize
+            sourceSize.width: DS.Style.spinBox.indicator.iconSize
             palette: D.DTK.makeIconPalette(control.palette)
             name: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? "entry_spinbox_up" : "entry_spinbox_down"
             mode: control.D.ColorSelector.controlState
@@ -79,8 +79,8 @@ Control {
                     height: spinBox.implicitHeight / 2
                     icon {
                         name: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? "arrow_ordinary_up" : "arrow_ordinary_down"
-                        width: DS.Style.spinBox.focusIndicatorIconSize
-                        height: DS.Style.spinBox.focusIndicatorIconSize
+                        width: DS.Style.spinBox.indicator.focusIconSize
+                        height: DS.Style.spinBox.indicator.focusIconSize
                     }
                     activeFocusOnTab: false
                     opacity: 1

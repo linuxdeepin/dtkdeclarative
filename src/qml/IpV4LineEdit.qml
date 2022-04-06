@@ -30,7 +30,7 @@ FocusScope {
     property string alertText
     property int alertDuration
     property bool showAlert
-    property D.Palette backgroundColor: DS.Style.editBackground
+    property D.Palette backgroundColor: DS.Style.edit.background
 
     width: impl.width
     height: impl.height
@@ -52,7 +52,7 @@ FocusScope {
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     text: modelData
-                    Layout.preferredWidth: DS.Style.ipLineEdit.fieldWidth
+                    Layout.preferredWidth: DS.Style.ipEdit.fieldWidth
                     Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                     validator: RegExpValidator {
                         regExp: /^(([0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])?)$/

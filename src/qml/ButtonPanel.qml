@@ -26,13 +26,13 @@ BoxPanel {
     id: control
     property Item button
 
-    color1: selectValue(DS.Style.button1, DS.Style.checkedButton, DS.Style.highlightedButton1)
-    color2: selectValue(DS.Style.button2, DS.Style.checkedButton, DS.Style.highlightedButton2)
-    insideBorderColor: selectValue(DS.Style.buttonInsideBorder, null, DS.Style.highlightedButtonBorder)
-    outsideBorderColor: selectValue(DS.Style.buttonOutsideBorder, null, null)
-    dropShadowColor: selectValue(DS.Style.buttonDropShadow, DS.Style.checkedButtonDropShadow, DS.Style.highlightedButtonDropShadow)
-    innerShadowColor1: selectValue(DS.Style.buttonInnerShadow1, DS.Style.checkedButtonInnerShadow, DS.Style.highlightedButtonInnerShadow1)
-    innerShadowColor2: selectValue(DS.Style.buttonInnerShadow2, null, DS.Style.highlightedButtonInnerShadow2)
+    color1: selectValue(DS.Style.button.background1, DS.Style.checkedButton.background, DS.Style.highlightedButton.background1)
+    color2: selectValue(DS.Style.button.background2, DS.Style.checkedButton.background, DS.Style.highlightedButton.background2)
+    insideBorderColor: selectValue(DS.Style.button.insideBorder, null, DS.Style.highlightedButton.border)
+    outsideBorderColor: selectValue(DS.Style.button.outsideBorder, null, null)
+    dropShadowColor: selectValue(DS.Style.button.dropShadow, DS.Style.checkedButton.dropShadow, DS.Style.highlightedButton.dropShadow)
+    innerShadowColor1: selectValue(DS.Style.button.innerShadow1, DS.Style.checkedButton.innerShadow, DS.Style.highlightedButton.innerShadow1)
+    innerShadowColor2: selectValue(DS.Style.button.innerShadow2, null, DS.Style.highlightedButton.innerShadow2)
     boxShadowBlur: selectValue(control.D.ColorSelector.controlState === D.DTK.PressedState ? 4 : 6, 6, 4)
     boxShadowOffsetY: selectValue(control.D.ColorSelector.controlState === D.DTK.PressedState ? 2 : 4, 4, 4)
     innerShadowOffsetY1: selectValue(control.D.ColorSelector.controlState === D.DTK.HoveredState ? -3 : -1, -1, -1)

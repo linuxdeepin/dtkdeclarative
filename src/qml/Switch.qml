@@ -27,8 +27,8 @@ import org.deepin.dtk.style 1.0 as DS
 T.Switch {
     id: control
 
-    property D.Palette backgroundColor: DS.Style.switchBackground
-    property D.Palette handleColor: DS.Style.switchHandle
+    property D.Palette backgroundColor: DS.Style.switchButton.background
+    property D.Palette handleColor: DS.Style.switchButton.handle
 
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
@@ -54,7 +54,7 @@ T.Switch {
             y: (parent.height - height) / 2
             sourceSize.width: DS.Style.switchButton.handleWidth
             sourceSize.height: DS.Style.switchButton.handleHeight
-            name: DS.Style.switchButton.iconNmae
+            name: DS.Style.switchButton.iconName
             opacity: control.D.ColorSelector.controlState === D.DTK.DisabledState ? (control.checked ? 0.4 : 1) : 1
             palette {
                 highlight: control.checked ? control.palette.highlight : control.D.ColorSelector.handleColor

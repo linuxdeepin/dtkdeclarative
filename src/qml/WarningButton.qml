@@ -25,6 +25,6 @@ import org.deepin.dtk.style 1.0 as DS
 
 Button {
     id: control
-    textColor: DS.Style.warningButtonText
+    textColor: DS.Style.warningButton.text
 }
 

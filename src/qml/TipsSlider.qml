@@ -61,7 +61,7 @@ Control {
             topMargin: __slider.horizontal ? 0 : __slider.handle.height / 2
             bottomMargin: __slider.horizontal ? 0 : __slider.handle.height / 2
         }
-        spacing: ticks.length > 1 ? (__slider.horizontal ? (parent.width - __slider.handle.width - DS.Style.slider.tickWidth * ticks.length)
-                                                         :(parent.height - __slider.handle.height - DS.Style.slider.tickWidth * ticks.length)) / (ticks.length - 1) : 0
+        spacing: ticks.length > 1 ? (__slider.horizontal ? (parent.width - __slider.handle.width - DS.Style.slider.tick.width * ticks.length)
+                                                         :(parent.height - __slider.handle.height - DS.Style.slider.tick.width * ticks.length)) / (ticks.length - 1) : 0
     }
 }
