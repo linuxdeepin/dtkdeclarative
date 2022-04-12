@@ -19,9 +19,6 @@ CONFIG(debug, debug|release) {
 }
 INCLUDEPATH += $$PWD/../src
 
-RESOURCES += \
-    $$PWD/dtkdeclarative_chameleon.qrc
-
 include($$PWD/src/src.pri)
 include($$PWD/imports/Chameleon/qml.pri)
 

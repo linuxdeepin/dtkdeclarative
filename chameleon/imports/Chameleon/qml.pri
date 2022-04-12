@@ -32,5 +32,4 @@ QML_FILES += \
     $$PWD/Control.qml \
     $$PWD/ScrollIndicator.qml \
     $$PWD/Popup.qml \
-    $$PWD/ScrollBar.qml \
     $$PWD/Pane.qml \
