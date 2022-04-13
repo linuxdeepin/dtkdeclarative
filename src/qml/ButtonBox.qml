@@ -27,7 +27,7 @@ import org.deepin.dtk.style 1.0 as DS
 Control {
     id: control
 
-    default property list<AbstractButton> buttons
+    default property alias buttons: btnGroup.buttons
     property alias group: btnGroup
 
     D.ColorSelector.hovered: false
@@ -35,7 +35,6 @@ Control {
 
     ButtonGroup {
         id: btnGroup
-        buttons: control.buttons
     }
     contentItem: RowLayout {
         spacing: DS.Style.buttonBox.spacing
