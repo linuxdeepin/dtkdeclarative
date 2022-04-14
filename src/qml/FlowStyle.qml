@@ -405,6 +405,10 @@ QtObject {
         property int fieldWidth: 40
     }
 
+    property QtObject passwordEdit: QtObject {
+        property int echoActionSpacing: 8
+    }
+
     property QtObject keySequenceEdit: QtObject {
         property int width: 200
         property int height: 36

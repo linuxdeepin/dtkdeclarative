@@ -17,6 +17,7 @@
 
 import QtQuick 2.11
 import org.deepin.dtk.impl 1.0 as D
+import org.deepin.dtk.style 1.0 as DS
 
 LineEdit {
     id: control
@@ -34,7 +35,8 @@ LineEdit {
     }
 
     echoMode: TextInput.Password
-    clearButtonAnchors.rightMargin: echoButton.visible? 8 + echoButton.width : 0
+    clearButton.anchors.rightMargin: echoButton.visible ? DS.Style.passwordEdit.echoActionSpacing
+                                                          + echoButton.width : 0
 
     Button {
         id: echoButton

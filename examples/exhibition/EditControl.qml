@@ -129,11 +129,11 @@ Column {
             text: "~/.ssh/ssh_keygen.key"
             ActionButton {
                 anchors {
-                    right: parent.right
+                    right: keyLineEdit.clearButton.left
                     rightMargin: 5
                     verticalCenter: parent.verticalCenter
                 }
-                icon.name: "fileopen"
+                icon.name: "entry_loadfile"
                 onClicked: {
                     keyFileDialog.open()
                 }
