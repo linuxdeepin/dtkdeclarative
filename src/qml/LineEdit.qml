@@ -21,7 +21,7 @@ import org.deepin.dtk.style 1.0 as DS
 
 TextField {
     id: control
-    property alias clearButtonAnchors: clearBtn.anchors
+    readonly property alias clearButton: clearBtn
 
     rightPadding: clearBtn.visible ? (clearBtn.width + clearBtn.anchors.rightMargin) : 0
     selectByMouse: true
