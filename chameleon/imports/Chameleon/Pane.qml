@@ -19,7 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.deepin.dtk.controls 1.0 as D
+import org.deepin.dtk 1.0 as D
 
 D.Pane {
 
