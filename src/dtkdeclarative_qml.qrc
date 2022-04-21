@@ -112,5 +112,6 @@
         <file>qml/WaterProgressBar.qml</file>
         <file>qml/private/ProgressBarImpl.qml</file>
         <file>qml/private/ProgressBarPanel.qml</file>
+        <file>qml/PlaceholderText.qml</file>
     </qresource>
 </RCC>
