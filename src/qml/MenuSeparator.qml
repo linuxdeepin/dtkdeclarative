@@ -29,6 +29,7 @@ T.MenuSeparator {
 
     property string text
     property bool __lineStyle: control.text === ""
+    property D.Palette textColor: DS.Style.menu.separatorText
 
     implicitWidth: Math.max(background ? background.implicitWidth : 0, contentItem.implicitWidth + leftPadding + rightPadding)
     implicitHeight: Math.max(background ? background.implicitHeight : 0, contentItem.implicitHeight + topPadding + bottomPadding)
@@ -53,8 +54,8 @@ T.MenuSeparator {
             id: titleCom
             Text {
                 text: control.text
-                opacity: 0.5
                 font: D.DTK.fontManager.t8
+                color: control.D.ColorSelector.textColor
             }
         }
     }

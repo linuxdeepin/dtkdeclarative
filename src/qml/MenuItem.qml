@@ -38,10 +38,10 @@ T.MenuItem {
         width: DS.Style.menu.item.iconSize.height
     }
 
-    property D.Palette itemColor: D.Palette {
-        hovered: D.DTK.makeColor(D.Color.HighlightedText)
-    }
-    palette.windowText: hovered ? D.ColorSelector.itemColor : undefined
+    property D.Palette textColor: DS.Style.menu.itemText
+    property D.Palette subMenuBackgroundColor: DS.Style.menu.subMenuOpenedBackground
+
+    palette.windowText: D.ColorSelector.textColor
     D.DciIcon.mode: D.ColorSelector.controlState
     D.DciIcon.theme: D.ColorSelector.controlTheme
     D.DciIcon.palette: D.DTK.makeIconPalette(palette)
@@ -96,10 +96,9 @@ T.MenuItem {
         implicitWidth: DS.Style.menu.item.width
         implicitHeight: DS.Style.menu.item.height
         Rectangle {
-            property D.Palette backgroundColor: DS.Style.menu.subMenuOpendBackground
             anchors.fill: parent
             visible: !control.hovered && control.subMenu && control.subMenu.opened
-            color: D.ColorSelector.backgroundColor
+            color: control.D.ColorSelector.subMenuBackgroundColor
             radius: DS.Style.control.radius
         }
 

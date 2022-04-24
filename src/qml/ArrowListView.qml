@@ -35,13 +35,15 @@ FocusScope {
     Column {
         width: parent.width
         Button {
-            height: DS.Style.arrowListView.stepButtonSize.height
             width: DS.Style.arrowListView.stepButtonSize.width
+            height: DS.Style.arrowListView.stepButtonSize.height
             flat: true
             anchors.horizontalCenter: parent.horizontalCenter
             enabled: !itemsView.atYBeginning
             visible: itemsView.interactive
-            icon.name: "go-up"
+            icon.name: "arrow_ordinary_up"
+            icon.width: DS.Style.arrowListView.stepButtonIconSize.width
+            icon.height: DS.Style.arrowListView.stepButtonIconSize.height
             onClicked: itemsView.decrementCurrentIndex()
         }
 
@@ -54,13 +56,15 @@ FocusScope {
         }
 
         Button {
-            height: DS.Style.arrowListView.stepButtonSize.height
             width: DS.Style.arrowListView.stepButtonSize.width
+            height: DS.Style.arrowListView.stepButtonSize.height
             flat: true
             anchors.horizontalCenter: parent.horizontalCenter
             enabled: !itemsView.atYEnd
             visible: itemsView.interactive
-            icon.name: "go-down"
+            icon.name: "arrow_ordinary_down"
+            icon.width: DS.Style.arrowListView.stepButtonIconSize.width
+            icon.height: DS.Style.arrowListView.stepButtonIconSize.height
             onClicked: itemsView.incrementCurrentIndex()
         }
     }

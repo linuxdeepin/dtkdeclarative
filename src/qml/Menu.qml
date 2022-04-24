@@ -28,6 +28,7 @@ T.Menu {
     id: control
 
     property int maxVisibleItems : DS.Style.arrowListView.maxVisibleItems
+    property D.Palette backgroundColor: DS.Style.menu.background
     property var model: control.contentModel
     property Component header
     property Component footer
@@ -95,6 +96,6 @@ T.Menu {
         implicitWidth: DS.Style.menu.item.width
         implicitHeight: DS.Style.menu.item.height
         radius: DS.Style.menu.radius
-        backgroundColor: DS.Style.menu.background
+        backgroundColor: control.backgroundColor
     }
 }

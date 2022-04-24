@@ -571,12 +571,23 @@ QtObject {
         }
 
         property D.Palette background: D.Palette {
-            normal: Qt.rgba(235 / 255.0, 235 / 255.0, 235 / 255.0, 0.6)
-            normalDark: Qt.rgba(247 / 255.0, 247 / 255.0, 247 / 255.0, 0.6)
+            normal: Qt.rgba(238 / 255.0, 238 / 255.0, 238 / 255.0, 0.8)
+            normalDark: Qt.rgba(20 / 255.0, 20 / 255.0, 20 / 255.0, 0.8)
         }
 
-        property D.Palette subMenuOpendBackground: D.Palette {
+        property D.Palette subMenuOpenedBackground: D.Palette {
             normal: Qt.rgba(0, 0, 0, 0.15)
+        }
+
+        property D.Palette itemText: D.Palette {
+            normal: "black"
+            normalDark: Qt.rgba(1, 1, 1, 0.6)
+            hovered: D.DTK.makeColor(D.Color.HighlightedText)
+        }
+
+        property D.Palette separatorText: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.5)
+            normalDark: Qt.rgba(1, 1, 1, 0.4)
         }
     }
 
@@ -619,6 +630,7 @@ QtObject {
 
     property QtObject arrowListView: QtObject {
         property size stepButtonSize: Qt.size(16, 16)
+        property size stepButtonIconSize: Qt.size(12, 12)
         property int maxVisibleItems: 16
         property int itemHeight: 30
     }
