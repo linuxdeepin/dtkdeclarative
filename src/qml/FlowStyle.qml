@@ -284,8 +284,8 @@ QtObject {
     }
 
     property QtObject windowButton: QtObject {
-        property int width: 45
-        property int height: 45
+        property int width: 50
+        property int height: 50
         property D.Palette background: D.Palette {
             normal: "transparent"
             normalDark: "transparent"
@@ -487,7 +487,7 @@ QtObject {
         property int height: 120
         property int contentHMargin: 10
         property int footerMargin: 10
-        property int titleBarHeight: 45
+        property int titleBarHeight: 50
         property int iconSize: 32
     }
 
@@ -496,6 +496,7 @@ QtObject {
         property int height: 380
         property int topPadding: 20
         property int bottomPadding: 10
+        property int productIconHeight: 96
     }
 
     property QtObject popup: QtObject {
@@ -746,8 +747,6 @@ QtObject {
 
     property QtObject titleBar: QtObject {
         property int height: 50
-        property int buttonWidth: 50
-        property int buttonHeight: 50
         property int iconSize: 32
     }
 

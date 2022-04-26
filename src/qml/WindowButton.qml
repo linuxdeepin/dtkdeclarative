@@ -29,6 +29,7 @@ Control {
     property alias pressed: mouseArea.pressed
     signal clicked
     property D.Palette textColor: DS.Style.button.text
+    property D.Palette backgroundColor: DS.Style.windowButton.background
 
     palette.windowText: D.ColorSelector.textColor
     hoverEnabled: true
@@ -36,8 +37,8 @@ Control {
         id: iconLoader
         palette: D.DTK.makeIconPalette(control.palette)
         sourceSize {
-            width: DS.Style.titleBar.buttonWidth
-            height: DS.Style.titleBar.buttonHeight
+            width: DS.Style.windowButton.width
+            height: DS.Style.windowButton.height
         }
         mode: control.D.ColorSelector.controlState
         theme: control.D.ColorSelector.controlTheme
@@ -48,9 +49,8 @@ Control {
         Component.onCompleted: clicked.connect(control.clicked)
     }
     background: Rectangle {
-        property D.Palette color1: DS.Style.windowButton.background
         implicitWidth: DS.Style.windowButton.width
-        implicitHeight: DS.Style.titleBar.height
-        color: D.ColorSelector.color1
+        implicitHeight: DS.Style.windowButton.height
+        color: control.D.ColorSelector.backgroundColor
     }
 }
