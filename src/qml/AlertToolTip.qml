@@ -63,6 +63,7 @@ ToolTip {
         verticalAlignment: Text.AlignVCenter
         text: control.text
         color: D.ColorSelector.textColor
+        wrapMode: Text.Wrap
     }
 
     enter: Transition {
@@ -76,7 +77,8 @@ ToolTip {
     }
 
     BoxShadow {
-        property D.Palette dropShadowColor: DS.Style.alertToolTip.dropShadow
+        property D.Palette dropShadowColor: DS.Style.alertToolTip.connecterdropShadow
+        property D.Palette backgroundColor: DS.Style.alertToolTip.connecterBackground
         y: - height * (0.75) - control.topMargin - control.topPadding
         width: DS.Style.alertToolTip.connectorWidth
         height: DS.Style.alertToolTip.connectorHeight
@@ -87,7 +89,7 @@ ToolTip {
 
         Rectangle {
             anchors.fill: parent
-            color: _background.color
+            color: parent.D.ColorSelector.backgroundColor
             border.color: _background.D.ColorSelector.borderColor
             border.width: 1
         }

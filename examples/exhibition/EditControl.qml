@@ -153,11 +153,11 @@ Column {
             text: "~/.ssh/ssh_keygen.key"
             ActionButton {
                 anchors {
-                    right: parent.right
+                    right: parent.clearButton.left
                     rightMargin: 5
                     verticalCenter: parent.verticalCenter
                 }
-                icon.name: "fileopen"
+                icon.name: "entry_loadfile"
             }
         }
 
@@ -168,11 +168,12 @@ Column {
             showAlert: true
             ActionButton {
                 anchors {
-                    right: parent.right
+                    right: parent.clearButton.left
                     rightMargin: 5
                     verticalCenter: parent.verticalCenter
                 }
-                icon.name: "fileopen"
+                icon.name: "entry_loadfile"
+
             }
         }
 
