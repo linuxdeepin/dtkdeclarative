@@ -366,6 +366,7 @@ QtObject {
         property int padding: 8
         property int spacing: 10
         property int iconSize: 16
+        property int maxVisibleItems: 16
 
         property QtObject edit: QtObject {
             property int indicatorSpacing: 7
@@ -386,6 +387,7 @@ QtObject {
 
         property D.Palette background: D.Palette {
             normal: Qt.rgba(0, 0, 0, 0.08)
+            normalDark: Qt.rgba(1, 1, 1, 0.05)
         }
 
         property D.Palette alertBackground: D.Palette {
@@ -535,14 +537,21 @@ QtObject {
 
         property D.Palette text: D.Palette {
             normal: "#e15736"
+            normalDark: "#e13669"
         }
 
         property D.Palette background: D.Palette {
-            normal: Qt.rgba(247, 247, 247, 0.6)
+            normal: Qt.rgba(247 / 255, 247 / 255, 247 / 255, 0.6)
+            normalDark: Qt.rgba(59 / 255, 59 / 255, 59 / 255, 0.6)
         }
 
-        property D.Palette dropShadow: D.Palette {
+        property D.Palette connecterdropShadow: D.Palette {
             normal: Qt.rgba(0, 0, 0, 0.1)
+        }
+
+        property D.Palette connecterBackground: D.Palette {
+            normal: Qt.rgba(1, 1, 1, 1)
+            normalDark: Qt.rgba(0, 0, 0, 0.1)
         }
     }
 

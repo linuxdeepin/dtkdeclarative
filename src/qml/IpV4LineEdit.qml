@@ -103,7 +103,7 @@ FocusScope {
                 ActionButton {
                     id: clearBtn
                     anchors.fill: parent
-                    icon.name: "window-close_round"
+                    icon.name: "entry_clear"
                     visible: control.activeFocus && control.text
                     focusPolicy: Qt.NoFocus
                 }

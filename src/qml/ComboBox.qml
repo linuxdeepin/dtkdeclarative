@@ -32,6 +32,7 @@ T.ComboBox {
     property string alertText
     property int alertDuration
     property bool showAlert
+    property int maxVisibleItems : DS.Style.comboBox.maxVisibleItems
     property D.Palette separatorColor: DS.Style.comboBox.edit.separator
 
     implicitWidth: DS.Style.control.implicitWidth(control)
@@ -159,16 +160,15 @@ T.ComboBox {
     }
 
     popup: Popup {
+        clip: true
         implicitWidth: control.width
-        contentItem: ListView {
-            clip: true
-            implicitHeight: contentHeight
-            model: control.delegateModel
-            currentIndex: control.highlightedIndex
-            highlightRangeMode: ListView.ApplyRange
-            highlightMoveDuration: 0
-
-            T.ScrollBar.vertical: ScrollBar { }
+        contentItem: ArrowListView {
+            maxVisibleItems: control.maxVisibleItems
+            implicitHeight: childrenRect.height
+            view.model: control.delegateModel
+            view.currentIndex: control.highlightedIndex
+            view.highlightRangeMode: ListView.ApplyRange
+            view.highlightMoveDuration: 0
         }
 
         background: FloatingPanel {
