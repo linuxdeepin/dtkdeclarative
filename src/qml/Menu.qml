@@ -55,7 +55,7 @@ T.Menu {
 
     contentItem: FocusScope {
         implicitHeight: childrenRect.height
-        implicitWidth: childrenRect.width
+
         Column {
             width: parent.width
             Loader {
@@ -80,9 +80,8 @@ T.Menu {
                     }
                 }
 
-                onCountChanged: {
-                    refreshContentItemWidth()
-                }
+                onCountChanged: refreshContentItemWidth()
+                Component.onCompleted: refreshContentItemWidth()
             }
             Loader {
                 width: parent.width

@@ -21,7 +21,6 @@
 
 import QtQuick 2.11
 import QtQuick.Window 2.11
-import QtQuick.Layouts 1.11
 import org.deepin.dtk.style 1.0 as DS
 
 FocusScope {
@@ -29,8 +28,8 @@ FocusScope {
     property int itemHeight:  DS.Style.arrowListView.itemHeight
     property alias view: itemsView
 
+    implicitWidth: DS.Style.arrowListView.width
     implicitHeight: childrenRect.height
-    implicitWidth: childrenRect.width
 
     Column {
         width: parent.width

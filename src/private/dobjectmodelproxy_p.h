@@ -64,7 +64,7 @@ public Q_SLOTS:
     int mapFromSource(const int i) const;
 
 private Q_SLOTS:
-    void onCountChanged();
+    void syncDataFromItem();
 
 Q_SIGNALS:
     void filterAcceptsItemChanged();
