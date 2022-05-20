@@ -639,6 +639,7 @@ QtObject {
     }
 
     property QtObject arrowListView: QtObject {
+        property int width: 180
         property size stepButtonSize: Qt.size(16, 16)
         property size stepButtonIconSize: Qt.size(12, 12)
         property int maxVisibleItems: 16

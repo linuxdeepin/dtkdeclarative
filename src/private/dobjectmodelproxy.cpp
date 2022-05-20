@@ -132,6 +132,19 @@ public:
         return compositor.objects();
     }
 
+    bool isAcceptedItem(const QJSValueList &args)
+    {
+        if (!filterAcceptsItem.isCallable())
+            return true;
+
+        const auto &result = filterAcceptsItem.call(args);
+        if (result.isError()) {
+            qCWarning(cfLog) << "ObjectModelProxy::isAcceptedItem() failed: can't call filterAcceptsItem." << result.toString();
+            return false;
+        }
+        return result.toBool();
+    }
+
     void reset(const QVector<QQuickItem *> &datas)
     {
         Q_Q(ObjectModelProxy);
@@ -144,7 +157,7 @@ public:
 
         for (auto item :compositor.datas) {
             auto argu1 = engine->newQObject(item);
-            const bool accept = filterAcceptsItem.call({argu1}).toBool();
+            const bool accept = isAcceptedItem({argu1});
             if (accept) {
                 auto currIndex = compositor.insert(item);
                 changeSet.insert(currIndex, 1);
@@ -166,12 +179,7 @@ public:
         for (auto item :compositor.datas) {
             const bool exists = objects.contains(item);
             auto argu1 = engine->newQObject(item);
-            const auto &result = filterAcceptsItem.call({argu1});
-            if (result.isError()) {
-                qCWarning(cfLog) << "ObjectModelProxy::update() failed: can't call filterAcceptsItem." << result.toString();
-                continue;
-            }
-            const bool accept = result.toBool();
+            const bool accept = isAcceptedItem({argu1});
             if (accept && !exists) {
                 auto currIndex = compositor.insert(item);
                 changeSet.insert(currIndex, 1);
@@ -341,7 +349,7 @@ void ObjectModelProxy::setFilterAcceptsItem(QJSValue filterAcceptsItem)
     Q_EMIT filterAcceptsItemChanged();
 }
 
-void ObjectModelProxy::onCountChanged()
+void ObjectModelProxy::syncDataFromItem()
 {
     Q_D(ObjectModelProxy);
     QVector<QQuickItem *> items;
@@ -357,11 +365,12 @@ void ObjectModelProxy::setSourceModel(QQmlObjectModel *sourceModel)
 {
     Q_D(ObjectModelProxy);
     if (d->impl) {
-        disconnect(d->impl, &QQmlObjectModel::countChanged, this, &ObjectModelProxy::onCountChanged);
+        disconnect(d->impl, &QQmlObjectModel::countChanged, this, &ObjectModelProxy::syncDataFromItem);
     }
 
     d->impl = sourceModel;
-    connect(d->impl, &QQmlObjectModel::countChanged, this, &ObjectModelProxy::onCountChanged);
+    syncDataFromItem();
+    connect(d->impl, &QQmlObjectModel::countChanged, this, &ObjectModelProxy::syncDataFromItem);
 }
 
 DQUICK_END_NAMESPACE
