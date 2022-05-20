@@ -81,7 +81,7 @@ FocusScope {
             focusPolicy: Qt.NoFocus
 
             visible: false
-            icon.name: ""  // TODO(Chen Bin): Replace it with dci icon.
+            icon.name: "action_reset"
             icon.width: 16
 
             onClicked: {
