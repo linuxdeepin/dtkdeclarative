@@ -113,5 +113,7 @@
         <file>qml/private/ProgressBarImpl.qml</file>
         <file>qml/private/ProgressBarPanel.qml</file>
         <file>qml/PlaceholderText.qml</file>
+        <file>qml/private/ColorOverlay.qml</file>
+        <file>qml/private/SoftwareColorOverlay.qml</file>
     </qresource>
 </RCC>

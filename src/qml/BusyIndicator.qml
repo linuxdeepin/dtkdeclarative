@@ -32,10 +32,32 @@ T.BusyIndicator {
     implicitWidth: DS.Style.busyIndicator.size
     implicitHeight: implicitWidth
     padding: width / DS.Style.busyIndicator.paddingFactor
-    contentItem: D.BusyIndicator {
+    contentItem: Item {
         implicitWidth: DS.Style.busyIndicator.size
         implicitHeight: implicitWidth
-        fillColor: control.D.ColorSelector.fillColor
-        running: control.running
+        Image {
+            id: indicatorSource
+            anchors.fill: parent
+            source: DS.Style.busyIndicator.spinnerSource
+            sourceSize {
+                width: parent.width
+                height: parent.height
+            }
+            visible: false
+        }
+
+        D.ColorOverlay {
+            anchors.fill: indicatorSource
+            source: indicatorSource
+            color: control.D.ColorSelector.fillColor
+
+            RotationAnimator on rotation {
+                from: 0
+                to: 360
+                duration: DS.Style.busyIndicator.animationDuration
+                running: control.running
+                loops: Animation.Infinite
+            }
+        }
     }
 }

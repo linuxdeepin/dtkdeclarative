@@ -667,6 +667,8 @@ QtObject {
         property D.Palette fillColor: D.Palette {
             normal: D.DTK.makeColor(D.Color.Highlight)
         }
+        property int animationDuration: 800
+        property string spinnerSource: "qrc:/dtk/declarative/resources/spinner-blue.webp"
     }
 
     property QtObject buttonIndicator: QtObject {

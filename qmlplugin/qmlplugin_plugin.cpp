@@ -37,7 +37,6 @@
 #include "private/dquickiconimage_p.h"
 #include "private/dquickdciiconimage_p.h"
 #include "private/dquickiconlabel_p.h"
-#include "private/dquickbusyindicator_p.h"
 #include "private/dquickcontrolpalette_p.h"
 #include "private/dsettingscontainer_p.h"
 #include "private/dmessagemanager_p.h"
@@ -45,6 +44,7 @@
 #include "private/dobjectmodelproxy_p.h"
 #include "private/dquickwaterprogressattribute_p.h"
 #include "private/dquickarrowboxpath_p.h"
+#include <private/dquickcoloroverlay_p.h>
 
 #include <DFontManager>
 
@@ -173,7 +173,6 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     // for org.deepin.dtk and org.deepin.dtk.impl
     dtkRegisterType<DQuickIconImage>(uri, implUri, 1, 0, "QtIcon");
     dtkRegisterType<DQuickIconLabel>(uri, implUri, 1, 0, "IconLabel");
-    dtkRegisterType<DQuickBusyIndicator>(uri, implUri, 1, 0, "BusyIndicator");
     dtkRegisterType<DQuickGlow>(uri, implUri, 1, 0, "GlowEffect");
     dtkRegisterType<DQUICK_NAMESPACE::DQuickDciIconImage>(uri, implUri, 1, 0, "DciIcon");
     dtkRegisterType<DQuickItemViewport>(uri, implUri, 1, 0, "ItemViewport");
@@ -193,6 +192,13 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType<DQuickKeyListener>(uri, implUri, 1, 0, "KeySequenceListener");
     dtkRegisterType<DQuickWaterProgressAttribute>(uri, implUri, 1, 0, "WaterProgressAttribute");
     dtkRegisterType<DQuickArrowBoxPath>(uri, implUri, 1, 0, "ArrowBoxPath");
+    dtkRegisterType<DQuickColorOverlay>(uri, implUri, 1, 0, "SoftwareColorOverlay");
+    if (softwareBackend == QQuickWindow::sceneGraphBackend()) {
+        dtkRegisterTypeAlias(uri, implUri, 1, 0, "SoftwareColorOverlay", "ColorOverlay", "private/");
+    } else {
+        dtkRegisterType(uri, implUri, 1, 0, "ColorOverlay", "private/");
+    }
+
 
     dtkRegisterAnonymousType<DQUICK_NAMESPACE::DQuickDciIcon>(uri, implUri, 1);
     dtkRegisterAnonymousType<DQuickControlColor>(uri, implUri, 1);
