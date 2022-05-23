@@ -435,7 +435,7 @@ QSGNode *DQuickItemViewport::updatePaintNode(QSGNode *old, QQuickItem::UpdatePai
                         }
                         // Maybe the texture size is changed
                         d->updateSourceRect(preNode->imageNode);
-                    } if (Q_LIKELY(preNode->softwareNode)) {
+                    } else if (Q_LIKELY(preNode->softwareNode)) {
                         if (preNode->softwareNode->texture() != texture) {
                             preNode->softwareNode->setTexture(texture);
                         }
