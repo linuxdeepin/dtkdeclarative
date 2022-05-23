@@ -22,7 +22,6 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dquickiconimage_p_p.h \
     $$PWD/dquickiconlabel_p.h \
     $$PWD/dquickiconlabel_p_p.h \
-    $$PWD/dquickbusyindicator_p.h \
     $$PWD/dquickitemviewport_p.h \
     $$PWD/drectanglenode_p.h \
     $$PWD/dshadownode_p.h \
@@ -43,6 +42,9 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dopacitymasknode.h \
     $$PWD/dquickkeylistener_p.h \
     $$PWD/dquickwaterprogressattribute_p.h \
+    $$PWD/dcoloroverlaynode.h \
+    $$PWD/dquickcoloroverlay_p.h \
+    $$PWD/dsoftwareeffectrendernode.h \
 
 SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dblitframebuffernode.cpp \
@@ -53,7 +55,6 @@ SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dquickarrowboxpath.cpp \
     $$PWD/dquickglow.cpp \
     $$PWD/dquickiconlabel.cpp \
-    $$PWD/dquickbusyindicator.cpp \
     $$PWD/dquickimageprovider.cpp \
     $$PWD/dquickinwindowblur.cpp \
     $$PWD/dquickrectangle.cpp \
@@ -73,3 +74,6 @@ SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dopacitymasknode.cpp \
     $$PWD/dquickkeylistener.cpp \
     $$PWD/dquickwaterprogressattribute.cpp \
+    $$PWD/dquickcoloroverlay.cpp \
+    $$PWD/dcoloroverlaynode.cpp \
+    $$PWD/dsoftwareeffectrendernode.cpp \

@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2022 UnionTech Technology Co., Ltd.
  *
- * Author:     xiaoyaobing <xiaoyaobing@uniontech.com>
+ * Author:     Chen Bin <chenbin@uniontech.com>
  *
- * Maintainer: xiaoyaobing <xiaoyaobing@uniontech.com>
+ * Maintainer: Chen Bin <chenbin@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -23,27 +23,16 @@ import QtQuick 2.0
 import QtGraphicalEffects.private 1.0
 import org.deepin.dtk.impl 1.0 as D
 
-/*!
-    The Qt Graphical Effects module provides a SourceProxy types.
-    the user can simply use ShaderEffectSource or Item as input
-
-*/
 Item {
     id: rootItem
 
     property variant source
-    property variant maskSource
-    property bool cached: false
-    property alias invert: mask.invert
+    property alias color: overlay.color
+    property alias cached: overlay.cached
 
     SourceProxy {
         id: sourceProxy
         input: rootItem.source
-    }
-
-    SourceProxy {
-        id: maskSourceProxy
-        input: rootItem.maskSource
     }
 
     ShaderEffectSource {
@@ -51,15 +40,14 @@ Item {
         anchors.fill: parent
         visible: rootItem.cached
         smooth: true
-        sourceItem: mask
+        sourceItem: overlay
         live: true
         hideSource: visible
     }
 
-    D.SoftwareOpacityMask {
-        id: mask
+    D.SoftwareColorOverlay {
+        id: overlay
         anchors.fill: parent
         source: sourceProxy.output
-        maskSource: maskSourceProxy.output
     }
 }

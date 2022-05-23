@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2022 UnionTech Technology Co., Ltd.
  *
- * Author:     xiaoyaobing <xiaoyaobing@uniontech.com>
+ * Author:     Chen Bin <chenbin@uniontech.com>
  *
- * Maintainer: xiaoyaobing <xiaoyaobing@uniontech.com>
+ * Maintainer: Chen Bin <chenbin@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DQUICKOPACITYMASK_P_H
-#define DQUICKOPACITYMASK_P_H
+#ifndef DQUICKCOLOROVERLAY_P_H
+#define DQUICKCOLOROVERLAY_P_H
 
 #include <dtkdeclarative_global.h>
 
@@ -28,42 +28,38 @@
 
 DQUICK_BEGIN_NAMESPACE
 
-class DQuickOpacityMaskPrivate;
-class DQuickOpacityMask : public QQuickItem
+class DQuickColorOverlayPrivate;
+class DQuickColorOverlay : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(bool invert READ invert WRITE setInvert NOTIFY invertChanged)
+    Q_DISABLE_COPY(DQuickColorOverlay)
+    Q_DECLARE_PRIVATE(DQuickColorOverlay)
     Q_PROPERTY(QQuickItem *source READ source WRITE setSource NOTIFY sourceChanged)
-    Q_PROPERTY(QQuickItem *maskSource READ maskSource WRITE setMaskSource NOTIFY maskSourceChanged)
+    Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
+    Q_PROPERTY(bool cached READ cached WRITE setCached NOTIFY cachedChanged)
 
 public:
-    explicit DQuickOpacityMask(QQuickItem *parent = nullptr);
+    explicit DQuickColorOverlay(QQuickItem *parent = nullptr);
 
-    bool invert();
-    void setInvert(bool invert);
+    QColor color() const;
+    void setColor(const QColor &color);
 
     QQuickItem *source() const;
     void setSource(QQuickItem *item);
 
-    QQuickItem *maskSource() const;
-    void setMaskSource(QQuickItem *item);
+    void setCached(bool cached);
+    bool cached() const;
 
 Q_SIGNALS:
-    void invertChanged();
+    void colorChanged();
     void sourceChanged();
-    void maskSourceChanged();
+    void cachedChanged();
 
 protected:
+    DQuickColorOverlay(DQuickColorOverlayPrivate &dd, QQuickItem *parent = nullptr);
     QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) override;
-
-protected:
-    DQuickOpacityMask(DQuickOpacityMaskPrivate &dd, QQuickItem *parent = nullptr);
-
-private:
-    Q_DISABLE_COPY(DQuickOpacityMask)
-    Q_DECLARE_PRIVATE(DQuickOpacityMask)
 };
 
 DQUICK_END_NAMESPACE
 
-#endif // DQUICKOPACITYMASK_P_H
+#endif // DQUICKCOLOROVERLAY_P_H

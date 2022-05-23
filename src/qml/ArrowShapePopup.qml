@@ -112,7 +112,7 @@ Popup {
             }
         }
 
-        OpacityMask {
+        D.OpacityMask {
             id: mask
             anchors.fill: parent
             maskSource: maskPath
