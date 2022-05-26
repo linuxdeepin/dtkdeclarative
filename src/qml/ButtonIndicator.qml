@@ -25,7 +25,7 @@ import org.deepin.dtk.style 1.0 as DS
 
 Rectangle {
     property D.Palette backgroundColor: DS.Style.buttonIndicator.background
-    property Control control: D.ColorSelector.control
+    property Item control: D.ColorSelector.control
 
     implicitWidth: DS.Style.buttonIndicator.size
     implicitHeight: implicitHeight
