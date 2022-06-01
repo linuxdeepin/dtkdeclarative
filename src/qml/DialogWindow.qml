@@ -65,7 +65,7 @@ Window {
 
         Item {
             id: contentLoader
-            Layout.fillHeight: true
+            Layout.preferredHeight: control.height - titleBar.height
             Layout.fillWidth: true
             Layout.leftMargin: DS.Style.dialogWindow.contentHMargin
             Layout.rightMargin: DS.Style.dialogWindow.contentHMargin

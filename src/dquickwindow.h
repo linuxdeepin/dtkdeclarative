@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 ~ 2020 Deepin Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #ifndef DWINDOW_H
 #define DWINDOW_H
@@ -25,7 +25,9 @@
 #include <DPlatformHandle>
 
 QT_BEGIN_NAMESPACE
+class QQmlComponent;
 class QQuickPath;
+class QQuickTransition;
 QT_END_NAMESPACE
 
 DQUICK_BEGIN_NAMESPACE
@@ -48,6 +50,7 @@ private:
     D_DECLARE_PRIVATE(DQuickWindow)
 };
 
+class DQuickAppLoaderItem;
 class DQuickWindowAttachedPrivate;
 class DQuickWindowAttached : public QObject, public DTK_CORE_NAMESPACE::DObject
 {
@@ -69,6 +72,9 @@ class DQuickWindowAttached : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes READ wmWindowTypes WRITE setWmWindowTypes NOTIFY wmWindowTypesChanged)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifFunctions motifFunctions READ motifFunctions WRITE setMotifFunctions NOTIFY motifFunctionsChanged)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifDecorations motifDecorations READ motifDecorations WRITE setMotifDecorations NOTIFY motifDecorationsChanged)
+    Q_PROPERTY(QQuickTransition *overlayExited READ overlayExited WRITE setOverlayExited NOTIFY overlayExitedChanged FINAL)
+    Q_PROPERTY(QQmlComponent *loadingOverlay READ loadingOverlay WRITE setLoadingOverlay NOTIFY loadingOverlayChanged FINAL)
+    Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickAppLoaderItem *appLoader READ appLoader NOTIFY appLoaderChanged)
 
 public:
     explicit DQuickWindowAttached(QWindow *window);
@@ -94,6 +100,12 @@ public:
     int alphaBufferSize() const;
 
     QQuickPath *clipPath() const;
+
+    QQuickTransition *overlayExited() const;
+    QQmlComponent *loadingOverlay() const;
+
+    DQuickAppLoaderItem *appLoader() const;
+    void setAppLoader(DQuickAppLoaderItem *item);
 
     DTK_GUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes() const;
     DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifFunctions motifFunctions() const;
@@ -128,6 +140,8 @@ public Q_SLOTS:
 
     void setClipPathByWM(const QPainterPath &clipPath);
     void setClipPath(QQuickPath *path);
+    void setOverlayExited(QQuickTransition *exit);
+    void setLoadingOverlay(QQmlComponent *component);
 
 Q_SIGNALS:
     void enabledChanged();
@@ -146,6 +160,9 @@ Q_SIGNALS:
     void motifDecorationsChanged();
     void alphaBufferSizeChanged();
     void clipPathChanged();
+    void overlayExitedChanged();
+    void loadingOverlayChanged();
+    void appLoaderChanged();
 
 private:
     D_DECLARE_PRIVATE(DQuickWindowAttached)

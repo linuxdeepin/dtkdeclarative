@@ -1,5 +1,9 @@
 /*
- * Copyright (C) 2020 ~ 2020 Deepin Technology Co., Ltd.
+ * Copyright (C) 2022 UnionTech Technology Co., Ltd.
+ *
+ * Author:     Chen Bin <chenbin@uniontech.com>
+ *
+ * Maintainer: Chen Bin <chenbin@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -12,17 +16,17 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DQMLAPPPLUGININTERFACE_H
-#define DQMLAPPPLUGININTERFACE_H
+#ifndef DQMLAPPMAINWINDOWINTERFACE_H
+#define DQMLAPPMAINWINDOWINTERFACE_H
 
 #include <QGuiApplication>
 
 #include <dtkdeclarative_global.h>
 
-#define DQmlAppPluginInterface_iid "dtk.qml.app.plugin.interface"
+#define DQmlAppMainWindowInterface_iid "dtk.qml.app.mainwindow.interface"
 
 QT_BEGIN_NAMESPACE
 class QQmlApplicationEngine;
@@ -30,18 +34,18 @@ QT_END_NAMESPACE
 
 DQUICK_BEGIN_NAMESPACE
 
-class DQmlAppPluginInterface
+class DQmlAppMainWindowInterface
 {
 public:
-    DQmlAppPluginInterface() = default;
-    virtual ~DQmlAppPluginInterface() = default;
-    virtual int main(QGuiApplication *app, QQmlApplicationEngine *engine) = 0;
-    virtual QGuiApplication *createApplication(int &argc, char **argv) {
-        return new QGuiApplication(argc, argv);
-    }
+    DQmlAppMainWindowInterface() = default;
+    virtual ~DQmlAppMainWindowInterface() = default;
+
+    virtual QUrl mainComponentPath() const = 0;
+    virtual void initialize(QQmlApplicationEngine *engine);
+    virtual void finishedLoading(QQmlApplicationEngine *engine);
 };
 
 DQUICK_END_NAMESPACE
 
-Q_DECLARE_INTERFACE(DTK_QUICK_NAMESPACE::DQmlAppPluginInterface, DQmlAppPluginInterface_iid)
+Q_DECLARE_INTERFACE(DTK_QUICK_NAMESPACE::DQmlAppMainWindowInterface, DQmlAppMainWindowInterface_iid)
 #endif // DQMLAPPPLUGININTERFACE_H

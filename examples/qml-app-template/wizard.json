@@ -147,15 +147,8 @@
                     "source": "./src"
                 },
                 {
-                    "source": "./tests"
-                },
-                {
-                    "source": "./template.qrc",
-                    "target": "./src/%{ProjectName}.qrc"
-                },
-                {
                     "source": "./template.desktop",
-                    "target": "%{ProjectName}.desktop"
+                    "target": "./%{ProjectName}.desktop"
                 },
                 {
                     "source": "./debian"

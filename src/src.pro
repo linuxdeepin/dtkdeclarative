@@ -10,7 +10,7 @@ contains(QMAKE_HOST.arch, mips.*): QMAKE_LFLAGS_SHLIB += "-Wl,-z,noexecstack"
 
 # for debian
 isEmpty(LIB_INSTALL_DIR) {
-    LIB_INSTALL_DIR = /usr/lib/$${QMAKE_HOST.arch}-linux-gnu
+    LIB_INSTALL_DIR = $$[QT_INSTALL_LIBS]
 }
 
 isEmpty(DTK_QML_APP_PLUGIN_PATH) {
@@ -25,10 +25,11 @@ includes.files += \
     $$PWD/*.h \
     $$PWD/DQuickWindow \
     $$PWD/DAppLoader \
-    $$PWD/DQmlAppPluginInterface \
+    $$PWD/DQmlAppMainWindowInterface \
+    $$PWD/DQmlAppPreloadInterface \
     $$PWD/DPlatformThemeProxy \
     $$PWD/DQuickItemViewport \
-    $$PWD/DQuickBlitFramebuffer
+    $$PWD/DQuickBlitFramebuffer \
 
 RESOURCES += $$PWD/dtkdeclarative_assets.qrc
 

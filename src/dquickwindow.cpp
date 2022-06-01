@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 ~ 2020 Deepin Technology Co., Ltd.
+ * Copyright (C) 2020 ~ 2022 UnionTech Technology Co., Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -12,14 +12,16 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dquickwindow.h"
+#include "dapploader.h"
 #include "private/dquickwindow_p.h"
 #include "private/dquickbehindwindowblur_p.h"
 #include "private/dquickbehindwindowblur_p_p.h"
 
+#include <private/dquickapploaderitem_p.h>
 #include <private/qquickpath_p.h>
 #include <private/qquickpath_p_p.h>
 
@@ -71,8 +73,8 @@ DQuickWindowAttachedPrivate::DQuickWindowAttachedPrivate(DQuickWindowAttached *q
     : DObjectPrivate(qq)
     , wmWindowTypes(DWindowManagerHelper::UnknowWindowType)
     , explicitEnable(false)
+    , appLoaderItem(new DQuickAppLoaderItem())
 {
-
 }
 
 DQuickWindowAttachedPrivate::~DQuickWindowAttachedPrivate()
@@ -336,6 +338,57 @@ QQuickPath *DQuickWindowAttached::clipPath() const
     D_DC(DQuickWindowAttached);
 
     return d->clipPath;
+}
+
+QQuickTransition *DQuickWindowAttached::overlayExited() const
+{
+    D_DC(DQuickWindowAttached);
+    return d->overlayExitedTransition;
+}
+
+void DQuickWindowAttached::setOverlayExited(QQuickTransition *trans)
+{
+    D_D(DQuickWindowAttached);
+    if (d->overlayExitedTransition == trans)
+        return;
+    d->overlayExitedTransition = trans;
+    Q_EMIT overlayExitedChanged();
+}
+
+QQmlComponent *DQuickWindowAttached::loadingOverlay() const
+{
+    D_DC(DQuickWindowAttached);
+    return d->loadingOverlay;
+}
+
+DQuickAppLoaderItem *DQuickWindowAttached::appLoader() const
+{
+    D_DC(DQuickWindowAttached);
+    return d->appLoaderItem;
+}
+
+void DQuickWindowAttached::setAppLoader(DQuickAppLoaderItem *item)
+{
+    D_D(DQuickWindowAttached);
+    if (d->appLoaderItem == item)
+        return;
+
+    // AppLoaderItem 会在窗口加载完毕后进行创建，因此
+    // 在窗口创建初期，AppLoaderItem 需要指定一个默认
+    // 值，防止 Qt 在运行时出现警告和报错
+    d->appLoaderItem->deleteLater();
+    d->appLoaderItem = item;
+    Q_EMIT appLoaderChanged();
+}
+
+void DQuickWindowAttached::setLoadingOverlay(QQmlComponent *component)
+{
+    D_D(DQuickWindowAttached);
+    if (component == d->loadingOverlay)
+        return;
+
+    d->loadingOverlay = component;
+    Q_EMIT loadingOverlayChanged();
 }
 
 /*!

@@ -1,5 +1,9 @@
 /*
- * Copyright (C) 2020 ~ 2020 Deepin Technology Co., Ltd.
+ * Copyright (C) 2022 UnionTech Technology Co., Ltd.
+ *
+ * Author:     Chen Bin <chenbin@uniontech.com>
+ *
+ * Maintainer: Chen Bin <chenbin@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -12,22 +16,23 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
-#include <QScopedPointer>
+#include "dqmlappmainwindowinterface.h"
 
-#include "launcherplugin.h"
+DQUICK_BEGIN_NAMESPACE
 
-// 此文件是QML应用的启动文件，一般无需修改
-// 请在LauncherPlugin::main()中实现所需功能
-int main(int argc, char *argv[])
+
+void DQmlAppMainWindowInterface::initialize(QQmlApplicationEngine *engine)
 {
-    LauncherPlugin plugin;
-    QScopedPointer<QGuiApplication> app(plugin.createApplication(argc, argv));
-    QQmlApplicationEngine engine;
-
-    return plugin.main(app.get(), &engine);
+    Q_UNUSED(engine);
 }
+
+void DQmlAppMainWindowInterface::finishedLoading(QQmlApplicationEngine *engine)
+{
+    Q_UNUSED(engine);
+}
+
+
+DQUICK_END_NAMESPACE
