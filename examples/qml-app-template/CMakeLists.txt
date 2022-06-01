@@ -12,6 +12,3 @@ find_package(DtkDeclarative REQUIRED)
 
 # Application
 add_subdirectory(src)
-
-# Unit Tests
-add_subdirectory(tests)

@@ -44,7 +44,8 @@
 #include "private/dobjectmodelproxy_p.h"
 #include "private/dquickwaterprogressattribute_p.h"
 #include "private/dquickarrowboxpath_p.h"
-#include <private/dquickcoloroverlay_p.h>
+#include "private/dquickcoloroverlay_p.h"
+#include "private/dquickapploaderitem_p.h"
 
 #include <DFontManager>
 
@@ -192,6 +193,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType<DQuickKeyListener>(uri, implUri, 1, 0, "KeySequenceListener");
     dtkRegisterType<DQuickWaterProgressAttribute>(uri, implUri, 1, 0, "WaterProgressAttribute");
     dtkRegisterType<DQuickArrowBoxPath>(uri, implUri, 1, 0, "ArrowBoxPath");
+    dtkRegisterType<DQuickAppLoaderItem>(uri, implUri, 1, 0, "AppLoader");
     dtkRegisterType<DQuickColorOverlay>(uri, implUri, 1, 0, "SoftwareColorOverlay");
     if (softwareBackend == QQuickWindow::sceneGraphBackend()) {
         dtkRegisterTypeAlias(uri, implUri, 1, 0, "SoftwareColorOverlay", "ColorOverlay", "private/");

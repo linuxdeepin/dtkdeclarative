@@ -25,10 +25,11 @@ includes.files += \
     $$PWD/*.h \
     $$PWD/DQuickWindow \
     $$PWD/DAppLoader \
-    $$PWD/DQmlAppPluginInterface \
+    $$PWD/DQmlAppMainWindowInterface \
+    $$PWD/DQmlAppPreloadInterface \
     $$PWD/DPlatformThemeProxy \
     $$PWD/DQuickItemViewport \
-    $$PWD/DQuickBlitFramebuffer
+    $$PWD/DQuickBlitFramebuffer \
 
 RESOURCES += $$PWD/dtkdeclarative_assets.qrc
 

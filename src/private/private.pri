@@ -45,6 +45,7 @@ HEADERS += $$PWD/dquickwindow_p.h \
     $$PWD/dcoloroverlaynode.h \
     $$PWD/dquickcoloroverlay_p.h \
     $$PWD/dsoftwareeffectrendernode.h \
+    $$PWD/dquickapploaderitem_p.h \
 
 SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dblitframebuffernode.cpp \
@@ -77,3 +78,4 @@ SOURCES += $$PWD/dquickiconimage.cpp \
     $$PWD/dquickcoloroverlay.cpp \
     $$PWD/dcoloroverlaynode.cpp \
     $$PWD/dsoftwareeffectrendernode.cpp \
+    $$PWD/dquickapploaderitem.cpp \

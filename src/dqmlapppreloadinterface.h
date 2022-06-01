@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 ~ 2022 UnionTech Technology Co., Ltd.
+ * Copyright (C) 2022 UnionTech Technology Co., Ltd.
  *
  * Author:     Chen Bin <chenbin@uniontech.com>
  *
@@ -18,46 +18,36 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef DAPPLOADER_H
-#define DAPPLOADER_H
 
-#include <DObject>
+#ifndef DQMLAPPPLUGINPRELOADINTERFACE_H
+#define DQMLAPPPLUGINPRELOADINTERFACE_H
 
+#include <QSGRendererInterface>
 #include <dtkdeclarative_global.h>
-#include <QQmlComponent>
+
+#define DQmlAppPreloadInterface_iid "dtk.qml.app.preload.interface"
 
 QT_BEGIN_NAMESPACE
-class QString;
-class QQmlEngine;
-class QQuickWindow;
 class QGuiApplication;
+class QQmlApplicationEngine;
+class QQmlEngine;
 QT_END_NAMESPACE
 
 DQUICK_BEGIN_NAMESPACE
 
-class DAppLoaderPrivate;
-class DAppLoader : public QObject, public DTK_CORE_NAMESPACE::DObject
+class DQmlAppPreloadInterface
 {
-    Q_OBJECT
-    D_DECLARE_PRIVATE(DAppLoader)
-    D_PRIVATE_SLOT(void _q_onMainComponentStatusChanged(QQmlComponent::Status))
-    D_PRIVATE_SLOT(void _q_onPreloadCreated(QObject *, const QUrl &))
-    D_PRIVATE_SLOT(void _q_onComponentProgressChanged())
-
 public:
-    DAppLoader() = delete ;
-    DAppLoader(const QString &appName, const QString &appPath = QString(), QObject *parent = nullptr);
-    ~DAppLoader();
+    DQmlAppPreloadInterface() = default;
+    virtual ~DQmlAppPreloadInterface() = default;
 
-    int exec(int &argc, char **argv);
-    static DAppLoader *instance() { return self; }
-
-Q_SIGNALS:
-    void loadFinished();
-private:
-    static DAppLoader *self;
+    virtual QUrl preloadComponentPath() const = 0;
+    virtual void aboutToPreload(QQmlApplicationEngine *engine);
+    virtual QGuiApplication *creatApplication(int &argc, char **argv);
+    virtual QSGRendererInterface::GraphicsApi graphicsApi();
 };
 
 DQUICK_END_NAMESPACE
 
-#endif // DAPPLOADER_H
+Q_DECLARE_INTERFACE(DTK_QUICK_NAMESPACE::DQmlAppPreloadInterface, DQmlAppPreloadInterface_iid)
+#endif // DQMLAPPPLUGINPRELOADINTERFACE_H
