@@ -143,6 +143,9 @@ public Q_SLOTS:
     void setOverlayExited(QQuickTransition *exit);
     void setLoadingOverlay(QQmlComponent *component);
 
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
 Q_SIGNALS:
     void enabledChanged();
     void windowRadiusChanged();

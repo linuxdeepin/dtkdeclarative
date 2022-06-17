@@ -25,6 +25,8 @@
 #include <private/qquickpath_p.h>
 #include <private/qquickpath_p_p.h>
 
+#include <QPlatformSurfaceEvent>
+
 DQUICK_BEGIN_NAMESPACE
 
 DQuickWindowPrivate::DQuickWindowPrivate(DQuickWindow *qq)
@@ -69,10 +71,10 @@ DQuickWindowAttached *DQuickWindow::qmlAttachedProperties(QObject *object)
     return nullptr;
 }
 
-DQuickWindowAttachedPrivate::DQuickWindowAttachedPrivate(DQuickWindowAttached *qq)
+DQuickWindowAttachedPrivate::DQuickWindowAttachedPrivate(QWindow *window, DQuickWindowAttached *qq)
     : DObjectPrivate(qq)
+    , window(window)
     , wmWindowTypes(DWindowManagerHelper::UnknowWindowType)
-    , explicitEnable(false)
     , appLoaderItem(new DQuickAppLoaderItem())
 {
 }
@@ -84,37 +86,37 @@ DQuickWindowAttachedPrivate::~DQuickWindowAttachedPrivate()
     }
 }
 
-void DQuickWindowAttachedPrivate::updatePlatformHandle()
+bool DQuickWindowAttachedPrivate::ensurePlatformHandle()
 {
-    if (static_cast<bool>(handle) == explicitEnable)
-        return;
+    if (handle)
+        return true;
 
+    if (!DPlatformHandle::setEnabledNoTitlebarForWindow(window, true))
+        return false;
+
+    Q_ASSERT(DPlatformHandle::isEnabledNoTitlebar(window));
     D_Q(DQuickWindowAttached);
+    handle = new DPlatformHandle(window);
+    QObject::connect(handle, &DPlatformHandle::borderColorChanged, q, &DQuickWindowAttached::borderColorChanged);
+    QObject::connect(handle, &DPlatformHandle::borderWidthChanged, q, &DQuickWindowAttached::borderWidthChanged);
+    QObject::connect(handle, &DPlatformHandle::shadowColorChanged, q, &DQuickWindowAttached::shadowColorChanged);
+    QObject::connect(handle, &DPlatformHandle::shadowOffsetChanged, q, &DQuickWindowAttached::shadowOffsetChanged);
+    QObject::connect(handle, &DPlatformHandle::shadowRadiusChanged, q, &DQuickWindowAttached::shadowRadiusChanged);
+    QObject::connect(handle, &DPlatformHandle::windowRadiusChanged, q, &DQuickWindowAttached::windowRadiusChanged);
+    QObject::connect(handle, &DPlatformHandle::translucentBackgroundChanged, q, &DQuickWindowAttached::translucentBackgroundChanged);
+    QObject::connect(handle, &DPlatformHandle::enableSystemMoveChanged, q, &DQuickWindowAttached::enableSystemMoveChanged);
+    QObject::connect(handle, &DPlatformHandle::enableSystemResizeChanged, q, &DQuickWindowAttached::enableSystemResizeChanged);
+    QObject::connect(handle, &DPlatformHandle::enableBlurWindowChanged, q, &DQuickWindowAttached::enableBlurWindowChanged);
+    QObject::connect(handle, SIGNAL(enableBlurWindowChanged()), q, SLOT(_q_updateBlurAreaForWindow()));
+    Q_EMIT q->enabledChanged();
+    return true;
+}
 
-    auto tWindow = qobject_cast<QQuickWindow *>(q->parent());
-
-    if (!explicitEnable) {
-        handle->setEnabledNoTitlebarForWindow(tWindow, false);
-        delete handle;
-        handle = nullptr;
-    } else if (DPlatformHandle::setEnabledNoTitlebarForWindow(tWindow, true)) {
-        Q_ASSERT(DPlatformHandle::isEnabledNoTitlebar(tWindow));
-        handle = new DPlatformHandle(tWindow);
-        QObject::connect(handle, &DPlatformHandle::borderColorChanged, q, &DQuickWindowAttached::borderColorChanged);
-        QObject::connect(handle, &DPlatformHandle::borderWidthChanged, q, &DQuickWindowAttached::borderWidthChanged);
-        QObject::connect(handle, &DPlatformHandle::shadowColorChanged, q, &DQuickWindowAttached::shadowColorChanged);
-        QObject::connect(handle, &DPlatformHandle::shadowOffsetChanged, q, &DQuickWindowAttached::shadowOffsetChanged);
-        QObject::connect(handle, &DPlatformHandle::shadowRadiusChanged, q, &DQuickWindowAttached::shadowRadiusChanged);
-        QObject::connect(handle, &DPlatformHandle::windowRadiusChanged, q, &DQuickWindowAttached::windowRadiusChanged);
-        QObject::connect(handle, &DPlatformHandle::translucentBackgroundChanged, q, &DQuickWindowAttached::translucentBackgroundChanged);
-        QObject::connect(handle, &DPlatformHandle::enableSystemMoveChanged, q, &DQuickWindowAttached::enableSystemMoveChanged);
-        QObject::connect(handle, &DPlatformHandle::enableSystemResizeChanged, q, &DQuickWindowAttached::enableSystemResizeChanged);
-        QObject::connect(handle, &DPlatformHandle::enableBlurWindowChanged, q, &DQuickWindowAttached::enableBlurWindowChanged);
-        QObject::connect(handle, SIGNAL(enableBlurWindowChanged()), q, SLOT(_q_updateBlurAreaForWindow()));
-        QObject::connect(DWindowManagerHelper::instance(), SIGNAL(windowMotifWMHintsChanged(quint32)), q, SLOT(_q_onWindowMotifHintsChanged(quint32)));
-        // to initialize MotifFunctions and MotifDecorations forwardly.
-        _q_onWindowMotifHintsChanged(static_cast<quint32>(tWindow->winId()));
-    }
+void DQuickWindowAttachedPrivate::destoryPlatformHandle()
+{
+    handle->setEnabledNoTitlebarForWindow(window, false);
+    delete handle;
+    handle = nullptr;
 }
 
 void DQuickWindowAttachedPrivate::_q_onWindowMotifHintsChanged(quint32 winId)
@@ -202,8 +204,11 @@ void DQuickWindowAttachedPrivate::_q_updateClipPath()
 
 DQuickWindowAttached::DQuickWindowAttached(QWindow *window)
     : QObject(window)
-    , DObject(*new DQuickWindowAttachedPrivate(this))
+    , DObject(*new DQuickWindowAttachedPrivate(window, this))
 {
+    window->installEventFilter(this);
+    QObject::connect(DWindowManagerHelper::instance(), SIGNAL(windowMotifWMHintsChanged(quint32)),
+                     this, SLOT(_q_onWindowMotifHintsChanged(quint32)));
 }
 
 QQuickWindow *DQuickWindowAttached::window() const
@@ -219,7 +224,7 @@ bool DQuickWindowAttached::isEnabled() const
 {
     D_DC(DQuickWindowAttached);
 
-    return d->explicitEnable && DPlatformHandle::isEnabledDXcb(window());
+    return DPlatformHandle::isEnabledDXcb(window());
 }
 
 /*!
@@ -486,16 +491,17 @@ DWindowManagerHelper::MotifDecorations DQuickWindowAttached::motifDecorations() 
  */
 void DQuickWindowAttached::setEnabled(bool e)
 {
-    D_D(DQuickWindowAttached);
-
-    if (!e || e == d->explicitEnable)
+    if (e == isEnabled())
         return;
 
-    d->explicitEnable = e;
-    d->updatePlatformHandle();
-
-    if (isEnabled())
+    D_D(DQuickWindowAttached);
+    if (!e) {
+        d->destoryPlatformHandle();
         Q_EMIT enabledChanged();
+        return;
+    }
+
+    d->ensurePlatformHandle();
 }
 
 /*!
@@ -506,7 +512,7 @@ void DQuickWindowAttached::setWindowRadius(int windowRadius)
 {
     D_D(DQuickWindowAttached);
 
-    d->updatePlatformHandle();
+    d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setWindowRadius(windowRadius);
 }
@@ -519,7 +525,7 @@ void DQuickWindowAttached::setBorderWidth(int borderWidth)
 {
     D_D(DQuickWindowAttached);
 
-    d->updatePlatformHandle();
+    d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setBorderWidth(borderWidth);
 }
@@ -532,7 +538,7 @@ void DQuickWindowAttached::setBorderColor(const QColor &borderColor)
 {
     D_D(DQuickWindowAttached);
 
-    d->updatePlatformHandle();
+    d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setBorderColor(borderColor);
 }
@@ -545,7 +551,7 @@ void DQuickWindowAttached::setShadowRadius(int shadowRadius)
 {
     D_D(DQuickWindowAttached);
 
-    d->updatePlatformHandle();
+    d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setShadowRadius(shadowRadius);
 }
@@ -558,7 +564,7 @@ void DQuickWindowAttached::setShadowOffset(const QPoint &shadowOffset)
 {
     D_D(DQuickWindowAttached);
 
-    d->updatePlatformHandle();
+    d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setShadowOffset(shadowOffset);
 }
@@ -571,7 +577,7 @@ void DQuickWindowAttached::setShadowColor(const QColor &shadowColor)
 {
     D_D(DQuickWindowAttached);
 
-    d->updatePlatformHandle();
+    d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setShadowColor(shadowColor);
 }
@@ -584,7 +590,7 @@ void DQuickWindowAttached::setTranslucentBackground(bool translucentBackground)
 {
     D_D(DQuickWindowAttached);
 
-    d->updatePlatformHandle();
+    d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setTranslucentBackground(translucentBackground);
 }
@@ -597,7 +603,7 @@ void DQuickWindowAttached::setEnableSystemResize(bool enableSystemResize)
 {
     D_D(DQuickWindowAttached);
 
-    d->updatePlatformHandle();
+    d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setEnableSystemResize(enableSystemResize);
 }
@@ -610,7 +616,7 @@ void DQuickWindowAttached::setEnableSystemMove(bool enableSystemMove)
 {
     D_D(DQuickWindowAttached);
 
-    d->updatePlatformHandle();
+    d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setEnableSystemMove(enableSystemMove);
 }
@@ -623,7 +629,7 @@ void DQuickWindowAttached::setEnableBlurWindow(bool enableBlurWindow)
 {
     D_D(DQuickWindowAttached);
 
-    d->updatePlatformHandle();
+    d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setEnableBlurWindow(enableBlurWindow);
 }
@@ -683,7 +689,7 @@ bool DQuickWindowAttached::setWindowBlurAreaByWM(const QVector<DPlatformHandle::
 {
     D_D(DQuickWindowAttached);
 
-    d->updatePlatformHandle();
+    d->ensurePlatformHandle();
     if (d->handle) {
         return d->handle->setWindowBlurAreaByWM(area);
     }
@@ -695,7 +701,7 @@ bool DQuickWindowAttached::setWindowBlurAreaByWM(const QList<QPainterPath> &area
 {
     D_D(DQuickWindowAttached);
 
-    d->updatePlatformHandle();
+    d->ensurePlatformHandle();
     if (d->handle) {
         return d->handle->setWindowBlurAreaByWM(area);
     }
@@ -707,7 +713,7 @@ void DQuickWindowAttached::setClipPathByWM(const QPainterPath &clipPath)
 {
     D_D(DQuickWindowAttached);
 
-    d->updatePlatformHandle();
+    d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setClipPath(clipPath);
 }
@@ -736,6 +742,22 @@ void DQuickWindowAttached::setClipPath(QQuickPath *path)
     } else {
         setClipPathByWM(QPainterPath());
     }
+}
+
+bool DQuickWindowAttached::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == parent()) {
+        if (event->type() == QEvent::PlatformSurface) {
+            QPlatformSurfaceEvent *surface = static_cast<QPlatformSurfaceEvent *>(event);
+            if (surface->surfaceEventType() == QPlatformSurfaceEvent::SurfaceCreated) {
+                D_D(DQuickWindowAttached);
+                d->_q_onWindowMotifHintsChanged(static_cast<quint32>(d->window->winId()));
+                watched->removeEventFilter(this);
+            }
+        }
+    }
+
+    return false;
 }
 
 void DQuickWindowAttached::setAlphaBufferSize(int size)

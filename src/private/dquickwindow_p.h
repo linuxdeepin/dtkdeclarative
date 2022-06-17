@@ -41,10 +41,11 @@ private:
 class DQuickWindowAttachedPrivate : public DTK_CORE_NAMESPACE::DObjectPrivate
 {
 public:
-    explicit DQuickWindowAttachedPrivate(DQuickWindowAttached *qq);
-    ~DQuickWindowAttachedPrivate();
+    explicit DQuickWindowAttachedPrivate(QWindow *window, DQuickWindowAttached *qq);
+    ~DQuickWindowAttachedPrivate() override;
 
-    void updatePlatformHandle();
+    bool ensurePlatformHandle();
+    void destoryPlatformHandle();
     void _q_onWindowMotifHintsChanged(quint32 winId);
     void addBlur(DQuickBehindWindowBlur *blur);
     void removeBlur(DQuickBehindWindowBlur *blur);
@@ -52,12 +53,12 @@ public:
     void _q_updateBlurAreaForWindow();
     void _q_updateClipPath();
 
+    QWindow *window = nullptr;
     DPlatformHandle *handle = nullptr;
 
     DWindowManagerHelper::WmWindowTypes wmWindowTypes;
     DWindowManagerHelper::MotifFunctions motifFunctions;
     DWindowManagerHelper::MotifDecorations motifDecorations;
-    bool explicitEnable;
 
     QList<DQuickBehindWindowBlur*> blurList;
     QQuickPath *clipPath = nullptr;
