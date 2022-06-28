@@ -123,11 +123,11 @@ private:
     QSGGeometryNode m_cornerNode;
 
     QRectF m_rect;
-    bool m_geometryChanged;
-    DQuickRectangle::Corners m_coners;
-    qreal m_radius;
-    QColor m_color;
-    QSGTexture *m_maskTexture;
+    bool m_geometryChanged = false;
+    DQuickRectangle::Corners m_coners = DQuickRectangle::NoneCorner;
+    qreal m_radius = 0;
+    QColor m_color = QColor::Invalid;
+    QSGTexture *m_maskTexture = nullptr;
 };
 
 class DSoftRectangleNode : public QSGRenderNode
@@ -145,10 +145,10 @@ public:
     void setCorners(DQuickRectangle::Corners);
 
 private:
-    QQuickItem *m_item;
-    qreal m_radius;
-    QColor m_color;
-    DQuickRectangle::Corners m_coners;
+    QQuickItem *m_item = nullptr;
+    qreal m_radius = 0;
+    QColor m_color = QColor::Invalid;
+    DQuickRectangle::Corners m_coners = DQuickRectangle::NoneCorner;
     QQuickWindow *m_window = nullptr;
 };
 
