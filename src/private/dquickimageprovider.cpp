@@ -118,6 +118,25 @@ static QImage requestImageFromQIcon(const QString &id, QSize *size, const QSize 
     return image;
 }
 
+static QImage generateDciIconImage(const QImage &src, DDciIcon::Theme theme, DDciIcon::Mode mode) {
+    Q_UNUSED(theme)
+    qint8 hue = 0, saturation = 0, lightness = 0,
+          red = 0, green = 0, blue = 0, alpha = 0;
+    switch (mode) {
+    case DDciIcon::Hover:
+        lightness += 10;
+        break;
+    case DDciIcon::Pressed:
+        lightness -= 10;
+        break;
+    default:
+        return src;
+    }
+
+    return DGuiApplicationHelper::adjustColor(src, hue, saturation, lightness, red, green, blue, alpha);
+
+}
+
 DQuickIconProvider::DQuickIconProvider()
     : QQuickImageProvider(QQuickImageProvider::Image, QQuickImageProvider::ForceAsynchronousImageLoading)
 {
@@ -230,14 +249,26 @@ QImage DQuickDciIconProvider::requestImage(const QString &id, QSize *size, const
     // and decorate to the target mode.
     // This boundingSize always contains devicePixelRatio.
     int boundingSize = qRound(qMax(requestedSize.width(), requestedSize.height()) / devicePixelRatio);
-    QPixmap pixmap = dciIcon.pixmap(devicePixelRatio, boundingSize, toDciTheme(theme), mode, palette);
-    if (pixmap.isNull())
-        pixmap = dciIcon.pixmap(devicePixelRatio, boundingSize, toDciTheme(theme), DDciIcon::Normal, palette);
+    const auto currentTheme = toDciTheme(theme);
+    auto currentMode = mode;
+    DDciIconMatchResult result = dciIcon.matchIcon(boundingSize, currentTheme, currentMode, DDciIcon::DontFallbackMode);
+    if (!result) {
+        currentMode = DDciIcon::Normal;
+        result = dciIcon.matchIcon(boundingSize, currentTheme, currentMode);
+    }
 
+    if (!result)
+        return invalidIcon(size);
+
+    const QPixmap &pixmap = dciIcon.pixmap(devicePixelRatio, boundingSize, result, palette);
     if (pixmap.isNull())
         return invalidIcon(size);
 
     QImage image = pixmap.toImage();
+    if (currentMode != mode && currentMode == DDciIcon::Normal
+            && !dciIcon.isSupportedAttribute(result, DDciIcon::HasPalette))
+        image = generateDciIconImage(image, currentTheme, mode);
+
     if (size)
         *size = image.size();
     return image;
