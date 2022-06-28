@@ -660,6 +660,11 @@ QtObject {
         property color checkedColor: Qt.rgba(0, 0, 0, 0.15)
     }
 
+    property QtObject stackView: QtObject {
+        property int animationDuration: 200
+        property int animationEasingType: Easing.OutCubic
+    }
+
     // Indicator
     property QtObject busyIndicator: QtObject {
         property int size: 16

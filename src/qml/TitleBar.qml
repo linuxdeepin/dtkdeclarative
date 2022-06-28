@@ -24,7 +24,6 @@ import QtQuick.Window 2.11
 import QtQuick.Layouts 1.11
 import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
-import "PixelMetric.js" as PM
 
 Control {
     id: control

@@ -31,12 +31,15 @@ Control {
     property D.Palette backgroundColor: DS.Style.floatingMessage.panel.background
     property D.Palette dropShadowColor: DS.Style.floatingMessage.panel.dropShadow
     property D.Palette borderColor: DS.Style.control.border
+    // corner radius
     property int radius: DS.Style.floatingMessage.panel.radius
+    // blur radius
+    property int blurRadius: DS.Style.floatingMessage.panel.radius
 
     background: D.InWindowBlur {
         implicitWidth: DS.Style.floatingMessage.panel.width
         implicitHeight: DS.Style.floatingMessage.panel.height
-        radius: control.radius
+        radius: blurRadius
         offscreen: true
 
         D.ItemViewport {

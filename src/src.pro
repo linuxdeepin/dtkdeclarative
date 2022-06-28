@@ -3,7 +3,7 @@ include(private/private.pri)
 TARGET = dtkdeclarative
 TEMPLATE = lib
 QT += dtkcore dtkgui core quick quick-private
-CONFIG += internal_module c++11
+CONFIG += internal_module c++11 qtquickcompiler
 
 # 龙芯架构上没有默认添加PT_GNU_STACK-section,所以此处手动指定一下
 contains(QMAKE_HOST.arch, mips.*): QMAKE_LFLAGS_SHLIB += "-Wl,-z,noexecstack"
