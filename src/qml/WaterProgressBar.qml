@@ -71,6 +71,10 @@ Control {
                     y: (90 - control.value) * control.height / 100
                     width: attribute.imageWidth
                     height: attribute.imageHeight
+                    sourceSize {
+                        width: attribute.imageWidth
+                        height: attribute.imageHeight
+                    }
                 }
             }
 
