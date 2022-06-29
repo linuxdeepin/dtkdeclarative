@@ -32,7 +32,7 @@ ToolTip {
     bottomPadding: DS.Style.alertToolTip.verticalPadding
     leftPadding: DS.Style.alertToolTip.horizontalPadding
     rightPadding: DS.Style.alertToolTip.horizontalPadding
-    implicitWidth: DS.Style.control.implicitWidth(control)
+    implicitWidth: Math.min(DS.Style.control.implicitWidth(control), target.width)
     implicitHeight: DS.Style.control.implicitHeight(control)
     margins: 0
     closePolicy: Popup.NoAutoClose
@@ -62,6 +62,7 @@ ToolTip {
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
         text: control.text
+        font: control.font
         color: D.ColorSelector.textColor
         wrapMode: Text.Wrap
     }

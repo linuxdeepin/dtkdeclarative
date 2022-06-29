@@ -29,10 +29,10 @@ Rectangle {
     property Item control
     property D.Palette backgroundColor: DS.Style.edit.background
     property D.Palette alertBackgroundColor: DS.Style.edit.alertBackground
-    property alias alertText: _alert.text
-    property alias alertDuration: _alert.timeout
-    property alias showAlert: _alert.visible
     property alias showBorder: _border.visible
+    property bool showAlert: false
+    property string alertText: ""
+    property int alertDuration: 0
 
     radius: DS.Style.control.radius
     color: showAlert ? D.ColorSelector.alertBackgroundColor
@@ -46,8 +46,13 @@ Rectangle {
         radius: parent.radius
     }
 
-    AlertToolTip {
-        id: _alert
-        target: control
+    Loader {
+        active: showAlert
+        sourceComponent: AlertToolTip {
+            target: control
+            timeout: alertDuration
+            visible: showAlert
+            text: alertText
+        }
     }
 }
