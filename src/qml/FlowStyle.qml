@@ -690,16 +690,30 @@ QtObject {
         property int padding: 2
         property int width: 4
         property int activeWidth: 12
-        property color lightBackground: "black"
-        property color darkBackground: "black"
-        property color innerShadowColor: Qt.rgba(0, 0, 0, 0.5)
-        property color outerShadowColor: Qt.rgba(1, 1, 1, 0.1)
         property real hideOpacity: 0.0
-        property real normalOpacity: 0.5
-        property real hoverOpacity: 0.7
-        property real activeOpacity: 0.4
         property int hidePauseDuration: 450
         property int hideDuration: 1500
+
+        property D.Palette background: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.5)
+            normalDark: Qt.rgba(1, 1, 1, 0.3)
+
+            hovered: Qt.rgba(0, 0, 0, 0.7)
+            hoveredDark: Qt.rgba(1, 1, 1, 0.7)
+
+            pressed: Qt.rgba(0, 0, 0, 0.4)
+            pressedDark: Qt.rgba(1, 1, 1, 0.3)
+        }
+
+        property D.Palette outsideBorder: D.Palette {
+            normal: Qt.rgba(1, 1, 1, 0.1)
+            normalDark: Qt.rgba(0, 0, 0, 0.1)
+        }
+
+        property D.Palette insideBorder: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.05)
+            normalDark: Qt.rgba(1, 1, 1, 0.05)
+        }
     }
 
     property QtObject progressBar: QtObject {

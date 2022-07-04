@@ -51,7 +51,6 @@ T.ScrollBar {
             PropertyChanges {
                 target: control.contentItem
                 implicitWidth: DS.Style.scrollBar.width
-                opacity: DS.Style.scrollBar.normalOpacity
             }
         },
         State {
@@ -60,7 +59,6 @@ T.ScrollBar {
             PropertyChanges {
                 target: control.contentItem
                 implicitWidth: DS.Style.scrollBar.activeWidth
-                opacity: DS.Style.scrollBar.hoverOpacity
             }
         },
         State {
@@ -69,7 +67,6 @@ T.ScrollBar {
             PropertyChanges {
                 target: control.contentItem
                 implicitWidth: DS.Style.scrollBar.activeWidth
-                opacity: DS.Style.scrollBar.activeOpacity
             }
         }
     ]
@@ -83,33 +80,33 @@ T.ScrollBar {
     }
 
     contentItem: Item {
+        id: content
+        property D.Palette backgroundColor: DS.Style.scrollBar.background
+        property D.Palette insideBorderColor: DS.Style.scrollBar.insideBorder
+        property D.Palette outsideBorderColor: DS.Style.scrollBar.outsideBorder
+
         implicitWidth: DS.Style.scrollBar.width
         implicitHeight: implicitWidth
-
-        BoxShadow {
-            anchors.fill: backgroundRect
-            shadowColor: DS.Style.scrollBar.outerShadowColor
-            shadowBlur: 1
-            spread: 1
-            cornerRadius: backgroundRect.radius
-            hollow: true
-        }
 
         Rectangle {
             id: backgroundRect
             anchors.fill: parent
-            radius: control.width / 2
-            color: DS.Style.control.selectColor(control.palette.window, DS.Style.scrollBar.lightBackground,
-                                        DS.Style.scrollBar.darkBackground)
-            border.width: DS.Style.control.borderWidth
+            radius: control.orientation == Qt.Horizontal ? control.height / 2 : control.width / 2
+            color: content.D.ColorSelector.backgroundColor
         }
 
-        BoxInsetShadow {
+        InsideBoxBorder {
             anchors.fill: backgroundRect
-            shadowColor: DS.Style.scrollBar.innerShadowColor
-            shadowBlur: 1
-            spread: 1
-            cornerRadius: backgroundRect.radius
+            radius: backgroundRect.radius
+            color: content.D.ColorSelector.insideBorderColor
+            borderWidth: DS.Style.control.borderWidth
+        }
+
+        OutsideBoxBorder {
+            anchors.fill: backgroundRect
+            radius: backgroundRect.radius
+            color: content.D.ColorSelector.outsideBorderColor
+            borderWidth: DS.Style.control.borderWidth
         }
     }
 }

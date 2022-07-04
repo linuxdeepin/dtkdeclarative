@@ -57,7 +57,7 @@ DialogWindow {
                 id: logoLabel
                 Layout.fillWidth: true
                 Layout.preferredHeight: DS.Style.aboutDialog.productIconHeight
-                Layout.alignment: Qt.AligHCenter
+                Layout.alignment: Qt.AlignHCenter
                 Layout.topMargin: 0
                 display: D.IconLabel.IconOnly
             }
