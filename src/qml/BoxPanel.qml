@@ -70,27 +70,29 @@ Item {
 
     Loader {
         anchors.fill: backgroundRect
-        active: innerShadowColor1 && shadowColor.a !== 0 && control.D.ColorSelector.family === D.Palette.CommonColor
+        readonly property color innerShadowColor: control.D.ColorSelector.innerShadowColor1
+        active: innerShadowColor1 && innerShadowColor.a !== 0 && control.D.ColorSelector.family === D.Palette.CommonColor
         z: D.DTK.AboveOrder
 
         sourceComponent: BoxInsetShadow {
             shadowBlur: 2
             shadowOffsetY: control.innerShadowOffsetY1
             spread: 1
-            shadowColor: control.D.ColorSelector.innerShadowColor1
+            shadowColor: innerShadowColor
             cornerRadius: backgroundRect.radius
         }
     }
 
     Loader {
         anchors.fill: backgroundRect
-        active: innerShadowColor2 && shadowColor.a !== 0 && control.D.ColorSelector.family === D.Palette.CommonColor
+        readonly property color innerShadowColor: control.D.ColorSelector.innerShadowColor2
+        active: innerShadowColor2 && innerShadowColor.a !== 0 && control.D.ColorSelector.family === D.Palette.CommonColor
         z: D.DTK.AboveOrder
 
         sourceComponent: BoxInsetShadow {
             shadowBlur: 1
             shadowOffsetY: 1
-            shadowColor: control.D.ColorSelector.innerShadowColor2
+            shadowColor: innerShadowColor
             cornerRadius: backgroundRect.radius
         }
     }
