@@ -48,11 +48,14 @@ BoxPanel {
         return normal
     }
 
-    FocusBoxBorder {
+    Loader {
         anchors.fill: parent
-        radius: control.radius
-        color: button.palette.highlight
-        visible: button.visualFocus
+        active: button.visualFocus
+
+        sourceComponent: FocusBoxBorder {
+            radius: control.radius
+            color: button.palette.highlight
+        }
     }
 
     Gradient {

@@ -40,34 +40,33 @@ Item {
         if (D.DTK.isSoftwareRender)
             return
 
+        mask.active = true
         layer.enabled = true
-        impl.__increase()
+        mask.item.__increase()
     }
 
     // to stop animation
     function stop() {
         layer.enabled = false
-        impl.__scalePos = 0
+        mask.active = false
+        mask.__scalePos = 0
     }
 
-    Item {
+    Loader {
         id: mask
         anchors.fill: parent
         visible: false
 
-        Rectangle {
+        property real __scalePos: 0
+        Behavior on __scalePos {
+            SmoothedAnimation { velocity: 300 }
+        }
+
+        sourceComponent: Rectangle {
             id: impl
             height: width
             radius: width / 2
             scale: __scalePos / 50
-
-            property real __scalePos: 0
-            Behavior on __scalePos {
-                SmoothedAnimation {
-                    id: smoothedAnimation
-                    velocity: 300
-                }
-            }
 
             function __increase() {
                 var curRadius = __minBoundingCicleRadius()
@@ -75,7 +74,7 @@ Item {
                 impl.width = curRadius * 2
                 impl.x = centerPoint.x - curRadius
                 impl.y = centerPoint.y - curRadius
-                impl.__scalePos = 50
+                mask.__scalePos = 50
             }
             function __minBoundingCicleRadius() {
                 // 区域内任意一点到四个定点距离的最大值，即为以此点为中心包含此区域的最小圆的半径
