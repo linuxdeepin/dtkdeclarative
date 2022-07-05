@@ -23,26 +23,27 @@ TextField {
     id: control
     readonly property alias clearButton: clearBtn
 
-    rightPadding: clearBtn.visible ? (clearBtn.width + clearBtn.anchors.rightMargin) : 0
+    rightPadding: clearBtn.active ? (clearBtn.width + clearBtn.anchors.rightMargin) : 0
     selectByMouse: true
 
-    ActionButton {
+    Loader {
         id: clearBtn
+        active: control.text.length !== 0
         width: height
         height: control.background.implicitHeight
         anchors {
             right: control.right
             verticalCenter: control.verticalCenter
         }
-        visible: control.text.length !== 0
-        focusPolicy: Qt.NoFocus
-        icon {
-            name: "entry_clear"
-            width: DS.Style.edit.actionIconSize
-            height: DS.Style.edit.actionIconSize
-        }
-        onClicked: {
-            control.clear()
+
+        sourceComponent: ActionButton {
+            focusPolicy: Qt.NoFocus
+            icon {
+                name: "entry_clear"
+                width: DS.Style.edit.actionIconSize
+                height: DS.Style.edit.actionIconSize
+            }
+            onClicked: control.clear()
         }
     }
 }

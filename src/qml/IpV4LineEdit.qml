@@ -92,20 +92,22 @@ FocusScope {
 
                 Component.onCompleted: {
                     updateByText()
-                    clearBtn.clicked.connect(clearText)
                     control.textChanged.connect(updateByText)
                 }
             }
-            Item {
+
+            Loader {
+                id: clearBtn
+                active: control.activeFocus && control.text
                 width: height
                 height: 36
                 Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                ActionButton {
-                    id: clearBtn
-                    anchors.fill: parent
+                Layout.rightMargin: 8
+
+                sourceComponent: ActionButton {
                     icon.name: "entry_clear"
-                    visible: control.activeFocus && control.text
                     focusPolicy: Qt.NoFocus
+                    onClicked: fields.clearText()
                 }
             }
         }

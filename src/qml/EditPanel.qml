@@ -29,7 +29,7 @@ Rectangle {
     property Item control
     property D.Palette backgroundColor: DS.Style.edit.background
     property D.Palette alertBackgroundColor: DS.Style.edit.alertBackground
-    property alias showBorder: _border.visible
+    property alias showBorder: _border.active
     property bool showAlert: false
     property string alertText: ""
     property int alertDuration: 0
@@ -38,12 +38,14 @@ Rectangle {
     color: showAlert ? D.ColorSelector.alertBackgroundColor
                      : D.ColorSelector.backgroundColor
 
-    FocusBoxBorder {
+    Loader {
         id: _border
         anchors.fill: parent
-        visible: control.activeFocus
-        color: control.palette.highlight
-        radius: parent.radius
+        active: control.activeFocus
+        sourceComponent: FocusBoxBorder {
+            color: control.palette.highlight
+            radius: panel.radius
+        }
     }
 
     Loader {
