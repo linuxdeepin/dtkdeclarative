@@ -56,14 +56,16 @@ T.CheckBox {
             fallbackToQIcon: false
         }
 
-        D.DciIcon {
-            visible: control.activeFocus
-            palette: control.D.DTK.makeIconPalette(control.palette)
-            mode: control.D.ColorSelector.controlState
-            theme: control.D.ColorSelector.controlTheme
-            name: control.checkState === Qt.Checked ? "checkbox_focus_checked" : "checkbox_focus"
-            sourceSize: Qt.size(control.icon.width, control.icon.height)
-            fallbackToQIcon: false
+        Loader {
+            active: control.activeFocus
+            sourceComponent: D.DciIcon {
+                palette: control.D.DTK.makeIconPalette(control.palette)
+                mode: control.D.ColorSelector.controlState
+                theme: control.D.ColorSelector.controlTheme
+                name: control.checkState === Qt.Checked ? "checkbox_focus_checked" : "checkbox_focus"
+                sourceSize: Qt.size(control.icon.width, control.icon.height)
+                fallbackToQIcon: false
+            }
         }
     }
 
@@ -74,6 +76,7 @@ T.CheckBox {
         font: control.font
         elide: Text.ElideRight
         verticalAlignment: Text.AlignVCenter
+        color: control.palette.windowText
     }
 
     background: null
