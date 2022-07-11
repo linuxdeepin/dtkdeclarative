@@ -99,18 +99,20 @@ T.ComboBox {
 
     contentItem: RowLayout {
         spacing: DS.Style.comboBox.spacing
-        D.DciIcon {
-            palette: D.DTK.makeIconPalette(control.palette)
-            mode: control.D.ColorSelector.controlState
-            theme: control.D.ColorSelector.controlTheme
-            name: (control.iconNameRole && model.get(control.currentIndex)[control.iconNameRole] !== undefined)
-                  ? model.get(control.currentIndex)[control.iconNameRole] : null
-            visible: name
-            sourceSize {
-                width: DS.Style.comboBox.iconSize
-                height: DS.Style.comboBox.iconSize
+
+        Loader {
+            property string iconName: (control.iconNameRole && model.get(control.currentIndex)[control.iconNameRole] !== undefined)
+                                      ? model.get(control.currentIndex)[control.iconNameRole] : null
+            active: iconName
+
+            sourceComponent: D.DciIcon {
+                palette: D.DTK.makeIconPalette(control.palette)
+                mode: control.D.ColorSelector.controlState
+                theme: control.D.ColorSelector.controlTheme
+                name: iconName
+                sourceSize: Qt.size(DS.Style.comboBox.iconSize, DS.Style.comboBox.iconSize)
+                fallbackToQIcon: true
             }
-            fallbackToQIcon: true
         }
 
         T.TextField {

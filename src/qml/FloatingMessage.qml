@@ -36,7 +36,7 @@ D.FloatingMessageContainer {
     }
     property Component button: ActionButton {
         icon {
-            name: "view-close"
+            name: "entry_clear"
             width: DS.Style.floatingMessage.closeButtonSize
             height: DS.Style.floatingMessage.closeButtonSize
         }
@@ -56,18 +56,22 @@ D.FloatingMessageContainer {
             width: Math.min(DS.Style.floatingMessage.maximumWidth, children.width + floatingPanel.leftPadding - floatingPanel.rightPadding)
             spacing: 10
 
-            D.DciIcon {
+            Loader {
                 id: iconLoader
-                sourceSize {
-                    width: 20
-                    height: 20
-                }
                 Layout.alignment: Qt.AlignVCenter
-                name: control.message.iconName || ""
-                visible: name != ""
-                mode: floatingPanel.D.ColorSelector.controlState
-                theme: floatingPanel.D.ColorSelector.controlTheme
-                palette: D.DTK.makeIconPalette(floatingPanel.palette)
+                property string iconName: control.message.iconName || ""
+                active: iconName
+
+                sourceComponent: D.DciIcon {
+                    sourceSize {
+                        width: 20
+                        height: 20
+                    }
+                    name: iconName
+                    mode: floatingPanel.D.ColorSelector.controlState
+                    theme: floatingPanel.D.ColorSelector.controlTheme
+                    palette: D.DTK.makeIconPalette(floatingPanel.palette)
+                }
             }
 
             Loader {

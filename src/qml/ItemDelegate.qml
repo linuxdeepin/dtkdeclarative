@@ -62,16 +62,20 @@ T.ItemDelegate {
         height: DS.Style.itemDelegate.iconSize
     }
 
-    indicator: D.DciIcon {
-        x: control.text ? (control.mirrored ? control.leftPadding : control.width - width - control.rightPadding) : control.leftPadding + (control.availableWidth - width) / 2
+    indicator: Loader {
+        x: control.text ? (control.mirrored ? control.leftPadding : control.width - width - control.rightPadding)
+                        : control.leftPadding + (control.availableWidth - width) / 2
         y: control.topPadding + (control.availableHeight - height) / 2
-        visible: control.indicatorVisible && control.checked
-        palette: D.DTK.makeIconPalette(control.palette)
-        mode: control.D.ColorSelector.controlState
-        theme: control.D.ColorSelector.controlTheme
-        fallbackToQIcon: false
-        name: "menu_select"
-        sourceSize: Qt.size(DS.Style.itemDelegate.checkIndicatorIconSize, DS.Style.itemDelegate.checkIndicatorIconSize)
+        active: control.indicatorVisible && control.checked
+
+        sourceComponent: D.DciIcon {
+            palette: D.DTK.makeIconPalette(control.palette)
+            mode: control.D.ColorSelector.controlState
+            theme: control.D.ColorSelector.controlTheme
+            fallbackToQIcon: false
+            name: "menu_select"
+            sourceSize: Qt.size(DS.Style.itemDelegate.checkIndicatorIconSize, DS.Style.itemDelegate.checkIndicatorIconSize)
+        }
     }
 
     contentItem: RowLayout {
@@ -79,7 +83,8 @@ T.ItemDelegate {
             spacing: control.spacing
             mirrored: control.mirrored
             display: control.display
-            alignment: control.display === D.IconLabel.IconOnly || control.display === D.IconLabel.TextUnderIcon ? Qt.AlignCenter : Qt.AlignLeft | Qt.AlignVCenter
+            alignment: control.display === D.IconLabel.IconOnly || control.display === D.IconLabel.TextUnderIcon
+                       ? Qt.AlignCenter : Qt.AlignLeft | Qt.AlignVCenter
             text: control.text
             font: control.font
             color: control.palette.windowText
@@ -96,23 +101,31 @@ T.ItemDelegate {
     background: Item {
         implicitWidth: DS.Style.itemDelegate.width
         implicitHeight: DS.Style.itemDelegate.height
-        HighlightPanel {
+
+        Loader {
             anchors.fill: parent
-            visible: checked && !control.cascadeSelected
+            active: checked && !control.cascadeSelected
+            sourceComponent: HighlightPanel {}
         }
-        D.RoundRectangle {
+
+        Loader {
             anchors.fill: parent
-            visible: checked && control.cascadeSelected
-            color: DS.Style.itemDelegate.cascadeColor
-            radius: DS.Style.control.radius
-            corners: control.corners
+            active: checked && control.cascadeSelected
+            sourceComponent: D.RoundRectangle {
+                color: DS.Style.itemDelegate.cascadeColor
+                radius: DS.Style.control.radius
+                corners: control.corners
+            }
         }
-        D.RoundRectangle {
+
+        Loader {
             anchors.fill: parent
-            visible: !checked && control.backgroundVisible
-            color: DS.Style.itemDelegate.normalColor
-            radius: DS.Style.control.radius
-            corners: control.corners
+            active: !checked && control.backgroundVisible
+            sourceComponent: D.RoundRectangle {
+                color: DS.Style.itemDelegate.normalColor
+                radius: DS.Style.control.radius
+                corners: control.corners
+            }
         }
     }
 }

@@ -57,13 +57,17 @@ FocusScope {
                     validator: RegExpValidator {
                         regExp: /^(([0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])?)$/
                     }
-                    Label {
-                        text: "."
-                        anchors {
-                            left: parent.right
+                    Loader {
+                        active: index < fields.count - 1
+
+                        sourceComponent: Label {
+                            text: "."
+                            anchors {
+                                left: parent.right
+                            }
                         }
-                        visible: index < fields.count - 1
                     }
+
                     onTextEdited: fields.updateText()
                 }
                 function updateText() {

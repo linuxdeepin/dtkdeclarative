@@ -648,6 +648,8 @@ QtObject {
         property size stepButtonIconSize: Qt.size(12, 12)
         property int maxVisibleItems: 16
         property int itemHeight: 30
+        property string upButtonIconName: "arrow_ordinary_up"
+        property string downButtonIconName: "arrow_ordinary_down"
     }
 
     property QtObject itemDelegate: QtObject {

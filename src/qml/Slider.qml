@@ -98,12 +98,8 @@ T.Slider {
 
             // draw passed groove area
             Loader {
-                sourceComponent: highlightedPassedGroove ? passedGroove : undefined
-            }
-
-            Component {
-                id: passedGroove
-                Shape {
+                active: highlightedPassedGroove
+                sourceComponent: Shape {
                     ShapePath {
                         capStyle: ShapePath.FlatCap
                         strokeStyle: ShapePath.DashLine

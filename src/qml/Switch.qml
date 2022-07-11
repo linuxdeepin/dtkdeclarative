@@ -55,7 +55,7 @@ T.Switch {
             sourceSize.width: DS.Style.switchButton.handleWidth
             sourceSize.height: DS.Style.switchButton.handleHeight
             name: DS.Style.switchButton.iconName
-            opacity: control.D.ColorSelector.controlState === D.DTK.DisabledState ? (control.checked ? 0.4 : 1) : 1
+            opacity: control.D.ColorSelector.controlState === D.DTK.DisabledState && control.checked ? 0.4 : 1
             palette {
                 highlight: control.checked ? control.palette.highlight : control.D.ColorSelector.handleColor
                 highlightForeground: control.palette.highlightedText

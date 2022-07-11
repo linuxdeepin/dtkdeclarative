@@ -26,7 +26,7 @@ import org.deepin.dtk.style 1.0 as DS
 Control {
     id: control
 
-    property alias text: __label.text
+    property string text
     property int textHorizontalAlignment: Text.AlignHCenter
     readonly property int direction: parent.parent.tickDirection
     readonly property bool horizontal: parent.parent.children[0].horizontal
@@ -35,8 +35,8 @@ Control {
     property D.Palette tickColor: DS.Style.slider.tick.background
     property D.Palette textColor: highlight ? DS.Style.checkedButton.text: DS.Style.button.text
 
-    implicitWidth: horizontal ? DS.Style.slider.tick.width : __rect.width + (__label.visible ? __label.width: 0)
-    implicitHeight: horizontal ? __rect.height + (__label.visible ? __label.height : 0) : DS.Style.slider.tick.width
+    implicitWidth: horizontal ? DS.Style.slider.tick.width : __rect.width + __label.width
+    implicitHeight: horizontal ? __rect.height + __label.height: DS.Style.slider.tick.width
 
     Rectangle {
         id: __rect
@@ -48,26 +48,33 @@ Control {
         color: control.D.ColorSelector.tickColor
     }
 
-    Label {
+    Loader {
         id: __label
-        visible: text
+        active: text.length !== 0
         anchors {
             top: horizontal ? (TipsSlider.TickDirection.Back === direction ? __rect.bottom : undefined) : undefined
             bottom: horizontal ? (TipsSlider.TickDirection.Front === direction ? __rect.top : undefined) : undefined
-            left: horizontal ? (Text.AlignLeft === textHorizontalAlignment ? __rect.left : undefined) : (TipsSlider.TickDirection.Back === direction ? __rect.right : undefined)
-            right: horizontal ? (Text.AlignRight === textHorizontalAlignment ? __rect.right : undefined) : (TipsSlider.TickDirection.Front === direction ? __rect.left : undefined)
+            left: horizontal ? (Text.AlignLeft === textHorizontalAlignment ? __rect.left : undefined)
+                             : (TipsSlider.TickDirection.Back === direction ? __rect.right : undefined)
+            right: horizontal ? (Text.AlignRight === textHorizontalAlignment ? __rect.right : undefined)
+                              : (TipsSlider.TickDirection.Front === direction ? __rect.left : undefined)
             horizontalCenter: horizontal && Text.AlignHCenter === textHorizontalAlignment ? __rect.horizontalCenter : undefined
             verticalCenter: horizontal ? undefined : __rect.verticalCenter
         }
-        rightPadding: DS.Style.slider.tick.hPadding
-        leftPadding: DS.Style.slider.tick.hPadding
-        topPadding: DS.Style.slider.tick.vPadding
-        bottomPadding: DS.Style.slider.tick.vPadding
-        horizontalAlignment: textHorizontalAlignment
-        verticalAlignment: Text.AlignVCenter
-        palette.windowText: control.D.ColorSelector.textColor
-        background: HighlightPanel {
-            visible: highlight
+
+        sourceComponent: Label {
+            text: control.text
+            rightPadding: DS.Style.slider.tick.hPadding
+            leftPadding: DS.Style.slider.tick.hPadding
+            topPadding: DS.Style.slider.tick.vPadding
+            bottomPadding: DS.Style.slider.tick.vPadding
+            horizontalAlignment: textHorizontalAlignment
+            verticalAlignment: Text.AlignVCenter
+            palette.windowText: control.D.ColorSelector.textColor
+            background: Loader {
+                active: highlight
+                sourceComponent: HighlightPanel { }
+            }
         }
     }
 }

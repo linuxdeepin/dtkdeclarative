@@ -32,10 +32,12 @@ T.Popup {
 
     padding: DS.Style.popup.padding
 
-    background: FloatingPanel {
-        visible: !control.D.PopupHandle.window
-        implicitHeight: DS.Style.popup.height
-        implicitWidth: DS.Style.popup.width
-        radius: DS.Style.popup.radius
+    background: Loader {
+        active: !control.D.PopupHandle.window
+        sourceComponent: FloatingPanel {
+            implicitHeight: DS.Style.popup.height
+            implicitWidth: DS.Style.popup.width
+            radius: DS.Style.popup.radius
+        }
     }
 }

@@ -59,7 +59,7 @@ Control {
     property bool __isVisible: mouseArea.containsMouse
     readonly property int __includedAreaX: control.width - optionMenuBtn.width - windowButtonsLoader.width
 
-    property alias enableInWindowBlendBlur: background.visible
+    property alias enableInWindowBlendBlur: background.active
 
     property D.Palette textColor: DS.Style.button.text
     palette.windowText: D.ColorSelector.textColor
@@ -93,11 +93,13 @@ Control {
         onClicked: mouse.accepted = false
     }
 
-    D.InWindowBlur {
+    Loader {
         id: background
+        active: false
         anchors.fill: parent
-        radius: 30
-        visible: false
+        sourceComponent: D.InWindowBlur {
+            radius: 30
+        }
     }
 
     ColumnLayout {
@@ -106,12 +108,15 @@ Control {
         anchors.fill: parent
         visible: control.height > 0
 
-        Rectangle {
-            id: separatorTop
-            Layout.preferredWidth: control.width
-            Layout.preferredHeight: 1
+        Loader {
+            active: embedMode
             visible: embedMode
-            color: "transparent"
+            sourceComponent: Rectangle {
+                Layout.preferredWidth: control.width
+                Layout.preferredHeight: 1
+                visible: embedMode
+                color: "transparent"
+            }
         }
 
         RowLayout {
@@ -198,29 +203,34 @@ Control {
             }
         }
 
-        Rectangle {
-            id: separatorButtom
-            Layout.preferredWidth: control.width
-            Layout.preferredHeight: 1
-            visible: separatorVisible
-            color: "transparent"
-            Layout.alignment: Qt.AlignBottom
+        Loader {
+            active: separatorVisible
+            visible: active
+
+            sourceComponent: Rectangle {
+                Layout.preferredWidth: control.width
+                Layout.preferredHeight: 1
+                color: "transparent"
+                Layout.alignment: Qt.AlignBottom
+            }
         }
     }
 
     Component {
         id: titleCenterCom
-        Label {
-            textFormat: Text.PlainText
+        Loader {
             property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowTitleHint)*/
             Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowTitleHint)
-
-            visible: hasWindowFlag && !embedMode &&
+            active: hasWindowFlag && !embedMode &&
                         (__dwindow.motifDecorations & D.WindowManagerHelper.DECOR_TITLE)
+            visible: active
 
-            text: control.title
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+            sourceComponent: Label {
+                textFormat: Text.PlainText
+                text: control.title
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
         }
     }
 }

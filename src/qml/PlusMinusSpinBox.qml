@@ -28,9 +28,9 @@ FocusScope {
     // Default SpinBox Properties
     property alias spinBox: spinBoxControl
     // Button Visible Properties
-    property alias upButtonVisible: plusButton.visible
-    property alias downButtonVisible: minusButton.visible
-    property alias resetButtonVisible: resetButton.visible
+    property alias upButtonVisible: plusButton.active
+    property alias downButtonVisible: minusButton.active
+    property alias resetButtonVisible: resetButton.active
 
     implicitWidth: DS.Style.spinBox.width
     implicitHeight: DS.Style.spinBox.height
@@ -45,47 +45,42 @@ FocusScope {
             down.indicator: null
         }
 
-        IconButton {
+        Loader {
             id: plusButton
-
-            implicitWidth: DS.Style.spinBox.height
-            implicitHeight: DS.Style.spinBox.height
-            focusPolicy: Qt.NoFocus
-
-            icon.name: "action_add"
-            icon.width: 16
-            onClicked: {
-                spinBoxControl.increase()
+            active: true
+            sourceComponent: IconButton {
+                implicitWidth: DS.Style.spinBox.height
+                implicitHeight: DS.Style.spinBox.height
+                focusPolicy: Qt.NoFocus
+                icon.name: "action_add"
+                icon.width: 16
+                onClicked: spinBoxControl.increase()
             }
         }
 
-        IconButton {
+        Loader {
             id: minusButton
-
-            implicitWidth: DS.Style.spinBox.height
-            implicitHeight: DS.Style.spinBox.height
-            focusPolicy: Qt.NoFocus
-
-            icon.name: "action_reduce"
-            icon.width: 16
-            onClicked: {
-                spinBoxControl.decrease()
+            active: true
+            sourceComponent: IconButton {
+                implicitWidth: DS.Style.spinBox.height
+                implicitHeight: DS.Style.spinBox.height
+                focusPolicy: Qt.NoFocus
+                icon.name: "action_reduce"
+                icon.width: 16
+                onClicked: spinBoxControl.decrease()
             }
         }
 
-        IconButton {
+        Loader {
             id: resetButton
-
-            implicitWidth: DS.Style.spinBox.height
-            implicitHeight: DS.Style.spinBox.height
-            focusPolicy: Qt.NoFocus
-
-            visible: false
-            icon.name: "action_reset"
-            icon.width: 16
-
-            onClicked: {
-                spinBoxControl.value = 0
+            active: false
+            sourceComponent: IconButton {
+                implicitWidth: DS.Style.spinBox.height
+                implicitHeight: DS.Style.spinBox.height
+                focusPolicy: Qt.NoFocus
+                icon.name: "action_reset"
+                icon.width: 16
+                onClicked: { spinBoxControl.value = 0 }
             }
         }
     }

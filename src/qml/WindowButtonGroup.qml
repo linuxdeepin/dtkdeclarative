@@ -44,47 +44,47 @@ RowLayout {
         if (Window.window.visibility === Window.Maximized) {
             Window.window.visibility = Window.Windowed
         } else if (Window.window.visibility !== Window.FullScreen &&
-                   maxOrWindedBtn.visible) {
+                   maxOrWindedBtn.active) {
             Window.window.visibility = Window.Maximized
         }
     }
 
-    WindowButton {
-        icon.name: "window_minimize"
-        textColor: control.textColor
+    Loader {
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowMinimizeButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowMinimizeButtonHint)
-
-        visible: hasWindowFlag &&  !__forceHind
+        active: hasWindowFlag &&  !__forceHind
+        visible: active
         enabled: (__dwindow.motifFunctions & D.WindowManagerHelper.FUNC_MINIMIZE)
 
-        onClicked: Window.window.visibility = Window.Minimized
+        sourceComponent: WindowButton {
+            icon.name: "window_minimize"
+            textColor: control.textColor
+
+            onClicked: Window.window.visibility = Window.Minimized
+        }
     }
 
-    WindowButton {
-        icon.name: "window_quit_full"
-        textColor: control.textColor
-        visible: !(!control.fullScreenButtonVisible ||
-                    !__dwindow.enabled ||
-                    Window.window.visibility !== Window.FullScreen)
+    Loader {
+        active: !(!control.fullScreenButtonVisible ||
+                  !__dwindow.enabled ||
+                  Window.window.visibility !== Window.FullScreen)
+        visible: active
+        sourceComponent: WindowButton {
+            icon.name: "window_quit_full"
+            textColor: control.textColor
 
-        onClicked: {
-            if (Window.window.visibility === Window.FullScreen) {
-                Window.window.visibility = Window.Windowed
-            } else {
-                Window.window.visibility = Window.FullScreen
+            onClicked: {
+                if (Window.window.visibility === Window.FullScreen) {
+                    Window.window.visibility = Window.Windowed
+                } else {
+                    Window.window.visibility = Window.FullScreen
+                }
             }
         }
     }
 
-    WindowButton {
+    Loader {
         id: maxOrWindedBtn
-        property bool isMaximized: Window.window.visibility === Window.Maximized
-        icon.name: isMaximized ? "window_restore" : "window_maximize"
-
-        textColor: control.textColor
-        onClicked: maxOrWinded()
-
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowMaximizeButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowMaximizeButtonHint)
 
@@ -96,16 +96,26 @@ RowLayout {
 
         enabled: ((__dwindow.motifFunctions & D.WindowManagerHelper.FUNC_MAXIMIZE) &&
                     (__dwindow.motifFunctions & D.WindowManagerHelper.FUNC_RESIZE))
+
+        sourceComponent: WindowButton {
+            property bool isMaximized: Window.window.visibility === Window.Maximized
+            icon.name: isMaximized ? "window_restore" : "window_maximize"
+            textColor: control.textColor
+            onClicked: maxOrWinded()
+        }
     }
 
-    WindowButton {
-        icon.name: "window_close"
-        textColor: control.textColor
+    Loader {
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowCloseButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowCloseButtonHint)
-
-        visible: hasWindowFlag && __dwindow.enabled
+        active: hasWindowFlag && __dwindow.enabled
+        visible: active
         enabled: __dwindow.motifFunctions & D.WindowManagerHelper.FUNC_CLOSE
-        onClicked: Window.window.close()
+
+        sourceComponent: WindowButton {
+            icon.name: "window_close"
+            textColor: control.textColor
+            onClicked: Window.window.close()
+        }
     }
 }

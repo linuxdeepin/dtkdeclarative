@@ -90,11 +90,13 @@ T.Menu {
         }
     }
 
-    background: FloatingPanel {
-        visible: !control.D.PopupHandle.window
-        implicitWidth: DS.Style.menu.item.width
-        implicitHeight: DS.Style.menu.item.height
-        radius: DS.Style.menu.radius
-        backgroundColor: control.backgroundColor
+    background: Loader {
+        active: !control.D.PopupHandle.window
+        sourceComponent: FloatingPanel {
+            implicitWidth: DS.Style.menu.item.width
+            implicitHeight: DS.Style.menu.item.height
+            radius: DS.Style.menu.radius
+            backgroundColor: control.backgroundColor
+        }
     }
 }

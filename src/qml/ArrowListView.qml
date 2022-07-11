@@ -22,6 +22,7 @@
 import QtQuick 2.11
 import QtQuick.Window 2.11
 import org.deepin.dtk.style 1.0 as DS
+import "private"
 
 FocusScope {
     property int maxVisibleItems : DS.Style.arrowListView.maxVisibleItems
@@ -33,17 +34,11 @@ FocusScope {
 
     Column {
         width: parent.width
-        Button {
-            width: DS.Style.arrowListView.stepButtonSize.width
-            height: DS.Style.arrowListView.stepButtonSize.height
-            flat: true
+
+        ArrowListViewButton {
             anchors.horizontalCenter: parent.horizontalCenter
-            enabled: !itemsView.atYBeginning
-            visible: itemsView.interactive
-            icon.name: "arrow_ordinary_up"
-            icon.width: DS.Style.arrowListView.stepButtonIconSize.width
-            icon.height: DS.Style.arrowListView.stepButtonIconSize.height
-            onClicked: itemsView.decrementCurrentIndex()
+            view: itemsView
+            direction: ArrowListViewButton.UpButton
         }
 
         ListView {
@@ -54,17 +49,10 @@ FocusScope {
             ScrollIndicator.vertical: ScrollIndicator { }
         }
 
-        Button {
-            width: DS.Style.arrowListView.stepButtonSize.width
-            height: DS.Style.arrowListView.stepButtonSize.height
-            flat: true
+        ArrowListViewButton {
             anchors.horizontalCenter: parent.horizontalCenter
-            enabled: !itemsView.atYEnd
-            visible: itemsView.interactive
-            icon.name: "arrow_ordinary_down"
-            icon.width: DS.Style.arrowListView.stepButtonIconSize.width
-            icon.height: DS.Style.arrowListView.stepButtonIconSize.height
-            onClicked: itemsView.incrementCurrentIndex()
+            view: itemsView
+            direction: ArrowListViewButton.DownButton
         }
     }
 }

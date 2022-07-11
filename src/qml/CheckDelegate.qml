@@ -42,16 +42,19 @@ T.CheckDelegate {
         height: DS.Style.itemDelegate.iconSize
     }
     checkable: true
-    indicator: D.DciIcon {
+    indicator: Loader {
         x: control.mirrored ? control.leftPadding : control.width - width - control.rightPadding
         y: control.topPadding + (control.availableHeight - height) / 2
-        visible: control.checked
-        palette: control.D.DTK.makeIconPalette(control.palette)
-        mode: control.D.ColorSelector.controlState
-        theme: control.D.ColorSelector.controlTheme
-        name: "menu_select"
-        sourceSize: Qt.size(DS.Style.itemDelegate.checkIndicatorIconSize, DS.Style.itemDelegate.checkIndicatorIconSize)
-        fallbackToQIcon: false
+        active: control.checked
+
+        sourceComponent: D.DciIcon {
+            palette: control.D.DTK.makeIconPalette(control.palette)
+            mode: control.D.ColorSelector.controlState
+            theme: control.D.ColorSelector.controlTheme
+            name: "menu_select"
+            sourceSize: Qt.size(DS.Style.itemDelegate.checkIndicatorIconSize, DS.Style.itemDelegate.checkIndicatorIconSize)
+            fallbackToQIcon: false
+        }
     }
 
     contentItem: RowLayout {

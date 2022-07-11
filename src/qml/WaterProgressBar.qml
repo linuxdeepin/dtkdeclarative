@@ -81,14 +81,18 @@ Control {
             Repeater {
                 model: attribute.pops
 
-                Rectangle {
-                    color: control.D.ColorSelector.popBackgroundColor
-                    visible: control.value > 30
+                Loader {
                     x: model.x
                     y: model.y
                     width: model.width
                     height: model.height
-                    radius: width / 2
+                    active: control.value > 30
+                    visible: active
+
+                    sourceComponent: Rectangle {
+                        color: control.D.ColorSelector.popBackgroundColor
+                        radius: width / 2
+                    }
                 }
             }
 

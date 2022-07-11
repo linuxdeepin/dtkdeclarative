@@ -62,50 +62,67 @@ T.MenuItem {
         icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
     }
 
-    indicator: D.DciIcon {
+    indicator: Loader {
+        width: DS.Style.menu.item.iconSize.width
+        height: DS.Style.menu.item.iconSize.height
+        active: control.checked
         anchors {
             left: control.left
-            leftMargin: control.mirrored ? control.width - width - control.rightPadding : control.leftPadding
+            leftMargin: control.mirrored ? control.width - width - control.rightPadding
+                                         : control.leftPadding
             verticalCenter: parent.verticalCenter
         }
-        sourceSize.width: DS.Style.menu.item.iconSize.height
-        visible: control.checked
-        name: "menu_select"
-        palette: control.D.DciIcon.palette
-        mode: control.D.ColorSelector.controlState
-        theme: control.D.ColorSelector.controlTheme
-        fallbackToQIcon: false
+
+        sourceComponent: D.DciIcon {
+            sourceSize: Qt.size(DS.Style.menu.item.iconSize.width,
+                                DS.Style.menu.item.iconSize.height)
+            name: "menu_select"
+            palette: control.D.DciIcon.palette
+            mode: control.D.ColorSelector.controlState
+            theme: control.D.ColorSelector.controlTheme
+            fallbackToQIcon: false
+        }
     }
 
-    arrow: D.DciIcon {
+    arrow: Loader {
+        width: DS.Style.menu.item.iconSize.width
+        height: DS.Style.menu.item.iconSize.height
+        active: control.subMenu
         anchors {
             right: parent.right
-            rightMargin: control.mirrored ? control.width - width - control.rightPadding : control.rightPadding
+            rightMargin: control.mirrored ? control.width - width - control.rightPadding
+                                          : control.rightPadding
             verticalCenter: parent.verticalCenter
         }
-        sourceSize.width: DS.Style.menu.item.iconSize.height
-        visible: control.subMenu
-        mirror: control.mirrored
-        name: control.subMenu ? "menu_arrow" : ""
-        palette: control.D.DciIcon.palette
-        mode: control.D.ColorSelector.controlState
-        theme: control.D.ColorSelector.controlTheme
-        fallbackToQIcon: false
+
+        sourceComponent: D.DciIcon {
+            sourceSize: Qt.size(DS.Style.menu.item.iconSize.width,
+                                DS.Style.menu.item.iconSize.height)
+            mirror: control.mirrored
+            name: "menu_arrow"
+            palette: control.D.DciIcon.palette
+            mode: control.D.ColorSelector.controlState
+            theme: control.D.ColorSelector.controlTheme
+            fallbackToQIcon: false
+        }
     }
 
     background: Item {
         implicitWidth: DS.Style.menu.item.width
         implicitHeight: DS.Style.menu.item.height
-        Rectangle {
+        Loader {
             anchors.fill: parent
-            visible: !control.hovered && control.subMenu && control.subMenu.opened
-            color: control.D.ColorSelector.subMenuBackgroundColor
-            radius: DS.Style.control.radius
+            active: !control.hovered && control.subMenu && control.subMenu.opened
+            sourceComponent: Rectangle {
+                color: control.D.ColorSelector.subMenuBackgroundColor
+                radius: DS.Style.control.radius
+            }
         }
 
-        HighlightPanel {
+        Loader {
             anchors.fill: parent
-            visible: control.hovered
+            active: control.hovered
+            sourceComponent: HighlightPanel {}
         }
     }
 }
