@@ -20,6 +20,7 @@
  */
 
 import QtQuick 2.11
+import QtQuick.Layouts 1.11
 import QtQuick.Templates 2.4 as T
 import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
@@ -54,12 +55,15 @@ T.Menu {
     }
 
     contentItem: FocusScope {
-        implicitHeight: childrenRect.height
+        implicitHeight: viewLayout.implicitHeight
 
-        Column {
-            width: parent.width
+        ColumnLayout {
+            id: viewLayout
+            anchors.fill: parent
+
             Loader {
-                width: parent.width
+                Layout.fillWidth: true
+                Layout.preferredHeight: height
                 sourceComponent: control.header
             }
             ArrowListView {
@@ -67,7 +71,8 @@ T.Menu {
                 property int count: contentView.view.count
 
                 view.model: control.model
-                width: parent.width
+                Layout.fillWidth: true
+                Layout.fillHeight: true
                 view.currentIndex: control.currentIndex
                 maxVisibleItems: control.maxVisibleItems
                 itemHeight: DS.Style.menu.item.height
@@ -84,7 +89,8 @@ T.Menu {
                 Component.onCompleted: refreshContentItemWidth()
             }
             Loader {
-                width: parent.width
+                Layout.fillWidth: true
+                Layout.preferredHeight: height
                 sourceComponent: control.footer
             }
         }
