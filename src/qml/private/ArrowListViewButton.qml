@@ -35,7 +35,7 @@ Loader {
 
     sourceComponent: Button {
         flat: true
-        enabled: !view.atYBeginning
+        enabled: direction === ArrowListViewButton.UpButton ? !view.atYBeginning : !itemsView.atYEnd
         width: DS.Style.arrowListView.stepButtonSize.width
         height: DS.Style.arrowListView.stepButtonSize.height
         icon.name: direction === ArrowListViewButton.UpButton ? DS.Style.arrowListView.upButtonIconName

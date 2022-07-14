@@ -567,7 +567,7 @@ QtObject {
 
         property QtObject item: QtObject {
             property int width: 180
-            property int height: 30
+            property int height: 34
             property size iconSize: Qt.size(14, 14)
             property int count: 0
         }

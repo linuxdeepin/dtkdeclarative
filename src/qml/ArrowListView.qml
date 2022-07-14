@@ -21,36 +21,45 @@
 
 import QtQuick 2.11
 import QtQuick.Window 2.11
+import QtQuick.Layouts 1.11
 import org.deepin.dtk.style 1.0 as DS
 import "private"
 
 FocusScope {
+    id: control
     property int maxVisibleItems : DS.Style.arrowListView.maxVisibleItems
     property int itemHeight:  DS.Style.arrowListView.itemHeight
     property alias view: itemsView
 
     implicitWidth: DS.Style.arrowListView.width
-    implicitHeight: childrenRect.height
+    implicitHeight: contentLayout.implicitHeight
 
-    Column {
-        width: parent.width
-
+    ColumnLayout {
+        id: contentLayout
+        anchors.fill: parent
         ArrowListViewButton {
-            anchors.horizontalCenter: parent.horizontalCenter
+            visible: itemsView.interactive
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: width
+            Layout.preferredHeight: height
             view: itemsView
             direction: ArrowListViewButton.UpButton
         }
 
         ListView {
             id: itemsView
-            width: parent.width
-            implicitHeight: Math.min(contentHeight, maxVisibleItems * DS.Style.arrowListView.itemHeight)
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            implicitHeight: Math.min(contentHeight, maxVisibleItems * itemHeight)
             interactive: Window.window ? (contentHeight > Window.window.height || model.count > maxVisibleItems) : false
             ScrollIndicator.vertical: ScrollIndicator { }
         }
 
         ArrowListViewButton {
-            anchors.horizontalCenter: parent.horizontalCenter
+            visible: itemsView.interactive
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: width
+            Layout.preferredHeight: height
             view: itemsView
             direction: ArrowListViewButton.DownButton
         }
