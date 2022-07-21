@@ -35,7 +35,7 @@ QT_END_NAMESPACE
 DQUICK_BEGIN_NAMESPACE
 
 class DQuickInWindowBlendBlurPrivate;
-class TextureProvider;
+class InWindowBlurTextureProvider;
 class DSGBlurNode;
 class DQuickInWindowBlur : public QQuickItem
 {
@@ -71,7 +71,7 @@ private Q_SLOTS:
 private:
     qreal m_radius = 20;
     bool m_offscreen = false;
-    mutable TextureProvider *m_tp = nullptr;
+    mutable InWindowBlurTextureProvider *m_tp = nullptr;
     friend void onRender(DSGBlurNode *, void *);
 };
 

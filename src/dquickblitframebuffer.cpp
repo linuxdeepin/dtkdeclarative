@@ -31,15 +31,15 @@
 
 DQUICK_BEGIN_NAMESPACE
 
-class Q_DECL_HIDDEN TextureProvider : public QSGTextureProvider {
+class Q_DECL_HIDDEN BlitFrameTextureProvider : public QSGTextureProvider {
 public:
-    TextureProvider()
+    BlitFrameTextureProvider()
         : QSGTextureProvider()
     {
 
     }
 
-    QSGTexture *texture() const override {
+    inline QSGTexture *texture() const override {
         return m_texture;
     }
     inline void setTexture(QSGTexture *tex) {
@@ -50,7 +50,6 @@ private:
     QSGTexture *m_texture = nullptr;
 };
 
-
 class Q_DECL_HIDDEN DQuickBlitFramebufferPrivate : public DCORE_NAMESPACE::DObjectPrivate
 {
 public:
@@ -60,7 +59,7 @@ public:
 
     }
 
-    mutable TextureProvider *tp = nullptr;
+    mutable BlitFrameTextureProvider *tp = nullptr;
 };
 
 DQuickBlitFramebuffer::DQuickBlitFramebuffer(QQuickItem *parent)
@@ -92,7 +91,7 @@ QSGTextureProvider *DQuickBlitFramebuffer::textureProvider() const
     }
 
     if (!d->tp) {
-        d->tp = new TextureProvider();
+        d->tp = new BlitFrameTextureProvider();
     }
 
     return d->tp;
@@ -111,7 +110,7 @@ static void onRender(DBlitFramebufferNode *node, void *data) {
         return;
     d->tp->setTexture(node->texture());
     // Don't direct emit the signal, must ensure the signal emit on current render loop after.
-    d->tp->metaObject()->invokeMethod(d->tp, &TextureProvider::textureChanged, Qt::QueuedConnection);
+    d->tp->metaObject()->invokeMethod(d->tp, &BlitFrameTextureProvider::textureChanged, Qt::QueuedConnection);
 }
 
 QSGNode *DQuickBlitFramebuffer::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *oldData)
