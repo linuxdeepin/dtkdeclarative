@@ -1,0 +1,30 @@
+# Maintainer: zccrs <zhangjide@deepin.org>
+pkgname=dtkdeclarative-git
+pkgver=1.0.0
+pkgrel=1
+pkgdesc='Deepin Toolkit, declarative module for DDE look and feel'
+arch=('x86_64' 'aarch64')
+url="https://github.com/linuxdeepin/dtkdeclarative"
+license=('LGPL3')
+depends=('dtkgui-git' 'qt5-declarative' 'qt5-quickcontrols2')
+makedepends=('git' 'qt5-tools' 'dtkcommon-git' 'dtkcore-git' 'dtkgui-git' 'qt5-declarative' 'qt5-quickcontrols2' 'gtest' 'gmock')
+conflicts=('dtkdeclarative')
+provides=('dtkdeclarative')
+groups=('deepin-git')
+source=('source.tar.gz')
+sha512sums=('SKIP')
+
+prepare() {
+    cd $deepin_source_name
+}
+
+build() {
+  cd $deepin_source_name
+  qmake-qt5 PREFIX=/usr DTK_VERSION=$pkgver LIB_INSTALL_DIR=/usr/lib
+  make
+}
+
+package() {
+  cd $deepin_source_name
+  make INSTALL_ROOT="$pkgdir" install
+}
