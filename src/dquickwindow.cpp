@@ -222,8 +222,6 @@ QQuickWindow *DQuickWindowAttached::window() const
  */
 bool DQuickWindowAttached::isEnabled() const
 {
-    D_DC(DQuickWindowAttached);
-
     return DPlatformHandle::isEnabledDXcb(window());
 }
 

@@ -288,7 +288,11 @@ void DQuickWaterProgressAttribute::setBackXOffset(qreal backXOffset)
 QQmlListProperty<WaterPopAttribute> DQuickWaterProgressAttribute::pops()
 {
     D_D(DQuickWaterProgressAttribute);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    return QQmlListProperty<WaterPopAttribute>(this, &d->m_pops);
+#else
     return QQmlListProperty<WaterPopAttribute>(this, d->m_pops);
+#endif
 }
 
 bool DQuickWaterProgressAttribute::running() const

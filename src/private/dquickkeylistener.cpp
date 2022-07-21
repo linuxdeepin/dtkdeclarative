@@ -127,15 +127,23 @@ bool DQuickKeyListener::eventFilter(QObject *watched, QEvent *event)
     QStringList keyTexts;
     static QList<int> modifierKeys = {Qt::Key_Control, Qt::Key_Shift, Qt::Key_Meta, Qt::Key_Alt};
     if (modifierKeys.contains(key)) {  // Only modifier keys.
-        keyTexts << modifiers.split("+", QString::SkipEmptyParts);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+        keyTexts << modifiers.split(QLatin1Char('+'), Qt::SkipEmptyParts);
+#else
+        keyTexts << modifiers.split(QLatin1Char('+'), QString::SkipEmptyParts);
+#endif
     } else {
         key = d->doNativeShiftKey(ke, key);
         QString ks =  QKeySequence(key).toString();
         QKeySequence sequence(modifiers + ks);
         QString writing = sequence.toString();
-        keyTexts << writing.split("+", QString::SkipEmptyParts);
-        if (writing.contains("++"))
-            keyTexts << "+";
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+        keyTexts << writing.split(QLatin1Char('+'), Qt::SkipEmptyParts);
+#else
+        keyTexts << writing.split(QLatin1Char('+'), QString::SkipEmptyParts);
+#endif
+        if (writing.contains(QLatin1String("++")))
+            keyTexts << QLatin1String("+");
     }
 
     if (keyTexts.count() > d->maxKeyCount)

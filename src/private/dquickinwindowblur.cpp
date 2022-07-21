@@ -33,9 +33,9 @@
 
 DQUICK_BEGIN_NAMESPACE
 
-class Q_DECL_HIDDEN TextureProvider : public QSGTextureProvider {
+class Q_DECL_HIDDEN InWindowBlurTextureProvider : public QSGTextureProvider {
 public:
-    TextureProvider()
+    InWindowBlurTextureProvider()
         : QSGTextureProvider()
         , m_texture(new QSGPlainTexture())
     {
@@ -45,7 +45,7 @@ public:
     inline QSGPlainTexture *plainTexture() const {
         return m_texture.data();
     }
-    QSGTexture *texture() const override {
+    inline QSGTexture *texture() const override {
         return plainTexture();
     }
 
@@ -102,7 +102,7 @@ QSGTextureProvider *DQuickInWindowBlur::textureProvider() const
     }
 
     if (!m_tp) {
-        m_tp = new TextureProvider();
+        m_tp = new InWindowBlurTextureProvider();
     }
     return m_tp;
 }
@@ -118,7 +118,7 @@ void onRender(DSGBlurNode *node, void *data) {
         return;
     node->writeToTexture(that->m_tp->plainTexture());
     // Don't direct emit the signal, must ensure the signal emit on current render loop after.
-    that->m_tp->metaObject()->invokeMethod(that->m_tp, &TextureProvider::textureChanged, Qt::QueuedConnection);
+    that->m_tp->metaObject()->invokeMethod(that->m_tp, &InWindowBlurTextureProvider::textureChanged, Qt::QueuedConnection);
 }
 
 QSGNode *DQuickInWindowBlur::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *data)
@@ -157,7 +157,7 @@ QSGNode *DQuickInWindowBlur::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeDa
     }
 
     if (!m_tp) {
-        m_tp = new TextureProvider();
+        m_tp = new InWindowBlurTextureProvider();
     }
 
     node->resize(size());
