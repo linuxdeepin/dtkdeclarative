@@ -1,6 +1,6 @@
 ## 介绍
 
-​		dtkdeclarative 是基于 QtQuick/QtQml 实现的控件开发库，它是用于代替已有的 dtkwidget 编程而开发出来的一个全新的 DTK 模块。dtkclarative 代码以 qtdeclarative 为基础进行开发，实现了对QML已有控件的覆盖（包含Qt Quick Controls 2中的所有控件），并增加了大量在 DTK  环境下友好显示的视觉特效和颜色风格。相对于 dtkwidget，它具备以下特点：
+​dtkdeclarative 是基于 QtQuick/QtQml 实现的控件开发库，它是用于代替已有的 dtkwidget 编程而开发出来的一个全新的 DTK 模块。dtkclarative 代码以 qtdeclarative 为基础进行开发，实现了对QML已有控件的覆盖（包含Qt Quick Controls 2中的所有控件），并增加了大量在 DTK  环境下友好显示的视觉特效和颜色风格。相对于 dtkwidget，它具备以下特点：
 
  1. **原始的 Qt 和 Qml 代码风格**
 
@@ -53,6 +53,12 @@ $ sudo make install
 
 1. 遇到使用问题，可直接提出 issue
 2. 在 [Deepin](https://bbs.deepin.org/) 社区寻求帮助
+
+## TODO
+
+1. 添加 plugins.qmltypes 文件，支持代码补全
+2. 支持 Qt6
+3. 支持 Vulkan
 
 ## 许可
 
