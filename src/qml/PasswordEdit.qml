@@ -38,29 +38,19 @@ LineEdit {
     clearButton.anchors.rightMargin: echoButton.visible ? DS.Style.passwordEdit.echoActionSpacing
                                                           + echoButton.width : 0
 
-    Button {
+    ActionButton {
         id: echoButton
 
         anchors {
             right: control.right
+            rightMargin: DS.Style.passwordEdit.echoActionSpacing
             verticalCenter: control.verticalCenter
         }
+
         width: height
         focusPolicy: Qt.NoFocus
-        palette {
-            button: D.DTK.themeType === D.ApplicationHelper.LightType ?
-                                        control.palette.highlight :
-                                        D.DTK.makeColor(control.palette.highlight).lightness(+10).color()
-            text: control.palette.highlightedText
-        }
-        onClicked: {
-            control.toggleEchoMode()
-        }
 
-        D.QtIcon {
-            anchors.centerIn: parent
-            color: control.palette.base
-            name: control.isEchoMode ? "password_hide" : "password_show"
-        }
+        onClicked: control.toggleEchoMode()
+        icon.name: control.isEchoMode ? "entry_password_shown" : "entry_password_hide"
     }
 }
