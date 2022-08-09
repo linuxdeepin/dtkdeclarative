@@ -40,6 +40,7 @@ T.TextField {
                              placeholder.implicitHeight + topPadding + bottomPadding)
     padding: DS.Style.control.padding
     color: control.palette.text
+    opacity: enabled ? 1 : 0.4
     selectionColor: control.palette.highlight
     selectedTextColor: control.palette.highlightedText
     verticalAlignment: TextInput.AlignVCenter

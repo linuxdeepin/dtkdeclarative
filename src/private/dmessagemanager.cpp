@@ -207,6 +207,7 @@ void MessageManager::ensureLayout()
                           "Column {\n"
                           "  anchors {\n"
                           "      bottom: parent.bottom\n"
+                          "      bottomMargin: 10;\n"
                           "      horizontalCenter: parent.horizontalCenter\n"
                           "  }\n"
                           "}\n", QUrl());

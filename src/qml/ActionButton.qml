@@ -29,6 +29,7 @@ T.Button {
     property D.Palette textColor: DS.Style.button.text
 
     palette.windowText: pressed ? D.ColorSelector.textColor : undefined
+    opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
     icon {
