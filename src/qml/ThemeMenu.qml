@@ -30,7 +30,6 @@ Menu {
         id: themeEG
         exclusive: true
         onTriggered: {
-            console.log("theme selected***", action, action.themeType)
             D.ApplicationHelper.setPaletteType(action.themeType)
         }
     }

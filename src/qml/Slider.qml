@@ -105,7 +105,7 @@ T.Slider {
                         strokeStyle: ShapePath.DashLine
                         strokeColor: control.palette.highlight
                         strokeWidth: control.horizontal ? sliderGroove.height : sliderGroove.width
-                        dashOffset: 0
+                        dashOffset: control.dashOffset
                         dashPattern: control.dashPattern
                         startX: control.horizontal ? 0 : sliderGroove.width / 2
                         startY: control.horizontal ? sliderGroove.height / 2 : sliderGroove.height
