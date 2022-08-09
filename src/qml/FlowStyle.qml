@@ -523,14 +523,29 @@ QtObject {
             property int radius: 14
             property D.Palette background: D.Palette {
                 normal: Qt.rgba(247 / 255.0, 247 / 255.0, 247 / 255.0, 0.6)
-                normalDark: Qt.rgba(247 / 255.0, 247 / 255.0, 247 / 255.0, 0.6)
+                normalDark: Qt.rgba(20 / 255.0, 20 / 255.0, 20 / 255.0, 0.6)
             }
 
             property D.Palette dropShadow: D.Palette {
                 normal: Qt.rgba(0, 0, 0, 0.2)
                 normalDark: Qt.rgba(0, 0, 0, 0.2)
             }
+
+            property D.Palette outsideBorder: D.Palette {
+                normal: Qt.rgba(0, 0, 0, 0.05)
+                normalDark: Qt.rgba(0, 0, 0, 0.5)
+            }
+
+            property D.Palette insideBorder: D.Palette {
+                normalDark: Qt.rgba(1, 1, 1, 0.05)
+            }
         }
+    }
+
+    property QtObject toolTip: QtObject {
+        property int verticalPadding: 4
+        property int horizontalPadding: 5
+        property int height: 24
     }
 
     property QtObject alertToolTip: QtObject {

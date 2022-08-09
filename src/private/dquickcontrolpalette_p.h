@@ -383,7 +383,6 @@ private:
     struct PaletteState {
         PaletteState(DQuickControlColorSelector *owner)
             : owner(owner)
-            , controlTheme(DGuiApplicationHelper::LightType)
             , controlState(DQMLGlobalObject::NormalState)
             , family(DQuickControlPalette::CommonColor)
             , familyIsUserSet(false)
@@ -396,7 +395,11 @@ private:
             , inactived(false)
             , inactivedValueValid(false)
         {
-
+            if (auto appHelper = DGuiApplicationHelper::instance()) {
+                controlTheme = appHelper->themeType();
+            } else {
+                controlTheme = DGuiApplicationHelper::LightType;
+            }
         }
 
         DQuickControlColorSelector *owner = nullptr;

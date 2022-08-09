@@ -30,7 +30,8 @@ Control {
 
     property D.Palette backgroundColor: DS.Style.floatingMessage.panel.background
     property D.Palette dropShadowColor: DS.Style.floatingMessage.panel.dropShadow
-    property D.Palette borderColor: DS.Style.control.border
+    property D.Palette outsideBorderColor: DS.Style.floatingMessage.panel.outsideBorder
+    property D.Palette insideBorderColor: DS.Style.floatingMessage.panel.insideBorder
     // corner radius
     property int radius: DS.Style.floatingMessage.panel.radius
     // blur radius
@@ -53,22 +54,36 @@ Control {
         BoxShadow {
             anchors.fill: backgroundRect
             shadowOffsetX: 0
-            shadowOffsetY: 4
+            shadowOffsetY: 6
             shadowColor: control.D.ColorSelector.dropShadowColor
             shadowBlur: 20
             cornerRadius: backgroundRect.radius
             spread: 0
             hollow: true
         }
+
         Rectangle {
             id: backgroundRect
             anchors.fill: parent
             radius: control.radius
             color: control.D.ColorSelector.backgroundColor
-            border {
-                color: control.D.ColorSelector.borderColor
-                width: DS.Style.control.borderWidth
+        }
+
+        Loader {
+            anchors.fill: backgroundRect
+            active: control.D.ColorSelector.controlTheme === D.ApplicationHelper.DarkType
+            sourceComponent: InsideBoxBorder {
+                radius: backgroundRect.radius
+                color: control.D.ColorSelector.insideBorderColor
+                borderWidth: DS.Style.control.borderWidth
             }
+        }
+
+        OutsideBoxBorder {
+            anchors.fill: backgroundRect
+            radius: backgroundRect.radius
+            color: control.D.ColorSelector.outsideBorderColor
+            borderWidth: DS.Style.control.borderWidth
         }
     }
 }
