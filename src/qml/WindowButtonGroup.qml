@@ -90,10 +90,10 @@ RowLayout {
 
         readonly property size maxSize: Qt.size(Window.window.maximumWidth, Window.window.maximumHeight)
         readonly property size minSize: Qt.size(Window.window.minimumWidth, Window.window.minimumHeight)
-        visible: (hasWindowFlag && !__forceHind &&
-                    (__dwindow.motifFunctions & D.WindowManagerHelper.FUNC_RESIZE) &&
-                    maxSize != minSize)
-
+        active: (hasWindowFlag && !__forceHind &&
+                 (__dwindow.motifFunctions & D.WindowManagerHelper.FUNC_RESIZE) &&
+                 maxSize != minSize)
+        visible: active
         enabled: ((__dwindow.motifFunctions & D.WindowManagerHelper.FUNC_MAXIMIZE) &&
                     (__dwindow.motifFunctions & D.WindowManagerHelper.FUNC_RESIZE))
 
