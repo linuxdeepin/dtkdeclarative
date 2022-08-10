@@ -583,8 +583,14 @@ void DOpenGLBlurEffectNode::initBlurSahder()
 void DOpenGLBlurEffectNode::applyDaulBlur(QOpenGLFramebufferObject *targetFBO, GLuint sourceTexture, QOpenGLShaderProgram *shader
                                   , const QSGRenderNode::RenderState *state, int matrixUniform, int scale)
 {
-    targetFBO->bind();
-    QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
+    auto context = QOpenGLContext::currentContext();
+    Q_ASSERT(context);
+    GLuint prevFbo = 0;
+    context->functions()->glGetIntegerv(GL_FRAMEBUFFER_BINDING, (GLint *)&prevFbo);
+
+    if (prevFbo != targetFBO->handle())
+        targetFBO->bind();
+    QOpenGLFunctions *f = context->functions();
     shader->bind();
 
     // TODO(xiaoyaobing): Shader pixel offset value during hardware rendering, because software rendering
@@ -623,7 +629,9 @@ void DOpenGLBlurEffectNode::applyDaulBlur(QOpenGLFramebufferObject *targetFBO, G
     f->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glDisable(GL_TEXTURE_2D);
     shader->release();
-    targetFBO->release();
+
+    if (prevFbo != targetFBO->handle())
+        context->functions()->glBindFramebuffer(GL_FRAMEBUFFER, prevFbo);
 }
 
 void DOpenGLBlurEffectNode::applyNoise(GLuint sourceTexture, const QSGRenderNode::RenderState *state)
