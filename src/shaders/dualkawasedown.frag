@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+//
+// SPDX-License-Identifier: LGPL-3.0-or-later
+
 varying highp vec2 qt_TexCoord;
 varying highp vec2 pixelOffset1;
 varying highp vec2 pixelOffset2;
