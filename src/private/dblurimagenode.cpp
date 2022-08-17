@@ -1,23 +1,7 @@
-/*
- * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
- *
- * Author:     JiDe Zhang <zhangjide@deepin.org>
- *
- * Maintainer: JiDe Zhang <zhangjide@deepin.org>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+//
+// SPDX-License-Identifier: LGPL-3.0-or-later
+
 #include "dblurimagenode_p.h"
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
@@ -583,8 +567,14 @@ void DOpenGLBlurEffectNode::initBlurSahder()
 void DOpenGLBlurEffectNode::applyDaulBlur(QOpenGLFramebufferObject *targetFBO, GLuint sourceTexture, QOpenGLShaderProgram *shader
                                   , const QSGRenderNode::RenderState *state, int matrixUniform, int scale)
 {
-    targetFBO->bind();
-    QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
+    auto context = QOpenGLContext::currentContext();
+    Q_ASSERT(context);
+    GLuint prevFbo = 0;
+    context->functions()->glGetIntegerv(GL_FRAMEBUFFER_BINDING, (GLint *)&prevFbo);
+
+    if (prevFbo != targetFBO->handle())
+        targetFBO->bind();
+    QOpenGLFunctions *f = context->functions();
     shader->bind();
 
     // TODO(xiaoyaobing): Shader pixel offset value during hardware rendering, because software rendering
@@ -623,7 +613,9 @@ void DOpenGLBlurEffectNode::applyDaulBlur(QOpenGLFramebufferObject *targetFBO, G
     f->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glDisable(GL_TEXTURE_2D);
     shader->release();
-    targetFBO->release();
+
+    if (prevFbo != targetFBO->handle())
+        context->functions()->glBindFramebuffer(GL_FRAMEBUFFER, prevFbo);
 }
 
 void DOpenGLBlurEffectNode::applyNoise(GLuint sourceTexture, const QSGRenderNode::RenderState *state)

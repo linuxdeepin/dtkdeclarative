@@ -1,0 +1,59 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: dtkdeclarative
+Upstream-Contact: UnionTech Software Technology Co., Ltd. <>
+Source: https://github.com/linuxdeepin/dtkdeclarative
+
+# icon files
+Files: *.dci *.png *.svg *.webp
+Copyright: UnionTech Software Technology Co., Ltd.
+License: LGPL-3.0-or-later
+
+#interface
+Files: src/D*
+Copyright: UnionTech Software Technology Co., Ltd.
+License: LGPL-3.0-or-later
+
+# debian
+Files: *debian/*
+Copyright: UnionTech Software Technology Co., Ltd.
+License: GPL-3.0-or-later
+
+# qt
+Files: *.pro *qmldir *.qrc *.pri
+Copyright: None
+License: CC0-1.0
+
+# Arch
+Files: archlinux/*
+Copyright: None
+License: CC0-1.0
+
+# README
+Files: *.md
+Copyright: UnionTech Software Technology Co., Ltd.
+License: CC-BY-4.0
+
+# ci
+Files: .github/*  *.yml *.yaml
+Copyright: None
+License: CC0-1.0
+
+# git
+Files: .gitignore
+Copyright: None
+License: CC0-1.0
+
+# freedesktop
+Files: *.desktop
+Copyright: None
+License: CC0-1.0
+
+# conf
+Files: *.json
+Copyright: None
+License: CC0-1.0
+
+# cmake
+Files: *.cmake *CMakeLists.txt
+Copyright: None
+License: CC0-1.0

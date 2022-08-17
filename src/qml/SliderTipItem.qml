@@ -1,23 +1,6 @@
-/*
- * Copyright (C) 2022 UnionTech Technology Co., Ltd.
- *
- * Author:     xiaoyaobing <xiaoyaobing@uniontech.com>
- *
- * Maintainer: xiaoyaobing <xiaoyaobing@uniontech.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+//
+// SPDX-License-Identifier: LGPL-3.0-or-later
 
 import QtQuick 2.0
 import org.deepin.dtk.impl 1.0 as D
@@ -43,7 +26,7 @@ Control {
         anchors.bottom: horizontal ? (TipsSlider.TickDirection.Front === direction ? parent.bottom : undefined) : undefined
         anchors.right: horizontal ? undefined : (TipsSlider.TickDirection.Front === direction ? parent.right : undefined)
         anchors.left: horizontal ? undefined : (TipsSlider.TickDirection.Back === direction ? parent.left : undefined)
-        width: horizontal ? DS.Style.slider.tick.wWidth : DS.Style.slider.tick.height
+        width: horizontal ? DS.Style.slider.tick.width : DS.Style.slider.tick.height
         height: horizontal ? DS.Style.slider.tick.height : DS.Style.slider.tick.width
         color: control.D.ColorSelector.tickColor
     }
@@ -53,21 +36,25 @@ Control {
         active: text.length !== 0
         anchors {
             top: horizontal ? (TipsSlider.TickDirection.Back === direction ? __rect.bottom : undefined) : undefined
+            topMargin: horizontal && (TipsSlider.TickDirection.Back === direction) ? DS.Style.slider.tick.vPadding : undefined
             bottom: horizontal ? (TipsSlider.TickDirection.Front === direction ? __rect.top : undefined) : undefined
+            bottomMargin: horizontal && (TipsSlider.TickDirection.Front === direction) ? DS.Style.slider.tick.vPadding : undefined
             left: horizontal ? (Text.AlignLeft === textHorizontalAlignment ? __rect.left : undefined)
                              : (TipsSlider.TickDirection.Back === direction ? __rect.right : undefined)
+            leftMargin: !horizontal && TipsSlider.TickDirection.Back === direction ? DS.Style.slider.tick.hPadding : undefined
             right: horizontal ? (Text.AlignRight === textHorizontalAlignment ? __rect.right : undefined)
                               : (TipsSlider.TickDirection.Front === direction ? __rect.left : undefined)
+            rightMargin: !horizontal && TipsSlider.TickDirection.Front === direction ? DS.Style.slider.tick.hPadding : undefined
             horizontalCenter: horizontal && Text.AlignHCenter === textHorizontalAlignment ? __rect.horizontalCenter : undefined
             verticalCenter: horizontal ? undefined : __rect.verticalCenter
         }
 
         sourceComponent: Label {
             text: control.text
-            rightPadding: DS.Style.slider.tick.hPadding
-            leftPadding: DS.Style.slider.tick.hPadding
-            topPadding: DS.Style.slider.tick.vPadding
-            bottomPadding: DS.Style.slider.tick.vPadding
+            rightPadding: highlight ? DS.Style.slider.tick.hPadding : 0
+            leftPadding: rightPadding
+            topPadding: highlight ?  DS.Style.slider.tick.vPadding : 0
+            bottomPadding: topPadding
             horizontalAlignment: textHorizontalAlignment
             verticalAlignment: Text.AlignVCenter
             palette.windowText: control.D.ColorSelector.textColor

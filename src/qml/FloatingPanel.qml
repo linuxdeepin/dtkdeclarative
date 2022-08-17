@@ -1,23 +1,6 @@
-﻿/*
- * Copyright (C) 2022 UnionTech Technology Co., Ltd.
- *
- * Author:     yeshanshan <yeshanshan@uniontech.com>
- *
- * Maintainer: yeshanshan <yeshanshan@uniontech.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+//
+// SPDX-License-Identifier: LGPL-3.0-or-later
 
 import QtQuick 2.11
 import org.deepin.dtk.impl 1.0 as D
@@ -30,7 +13,8 @@ Control {
 
     property D.Palette backgroundColor: DS.Style.floatingMessage.panel.background
     property D.Palette dropShadowColor: DS.Style.floatingMessage.panel.dropShadow
-    property D.Palette borderColor: DS.Style.control.border
+    property D.Palette outsideBorderColor: DS.Style.floatingMessage.panel.outsideBorder
+    property D.Palette insideBorderColor: DS.Style.floatingMessage.panel.insideBorder
     // corner radius
     property int radius: DS.Style.floatingMessage.panel.radius
     // blur radius
@@ -53,22 +37,36 @@ Control {
         BoxShadow {
             anchors.fill: backgroundRect
             shadowOffsetX: 0
-            shadowOffsetY: 4
+            shadowOffsetY: 6
             shadowColor: control.D.ColorSelector.dropShadowColor
             shadowBlur: 20
             cornerRadius: backgroundRect.radius
             spread: 0
             hollow: true
         }
+
         Rectangle {
             id: backgroundRect
             anchors.fill: parent
             radius: control.radius
             color: control.D.ColorSelector.backgroundColor
-            border {
-                color: control.D.ColorSelector.borderColor
-                width: DS.Style.control.borderWidth
+        }
+
+        Loader {
+            anchors.fill: backgroundRect
+            active: control.D.ColorSelector.controlTheme === D.ApplicationHelper.DarkType
+            sourceComponent: InsideBoxBorder {
+                radius: backgroundRect.radius
+                color: control.D.ColorSelector.insideBorderColor
+                borderWidth: DS.Style.control.borderWidth
             }
+        }
+
+        OutsideBoxBorder {
+            anchors.fill: backgroundRect
+            radius: backgroundRect.radius
+            color: control.D.ColorSelector.outsideBorderColor
+            borderWidth: DS.Style.control.borderWidth
         }
     }
 }

@@ -1,23 +1,6 @@
-/*
- * Copyright (C) 2021 ~ 2022 UnionTech Technology Co., Ltd.
- *
- * Author:     JiDe Zhang <zhangjide@deepin.org>
- *
- * Maintainer: JiDe Zhang <zhangjide@deepin.org>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+//
+// SPDX-License-Identifier: LGPL-3.0-or-later
 
 import QtQuick 2.0
 import org.deepin.dtk.impl 1.0 as D
@@ -523,14 +506,29 @@ QtObject {
             property int radius: 14
             property D.Palette background: D.Palette {
                 normal: Qt.rgba(247 / 255.0, 247 / 255.0, 247 / 255.0, 0.6)
-                normalDark: Qt.rgba(247 / 255.0, 247 / 255.0, 247 / 255.0, 0.6)
+                normalDark: Qt.rgba(20 / 255.0, 20 / 255.0, 20 / 255.0, 0.6)
             }
 
             property D.Palette dropShadow: D.Palette {
                 normal: Qt.rgba(0, 0, 0, 0.2)
                 normalDark: Qt.rgba(0, 0, 0, 0.2)
             }
+
+            property D.Palette outsideBorder: D.Palette {
+                normal: Qt.rgba(0, 0, 0, 0.05)
+                normalDark: Qt.rgba(0, 0, 0, 0.5)
+            }
+
+            property D.Palette insideBorder: D.Palette {
+                normalDark: Qt.rgba(1, 1, 1, 0.05)
+            }
         }
+    }
+
+    property QtObject toolTip: QtObject {
+        property int verticalPadding: 4
+        property int horizontalPadding: 5
+        property int height: 24
     }
 
     property QtObject alertToolTip: QtObject {
@@ -567,7 +565,7 @@ QtObject {
 
         property QtObject item: QtObject {
             property int width: 180
-            property int height: 30
+            property int height: 34
             property size iconSize: Qt.size(14, 14)
             property int count: 0
         }
