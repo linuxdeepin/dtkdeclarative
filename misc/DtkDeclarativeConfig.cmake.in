@@ -1,0 +1,6 @@
+set(DTK_QML_APP_PLUGIN_PATH @DTK_QML_APP_PLUGIN_PATH@)
+set(DTKDeclarative_INCLUDE_DIR @CMAKE_INSTALL_FULL_INCLUDEDIR@/libdtk-@CMAKE_PROJECT_VERSION@/DDeclarative)
+find_package(Dtk REQUIRED Core)
+find_package(Dtk REQUIRED Gui)
+set(DtkDeclarative_LIBRARIES dtkdeclarative)
+include_directories("${DTKDeclarative_INCLUDE_DIR}")
