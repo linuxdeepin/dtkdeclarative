@@ -6,7 +6,7 @@ export QT_SELECT = qt5
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
 ifneq (,$(wildcard .git/config))
-	CONFIG_VERSION=
+	CONFIG_VERSION= $(shell git describe --tags)
 else
 VERSION = $(DEB_VERSION_UPSTREAM)
 _PACK_VER = $(shell echo $(VERSION) | awk -F'[+_~-]' '{print $$1}')
@@ -19,7 +19,7 @@ endif
 endif
 
 %:
-	dh $@ --buildsystem=qmake --parallel --with qmlcdeps
+	dh $@ --buildsystem=cmake --parallel --with qmlcdeps
 
 override_dh_auto_configure:
-	dh_auto_configure -- LIB_INSTALL_DIR=/usr/lib/$(DEB_HOST_MULTIARCH) VERSION=$(CONFIG_VERSION) DTK_QML_APP_PLUGIN_PATH=/usr/lib/$(DEB_HOST_MULTIARCH)/dtkdeclarative/qml-app
+	dh_auto_configure -- LIB_INSTALL_DIR=/usr/lib/$(DEB_HOST_MULTIARCH) -DBUILD_DOCS=OFF VERSION=$(CONFIG_VERSION) DTK_QML_APP_PLUGIN_PATH=/usr/lib/$(DEB_HOST_MULTIARCH)/dtkdeclarative/qml-app

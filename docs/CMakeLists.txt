@@ -2,11 +2,11 @@ cmake_minimum_required (VERSION 3.10)
 
 find_package (Doxygen REQUIRED)
 
-set (QCH_INSTALL_DESTINATION ${CMAKE_INSTALLL_PREFIX}/share/DDE/dtk CACHE STRING "QCH install location")
+set (QCH_INSTALL_DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/qt5/doc CACHE STRING "QCH install location")
 
-set (DOXYGEN_GENERATE_HTML "NO" CACHE STRING "Doxygen HTML output")
-set (DOXYGEN_GENERATE_XML "NO" CACHE STRING "Doxygen XML output")
-set (DOXYGEN_GENERATE_QHP "YES" CACHE STRING "Doxygen QHP output")
+set (DOXYGEN_GENERATE_HTML YES CACHE STRING "Doxygen HTML output")
+set (DOXYGEN_GENERATE_XML YES CACHE STRING "Doxygen XML output")
+set (DOXYGEN_GENERATE_QHP YES CACHE STRING "Doxygen QHP output")
 set (DOXYGEN_FILE_PATTERNS *.cpp *.h *.zh_CN.md *.zh_CN.dox CACHE STRING "Doxygen File Patterns")
 set (DOXYGEN_PROJECT_NUMBER ${CMAKE_PROJECT_VERSION} CACHE STRING "") # Should be the same as this project is using.
 set (DOXYGEN_EXTRACT_STATIC YES)

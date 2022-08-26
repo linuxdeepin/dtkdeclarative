@@ -42,6 +42,7 @@ int main(int argc, char **argv)
     QQuickStyle::setStyle("Chameleon");
 #else
     QQuickStyle::setStyle(CHAMELEON_PATH"/Chameleon");
+    qInfo() << "QQuickStyle:" << CHAMELEON_PATH"/Chameleon";
 #endif
     QQmlApplicationEngine engine;
 

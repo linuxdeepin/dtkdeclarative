@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Deepin Packages Builder <packages@deepin.com>
 Build-Depends:
  debhelper (>= 9),
+ cmake,
  qtdeclarative5-dev,
  qtbase5-dev-tools,
  qtquickcontrols2-5-dev,

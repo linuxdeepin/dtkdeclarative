@@ -1,0 +1,37 @@
+set(JS_FILES
+    ${CMAKE_CURRENT_LIST_DIR}/PixelMetric.js
+)
+
+set(QML_FILES
+    ${CMAKE_CURRENT_LIST_DIR}/ScrollBar.qml
+    ${CMAKE_CURRENT_LIST_DIR}/BusyIndicator.qml
+    ${CMAKE_CURRENT_LIST_DIR}/CheckBox.qml
+    ${CMAKE_CURRENT_LIST_DIR}/RadioButton.qml
+    ${CMAKE_CURRENT_LIST_DIR}/Switch.qml
+    ${CMAKE_CURRENT_LIST_DIR}/Slider.qml
+    ${CMAKE_CURRENT_LIST_DIR}/ToolTip.qml
+    ${CMAKE_CURRENT_LIST_DIR}/ProgressBar.qml
+    ${CMAKE_CURRENT_LIST_DIR}/PageIndicator.qml
+    ${CMAKE_CURRENT_LIST_DIR}/ItemDelegate.qml
+    ${CMAKE_CURRENT_LIST_DIR}/StackView.qml
+    ${CMAKE_CURRENT_LIST_DIR}/ComboBox.qml
+    ${CMAKE_CURRENT_LIST_DIR}/RoundButton.qml
+    ${CMAKE_CURRENT_LIST_DIR}/GroupBox.qml
+    ${CMAKE_CURRENT_LIST_DIR}/Frame.qml
+    ${CMAKE_CURRENT_LIST_DIR}/MenuSeparator.qml
+    ${CMAKE_CURRENT_LIST_DIR}/MenuItem.qml
+    ${CMAKE_CURRENT_LIST_DIR}/Menu.qml
+    ${CMAKE_CURRENT_LIST_DIR}/ApplicationWindow.qml
+    ${CMAKE_CURRENT_LIST_DIR}/Button.qml
+    ${CMAKE_CURRENT_LIST_DIR}/CheckDelegate.qml
+    ${CMAKE_CURRENT_LIST_DIR}/DelayButton.qml
+    ${CMAKE_CURRENT_LIST_DIR}/Dial.qml
+    ${CMAKE_CURRENT_LIST_DIR}/DialogButtonBox.qml
+    ${CMAKE_CURRENT_LIST_DIR}/TextField.qml
+    ${CMAKE_CURRENT_LIST_DIR}/TextArea.qml
+    ${CMAKE_CURRENT_LIST_DIR}/SpinBox.qml
+    ${CMAKE_CURRENT_LIST_DIR}/Control.qml
+    ${CMAKE_CURRENT_LIST_DIR}/ScrollIndicator.qml
+    ${CMAKE_CURRENT_LIST_DIR}/Popup.qml
+    ${CMAKE_CURRENT_LIST_DIR}/Pane.qml
+)
