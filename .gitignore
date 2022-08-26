@@ -15,9 +15,8 @@ object_script.*.Debug
 *_plugin_import.cpp
 /.qmake.cache
 /.qmake.stash
-*.pro.user
+*.user
 *.pro.user.*
-*.qbs.user
 *.qbs.user.*
 *.moc
 moc_*.cpp
@@ -48,3 +47,6 @@ src/DtkDeclaratives
 src/dtkdeclarative_config.h
 src/qt_lib_dtkdeclarative.pri
 chameleon/imports/org
+
+*/.vscode/*
+build

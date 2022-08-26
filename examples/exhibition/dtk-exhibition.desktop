@@ -2,4 +2,5 @@
 Name=DTK Exhibition
 Exec=dtk-exhibition
 Type=Application
+Icon=example
 Categories=DTK;Development;
