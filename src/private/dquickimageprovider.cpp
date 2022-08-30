@@ -231,8 +231,15 @@ QImage DQuickDciIconProvider::requestImage(const QString &id, QSize *size, const
 
     // If the target mode icon didn't found, we should find the normal mode icon
     // and decorate to the target mode.
-    // This boundingSize always contains devicePixelRatio.
-    int boundingSize = qRound(qMax(requestedSize.width(), requestedSize.height()) / devicePixelRatio);
+
+    // When the application uses the AA_UseHighDpiPixmaps attribute,
+    // the boundingSize should typically divide by devicePixelRatio,
+    // see Qt::AA_UseHighDpiPixmaps.
+    int boundingSize = qMax(requestedSize.width(), requestedSize.height());
+    if (qApp->testAttribute(Qt::AA_UseHighDpiPixmaps)) {
+        boundingSize = qRound(boundingSize / devicePixelRatio);
+    }
+
     const auto currentTheme = toDciTheme(theme);
     auto currentMode = mode;
     DDciIconMatchResult result = dciIcon.matchIcon(boundingSize, currentTheme, currentMode, DDciIcon::DontFallbackMode);
