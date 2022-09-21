@@ -16,7 +16,7 @@ License: LGPL-3.0-or-later
 # debian
 Files: *debian/*
 Copyright: UnionTech Software Technology Co., Ltd.
-License: GPL-3.0-or-later
+License: LGPL-3.0-or-later
 
 # qt
 Files: *.pro *qmldir *.qrc *.pri
@@ -49,11 +49,21 @@ Copyright: None
 License: CC0-1.0
 
 # conf
-Files: *.json
+Files: *.json *.qdocconf *.qdocinc
 Copyright: None
 License: CC0-1.0
 
 # cmake
 Files: *.cmake *CMakeLists.txt
+Copyright: None
+License: CC0-1.0
+
+# docs
+Files: doc/*
+Copyright: None
+License: CC0-1.0
+
+#image
+Files: *.jpg *.png *.gif
 Copyright: None
 License: CC0-1.0
