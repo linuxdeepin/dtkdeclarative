@@ -19,7 +19,7 @@ endif
 endif
 
 %:
-	dh $@ --buildsystem=cmake --parallel --with qmlcdeps
+	dh $@ --parallel
 
 override_dh_auto_configure:
-	dh_auto_configure -- LIB_INSTALL_DIR=/usr/lib/$(DEB_HOST_MULTIARCH) -DBUILD_DOCS=OFF VERSION=$(CONFIG_VERSION) DTK_QML_APP_PLUGIN_PATH=/usr/lib/$(DEB_HOST_MULTIARCH)/dtkdeclarative/qml-app
+	dh_auto_configure -- -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=ON -DBUILD_VERSION=$(BUILD_VER) -DVERSION=$(CONFIG_VERSION)

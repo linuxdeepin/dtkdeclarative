@@ -13,7 +13,10 @@ Build-Depends:
  qtdeclarative5-private-dev,
  qtbase5-private-dev,
  pkg-kde-tools,
- libgtest-dev
+ libgtest-dev,
+ doxygen,
+ qttools5-dev-tools,
+ qttools5-dev,
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org
 
@@ -40,7 +43,12 @@ Description: Deepin Tool Kit Gui Devel library
  Dtkdeclarative is base library of Deepin Qt/QtQuick applications.
  .
  This package contains the header files and shared libraries of DtkDeclarative
- 
+
+Package: libdtkdeclarative-doc
+Architecture: any
+Description: Deepin Tool Kit Gui Devel library (Document)
+ Dtkdeclarative is base library of Deepin Qt/QtQuick applications.
+
 Package: dtk-exhibition
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},

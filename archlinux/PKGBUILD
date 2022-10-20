@@ -7,7 +7,7 @@ arch=('x86_64' 'aarch64')
 url="https://github.com/linuxdeepin/dtkdeclarative"
 license=('LGPL3')
 depends=('dtkgui-git' 'qt5-declarative' 'qt5-quickcontrols2')
-makedepends=('git' 'qt5-tools' 'dtkcommon-git' 'dtkcore-git' 'dtkgui-git' 'qt5-declarative' 'qt5-quickcontrols2' 'gtest' 'gmock')
+makedepends=('git' 'qt5-tools' 'dtkcommon-git' 'dtkcore-git' 'dtkgui-git' 'qt5-declarative' 'qt5-quickcontrols2' 'gtest' 'gmock' 'cmake'  'ninja' 'doxygen')
 conflicts=('dtkdeclarative')
 provides=('dtkdeclarative')
 groups=('deepin-git')
@@ -20,11 +20,17 @@ prepare() {
 
 build() {
   cd $deepin_source_name
-  qmake-qt5 PREFIX=/usr DTK_VERSION=$pkgver LIB_INSTALL_DIR=/usr/lib
-  make
+  cmake -GNinja \
+      -DMKSPECS_INSTALL_DIR=/usr/lib/qt/mkspecs/modules/\
+      -DBUILD_DOCS=ON \
+      -DBUILD_EXAMPLES=OFF \
+      -DQCH_INSTALL_DESTINATION=/usr/share/doc/qt \
+      -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release
 }
 
 package() {
   cd $deepin_source_name
-  make INSTALL_ROOT="$pkgdir" install
+  DESTDIR="$pkgdir" ninja install
 }
