@@ -7,8 +7,7 @@ find_package(DtkGui REQUIRED)
 qt5_add_resources(QRCS ./assets.qrc ./qml.qrc)
 
 add_executable(${BIN_NAME} 
-    ./main.cpp 
-    #./qml.qrc
+    main.cpp 
     ${QRCS}
 )
 
@@ -27,5 +26,5 @@ target_link_libraries(${BIN_NAME} PUBLIC
     dtkdeclarative
 )
 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BIN_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
-install(FILES ${CMAKE_CURRENT_LIST_DIR}/dtk-exhibition.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/applications")
+install(TARGETS ${BIN_NAME} DESTINATION "${CMAKE_INSTALL_BINDIR}")
+install(FILES ${CMAKE_CURRENT_LIST_DIR}/dtk-exhibition.desktop DESTINATION "${CMAKE_INSTALL_DATADIR}/applications")

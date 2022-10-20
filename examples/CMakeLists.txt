@@ -8,7 +8,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CHAMELEON_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../chameleon/imports")
 #set(CHAMELEON_PATH "/tmp/chameleon-qml/imports")
 add_definitions(-DCHAMELEON_PATH=\"${CHAMELEON_PATH}\")
-message("CHAMELEON_PATH : ${CHAMELEON_PATH}")
+#message("CHAMELEON_PATH : ${CHAMELEON_PATH}")
 # 打开 Qt DEPRECATED 警告
 add_definitions(-DQT_DEPRECATED_WARNINGS)
 

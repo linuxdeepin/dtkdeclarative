@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.21)
-
 set(LIB_NAME dtkdeclarative)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -9,7 +7,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-include(GNUInstallDirs)
+#include(GNUInstallDirs)
 if (${CMAKE_INSTALL_LIBDIR} STREQUAL "lib")
     message("redirector from [${CMAKE_INSTALL_LIBDIR}] to [${CMAKE_CURRENT_BINARY_DIR}/lib]")
     set(CMAKE_INSTALL_LIBDIR ${CMAKE_CURRENT_BINARY_DIR}/lib)
@@ -17,8 +15,8 @@ endif()
 
 set(LIB_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR} CACHE STRING "lib install path")
 set(DTK_QML_APP_PLUGIN_PATH "${LIB_INSTALL_DIR}/${LIB_NAME}/qml-app" CACHE STRING "dtk qml app plugin path")
-message("lib install dir :${LIB_INSTALL_DIR}")
-message("dtk qml app plugin path :${DTK_QML_APP_PLUGIN_PATH}")
+#message("lib install dir :${LIB_INSTALL_DIR}")
+#message("dtk qml app plugin path :${DTK_QML_APP_PLUGIN_PATH}")
 add_definitions(-DDTK_QML_APP_PLUGIN_PATH=\"${DTK_QML_APP_PLUGIN_PATH}\")
 
 # 增加安全编译参数
