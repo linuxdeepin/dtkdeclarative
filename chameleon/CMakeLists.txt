@@ -31,6 +31,10 @@ add_library(${pluginName} SHARED
 
 include_directories(../src)
 
+if(USE_QQuickStylePluginPrivate)
+  include_directories(${Qt5QuickControls2_PRIVATE_INCLUDE_DIRS})
+endif()
+
 target_link_libraries(${pluginName} PUBLIC
     Qt5::Qml
     Qt5::Quick
