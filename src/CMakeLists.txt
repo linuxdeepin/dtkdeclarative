@@ -30,9 +30,29 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips64")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -ftree-vectorize -march=loongson3a -mhard-float -mno-micromips -mno-mips16 -flax-vector-conversions -mloongson-ext2 -mloongson-mmi")
 endif()
 
-find_package(Qt5 REQUIRED COMPONENTS Core Quick QuickCompiler DBus)
+find_package(Qt5 REQUIRED COMPONENTS Core Quick QuickCompiler DBus QuickControls2)
 find_package(DtkCore REQUIRED)
 find_package(DtkGui REQUIRED)
+if(USE_QQuickStylePlugin)
+  set(include_DIRS 
+    ${Qt5Core_INCLUDE_DIRS}
+    ${Qt5Quick_INCLUDE_DIRS}
+    ${Qt5DBus_INCLUDE_DIRS}
+    ${Qt5Quick_PRIVATE_INCLUDE_DIRS}
+    ${DtkCore_INCLUDE_DIRS}
+    ${DtkGui_INCLUDE_DIRS}
+  )
+else()
+  set(include_DIRS 
+    ${Qt5Core_INCLUDE_DIRS}
+    ${Qt5Quick_INCLUDE_DIRS}
+    ${Qt5DBus_INCLUDE_DIRS}
+    ${Qt5Quick_PRIVATE_INCLUDE_DIRS}
+    ${Qt5QuickControls2_PRIVATE_INCLUDE_DIRS}
+    ${DtkCore_INCLUDE_DIRS}
+    ${DtkGui_INCLUDE_DIRS}
+  )
+endif()
 
 file(GLOB_RECURSE HEADERS "./*.h")
 file(GLOB_RECURSE SRCS   "./*.cpp")
@@ -56,12 +76,7 @@ set_target_properties(${LIB_NAME} PROPERTIES
 )
 
 target_include_directories( ${LIB_NAME} PUBLIC
-    ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Quick_INCLUDE_DIRS}
-    ${Qt5DBus_INCLUDE_DIRS}
-    ${Qt5Quick_PRIVATE_INCLUDE_DIRS}
-    ${DtkCore_INCLUDE_DIRS}
-    ${DtkGui_INCLUDE_DIRS}
+  ${include_DIRS}
 )
 
 target_link_libraries(${LIB_NAME} PRIVATE
