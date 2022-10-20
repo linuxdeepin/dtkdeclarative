@@ -23,6 +23,27 @@ if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX /usr)
 endif ()
 
+set (USE_QQuickStylePlugin OFF)
+find_package(Qt5QuickControls2)
+try_compile(QQuickStylePluginPrivateTest
+              ${CMAKE_CURRENT_BINARY_DIR}/try_compile
+            SOURCES
+              ${CMAKE_CURRENT_SOURCE_DIR}/try_compile/try_compile.cpp
+            LINK_LIBRARIES
+              Qt5::QuickControls2
+            CMAKE_FLAGS
+              "-DINCLUDE_DIRECTORIES=${Qt5QuickControls2_PRIVATE_INCLUDE_DIRS}"
+            OUTPUT_VARIABLE
+              result
+)
+if(QQuickStylePluginPrivateTest)
+  message("=======================================================")
+  message("    You have Qt5QuickControls2_PRIVATE_INCLUDE_DIRS")
+  message("=======================================================")
+  add_definitions(-DUSE_QQuickStylePlugin)
+  set (USE_QQuickStylePlugin ON)
+endif()
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wall -Wextra")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--as-needed")
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
