@@ -33,7 +33,7 @@ endif()
 find_package(Qt5 REQUIRED COMPONENTS Core Quick QuickCompiler DBus QuickControls2)
 find_package(DtkCore REQUIRED)
 find_package(DtkGui REQUIRED)
-if(USE_QQuickStylePlugin)
+if(USE_QQuickStylePluginPrivate)
   set(include_DIRS 
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Quick_INCLUDE_DIRS}
