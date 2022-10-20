@@ -51,3 +51,6 @@ chameleon/imports/org
 
 */.vscode/*
 build
+
+#clangd
+.cache
