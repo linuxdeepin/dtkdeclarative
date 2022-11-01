@@ -30,7 +30,10 @@ Column {
                 MenuItem { text: qsTr("打开") }
                 MenuItem { text: qsTr("在新窗口打开") }
                 MenuItem { text: qsTr("在新标签中打开") }
-                MenuItem { text: qsTr("以管理员身份打开") }
+                MenuItem {
+                    text: qsTr("以管理员身份打开")
+                    enabled : false
+                }
                 MenuSeparator {}
                 MenuItem { text: qsTr("复制") }
                 MenuSeparator {}
