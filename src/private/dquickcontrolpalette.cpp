@@ -403,6 +403,7 @@ void DQuickControlColorSelector::setControl(QQuickItem *newControl)
             connect(m_control, SIGNAL(pressedChanged()), this, SLOT(updateControlState()));
         }
         connect(m_control, &QQuickItem::enabledChanged, this, &DQuickControlColorSelector::updateControlState);
+        connect(m_control, &QQuickItem::visibleChanged, this, &DQuickControlColorSelector::updateControlState);
         connect(m_control, &QQuickItem::windowChanged, this, &DQuickControlColorSelector::updateControlWindow);
         updateControlWindow();
 
