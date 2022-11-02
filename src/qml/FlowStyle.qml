@@ -783,6 +783,7 @@ QtObject {
     property QtObject titleBar: QtObject {
         property int height: 50
         property int iconSize: 32
+        property int leftMargin: 10
     }
 
     // Other

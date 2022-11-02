@@ -107,6 +107,7 @@ Control {
             Layout.alignment: Qt.AlignHCenter
             Layout.fillHeight: true
             Layout.fillWidth: true
+            Layout.leftMargin: DS.Style.titleBar.leftMargin
 
             D.DciIcon {
                 id: iconLabel
