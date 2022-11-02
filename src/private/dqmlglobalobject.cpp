@@ -22,6 +22,8 @@
 #ifdef Q_OS_UNIX
 #include <unistd.h>
 #include <pwd.h>
+#include <DStandardPaths>
+#include <DPathBuf>
 #endif
 
 DGUI_USE_NAMESPACE
@@ -455,6 +457,24 @@ void DQMLGlobalObject::sendSystemMessage(const QString &summary, const QString &
 void DQMLGlobalObject::setPopupMode(const PopupMode mode)
 {
     DPopupWindowHandle::setPopupMode(mode);
+}
+
+bool DQMLGlobalObject::loadTranslator()
+{
+    DCORE_USE_NAMESPACE;
+
+    QList<QString> translateDirs;
+    const QString dtkdeclarativeTranslationPath(DDECLARATIVE_TRANSLATIONS_DIR);
+    //("/home/user/.local/share", "/usr/local/share", "/usr/share")
+    auto dataDirs = DStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
+    for (const auto &path : dataDirs) {
+        DPathBuf DPathBuf(path);
+        translateDirs << (DPathBuf / dtkdeclarativeTranslationPath).toString();
+    }
+#ifdef DTK_STATIC_TRANSLATION
+    translateDirs << QString(":/dtk/translations");
+#endif
+    return DGuiApplicationHelper::loadTranslator("dtkdeclarative", translateDirs, QList<QLocale>() << QLocale::system());
 }
 
 DQUICK_END_NAMESPACE

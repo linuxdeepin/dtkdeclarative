@@ -12,6 +12,9 @@ unix:LIBS += \
 # 指定moc文件生成目录和src一样
 MOC_DIR=$$OUT_PWD/../src
 
+DMODULE_NAME=ddeclarative
+load(dtk_translation)
+
 include($$PWD/../src/src.pri)
 include($$PWD/../src/private/private.pri)
 
