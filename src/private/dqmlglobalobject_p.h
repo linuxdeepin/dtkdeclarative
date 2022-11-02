@@ -188,6 +188,7 @@ public:
                                        const QVariantMap hints = QVariantMap(), const int timeout = 3000, const uint replaceId = 0);
 
     static void setPopupMode(const PopupMode mode);
+    static bool loadTranslator();
 
 Q_SIGNALS:
     void hasBlurWindowChanged();

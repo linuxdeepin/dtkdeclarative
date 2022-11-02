@@ -6,6 +6,6 @@ import QtQuick 2.11
 
 Action {
     id: quitAction
-    text: qsTr("Quit")
+    text: qsTr("Exit")
     onTriggered: Qt.quit()
 }

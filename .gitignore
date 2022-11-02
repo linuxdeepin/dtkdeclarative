@@ -28,6 +28,7 @@ ui_*.h
 *.jsc
 Makefile*
 *build-*
+src/translations/*.qm
 
 # Qt unit tests
 target_wrapper.*

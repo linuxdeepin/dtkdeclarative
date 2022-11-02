@@ -355,6 +355,7 @@ void QmlpluginPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
     engine->addImageProvider("dtk.dci.icon", new DQuickDciIconProvider);
     engine->addImageProvider("dtk.shadow", new DQuickShadowProvider);
     QQmlExtensionPlugin::initializeEngine(engine, uri);
+    DQMLGlobalObject::loadTranslator();
 }
 
 DQUICK_END_NAMESPACE
