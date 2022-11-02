@@ -63,6 +63,8 @@ Control {
             spacing: 0
             Layout.alignment: Qt.AlignHCenter
             Layout.fillHeight: true
+            Layout.leftMargin: DS.Style.titleBar.leftMargin
+
             D.DciIcon {
                 id: iconLabel
                 visible: name !== ""
