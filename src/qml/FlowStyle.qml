@@ -272,9 +272,10 @@ QtObject {
         property D.Palette background: D.Palette {
             normal: "transparent"
             normalDark: "transparent"
-            hovered: Qt.rgba(0, 0, 0, 0.29)
-            hoveredDark: Qt.rgba(0, 0, 0, 0.29)
-            pressed: Qt.rgba(0, 0, 0, 0.29)
+            hovered: Qt.rgba(0, 0, 0, 0.10)
+            hoveredDark: Qt.rgba(1, 1, 1, 0.10)
+            pressed: Qt.rgba(0, 0, 0, 0.15)
+            pressedDark: Qt.rgba(1, 1, 1, 0.15)
         }
     }
 
