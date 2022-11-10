@@ -9,20 +9,20 @@ import org.deepin.dtk.style 1.0 as DS
 Control {
     id: control
 
-    padding: DS.Style.floatingMessage.panel.radius / 2
+    padding: DS.Style.floatingPanel.radius / 2
 
-    property D.Palette backgroundColor: DS.Style.floatingMessage.panel.background
-    property D.Palette dropShadowColor: DS.Style.floatingMessage.panel.dropShadow
-    property D.Palette outsideBorderColor: DS.Style.floatingMessage.panel.outsideBorder
-    property D.Palette insideBorderColor: DS.Style.floatingMessage.panel.insideBorder
+    property D.Palette backgroundColor: DS.Style.floatingPanel.background
+    property D.Palette dropShadowColor: DS.Style.floatingPanel.dropShadow
+    property D.Palette outsideBorderColor: DS.Style.floatingPanel.outsideBorder
+    property D.Palette insideBorderColor: DS.Style.floatingPanel.insideBorder
     // corner radius
-    property int radius: DS.Style.floatingMessage.panel.radius
+    property int radius: DS.Style.floatingPanel.radius
     // blur radius
-    property int blurRadius: DS.Style.floatingMessage.panel.radius
+    property int blurRadius: DS.Style.floatingPanel.radius
 
     background: D.InWindowBlur {
-        implicitWidth: DS.Style.floatingMessage.panel.width
-        implicitHeight: DS.Style.floatingMessage.panel.height
+        implicitWidth: DS.Style.floatingPanel.width
+        implicitHeight: DS.Style.floatingPanel.height
         radius: blurRadius
         offscreen: true
 
