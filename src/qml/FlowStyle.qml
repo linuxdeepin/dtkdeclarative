@@ -500,29 +500,29 @@ QtObject {
         property int maximumWidth: 450
         property int minimumHeight: 40
         property int closeButtonSize: 22
+    }
 
-        property QtObject panel: QtObject {
-            property int width: 180
-            property int height: 40
-            property int radius: 14
-            property D.Palette background: D.Palette {
-                normal: Qt.rgba(247 / 255.0, 247 / 255.0, 247 / 255.0, 0.6)
-                normalDark: Qt.rgba(20 / 255.0, 20 / 255.0, 20 / 255.0, 0.6)
-            }
+    property QtObject floatingPanel: QtObject {
+        property int width: 180
+        property int height: 40
+        property int radius: 14
+        property D.Palette background: D.Palette {
+            normal: Qt.rgba(247 / 255.0, 247 / 255.0, 247 / 255.0, 0.6)
+            normalDark: Qt.rgba(20 / 255.0, 20 / 255.0, 20 / 255.0, 0.6)
+        }
 
-            property D.Palette dropShadow: D.Palette {
-                normal: Qt.rgba(0, 0, 0, 0.2)
-                normalDark: Qt.rgba(0, 0, 0, 0.2)
-            }
+        property D.Palette dropShadow: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.2)
+            normalDark: Qt.rgba(0, 0, 0, 0.2)
+        }
 
-            property D.Palette outsideBorder: D.Palette {
-                normal: Qt.rgba(0, 0, 0, 0.05)
-                normalDark: Qt.rgba(0, 0, 0, 0.5)
-            }
+        property D.Palette outsideBorder: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.05)
+            normalDark: Qt.rgba(0, 0, 0, 0.5)
+        }
 
-            property D.Palette insideBorder: D.Palette {
-                normalDark: Qt.rgba(1, 1, 1, 0.05)
-            }
+        property D.Palette insideBorder: D.Palette {
+            normalDark: Qt.rgba(1, 1, 1, 0.05)
         }
     }
 

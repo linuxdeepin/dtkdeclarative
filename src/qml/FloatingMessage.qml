@@ -29,6 +29,7 @@ D.FloatingMessageContainer {
     duration: 4000
     panel: FloatingPanel {
         id: floatingPanel
+        implicitWidth: DS.Style.control.contentImplicitWidth(floatingPanel)
         leftPadding: 10
         rightPadding: 10
         topPadding: 0
@@ -62,6 +63,7 @@ D.FloatingMessageContainer {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 Layout.alignment: Qt.AlignVCenter
+                Layout.rightMargin: closeButton.active ? 0 : 6 // when no closeButton, contentLoader.rightMargin is 10 + 6, otherwise is 10
                 Layout.maximumWidth: maxContentWidth
                 Layout.preferredHeight: DS.Style.floatingMessage.minimumHeight
                 property int maxContentWidth: DS.Style.floatingMessage.maximumWidth - iconLoader.implicitWidth - closeButton.implicitWidth

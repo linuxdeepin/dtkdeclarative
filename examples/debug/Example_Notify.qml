@@ -34,7 +34,6 @@ Column {
         FloatingMessage {
             id: floatMsg
             contentItem: RowLayout {
-                anchors.fill: parent
                 spacing: 0
 
                 Label {
