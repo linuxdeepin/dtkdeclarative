@@ -37,12 +37,9 @@ T.Menu {
         blurControl: control
     }
 
-    contentItem: FocusScope {
-        implicitHeight: viewLayout.implicitHeight
-
-        ColumnLayout {
+    contentItem: Control {
+        contentItem:  ColumnLayout {
             id: viewLayout
-            anchors.fill: parent
 
             Loader {
                 Layout.fillWidth: true
@@ -64,12 +61,14 @@ T.Menu {
                 {
                     for (var i = 0; i < view.count; ++i) {
                         var item = view.model.get(i)
-                        item.width = view.width
+                        if (item) {
+                            item.width = view.width
+                        }
                     }
                 }
 
                 onCountChanged: refreshContentItemWidth()
-                Component.onCompleted: refreshContentItemWidth()
+                onWidthChanged: refreshContentItemWidth()
             }
             Loader {
                 Layout.fillWidth: true

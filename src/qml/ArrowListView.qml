@@ -14,7 +14,7 @@ FocusScope {
     property int itemHeight:  DS.Style.arrowListView.itemHeight
     property alias view: itemsView
 
-    implicitWidth: DS.Style.arrowListView.width
+    implicitWidth: Math.max(DS.Style.arrowListView.width, contentLayout.implicitWidth)
     implicitHeight: contentLayout.implicitHeight
 
     ColumnLayout {
@@ -34,6 +34,15 @@ FocusScope {
             Layout.fillWidth: true
             Layout.fillHeight: true
             implicitHeight: Math.min(contentHeight, maxVisibleItems * itemHeight)
+            implicitWidth:{
+                var maxWidth = 0
+                for (var i = 0; i < itemsView.count; ++i) {
+                    var item = itemsView.model.get(i)
+                    if (item && item.implicitWidth > maxWidth)
+                        maxWidth = item.implicitWidth
+                }
+                return maxWidth
+            }
             interactive: Window.window ? (contentHeight > Window.window.height || model.count > maxVisibleItems) : false
             ScrollIndicator.vertical: ScrollIndicator { }
         }
