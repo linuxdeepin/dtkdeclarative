@@ -15,6 +15,7 @@ Control {
     property D.Palette dropShadowColor: DS.Style.floatingPanel.dropShadow
     property D.Palette outsideBorderColor: DS.Style.floatingPanel.outsideBorder
     property D.Palette insideBorderColor: DS.Style.floatingPanel.insideBorder
+    property bool enableOffScreen: true
     // corner radius
     property int radius: DS.Style.floatingPanel.radius
     // blur radius
@@ -24,7 +25,7 @@ Control {
         implicitWidth: DS.Style.floatingPanel.width
         implicitHeight: DS.Style.floatingPanel.height
         radius: blurRadius
-        offscreen: true
+        offscreen: enableOffScreen
 
         D.ItemViewport {
             anchors.fill: parent
