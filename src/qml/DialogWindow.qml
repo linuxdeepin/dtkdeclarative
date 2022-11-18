@@ -54,4 +54,11 @@ Window {
             Layout.rightMargin: DS.Style.dialogWindow.contentHMargin
         }
     }
+
+    onClosing: {
+        // close can't reset sub control's hovered state. pms Bug:168405
+        // if we need to close, we can add closing handler to set `close.acceped = true`
+        close.accepted = false
+        Window.window.hide()
+    }
 }
