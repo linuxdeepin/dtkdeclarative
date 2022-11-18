@@ -12,7 +12,8 @@ Build-Depends:
  qtdeclarative5-private-dev,
  qtbase5-private-dev,
  pkg-kde-tools,
- libgtest-dev
+ libgtest-dev,
+ qttools5-dev-tools
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org
 
