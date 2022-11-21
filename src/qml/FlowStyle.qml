@@ -181,43 +181,72 @@ QtObject {
     property QtObject highlightedButton: QtObject {
         property D.Palette background1: D.Palette {
             normal {
-                common: "#00aaff"
+                common: D.DTK.makeColor(D.Color.Highlight).saturation(+22).lightness(+14)
                 crystal: Qt.rgba(0, 0, 0, 0.1)
             }
+            normalDark {
+                common: D.DTK.makeColor(D.Color.Highlight).saturation(+10).lightness(+10)
+            }
             hovered {
-                common: "#24b6ff"
+                common: D.DTK.makeColor(D.Color.Highlight).lightness(+10).saturation(+20).lightness(+10)
                 crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.2)
             }
+            hoveredDark {
+                common: D.DTK.makeColor(D.Color.Highlight).lightness(+10).saturation(+30).lightness(+10)
+            }
             pressed {
-                common: "#005bcb"
+                common: D.DTK.makeColor(D.Color.Highlight).lightness(-10).saturation(+8).lightness(-8)
                 crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.15)
+            }
+            pressedDark {
+                common: D.DTK.makeColor(D.Color.Highlight).saturation(+10).lightness(+2)
+            }
+            disabled {
+                common: D.DTK.makeColor(D.Color.Highlight).saturation(+22).lightness(+14)
+                crystal: Qt.rgba(0, 0, 0, 0.1)
             }
         }
 
         property D.Palette background2: D.Palette {
             normal {
-                common: "#006eff"
+                common: D.DTK.makeColor(D.Color.Highlight).saturation(+26).lightness(-10)
                 crystal: Qt.rgba(0, 0, 0, 0.1)
             }
+            normalDark {
+                common: D.DTK.makeColor(D.Color.Highlight).saturation(+28).lightness(-2)
+            }
             hovered {
-                common: "#3586ff"
+                common: D.DTK.makeColor(D.Color.Highlight).lightness(+10).saturation(+15).lightness(-8)
                 crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.2)
             }
+            hoveredDark {
+                common: D.DTK.makeColor(D.Color.Highlight).lightness(+10).saturation(+30).lightness(-7)
+            }
             pressed {
-                common: "#0067ff"
+                common: D.DTK.makeColor(D.Color.Highlight).lightness(-10).saturation(+15).lightness(-1)
                 crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.15)
             }
-
+            pressedDark {
+                common: D.DTK.makeColor(D.Color.Highlight).saturation(+10).lightness(+2)
+            }
+            disabled {
+                common: D.DTK.makeColor(D.Color.Highlight).saturation(+22).lightness(+14)
+                crystal: Qt.rgba(0, 0, 0, 0.1)
+            }
         }
 
         property D.Palette dropShadow: D.Palette {
-            normal: Qt.rgba(0, 112 / 255.0, 1, 0.3)
+            normal: D.DTK.makeColor(D.Color.Highlight).saturation(+50).lightness(-10).opacity(+30)
+            hovered: D.DTK.makeColor(D.Color.Highlight).saturation(+50).lightness(-10).opacity(+30)
+            pressed: D.DTK.makeColor(D.Color.Highlight).saturation(+50).lightness(-10).opacity(+20)
+            disabled: D.DTK.makeColor(D.Color.Highlight).saturation(+50).lightness(-10).opacity(+30)
         }
 
         property D.Palette innerShadow1: D.Palette {
-            normal: Qt.rgba(0, 50 / 255.0, 1, 0.3)
-            hovered: Qt.rgba(0, 85 / 255.0, 1, 0.5)
-            pressed: Qt.rgba(0, 97 / 255.0, 1, 0.5)
+            normal: D.DTK.makeColor(D.Color.Highlight).lightness(-10)
+            hovered: D.DTK.makeColor(D.Color.Highlight).lightness(+10).lightness(-10)
+            pressed: D.DTK.makeColor(D.Color.Highlight).lightness(+10).lightness(-5)
+            disabled: D.DTK.makeColor(D.Color.Highlight).lightness(-10)
         }
 
         property D.Palette innerShadow2: D.Palette {
