@@ -103,7 +103,7 @@ Column {
                             Layout.preferredWidth: 175
                         }
                         Item {Layout.fillWidth: true}
-                        Button {
+                        RecommandButton {
                             text: "授权"
                             Layout.preferredWidth: 175
                             Layout.alignment: Qt.AlignRight
@@ -186,7 +186,7 @@ Column {
                             Layout.preferredWidth: 175
                         }
                         Item {Layout.fillWidth: true}
-                        Button {
+                        RecommandButton {
                             text: "授权"
                             Layout.preferredWidth: 175
                             Layout.alignment: Qt.AlignRight
