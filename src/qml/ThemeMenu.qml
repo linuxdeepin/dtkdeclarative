@@ -9,6 +9,8 @@ Menu {
     id: control
 
     title: qsTr("Theme")
+
+    readonly property bool __checkedUnknowType : D.ApplicationHelper.paletteType === D.ApplicationHelper.UnknownType
     ActionGroup {
         id: themeEG
         exclusive: true
@@ -20,18 +22,19 @@ Menu {
     Action {
         text: qsTr("Light Theme")
         readonly property int themeType: D.ApplicationHelper.LightType
-        checked: D.DTK.themeType === themeType
+        checked: !__checkedUnknowType && D.DTK.themeType === themeType
         ActionGroup.group: themeEG
     }
     Action {
         text: qsTr("Dark Theme")
         readonly property int themeType: D.ApplicationHelper.DarkType
-        checked: D.DTK.themeType === themeType
+        checked: !__checkedUnknowType && D.DTK.themeType === themeType
         ActionGroup.group: themeEG
     }
     Action {
         text: qsTr("System Theme")
         readonly property int themeType: D.ApplicationHelper.UnknownType
+        checked: __checkedUnknowType
         ActionGroup.group: themeEG
     }
 }
