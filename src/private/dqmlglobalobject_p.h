@@ -196,7 +196,7 @@ Q_SIGNALS:
     void hasNoTitlebarChanged();
     void paletteChanged();
     void inactivePaletteChanged();
-    void themeTypeChanged(DGuiApplicationHelper::ColorType themeType);
+    void themeTypeChanged(DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType themeType);
 
 private:
     D_DECLARE_PRIVATE(DQMLGlobalObject)
