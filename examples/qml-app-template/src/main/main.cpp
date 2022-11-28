@@ -9,10 +9,12 @@ DQUICK_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {
+    DAppLoader appLoader("org.deepin.%{ProjectName}");
 #ifdef PLUGINPATH
-    DAppLoader appLoader(APP_NAME, PLUGINPATH);
-#else
-    DAppLoader appLoader(APP_NAME);
+    appLoader.addPluginPath(PLUGINPATH);
+#endif
+#ifdef APP_PLUGIN_PATH
+    appLoader.addPluginPath(APP_PLUGIN_PATH);
 #endif
     return appLoader.exec(argc, argv);
 }

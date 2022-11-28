@@ -11,6 +11,8 @@
 #include <QQmlApplicationEngine>
 #include <QQmlIncubator>
 
+#include <DPathBuf>
+
 #include <private/qquickitem_p.h>
 #include <private/qquicktransition_p.h>
 
@@ -23,6 +25,7 @@
 #include "private/dapploader_p.h"
 
 DQUICK_BEGIN_NAMESPACE
+DCORE_USE_NAMESPACE
 
 #define APPLICATIONWINDOW_CONTENTDATA "contentData"
 #define DIALOGWINDOW_CONTENTDATA "content"
@@ -131,28 +134,53 @@ void DAppLoaderPrivate::ensureLoadPreload()
 {
     if (preloadInstance)
         return;
-    preloadInstance.reset(qobject_cast<DQmlAppPreloadInterface *>(ensureInstance(preloadQmlPlugin)));
+    preloadInstance.reset(loadInstance<DQmlAppPreloadInterface>());
     if (preloadInstance.isNull())
-        qFatal("Preload plugin for \"%s\" is not found!", qPrintable(appName));
+        qFatal("Preload plugin for \"%s\" is not found!", qPrintable(appid));
 }
 
 void DAppLoaderPrivate::ensureLoadMain()
 {
     if (mainInstance)
         return;
-    mainInstance.reset(qobject_cast<DQmlAppMainWindowInterface *>(ensureInstance(mainQmlPlugin)));
+    mainInstance.reset(loadInstance<DQmlAppMainWindowInterface>());
     if (mainInstance.isNull())
-        qFatal("Main plugin for \"%s\" is not found!", qPrintable(appName));}
+        qFatal("Main plugin for \"%s\" is not found!", qPrintable(appid));
+}
 
-QObject *DAppLoaderPrivate::ensureInstance(const QString &pluginPath)
+template<class T>
+T *DAppLoaderPrivate::loadInstance() const
 {
-    QPluginLoader loader(pluginPath);
-    QObject *instance = loader.instance();
-    if (!instance) {
-        qFatal("Can't load \"%s\", error message: %s", qPrintable(pluginPath), qPrintable(loader.errorString()));
+    for (auto iter = pluginPaths.rbegin(); iter != pluginPaths.rend(); iter++) {
+        const QDir dir(*iter);
+        if (!dir.exists())
+            continue;
+
+        for (auto entry : dir.entryInfoList(QDir::Files | QDir::NoSymLinks)) {
+            const auto path = entry.absoluteFilePath();
+            if (!QLibrary::isLibrary(path))
+                continue;
+
+            QPluginLoader loader(path);
+            const auto &metaData = loader.metaData();
+
+            const QString iid = metaData["IID"].toString();
+            if (iid != qobject_interface_iid<T *>())
+                continue;
+
+            if (appid != metaData["MetaData"]["appid"].toString())
+                continue;
+
+            if (auto instance = qobject_cast<T *>(loader.instance())) {
+                qInfo("Load for %s 's plugin path: %s", qPrintable(appid), qPrintable(path));
+                return instance;
+            }
+        }
     }
 
-    return instance;
+    qWarning() << "Can't load request plugin from those directories:" << pluginPaths;
+
+    return nullptr;
 }
 
 void DAppLoaderPrivate::destoryIncubator(QQmlIncubator *incubator)
@@ -398,26 +426,50 @@ void DAppLoaderPrivate::_q_onComponentProgressChanged()
     appRootItem->setProgress(progress / components.count());
 }
 
+QStringList DAppLoaderPrivate::buildinPluginPaths()
+{
+    QStringList result;
+    // 'DTK_QML_PLUGIN_PATH' directory.
+    const auto dtkPluginPath = qgetenv("DTK_QML_PLUGIN_PATH");
+    if (!dtkPluginPath.isEmpty())
+        result.append(dtkPluginPath);
+
+#ifdef DTK_QML_APP_PLUGIN_SUBPATH
+    const auto ldPath = qgetenv("LD_LIBRARY_PATH");
+    if (!ldPath.isEmpty()) {
+        // fallback to $LD_LIBRARY_PATH/'DTK_QML_APP_PLUGIN_SUBPATH'.
+        for (const auto &i : ldPath.split(':')) {
+            const DPathBuf dir(i);
+            result.append((dir / DTK_QML_APP_PLUGIN_SUBPATH).toString());
+        }
+    }
+#endif
+
+#ifdef DTK_QML_APP_PLUGIN_PATH
+    // dtkdeclarative runtime directory.
+    result.append(DTK_QML_APP_PLUGIN_PATH);
+#endif
+
+    return result;
+}
+
 /*!
  * \~chinese \brief DAppLoader::DAppLoader　用于加载DTk QML应用插件
- * \~chinese \param appName　　应用插件的名字
+ * \~chinese \param appid　　应用插件的名字
  * \~chinese \param appPath　　应用插件的安装目录
  */
-DAppLoader::DAppLoader(const QString &appName, const QString &appPath, QObject *parent)
+DAppLoader::DAppLoader(const QString &appid, const QString &appPath, QObject *parent)
     : QObject (parent)
     , DTK_CORE_NAMESPACE::DObject(*new DAppLoaderPrivate(this))
 {
     D_D(DAppLoader);
-    QString path = appPath;
 
-#ifdef DTK_QML_APP_PLUGIN_PATH
-    if (path.isEmpty()) {
-        path = DTK_QML_APP_PLUGIN_PATH;
-    }
-#endif
-    d->appName = appName;
-    d->mainQmlPlugin = path + "/libdtkqml-" + d->appName + ".so";
-    d->preloadQmlPlugin = path + "/libdtkqml-" + d->appName + "-Preload" + ".so";
+    d->appid = appid;
+
+    const auto &paths = d->buildinPluginPaths();
+    for (auto iter = paths.rbegin(); iter != paths.rend(); iter++)
+        addPluginPath(*iter);
+    addPluginPath(appPath);
 }
 
 DAppLoader::~DAppLoader()
@@ -428,10 +480,30 @@ DAppLoader::~DAppLoader()
     self = nullptr;
 }
 
+void DAppLoader::addPluginPath(const QString &dir)
+{
+    D_D(DAppLoader);
+    if (dir.isEmpty())
+        return;
+    d->pluginPaths.append(dir);
+}
+
+/*!
+ * \~chinese \brief DAppLoader::pluginPaths high priority at the front.
+ */
+QStringList DAppLoader::pluginPaths() const
+{
+    D_DC(DAppLoader);
+    QStringList paths;
+    std::reverse_copy(d->pluginPaths.begin(), d->pluginPaths.end(), std::back_inserter(paths));
+    return paths;
+}
+
 // it will enter the eventloop directly.
 int DAppLoader::exec(int &argc, char **argv)
 {
     D_D(DAppLoader);
+
     d->ensureLoadPreload();
     d->app.reset(d->preloadInstance->creatApplication(argc, argv));
 

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-set(MAINCOMPONENT_LIB_NAME dtkqml-${CMAKE_PROJECT_NAME})
+set(MAINCOMPONENT_LIB_NAME ${CMAKE_PROJECT_NAME}-main)
 
 ###! maincomponent 中可以添加应用的第三方依赖、注册
 ###! 应用的c++和qml类型、进行耗时计算和加载等等。

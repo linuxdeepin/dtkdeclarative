@@ -44,7 +44,6 @@ public:
     DAppLoaderPrivate(DAppLoader *qq);
     void ensureLoadPreload();
     void ensureLoadMain();
-    static QObject *ensureInstance(const QString &pluginPath);
     void destoryIncubator(QQmlIncubator *incubator);
     QQmlContext *creationContext(QQmlComponent *component, QObject *obj);
     bool createObjects(const char *propertyName);
@@ -60,9 +59,10 @@ public:
     void _q_onMainComponentStatusChanged(QQmlComponent::Status status);
     void _q_onComponentProgressChanged();
 
-    QString appName;
-    QString mainQmlPlugin;
-    QString preloadQmlPlugin;
+    static QStringList buildinPluginPaths();
+
+    QString appid;
+    QStringList pluginPaths;
     QQmlApplicationEngine *engine;
     QList<QQmlIncubator *> incubators;
     DQuickAppLoaderItem *appRootItem;
@@ -79,6 +79,8 @@ public:
     QScopedPointer<DQmlAppMainWindowInterface> mainInstance;
     QScopedPointer<QGuiApplication> app;
 private:
+    template<class T> T *loadInstance() const;
+
     D_DECLARE_PUBLIC(DAppLoader)
 };
 

@@ -25,6 +25,8 @@ target_link_libraries(${APP_NAME}
     ${DtkDeclarative_LIBRARIES}
     )
 
+add_definitions(-DAPP_PLUGIN_PATH=\"${DTK_QML_APP_PLUGIN_PATH}\")
+
 set_target_properties(${APP_NAME} PROPERTIES INSTALL_RPATH ${DTK_QML_APP_PLUGIN_PATH})
 install(TARGETS ${APP_NAME} DESTINATION ${APP_BIN_INSTALL_DIR})
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../${CMAKE_PROJECT_NAME}.desktop" DESTINATION share/applications)
