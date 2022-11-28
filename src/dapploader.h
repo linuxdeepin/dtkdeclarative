@@ -33,6 +33,9 @@ public:
     DAppLoader(const QString &appName, const QString &appPath = QString(), QObject *parent = nullptr);
     ~DAppLoader();
 
+    void addPluginPath(const QString &dir);
+    QStringList pluginPaths() const;
+
     int exec(int &argc, char **argv);
     static DAppLoader *instance() { return self; }
 

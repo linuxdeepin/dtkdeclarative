@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-set(PRELOAD_LIB_NAME dtkqml-${CMAKE_PROJECT_NAME}-Preload)
+set(PRELOAD_LIB_NAME ${CMAKE_PROJECT_NAME}-preload)
 
 ###! 请确保 preloadplugin 下仅依赖最少的三方内容，
 ###! 且不做额外的复杂操作，将第三方库和自定义类型放在

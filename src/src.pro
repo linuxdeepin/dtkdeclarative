@@ -13,11 +13,11 @@ isEmpty(LIB_INSTALL_DIR) {
     LIB_INSTALL_DIR = $$[QT_INSTALL_LIBS]
 }
 
-isEmpty(DTK_QML_APP_PLUGIN_PATH) {
-    DTK_QML_APP_PLUGIN_PATH = $$LIB_INSTALL_DIR/$$TARGET/qml-app
+isEmpty(DTK_QML_APP_PLUGIN_SUBPATH) {
+    DTK_QML_APP_PLUGIN_SUBPATH = dtkdeclarative/plugins
 }
 
-DEFINES += DTK_QML_APP_PLUGIN_PATH=\\\"'$$DTK_QML_APP_PLUGIN_PATH'\\\"
+DEFINES += DTK_QML_APP_PLUGIN_SUBPATH=\\\"'$$DTK_QML_APP_PLUGIN_SUBPATH'\\\"
 
 include(src.pri)
 
@@ -41,8 +41,11 @@ template.path = /usr/share/qtcreator/templates/wizards/projects
 
 INSTALLS += includes target template
 
-CMAKE_CONTENT += "set(DTK_QML_APP_PLUGIN_PATH $${DTK_QML_APP_PLUGIN_PATH})"
-MODULE_PRI_CONT += "QT.$${TARGET}.qml_apps = $${DTK_QML_APP_PLUGIN_PATH}"
+CMAKE_CONTENT += "include(GNUInstallDirs)"
+CMAKE_CONTENT += "set(DTK_QML_APP_PLUGIN_PATH ${CMAKE_INSTALL_FULL_LIBDIR}/$${DTK_QML_APP_PLUGIN_SUBPATH})"
+MODULE_PRI_CONT += "QT.$${TARGET}.qml_apps = \$\$[QT_INSTALL_LIBS]/$${DTK_QML_APP_PLUGIN_SUBPATH}"
+
+DEFINES += DTK_QML_APP_PLUGIN_PATH=\\\"'$$[QT_INSTALL_LIBS]/$$DTK_QML_APP_PLUGIN_SUBPATH'\\\"
 
 load(dtk_cmake)
 load(dtk_module)
