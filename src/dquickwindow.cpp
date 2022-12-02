@@ -476,17 +476,26 @@ DWindowManagerHelper::MotifDecorations DQuickWindowAttached::motifDecorations() 
  */
 void DQuickWindowAttached::setEnabled(bool e)
 {
+    D_D(DQuickWindowAttached);
+    d->explicitEnable = e;
     if (e == isEnabled())
         return;
 
-    D_D(DQuickWindowAttached);
     if (!e) {
         d->destoryPlatformHandle();
         Q_EMIT enabledChanged();
         return;
     }
 
-    d->ensurePlatformHandle();
+    if (!d->ensurePlatformHandle()) {
+        QObject::connect(DWindowManagerHelper::instance(), &DWindowManagerHelper::hasNoTitlebarChanged, this,
+                         [this] () {
+            D_D(DQuickWindowAttached);
+            if (d->explicitEnable && DWindowManagerHelper::instance()->hasNoTitlebar())
+                d->ensurePlatformHandle();
+
+        }, Qt::UniqueConnection);
+    }
 }
 
 /*!

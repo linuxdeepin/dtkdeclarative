@@ -42,6 +42,7 @@ public:
 
     QWindow *window = nullptr;
     DPlatformHandle *handle = nullptr;
+    bool explicitEnable = false;
 
     DWindowManagerHelper::WmWindowTypes wmWindowTypes;
     DWindowManagerHelper::MotifFunctions motifFunctions;
