@@ -57,7 +57,7 @@ Control {
             bottomPadding: topPadding
             horizontalAlignment: textHorizontalAlignment
             verticalAlignment: Text.AlignVCenter
-            palette.windowText: control.D.ColorSelector.textColor
+            color: control.D.ColorSelector.textColor
             background: Loader {
                 active: highlight
                 sourceComponent: HighlightPanel { }

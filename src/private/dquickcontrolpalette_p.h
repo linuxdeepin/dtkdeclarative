@@ -97,6 +97,7 @@ Q_DECLARE_METATYPE(DTK_QUICK_NAMESPACE::DQuickControlColor)
 
 DQUICK_BEGIN_NAMESPACE
 
+class DQuickControlPaletteAttached;
 class DQuickControlPalette : public QObject
 {
     friend class DQuickControlColorSelector;
@@ -134,6 +135,8 @@ public:
 
     explicit DQuickControlPalette(QObject *parent = nullptr);
     ~DQuickControlPalette();
+
+    static DQuickControlPaletteAttached *qmlAttachedProperties(QObject *object);
 
     bool enabled() const;
     void setEnabled(bool newEnabled);
@@ -247,8 +250,47 @@ public:
 private:
     bool m_enabled = true;
 };
+
+class DQuickControlPaletteAttachedPrivate;
+class DQuickControlPaletteAttached : public QObject, DCORE_NAMESPACE::DObject
+{
+    Q_OBJECT
+    D_DECLARE_PRIVATE(DQuickControlPaletteAttached)
+    Q_PROPERTY(QColor foreground READ foreground WRITE setForeground RESET resetForeground NOTIFY paletteChanged)
+    Q_PROPERTY(QColor background READ background WRITE setBackground RESET resetBackground NOTIFY paletteChanged)
+    Q_PROPERTY(QColor highlight READ highlight WRITE setHighlight RESET resetHighlight NOTIFY paletteChanged)
+    Q_PROPERTY(QColor highlightForeground READ highlightForeground WRITE setHighlightForeground RESET resetHighlightForeground NOTIFY paletteChanged)
+    Q_PROPERTY(DTK_GUI_NAMESPACE::DDciIconPalette palette READ palette NOTIFY paletteChanged)
+
+public:
+    explicit DQuickControlPaletteAttached(QQuickItem *parent);
+    ~DQuickControlPaletteAttached() override;
+
+    DDciIconPalette palette() const;
+
+    QColor foreground() const;
+    void setForeground(const QColor &foreground);
+    void resetForeground();
+
+    QColor background() const;
+    void setBackground(const QColor &background);
+    void resetBackground();
+
+    QColor highlight() const;
+    void setHighlight(const QColor &highlight);
+    void resetHighlight();
+
+    QColor highlightForeground() const;
+    void setHighlightForeground(const QColor &highlightForeground);
+    void resetHighlightForeground();
+
+Q_SIGNALS:
+    void paletteChanged();
+};
+
 DQUICK_END_NAMESPACE
 QML_DECLARE_TYPE(DTK_QUICK_NAMESPACE::DQuickControlPalette)
+QML_DECLARE_TYPEINFO(DTK_QUICK_NAMESPACE::DQuickControlPalette, QML_HAS_ATTACHED_PROPERTIES)
 
 DQUICK_BEGIN_NAMESPACE
 class CustomMetaObject;

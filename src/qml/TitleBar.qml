@@ -45,7 +45,7 @@ Control {
     property alias enableInWindowBlendBlur: background.active
 
     property D.Palette textColor: DS.Style.button.text
-    palette.windowText: D.ColorSelector.textColor
+    D.Palette.foreground: D.ColorSelector.textColor
     MouseArea {
         id: mouseArea
         anchors.fill: parent
@@ -118,7 +118,7 @@ Control {
                 Layout.alignment: Qt.AlignLeft
                 Layout.leftMargin: 2
                 visible: name
-                palette: D.DTK.makeIconPalette(control.palette)
+                palette: control.D.Palette.palette
                 mode: control.D.ColorSelector.controlState
                 theme: control.D.ColorSelector.controlTheme
             }

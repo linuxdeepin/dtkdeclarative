@@ -14,11 +14,11 @@ Control {
     property D.Palette textColor: DS.Style.button.text
     property D.Palette backgroundColor: DS.Style.windowButton.background
 
-    palette.windowText: D.ColorSelector.textColor
+    D.Palette.foreground: D.ColorSelector.textColor
     hoverEnabled: true
     contentItem: D.DciIcon {
         id: iconLoader
-        palette: D.DTK.makeIconPalette(control.palette)
+        palette: control.D.Palette.palette
         sourceSize {
             width: DS.Style.windowButton.width
             height: DS.Style.windowButton.height

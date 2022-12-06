@@ -15,9 +15,9 @@ Control {
     property D.Palette backgroundColor: DS.Style.settings.background
     property D.Palette checkedTextColor: DS.Style.checkedButton.text
 
-    palette.windowText: checked ? D.ColorSelector.checkedTextColor : undefined
     contentItem: Label {
         text: Settings.SettingsGroup.name
+        color: checked ? D.ColorSelector.checkedTextColor : undefined
         font: __getFont(Settings.SettingsGroup.level)
         leftPadding: __getMargin(Settings.SettingsGroup.level)
         topPadding: DS.Style.settings.navigation.textVPadding

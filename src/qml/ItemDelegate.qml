@@ -35,11 +35,11 @@ T.ItemDelegate {
     spacing: DS.Style.control.spacing
     checkable: true
     autoExclusive: true
-    palette.windowText: checked && !control.cascadeSelected ? D.ColorSelector.checkedTextColor : undefined
 
+    D.Palette.foreground: checked && !control.cascadeSelected ? D.ColorSelector.checkedTextColor : undefined
     D.DciIcon.mode: D.ColorSelector.controlState
     D.DciIcon.theme: D.ColorSelector.controlTheme
-    D.DciIcon.palette: D.DTK.makeIconPalette(palette)
+    D.DciIcon.palette: control.D.Palette.palette
     icon {
         width: DS.Style.itemDelegate.iconSize
         height: DS.Style.itemDelegate.iconSize

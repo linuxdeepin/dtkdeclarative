@@ -19,7 +19,7 @@ Control {
     property int direction
     property D.Palette inactiveBackgroundColor: DS.Style.spinBox.indicator.background
 
-    palette.windowText: control.D.ColorSelector.inactiveBackgroundColor
+    D.Palette.foreground: control.D.ColorSelector.inactiveBackgroundColor
     hoverEnabled: true
     implicitWidth: DS.Style.spinBox.indicator.width
     implicitHeight: spinBox.activeFocus ? spinBox.implicitHeight / 2 : DS.Style.spinBox.indicator.height
@@ -30,7 +30,7 @@ Control {
         D.DciIcon {
             id: icon
             sourceSize.width: DS.Style.spinBox.indicator.iconSize
-            palette: D.DTK.makeIconPalette(control.palette)
+            palette: control.D.Palette.palette
             name: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? "entry_spinbox_up" : "entry_spinbox_down"
             mode: control.D.ColorSelector.controlState
             theme: control.D.ColorSelector.controlTheme

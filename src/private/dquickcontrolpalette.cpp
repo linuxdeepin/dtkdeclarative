@@ -6,6 +6,7 @@
 #include "dquickglobal_p.h"
 
 #include <DGuiApplicationHelper>
+#include <DObjectPrivate>
 
 #include <QPalette>
 #include <QQuickItem>
@@ -135,6 +136,19 @@ DQuickControlPalette::~DQuickControlPalette()
 
 }
 
+DQuickControlPaletteAttached *DQuickControlPalette::qmlAttachedProperties(QObject *object)
+{
+    auto item = qobject_cast<QQuickItem *>(object);
+
+    if (!item)
+        return nullptr;
+
+    if (!_d_isControlItem(item) && item->property("palette").isNull())
+        return nullptr;
+
+    return new DQuickControlPaletteAttached(item);
+}
+
 bool DQuickControlPalette::enabled() const
 {
     return m_enabled;
@@ -146,6 +160,165 @@ void DQuickControlPalette::setEnabled(bool newEnabled)
         return;
     m_enabled = newEnabled;
     Q_EMIT enabledChanged();
+}
+
+class DQuickControlPaletteAttachedPrivate : public DCORE_NAMESPACE::DObjectPrivate
+{
+    D_DECLARE_PUBLIC(DQuickControlPaletteAttached)
+public:
+    DQuickControlPaletteAttachedPrivate(DCORE_NAMESPACE::DObject *qq)
+      : DObjectPrivate(qq)
+    {
+    }
+    ~DQuickControlPaletteAttachedPrivate() override;
+
+    inline QPalette qpa() const
+    {
+        D_QC(DQuickControlPaletteAttached);
+        return qvariant_cast<QPalette>(q->parent()->property("palette"));
+    }
+
+    QColor m_foreground;
+    QColor m_background;
+    QColor m_highlight;
+    QColor m_highlightForeground;
+};
+DQuickControlPaletteAttachedPrivate::~DQuickControlPaletteAttachedPrivate()
+{
+}
+
+DQuickControlPaletteAttached::DQuickControlPaletteAttached(QQuickItem *parent)
+    : QObject (parent)
+    , DObject(*new DQuickControlPaletteAttachedPrivate(this))
+{
+    Q_ASSERT(parent);
+    connect(parent, SIGNAL(paletteChanged()), this, SIGNAL(paletteChanged()));
+}
+
+DQuickControlPaletteAttached::~DQuickControlPaletteAttached()
+{
+
+}
+
+DDciIconPalette DQuickControlPaletteAttached::palette() const
+{
+    return DDciIconPalette(foreground(), background(), highlight(), highlightForeground());
+}
+
+QColor DQuickControlPaletteAttached::foreground() const
+{
+    D_DC(DQuickControlPaletteAttached);
+    if (!d->m_foreground.isValid())
+        return d->qpa().windowText().color();
+
+    return d->m_foreground;
+}
+
+void DQuickControlPaletteAttached::setForeground(const QColor &foreground)
+{
+    D_D(DQuickControlPaletteAttached);
+    if (d->m_foreground == foreground)
+        return;
+
+    d->m_foreground = foreground;
+    Q_EMIT paletteChanged();
+}
+
+void DQuickControlPaletteAttached::resetForeground()
+{
+    D_D(DQuickControlPaletteAttached);
+    if (!d->m_foreground.isValid())
+        return;
+
+    d->m_foreground = QColor();
+    Q_EMIT paletteChanged();
+}
+
+QColor DQuickControlPaletteAttached::background() const
+{
+    D_DC(DQuickControlPaletteAttached);
+    if (!d->m_background.isValid())
+        return d->qpa().window().color();
+
+    return d->m_background;
+}
+
+void DQuickControlPaletteAttached::setBackground(const QColor &background)
+{
+    D_D(DQuickControlPaletteAttached);
+    if (d->m_background == background)
+        return;
+
+    d->m_background = background;
+    Q_EMIT paletteChanged();
+}
+
+void DQuickControlPaletteAttached::resetBackground()
+{
+    D_D(DQuickControlPaletteAttached);
+    if (!d->m_background.isValid())
+        return;
+
+    d->m_background = QColor();
+    Q_EMIT paletteChanged();
+}
+
+QColor DQuickControlPaletteAttached::highlight() const
+{
+    D_DC(DQuickControlPaletteAttached);
+    if (!d->m_highlight.isValid())
+        return d->qpa().highlight().color();
+
+    return d->m_highlight;
+}
+
+void DQuickControlPaletteAttached::setHighlight(const QColor &highlight)
+{
+    D_D(DQuickControlPaletteAttached);
+    if (d->m_highlight == highlight)
+        return;
+
+    d->m_highlight = highlight;
+    Q_EMIT paletteChanged();
+}
+
+void DQuickControlPaletteAttached::resetHighlight()
+{
+    D_D(DQuickControlPaletteAttached);
+    if (!d->m_highlight.isValid())
+        return;
+
+    d->m_highlight = QColor();
+    Q_EMIT paletteChanged();
+}
+
+QColor DQuickControlPaletteAttached::highlightForeground() const
+{
+    D_DC(DQuickControlPaletteAttached);
+    if (!d->m_highlightForeground.isValid())
+        return d->qpa().highlightedText().color();
+
+    return d->m_highlightForeground;
+}
+
+void DQuickControlPaletteAttached::setHighlightForeground(const QColor &highlightForeground)
+{
+    D_D(DQuickControlPaletteAttached);
+    if (d->m_highlightForeground == highlightForeground)
+        return;
+
+    d->m_highlightForeground = highlightForeground;
+    Q_EMIT paletteChanged();
+}
+
+void DQuickControlPaletteAttached::resetHighlightForeground()
+{
+    D_D(DQuickControlPaletteAttached);
+    if (!d->m_highlightForeground.isValid())
+        return;
+
+    d->m_highlightForeground = QColor();
+    Q_EMIT paletteChanged();
 }
 
 class Q_DECL_HIDDEN CustomMetaObject : public QQmlOpenMetaObject
