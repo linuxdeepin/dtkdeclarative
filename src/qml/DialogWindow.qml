@@ -11,8 +11,6 @@ import org.deepin.dtk.style 1.0 as DS
 Window {
     id: control
 
-    width: implicitWidth
-    height: implicitHeight
     maximumWidth: Screen.desktopAvailableWidth
     maximumHeight: Screen.desktopAvailableHeight
     minimumWidth: DS.Style.dialogWindow.width
@@ -27,31 +25,45 @@ Window {
     color: active ? D.DTK.palette.window : D.DTK.inactivePalette.window
 
     readonly property int maxContentHeight: height - titleBar.height
-    readonly property int implicitWidth: layout.implicitWidth
-    readonly property int implicitHeight: titleBar.height + contentLoader.childrenRect.height
+    readonly property int implicitWidth: content.width
+    readonly property int implicitHeight: content.height
     property alias header: titleBar.sourceComponent
     property string icon
     default property alias content: contentLoader.children
 
-    ColumnLayout {
-        id: layout
-        spacing: 0
+    Control {
+        id: content
+        palette: control.active ? D.DTK.palette : D.DTK.inactivePalette
+        width: layout.implicitWidth
+        height: titleBar.height + contentLoader.childrenRect.height
+        ColumnLayout {
+            id: layout
+            spacing: 0
 
-        Loader {
-            id: titleBar
-            z: D.DTK.TopOrder
-            sourceComponent: DialogTitleBar {
-                enableInWindowBlendBlur: true
-                icon.name: control.icon
+            Loader {
+                id: titleBar
+                z: D.DTK.TopOrder
+                sourceComponent: DialogTitleBar {
+                    enableInWindowBlendBlur: true
+                    icon.name: control.icon
+                }
+            }
+
+            Item {
+                id: contentLoader
+                Layout.preferredHeight: control.height - titleBar.height
+                Layout.fillWidth: true
+                Layout.leftMargin: DS.Style.dialogWindow.contentHMargin
+                Layout.rightMargin: DS.Style.dialogWindow.contentHMargin
             }
         }
-
-        Item {
-            id: contentLoader
-            Layout.preferredHeight: control.height - titleBar.height
-            Layout.fillWidth: true
-            Layout.leftMargin: DS.Style.dialogWindow.contentHMargin
-            Layout.rightMargin: DS.Style.dialogWindow.contentHMargin
+        Component.onCompleted: {
+            if (control.width <= 0) {
+                control.width = control.implicitWidth
+            }
+            if (control.height <= 0) {
+                control.height = control.implicitHeight
+            }
         }
     }
 
