@@ -1,3 +1,9 @@
+dtkdeclarative (5.6.3) unstable; urgency=medium
+
+  * Release 5.6.3
+
+ -- Deepin Packages Builder <packages@deepin.com>  Tue, 20 Dec 2022 11:36:24 +0800
+
 dtkdeclarative (0.0.1) unstable; urgency=medium
 
   * Initial release.
