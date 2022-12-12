@@ -15,6 +15,8 @@
 
 #include <QQuickWindow>
 
+#include <DGuiApplicationHelper>
+DGUI_USE_NAMESPACE
 DQUICK_BEGIN_NAMESPACE
 
 class Q_DECL_HIDDEN InWindowBlurTextureProvider : public QSGTextureProvider {
@@ -41,6 +43,10 @@ DQuickInWindowBlur::DQuickInWindowBlur(QQuickItem *parent)
     : QQuickItem(parent)
 {
     setFlag(QQuickItem::ItemHasContents, true);
+    // TODO, `update` should be called when QSGRenderNode changed.
+    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, [this](){
+        update();
+    });
 }
 
 DQuickInWindowBlur::~DQuickInWindowBlur()
