@@ -1,0 +1,35 @@
+package:
+  id: dtkdeclarative
+  name: dtkdeclarative
+  kind: lib
+  version: 5.6.3
+  descriptipon: |
+    Deepin Tool Kit Gui library \
+    Dtkdeclarative is base library of Deepin Qt/QtQuick applications.
+
+base:
+  id: org.deepin.base
+  version: 23.0.0
+
+depends:
+  - id: qtbase/5.15.7
+  - id: qtsvg/5.15.7
+  - id: libqtxdg/3.6.0.1
+  - id: gsettings-qt/0.3.1.1
+  - id: qtquickcontrols2/5.15.7
+  - id: qtdeclarative/5.15.7
+  - id: qttools/5.15.7
+  - id: dtkcommon/5.6.3
+  - id: dtkcore/5.6.3
+  - id: dtkgui/5.6.3
+    #- id: googletest/1.8.1
+
+source:
+  kind: local 
+
+variables:
+  extra_args: |
+    VERSION=${VERSION}
+
+build:
+  kind: qmake
