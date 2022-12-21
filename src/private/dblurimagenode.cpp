@@ -567,6 +567,9 @@ void DOpenGLBlurEffectNode::initBlurSahder()
 void DOpenGLBlurEffectNode::applyDaulBlur(QOpenGLFramebufferObject *targetFBO, GLuint sourceTexture, QOpenGLShaderProgram *shader
                                   , const QSGRenderNode::RenderState *state, int matrixUniform, int scale)
 {
+    if (Q_UNLIKELY(!m_item || !m_item->window()))
+        return;
+
     auto context = QOpenGLContext::currentContext();
     Q_ASSERT(context);
     GLuint prevFbo = 0;
