@@ -104,7 +104,7 @@ static void updateBlurNodeTexture(DBlitFramebufferNode *node, void *blurNode) {
 
 void onRender(DSGBlurNode *node, void *data) {
     DQuickInWindowBlur *that = reinterpret_cast<DQuickInWindowBlur*>(data);
-    if (!that->m_tp)
+    if (!that || !that->m_tp)
         return;
     node->writeToTexture(that->m_tp->plainTexture());
     // Don't direct emit the signal, must ensure the signal emit on current render loop after.
