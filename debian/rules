@@ -5,21 +5,13 @@ export QT_SELECT = qt5
 
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
-ifneq (,$(wildcard .git/config))
-	CONFIG_VERSION= $(shell git describe --tags)
-else
 VERSION = $(DEB_VERSION_UPSTREAM)
-_PACK_VER = $(shell echo $(VERSION) | awk -F'[+_~-]' '{print $$1}')
-_BUILD_VER = $(shell echo $(VERSION) | awk -F'[+_~-]' '{print $$2}' | sed 's/[^0-9]//g')
-ifeq ($(_BUILD_VER),)
-	CONFIG_VERSION = $(_PACK_VER)
-else
-	CONFIG_VERSION = $(_PACK_VER).$(_BUILD_VER)
-endif
-endif
+PACK_VER = $(shell echo $(VERSION) | awk -F'[+_~-]' '{print $$1}')
+# Fix: invalid digit "8" in octal constant. e.g.  u008 ==> 008 ==> 8
+BUILD_VER = $(shell echo $(VERSION) | awk -F'[+_~-]' '{print $$2}' | sed 's/[^0-9]//g' | awk '{print int($$1)}')
 
 %:
-	dh $@ --parallel
+	dh $@
 
 override_dh_auto_configure:
-	dh_auto_configure -- -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=ON -DBUILD_VERSION=$(BUILD_VER) -DVERSION=$(CONFIG_VERSION)
+	dh_auto_configure -- -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=ON -DBUILD_VERSION=$(BUILD_VER) -DVERSION=$(PACK_VER)

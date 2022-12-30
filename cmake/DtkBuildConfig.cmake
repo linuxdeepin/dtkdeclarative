@@ -1,7 +1,3 @@
-# SPDX-FileCopyrightText: 2022 Uniontech Software Technology Co.,Ltd.
-#
-# SPDX-License-Identifier: BSD-3-Clause
-
 # This cmake file is used to deploy files that dconfig's meta and override configure.
 
 include(CMakeParseArguments)
@@ -50,9 +46,9 @@ function(GEN_DTK_CONFIG_HEADER)
     cmake_parse_arguments(_CONFIG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
     if (DEFINED _CONFIG_MSG)
-        message("MODULE_NAME :${_CONFIG_MODULE_NAME}\n"
-                "DEST_DIR:${_CONFIG_DEST_DIR}\n"
-                "HEADERS:${_CONFIG_HEADERS}\n")
+        message("MODULE_NAME: ${_CONFIG_MODULE_NAME}\n"
+                "DEST_DIR: ${_CONFIG_DEST_DIR}\n"
+                "HEADERS: ${_CONFIG_HEADERS}\n")
     endif()
 
     set(config_file_path ${CMAKE_CURRENT_SOURCE_DIR})
@@ -86,4 +82,3 @@ function(GEN_DTK_CONFIG_HEADER)
     endforeach()
    
 endfunction()
-

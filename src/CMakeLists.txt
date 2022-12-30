@@ -1,108 +1,93 @@
-set(LIB_NAME dtkdeclarative)
-
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-#include(GNUInstallDirs)
-if (${CMAKE_INSTALL_LIBDIR} STREQUAL "lib")
-    message("redirector from [${CMAKE_INSTALL_LIBDIR}] to [${CMAKE_CURRENT_BINARY_DIR}/lib]")
-    set(CMAKE_INSTALL_LIBDIR ${CMAKE_CURRENT_BINARY_DIR}/lib)
-endif()
-
-set(LIB_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR} CACHE STRING "lib install path")
 set(DTK_QML_APP_PLUGIN_PATH "${LIB_INSTALL_DIR}/${LIB_NAME}/qml-app" CACHE STRING "dtk qml app plugin path")
-#message("lib install dir :${LIB_INSTALL_DIR}")
-#message("dtk qml app plugin path :${DTK_QML_APP_PLUGIN_PATH}")
-add_definitions(-DDTK_QML_APP_PLUGIN_PATH=\"${DTK_QML_APP_PLUGIN_PATH}\")
+set(DTK_QML_APP_PLUGIN_SUBPATH "dtkdeclarative/plugins" CACHE STRING "dtk qml app plugin subpath")
+set(DDECLARATIVE_TRANSLATIONS_DIR "dtk5/DDeclarative/translations" CACHE STRING "DDeclarative translations directory")
+set(DDECLARATIVE_TRANSLATIONS_PATH "share/${DDECLARATIVE_TRANSLATIONS_DIR}")
+set(TRANSLATIONS_INSTALL_PATH "${DDECLARATIVE_TRANSLATIONS_PATH}")
 
-# 增加安全编译参数
+# Add secure compiler options
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector-all")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fstack-protector-all")
 set(CMAKE_EXE_LINKER_FLAGS  "-z relro -z now -z noexecstack -pie")
-# for mips64
+# For mips64
 if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips64")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -ftree-vectorize -march=loongson3a -mhard-float -mno-micromips -mno-mips16 -flax-vector-conversions -mloongson-ext2 -mloongson-mmi")
 endif()
 
-find_package(Qt5 REQUIRED COMPONENTS Core Quick QuickCompiler DBus QuickControls2)
-find_package(DtkCore REQUIRED)
-find_package(DtkGui REQUIRED)
-if(USE_QQuickStylePluginPrivate)
-  set(include_DIRS 
-    ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Quick_INCLUDE_DIRS}
-    ${Qt5DBus_INCLUDE_DIRS}
-    ${Qt5Quick_PRIVATE_INCLUDE_DIRS}
-    ${DtkCore_INCLUDE_DIRS}
-    ${DtkGui_INCLUDE_DIRS}
-  )
-else()
-  set(include_DIRS 
-    ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Quick_INCLUDE_DIRS}
-    ${Qt5DBus_INCLUDE_DIRS}
-    ${Qt5Quick_PRIVATE_INCLUDE_DIRS}
-    ${Qt5QuickControls2_PRIVATE_INCLUDE_DIRS}
-    ${DtkCore_INCLUDE_DIRS}
-    ${DtkGui_INCLUDE_DIRS}
-  )
-endif()
+find_package(Qt5 REQUIRED COMPONENTS Core Quick QuickCompiler DBus QuickControls2 LinguistTools)
+find_package(Dtk REQUIRED COMPONENTS Core Gui)
 
+file(GLOB PUBLIC_HEADERS "./*.h")
 file(GLOB_RECURSE HEADERS "./*.h")
 file(GLOB_RECURSE SRCS   "./*.cpp")
 file(GLOB D_HEADERS   "./D*")
 file(GLOB QML_RCS ${CMAKE_CURRENT_LIST_DIR}/dtkdeclarative_qml.qrc)
 file(GLOB ASSETS_RCS ${CMAKE_CURRENT_LIST_DIR}/dtkdeclarative_assets.qrc)
-# quick compiler gen qmlc
+file(GLOB TS_FILES "translations/*.ts")
+# Quick compiler gen qmlc
 qtquick_compiler_add_resources(RESOURCES ${QML_RCS})
+# qtquick_compiler_add_resources(ASSETS_RESOURCES ${ASSETS_RCS})
+# Add translation source file
+qt5_add_translation(QM_FILES ${TS_FILES})
 
 add_library(${LIB_NAME} SHARED
     ${SRCS}
-    ${HEADERS} 
+    ${HEADERS}
     ${D_HEADERS}
     ${RESOURCES}
     ${ASSETS_RCS}
+    ${QM_FILES}
 )
 
 set_target_properties(${LIB_NAME} PROPERTIES
-  VERSION ${CMAKE_PROJECT_VERSION}
-  SOVERSION ${CMAKE_PROJECT_VERSION_MAJOR}
+    VERSION ${CMAKE_PROJECT_VERSION}
+    SOVERSION ${CMAKE_PROJECT_VERSION_MAJOR}
+    EXPORT_NAME Declarative
 )
 
-target_include_directories( ${LIB_NAME} PUBLIC
-  ${include_DIRS}
+target_compile_definitions(${LIB_NAME} PRIVATE
+    DTK_QML_APP_PLUGIN_PATH="${DTK_QML_APP_PLUGIN_PATH}"
+    DTK_QML_APP_PLUGIN_SUBPATH="${DTK_QML_APP_PLUGIN_SUBPATH}"
+    DDECLARATIVE_TRANSLATIONS_DIR="${DDECLARATIVE_TRANSLATIONS_DIR}"
 )
 
-target_link_libraries(${LIB_NAME} PRIVATE
+if(USE_QQuickStylePluginPrivate)
+    target_link_libraries(${LIB_NAME} PRIVATE
+        Qt5::QuickControls2Private
+    )
+endif()
+
+target_link_libraries(${LIB_NAME} PUBLIC
     Qt5::Core
-    Qt5::Quick 
+    Qt5::Quick
+    Qt5::QuickPrivate
     Qt5::DBus
-    ${DtkCore_LIBRARIES}
-    ${DtkGui_LIBRARIES}
+    Dtk::Core
+    Dtk::Gui
+)
+
+target_include_directories(${LIB_NAME} PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
+)
+
+target_include_directories(${LIB_NAME} INTERFACE
+    $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+)
+
+target_link_directories(${LIB_NAME} INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+    $<INSTALL_INTERFACE:${LIB_INSTALL_DIR}>
 )
 
 # gen dtkdeclarative_config.h
-include(../cmake/DtkBuildConfig.cmake)
+include(DtkBuildConfig)
 set(options MSG) # print MODULE_NAME D_HEADERS DEST_DIR
 gen_dtk_config_header(MODULE_NAME ${LIB_NAME} HEADERS ${D_HEADERS})
 
-# install so
-install(TARGETS ${LIB_NAME} DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-# install headers
-install(FILES ${HEADERS} ${D_HEADERS} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/libdtk-${PROJECT_VERSION}/DDeclarative")
-# install wizards templates
-file(GLOB_RECURSE QML_TEMPLATE ${CMAKE_CURRENT_LIST_DIR}/../misc/qml-app-template/*)
-install(FILES ${QML_TEMPLATE} DESTINATION "/usr/share/qtcreator/templates/wizards/projects")
-# install cmake config file
-configure_file(${CMAKE_CURRENT_LIST_DIR}/../misc/DtkDeclarativeConfig.cmake.in DtkDeclarativeConfig.cmake @ONLY)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/DtkDeclarativeConfig.cmake DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/DtkDeclarative")
-# install pkg-config file
-configure_file(${CMAKE_CURRENT_LIST_DIR}/../misc/dtkdeclarative.pc.in dtkdeclarative.pc @ONLY)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/dtkdeclarative.pc DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig/")
-# install qmake module config file
-configure_file(${CMAKE_CURRENT_LIST_DIR}/../misc/qt_lib_dtkdeclarative.pri.in qt_lib_dtkdeclarative.pri @ONLY)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/qt_lib_dtkdeclarative.pri DESTINATION "${CMAKE_INSTALL_LIBDIR}/qt5/mkspecs/modules")
+# Install library
+install(TARGETS ${LIB_NAME} EXPORT DtkDeclarativeTargets DESTINATION "${LIB_INSTALL_DIR}")
+# Install headers
+install(FILES ${PUBLIC_HEADERS} ${D_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}")
+# Install export targets
+install(EXPORT DtkDeclarativeTargets NAMESPACE Dtk:: FILE DtkDeclarativeTargets.cmake DESTINATION "${CONFIG_INSTALL_DIR}")
+# Install translations
+install(FILES ${QM_FILES} DESTINATION "${TRANSLATIONS_INSTALL_PATH}")

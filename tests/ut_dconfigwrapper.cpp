@@ -10,7 +10,7 @@
 #include "private/dconfigwrapper_p.h"
 
 static constexpr char const *LocalPrefix = "/tmp/example";
-static constexpr char const *APP_ID = "tests";
+static constexpr char const *APP_ID = BIN_NAME;
 static constexpr char const *FILE_NAME = "example";
 class ut_DConfigWrapper : public ::testing::Test
 {

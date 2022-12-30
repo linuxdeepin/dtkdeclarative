@@ -31,7 +31,7 @@ add_library(${MAINCOMPONENT_LIB_NAME} SHARED
 # 由于 LIB 程序为本项目的功能实现部分，需要用到的第三方库都需要在此处添加。
 target_link_libraries(${MAINCOMPONENT_LIB_NAME}
     Qt5::Quick
-    ${DtkDeclarative_LIBRARIES}
+    Dtk::Declarative
     )
 
 # Add install rule

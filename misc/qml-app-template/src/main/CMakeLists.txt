@@ -22,7 +22,7 @@ add_executable(${APP_NAME} ${SRC})
 # 由于 EXE 只是作为启动程序加载 LIB 使用，一般来说，只需链接 ${LIB_NAME} 既可。
 target_link_libraries(${APP_NAME}
     Qt5::Quick
-    ${DtkDeclarative_LIBRARIES}
+    Dtk::Declarative
     )
 
 add_definitions(-DAPP_PLUGIN_PATH=\"${DTK_QML_APP_PLUGIN_PATH}\")

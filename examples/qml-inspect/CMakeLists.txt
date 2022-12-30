@@ -1,28 +1,17 @@
 set(BIN_NAME qml-inspect)
 
 find_package(Qt5 COMPONENTS Quick QuickControls2)
-# find_package(DtkCore REQUIRED)
-find_package(DtkGui REQUIRED)
+find_package(Dtk REQUIRED COMPONENTS Gui)
 
-add_executable(${BIN_NAME} 
-    ./main.cpp 
-    ./qml.qrc
-    ./dciicons.qrc
-)
-
-target_include_directories(${BIN_NAME} PUBLIC
-    ${Qt5Quick_INCLUDE_DIRS}
-    ${Qt5QuickControls2_INCLUDE_DIRS}
-    # ${DtkCore_INCLUDE_DIR}
-    ${DtkGui_INCLUDE_DIR}
+add_executable(${BIN_NAME}
+    ${CMAKE_CURRENT_LIST_DIR}/main.cpp 
+    ${CMAKE_CURRENT_LIST_DIR}/qml.qrc
+    ${CMAKE_CURRENT_LIST_DIR}/dciicons.qrc
 )
 
 target_link_libraries(${BIN_NAME} PUBLIC
     Qt5::Quick 
     Qt5::QuickControls2
-    # ${DtkCore_LIBRARIES}
-    ${DtkGui_LIBRARIES}
-    dtkdeclarative
+    Dtk::Gui
+    ${LIB_NAME}
 )
-
-#install(FILES ${BIN_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
