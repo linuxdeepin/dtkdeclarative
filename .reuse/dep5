@@ -68,8 +68,8 @@ Files: *.jpg *.png *.gif
 Copyright: None
 License: CC0-1.0
 
-# ts
-Files: *.ts .tx/config
+# ts .tx/files
+Files: *.ts .tx/*
 Copyright: None
 License: CC0-1.0
 
