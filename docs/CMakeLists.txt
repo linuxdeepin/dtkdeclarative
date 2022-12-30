@@ -21,17 +21,17 @@ set (DOXYGEN_TAGFILES "qtcore.tags=qthelp://org.qt-project.qtcore/qtcore/" CACHE
 
 set (DOXYGEN_PREDEFINED
     "D_DECL_DEPRECATED_X(x)="
-    "\"DCORE_BEGIN_NAMESPACE=namespace Dtk { namespace Core {\""
-    "\"DCORE_END_NAMESPACE=}}\""
-    "\"DCORE_USE_NAMESPACE=using namespace Dtk::Core\;\""
-    "\"DQUICK_BEGIN_NAMESPACE=namespace Dtk { namespace Quick {\""
-    "\"DQUICK_END_NAMESPACE=}}\""
-    "\"DQUICK_USE_NAMESPACE=using namespace Dtk::Quick\;\""
+    "DCORE_BEGIN_NAMESPACE=namespace Dtk { namespace Core {"
+    "DCORE_END_NAMESPACE=}}"
+    "DCORE_USE_NAMESPACE=using namespace Dtk::Core;"
+    "DQUICK_BEGIN_NAMESPACE=namespace Dtk { namespace Quick {"
+    "DQUICK_END_NAMESPACE=}}"
+    "DQUICK_USE_NAMESPACE=using namespace Dtk::Quick\;"
 )
 set (DOXYGEN_MACRO_EXPANSION "YES")
 set (DOXYGEN_EXPAND_ONLY_PREDEF "YES")
 
-doxygen_add_docs (doxygen
+doxygen_add_docs(doxygen
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/docs
     ALL
@@ -39,4 +39,4 @@ doxygen_add_docs (doxygen
     COMMENT "Generate documentation via Doxygen"
 )
 
-install (FILES ${PROJECT_BINARY_DIR}/docs/html/dtkdeclarative.qch DESTINATION ${QCH_INSTALL_DESTINATION})
+install(FILES ${PROJECT_BINARY_DIR}/docs/html/dtkdeclarative.qch DESTINATION ${QCH_INSTALL_DESTINATION})

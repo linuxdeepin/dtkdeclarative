@@ -1,11 +1,11 @@
 prefix=@CMAKE_INSTALL_PREFIX@
 exec_prefix=${prefix}
-libdir=${prefix}/lib
-includedir=${prefix}/include/libdtk-@PROJECT_VERSION@/DDeclarative
-
+libdir=${prefix}/@LIB_INSTALL_DIR@
+includedir=${prefix}/@INCLUDE_INSTALL_DIR@
 
 Name: DtkDeclarative
 Description: Deepin Tool Kit DtkDeclarative header files
 Version: @CMAKE_PROJECT_VERSION@
-Libs: -ldtkdeclarative
+Libs: -L${libdir} -ldtkdeclarative
 Cflags: -I${includedir}
+Requires: dtkcore dtkgui Qt5Core Qt5Gui Qt5DBus Qt5Xml Qt5Quick

@@ -1,29 +1,24 @@
 set(BIN_NAME dtk-exhibition)
 
-find_package(Qt5 COMPONENTS Quick QuickControls2)
-find_package(DtkCore REQUIRED)
-find_package(DtkGui REQUIRED)
+find_package(Qt5 REQUIRED COMPONENTS Quick QuickControls2)
+find_package(Dtk REQUIRED COMPONENTS Core Gui)
 
-qt5_add_resources(QRCS ./assets.qrc ./qml.qrc)
+set(CMAKE_EXE_LINKER_FLAGS  "-z relro -z now -z noexecstack -pie")
 
-add_executable(${BIN_NAME} 
-    main.cpp 
-    ${QRCS}
+add_executable(${BIN_NAME}
+    ${CMAKE_CURRENT_LIST_DIR}/main.cpp 
+    ${CMAKE_CURRENT_LIST_DIR}/assets.qrc
+    ${CMAKE_CURRENT_LIST_DIR}/qml.qrc
 )
 
-target_include_directories(${BIN_NAME} PUBLIC
-    ${Qt5Quick_INCLUDE_DIRS}
-    ${Qt5QuickControls2_INCLUDE_DIRS}
-    ${DtkCore_INCLUDE_DIR}
-    ${DtkGui_INCLUDE_DIR}
-)
+target_compile_options(${BIN_NAME} PRIVATE "-fpic")
 
-target_link_libraries(${BIN_NAME} PUBLIC
+target_link_libraries(${BIN_NAME} PRIVATE
     Qt5::Quick 
     Qt5::QuickControls2
-    ${DtkCore_LIBRARIES}
-    ${DtkGui_LIBRARIES}
-    dtkdeclarative
+    Dtk::Core
+    Dtk::Gui
+    ${LIB_NAME}
 )
 
 install(TARGETS ${BIN_NAME} DESTINATION "${CMAKE_INSTALL_BINDIR}")

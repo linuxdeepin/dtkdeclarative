@@ -1,68 +1,68 @@
-set(pluginName qtquickcontrols2chameleonstyleplugin)
-
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(PLUGIN_NAME qtquickcontrols2chameleonstyleplugin)
 set(TARGETPATH "QtQuick/Controls.2/Chameleon")
-set(QML_DIR "${CMAKE_CURRENT_LIST_DIR}/imports/Chameleon/qmldir")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/imports/Chameleon")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/plugins/Chameleon")
+set(PLUGIN_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt5/qml/${TARGETPATH}")
 
 find_package(DtkGui REQUIRED)
-find_package(Qt5 REQUIRED COMPONENTS
+find_package(Qt5 COMPONENTS
     Qml
     QuickCompiler
     Quick
     QuickControls2 REQUIRED
 )
 
-
-include(imports/Chameleon/qml.cmake)
-include(src/src.cmake)
+file(GLOB QML_FILES "imports/Chameleon/*.qml")
+file(GLOB JS_FILES "imports/Chameleon/*.js")
+file(GLOB SRC_FILES "src/*.h" "src/*.cpp")
 
 qtquick_compiler_add_resources(RESOURCES ${CMAKE_CURRENT_LIST_DIR}/imports/Chameleon/qml.qrc)
 
-add_library(${pluginName} SHARED
-  ${SRC_FILES}
-  ${RESOURCES} #   imports/Chameleon/qml.qrc
-  ${QML_DIR}
+add_library(${PLUGIN_NAME} SHARED
+    ${SRC_FILES}
+    ${RESOURCES} #   imports/Chameleon/qml.qrc
+    ${QML_DIR}
 )
 
-include_directories(../src)
-
-if(USE_QQuickStylePluginPrivate)
-  include_directories(${Qt5QuickControls2_PRIVATE_INCLUDE_DIRS})
-endif()
-
-target_link_libraries(${pluginName} PUBLIC
+target_link_libraries(${PLUGIN_NAME} PRIVATE
     Qt5::Qml
     Qt5::Quick
     Qt5::QuickControls2
-#    -lpthread
 )
 
-set(compiler_path "${_qt5Core_install_prefix}/bin/qmlcachegen")
+if(USE_QQuickStylePluginPrivate)
+    target_link_libraries(${PLUGIN_NAME} PRIVATE
+        Qt5::QuickControls2Private
+    )
+endif()
+
+set(COMPILER "${_qt5Core_install_prefix}/bin/qmlcachegen") # Consider not to use Qt private variable
 set(QMLC_FILES)
-foreach(it ${QML_FILES})
-    get_filename_component(extension ${it} EXT)
-    if(extension STREQUAL ".qml" OR extension STREQUAL ".js" OR extension STREQUAL ".ui.qml")
-        set(output_file "${it}c")
-#        message("compiler_path: ${compiler_path}\nintput_file: ${it}\noutput_file: ${output_file}")
-        #add_custom_command(OUTPUT ${output_file} COMMAND ${compiler_path}  ARGS ${it} -o ${output_file})
-        execute_process(COMMAND ${compiler_path} ${it} -o ${output_file})
-        list(APPEND QMLC_FILES ${output_file})
+foreach(QML_FILE ${QML_FILES})
+    get_filename_component(EXTENSION ${QML_FILE} EXT)
+    if(EXTENSION STREQUAL ".qml" OR EXTENSION STREQUAL ".js" OR EXTENSION STREQUAL ".ui.qml")
+        set(OUTPUT_FILE "${QML_FILE}c")
+        execute_process(COMMAND ${COMPILER} ${QML_FILE} -o ${OUTPUT_FILE})
+        list(APPEND QMLC_FILES ${OUTPUT_FILE})
     endif()
 endforeach()
 
-include(GNUInstallDirs)
-set(DEST_DIR "${CMAKE_INSTALL_LIBDIR}/qt5/qml/${TARGETPATH}")
+set(QML_DIR "${CMAKE_CURRENT_BINARY_DIR}/qmldir")
+configure_file("${CMAKE_CURRENT_LIST_DIR}/imports/Chameleon/qmldir.in" "${QML_DIR}" @ONLY)
+set(OUT_QML_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/qmldir")
+# copy qmldir
+add_custom_command(TARGET ${PLUGIN_NAME}
+   POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E
+   copy_if_different
+   "${QML_DIR}"    #in-file
+   "${OUT_QML_DIR}"                            #out-file
+)
 
-install(TARGETS ${pluginName} DESTINATION ${DEST_DIR})
+install(TARGETS ${PLUGIN_NAME} DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES
     ${QML_DIR}
     ${JS_FILES}
     ${QML_FILES}
     ${QMLC_FILES}
-    DESTINATION ${DEST_DIR}
+    DESTINATION ${PLUGIN_INSTALL_DIR}
 )
