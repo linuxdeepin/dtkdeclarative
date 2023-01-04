@@ -46,6 +46,7 @@ Description: Deepin Tool Kit Gui Devel library
 
 Package: libdtkdeclarative-doc
 Architecture: any
+Depends: ${misc:Depends}
 Description: Deepin Tool Kit Gui Devel library (Document)
  Dtkdeclarative is base library of Deepin Qt/QtQuick applications.
 
