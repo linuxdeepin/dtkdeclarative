@@ -56,13 +56,15 @@ if(USE_QQuickStylePluginPrivate)
     )
 endif()
 
-target_link_libraries(${LIB_NAME} PUBLIC
+target_link_libraries(${LIB_NAME}
+PUBLIC
     Qt5::Core
     Qt5::Quick
-    Qt5::QuickPrivate
-    Qt5::DBus
     Dtk::Core
     Dtk::Gui
+PRIVATE
+    Qt5::QuickPrivate
+    Qt5::DBus
 )
 
 target_include_directories(${LIB_NAME} PUBLIC
