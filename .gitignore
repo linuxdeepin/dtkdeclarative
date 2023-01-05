@@ -54,3 +54,9 @@ build
 
 #clangd
 .cache
+
+#vscode
+.vscode
+
+#idea
+.idea

@@ -4,10 +4,12 @@ find_package (Doxygen REQUIRED)
 
 set (QCH_INSTALL_DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/qt5/doc CACHE STRING "QCH install location")
 
-set (DOXYGEN_GENERATE_HTML YES CACHE STRING "Doxygen HTML output")
-set (DOXYGEN_GENERATE_XML YES CACHE STRING "Doxygen XML output")
-set (DOXYGEN_GENERATE_QHP YES CACHE STRING "Doxygen QHP output")
-set (DOXYGEN_FILE_PATTERNS *.cpp *.h *.zh_CN.md *.zh_CN.dox CACHE STRING "Doxygen File Patterns")
+set (DOXYGEN_GENERATE_HTML "YES" CACHE STRING "Doxygen HTML output")
+set (DOXYGEN_GENERATE_XML "YES" CACHE STRING "Doxygen XML output")
+set (DOXYGEN_GENERATE_QHP "YES" CACHE STRING "Doxygen QHP output")
+set (DOXYGEN_FILTER_PATTERNS *.qml=doxyqml CACHE STRING "Extra filter patterns")
+set (DOXYGEN_FILE_PATTERNS *.cpp *.h *.zh_CN.md *.zh_CN.dox *.qml CACHE STRING "Doxygen File Patterns")
+set (DOXYGEN_EXTENSION_MAPPING qml=C++ CACHE STRING "Extra extension mapping")
 set (DOXYGEN_PROJECT_NUMBER ${CMAKE_PROJECT_VERSION} CACHE STRING "") # Should be the same as this project is using.
 set (DOXYGEN_EXTRACT_STATIC YES)
 set (DOXYGEN_OUTPUT_LANGUAGE "Chinese" CACHE STRING "Doxygen Output Language")
@@ -18,6 +20,7 @@ set (DOXYGEN_QCH_FILE "dtkdeclarative.qch")
 set (DOXYGEN_QHP_VIRTUAL_FOLDER "dtkdeclarative")
 set (DOXYGEN_HTML_EXTRA_STYLESHEET "" CACHE STRING "Doxygen custom stylesheet for HTML output")
 set (DOXYGEN_TAGFILES "qtcore.tags=qthelp://org.qt-project.qtcore/qtcore/" CACHE STRING "Doxygen tag files")
+set (DOXYGEM_ALIASES "signal=@typedef")
 
 set (DOXYGEN_PREDEFINED
     "D_DECL_DEPRECATED_X(x)="
