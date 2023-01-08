@@ -3,7 +3,6 @@
 @~chinese
 @class ButtonBox
 @ingroup Control
-
 @ingroup QML_TYPES
 @brief 一种按钮样式的组合控件，可用于放置多个按钮形成组合按钮.
 @details
