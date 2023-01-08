@@ -1,12 +1,12 @@
 /**
 @~chinese
-@class CheckDelegate(FlowStyle)
+@class CheckDelegate
 @ingroup CheckDelegate
 
 @ingroup QML_TYPES
 @brief 提供一种行云设计风格的 CheckDelegate 控件.
 @details
-    \l {CheckDelegate(FlowStyle)}{CheckDelegate} 控件是 ListView 控件中用于多选
+    CheckDelegate 控件是 ListView 控件中用于多选
     的代理控件。其功能在于对列表中的多个列表项进行框选和高亮。
 
     CheckDelegate(FlowStyle) 兼容 CheckDelegate 中的所有接口，同时也提供了
