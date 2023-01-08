@@ -21,6 +21,7 @@ set (DOXYGEN_QHP_VIRTUAL_FOLDER "dtkdeclarative")
 set (DOXYGEN_HTML_EXTRA_STYLESHEET "" CACHE STRING "Doxygen custom stylesheet for HTML output")
 set (DOXYGEN_TAGFILES "qtcore.tags=qthelp://org.qt-project.qtcore/qtcore/" CACHE STRING "Doxygen tag files")
 set (DOXYGEM_ALIASES "signal=@typedef")
+set (DOXYGEN_EXAMPLE_PATH ${CMAKE_CURRENT_LIST_DIR}/snippets/)
 
 set (DOXYGEN_PREDEFINED
     "D_DECL_DEPRECATED_X(x)="

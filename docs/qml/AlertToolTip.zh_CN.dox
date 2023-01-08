@@ -15,25 +15,12 @@
     目前 AlertToolTip 已经实现了在所有输入框控件的适配，如下图所示：<br>
 @image html AlertToolTip_EditExam.png
     对于该控件的进一步封装，可通过如下方式控制：
-    \table
-        \header
-            \li 属性
-            \li AlertToolTip 属性
-            \li 描述
-        \row
-            \li alertText
-            \li AlertToolTip.text
-            \li 警告信息的文本
-        \row
-            \li alertDuration
-            \li AlertToolTip.timeout
-            \li 警告信息显示的时长
-        \row
-            \li showAlert
-            \li AlertToolTip.visible
-            \li 是否显示警告信息,该属性会在 timeout 结束后自动设置为false
-    \endtable
-    需要强调的是，上述属性已经在所有编辑框控件中添加。
+| **属性**        | **AlertToolTip 属性**  | **描述**                               |
+|---------------|----------------------|--------------------------------------|
+| alertText     | AlertToolTip.text    | 警告信息的文本                              |
+| alertDuration | AlertToolTip.timeout | 警告信息显示的时长                            |
+| showAlert     | AlertToolTip.visible | 是否显示警告信息,该属性会在 timeout 结束后自动设置为false |
+需要强调的是，上述属性已经在所有编辑框控件中添加。
 
 @property Item AlertToolTip::target
 @details `target` 属性用于控制 `AlertToolTip` 被附属的目标对象。
