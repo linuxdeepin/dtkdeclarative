@@ -2,6 +2,8 @@
 @~chinese
 @class ArrowShapeBlur
 @ingroup InWindowBlur
+@ingroup QML_TYPES
+@ingroup org.deepin.dtk
 
 @brief 提供一个带模糊效果的箭头窗口控件.
 @details
@@ -10,9 +12,9 @@
     节控件，如下图所示：
 @image html musicvoice.png
     ArrowShapeBlur 控件作为 InWindowBlur 类的拓展，在属性和功能上也有部分新增，除基础的
-    箭头宽度 \c arrowWidth 箭头高度 \c arrowHeight 箭头位置 \c arrowPosition 以及
-    箭头方向 \c arrowDirection 之外，在模糊方面其增加了与 BehindWindowBlur 控件类似的
-    混合填充色的属性 \c blendColor ，和边框圆角以及边框颜色等等，用于提供更加丰富的属性设置。
+    箭头宽度`arrowWidth`箭头高度 `arrowHeight`箭头位置`arrowPosition`以及
+    箭头方向`arrowDirection`之外，在模糊方面其增加了与`BehindWindowBlur`控件类似的
+    混合填充色的属性`blendColor`，和边框圆角以及边框颜色等等，用于提供更加丰富的属性设置。
 
 @property color ArrowShapeBlur::blendColor
 @brief 该属性用于指定箭头模糊窗口的混合填充色
@@ -40,23 +42,12 @@
 @brief 该属性用于指定箭头模糊窗口的箭头方向枚举。
 @details
 方向分为上、下、左、右四种，如下表所示：
-    \table
-    \header
-        \li 方向
-        \li 枚举
-    \row
-    \li 上
-    \li DTK.UpArrow
-    \row
-    \li 下
-    \li DTK.DownArrow
-    \row
-    \li 左
-    \li DTK.LeftArrow
-    \row
-    \li 右
-    \li DTK.RightArrow
-    \endtable
+| **方向** | **枚举**      |
+|--------|-------------|
+| 上      | DTK.UpArrow |
+| 下      | DTK.DownArrow |
+| 左      | DTK.LeftArrow |
+| 右      | DTK.RightArrow |
 
 @property color ArrowShapeBlur::shadowColor
 @brief 该属性用于指定箭头模糊窗口的阴影颜色

@@ -13,43 +13,19 @@
 @image html BoxInsetShadowExample1.png
     圆角系数当不指定时默认为直角效果。
     模糊大小越大，其模糊范围越广，模糊程度越高，例如下表效果比较：
-    \table
-        \header
-            \li 模糊系数
-            \li 代码
-            \li 效果展示
-        \row
-            \li 2
-            \li \snippet snippets/dtkdeclarative_boxinsetshadow.qml 0
-            \li \image images/BoxInsetShadowExample1.png
-        \row
-            \li 20
-            \li \snippet snippets/dtkdeclarative_boxinsetshadow.qml 1
-            \li \image images/BoxInsetShadowExample2.png
-        \row
-            \li 40
-            \li \snippet snippets/dtkdeclarative_boxinsetshadow.qml 2
-            \li \image images/BoxInsetShadowExample3.png
-    \endtable
+| **模糊系数** | **代码**                                                | **效果展示**                                 |
+|----------|-------------------------------------------------------|------------------------------------------|
+| 2        | @snippet snippets/dtkdeclarative_boxinsetshadow.qml 0 | @image html BoxInsetShadowExample1.png |
+| 20       | @snippet snippets/dtkdeclarative_boxinsetshadow.qml 1 | @image html BoxInsetShadowExample2.png |
+| 40       | @snippet snippets/dtkdeclarative_boxinsetshadow.qml 2 | @image html BoxInsetShadowExample3.png |
+
     扩散大小越大，阴影范围越广，如下表效果比较：
-    \table
-        \header
-            \li 扩散系数
-            \li 代码
-            \li 效果展示
-        \row
-            \li 1
-            \li \snippet snippets/dtkdeclarative_boxinsetshadow.qml 1
-            \li \image images/BoxInsetShadowExample1.png
-        \row
-            \li 10
-            \li \snippet snippets/dtkdeclarative_boxinsetshadow.qml 3
-            \li \image images/BoxInsetShadowExample4.png
-        \row
-            \li 20
-            \li \snippet snippets/dtkdeclarative_boxinsetshadow.qml 4
-            \li \image images/BoxInsetShadowExample5.png
-    \endtable
+| **扩散系数** | **代码**                                                | **效果展示**                                 |
+|----------|-------------------------------------------------------|------------------------------------------|
+| 1        | @snippet snippets/dtkdeclarative_boxinsetshadow.qml 1 | @image html BoxInsetShadowExample1.png |
+| 10       | @snippet snippets/dtkdeclarative_boxinsetshadow.qml 3 | @image html BoxInsetShadowExample4.png |
+| 20       | @snippet snippets/dtkdeclarative_boxinsetshadow.qml 4 | @image html BoxInsetShadowExample5.png |
+
 
 @property real BoxInsetShadow::cornerRadius
 @brief cornerRadius 属性表示内阴影控件的圆角大小

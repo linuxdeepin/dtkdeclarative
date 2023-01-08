@@ -2,7 +2,7 @@
 @~chinese
 @class AboutDialog
 @ingroup DialogWindow
-@inqmlmodule org.deepin.dtk
+@ingroup org.deepin.dtk
 @ingroup QML_TYPES
 @brief 一个用于显示应用程序关于界面的对话框.
 @details
@@ -12,7 +12,7 @@
     其设计效果如下图所示：<br>
 @image html AboutDialog.png
 
-    其使用方式如下代码所示：
+其使用方式如下代码所示：
 ```qml
     AboutDialog {
         version: qsTr(String("Version: %1").arg(appVersion))

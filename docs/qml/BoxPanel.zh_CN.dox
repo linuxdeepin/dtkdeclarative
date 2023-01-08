@@ -6,21 +6,17 @@
 
 @ingroup QML_TYPES
 @brief 提供一个盒子面板控件.
-
+@details
     BoxPanel 提供一个通用的盒子面板控件，它自带了内置的内外阴影特效，被
     使用在 Button 和 ButtonBox 控件中作为基础控件使用。 BoxPanel 通常
     被用作控件的背景，默认情况下，该控件在亮色主题下的效果如下图所示：
-
 @image html BoxPanelExample1.png
-
     通过更改 BoxPanel 的属性，可以改变 BoxPanel 的圆角大小、背景颜色、阴影颜色、模糊系数等等。
     例如下述代码，可以将 BoxPanel 的颜色修改为渐变色：
-
 ```qml
     BoxPanel {
         width: 200
         height: 200
-
         radius: width / 2
         color1: D.Palette {
             normal: "#228B22"
@@ -30,7 +26,6 @@
         }
     }
 ```
-
     效果如下图所示：
 @image html BoxPanelExample2.png
     当然如果不满足阴影和边框的效果，也可以通过控制阴影的大小实现自定义阴影，
@@ -39,11 +34,11 @@
     BoxPanel {
         width: 200
         height: 200
-
         radius: width / 2
         color1: Palette {
             normal: "#228B22"
         }
+
         color2: Palette {
             normal: "#00CED1"
         }
@@ -68,7 +63,6 @@
         innerShadowOffsetY1: -2
     }
 ```
-
     效果如下图所示：
 @image html BoxPanelExample3.png
 
@@ -82,6 +76,9 @@
 @property Palette BoxPanel::color2
 @brief color2 属性和 color1 属性类似，表示 BoxPanel 控件的第二背景色
 @details 当 color2 的颜色与 color1不同时，表示该背景色为渐变色。
+
+@property Palette BoxPanel::insideBorderColor
+@brief insideBorderColor 属性表示 BoxPanel 控件的内边框颜色
 
 @property Palette BoxPanel::outsideBorderColor
 @brief outsideBorderColor 属性表示 BoxPanel 控件的外边框颜色
@@ -99,8 +96,8 @@
 @details 第二内阴影为固定的内阴影,其位置固定在 BoxPanel 控件内，阴影效果除阴影颜色外不允许外部改变。
 
 @property int BoxPanel::boxShadowBlur
-@brief boxShadowBlur 属性表示 BoxPanel 控件的阴影模糊系数，默认情况下该系数大小为 6。
-    扩大和缩小该系数能够增加和缩小阴影的模糊范围。
+@brief boxShadowBlur 属性表示 BoxPanel 控件的阴影模糊系数
+@details 默认情况下该系数大小为 6，扩大和缩小该系数能够增加和缩小阴影的模糊范围。
 
 @property int BoxPanel::boxShadowOffsetY
 @brief boxShadowOffsetY 属性表示 BoxPanel 控件的阴影 y 坐标偏移量
