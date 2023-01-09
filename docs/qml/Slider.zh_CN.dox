@@ -17,17 +17,11 @@
     }
 ```
     Slider 的效果如下图所示：<br>
-    \table
-        \header
-            \li 方向
-            \li 效果
-        \row
-            \li 横向
-            \li 无滑块方向： \image images/SliderNormalHor.png
-        \row
-            \li 纵向
-            \li 滑块朝下： \image images/SliderNormalVer.png
-    \endtable
+| **方向** | **滑块方向** | **效果**                          |
+|--------|----------|---------------------------------|
+| 横向     | 无滑块方向    | @image html SliderNormalHor.png |
+| 纵向     | 滑块朝下     | @image html SliderNormalVer.png |
+
 
 @property Palette Slider(FlowStyle)::grooveColor
 @brief grooveColor 属性控制滑槽的颜色， \c grooveColor 并非控制滑槽划过区域的颜色，
@@ -37,34 +31,19 @@
 
 @property enumeration Slider(FlowStyle)::handleType
 @brief handleType 属性表示滑块的方向，默认情况下，滑块无任何方向。
-    handleType 可供使用的枚举为：
-    \table
-        \header
-            \li 枚举
-            \li 含义
+@details
+handleType 可供使用的枚举为：<br>
+| **枚举**                   | **含义**               |
+|:------------------------:|:------------------------:|
+| Slider.NoArrowHorizontal | 水平无方向                |
+| Slider.NoArrowVertical   | 竖直无方向                |
+| Slider.ArrowUp           | 滑块箭头朝上，一般用于滑动条为水平方向时 |
+| Slider.ArrowLeft         | 滑块箭头朝左，一般用于滑动条为竖直方向时 |
+| Slider.ArrowBottom       | 滑块箭头朝下，一般用于滑动条为水平方向时 |
+| Slider.ArrowRight        | 滑块箭头朝右，一般用于滑动条为竖直方向时 |
 
-        \row
-            \li Slider.NoArrowHorizontal
-            \li 水平无方向。请注意，水平无方向和竖直无方向，在滑动条的水平和数值方向时，滑块的图标
-            也不一样，水平无方向时，滑块宽度高于高度，显得更加扁平，竖直无方向时，滑块高度高于宽度，
-            显得更加修长。
-        \row
-            \li Slider.NoArrowVertical
-            \li 竖直无方向。
-        \row
-            \li Slider.ArrowUp
-            \li 滑块箭头朝上，一般用于滑动条为水平方向时。
-        \row
-            \li Slider.ArrowLeft
-            \li 滑块箭头朝左，一般用于滑动条为竖直方向时。
-        \row
-            \li Slider.ArrowBottom
-            \li 滑块箭头朝下，一般用于滑动条为水平方向时。
-        \row
-            \li Slider.ArrowRight
-            \li 滑块箭头朝右，一般用于滑动条为竖直方向时。
-    \endtable
-
+@note 注意，水平无方向和竖直无方向，在滑动条的水平和数值方向时，滑块的图标也不一样，
+    水平无方向时，滑块宽度高于高度，显得更加扁平，竖直无方向时，滑块高度高于宽度，显得更加修长。
 
 
 @property real Slider(FlowStyle)::dashOffset
@@ -83,12 +62,10 @@
 
 
 @property var Slider(FlowStyle)::dashPattern
-@brief dashPattern 表示绘制点和间距的距离，默认值为[0.5, 0.25]，即可以理解为，每绘制
-    0.5 像素的滑条样式，就绘制 0.25 像素的间距。将其中值变大，会起到其代表的那一部分的区域
-    变大的效果。
-
+@brief dashPattern 表示绘制点和间距的距离，默认值为[0.5, 0.25]
+@details 即可以理解为，每绘制0.5 像素的滑条样式，就绘制 0.25 像素的间距。将其中值变大，会起到其代表的那一部分的区域变大的效果。
     例如以下代码：
-@
+```qml
     Slider {
         dashPattern: [0.5, 5] // 每绘制0.5像素的滑块，就绘制5像素的间距
         width: 200
@@ -97,21 +74,13 @@
     效果如下图所示：
 @image html SliderDashPattern.png
 
-
 @property bool Slider(FlowStyle)::highlightedPassedGroove
-@brief highlightedPassedGroove 属性控制是否高亮滑块移动过的区域，默认情况下 highlightedPassedGroove
-    为 false。
+@brief highlightedPassedGroove 属性控制是否高亮滑块移动过的区域，
+@details 默认情况下 highlightedPassedGroove为 false。<br>
+效果如下所示：
+| **highlightedPassedGroove** | **效果**                            |
+|:---------------------------:|:---------------------------------:|
+| false                       | @image html SliderNormalHor.png   |
+| true                        | @image html SliderHighlighted.png |
 
-    效果如下所示：
-    \table
-        \header
-            \li highlightedPassedGroove
-            \li 效果
-        \row
-            \li false
-            \li \image images/SliderNormalHor.png
-        \row
-            \li true
-            \li \image images/SliderHighlighted.png
-    \endtable
-
+*/

@@ -6,6 +6,7 @@
 
 @ingroup QML_TYPES
 @brief 一种只支持硬件渲染模式的矩形阴影控件.
+@details
     RectangularShadow 是 GlowEffect 应用形态，它重新整理了 GlowEffect 的各个属性，并将其修饰为
     更容易理解的属性名称。 RectangularShadow 相对于 GlowEffect 更容易使用。
     但 RectangularShadow 和 GlowEffect 都有同样的缺点：暂不支持使用软件渲染。因此使用这两种效果时
@@ -29,7 +30,6 @@
             color: "red"
         }
 ```
-
     其效果如下图所示：
 @image html RectangularShadowExample.png
 
