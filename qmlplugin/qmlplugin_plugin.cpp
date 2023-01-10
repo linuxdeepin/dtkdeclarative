@@ -285,7 +285,6 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "SliderTipItem");
     dtkRegisterType(uri, controlsUri, 1, 0, "CheckBox");
     dtkRegisterType(uri, controlsUri, 1, 0, "IpV4LineEdit");
-    dtkRegisterType(uri, controlsUri, 1, 0, "StyledArrowShapeWindow");
     // TODO(xiaoyaobing): software rendering has not been completed
     dtkRegisterType(uri, controlsUri, 1, 0, "ArrowShapePopup");
     if (softwareBackend == QQuickWindow::sceneGraphBackend()) {

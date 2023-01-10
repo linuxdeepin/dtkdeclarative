@@ -74,7 +74,6 @@
         <file>qml/InsideBoxBorder.qml</file>
         <file>qml/SortFilterModel.qml</file>
         <file>qml/ArrowShapePopupWindow.qml</file>
-        <file>qml/StyledArrowShapeWindow.qml</file>
         <file>qml/private/OpacityMask.qml</file>
         <file>qml/private/SoftwareOpacityMask.qml</file>
         <file>qml/ArrowShapePopup.qml</file>
