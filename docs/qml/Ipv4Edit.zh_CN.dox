@@ -12,10 +12,8 @@
     控件兼容了使用 Tab 键切换当前输入框的方式，当当前输入框输入完成后，可唤起 Tab 键
     调整位置输入，同时 IpV4LineEdit 自带的特殊的 clear button 能够一键清除用户的
     所有输入。
-
     IpV4LineEdit 也支持现实特殊的警告信息，当用户输入方式有误时，IpV4LineEdit 提供
     属性可唤起提示信息，告知用户输入方式的问题。
-
     IpV4LineEdit 的效果如下图所示：
 
 @image html IPV4EditExample.png
