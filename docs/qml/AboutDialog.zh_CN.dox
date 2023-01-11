@@ -7,8 +7,7 @@
 @brief 一个用于显示应用程序关于界面的对话框.
 @details
     AboutDialog 是一个 DTK 风格的关于对话框，其被用于显示应用程序统一的关于界面，包括应用名称、描述、图标、版本等等。<br>
-    AboutDialog 具备 DialogWindow 的所有属性，也能够使用 DTK 中的 DWindow 来修改窗口的特殊信息。但这些应用程序<br>
-    通常无需关心，DTK 的内部实现中已经完成。<br>
+    AboutDialog 具备 DialogWindow 的所有属性，也能够使用 DTK 中的 DWindow 来修改窗口的特殊信息。但这些应用程序通常无需关心，DTK 的内部实现中已经完成。<br>
     其设计效果如下图所示：<br>
 @image html AboutDialog.png
 
@@ -21,7 +20,6 @@
         companyLogo: "file://" + DTK.deepinDistributionOrgLogo
         websiteName: DTK.deepinWebsiteName
         websiteLink: DTK.deepinWebsiteLink
-        license: appLicense === "" ? "" : qsTr(String("%1 is released under %2").arg(appProductName).arg(appLicense))
     }
 ```
 

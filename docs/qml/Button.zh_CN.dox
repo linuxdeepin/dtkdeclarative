@@ -9,9 +9,8 @@
     Button控件提供行云设计风格的按钮控件。其风格旨在提供一种简约、友好和生命力的效果。<br>
     设计中，Button使用了大量的内外阴影、渐变和内外边框。<br>
     同时，针对按钮不同状态的颜色调整也做了统一整合，添加了鼠标悬浮时的进入进出动画等等。<br>
-    同时，针对 Button控件衍生的各个其他风格的按钮控件，例如 ActionButton、RecommandButton、WarningButton
-    等等也很好的进行展示。<br>
-
+    同时，针对 Button控件衍生的各个其他风格的按钮控件，
+    例如 ActionButton、RecommandButton、WarningButton等等也很好的进行展示。<br>
     Button控件能够使用 QtIcon 和 DciIcon 两种，在使用上，二者没有太大的差异。<br>
     都只需要指定名称和大小， Button也支持添加 indicator 控件，一般情况下，<br>
     indicator 的位置在 Button的最右侧。<br>

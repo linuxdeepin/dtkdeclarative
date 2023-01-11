@@ -7,7 +7,7 @@
 @ingroup QML_TYPES
 @brief 一种加减按钮样式的数字轮选框控件.
 @details
-    PlusMinusSpinBox 控件是基于基础的 SpinBox 控件进行调整的特殊样式控件，<br>
+    PlusMinusSpinBox 控件是基于基础的 SpinBox 控件进行调整的特殊样式控件，
     PlusMinusSpinBox 将 SpinBox 内部调整数值的按钮从上下箭头修改为特殊的加减号按钮和还原按钮，<br>
     默认情况下还原按钮不作显示，可通过属性控制该按钮的显示和隐藏。<br>
     PlusMinusSpinBox 主要用于特殊场景、特殊样式下的独特的 SpinBox 控件，<br>
