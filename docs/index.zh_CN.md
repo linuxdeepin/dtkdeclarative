@@ -199,6 +199,9 @@ QtQuick/QtQml基于Qml语言开发，其特点是通过树状模型来指定父�
 
 本质上dtkdeclarative就是对于qt的qml模块的扩展，使用qt的资料学习qml再对照本文档进行开发是一种行之有效的手段
 
+同时我们提供了对应的开发规范，详细介绍了对于DCI图标，调色板和DConfig的使用，以方便开发者开发:
+@ref DevSpecification
+
 ## 依赖关系
 
 dtkdeclarative项目依赖于dtk的部分项目以及qtqml的相关依赖。项目中使用到dtkdeclarative项目时，构建运行环境是项目迁移的开始。
