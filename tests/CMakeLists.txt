@@ -14,7 +14,6 @@ add_executable(${BIN_NAME}
 )
 
 target_compile_definitions(${BIN_NAME} PRIVATE
-    PREFIX="${CMAKE_PREFIX_PATH}"
     BIN_NAME="${BIN_NAME}"
 )
 
