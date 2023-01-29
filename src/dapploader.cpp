@@ -513,7 +513,11 @@ int DAppLoader::exec(int &argc, char **argv)
         d->engine = new QQmlApplicationEngine(this);
     auto graphics = d->preloadInstance->graphicsApi();
     if (graphics == QSGRendererInterface::Unknown) {
+#if defined __aarch64__
+        const char *renderName = reinterpret_cast<const char *>(glGetString(GL_RENDERER));
+#else
         const char *renderName = reinterpret_cast<const char *>(glGetString(GL_RENDER));
+#endif
         if (renderName) {
             if (renderName != QByteArrayLiteral("LLVMPIPE")
                     || renderName != QByteArrayLiteral("SWRAST"))
