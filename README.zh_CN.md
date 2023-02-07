@@ -10,6 +10,10 @@
 
 ![img](./docs/introduce.png)
 
+## 文档
+
++ [dtkdeclarative 中文文档](https://linuxdeepin.github.io/​dtkdeclarative/index.html)
+
 ## 依赖
 
 + qml-module-qtquick-shapes
@@ -24,8 +28,6 @@
 + libdtkcore-dev
 + qtdeclarative5-private-dev
 + qtbase5-private-dev
-
-## 安装
 
 ### 构建过程
 
@@ -48,8 +50,14 @@ $ sudo make install
 
 ## 帮助
 
-+ 遇到使用问题，可直接提出 issue
-+ 在 [Deepin社区](https://bbs.deepin.org/)寻求帮助
+任何使用问题都可以通过以下方式寻求帮助:
+
+* [Telegram 群组](https://t.me/deepin)
+* [Matrix](https://matrix.to/#/#deepin-community:matrix.org)
+* [IRC (libera.chat)](https://web.libera.chat/#deepin-community)
+* [Forum](https://bbs.deepin.org)
+* [WiKi](https://wiki.deepin.org/)
+如果你发现一个确定的bug，可以通过issue的方式提出，我们会尽快修复。如果你有一定的开发能力，欢迎提交PR。
 
 ## 贡献指南
 

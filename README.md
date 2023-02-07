@@ -8,7 +8,11 @@ dtkdeclarative is a widget development toolkit based on QtQuick/QtQml, which is 
 4. **Unified widget theme style**
 5. **Abundant effects and colors**
 
-[中文文档](README_zh_CN.md)
+[中文介绍](README.zh_CN.md)
+
+## Document
+
+[dtkdeclarative 中文文档](https://linuxdeepin.github.io/​dtkdeclarative/index.html)
 
 ## Dependencies
 
@@ -24,8 +28,6 @@ dtkdeclarative is a widget development toolkit based on QtQuick/QtQml, which is 
 + libdtkcore-dev
 + qtdeclarative5-private-dev
 + qtbase5-private-dev
-
-## Installation
 
 ### Build from source
 
@@ -53,9 +55,15 @@ $ sudo make install
 
 ## Getting Involved
 
-We encourage you to report issues and contribute changes
+Any usage issues can ask for help via
 
-+ [Contribution guide for developers](https://github.com/linuxdeepin/developer-center/wiki/Contribution-Guidelines-for-Developers-en)(English)
+* [Telegram group](https://t.me/deepin)
+* [Matrix](https://matrix.to/#/#deepin-community:matrix.org)
+* [IRC (libera.chat)](https://web.libera.chat/#deepin-community)
+* [Forum](https://bbs.deepin.org)
+* [WiKi](https://wiki.deepin.org/)
+ If you find a definite bug, you can raise it by way of an issue and we will fix it as soon as possible.
+ If you have some development skills, you are welcome to submit a PR.
 
 ## License
 
