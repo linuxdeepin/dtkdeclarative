@@ -8,11 +8,11 @@
 4. **统一的控件主题风格**
 5. **丰富的特效和色彩**
 
-![img](./docs/introduce.png)
+![img](./docs/images/introduction.png)
 
 ## 文档
 
-+ [dtkdeclarative 中文文档](https://linuxdeepin.github.io/​dtkdeclarative/index.html)
++ [dtkdeclarative 中文文档](https://linuxdeepin.github.io/dtkdeclarative/index.html)
 
 ## 依赖
 

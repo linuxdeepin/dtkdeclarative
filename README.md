@@ -12,7 +12,8 @@ dtkdeclarative is a widget development toolkit based on QtQuick/QtQml, which is 
 
 ## Document
 
-[dtkdeclarative 中文文档](https://linuxdeepin.github.io/​dtkdeclarative/index.html)
+[dtkdeclarative 中文文档](https://linuxdeepin.github.io/dtkdeclarative/index.html)
+
 
 ## Dependencies
 
