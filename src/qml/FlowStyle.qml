@@ -511,11 +511,11 @@ QtObject {
     }
 
     property QtObject aboutDialog: QtObject {
-        property int width: 200
-        property int height: 380
-        property int topPadding: 20
-        property int bottomPadding: 10
-        property int productIconHeight: 96
+        property int width: 540
+        property int height: 290
+        property int leftAreaWidth: 220
+        property int bottomPadding: 20
+        property int productIconHeight: 128
     }
 
     property QtObject popup: QtObject {
