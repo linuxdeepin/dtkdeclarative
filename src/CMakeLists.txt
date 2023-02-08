@@ -33,7 +33,7 @@ add_library(${LIB_NAME} SHARED
     ${SRCS}
     ${HEADERS}
     ${D_HEADERS}
-    ${RESOURCES}
+    ${QML_RCS}
     ${ASSETS_RCS}
     ${QM_FILES}
 )
