@@ -186,6 +186,7 @@ QtObject {
             }
             normalDark {
                 common: D.DTK.makeColor(D.Color.Highlight).saturation(+10).lightness(+10)
+                crystal: Qt.rgba(0, 0, 0, 0.1)
             }
             hovered {
                 common: D.DTK.makeColor(D.Color.Highlight).lightness(+10).saturation(+20).lightness(+10)
@@ -214,6 +215,7 @@ QtObject {
             }
             normalDark {
                 common: D.DTK.makeColor(D.Color.Highlight).saturation(+28).lightness(-2)
+                crystal: Qt.rgba(0, 0, 0, 0.1)
             }
             hovered {
                 common: D.DTK.makeColor(D.Color.Highlight).lightness(+10).saturation(+15).lightness(-8)
@@ -236,16 +238,25 @@ QtObject {
         }
 
         property D.Palette dropShadow: D.Palette {
-            normal: D.DTK.makeColor(D.Color.Highlight).saturation(+50).lightness(-10).opacity(+30)
+            normal {
+                common: D.DTK.makeColor(D.Color.Highlight).saturation(+50).lightness(-10).opacity(+30)
+                crystal: Qt.rgba(0, 0, 0, 0.1)
+            }
+            normalDark: D.DTK.makeColor(D.Color.Highlight).saturation(+15).lightness(+12).opacity(+20)
             hovered: D.DTK.makeColor(D.Color.Highlight).saturation(+50).lightness(-10).opacity(+30)
             pressed: D.DTK.makeColor(D.Color.Highlight).saturation(+50).lightness(-10).opacity(+20)
             disabled: D.DTK.makeColor(D.Color.Highlight).saturation(+50).lightness(-10).opacity(+30)
         }
 
         property D.Palette innerShadow1: D.Palette {
-            normal: D.DTK.makeColor(D.Color.Highlight).lightness(-10)
+            normal {
+                common: D.DTK.makeColor(D.Color.Highlight).lightness(-10)
+                crystal: Qt.rgba(0, 0, 0, 0.1)
+            }
+            normalDark: D.DTK.makeColor(D.Color.Highlight).saturation(+25).lightness(-6)
             hovered: D.DTK.makeColor(D.Color.Highlight).lightness(+10).lightness(-10)
             pressed: D.DTK.makeColor(D.Color.Highlight).lightness(+10).lightness(-5)
+            pressedDark: D.DTK.makeColor(D.Color.Highlight).saturation(+36).lightness(-10)
             disabled: D.DTK.makeColor(D.Color.Highlight).lightness(-10)
         }
 
@@ -255,18 +266,23 @@ QtObject {
 
         property D.Palette text: D.Palette {
             normal {
-                common: Qt.rgba(1, 1, 1, 0.9)
+                common: Qt.rgba(1, 1, 1, 1)
                 crystal: D.DTK.makeColor(D.Color.Highlight)
             }
-            hovered: "white"
-            pressed: Qt.rgba(1, 1, 1, 0.6)
+            normalDark: normal
         }
 
         property D.Palette border: D.Palette {
             normal {
-                common: Qt.rgba(0, 129 / 255.0, 1, 0.2)
+                common: D.DTK.makeColor(D.Color.Highlight).opacity(+20)
                 crystal: Qt.rgba(1, 1, 1, 0.1)
             }
+            normalDark {
+                common: Qt.rgba(1, 1, 1, 0.2)
+                crystal: Qt.rgba(1, 1, 1, 0.1)
+            }
+            hovered: Qt.rgba(0, 0, 0, 0.03)
+            hoveredDark: Qt.rgba(1, 1, 1, 0.2)
         }
     }
 
