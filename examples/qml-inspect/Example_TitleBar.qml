@@ -13,7 +13,7 @@ TitleBar {
     title: "title custom"
 
     property string appProductName: Qt.application.displayName
-    property string appLicense
+    property string appLicense: "LGPL-3.0-or-later"
 
 //    menu: Menu {
 //        delegate: MenuItem {
@@ -41,12 +41,13 @@ TitleBar {
 //        }
 //    }
     aboutDialog: AboutDialog {
+        productIcon: "music"
         modality: Qt.NonModal
-        version: qsTr(String("Version: %1").arg(Qt.application.version))
         productName: qsTr(appProductName)
         companyLogo: "file://" + DTK.deepinDistributionOrgLogo
         websiteName: DTK.deepinWebsiteName
         websiteLink: DTK.deepinWebsiteLink
+        description: "qml inspect is used to developer as a debug tool."
         license: appLicense === "" ? "" : qsTr(String("%1 is released under %2").arg(appProductName).arg(appLicense))
     }
 

@@ -14,10 +14,11 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     app.setOrganizationName("deepin");
     app.setApplicationName("Example");
+    app.setApplicationVersion("1.0.0");
 
     QQuickStyle::setStyle(CHAMELEON_PATH"/Chameleon");
     QQmlApplicationEngine engine;
-//    qputenv("D_POPUP_MODE", "embed");
+    qputenv("D_POPUP_MODE", "embed");
 
 //    QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
     engine.addImportPath(CHAMELEON_PATH);

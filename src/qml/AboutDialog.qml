@@ -10,6 +10,8 @@ import org.deepin.dtk.style 1.0 as DS
 
 DialogWindow {
     id: control
+    width: DS.Style.aboutDialog.width
+    height: DS.Style.aboutDialog.height
 
     property alias windowTitle: control.title
     property alias productName: productNameLabel.text
@@ -24,68 +26,102 @@ DialogWindow {
     readonly property string __websiteLinkTemplate:
         "<a href='%1' style='text-decoration: none; font-size:13px; color: #004EE5;'>%2</a>"
 
-    ScrollView {
+    RowLayout {
         id: contentView
         width: parent.width
         implicitHeight: contentLayout.implicitHeight
-        topPadding: DS.Style.aboutDialog.topMargin
-        bottomPadding: DS.Style.aboutDialog.bottomMargin
-        palette.window: "transparent"
         ColumnLayout {
             id: contentLayout
             spacing: 0
-            width: contentView.width
+            Layout.preferredWidth: Math.max(control.width / 5 * 2, DS.Style.aboutDialog.leftAreaWidth)
+            Layout.bottomMargin: DS.Style.aboutDialog.bottomPadding
 
             D.IconLabel {
                 id: logoLabel
-                Layout.fillWidth: true
                 Layout.preferredHeight: DS.Style.aboutDialog.productIconHeight
+                Layout.preferredWidth: Layout.preferredHeight
                 Layout.alignment: Qt.AlignHCenter
                 Layout.topMargin: 0
                 display: D.IconLabel.IconOnly
             }
             Label {
                 id: productNameLabel
-                Layout.alignment: Qt.AlignCenter
-                Layout.topMargin: 3
-            }
-            Label {
-                id: versionLabel
+                font: D.DTK.fontManager.t5
                 Layout.alignment: Qt.AlignCenter
                 Layout.topMargin: 8
             }
             Image {
                 id: companyLogoLabel
                 Layout.alignment: Qt.AlignCenter
-                Layout.topMargin: 0
-            }
-            Label {
-                id: websiteLabel
-                Layout.alignment: Qt.AlignCenter
-                Layout.topMargin: 5
-                text: (websiteLink === "" || websiteName === "") ?
-                          "" : __websiteLinkTemplate.arg(websiteLink).arg(websiteName)
-            }
-            Label {
-                id: descriptionLabel
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignHCenter
-                Layout.topMargin: 12
-                wrapMode: Text.Wrap
+                Layout.topMargin: 30
             }
             Label {
                 id: licenseLabel
-                Layout.alignment: Qt.AlignHCenter
-                Layout.topMargin: 7
+                font: D.DTK.fontManager.t10
+                Layout.preferredWidth: parent.width
+                Layout.alignment: Qt.AlignCenter
+                Layout.topMargin: 3
+                Layout.leftMargin: 30
+                wrapMode: Text.WordWrap
+                elide: Text.ElideRight
                 visible: license !== ""
             }
-
-            Component.onCompleted: {
-                websiteLabel.linkActivated.connect(D.ApplicationHelper.openUrl)
-                descriptionLabel.linkActivated.connect(D.ApplicationHelper.openUrl)
-                licenseLabel.linkActivated.connect(D.ApplicationHelper.openUrl)
-                console.log("logo path", D.DTK.deepinDistributionOrgLogo)
+        }
+        ColumnLayout {
+            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+            spacing: 10
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.rightMargin: 20
+            ColumnLayout {
+                spacing: 1
+                Label {
+                    font: D.DTK.fontManager.t10
+                    text: qsTr("Version")
+                }
+                Label {
+                    id: versionLabel
+                    font: D.DTK.fontManager.t8
+                    wrapMode: Text.WordWrap
+                    text: Qt.application.version
+                    Layout.fillWidth: true
+                }
             }
+            ColumnLayout {
+                spacing: 1
+                Label {
+                    font: D.DTK.fontManager.t10
+                    text: qsTr("Homepage")
+                }
+                Label {
+                    id: websiteLabel
+                    font: D.DTK.fontManager.t8
+                    text: (control.websiteLink === "" || control.websiteName === "") ?
+                              "" : control.__websiteLinkTemplate.arg(websiteLink).arg(control.websiteName)
+                    wrapMode: Text.WordWrap
+                    Layout.fillWidth: true
+                }
+            }
+            ColumnLayout {
+                spacing: 1
+                Label {
+                    font: D.DTK.fontManager.t10
+                    text: qsTr("Description")
+                }
+                Label {
+                    id: descriptionLabel
+                    Layout.fillWidth: true
+                    font: D.DTK.fontManager.t8
+                    wrapMode: Text.WordWrap
+                    elide: Text.ElideRight
+                }
+            }
+       }
+
+        Component.onCompleted: {
+            websiteLabel.linkActivated.connect(D.ApplicationHelper.openUrl)
+            descriptionLabel.linkActivated.connect(D.ApplicationHelper.openUrl)
+            licenseLabel.linkActivated.connect(D.ApplicationHelper.openUrl)
         }
 
         focus: true

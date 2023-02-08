@@ -8,6 +8,24 @@
     </message>
 </context>
 <context>
+    <name>AboutDialog</name>
+    <message>
+        <location filename="../qml/AboutDialog.qml" line="80"/>
+        <source>Version</source>
+        <translation>པར་གཞི།  </translation>
+    </message>
+    <message>
+        <location filename="../qml/AboutDialog.qml" line="94"/>
+        <source>Homepage</source>
+        <translation>གཙོ་ངོས།</translation>
+    </message>
+    <message>
+        <location filename="../qml/AboutDialog.qml" line="109"/>
+        <source>Description</source>
+        <translation>ཞིབ་བརྗོད།</translation>
+    </message>
+</context>
+<context>
     <name>HelpAction</name>
     <message>
         <location filename="../qml/HelpAction.qml" line="10"/>
@@ -47,17 +65,17 @@
         <translation>བརྗོད་བྱ་གཙོ་བོ།</translation>
     </message>
     <message>
-        <location filename="../qml/ThemeMenu.qml" line="21"/>
+        <location filename="../qml/ThemeMenu.qml" line="23"/>
         <source>Light Theme</source>
         <translation>ཁ་དཀར་པོ།</translation>
     </message>
     <message>
-        <location filename="../qml/ThemeMenu.qml" line="27"/>
+        <location filename="../qml/ThemeMenu.qml" line="29"/>
         <source>Dark Theme</source>
         <translation>ཁ་སྨུག་པོ།</translation>
     </message>
     <message>
-        <location filename="../qml/ThemeMenu.qml" line="33"/>
+        <location filename="../qml/ThemeMenu.qml" line="35"/>
         <source>System Theme</source>
         <translation>མ་ལག་གི་རྗེས་འབྲངས་བ།</translation>
     </message>
