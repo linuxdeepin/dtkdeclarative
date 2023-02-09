@@ -9,7 +9,7 @@ import org.deepin.dtk.style 1.0 as DS
 Control {
     id: control
     property alias icon: iconLoader
-    property alias pressed: mouseArea.pressed
+    readonly property bool pressed: mouseArea.pressed
     signal clicked
     property D.Palette textColor: DS.Style.button.text
     property D.Palette backgroundColor: DS.Style.windowButton.background
