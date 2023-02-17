@@ -1,3 +1,5 @@
+Item {
+
 //! [0]
 Rectangle {
     id: backgroundRect
@@ -93,3 +95,5 @@ BoxInsetShadow {
     cornerRadius: backgroundRect.radius
 }
 //! [4]
+
+}
