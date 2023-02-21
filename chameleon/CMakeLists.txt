@@ -1,7 +1,7 @@
 set(PLUGIN_NAME qtquickcontrols2chameleonstyleplugin)
 set(TARGETPATH "QtQuick/Controls.2/Chameleon")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/plugins/Chameleon")
-set(PLUGIN_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt5/qml/${TARGETPATH}")
+set(PLUGIN_INSTALL_DIR "${QML_INSTALL_DIR}/${TARGETPATH}")
 
 find_package(DtkGui REQUIRED)
 find_package(Qt5 COMPONENTS

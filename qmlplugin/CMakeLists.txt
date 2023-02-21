@@ -1,5 +1,5 @@
 set(URI "org/deepin/dtk")
-set(PLUGIN_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt5/qml/${URI}")
+set(PLUGIN_INSTALL_DIR "${QML_INSTALL_DIR}/${URI}")
 set(PLUGIN_NAME dtkdeclarativeplugin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/plugins/${URI}")
 
