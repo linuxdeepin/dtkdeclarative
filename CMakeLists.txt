@@ -31,6 +31,7 @@ set(TEMPLATE_INSTALL_DIR "share/qtcreator/templates/wizards/projects/qml-app-tem
 set(CONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/DtkDeclarative" CACHE STRING "CMake config file install directory")
 set(PKGCONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/pkgconfig" CACHE STRING "Directory to install pkg-config file")
 set(MKSPECS_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt5/mkspecs/modules" CACHE STRING "Qt pri module install directory")
+set(QML_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt5/qml" CACHE STRING "Qml plugin install directory")
 
 set(USE_QQuickStylePluginPrivate OFF)
 find_package(Qt5QuickControls2)
