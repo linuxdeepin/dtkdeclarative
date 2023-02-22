@@ -1,3 +1,13 @@
+dtkdeclarative (5.6.8) unstable; urgency=medium
+
+  * Allow custom QML plugin install path
+  * Modify AboutDialog's style
+  * Fix application crashed when WindowButton unload
+  * Change docs from qdoc to doxygen and update docs
+  * Change project manager tool from qmake to cmake
+
+ -- Deepin Packages Builder <packages@deepin.com>  Wed, 22 Feb 2023 16:06:59 +0800
+
 dtkdeclarative (5.6.3) unstable; urgency=medium
 
   * Release 5.6.3
