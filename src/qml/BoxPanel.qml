@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -20,6 +20,8 @@ Item {
     property int boxShadowBlur: 6
     property int boxShadowOffsetY: 4
     property int innerShadowOffsetY1: -1
+    // Background color changes with hover state if `backgroundFlowingHovered` is `undefined`.
+    property bool backgroundFlowsHovered: D.ColorSelector.family === D.Palette.CommonColor ? false : undefined
 
     Loader {
         anchors.fill: backgroundRect
@@ -36,19 +38,19 @@ Item {
         id: backgroundRect
         property alias color1: control.color1
         property alias color2: control.color2
-        D.ColorSelector.hovered: false
+        D.ColorSelector.hovered: backgroundFlowsHovered
 
         Gradient {
             id: backgroundGradient
             // Use the backgroundRect's colorselecor can filter the hovered state.
-            GradientStop { position: 0.0; color: backgroundRect.D.ColorSelector.color1}
-            GradientStop { position: 0.96; color: backgroundRect.D.ColorSelector.color2}
+            GradientStop { position: 0.0; color: backgroundRect.D.ColorSelector.color.color1}
+            GradientStop { position: 0.96; color: backgroundRect.D.ColorSelector.color.color2}
         }
 
         anchors.fill: parent
         radius: control.radius
-        gradient: D.ColorSelector.color1 === D.ColorSelector.color2 ? null : backgroundGradient
-        color: D.ColorSelector.color1
+        gradient: D.ColorSelector.color.color1 === D.ColorSelector.color.color2 ? null : backgroundGradient
+        color: D.ColorSelector.color.color1
     }
 
     Loader {
