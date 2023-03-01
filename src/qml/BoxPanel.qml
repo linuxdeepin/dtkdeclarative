@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -20,6 +20,8 @@ Item {
     property int boxShadowBlur: 6
     property int boxShadowOffsetY: 4
     property int innerShadowOffsetY1: -1
+    // Background color changes with hover state if `backgroundFlowingHovered` is `true`.
+    property bool backgroundFlowsHovered: true
 
     Loader {
         anchors.fill: backgroundRect
@@ -36,7 +38,7 @@ Item {
         id: backgroundRect
         property alias color1: control.color1
         property alias color2: control.color2
-        D.ColorSelector.hovered: false
+        D.ColorSelector.hovered: backgroundFlowsHovered ? undefined : false
 
         Gradient {
             id: backgroundGradient

@@ -27,5 +27,6 @@ Control {
     background: BoxPanel {
         implicitWidth: DS.Style.buttonBox.width
         implicitHeight: DS.Style.buttonBox.height
+        backgroundFlowsHovered: D.ColorSelector.family === D.Palette.CrystalColor
     }
 }
