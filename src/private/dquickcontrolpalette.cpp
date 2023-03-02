@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -192,7 +192,7 @@ public:
     }
 
     int metaCall(QObject *o, QMetaObject::Call _c, int _id, void **_a) override {
-        if (_c == QMetaObject::ResetProperty) {
+        if (_c == QMetaObject::ResetProperty && _id >= propertyOffset()) {
             auto ownerObject = owner()->parent();
             const QByteArray &proName = name((_id - propertyOffset()));
             int itemPropertyIndex = ownerObject->metaObject()->indexOfProperty(proName);
@@ -213,7 +213,7 @@ public:
         if (builder.hasNotifySignal()) {
             int slotIndex = owner()->metaObject()->indexOfSlot(COLORPROPERTYCHANGEFUNC);
             if (slotIndex != -1)
-                QMetaObject::connect(owner(), type()->signalOffset() + id, owner(), slotIndex, Qt::UniqueConnection);
+                QMetaObject::connect(object(), type()->signalOffset() + id, owner(), slotIndex, Qt::UniqueConnection);
         }
         return QQmlOpenMetaObject::propertyCreated(id, builder);
     }
@@ -375,6 +375,7 @@ void DQuickControlColorSelector::setupMetaPropertyPalettes(QQuickItem *object)
                        .arg(object->metaObject()->className()).arg(QString::number(reinterpret_cast<quintptr>(object), 16).prepend("0x")).arg(object->objectName()).arg(p.name()));
         updatePaletteFromMetaProperty(p, object);
     }
+    Q_EMIT colorProviderChanged();
 }
 
 QQuickItem *DQuickControlColorSelector::control() const
@@ -612,6 +613,11 @@ QStringList DQuickControlColorSelector::specialObjectNameItems()
 {
     // TODO(Chen Bin): To be determined
     return { QLatin1String("ColorSelectorMaster") };
+}
+
+QObject *DQuickControlColorSelector::colorProvider() const
+{
+    return const_cast<DQuickControlColorSelector *>(this);
 }
 
 bool DQuickControlColorSelector::doGetHoveredRecu(bool *value) const

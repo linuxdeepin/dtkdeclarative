@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -266,6 +266,7 @@ public:
     Q_PROPERTY(bool pressed READ pressed WRITE setPressed RESET resetPressed NOTIFY pressedChanged)
     Q_PROPERTY(bool disabled READ disabled WRITE setDisabled RESET resetDisabled NOTIFY disabledChanged)
     Q_PROPERTY(bool inactived READ inactived WRITE setInactived RESET resetInactived NOTIFY inactivedChanged)
+    Q_PROPERTY(QObject* color READ colorProvider NOTIFY colorProviderChanged)
     Q_CLASSINFO("DefaultProperty", "palettes")
 
     explicit DQuickControlColorSelector(QQuickItem *parent);
@@ -300,6 +301,8 @@ public:
 
     static QStringList specialObjectNameItems();
 
+    QObject *colorProvider() const;
+
 Q_SIGNALS:
     void controlThemeChanged();
     void controlStateChanged();
@@ -311,6 +314,7 @@ Q_SIGNALS:
     void colorPropertyChanged(const QByteArray &name);
     void colorPropertiesChanged();
     void familyChanged();
+    void colorProviderChanged();
 
 private:
     bool doGetHoveredRecu(bool *value) const;

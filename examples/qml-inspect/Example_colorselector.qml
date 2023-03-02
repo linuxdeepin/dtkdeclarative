@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -123,6 +123,38 @@ Rectangle {
                         rect2.backgroundColor = otherBackgroundColor
                         rect2Text.textColor = othertextColor
                     }
+                }
+            }
+        }
+    }
+
+    Control {
+        id: initColorSelectorByBinding
+        anchors.left: control1.right
+        anchors.leftMargin: 20
+        width: 500
+        height: 50
+        property Palette textColor: Palette {
+            normal: "blue"
+            hovered: "red"
+        }
+
+        Text {
+            id: bindingColorSelector
+            text: "Whether text color changes flowing control's hovered state.\n(Click to change.)"
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
+            anchors.fill: parent
+            // Add a Palette property to enable construct ColorSelector
+            property alias textColor: initColorSelectorByBinding.textColor
+            // Assign a binding express for ColorSelector.
+            ColorSelector.hovered: ColorSelector.family === Palette.CommonColor ? false : undefined
+            color: ColorSelector.color.textColor
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    bindingColorSelector.ColorSelector.family = bindingColorSelector.ColorSelector.family === Palette.CommonColor ? Palette.CrystalColor : Palette.CommonColor
                 }
             }
         }
