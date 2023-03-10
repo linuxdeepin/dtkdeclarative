@@ -152,7 +152,7 @@ class Q_DECL_HIDDEN CustomMetaObject : public QQmlOpenMetaObject
 {
 public:
     CustomMetaObject(DQuickControlColorSelector *obj)
-        : QQmlOpenMetaObject(obj, new QQmlOpenMetaObjectType(obj->metaObject(), qmlEngine(obj)))
+        : QQmlOpenMetaObject(obj, new QQmlOpenMetaObjectType(obj->metaObject(), qmlEngine(obj->parent())))
     {
 
     }
@@ -232,6 +232,30 @@ public:
                 qWarning() << "ColorSelector: The" << pname << "is an invalid color on the" << qmlObj;
         }
         QQmlOpenMetaObject::propertyRead(id);
+    }
+
+    // Because set true for QQmlOpenMetaObject::setCached, the DQuickControlColorSelector's
+    // QQmlPropertyCache in QQmlData is from the QQmlOpenMetaObject. The QQmlData::propertyCache
+    // is released in QQmlOpenMetaObject::createProperty, If we not reset it to owner()->m_propertyCache,
+    // It's will reset by QQmlMetaTypeData::propertyCache's caller(qQmlPropertyCacheProperty), in Qt5,
+    // the QQmlMetaTypeData will store the QQmlOpenMetaObject to QQmlMetaTypeData::propertyCaches for
+    // a DynamicMetaObject(QQmlOpenMetaObject), and not update QQmlData::propertyCache when create new
+    // property in QQmlOpenMetaObject, this is a bug, so we must ensure the QQmlData::propertyCache awlays
+    // from QQmlOpenMetaObject.
+    int createProperty(const char *name, const char *data) override {
+        QQmlData *qmldata = QQmlData::get(owner());
+        QQmlPropertyCache *cache = qmldata ? qmldata->propertyCache : nullptr;
+        Q_ASSERT(!cache || cache == owner()->m_propertyCache);
+
+        int ret = QQmlOpenMetaObject::createProperty(name, data);
+        if (qmldata && qmldata->propertyCache != cache) {
+            Q_ASSERT(!qmldata->propertyCache); // It's released in QQmlOpenMetaObject::createProperty
+            // Ensure QQmlOpenMetaObject::setCached always take effect
+            qmldata->propertyCache = owner()->m_propertyCache;
+            qmldata->propertyCache->addref();
+        }
+
+        return ret;
     }
 };
 
@@ -791,7 +815,12 @@ void DQuickControlColorSelector::ensureMetaObject()
         return;
 
     m_metaObject = new CustomMetaObject(this);
+    // Must true, see CustomMetaObject::createProperty
     m_metaObject->setCached(true);
+    QQmlData *qmldata = QQmlData::get(this);
+    Q_ASSERT(qmldata);
+    // the cache object is from QQmlOpenMetaObjectTypePrivate
+    m_propertyCache = qmldata->propertyCache;
 }
 
 int DQuickControlColorSelector::indexOfPalette(const QByteArray &name) const
