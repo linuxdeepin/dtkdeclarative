@@ -18,6 +18,7 @@
 QT_BEGIN_NAMESPACE
 class QQuickItem;
 class QQuickWindow;
+class QQmlPropertyCache;
 QT_END_NAMESPACE
 
 DQUICK_BEGIN_NAMESPACE
@@ -364,6 +365,7 @@ private:
     typedef QPair<QByteArray, DQuickControlPalette*> ControlPaletteData;
     QList<ControlPaletteData> m_palettes;
     CustomMetaObject *m_metaObject = nullptr;
+    QQmlPropertyCache *m_propertyCache = nullptr;
     struct PaletteState {
         PaletteState(DQuickControlColorSelector *owner)
             : owner(owner)

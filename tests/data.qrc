@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>data/dconf-example.meta.json</file>
+        <file>qml/ColorSelector_GetColorFromProperty.qml</file>
     </qresource>
 </RCC>

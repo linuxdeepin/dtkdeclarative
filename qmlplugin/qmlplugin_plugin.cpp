@@ -341,6 +341,9 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "ContentTitle");
     dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "ContentBackground");
 
+    // for org.deepin.dtk.private
+    dtkRegisterType(privateUri, implUri, 1, 0, "ButtonPanel");
+
     // for custom type
     QMetaType::registerConverter<QColor, DQuickControlColor>(convertColorToQuickColorType<DQuickControlColor>);
     QMetaType::registerConverter<QColor, DColor>(convertColorToDColorType<DColor>);

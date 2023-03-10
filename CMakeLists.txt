@@ -62,6 +62,7 @@ endif()
 
 if(BUILD_TESTING)
     add_subdirectory(tests)
+    add_dependencies(unit-test dtkdeclarativeplugin)
 endif()
 
 # Install wizards template

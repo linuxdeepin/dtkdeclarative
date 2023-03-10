@@ -39,6 +39,7 @@ Item {
         property alias color1: control.color1
         property alias color2: control.color2
         D.ColorSelector.hovered: backgroundFlowsHovered ? undefined : false
+        objectName: "background"
 
         Gradient {
             id: backgroundGradient
