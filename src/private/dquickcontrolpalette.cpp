@@ -192,7 +192,7 @@ public:
     }
 
     int metaCall(QObject *o, QMetaObject::Call _c, int _id, void **_a) override {
-        if (_c == QMetaObject::ResetProperty) {
+        if (_c == QMetaObject::ResetProperty && _id >= propertyOffset()) {
             auto ownerObject = owner()->parent();
             const QByteArray &proName = name((_id - propertyOffset()));
             int itemPropertyIndex = ownerObject->metaObject()->indexOfProperty(proName);
@@ -213,7 +213,7 @@ public:
         if (builder.hasNotifySignal()) {
             int slotIndex = owner()->metaObject()->indexOfSlot(COLORPROPERTYCHANGEFUNC);
             if (slotIndex != -1)
-                QMetaObject::connect(owner(), type()->signalOffset() + id, owner(), slotIndex, Qt::UniqueConnection);
+                QMetaObject::connect(object(), type()->signalOffset() + id, owner(), slotIndex, Qt::UniqueConnection);
         }
         return QQmlOpenMetaObject::propertyCreated(id, builder);
     }
