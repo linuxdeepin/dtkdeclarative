@@ -34,7 +34,7 @@ Copyright: UnionTech Software Technology Co., Ltd.
 License: CC-BY-4.0
 
 # ci
-Files: .github/*  *.yml *.yaml
+Files: .github/*  *.yml *.yaml .obs/*
 Copyright: None
 License: CC0-1.0
 
