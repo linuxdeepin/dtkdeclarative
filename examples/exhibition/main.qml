@@ -13,7 +13,7 @@ ApplicationWindow {
     visible: true
     width: Math.max(contentList.contentWidth + navigation.width, 1500)
     height: 800
-    title: qsTr("DTK Exhibition")
+    title: qsTr("DTK Exhibition(Scene Graph Backend: %1)").arg(globalObject.sceneGraphBackend(root))
 
     // 开启“圆角窗口&无系统标题栏”模式
     DWindow.enabled: true
