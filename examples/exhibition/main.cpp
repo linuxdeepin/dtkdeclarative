@@ -11,9 +11,12 @@
 #include <QUrl>
 #include <QDebug>
 #include <QQuickItem>
+#include <QQuickWindow>
+#include <QSGRendererInterface>
 
 class Object : public QObject {
     Q_OBJECT
+
 public:
     Q_INVOKABLE QByteArray readFile(const QUrl &url) const {
         QFile file(url.isLocalFile() ? url.toLocalFile() : (":" + url.path()));
@@ -26,6 +29,29 @@ public:
         oldItem->setParentItem(nullptr);
         QQmlEngine::setObjectOwnership(oldItem, QQmlEngine::CppOwnership);
         oldItem->deleteLater();
+    }
+
+    Q_INVOKABLE QString sceneGraphBackend(QQuickWindow *window) const {
+        const QString &backend = window->sceneGraphBackend();
+        if (!backend.isEmpty())
+            return backend;
+
+        switch (window->rendererInterface()->graphicsApi()) {
+        case QSGRendererInterface::Unknown: return "Unknown";
+        case QSGRendererInterface::Software: return "Software";
+        case QSGRendererInterface::OpenGL: return "OpenGL";
+        case QSGRendererInterface::Direct3D12: return "Direct3D12";
+        case QSGRendererInterface::OpenVG: return "OpenVG";
+        case QSGRendererInterface::OpenGLRhi: return "OpenGLRhi";
+        case QSGRendererInterface::Direct3D11Rhi: return "Direct3D11Rhi";
+        case QSGRendererInterface::VulkanRhi: return "VulkanRhi";
+        case QSGRendererInterface::MetalRhi: return "MetalRhi";
+        case QSGRendererInterface::NullRhi: return "NullRhi";
+        default:
+            break;
+        }
+
+        return "None";
     }
 };
 
