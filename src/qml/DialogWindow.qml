@@ -30,6 +30,7 @@ Window {
     property alias header: titleBar.sourceComponent
     property string icon
     default property alias content: contentLoader.children
+    property alias palette : content.palette
 
     Control {
         id: content

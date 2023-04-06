@@ -43,6 +43,9 @@ DialogWindow {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.topMargin: 0
                 display: D.IconLabel.IconOnly
+                icon.mode: control.D.ColorSelector.controlState
+                icon.theme: control.D.ColorSelector.controlTheme
+                icon.palette: D.DTK.makeIconPalette(control.palette)
             }
             Label {
                 id: productNameLabel
