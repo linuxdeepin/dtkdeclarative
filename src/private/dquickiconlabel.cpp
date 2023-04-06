@@ -49,7 +49,7 @@ void DQuickIconLabelPrivate::createIconImage()
     image->setName(icon.name());
     image->setTheme(icon.theme());
     image->setPalette(icon.palette());
-    image->setSourceSize(QSize(icon.width(), icon.height()));
+    image->setSourceSize(iconSize());
     image->setMode(icon.mode());
     image->setFallbackToQIcon(icon.fallbackToQIcon());
     image->imageItem()->setFallbackSource(icon.source());
@@ -91,7 +91,7 @@ void DQuickIconLabelPrivate::syncImage()
 
     image->setName(icon.name());
     image->setMode(icon.mode());
-    image->setSourceSize(QSize(icon.width(), icon.height()));
+    image->setSourceSize(iconSize());
     image->setPalette(icon.palette());
     image->setTheme(icon.theme());
     image->setFallbackToQIcon(icon.fallbackToQIcon());
@@ -384,6 +384,18 @@ void DQuickIconLabelPrivate::itemDestroyed(QQuickItem *item)
         image = nullptr;
     else if (item == label)
         label = nullptr;
+}
+
+QSize DQuickIconLabelPrivate::iconSize() const
+{
+    D_QC(DQuickIconLabel);
+    // If no size is specified for theme icons, it will use the smallest available size.
+    QSize size(icon.width(), icon.height());
+    if (size.width() <= 0)
+        size.setWidth(q->width());
+    if (size.height() <= 0)
+        size.setHeight(q->height());
+    return size;
 }
 
 DQuickIconLabel::DQuickIconLabel(QQuickItem *parent)

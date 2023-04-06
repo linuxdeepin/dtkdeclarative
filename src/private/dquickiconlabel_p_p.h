@@ -45,6 +45,8 @@ public:
     void itemImplicitHeightChanged(QQuickItem *) override;
     void itemDestroyed(QQuickItem *item) override;
 
+    QSize iconSize() const;
+
     bool mirrored = false;
     DQuickIconLabel::Display display = DQuickIconLabel::TextBesideIcon;
     Qt::Alignment alignment = Qt::AlignCenter;
