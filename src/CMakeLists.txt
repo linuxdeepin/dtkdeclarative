@@ -15,6 +15,9 @@ endif()
 
 find_package(Qt5 REQUIRED COMPONENTS Core Quick QuickCompiler DBus QuickControls2 LinguistTools)
 find_package(Dtk REQUIRED COMPONENTS Core Gui)
+find_package(PkgConfig REQUIRED)
+
+pkg_check_modules(GL REQUIRED IMPORTED_TARGET gl)
 
 file(GLOB PUBLIC_HEADERS "./*.h")
 file(GLOB_RECURSE HEADERS "./*.h")
@@ -65,6 +68,7 @@ PUBLIC
 PRIVATE
     Qt5::QuickPrivate
     Qt5::DBus
+    PkgConfig::GL
 )
 
 target_include_directories(${LIB_NAME} PUBLIC
