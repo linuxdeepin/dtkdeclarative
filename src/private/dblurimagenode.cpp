@@ -575,8 +575,7 @@ void DOpenGLBlurEffectNode::applyDaulBlur(QOpenGLFramebufferObject *targetFBO, G
     GLuint prevFbo = 0;
     context->functions()->glGetIntegerv(GL_FRAMEBUFFER_BINDING, (GLint *)&prevFbo);
 
-    if (prevFbo != targetFBO->handle())
-        targetFBO->bind();
+    targetFBO->bind();
     QOpenGLFunctions *f = context->functions();
     shader->bind();
 
@@ -616,9 +615,10 @@ void DOpenGLBlurEffectNode::applyDaulBlur(QOpenGLFramebufferObject *targetFBO, G
     f->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glDisable(GL_TEXTURE_2D);
     shader->release();
+    targetFBO->release();
 
     if (prevFbo != targetFBO->handle())
-        context->functions()->glBindFramebuffer(GL_FRAMEBUFFER, prevFbo);
+        f->glBindFramebuffer(GL_FRAMEBUFFER, prevFbo);
 }
 
 void DOpenGLBlurEffectNode::applyNoise(GLuint sourceTexture, const QSGRenderNode::RenderState *state)
