@@ -755,7 +755,7 @@ QColor DQuickControlColorSelector::getColorOf(const DQuickControlPalette *palett
     bool shouldInverseColor = false;
     do {
         if (disabled) {
-            targetColor = palette->colors.at(themeIndex + DQuickControlPalette::Disabled);
+            targetColor = palette->colors.at(themeIndex + familyIndex + DQuickControlPalette::Disabled);
             if (targetColor.isValid()) // Don't process the disabled's color, should direct uses it.
                 break;
             // fallback to normal color
