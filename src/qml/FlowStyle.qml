@@ -394,7 +394,7 @@ QtObject {
         property int height: 36
         property int padding: 8
         property int spacing: 10
-        property int iconSize: 16
+        property int iconSize: 12
         property int maxVisibleItems: 16
 
         property QtObject edit: QtObject {
