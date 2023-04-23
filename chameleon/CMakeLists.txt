@@ -35,7 +35,11 @@ if(USE_QQuickStylePluginPrivate)
     )
 endif()
 
-set(COMPILER "${_qt5Core_install_prefix}/bin/qmlcachegen") # Consider not to use Qt private variable
+find_program(COMPILER 
+    NAMES qmlcachegen
+    REQUIRED
+)
+
 set(QMLC_FILES)
 foreach(QML_FILE ${QML_FILES})
     get_filename_component(EXTENSION ${QML_FILE} EXT)
