@@ -39,22 +39,20 @@ Control {
         }
     }
 
-    D.InWindowBlur {
+    background: D.InWindowBlur {
         id: background
-        anchors.fill: parent
         radius: 30
         visible: false
     }
 
-    ColumnLayout {
+    contentItem: ColumnLayout {
         id: content
         spacing: 0
-        anchors.fill: parent
 
         Rectangle {
             id: separatorTop
-            width: control.width
-            height: 1
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: 1
             visible: !__dwindow.enabled
             color: "transparent"
         }
@@ -63,6 +61,7 @@ Control {
             spacing: 0
             Layout.alignment: Qt.AlignHCenter
             Layout.fillHeight: true
+            Layout.preferredWidth: parent.width
             Layout.leftMargin: DS.Style.titleBar.leftMargin
 
             D.DciIcon {
@@ -102,8 +101,8 @@ Control {
 
         Rectangle {
             id: separatorButtom
-            width: control.width
-            height: 1
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: 1
             color: "transparent"
             Layout.alignment: Qt.AlignBottom
         }
