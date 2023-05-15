@@ -59,5 +59,6 @@ T.RadioButton {
         font: control.font
         elide: Text.ElideRight
         verticalAlignment: Text.AlignVCenter
+        color: control.palette.windowText
     }
 }
