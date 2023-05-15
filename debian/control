@@ -29,7 +29,8 @@ Description: Deepin Tool Kit Qt Quick Controls 2 QML module
 
 Package: libdtkdeclarative5
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends},
+  libdtkcore5 (>= 5.6.12)
 Multi-Arch: same
 Description: Deepin Tool Kit Gui library
  Dtkdeclarative is base library of Deepin Qt/QtQuick applications.
