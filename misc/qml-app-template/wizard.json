@@ -147,18 +147,30 @@
                     "source": "./src"
                 },
                 {
+                    "source": "./src/main"
+                },
+                {
+                    "source": "./src/maincomponentplugin"
+                },
+                {
+                    "source": "./src/preloadplugin"
+                },
+                {
                     "source": "./template.desktop",
                     "target": "./%{ProjectName}.desktop"
                 },
                 {
                     "source": "./debian"
                 },
-		        {
+                {
+                    "source": "./debian/source"
+                },
+                {
                     "source": "../../git.ignore",
                     "target": ".gitignore",
                     "condition": "%{JS: !%{IsSubproject} && '%{VersionControl}' === 'G.Git'}"
                 }
-	    ]
+            ]
         }
     ]
 }
