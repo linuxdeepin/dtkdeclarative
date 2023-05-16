@@ -9,7 +9,7 @@ import org.deepin.dtk 1.0
 /**
         AppLoader 用于动态创建组件，它在 Preaload 创建显示
     出来后再进行创建操作，并将创建出来的组件放置在 Preload 的
-    窗口内部。开发过程过不需要处理 AppLoader 的处理过程，对于
+    窗口内部。开发过程中不需要处理 AppLoader 的处理过程，对于
     需要使用到 Window 属性的情况，请使用其属性 AppLoader.window。
 
         AppLoader 中请将相互独立的组件放置在不同 Component
