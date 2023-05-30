@@ -13,8 +13,12 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips64")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -ftree-vectorize -march=loongson3a -mhard-float -mno-micromips -mno-mips16 -flax-vector-conversions -mloongson-ext2 -mloongson-mmi")
 endif()
 
-find_package(Qt5 REQUIRED COMPONENTS Core Quick QuickCompiler DBus QuickControls2 LinguistTools)
-find_package(Dtk REQUIRED COMPONENTS Core Gui)
+find_package(Qt${QT_DEFAULT_MAJOR_VERSION} REQUIRED COMPONENTS Core Quick DBus QuickControls2 LinguistTools)
+if(EnableDtk5)
+    find_package(Qt${QT_DEFAULT_MAJOR_VERSION}QuickCompiler)
+endif()
+find_package(Dtk${DTK_DEFAULT_MAJOR_VERSION}Core REQUIRED)
+find_package(Dtk${DTK_DEFAULT_MAJOR_VERSION}Gui REQUIRED)
 find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(GL REQUIRED IMPORTED_TARGET gl)
@@ -26,17 +30,28 @@ file(GLOB D_HEADERS   "./D*")
 file(GLOB QML_RCS ${CMAKE_CURRENT_LIST_DIR}/dtkdeclarative_qml.qrc)
 file(GLOB ASSETS_RCS ${CMAKE_CURRENT_LIST_DIR}/dtkdeclarative_assets.qrc)
 file(GLOB TS_FILES "translations/*.ts")
-# Quick compiler gen qmlc
-qtquick_compiler_add_resources(RESOURCES ${QML_RCS})
-# qtquick_compiler_add_resources(ASSETS_RESOURCES ${ASSETS_RCS})
-# Add translation source file
-qt5_add_translation(QM_FILES ${TS_FILES})
+if(EnableDtk5)
+    # Quick compiler gen qmlc
+    qtquick_compiler_add_resources(RESOURCES
+        ${QML_RCS}
+        ${CMAKE_CURRENT_LIST_DIR}/qml/templates/dtkdeclarative_templates.qrc
+    )
+    # Add translation source file
+    qt5_add_translation(QM_FILES ${TS_FILES})
+endif()
+if(EnableDtk6)
+    qt_add_resources(RESOURCES
+        ${QML_RCS}
+        ${CMAKE_CURRENT_LIST_DIR}/qml/templates-6/dtkdeclarative_templates.qrc
+    )
+    qt_add_translation(QM_FILES ${TS_FILES})
+endif()
 
 add_library(${LIB_NAME} SHARED
     ${SRCS}
     ${HEADERS}
     ${D_HEADERS}
-    ${QML_RCS}
+    ${RESOURCES}
     ${ASSETS_RCS}
     ${QM_FILES}
 )
@@ -55,19 +70,19 @@ target_compile_definitions(${LIB_NAME} PRIVATE
 
 if(USE_QQuickStylePluginPrivate)
     target_link_libraries(${LIB_NAME} PRIVATE
-        Qt5::QuickControls2Private
+        Qt${QT_VERSION_MAJOR}::QuickControls2Private
     )
 endif()
 
 target_link_libraries(${LIB_NAME}
 PUBLIC
-    Qt5::Core
-    Qt5::Quick
-    Dtk::Core
-    Dtk::Gui
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Quick
+    Dtk${DTK_VERSION_MAJOR}::Core
+    Dtk${DTK_VERSION_MAJOR}::Gui
 PRIVATE
-    Qt5::QuickPrivate
-    Qt5::DBus
+    Qt${QT_VERSION_MAJOR}::QuickPrivate
+    Qt${QT_VERSION_MAJOR}::DBus
     PkgConfig::GL
 )
 

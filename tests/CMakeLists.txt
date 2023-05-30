@@ -1,8 +1,9 @@
 set(BIN_NAME unit-test)
 
-find_package(Dtk REQUIRED COMPONENTS Core Gui)
+find_package(Dtk${DTK_DEFAULT_MAJOR_VERSION}Core REQUIRED)
+find_package(Dtk${DTK_DEFAULT_MAJOR_VERSION}Gui REQUIRED)
 find_package(GTest REQUIRED)
-find_package(Qt5 REQUIRED COMPONENTS Core Gui Quick QuickControls2 Qml Test)
+find_package(Qt${QT_DEFAULT_MAJOR_VERSION} REQUIRED COMPONENTS Core Gui Quick QuickControls2 Qml Test)
 
 file(GLOB TEST_HEADER  ut_.*h)
 file(GLOB TEST_SOURCE  *.cpp)
@@ -29,15 +30,15 @@ target_compile_options(${BIN_NAME} PRIVATE
 add_definitions(-DQML_PLUGIN_PATH="${PROJECT_BINARY_DIR}/plugins/")
 
 target_link_libraries(${BIN_NAME} PRIVATE
-    Qt5::Gui
-    Qt5::Core
-    Qt5::CorePrivate
-    Qt5::Test
-    Qt5::Qml
-    Qt5::Quick
-    Qt5::QuickControls2
-    Dtk::Core
-    Dtk::Gui
+    Qt${QT_VERSION_MAJOR}::Gui
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::CorePrivate
+    Qt${QT_VERSION_MAJOR}::Test
+    Qt${QT_VERSION_MAJOR}::Qml
+    Qt${QT_VERSION_MAJOR}::Quick
+    Qt${QT_VERSION_MAJOR}::QuickControls2
+    Dtk${DTK_VERSION_MAJOR}::Core
+    Dtk${DTK_VERSION_MAJOR}::Gui
     GTest::GTest
     ${LIB_NAME}
     pthread

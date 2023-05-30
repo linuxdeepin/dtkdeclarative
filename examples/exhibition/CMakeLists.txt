@@ -1,7 +1,8 @@
 set(BIN_NAME dtk-exhibition)
 
-find_package(Qt5 REQUIRED COMPONENTS Quick QuickControls2)
-find_package(Dtk REQUIRED COMPONENTS Core Gui)
+find_package(Qt${QT_DEFAULT_MAJOR_VERSION} REQUIRED COMPONENTS Quick QuickControls2)
+find_package(Dtk${DTK_DEFAULT_MAJOR_VERSION}Core REQUIRED)
+find_package(Dtk${DTK_DEFAULT_MAJOR_VERSION}Gui REQUIRED)
 
 set(CMAKE_EXE_LINKER_FLAGS  "-z relro -z now -z noexecstack -pie -Wl,--as-needed")
 
@@ -14,10 +15,10 @@ add_executable(${BIN_NAME}
 target_compile_options(${BIN_NAME} PRIVATE "-fpic")
 
 target_link_libraries(${BIN_NAME} PRIVATE
-    Qt5::Quick 
-    Qt5::QuickControls2
-    Dtk::Core
-    Dtk::Gui
+    Qt${QT_VERSION_MAJOR}::Quick 
+    Qt${QT_VERSION_MAJOR}::QuickControls2
+    Dtk${DTK_VERSION_MAJOR}::Core
+    Dtk${DTK_VERSION_MAJOR}::Gui
     ${LIB_NAME}
 )
 

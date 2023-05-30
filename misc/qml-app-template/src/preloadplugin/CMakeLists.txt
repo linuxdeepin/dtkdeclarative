@@ -27,7 +27,7 @@ add_library(${PRELOAD_LIB_NAME} SHARED
 
 # 由于 LIB 程序为本项目的功能实现部分，需要用到的第三方库都需要在此处添加。
 target_link_libraries(${PRELOAD_LIB_NAME}
-    Qt5::Quick
+    Qt${QT_VERSION_MAJOR}::Quick
     Dtk::Declarative
     )
 

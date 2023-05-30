@@ -2,6 +2,24 @@ cmake_minimum_required(VERSION 3.10)
 
 set(VERSION "5.6.8" CACHE STRING "Define project version")
 
+set(DTK_VERSION "5" CACHE STRING "Dtk Version")
+
+if (DTK_VERSION STREQUAL "5")
+    set(QT_DEFAULT_MAJOR_VERSION "5")
+    set(DTK_DEFAULT_MAJOR_VERSION "")
+    set(DTK_VERSION_MAJOR "")
+    set(EnableDtk5 on)
+    set(EnableDtk6 off)
+elseif(DTK_VERSION STREQUAL "6")
+    set(QT_DEFAULT_MAJOR_VERSION "6")
+    set(DTK_DEFAULT_MAJOR_VERSION "6")
+    set(DTK_VERSION_MAJOR "6")
+    set(EnableDtk5 off)
+    set(EnableDtk6 on)
+else()
+    message(FATAL_ERROR "Only support DTK_VERSION is 5 or 6")
+endif()
+
 project(DtkDeclarative
     VERSION "${VERSION}"
     DESCRIPTION "DTK Declarative module"
@@ -34,10 +52,18 @@ set(MKSPECS_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt5/mkspecs/modules" CACHE STRI
 set(QML_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt5/qml" CACHE STRING "Qml plugin install directory")
 
 set(USE_QQuickStylePluginPrivate OFF)
-find_package(Qt5QuickControls2)
-if(TARGET Qt5::QuickControls2 AND TARGET Qt5::QuickControls2Private)
+find_package(Qt${QT_DEFAULT_MAJOR_VERSION}QuickControls2)
+if(EnableDtk5)
+if(TARGET Qt::QuickControls2 AND TARGET Qt::QuickControls2Private)
     add_definitions(-DUSE_QQuickStylePlugin)
     set(USE_QQuickStylePluginPrivate ON)
+endif()
+endif()
+if(EnableDtk6)
+if(TARGET Qt6::QuickControls2 AND TARGET Qt6::QuickControls2Private)
+    add_definitions(-DUSE_QQuickStylePlugin)
+    set(USE_QQuickStylePluginPrivate ON)
+endif()
 endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wall -Wextra")
