@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.10)
 
 find_package (Doxygen REQUIRED)
 
-set (QCH_INSTALL_DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/qt5/doc CACHE STRING "QCH install location")
+set (QCH_INSTALL_DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/qt${QT_VERSION_MAJOR}/doc CACHE STRING "QCH install location")
 
 set (DOXYGEN_GENERATE_HTML "YES" CACHE STRING "Doxygen HTML output")
 set (DOXYGEN_GENERATE_XML "YES" CACHE STRING "Doxygen XML output")
@@ -14,10 +14,7 @@ set (DOXYGEN_PROJECT_NUMBER ${CMAKE_PROJECT_VERSION} CACHE STRING "") # Should b
 set (DOXYGEN_EXTRACT_STATIC YES)
 set (DOXYGEN_OUTPUT_LANGUAGE "Chinese" CACHE STRING "Doxygen Output Language")
 set (DOXYGEN_IMAGE_PATH ${CMAKE_CURRENT_LIST_DIR}/images/)
-find_program(DOXYGEN_QHG_LOCATION 
-    NAMES qhelpgenerator qhelpgenerator-qt5 qhelpgenerator5
-    REQUIRED
-)
+set (DOXYGEN_QHG_LOCATION "qhelpgenerator" CACHE STRING "Doxygen QHG path")
 set (DOXYGEN_QHP_NAMESPACE "org.deepin.dtk.declarative")
 set (DOXYGEN_QCH_FILE "dtkdeclarative.qch")
 set (DOXYGEN_QHP_VIRTUAL_FOLDER "dtkdeclarative")
