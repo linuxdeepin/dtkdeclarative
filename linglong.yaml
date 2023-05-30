@@ -29,7 +29,7 @@ source:
 
 variables:
   extra_args: |
-    VERSION=${VERSION}
+    DTK_VERSION=${VERSION}
 
 build:
   kind: qmake

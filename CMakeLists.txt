@@ -1,14 +1,28 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(VERSION "5.6.8" CACHE STRING "Define project version")
-
+set(DTK_VERSION "5.6.8" CACHE STRING "Define project version")
 project(DtkDeclarative
-    VERSION "${VERSION}"
+    VERSION "${DTK_VERSION}"
     DESCRIPTION "DTK Declarative module"
     HOMEPAGE_URL "https://github.com/linuxdeepin/dtkdeclarative"
     LANGUAGES CXX
 )
 set(LIB_NAME dtkdeclarative)
+
+if (${PROJECT_VERSION_MAJOR} STREQUAL "5")
+    set(QT_DEFAULT_MAJOR_VERSION "5")
+    set(QT_VERSION_MAJOR "5")
+    set(EnableDtk5 on)
+    set(EnableDtk6 off)
+elseif(${PROJECT_VERSION_MAJOR} STREQUAL "6")
+    set(QT_DEFAULT_MAJOR_VERSION "6")
+    set(QT_VERSION_MAJOR "6")
+    set(DTK_VERSION_MAJOR "6")
+    set(EnableDtk5 off)
+    set(EnableDtk6 on)
+else()
+    message(FATAL_ERROR "Only support DTK_VERSION is 5 or 6")
+endif()
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -30,14 +44,20 @@ set(INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}/dtk${PROJECT_VERSION_MAJOR}
 set(TEMPLATE_INSTALL_DIR "share/qtcreator/templates/wizards/projects/qml-app-template" CACHE STRING "Directory to install QtCreator template")
 set(CONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/DtkDeclarative" CACHE STRING "CMake config file install directory")
 set(PKGCONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/pkgconfig" CACHE STRING "Directory to install pkg-config file")
-set(MKSPECS_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt5/mkspecs/modules" CACHE STRING "Qt pri module install directory")
-set(QML_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt5/qml" CACHE STRING "Qml plugin install directory")
+set(MKSPECS_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt${QT_VERSION_MAJOR}/mkspecs/modules" CACHE STRING "Qt pri module install directory")
+set(QML_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt${QT_VERSION_MAJOR}/qml" CACHE STRING "Qml plugin install directory")
 
 set(USE_QQuickStylePluginPrivate OFF)
-find_package(Qt5QuickControls2)
-if(TARGET Qt5::QuickControls2 AND TARGET Qt5::QuickControls2Private)
-    add_definitions(-DUSE_QQuickStylePlugin)
+find_package(Qt${QT_VERSION_MAJOR}QuickControls2)
+if(EnableDtk5)
+if(TARGET Qt::QuickControls2 AND TARGET Qt::QuickControls2Private)
     set(USE_QQuickStylePluginPrivate ON)
+endif()
+endif()
+if(EnableDtk6)
+if(TARGET Qt6::QuickControls2 AND TARGET Qt6::QuickControls2Private)
+    set(USE_QQuickStylePluginPrivate ON)
+endif()
 endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wall -Wextra")
