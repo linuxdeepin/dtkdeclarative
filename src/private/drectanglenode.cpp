@@ -12,6 +12,7 @@
 DQUICK_USE_NAMESPACE
 DQUICK_BEGIN_NAMESPACE
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
 const char *CornerColorShader::vertexShader() const
 {
     return "uniform highp mat4 qt_Matrix;                      \n"
@@ -67,6 +68,8 @@ void CornerColorShader::initialize()
     QOpenGLShaderProgram * const program = QSGMaterialShader::program();
     m_idQtOpacity = program->uniformLocation("qt_Opacity");
 }
+#else
+#endif
 
 CornerColorMaterial::CornerColorMaterial()
     : QSGOpaqueTextureMaterial()
@@ -83,10 +86,18 @@ QSGMaterialType *CornerColorMaterial::type() const
     return &type;
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 QSGMaterialShader *CornerColorMaterial::createShader() const
 {
     return new CornerColorShader;
 }
+#else
+QSGMaterialShader *CornerColorMaterial::createShader(QSGRendererInterface::RenderMode renderMode) const
+{
+    Q_UNUSED(renderMode)
+    return nullptr;
+}
+#endif
 
 int CornerColorMaterial::compare(const QSGMaterial *other) const
 {

@@ -9,6 +9,9 @@
 #include <QSGRenderNode>
 #include <QImage>
 #include <QPointer>
+#ifndef QT_NO_OPENGL
+#include <qopengl.h>
+#endif
 
 QT_BEGIN_NAMESPACE
 class QQuickItem;

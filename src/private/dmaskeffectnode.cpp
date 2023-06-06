@@ -21,11 +21,14 @@ class OpaqueTextureMaterialShader : public QSGMaterialShader
 public:
     OpaqueTextureMaterialShader();
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
     void updateState(const RenderState &state, QSGMaterial *newEffect, QSGMaterial *oldEffect) override;
     char const *const *attributeNames() const override;
 
 protected:
     void initialize() override;
+#else
+#endif
 
 protected:
     int m_matrix_id;
@@ -36,8 +39,11 @@ class TextureMaterialShader : public OpaqueTextureMaterialShader
 public:
     TextureMaterialShader();
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
     void updateState(const RenderState &state, QSGMaterial *newEffect, QSGMaterial *oldEffect) override;
     void initialize() override;
+#else
+#endif
 
 protected:
     int m_opacity_id;
@@ -45,12 +51,16 @@ protected:
 
 OpaqueTextureMaterialShader::OpaqueTextureMaterialShader()
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
 #if QT_CONFIG(opengl)
     setShaderSourceFile(QOpenGLShader::Vertex, QStringLiteral(":/dtk/declarative/shaders/quickitemviewport-opaque.vert"));
     setShaderSourceFile(QOpenGLShader::Fragment, QStringLiteral(":/dtk/declarative/shaders/quickitemviewport-opaque.frag"));
 #endif
+#else
+#endif
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
 char const *const *OpaqueTextureMaterialShader::attributeNames() const
 {
     static char const *const attr[] = { "qt_VertexPosition", "qt_VertexTexCoord", nullptr };
@@ -122,15 +132,21 @@ void OpaqueTextureMaterialShader::updateState(const RenderState &state, QSGMater
     Q_UNUSED(state)
 #endif
 }
+#else
+#endif
 
 TextureMaterialShader::TextureMaterialShader()
     : OpaqueTextureMaterialShader()
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
 #if QT_CONFIG(opengl)
     setShaderSourceFile(QOpenGLShader::Fragment, ":/dtk/declarative/shaders/quickitemviewport.frag");
 #endif
+#else
+#endif
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
 void TextureMaterialShader::updateState(const QSGMaterialShader::RenderState &state, QSGMaterial *newEffect, QSGMaterial *oldEffect)
 {
     Q_ASSERT(oldEffect == nullptr || newEffect->type() == oldEffect->type());
@@ -148,6 +164,8 @@ void TextureMaterialShader::initialize()
     m_opacity_id = program()->uniformLocation("opacity");
 #endif
 }
+#else
+#endif
 
 MaskEffectNode::MaskEffectNode()
     : m_geometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4)
@@ -340,10 +358,18 @@ QSGMaterialType *TextureMaterial::type() const
     return &type;
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 QSGMaterialShader *TextureMaterial::createShader() const
 {
     return new TextureMaterialShader;
 }
+#else
+QSGMaterialShader *TextureMaterial::createShader(QSGRendererInterface::RenderMode renderMode) const
+{
+    Q_UNUSED(renderMode)
+    return new TextureMaterialShader;
+}
+#endif
 
 int TextureMaterial::compare(const QSGMaterial *o) const
 {
@@ -356,10 +382,18 @@ QSGMaterialType *OpaqueTextureMaterial::type() const
     return &type;
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 QSGMaterialShader *OpaqueTextureMaterial::createShader() const
 {
     return new OpaqueTextureMaterialShader;
 }
+#else
+QSGMaterialShader *OpaqueTextureMaterial::createShader(QSGRendererInterface::RenderMode renderMode) const
+{
+    Q_UNUSED(renderMode)
+    return new OpaqueTextureMaterialShader;
+}
+#endif
 
 int OpaqueTextureMaterial::compare(const QSGMaterial *o) const
 {
@@ -375,8 +409,11 @@ void OpaqueTextureMaterial::setMaskTexture(QSGTexture *texture)
         return;
     }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
     if (texture->textureId() == m_maskTexture->textureId())
         return;
+#else
+#endif
 
     m_maskTexture = texture;
 }

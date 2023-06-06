@@ -23,6 +23,7 @@ bool DHandleContextMenuWindow::event(QEvent *e)
 void DHandleContextMenuWindow::handleMouseEvent(QMouseEvent *event)
 {
     QQuickWindowPrivate *d = reinterpret_cast<QQuickWindowPrivate *>(qGetPtrHelper(d_ptr));
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
     if (!mouseGrabberItem() && !d->pointerEventInstance(QQuickPointerDevice::genericMouseDevice())->point(0)->exclusiveGrabber()) {
         // 右键点击事件模拟发送菜单显示事件
         if (event->button() == Qt::RightButton && event->type() == QEvent::MouseButtonPress) {
@@ -33,4 +34,6 @@ void DHandleContextMenuWindow::handleMouseEvent(QMouseEvent *event)
             QGuiApplication::sendEvent(this, &e);
         }
     }
+#else
+#endif
 }

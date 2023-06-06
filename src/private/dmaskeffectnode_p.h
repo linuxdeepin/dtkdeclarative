@@ -18,7 +18,12 @@ class OpaqueTextureMaterial : public QSGOpaqueTextureMaterial
 {
 public:
     QSGMaterialType *type() const override;
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QSGMaterialShader *createShader() const override;
+#else
+    QSGMaterialShader *createShader(QSGRendererInterface::RenderMode renderMode) const override;
+#endif
     int compare(const QSGMaterial *other) const override;
 
     void setMaskTexture(QSGTexture *texture);
@@ -44,7 +49,11 @@ class TextureMaterial : public OpaqueTextureMaterial
 {
 public:
     QSGMaterialType *type() const override;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QSGMaterialShader *createShader() const override;
+#else
+    QSGMaterialShader *createShader(QSGRendererInterface::RenderMode renderMode) const override;
+#endif
     int compare(const QSGMaterial *other) const override;
 };
 
