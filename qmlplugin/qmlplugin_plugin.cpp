@@ -354,6 +354,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
 
 void QmlpluginPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
 {
+    Q_UNUSED(DGuiApplicationHelper::instance());
     engine->addImageProvider("dtk.icon", new DQuickIconProvider);
     engine->addImageProvider("dtk.dci.icon", new DQuickDciIconProvider);
     engine->addImageProvider("dtk.shadow", new DQuickShadowProvider);
