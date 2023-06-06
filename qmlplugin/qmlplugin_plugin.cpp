@@ -105,6 +105,17 @@ inline void dtkSettingsRegisterType(const char *uri1, const char *uri2, int vers
     if (uri2)
         qmlRegisterType(url, uri2, versionMajor, versionMinor, qmlName);
 }
+inline void dtkTemplatesRegisterType(const char *uri1, const char *uri2, int versionMajor, int versionMinor, const char *qmlName) {
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
+    static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml/templates/%1.qml");
+#else
+    static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml/templates-6/%1.qml");
+#endif
+    const QUrl url(urlTemplate.arg(qmlName));
+    qmlRegisterType(url, uri1, versionMajor, versionMinor, qmlName);
+    if (uri2)
+        qmlRegisterType(url, uri2, versionMajor, versionMinor, qmlName);
+}
 
 #if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
 static QVariant quickColorTypeConverter(const QString &data)
@@ -155,6 +166,47 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     // @uri org.deepin.dtk.settings
     const QByteArray settingsUri = QByteArray(uri) + ".settings";
     qmlRegisterModule(settingsUri, 1, 0);
+    // @uri QtQuick.Templates
+    const QByteArray templatesUri = QByteArray(uri).append(".templates");
+    qmlRegisterModule(templatesUri.constData(), 1, 0);
+
+    // QtQuick.Templates
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "ApplicationWindow");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "BusyIndicator");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "Button");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "CheckBox");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "CheckDelegate");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "ComboBox");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "Control");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "DelayButton");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "DialogButtonBox");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "Dial");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "Frame");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "GroupBox");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "ItemDelegate");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "MenuItem");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "Menu");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "MenuSeparator");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "PageIndicator");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "Pane");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "Popup");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "ProgressBar");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "RadioButton");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "RoundButton");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "ScrollBar");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "ScrollIndicator");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "Slider");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "SpinBox");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "StackView");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "Switch");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "TextArea");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "TextField");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "ToolTip");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "OpacityMask");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "ShaderEffectSource");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "SourceProxy");
+    dtkTemplatesRegisterType(templatesUri, nullptr, 1, 0, "ToolButton");
+
 
     // for org.deepin.dtk and org.deepin.dtk.impl
     dtkRegisterType<DQuickIconImage>(uri, implUri, 1, 0, "QtIcon");

@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 import QtQuick 2.0
-import QtGraphicalEffects.private 1.0
+import org.deepin.dtk.templates 1.0
 import org.deepin.dtk.impl 1.0 as D
 
 /*!

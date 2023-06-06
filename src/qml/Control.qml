@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 import QtQuick 2.11
-import QtQuick.Templates 2.4 as T
+import org.deepin.dtk.templates 1.0 as T
 import org.deepin.dtk.style 1.0 as DS
 
 T.Control {

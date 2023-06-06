@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-import QtGraphicalEffects 1.0
+import org.deepin.dtk.templates 1.0
 
 /*!
     The Qt Graphical Effects module provides a set of QML types.The effects cover functional areas
