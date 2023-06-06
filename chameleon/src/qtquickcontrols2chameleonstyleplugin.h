@@ -26,6 +26,10 @@ public:
 #ifdef USE_QQuickStylePlugin
     QString name() const override;
 #endif
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    virtual void initializeTheme(QQuickTheme *) {}
+#endif
     void registerTypes(const char *uri) override;
 };
 

@@ -40,6 +40,23 @@ Q_LOGGING_CATEGORY(appLoaderLog, "dtk.quick.apploader");
 static const QQuickItemPrivate::ChangeTypes changedTypes = QQuickItemPrivate::Geometry;
 DAppLoader *DAppLoader::self = nullptr;
 
+static inline const bool heightValid(QQuickItemPrivate *item)
+{
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
+    return item->heightValid;
+#else
+    return item->heightValid();
+#endif
+}
+static inline bool widthValid(QQuickItemPrivate *item)
+{
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
+    return item->widthValid;
+#else
+    return item->widthValid();
+#endif
+}
+
 class DQmlComponentIncubator : public QQmlIncubator
 {
 public:
@@ -252,13 +269,13 @@ void DAppLoaderPrivate::updateRootItemSize(QQuickItem *item)
         return;
 
     QQuickItemPrivate *ip = QQuickItemPrivate::get(item);
-    if (ip->widthValid) {
+    if (widthValid(ip)) {
         appRootItem->setWidth(item->width());
     } else {
         appRootItem->setWidth(appWindow->width());
     }
 
-    if (ip->heightValid) {
+    if (heightValid(ip)) {
         appRootItem->setHeight(item->height());
     } else {
         appRootItem->setWidth(appWindow->height());
@@ -308,7 +325,7 @@ void DAppLoaderPrivate::createOverlay()
         engine->setObjectOwnership(exitedTransition, QQmlEngine::CppOwnership);
     loComponent->completeCreate();
     QQuickItemPrivate *overlayPrivate = QQuickItemPrivate::get(loadingOverlay);
-    if (!overlayPrivate->widthValid || !overlayPrivate->heightValid) {
+    if (!widthValid(overlayPrivate) || !heightValid(overlayPrivate)) {
         overlayUsingParentSize = true;
         if (qFuzzyCompare(windowContentItem->width(), 0) || qFuzzyCompare(windowContentItem->height(), 0)) {
             loadingOverlay->setSize(appWindow->size());
@@ -521,10 +538,18 @@ int DAppLoader::exec(int &argc, char **argv)
         if (renderName) {
             if (renderName != QByteArrayLiteral("LLVMPIPE")
                     || renderName != QByteArrayLiteral("SWRAST"))
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
                 QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
+#else
+                QQuickWindow::setGraphicsApi(QSGRendererInterface::Software);
+#endif
         }
     } else {
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
         QQuickWindow::setSceneGraphBackend(graphics);
+#else
+        QQuickWindow::setGraphicsApi(graphics);
+#endif
     }
     d->preloadInstance->aboutToPreload(d->engine);
     QObject::connect(d->engine, SIGNAL(objectCreated(QObject *, const QUrl &)), this, SLOT(_q_onPreloadCreated(QObject *, const QUrl &)));

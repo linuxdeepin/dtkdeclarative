@@ -655,11 +655,20 @@ void DQuickIconLabel::componentComplete()
     d->layout();
 }
 
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
 void DQuickIconLabel::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
 {
     Q_D(DQuickIconLabel);
     QQuickItem::geometryChanged(newGeometry, oldGeometry);
     d->layout();
 }
+#else
+void DQuickIconLabel::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
+{
+    Q_D(DQuickIconLabel);
+    QQuickItem::geometryChange(newGeometry, oldGeometry);
+    d->layout();
+}
+#endif
 
 DQUICK_END_NAMESPACE

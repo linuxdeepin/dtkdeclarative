@@ -347,6 +347,7 @@ void DQuickItemViewport::itemChange(QQuickItem::ItemChange change, const QQuickI
     QQuickItem::itemChange(change, data);
 }
 
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
 void DQuickItemViewport::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
 {
     D_D(DQuickItemViewport);
@@ -357,6 +358,18 @@ void DQuickItemViewport::geometryChanged(const QRectF &newGeometry, const QRectF
     }
     QQuickItem::geometryChanged(newGeometry, oldGeometry);
 }
+#else
+void DQuickItemViewport::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
+{
+    D_D(DQuickItemViewport);
+    if (!d->sourceRect.isValid() && newGeometry.size() != oldGeometry.size()) {
+        d->markDirty(DQuickItemViewportPrivate::DirtyMaskSizeRatio);
+        if (!d->sourceRect.isValid())
+            d->markDirty(DQuickItemViewportPrivate::DirtySourceSizeRatio);
+    }
+    QQuickItem::geometryChange(newGeometry, oldGeometry);
+}
+#endif
 
 static inline void safeSetMaterialBlending(QSGMaterial *m, bool b) {
     if (m && m != reinterpret_cast<QSGMaterial*>(1)) {

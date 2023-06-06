@@ -233,7 +233,11 @@ void DConfigWrapper::componentComplete()
     const DefalutProperties &properties = propertyAndValues(this);
     qCDebug(cfLog) << "properties" << properties;
 
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
     auto objectType = new QQmlOpenMetaObjectType(&DConfigWrapper::staticMetaObject, qmlEngine(this));
+#else
+    auto objectType = new QQmlOpenMetaObjectType(&DConfigWrapper::staticMetaObject);
+#endif
     auto mo = new DConfigWrapperMetaObject(this, objectType);
     mo->setCached(true);
 

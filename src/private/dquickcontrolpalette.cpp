@@ -152,7 +152,11 @@ class Q_DECL_HIDDEN CustomMetaObject : public QQmlOpenMetaObject
 {
 public:
     CustomMetaObject(DQuickControlColorSelector *obj)
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
         : QQmlOpenMetaObject(obj, new QQmlOpenMetaObjectType(obj->metaObject(), qmlEngine(obj->parent())))
+#else
+        : QQmlOpenMetaObject(obj, new QQmlOpenMetaObjectType(obj->metaObject()))
+#endif
     {
 
     }

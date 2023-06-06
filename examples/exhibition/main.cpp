@@ -40,9 +40,11 @@ public:
         case QSGRendererInterface::Unknown: return "Unknown";
         case QSGRendererInterface::Software: return "Software";
         case QSGRendererInterface::OpenGL: return "OpenGL";
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
         case QSGRendererInterface::Direct3D12: return "Direct3D12";
-        case QSGRendererInterface::OpenVG: return "OpenVG";
         case QSGRendererInterface::OpenGLRhi: return "OpenGLRhi";
+#endif
+        case QSGRendererInterface::OpenVG: return "OpenVG";
         case QSGRendererInterface::Direct3D11Rhi: return "Direct3D11Rhi";
         case QSGRendererInterface::VulkanRhi: return "VulkanRhi";
         case QSGRendererInterface::MetalRhi: return "MetalRhi";
@@ -64,16 +66,17 @@ int main(int argc, char **argv)
     app.setApplicationName("dtk-exhibition");
     qputenv("D_POPUP_MODE", "embed");
 
-#ifdef QT_NO_DEBUG
-    QQuickStyle::setStyle("Chameleon");
-#else
-    QQuickStyle::setStyle(CHAMELEON_PATH"/Chameleon");
-    qInfo() << "QQuickStyle:" << CHAMELEON_PATH"/Chameleon";
-#endif
     QQmlApplicationEngine engine;
 
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
+    QQuickStyle::addStylePath(CHAMELEON_PATH);
 //    QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
+#else
     engine.addImportPath(CHAMELEON_PATH);
+    QQuickWindow::setGraphicsApi(QSGRendererInterface::Software);
+#endif
+    QQuickStyle::setStyle("Chameleon");
+
     engine.rootContext()->setContextProperty("examplesFiles",
                                              QDir(":/examples").entryList({"*.qml"}));
     engine.rootContext()->setContextProperty("globalObject", new Object());

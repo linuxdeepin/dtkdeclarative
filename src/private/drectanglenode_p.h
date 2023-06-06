@@ -20,6 +20,7 @@
 
 DQUICK_BEGIN_NAMESPACE
 
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0) // TODO qt6
 class CornerColorShader : public QSGOpaqueTextureMaterialShader
 {
 public:
@@ -32,6 +33,8 @@ public:
 private:
     int m_idQtOpacity = -1;
 };
+#else
+#endif
 
 class CornerColorMaterial : public QSGOpaqueTextureMaterial
 {
@@ -44,7 +47,11 @@ public:
     void setColor(const QColor &color) { m_color = color; }
 
     QSGMaterialType *type() const override;
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
     QSGMaterialShader *createShader() const override;
+#else
+    QSGMaterialShader *createShader(QSGRendererInterface::RenderMode renderMode) const override;
+#endif
 
     int compare(const QSGMaterial *other) const override;
 

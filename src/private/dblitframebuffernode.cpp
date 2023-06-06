@@ -105,7 +105,10 @@ public:
                                                || fbo->height() < textureSize.height())))) {
             fbo = shareBuffer ? CachedFBO::getFBO(textureSize, useAtlasTexture)
                               : SharedCachedFBO(new CachedFBO(textureSize));
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0) // TODO qt6
             m_texture->setTextureId(fbo->texture());
+#else
+#endif
             m_texture->setHasAlphaChannel(true);
             m_texture->setTextureSize(fbo->size());
         }
