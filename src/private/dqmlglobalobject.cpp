@@ -126,6 +126,11 @@ void DQMLGlobalObjectPrivate::ensurePalette()
     if (paletteInit)
         return;
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    quickPalette = new QQuickPalette(q_func());
+    inactiveQuickPalette = new QQuickPalette(q_func());
+#endif
+
     paletteInit = true;
     updatePalettes();
 
@@ -143,6 +148,10 @@ void DQMLGlobalObjectPrivate::updatePalettes()
         // The palette don't need set color for the QPalette::Disabled group.
         palette.setBrush(QPalette::All, role, palette.brush(QPalette::Active, role));
     }
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    quickPalette->fromQPalette(palette);
+    inactiveQuickPalette->fromQPalette(inactivePalette);
+#endif
 }
 
 void DQMLGlobalObjectPrivate::_q_onPaletteChanged()
@@ -246,6 +255,22 @@ QPalette DQMLGlobalObject::inactivePalette() const
     const_cast<DQMLGlobalObjectPrivate*>(d)->ensurePalette();
     return d->inactivePalette;
 }
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+QQuickPalette *DQMLGlobalObject::quickPalette() const
+{
+    D_DC(DQMLGlobalObject);
+    const_cast<DQMLGlobalObjectPrivate*>(d)->ensurePalette();
+    return d->quickPalette;
+}
+
+QQuickPalette *DQMLGlobalObject::inactiveQuickPalette() const
+{
+    D_DC(DQMLGlobalObject);
+    const_cast<DQMLGlobalObjectPrivate*>(d)->ensurePalette();
+    return d->inactiveQuickPalette;
+}
+#endif
 
 QColor DQMLGlobalObject::blendColor(const QColor &substrate, const QColor &superstratum)
 {

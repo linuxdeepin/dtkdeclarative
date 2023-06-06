@@ -29,6 +29,10 @@ public:
     bool paletteInit = false;
     QPalette palette;
     QPalette inactivePalette;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QQuickPalette *quickPalette = nullptr;
+    QQuickPalette *inactiveQuickPalette = nullptr;
+#endif
     QString deepinWebsiteName;
     QString deepinWebsiteLink;
     QString deepinDistributionOrgLogo;
