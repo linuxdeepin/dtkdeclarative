@@ -16,6 +16,12 @@
 #include <QQuickWindow>
 #include <QQmlComponent>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+QT_BEGIN_NAMESPACE
+class QQuickPalette;
+QT_END_NAMESPACE
+#endif
+
 DGUI_BEGIN_NAMESPACE
 class DFontManager;
 DGUI_END_NAMESPACE
@@ -109,8 +115,13 @@ class DQMLGlobalObject : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(QString windowManagerNameString READ windowManagerNameString CONSTANT)
     Q_PROPERTY(DPlatformThemeProxy *platformTheme READ platformTheme FINAL CONSTANT)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DFontManager *fontManager READ fontManager FINAL CONSTANT)
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
     Q_PROPERTY(QPalette palette READ palette NOTIFY paletteChanged)
     Q_PROPERTY(QPalette inactivePalette READ inactivePalette NOTIFY inactivePaletteChanged)
+#else
+    Q_PROPERTY(QQuickPalette* palette READ quickPalette NOTIFY paletteChanged)
+    Q_PROPERTY(QQuickPalette* inactivePalette READ inactiveQuickPalette NOTIFY inactivePaletteChanged)
+#endif
     Q_PROPERTY(QString deepinDistributionOrgLogo READ deepinDistributionOrgLogo CONSTANT)
     Q_PROPERTY(QString deepinWebsiteName READ deepinWebsiteName CONSTANT)
     Q_PROPERTY(QString deepinWebsiteLink READ deepinWebsiteLink CONSTANT)
@@ -159,6 +170,10 @@ public:
 
     QPalette palette() const;
     QPalette inactivePalette() const;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QQuickPalette *quickPalette() const;
+    QQuickPalette *inactiveQuickPalette() const;
+#endif
 
     Q_INVOKABLE QColor blendColor(const QColor &substrate, const QColor &superstratum);
     Q_INVOKABLE DTK_QUICK_NAMESPACE::DColor makeColor(DTK_QUICK_NAMESPACE::DColor::Type type);
@@ -177,7 +192,11 @@ public:
     Q_INVOKABLE QPoint cursorPosition() const;
 
     Q_INVOKABLE DTK_QUICK_NAMESPACE::DQuickDciIcon makeIcon(const QJSValue &qicon, const QJSValue &iconExtra);
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
     Q_INVOKABLE DTK_GUI_NAMESPACE::DDciIconPalette makeIconPalette(const QPalette &palette);
+#else
+    Q_INVOKABLE DTK_GUI_NAMESPACE::DDciIconPalette makeIconPalette(const QQuickPalette *palette);
+#endif
 
     Q_INVOKABLE bool sendMessage(QObject *target, const QString &content, const QString &iconName = QString(), int duration = 4000, const QString &msgId = QString());
     Q_INVOKABLE bool sendMessage(QObject *target, QQmlComponent *delegate, const QVariant &message, int duration = 4000, const QString &msgId = QString());
