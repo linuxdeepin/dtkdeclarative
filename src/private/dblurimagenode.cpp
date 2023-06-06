@@ -16,6 +16,8 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLContext>
 #include <QOpenGLBuffer>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLFramebufferObject>
 #endif
 
 DQUICK_BEGIN_NAMESPACE
@@ -476,8 +478,11 @@ void DOpenGLBlurEffectNode::render(const QSGRenderNode::RenderState *state)
     if (Q_UNLIKELY(m_fboVector.isEmpty()))
         return;
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
     applyDaulBlur(m_fboVector[1], m_texture->textureId(), m_programKawaseDown, state,
             m_matrixKawaseDownUniform, 2);
+#else
+#endif
 
     for (int i = 1; i < m_radius; i++) {
         applyDaulBlur(m_fboVector[i + 1], m_fboVector[i]->texture(), m_programKawaseDown, state,
@@ -511,7 +516,10 @@ bool DOpenGLBlurEffectNode::writeToTexture(QSGPlainTexture *targetTexture) const
 {
     if (Q_UNLIKELY(m_fboVector.isEmpty()))
         return false;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
     targetTexture->setTextureId(m_fboVector.first()->texture());
+#else
+#endif
     targetTexture->setHasAlphaChannel(m_texture->hasAlphaChannel());
     targetTexture->setTextureSize(m_fboVector.first()->size());
     return true;

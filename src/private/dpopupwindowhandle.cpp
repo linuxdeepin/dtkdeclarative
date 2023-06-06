@@ -140,7 +140,11 @@ static inline void popupGeometryChanged(QQuickItem *obj, const QRectF &newGeomet
     Q_ASSERT(handle);
     if (!handle->isPositioning()) {
         // only in `reposition` to override virtual function.
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         DVtableHook::callOriginalFun(obj, &QQuickItem::geometryChanged, newGeometry, oldGeometry);
+#else
+        DVtableHook::callOriginalFun(obj, &QQuickItem::geometryChange, newGeometry, oldGeometry);
+#endif
     }
 }
 static inline void popupUpdatePolish(QQuickItem *obj)
@@ -166,7 +170,11 @@ DPopupWindowHandleImpl::DPopupWindowHandleImpl(QQuickWindow *window, QObject *pa
     connect(popup(), SIGNAL(opened()), this, SLOT(reposition()));
     popupItem()->setProperty(PopupWindowHandlePointer, QVariant::fromValue(this));
     // geometryChanged would call reposition of `PopupItem`.
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     DVtableHook::overrideVfptrFun(popupItem(), &QQuickItem::geometryChanged, &popupGeometryChanged);
+#else
+    DVtableHook::overrideVfptrFun(popupItem(), &QQuickItem::geometryChange, &popupGeometryChanged);
+#endif
     // updatePolish would call reposition of `PopupItem`.
     DVtableHook::overrideVfptrFun(popupItem(), &QQuickItem::updatePolish, &popupUpdatePolish);
 
@@ -180,7 +188,11 @@ DPopupWindowHandleImpl::~DPopupWindowHandleImpl()
     QQuickItem *item = popupItem();
     if (item) {
         // reset original virtual function.
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         DVtableHook::resetVfptrFun(item, &QQuickItem::geometryChanged);
+#else
+        DVtableHook::resetVfptrFun(item, &QQuickItem::geometryChange);
+#endif
         DVtableHook::resetVfptrFun(item, &QQuickItem::updatePolish);
         disconnect(item, nullptr, this, nullptr);
     }

@@ -16,12 +16,19 @@ int main(int argc, char *argv[])
     app.setApplicationName("Example");
     app.setApplicationVersion("1.0.0");
 
-    QQuickStyle::setStyle(CHAMELEON_PATH"/Chameleon");
-    QQmlApplicationEngine engine;
     qputenv("D_POPUP_MODE", "embed");
 
+    QQmlApplicationEngine engine;
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    QQuickStyle::addStylePath(CHAMELEON_PATH);
 //    QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
+#else
     engine.addImportPath(CHAMELEON_PATH);
+//    QQuickWindow::setGraphicsApi(QSGRendererInterface::Software);
+#endif
+    QQuickStyle::setStyle("Chameleon");
+
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;

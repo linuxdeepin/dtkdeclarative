@@ -16,6 +16,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QtMath>
+#include <QFile>
 
 #include <private/dquickdciiconimage_p.h>
 
@@ -76,7 +77,9 @@ static QImage requestImageFromQIcon(const QString &id, QSize *size, const QSize 
     QSize icon_size = requestedSize;
     // 初始时可能没有为图标设置期望的大小
     if (icon_size.isEmpty()) {
-        icon_size = icon.availableSizes(qMode, qState).first();
+        const auto &sizes = icon.availableSizes(qMode, qState);
+        if (!sizes.isEmpty())
+            icon_size = sizes.first();
     } else {
         // 因为传入的requestedSize是已经乘过缩放的, 因此此处要除以缩放比例获取真实的图标大小
         icon_size /= devicePixelRatio;

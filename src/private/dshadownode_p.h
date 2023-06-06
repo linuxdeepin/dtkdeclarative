@@ -32,7 +32,11 @@ public:
     void setSpread(qreal spread) { m_spread = spread; }
 
     QSGMaterialType *type() const override;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QSGMaterialShader *createShader() const override;
+#else
+    QSGMaterialShader *createShader(QSGRendererInterface::RenderMode renderMode) const override;
+#endif
 
     int compare(const QSGMaterial *) const override;
 

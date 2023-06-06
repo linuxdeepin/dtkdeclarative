@@ -106,6 +106,7 @@ inline void dtkSettingsRegisterType(const char *uri1, const char *uri2, int vers
         qmlRegisterType(url, uri2, versionMajor, versionMinor, qmlName);
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 static QVariant quickColorTypeConverter(const QString &data)
 {
     return QVariant::fromValue(DQuickControlColor(QColor(data)));
@@ -115,6 +116,7 @@ static QVariant dcolorTypeConverter(const QString &data)
 {
     return QVariant::fromValue(DColor(QColor(data)));
 }
+#endif
 
 template <typename ReturnType>
 ReturnType convertColorToQuickColorType(const QColor &value)
@@ -348,8 +350,10 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     QMetaType::registerConverter<QColor, DQuickControlColor>(convertColorToQuickColorType<DQuickControlColor>);
     QMetaType::registerConverter<QColor, DColor>(convertColorToDColorType<DColor>);
     QMetaType::registerConverter<DColor, DQuickControlColor>(convertDColorToQuickColorType<DQuickControlColor>);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QQmlMetaType::registerCustomStringConverter(qMetaTypeId<DQuickControlColor>(), quickColorTypeConverter);
     QQmlMetaType::registerCustomStringConverter(qMetaTypeId<DColor>(), dcolorTypeConverter);
+#endif
 }
 
 void QmlpluginPlugin::initializeEngine(QQmlEngine *engine, const char *uri)

@@ -11,6 +11,7 @@ DQUICK_BEGIN_NAMESPACE
 
 class ShadowMaterialShader : public QSGMaterialShader
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
     const char *vertexShader() const override;
     const char *fragmentShader() const override;
     void updateState(const RenderState &state, QSGMaterial *newEffect, QSGMaterial *) override;
@@ -18,12 +19,15 @@ class ShadowMaterialShader : public QSGMaterialShader
 
 private:
     void initialize() override;
+#else
+#endif
 #if QT_CONFIG(opengl)
     int m_matrix_id;
     int m_opacity_id;
 #endif
 };
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
 const char *ShadowMaterialShader::vertexShader() const
 {
     return "uniform highp mat4 qt_Matrix;                      \n"
@@ -92,6 +96,8 @@ void ShadowMaterialShader::initialize()
     m_opacity_id = program()->uniformLocation("qt_Opacity");
 #endif
 }
+#else
+#endif
 
 ShadowMaterial::ShadowMaterial()
 {
@@ -104,10 +110,19 @@ QSGMaterialType *ShadowMaterial::type() const
     return &type;
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+
 QSGMaterialShader *ShadowMaterial::createShader() const
 {
     return new ShadowMaterialShader;
 }
+#else
+QSGMaterialShader *ShadowMaterial::createShader(QSGRendererInterface::RenderMode renderMode) const
+{
+    Q_UNUSED(renderMode)
+    return new ShadowMaterialShader;
+}
+#endif
 
 int ShadowMaterial::compare(const QSGMaterial *) const
 {

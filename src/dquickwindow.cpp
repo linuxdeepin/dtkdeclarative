@@ -11,6 +11,7 @@
 #include <private/dquickapploaderitem_p.h>
 #include <private/qquickpath_p.h>
 #include <private/qquickpath_p_p.h>
+#include <private/qquicktransition_p.h>
 
 #include <QPlatformSurfaceEvent>
 

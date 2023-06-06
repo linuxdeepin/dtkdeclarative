@@ -18,6 +18,9 @@
 #include <DSysInfo>
 #include <DNotifySender>
 #include <QQuickItem>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <private/qquickpalette_p.h>
+#endif
 
 #ifdef Q_OS_UNIX
 #include <unistd.h>
@@ -363,6 +366,7 @@ DQuickDciIcon DQMLGlobalObject::makeIcon(const QJSValue &qicon, const QJSValue &
     return dciIcon;
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 DDciIconPalette DQMLGlobalObject::makeIconPalette(const QPalette &palette)
 {
     DDciIconPalette iconPalette;
@@ -372,6 +376,17 @@ DDciIconPalette DQMLGlobalObject::makeIconPalette(const QPalette &palette)
     iconPalette.setHighlightForeground(palette.color(QPalette::HighlightedText));
     return iconPalette;
 }
+#else
+DDciIconPalette DQMLGlobalObject::makeIconPalette(const QQuickPalette *palette)
+{
+    DDciIconPalette iconPalette;
+    iconPalette.setForeground(palette->windowText());
+    iconPalette.setBackground(palette->window());
+    iconPalette.setHighlight(palette->highlight());
+    iconPalette.setHighlightForeground(palette->highlightedText());
+    return iconPalette;
+}
+#endif
 
 bool DQMLGlobalObject::sendMessage(QObject *target, const QString &content, const QString &iconName, int duration, const QString &msgId)
 {
