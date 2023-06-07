@@ -89,7 +89,7 @@ QtObject {
         }
 
         property D.Palette background: D.Palette {
-            normal: "transparent"
+            normal: Qt.color("transparent")
             hovered: Qt.rgba(0, 0, 0, 0.1)
         }
     }
@@ -104,30 +104,30 @@ QtObject {
 
         property D.Palette background1: D.Palette {
             normal {
-                common: "#f7f7f7"
+                common: Qt.color("#f7f7f7")
                 crystal: Qt.rgba(0, 0, 0, 0.1)
             }
             hovered {
-                common: "#e1e1e1"
+                common: Qt.color("#e1e1e1")
                 crystal:  Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.2)
             }
             pressed {
-                common: "#bcc4d0"
+                common: Qt.color("#bcc4d0")
                 crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.15)
             }
         }
 
         property D.Palette background2: D.Palette {
             normal {
-                common: "#f0f0f0"
+                common: Qt.color("#f0f0f0")
                 crystal: Qt.rgba(0, 0, 0, 0.1)
             }
             hovered {
-                common: "#d2d2d2"
+                common: Qt.color("#d2d2d2")
                 crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.2)
             }
             pressed {
-                common: "#cdd6e0"
+                common: Qt.color("#cdd6e0")
                 crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.15)
             }
         }
@@ -139,13 +139,13 @@ QtObject {
 
         property D.Palette innerShadow1: D.Palette {
             normal: Qt.rgba(0, 0, 0, 0.05)
-            pressed: "transparent"
+            pressed: Qt.color("transparent")
         }
 
         property D.Palette innerShadow2: D.Palette {
             normal: Qt.rgba(1, 1, 1, 0.2)
             hovered: Qt.rgba(1, 1, 1, 0.5)
-            pressed: "transparent"
+            pressed: Qt.color("transparent")
         }
 
         property D.Palette insideBorder: D.Palette {
@@ -163,7 +163,7 @@ QtObject {
                 crystal: Qt.rgba(0, 0, 0, 0.08)
             }
             hovered: Qt.rgba(0, 0, 0, 0.2)
-            pressed: "transparent"
+            pressed: Qt.color("transparent")
         }
 
         property D.Palette text: D.Palette {
@@ -261,7 +261,7 @@ QtObject {
         }
 
         property D.Palette innerShadow2: D.Palette {
-            normal: "transparent"
+            normal: Qt.color("transparent")
         }
 
         property D.Palette text: D.Palette {
@@ -315,8 +315,8 @@ QtObject {
         property int width: 50
         property int height: 50
         property D.Palette background: D.Palette {
-            normal: "transparent"
-            normalDark: "transparent"
+            normal: Qt.color("transparent")
+            normalDark: Qt.color("transparent")
             hovered: Qt.rgba(0, 0, 0, 0.10)
             hoveredDark: Qt.rgba(1, 1, 1, 0.10)
             pressed: Qt.rgba(0, 0, 0, 0.15)
@@ -326,7 +326,7 @@ QtObject {
 
     property QtObject warningButton: QtObject {
         property D.Palette text: D.Palette {
-            normal: "#ff5736"
+            normal: Qt.color("#ff5736")
         }
     }
 
@@ -339,12 +339,12 @@ QtObject {
 
         property D.Palette background: D.Palette {
             normal: Qt.rgba(50 / 255, 50 / 255, 50 / 255, 0.2)
-            normalDark: "#1A1A1A"
+            normalDark: Qt.color("#1A1A1A")
         }
 
         property D.Palette handle: D.Palette {
-            normal: "#8c8c8c"
-            normalDark: "#444444"
+            normal: Qt.color("#8c8c8c")
+            normalDark: Qt.color("#444444")
         }
     }
 
@@ -465,13 +465,13 @@ QtObject {
             property int topBottomPadding: 3
 
             property D.Palette background1: D.Palette {
-                normal: "#c3c3c3"
-                normalDark: "#3e3e3e"
+                normal: Qt.color("#c3c3c3")
+                normalDark: Qt.color("#3e3e3e")
             }
 
             property D.Palette background2: D.Palette {
-                normal: "#d8d8d8"
-                normalDark: "#525252"
+                normal: Qt.color("#d8d8d8")
+                normalDark: Qt.color("#525252")
             }
 
             property D.Palette shadowInner1: D.Palette {
@@ -488,7 +488,7 @@ QtObject {
             }
 
             property D.Palette text: D.Palette {
-                normal: "black"
+                normal: Qt.color("black")
             }
         }
     }
@@ -584,8 +584,8 @@ QtObject {
         property int horizontalPadding: 10
 
         property D.Palette text: D.Palette {
-            normal: "#e15736"
-            normalDark: "#e13669"
+            normal: Qt.color("#e15736")
+            normalDark: Qt.color("#e13669")
         }
 
         property D.Palette background: D.Palette {
@@ -638,7 +638,7 @@ QtObject {
         }
 
         property D.Palette itemText: D.Palette {
-            normal: "black"
+            normal: Qt.color("black")
             normalDark: Qt.rgba(1, 1, 1, 0.6)
             hovered: D.DTK.makeColor(D.Color.HighlightedText)
         }
@@ -731,7 +731,7 @@ QtObject {
         property int iconSize: 12
         property D.Palette background: D.Palette {
             normal: Qt.rgba(1, 1, 1, 0.2)
-            normalDark: "#ffffff"
+            normalDark: Qt.color("#ffffff")
         }
     }
 
@@ -794,7 +794,7 @@ QtObject {
         }
 
         property D.Palette progressBackground: D.Palette {
-            normal: "white"
+            normal: Qt.color("white")
             normalDark: Qt.rgba(1, 1, 1, 0.7)
         }
     }
@@ -806,11 +806,11 @@ QtObject {
         property string waterBackImagePath: "qrc:/dtk/declarative/resources/water_back.png"
 
         property D.Palette background1: D.Palette {
-            normal: "#1f08ff"
+            normal: Qt.color("#1f08ff")
         }
 
         property D.Palette background2: D.Palette {
-            normal: "#50fff7"
+            normal: Qt.color("#50fff7")
         }
 
         property D.Palette dropShadow: D.Palette {
@@ -822,7 +822,7 @@ QtObject {
         }
 
         property D.Palette textColor: D.Palette {
-            normal: "white"
+            normal: Qt.color("white")
         }
     }
 
