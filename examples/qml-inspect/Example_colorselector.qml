@@ -25,19 +25,19 @@ Rectangle {
         height: 50
 
         property Palette backgroundColor: Palette {
-            normal: "black"
+            normal: Qt.color("black")
         }
         property Palette backgroundColorClicked: Palette {
-            normal: "blue"
+            normal: Qt.color("blue")
         }
 
         property Palette textColorClicked: Palette {
-            normal: "yellow"
+            normal: Qt.color("yellow")
         }
 
         Rectangle {
             property Palette borderColor: Palette {
-                normal: "red"
+                normal: Qt.color("red")
             }
             id: rect1
             anchors.left: parent.left
@@ -50,7 +50,7 @@ Rectangle {
 
             Text {
                 property Palette textColor: Palette {
-                    normal: "white"
+                    normal: Qt.color("white")
                 }
 
                 id: rect1Text
@@ -74,13 +74,13 @@ Rectangle {
         Rectangle {
             id: rect2
             property Palette borderColor: Palette {
-                normal: "red"
+                normal: Qt.color("red")
             }
             property Palette backgroundColor: Palette {
-                normal: "black"
+                normal: Qt.color("black")
             }
             property Palette backgroundColorClicked: Palette {
-                normal: "magenta"
+                normal: Qt.color("magenta")
             }
 
             anchors.left: rect1.right
@@ -95,11 +95,11 @@ Rectangle {
             Text {
                 id: rect2Text
                 property Palette textColor: Palette {
-                    normal: "yellow"
+                    normal: Qt.color("yellow")
                 }
 
                 property Palette textColorClicked: Palette {
-                    normal: "blue"
+                    normal: Qt.color("blue")
                 }
 
                 anchors.fill: parent
@@ -112,11 +112,11 @@ Rectangle {
                     anchors.fill: parent
                     Palette {
                         id: otherBackgroundColor
-                        normal: "darkRed"
+                        normal: Qt.color("darkRed")
                     }
                     Palette {
                         id: othertextColor
-                        normal: "darkBlue"
+                        normal: Qt.color("darkBlue")
                     }
 
                     onClicked: {
@@ -147,19 +147,19 @@ Rectangle {
         height: 50
 
         property Palette backgroundColor: Palette {
-            normal: "black"
+            normal: Qt.color("black")
         }
         property Palette backgroundColorClicked: Palette {
-            normal: "blue"
+            normal: Qt.color("blue")
         }
 
         property Palette textColorClicked: Palette {
-            normal: "cyan"
+            normal: Qt.color("cyan")
         }
 
         Rectangle {
             property Palette borderColor: Palette {
-                normal: "red"
+                normal: Qt.color("red")
             }
             id: rect3
             anchors.left: parent.left
@@ -172,7 +172,7 @@ Rectangle {
 
             Text {
                 property Palette textColor: Palette {
-                    normal: "white"
+                    normal: Qt.color("white")
                 }
                 id: rect3Text
                 anchors.fill: parent
@@ -206,20 +206,20 @@ Rectangle {
             height: 50
             color: ColorSelector.backgroundColor
             property Palette backgroundColor: Palette {
-                normal: "black"
+                normal: Qt.color("black")
             }
             property Palette backgroundColorClicked: Palette {
-                normal: "magenta"
+                normal: Qt.color("magenta")
             }
 
             Text {
                 id: rect4Text
                 property Palette textColor: Palette {
-                    normal: "yellow"
+                    normal: Qt.color("yellow")
                 }
 
                 property Palette textColorClicked: Palette {
-                    normal: "blue"
+                    normal: Qt.color("blue")
                 }
 
                 anchors.fill: parent
@@ -269,12 +269,12 @@ Rectangle {
                 anchors.left: parent.left
                 anchors.top: parent.top
                 property Palette backgroundColor: Palette {
-                    normal: "gray"
+                    normal: Qt.color("gray")
                 }
 
                 Rectangle {
                     property Palette borderColor: Palette {
-                        normal: "red"
+                        normal: Qt.color("red")
                     }
                     id: reparentRect1
                     width: 50
@@ -285,7 +285,7 @@ Rectangle {
 
                     Text {
                         property Palette textColor: Palette {
-                            normal: "blue"
+                            normal: Qt.color("blue")
                         }
                         anchors.fill: parent
                         text: "Rect1"
@@ -336,12 +336,12 @@ Rectangle {
                 anchors.top: parent.top
 
                 property Palette backgroundColor: Palette {
-                    normal: "red"
+                    normal: Qt.color("red")
                 }
 
                 Rectangle {
                     property Palette borderColor: Palette {
-                        normal: "gray"
+                        normal: Qt.color("gray")
                     }
                     id: reparentRect2
                     width: 50
@@ -352,7 +352,7 @@ Rectangle {
 
                     Text {
                         property Palette textColor: Palette {
-                            normal: "yellow"
+                            normal: Qt.color("yellow")
                         }
                         anchors.fill: parent
                         text: "Rect2"
