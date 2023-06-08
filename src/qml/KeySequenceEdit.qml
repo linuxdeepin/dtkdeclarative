@@ -14,7 +14,7 @@ Control {
     property string placeholderText
     property alias keys: listener.keys
     property D.Palette backgroundColor: DS.Style.keySequenceEdit.background
-    property D.Palette placeholderTextColor: DS.Style.keySequenceEdit.placeholderText
+    property D.Palette placeholderTextColor2: DS.Style.keySequenceEdit.placeholderText
 
     background: Rectangle {
         implicitWidth: DS.Style.keySequenceEdit.width
@@ -38,7 +38,7 @@ Control {
             id: inputComponent
             Label {
                 text: control.placeholderText
-                color: control.D.ColorSelector.placeholderTextColor
+                color: control.D.ColorSelector.placeholderTextColor2
                 font: D.DTK.fontManager.t7
                 horizontalAlignment: Qt.AlignRight
                 verticalAlignment: Qt.AlignVCenter

@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 import QtQuick 2.0
-import QtQuick.Controls 2.4
 
 Item {
     id: control

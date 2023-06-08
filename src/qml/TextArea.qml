@@ -11,7 +11,7 @@ import org.deepin.dtk.style 1.0 as DS
 T.TextArea {
     id: control
 
-    property D.Palette placeholderTextColor: DS.Style.edit.placeholderText
+    property D.Palette placeholderTextColor2: DS.Style.edit.placeholderText
     implicitWidth: Math.max(DS.Style.control.implicitWidth(control), placeholder.implicitWidth + leftPadding + rightPadding)
     implicitHeight: Math.max(DS.Style.control.implicitHeight(control), placeholder.implicitHeight + topPadding + bottomPadding)
 
@@ -34,7 +34,7 @@ T.TextArea {
         sourceComponent: PlaceholderText {
             text: control.placeholderText
             font: control.font
-            color: control.D.ColorSelector.placeholderTextColor
+            color: control.D.ColorSelector.placeholderTextColor2
             verticalAlignment: control.verticalAlignment
             elide: Text.ElideRight
             renderType: control.renderType

@@ -9,7 +9,7 @@ import org.deepin.dtk.style 1.0 as DS
 
 T.TextField {
     id: control
-    property D.Palette placeholderTextColor: DS.Style.edit.placeholderText
+    property D.Palette placeholderTextColor2: DS.Style.edit.placeholderText
     property alias backgroundColor: panel.backgroundColor
     // alert control properties
     property alias alertText: panel.alertText
@@ -41,7 +41,7 @@ T.TextField {
         sourceComponent: PlaceholderText {
             text: control.placeholderText
             font: control.font
-            color: control.D.ColorSelector.placeholderTextColor
+            color: control.D.ColorSelector.placeholderTextColor2
             verticalAlignment: control.verticalAlignment
             renderType: control.renderType
         }
