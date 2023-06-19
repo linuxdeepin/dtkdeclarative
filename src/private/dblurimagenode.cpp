@@ -478,11 +478,14 @@ void DOpenGLBlurEffectNode::render(const QSGRenderNode::RenderState *state)
     if (Q_UNLIKELY(m_fboVector.isEmpty()))
         return;
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
-    applyDaulBlur(m_fboVector[1], m_texture->textureId(), m_programKawaseDown, state,
-            m_matrixKawaseDownUniform, 2);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    auto textureId = m_texture->textureId();
 #else
+    //TODO support vulkan
+    auto textureId = (m_texture->nativeInterface<QNativeInterface::QSGOpenGLTexture>())->nativeTexture();
 #endif
+    applyDaulBlur(m_fboVector[1], textureId, m_programKawaseDown, state,
+                  m_matrixKawaseDownUniform, 2);
 
     for (int i = 1; i < m_radius; i++) {
         applyDaulBlur(m_fboVector[i + 1], m_fboVector[i]->texture(), m_programKawaseDown, state,
@@ -516,12 +519,17 @@ bool DOpenGLBlurEffectNode::writeToTexture(QSGPlainTexture *targetTexture) const
 {
     if (Q_UNLIKELY(m_fboVector.isEmpty()))
         return false;
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
-    targetTexture->setTextureId(m_fboVector.first()->texture());
+
+    const auto fbo = m_fboVector.first();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    targetTexture->setTextureId(fbo->texture());
 #else
+    auto wp = QQuickWindowPrivate::get(m_item->window());
+    targetTexture->setTextureFromNativeTexture(wp->rhi, static_cast<quint64>(fbo->texture()),
+                                           0, fbo->size(), {}, {});
 #endif
     targetTexture->setHasAlphaChannel(m_texture->hasAlphaChannel());
-    targetTexture->setTextureSize(m_fboVector.first()->size());
+    targetTexture->setTextureSize(fbo->size());
     return true;
 }
 

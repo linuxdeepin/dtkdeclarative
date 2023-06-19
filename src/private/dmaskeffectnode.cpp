@@ -409,10 +409,15 @@ void OpaqueTextureMaterial::setMaskTexture(QSGTexture *texture)
         return;
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     if (texture->textureId() == m_maskTexture->textureId())
         return;
 #else
+    // TODO support vulkan
+    auto sourceTextureId = (m_maskTexture->nativeInterface<QNativeInterface::QSGOpenGLTexture>())->nativeTexture();
+    auto targetTextureId = (texture->nativeInterface<QNativeInterface::QSGOpenGLTexture>())->nativeTexture();
+    if (sourceTextureId == targetTextureId)
+        return;
 #endif
 
     m_maskTexture = texture;
