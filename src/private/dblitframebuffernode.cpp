@@ -105,9 +105,13 @@ public:
                                                || fbo->height() < textureSize.height())))) {
             fbo = shareBuffer ? CachedFBO::getFBO(textureSize, useAtlasTexture)
                               : SharedCachedFBO(new CachedFBO(textureSize));
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
             m_texture->setTextureId(fbo->texture());
 #else
+            // binding buffer's texture for proxyTexture.
+            auto wp = QQuickWindowPrivate::get(m_item->window());
+            m_texture->setTextureFromNativeTexture(wp->rhi, static_cast<quint64>(fbo->texture()),
+                                                   0, fbo->size(), {}, {});
 #endif
             m_texture->setHasAlphaChannel(true);
             m_texture->setTextureSize(fbo->size());
