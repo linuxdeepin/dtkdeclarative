@@ -35,5 +35,17 @@ void DHandleContextMenuWindow::handleMouseEvent(QMouseEvent *event)
         }
     }
 #else
+    auto pe = static_cast<QPointerEvent *>(event);
+    if (!mouseGrabberItem() && pe && !QPointingDevicePrivate::get(const_cast<QPointingDevice*>(pe->pointingDevice()))->firstPointExclusiveGrabber()) {
+        // 右键点击事件模拟发送菜单显示事件
+        if (event->button() == Qt::RightButton && event->type() == QEvent::MouseButtonPress) {
+            auto da = d->deliveryAgentPrivate();
+            QPointF last = da->lastMousePosition.isNull() ? event->scenePosition() : da->lastMousePosition;
+            da->lastMousePosition = event->scenePosition();
+
+            QContextMenuEvent e(QContextMenuEvent::Mouse, last.toPoint(), event->scenePosition().toPoint(), event->modifiers());
+            QGuiApplication::sendEvent(this, &e);
+        }
+    }
 #endif
 }
