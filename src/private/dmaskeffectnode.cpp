@@ -16,51 +16,63 @@ inline static bool isPowerOfTwo(int x)
     return x == (x & -x);
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 class OpaqueTextureMaterialShader : public QSGMaterialShader
 {
 public:
     OpaqueTextureMaterialShader();
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
     void updateState(const RenderState &state, QSGMaterial *newEffect, QSGMaterial *oldEffect) override;
     char const *const *attributeNames() const override;
 
 protected:
     void initialize() override;
-#else
-#endif
 
 protected:
     int m_matrix_id;
 };
+#else
+class OpaqueTextureMaterialShader : public QSGOpaqueTextureMaterialRhiShader
+{
+public:
+    OpaqueTextureMaterialShader();
+
+    bool updateUniformData(RenderState &state, QSGMaterial *newMaterial, QSGMaterial *oldMaterial);
+
+    void updateSampledImage(RenderState &state, int binding, QSGTexture **texture, QSGMaterial *newMaterial, QSGMaterial *oldMaterial);
+};
+#endif
 
 class TextureMaterialShader : public OpaqueTextureMaterialShader
 {
 public:
     TextureMaterialShader();
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     void updateState(const RenderState &state, QSGMaterial *newEffect, QSGMaterial *oldEffect) override;
     void initialize() override;
-#else
-#endif
 
 protected:
     int m_opacity_id;
+#else
+    bool updateUniformData(RenderState &state, QSGMaterial *newMaterial, QSGMaterial *oldMaterial);
+#endif
 };
 
 OpaqueTextureMaterialShader::OpaqueTextureMaterialShader()
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #if QT_CONFIG(opengl)
     setShaderSourceFile(QOpenGLShader::Vertex, QStringLiteral(":/dtk/declarative/shaders/quickitemviewport-opaque.vert"));
     setShaderSourceFile(QOpenGLShader::Fragment, QStringLiteral(":/dtk/declarative/shaders/quickitemviewport-opaque.frag"));
 #endif
 #else
+    setShaderFileName(QSGMaterialShader::VertexStage, QStringLiteral(":/dtk/declarative/shaders_ng/quickitemviewport-opaque.vert.qsb"));
+    setShaderFileName(QSGMaterialShader::FragmentStage, QStringLiteral(":/dtk/declarative/shaders_ng/quickitemviewport-opaque.frag.qsb"));
 #endif
 }
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 char const *const *OpaqueTextureMaterialShader::attributeNames() const
 {
     static char const *const attr[] = { "qt_VertexPosition", "qt_VertexTexCoord", nullptr };
@@ -133,6 +145,73 @@ void OpaqueTextureMaterialShader::updateState(const RenderState &state, QSGMater
 #endif
 }
 #else
+
+// Mapping shader's ubuf of quickitemviewport-opaque
+enum Ubuf {
+    QtMatrixSize = 64,
+    MaskScaleSize = 8,
+    MaskOffsetSize = MaskScaleSize,
+    SourceScaleSize = MaskScaleSize,
+
+    QtMatrixOffset = 0,
+    MaskScaleOffset = QtMatrixOffset + QtMatrixSize,
+    MaskOffsetOffset = MaskScaleOffset + MaskScaleSize,
+    SourceScaleOffset = MaskOffsetOffset + MaskOffsetSize,
+
+    MaskBindingIndex = 2
+};
+
+bool OpaqueTextureMaterialShader::updateUniformData(RenderState &state, QSGMaterial *newMaterial, QSGMaterial *oldMaterial)
+{
+    Q_ASSERT(oldMaterial == nullptr || newMaterial->type() == oldMaterial->type());
+    const OpaqueTextureMaterial *material = static_cast<OpaqueTextureMaterial *>(newMaterial);
+
+    bool changed = QSGOpaqueTextureMaterialRhiShader::updateUniformData(state, newMaterial, oldMaterial);
+
+    QByteArray *buf = state.uniformData();
+    Q_ASSERT(buf->size() >= SourceScaleOffset + SourceScaleSize);
+    if (state.isMatrixDirty()) {
+        const QMatrix4x4 m = state.combinedMatrix();
+        memcpy(buf->data() + QtMatrixOffset, m.constData(), QtMatrixSize);
+        changed = true;
+    }
+
+    if (oldMaterial != newMaterial) {
+        const QVector2D maskScale = material->maskScale();
+        const QVector2D maskOffset = material->maskOffset();
+        const QVector2D sourceScale = material->sourceScale();
+
+        Q_ASSERT(sizeof(maskScale) == MaskScaleSize);
+
+        memcpy(buf->data() + MaskScaleOffset, &maskScale, MaskScaleSize);
+        memcpy(buf->data() + MaskOffsetSize, &maskOffset, MaskOffsetSize);
+        memcpy(buf->data() + SourceScaleOffset, &sourceScale, SourceScaleSize);
+
+        changed = true;
+    }
+    return changed;
+}
+
+void OpaqueTextureMaterialShader::updateSampledImage(RenderState &state, int binding, QSGTexture **texture, QSGMaterial *newMaterial, QSGMaterial *oldMaterial)
+{
+    // update mask for `layout(binding = 2) uniform sampler2D mask;`
+    if (binding != MaskBindingIndex)
+        return QSGOpaqueTextureMaterialRhiShader::updateSampledImage(state, binding, texture, newMaterial, oldMaterial);
+
+#ifdef QT_NO_DEBUG
+    Q_UNUSED(oldMaterial);
+#endif
+    Q_ASSERT(oldMaterial == nullptr || newMaterial->type() == oldMaterial->type());
+    OpaqueTextureMaterial *tx = static_cast<OpaqueTextureMaterial *>(newMaterial);
+    QSGTexture *t = tx->maskTexture();
+    if (!t) {
+        *texture = nullptr;
+        return;
+    }
+
+    t->commitTextureOperations(state.rhi(), state.resourceUpdateBatch());
+    *texture = t;
+}
 #endif
 
 TextureMaterialShader::TextureMaterialShader()
@@ -143,10 +222,12 @@ TextureMaterialShader::TextureMaterialShader()
     setShaderSourceFile(QOpenGLShader::Fragment, ":/dtk/declarative/shaders/quickitemviewport.frag");
 #endif
 #else
+    setShaderFileName(QSGMaterialShader::VertexStage, QStringLiteral(":/dtk/declarative/shaders_ng/quickitemviewport.vert.qsb"));
+    setShaderFileName(QSGMaterialShader::FragmentStage, QStringLiteral(":/dtk/declarative/shaders_ng/quickitemviewport.frag.qsb"));
 #endif
 }
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 void TextureMaterialShader::updateState(const QSGMaterialShader::RenderState &state, QSGMaterial *newEffect, QSGMaterial *oldEffect)
 {
     Q_ASSERT(oldEffect == nullptr || newEffect->type() == oldEffect->type());
@@ -165,6 +246,25 @@ void TextureMaterialShader::initialize()
 #endif
 }
 #else
+enum Ubuf2 {
+    opacitySize = 4,
+
+    opacityOffset = Ubuf::SourceScaleOffset + Ubuf::SourceScaleSize,
+};
+bool TextureMaterialShader::updateUniformData(RenderState &state, QSGMaterial *newMaterial, QSGMaterial *oldMaterial)
+{
+    Q_ASSERT(oldMaterial == nullptr || newMaterial->type() == oldMaterial->type());
+
+    bool changed = OpaqueTextureMaterialShader::updateUniformData(state, newMaterial, oldMaterial);
+    QByteArray *buf = state.uniformData();
+    Q_ASSERT(buf->size() >= opacityOffset + opacitySize);
+    if (state.isOpacityDirty()) {
+        const float opacity = state.opacity();
+        memcpy(buf->data() + opacityOffset, &opacity, opacitySize);
+        changed = true;
+    }
+    return changed;
+}
 #endif
 
 MaskEffectNode::MaskEffectNode()

@@ -17,6 +17,9 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick DBus QuickCont
 if(EnableQt5)
     find_package(Qt${QT_VERSION_MAJOR}QuickCompiler)
 endif()
+if(EnableQt6)
+    find_package(Qt${QT_DEFAULT_MAJOR_VERSION}ShaderTools)
+endif()
 find_package(Dtk${DTK_VERSION_MAJOR}Core REQUIRED)
 find_package(Dtk${DTK_VERSION_MAJOR}Gui REQUIRED)
 find_package(PkgConfig REQUIRED)
@@ -54,6 +57,24 @@ add_library(${LIB_NAME} SHARED
     ${ASSETS_RCS}
     ${QM_FILES}
 )
+
+if(EnableQt6)
+    qt_add_shaders(${LIB_NAME} "_shaders_ng"
+        BATCHABLE
+        PRECOMPILE
+        PREFIX
+            "/dtk/declarative"
+        FILES
+            "shaders_ng/quickitemviewport.vert"
+            "shaders_ng/quickitemviewport.frag"
+            "shaders_ng/quickitemviewport-opaque.vert"
+            "shaders_ng/quickitemviewport-opaque.frag"
+            "shaders_ng/cornerscolorshader.vert"
+            "shaders_ng/cornerscolorshader.frag"
+            "shaders_ng/shadowmaterial.vert"
+            "shaders_ng/shadowmaterial.frag"
+    )
+endif()
 
 set_target_properties(${LIB_NAME} PROPERTIES
     VERSION ${CMAKE_PROJECT_VERSION}
