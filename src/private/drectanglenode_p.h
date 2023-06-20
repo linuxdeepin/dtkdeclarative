@@ -20,7 +20,7 @@
 
 DQUICK_BEGIN_NAMESPACE
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 class CornerColorShader : public QSGOpaqueTextureMaterialShader
 {
 public:
@@ -34,6 +34,12 @@ private:
     int m_idQtOpacity = -1;
 };
 #else
+class CornerColorShader : public QSGOpaqueTextureMaterialRhiShader
+{
+public:
+    CornerColorShader();
+    bool updateUniformData(RenderState &state, QSGMaterial *newMaterial, QSGMaterial *oldMaterial);
+};
 #endif
 
 class CornerColorMaterial : public QSGOpaqueTextureMaterial

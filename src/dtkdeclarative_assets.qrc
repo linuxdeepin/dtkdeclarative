@@ -34,6 +34,9 @@
         <file>resources/water_back.png</file>
         <file>resources/water_front.png</file>
         <file>resources/spinner-blue.webp</file>
+        <file>shaders_ng/quickitemviewport.frag</file>
+        <file>shaders_ng/quickitemviewport-opaque.frag</file>
+        <file>shaders_ng/quickitemviewport-opaque.vert</file>
     </qresource>
     <qresource prefix="/dsg">
         <file alias="built-in-icons/window_maximize.dci">icons/bloom/window_maximize.dci</file>
