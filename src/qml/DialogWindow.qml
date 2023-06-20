@@ -59,11 +59,15 @@ Window {
             }
         }
         Component.onCompleted: {
-            if (control.width <= 0) {
-                control.width = control.implicitWidth
+            if (control.width < control.minimumWidth) {
+                control.width = control.minimumWidth
+            } else if (control.width > control.maximumWidth) {
+                control.width = control.maximumWidth
             }
-            if (control.height <= 0) {
-                control.height = control.implicitHeight
+            if (control.height < control.minimumHeight) {
+                control.height = control.minimumHeight
+            } else if (control.height > control.maximumHeight) {
+                control.height = control.maximumHeight
             }
         }
     }

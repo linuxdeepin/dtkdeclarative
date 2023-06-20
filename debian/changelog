@@ -1,3 +1,18 @@
+dtkdeclarative (5.6.13) unstable; urgency=medium
+
+  * fix: typo
+    Thanks to student-ice
+  * feat: Support switching qt5 and qt6 for cmake(Issue: #87)
+  * fix: Unsupported type for property assignment(Issue: #87)
+  * fix: Crashed while debugging in Qt
+  * feat: Support compiling between Qt5 and Qt6(Issue: #87)
+  * feat: Support QQuickPalette in Qt6(Issue: #87)
+  * feat: Forward ContentMenuEvent in Qt6(Issue: #87)
+  * fix: Qt.color is invalid in qt5(Issue: #87)
+  * fix: windows width may exceed limit(Issue: #69)
+
+ -- Deepin Packages Builder <packages@deepin.org>  Tue, 20 Jun 2023 17:28:06 +0800
+
 dtkdeclarative (5.6.12) unstable; urgency=medium
 
   * fix: a missing library link
