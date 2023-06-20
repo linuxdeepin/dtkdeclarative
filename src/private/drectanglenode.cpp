@@ -8,11 +8,14 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QQuickWindow>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <QtGui/private/qshader_p.h>
+#endif
 
 DQUICK_USE_NAMESPACE
 DQUICK_BEGIN_NAMESPACE
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 const char *CornerColorShader::vertexShader() const
 {
     return "uniform highp mat4 qt_Matrix;                      \n"
@@ -69,6 +72,27 @@ void CornerColorShader::initialize()
     m_idQtOpacity = program->uniformLocation("qt_Opacity");
 }
 #else
+CornerColorShader::CornerColorShader()
+{
+    setShaderFileName(QSGMaterialShader::VertexStage, QStringLiteral(":/dtk/declarative/shaders_ng/cornerscolorshader.vert.qsb"));
+    setShaderFileName(QSGMaterialShader::FragmentStage, QStringLiteral(":/dtk/declarative/shaders_ng/cornerscolorshader.frag.qsb"));
+}
+
+bool CornerColorShader::updateUniformData(RenderState &state, QSGMaterial *newMaterial, QSGMaterial *oldMaterial)
+{
+    CornerColorMaterial *newSurface = static_cast<CornerColorMaterial *>(newMaterial);
+
+    bool changed = QSGOpaqueTextureMaterialRhiShader::updateUniformData(state, newSurface, oldMaterial);
+    QByteArray *buf = state.uniformData();
+    Q_ASSERT(buf->size() >= 68);
+    if (state.isOpacityDirty()) {
+        const float opacity = state.opacity();
+        memcpy(buf->data() + 64, &opacity, 4);
+        changed = true;
+    }
+
+    return changed;
+}
 #endif
 
 CornerColorMaterial::CornerColorMaterial()
@@ -95,7 +119,7 @@ QSGMaterialShader *CornerColorMaterial::createShader() const
 QSGMaterialShader *CornerColorMaterial::createShader(QSGRendererInterface::RenderMode renderMode) const
 {
     Q_UNUSED(renderMode)
-    return nullptr;
+    return new CornerColorShader;
 }
 #endif
 

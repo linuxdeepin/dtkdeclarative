@@ -9,9 +9,9 @@
 DQUICK_USE_NAMESPACE
 DQUICK_BEGIN_NAMESPACE
 
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
 class ShadowMaterialShader : public QSGMaterialShader
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
     const char *vertexShader() const override;
     const char *fragmentShader() const override;
     void updateState(const RenderState &state, QSGMaterial *newEffect, QSGMaterial *) override;
@@ -19,15 +19,12 @@ class ShadowMaterialShader : public QSGMaterialShader
 
 private:
     void initialize() override;
-#else
-#endif
 #if QT_CONFIG(opengl)
     int m_matrix_id;
     int m_opacity_id;
 #endif
 };
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
 const char *ShadowMaterialShader::vertexShader() const
 {
     return "uniform highp mat4 qt_Matrix;                      \n"
@@ -97,6 +94,52 @@ void ShadowMaterialShader::initialize()
 #endif
 }
 #else
+class ShadowMaterialShader : public QSGMaterialShader
+{
+public:
+    ShadowMaterialShader() {
+        setShaderFileName(QSGMaterialShader::VertexStage, QStringLiteral(":/dtk/declarative/shaders_ng/shadowmaterial.vert.qsb"));
+        setShaderFileName(QSGMaterialShader::FragmentStage, QStringLiteral(":/dtk/declarative/shaders_ng/shadowmaterial.frag.qsb"));
+    }
+public:
+    bool updateUniformData(RenderState &state, QSGMaterial *newMaterial, QSGMaterial *oldMaterial)
+    {
+        bool changed = false;
+        QByteArray *buf = state.uniformData();
+        Q_ASSERT(buf->size() >= 96);
+
+        if (state.isMatrixDirty()) {
+            const QMatrix4x4 m = state.combinedMatrix();
+            memcpy(buf->data(), m.constData(), 64);
+            changed = true;
+        }
+
+        if (state.isOpacityDirty()) {
+            const float opacity = state.opacity();
+            memcpy(buf->data() + 64, &opacity, 4);
+            changed = true;
+        }
+
+        ShadowMaterial *customMaterial = static_cast<ShadowMaterial *>(newMaterial);
+        if (oldMaterial != newMaterial) {
+            const QColor color = customMaterial->color();
+            QVector4D c = { color.redF(),
+                          color.greenF(),
+                          color.blueF(),
+                          color.alphaF() };
+            const float relativeSizeX = customMaterial->relativeSizeX();
+            const float relativeSizeY = customMaterial->relativeSizeY();
+            const float spread = customMaterial->spread();
+            memcpy(buf->data() + 68, &c, 16);
+            memcpy(buf->data() + 84, &relativeSizeX, 4);
+            memcpy(buf->data() + 88, &relativeSizeY, 4);
+            memcpy(buf->data() + 92, &spread, 4);
+            changed = true;
+        }
+
+        return changed;
+    }
+};
 #endif
 
 ShadowMaterial::ShadowMaterial()
