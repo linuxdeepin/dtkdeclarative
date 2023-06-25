@@ -45,6 +45,9 @@ public:
     inline DColor(const QColor &color) {
         data.color.value = color;
     }
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    DColor(const QJSValue &params) : DColor(QColor(params.toString())) { }
+#endif
     DColor(Type type);
     inline DColor(const DColor &other) {
         memcpy(static_cast<void*>(&data), static_cast<const void*>(&other.data), sizeof(Data));
