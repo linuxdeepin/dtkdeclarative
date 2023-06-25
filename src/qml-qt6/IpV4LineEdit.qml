@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-import QtQuick 2.11
+import QtQuick
 import QtQuick.Layouts 1.11
 import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
@@ -37,8 +37,8 @@ FocusScope {
                     text: modelData
                     Layout.preferredWidth: DS.Style.ipEdit.fieldWidth
                     Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-                    validator: RegExpValidator {
-                        regExp: /^(([0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])?)$/
+                    validator: RegularExpressionValidator {
+                        regularExpression: /^(([0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])?)$/
                     }
                     Loader {
                         active: index < fields.count - 1

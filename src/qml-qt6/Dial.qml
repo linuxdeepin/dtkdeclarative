@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 import QtQuick 2.11
-import QtQuick.Controls.impl 2.4
+import QtQuick.Controls.Basic.impl
 import QtQuick.Templates as T
 import "PixelMetric.js" as PM
 
