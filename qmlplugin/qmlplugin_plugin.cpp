@@ -76,7 +76,11 @@ inline void dtkRegisterSingletonType(const char *uri1, const char *uri2, int ver
         qmlRegisterSingletonType<T>(uri2, versionMajor, versionMinor, qmlName, callback);
 }
 inline void dtkRegisterType(const char *uri1, const char *uri2, int versionMajor, int versionMinor, const char *qmlName, const char *subdir = "") {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml/%1%2.qml");
+#else
+    static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml-qt6/%1%2.qml");
+#endif
     const QUrl url(urlTemplate.arg(subdir).arg(qmlName));
     qmlRegisterType(url, uri1, versionMajor, versionMinor, qmlName);
     if (uri2)
@@ -84,7 +88,11 @@ inline void dtkRegisterType(const char *uri1, const char *uri2, int versionMajor
 }
 
 inline void dtkRegisterTypeAlias(const char *uri1, const char *uri2, int versionMajor, int versionMinor, const char *qmlFileName, const char *alias, const char *subdir = "") {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml/%1%2.qml");
+#else
+    static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml-qt6/%1%2.qml");
+#endif
     const QUrl url(urlTemplate.arg(subdir).arg(qmlFileName));
     qmlRegisterType(url, uri1, versionMajor, versionMinor, alias);
     if (uri2)
@@ -92,14 +100,22 @@ inline void dtkRegisterTypeAlias(const char *uri1, const char *uri2, int version
 }
 
 inline void dtkStyleRegisterSingletonType(const char *uri1, const char *uri2, int versionMajor, int versionMinor, const char *qmlName) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml/style/%1.qml");
+#else
+    static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml-qt6/style/%1.qml");
+#endif
     QUrl url(urlTemplate.arg(qmlName));
     qmlRegisterSingletonType(url, uri1, versionMajor, versionMinor, qmlName);
     if (uri2)
         qmlRegisterSingletonType(url, uri2, versionMajor, versionMinor, qmlName);
 }
 inline void dtkSettingsRegisterType(const char *uri1, const char *uri2, int versionMajor, int versionMinor, const char *qmlName) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml/settings/%1.qml");
+#else
+    static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml-qt6/settings/%1.qml");
+#endif
     const QUrl url(urlTemplate.arg(qmlName));
     qmlRegisterType(url, uri1, versionMajor, versionMinor, qmlName);
     if (uri2)
