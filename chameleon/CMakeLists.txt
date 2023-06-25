@@ -75,7 +75,6 @@ if(EnableDtk6)
         NO_PLUGIN_OPTIONAL
         NO_GENERATE_PLUGIN_SOURCE
         SOURCES ${SRC_FILES}
-        QML_FILES ${QML_FILES}
         RESOURCES ${CMAKE_CURRENT_LIST_DIR}/imports/Chameleon/qml.qrc #   imports/Chameleon/qml.qrc
     )
 endif()
