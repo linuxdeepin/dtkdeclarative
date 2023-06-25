@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 //FIXME：此文件存在性存疑，roundbutton为圆button 与floatingbutton一样了
 import QtQuick 2.11
-import QtQuick.Templates 2.4 as T
+import QtQuick.Templates as T
 import "PixelMetric.js" as PM
 
 T.RadioButton {
