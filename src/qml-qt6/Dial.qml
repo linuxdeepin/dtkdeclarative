@@ -4,7 +4,7 @@
 
 import QtQuick 2.11
 import QtQuick.Controls.impl 2.4
-import QtQuick.Templates 2.4 as T
+import QtQuick.Templates as T
 import "PixelMetric.js" as PM
 
 T.Dial {
