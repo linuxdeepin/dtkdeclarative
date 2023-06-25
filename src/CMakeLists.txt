@@ -27,11 +27,11 @@ file(GLOB PUBLIC_HEADERS "./*.h")
 file(GLOB_RECURSE HEADERS "./*.h")
 file(GLOB_RECURSE SRCS   "./*.cpp")
 file(GLOB D_HEADERS   "./D*")
-file(GLOB QML_RCS ${CMAKE_CURRENT_LIST_DIR}/dtkdeclarative_qml.qrc)
 file(GLOB ASSETS_RCS ${CMAKE_CURRENT_LIST_DIR}/dtkdeclarative_assets.qrc)
 file(GLOB TS_FILES "translations/*.ts")
 if(EnableDtk5)
     # Quick compiler gen qmlc
+    file(GLOB QML_RCS ${CMAKE_CURRENT_LIST_DIR}/dtkdeclarative_qml.qrc)
     qtquick_compiler_add_resources(RESOURCES
         ${QML_RCS}
     )
@@ -39,6 +39,7 @@ if(EnableDtk5)
     qt5_add_translation(QM_FILES ${TS_FILES})
 endif()
 if(EnableDtk6)
+    file(GLOB QML_RCS ${CMAKE_CURRENT_LIST_DIR}/dtkdeclarative_qml-qt6.qrc)
     qt_add_resources(RESOURCES
         ${QML_RCS}
     )
