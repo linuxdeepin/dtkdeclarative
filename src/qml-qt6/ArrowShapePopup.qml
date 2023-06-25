@@ -4,7 +4,7 @@
 
 import QtQuick 2.0
 import QtQuick.Shapes 1.11
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
 import org.deepin.dtk.impl 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
@@ -73,7 +73,6 @@ Popup {
             anchors.fill: parent
             verticalOffset: 6
             radius: 12
-            samples: 17
             source: mask
             color: DS.Style.selectColor(palette.window, DS.Style.arrowRectangleBlur.shadowColor,
                                         DS.Style.arrowRectangleBlur.darkShadowColor)
