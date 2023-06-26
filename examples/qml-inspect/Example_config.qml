@@ -96,7 +96,7 @@ Item {
             }
             Connections{
                 target: exampleConfig
-                onKey3Changed: {
+                function onKey3Changed() {
                     key3Text.text = exampleConfig.key3
                     console.info("Connections key3Changed");
                 }
