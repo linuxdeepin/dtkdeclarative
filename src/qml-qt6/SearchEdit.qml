@@ -47,7 +47,7 @@ LineEdit {
         MouseArea {
             anchors.fill: parent
             visible: !editting
-            onClicked: {
+            onClicked: function(mouse) {
                 control.forceActiveFocus(Qt.MouseFocusReason)
                 mouse.accepted = false
             }
