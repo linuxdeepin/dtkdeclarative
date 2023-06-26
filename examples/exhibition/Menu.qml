@@ -172,7 +172,7 @@ Column {
                         "方正楷体_GBK",
                     ]
                     delegate: MenuItem { }
-                    onObjectAdded: {
+                    onObjectAdded: function(index, object) {
                         object.text = model[index]
                         object.font.family = object.text
                         fontMenu.insertItem(index, object)
