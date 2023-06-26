@@ -5,7 +5,7 @@ find_package(Dtk${DTK_VERSION_MAJOR}Gui REQUIRED)
 
 set(URI "org/deepin/dtk")
 set(PLUGIN_NAME dtkdeclarativeplugin)
-if(EnableDtk5)
+if(EnableQt5)
     set(PLUGIN_INSTALL_DIR "${QML_INSTALL_DIR}/${URI}")
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/plugins/${URI}")
 
@@ -31,7 +31,7 @@ if(EnableDtk5)
 
 endif()
 
-if(EnableDtk6)
+if(EnableQt6)
     qt_add_qml_module(${PLUGIN_NAME}
         PLUGIN_TARGET ${PLUGIN_NAME}
         URI "org.deepin.dtk"

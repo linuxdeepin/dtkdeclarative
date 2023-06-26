@@ -14,7 +14,7 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips64")
 endif()
 
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick DBus QuickControls2 LinguistTools)
-if(EnableDtk5)
+if(EnableQt5)
     find_package(Qt${QT_VERSION_MAJOR}QuickCompiler)
 endif()
 find_package(Dtk${DTK_VERSION_MAJOR}Core REQUIRED)
@@ -29,7 +29,7 @@ file(GLOB_RECURSE SRCS   "./*.cpp")
 file(GLOB D_HEADERS   "./D*")
 file(GLOB ASSETS_RCS ${CMAKE_CURRENT_LIST_DIR}/dtkdeclarative_assets.qrc)
 file(GLOB TS_FILES "translations/*.ts")
-if(EnableDtk5)
+if(EnableQt5)
     # Quick compiler gen qmlc
     file(GLOB QML_RCS ${CMAKE_CURRENT_LIST_DIR}/dtkdeclarative_qml.qrc)
     qtquick_compiler_add_resources(RESOURCES
@@ -38,7 +38,7 @@ if(EnableDtk5)
     # Add translation source file
     qt5_add_translation(QM_FILES ${TS_FILES})
 endif()
-if(EnableDtk6)
+if(EnableQt6)
     file(GLOB QML_RCS ${CMAKE_CURRENT_LIST_DIR}/dtkdeclarative_qml-qt6.qrc)
     qt_add_resources(RESOURCES
         ${QML_RCS}
