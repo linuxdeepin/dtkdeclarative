@@ -10,7 +10,7 @@ Control {
     id: control
     property alias icon: iconLoader
     readonly property bool pressed: mouseArea.pressed
-    signal clicked
+    signal clicked(var mouse)
     property D.Palette textColor: DS.Style.button.text
     property D.Palette backgroundColor: DS.Style.windowButton.background
 

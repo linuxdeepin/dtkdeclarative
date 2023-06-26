@@ -27,7 +27,7 @@ Control {
         anchors.fill: parent
         acceptedButtons: Qt.AllButtons
         propagateComposedEvents: true
-        onPressed: {
+        onPressed: function(mouse) {
             if (mouse.button === Qt.RightButton) {
                 if (mouse.x < control.width - closeBtn.width) {
                     __dwindow.popupSystemWindowMenu()

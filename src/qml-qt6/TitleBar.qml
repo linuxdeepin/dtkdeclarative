@@ -53,7 +53,7 @@ Control {
         acceptedButtons: Qt.AllButtons
         propagateComposedEvents: true
 
-        onPressed: {
+        onPressed: function(mouse) {
             if (mouse.button === Qt.RightButton) {
                 if (mouse.x < __includedAreaX) {
                     __dwindow.popupSystemWindowMenu()
@@ -63,7 +63,7 @@ Control {
             }
             mouse.accepted = false
         }
-        onDoubleClicked: {
+        onDoubleClicked: function(mouse) {
             // Windowed or Maximized
             if (mouse.button === Qt.LeftButton) {
                 control.toggleWindowState()
@@ -72,8 +72,8 @@ Control {
             }
             mouse.accepted = false
         }
-        onReleased: mouse.accepted = false
-        onClicked: mouse.accepted = false
+        onReleased: function(mouse) { mouse.accepted = false }
+        onClicked: function(mouse) { mouse.accepted = false }
     }
 
     Loader {
