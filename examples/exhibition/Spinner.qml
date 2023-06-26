@@ -48,7 +48,7 @@ Column {
                         anchors.fill: parent
                         running: true
                         fillColor: Palette {
-                            normal: "#ffffff"
+                            normal: ("#ffffff")
                         }
                     }
                 }
