@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 #endif
 
     QGuiApplication app(argc, argv);
-    app.setApplicationName("tests");
+    app.setApplicationName(BIN_NAME);
     ::testing::InitGoogleTest(&argc, argv);
 
     return RUN_ALL_TESTS();

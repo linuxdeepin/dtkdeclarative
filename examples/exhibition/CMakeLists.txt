@@ -6,10 +6,16 @@ find_package(Dtk${DTK_VERSION_MAJOR}Gui REQUIRED)
 
 set(CMAKE_EXE_LINKER_FLAGS  "-z relro -z now -z noexecstack -pie -Wl,--as-needed")
 
+if (EnableQt5)
+    set(QML_RCS ${CMAKE_CURRENT_LIST_DIR}/qml.qrc)
+endif()
+if (EnableQt6)
+    set(QML_RCS ${CMAKE_CURRENT_LIST_DIR}/qml-qt6.qrc)
+endif()
 add_executable(${BIN_NAME}
     ${CMAKE_CURRENT_LIST_DIR}/main.cpp 
     ${CMAKE_CURRENT_LIST_DIR}/assets.qrc
-    ${CMAKE_CURRENT_LIST_DIR}/qml.qrc
+    ${QML_RCS}
 )
 
 target_compile_options(${BIN_NAME} PRIVATE "-fpic")
