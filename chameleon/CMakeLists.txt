@@ -6,7 +6,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS
     Quick
     QuickControls2 REQUIRED
 )
-if(EnableDtk5)
+if(EnableQt5)
     find_package(Qt${QT_VERSION_MAJOR}QuickCompiler)
 endif()
 
@@ -14,7 +14,7 @@ file(GLOB QML_FILES "imports/Chameleon/*.qml")
 file(GLOB JS_FILES "imports/Chameleon/*.js")
 file(GLOB SRC_FILES "src/*.h" "src/*.cpp")
 
-if(EnableDtk5)
+if(EnableQt5)
     set(TARGETPATH "QtQuick/Controls.2/Chameleon")
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/plugins/Chameleon")
     set(PLUGIN_INSTALL_DIR "${QML_INSTALL_DIR}/${TARGETPATH}")
@@ -64,7 +64,7 @@ if(EnableDtk5)
     )
 endif()
 
-if(EnableDtk6)
+if(EnableQt6)
     qt_add_qml_module(${PLUGIN_NAME}
         URI "Chameleon"
         VERSION "${PROJECT_VERSION}"
