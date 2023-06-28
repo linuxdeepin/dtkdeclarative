@@ -9,11 +9,11 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
-        onClicked: {
+        onClicked: function(mouse) {
             if (mouse.button === Qt.RightButton)
                 contextMenu.popup()
         }
-        onPressAndHold: {
+        onPressAndHold: function(mouse) {
             if (mouse.source === Qt.MouseEventNotSynthesized)
                 contextMenu.popup()
         }
