@@ -31,6 +31,7 @@ class DQuickIconLabel : public QQuickItem
     Q_PROPERTY(qreal rightPadding READ rightPadding WRITE setRightPadding RESET resetRightPadding FINAL)
     Q_PROPERTY(qreal bottomPadding READ bottomPadding WRITE setBottomPadding RESET resetBottomPadding FINAL)
 
+    QML_NAMED_ELEMENT(IconLabel)
 public:
     enum Display {
         IconOnly,

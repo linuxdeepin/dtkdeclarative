@@ -28,6 +28,7 @@ class DQuickControlColor
     Q_GADGET
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DColor common READ common WRITE setCommon FINAL)
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DColor crystal READ crystal WRITE setCrystal FINAL)
+    QML_ANONYMOUS
 
 public:
     DQuickControlColor();
@@ -113,6 +114,7 @@ class DQuickControlPalette : public QObject
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor disabled READ disabled WRITE setDisabled NOTIFY disabledChanged)
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor disabledDark READ disabledDark WRITE setDisabledDark NOTIFY disabledDarkChanged)
 
+    QML_NAMED_ELEMENT(Palette)
 public:
     enum ColorFamily {
         CommonColor = 0,

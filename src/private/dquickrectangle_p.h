@@ -19,6 +19,7 @@ class Q_DECL_EXPORT DQuickRectangle : public QQuickItem
     Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
     Q_PROPERTY(qreal radius READ radius WRITE setRadius NOTIFY radiusChanged)
     Q_PROPERTY(Corners corners READ corners WRITE setCorners NOTIFY cornersChanged)
+    QML_NAMED_ELEMENT(RoundRectangle)
 
 public:
     enum Corner {

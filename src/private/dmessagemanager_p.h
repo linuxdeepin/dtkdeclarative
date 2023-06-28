@@ -19,6 +19,7 @@ class FloatingMessageContainer : public QObject
     Q_PROPERTY(QVariant message READ message WRITE setMessage NOTIFY messageChanged)
     Q_PROPERTY(int duration READ duration WRITE setDuration NOTIFY durationChanged)
     Q_CLASSINFO("DefaultProperty", "panel")
+    QML_NAMED_ELEMENT(FloatingMessageContainer)
 public:
     explicit FloatingMessageContainer(QObject *parent = nullptr);
 

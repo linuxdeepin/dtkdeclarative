@@ -33,6 +33,7 @@ DQUICK_BEGIN_NAMESPACE
 class DColor
 {
     Q_GADGET
+    QML_ANONYMOUS
 public:
     enum Type : quint8 {
         Invalid = 0,

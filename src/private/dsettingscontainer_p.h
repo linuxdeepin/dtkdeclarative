@@ -9,8 +9,8 @@
 
 #include <QQmlParserStatus>
 #include <private/qqmlobjectmodel_p.h>
+#include "dconfigwrapper_p.h"
 
-class DConfigWrapper;
 DQUICK_BEGIN_NAMESPACE
 
 class SettingsOption : public QObject
@@ -21,6 +21,7 @@ class SettingsOption : public QObject
     Q_PROPERTY(QVariant value READ value WRITE setValue RESET resetValue NOTIFY valueChanged)
     Q_PROPERTY(QQmlComponent *delegate READ delegate WRITE setDelegate NOTIFY delegateChanged)
     Q_CLASSINFO("DefaultProperty", "delegate")
+    QML_NAMED_ELEMENT(SettingsOption)
 
 public:
     explicit SettingsOption(QObject *parent = nullptr);
@@ -70,6 +71,7 @@ class SettingsGroup : public QObject
     Q_PROPERTY(QQmlListProperty<DTK_QUICK_NAMESPACE::SettingsGroup> children READ children NOTIFY childrenChanged)
     Q_PROPERTY(QQmlComponent *background READ background WRITE setBackground NOTIFY backgroundChanged)
     Q_CLASSINFO("DefaultProperty", "options")
+    QML_NAMED_ELEMENT(SettingsGroup)
 
 public:
     explicit SettingsGroup(QObject * parent = nullptr);
@@ -188,6 +190,7 @@ class SettingsContainer : public QObject, public QQmlParserStatus
     Q_PROPERTY(SettingsNavigationModel *navigationModel READ navigationModel NOTIFY navigationModelChanged)
     Q_PROPERTY(QQmlComponent *navigationTitle READ navigationTitle WRITE setNavigationTitle NOTIFY navigationTitleChanged)
     Q_CLASSINFO("DefaultProperty", "groups")
+    QML_NAMED_ELEMENT(SettingsContainer)
 
 public:
     explicit SettingsContainer(QObject *parent = nullptr);

@@ -9,6 +9,7 @@
 
 class DHandleContextMenuWindow : public QQuickWindow
 {
+    QML_NAMED_ELEMENT(ContextMenuWindow)
 public:
     DHandleContextMenuWindow(QWindow *parent = nullptr);
 

@@ -11,6 +11,7 @@
 #include <QQmlListProperty>
 #include <QObject>
 #include <QSharedDataPointer>
+#include <QtQml/qqml.h>
 
 class QQuickItem;
 DQUICK_BEGIN_NAMESPACE
@@ -24,6 +25,7 @@ class WaterPopAttribute : public QObject
     Q_PROPERTY(qreal ySpeed READ ySpeed WRITE setYSpeed NOTIFY ySpeedChanged FINAL)
     Q_PROPERTY(qreal x READ x WRITE setX NOTIFY xChanged FINAL)
     Q_PROPERTY(qreal y READ y WRITE setY NOTIFY yChanged FINAL)
+    QML_ANONYMOUS
 
 public:
     WaterPopAttribute(qreal sizeRatio = 0, qreal xSpeed = 0, qreal ySpeed = 0);
@@ -79,6 +81,7 @@ class DQuickWaterProgressAttribute : public QObject, DCORE_NAMESPACE::DObject
     Q_PROPERTY(QQmlListProperty<DTK_QUICK_NAMESPACE::WaterPopAttribute> pops READ pops NOTIFY popsChanged)
     Q_PROPERTY(bool running READ running WRITE setRunning NOTIFY runningChanged)
     Q_PROPERTY(QQuickItem *waterProgress READ waterProgress WRITE setWaterProgress NOTIFY waterProgressChanged)
+    QML_NAMED_ELEMENT(WaterProgressAttribute)
 
 public:
     explicit DQuickWaterProgressAttribute(QObject *parent = nullptr);

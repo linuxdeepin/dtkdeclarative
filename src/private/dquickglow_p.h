@@ -23,6 +23,7 @@ class Q_DECL_EXPORT DQuickGlow : public QQuickItem
     Q_PROPERTY(qreal relativeSizeY READ relativeSizeY WRITE setRelativeSizeY NOTIFY relativeSizeYChangd)
     Q_PROPERTY(bool fill READ fill WRITE setFill NOTIFY fillChanged)
 
+    QML_NAMED_ELEMENT(GlowEffect)
 public:
     explicit DQuickGlow(QQuickItem *parent = nullptr);
 

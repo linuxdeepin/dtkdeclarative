@@ -26,6 +26,7 @@ class DQuickInWindowBlur : public QQuickItem
     Q_OBJECT
     Q_PROPERTY(qreal radius READ radius WRITE setRadius NOTIFY radiusChanged)
     Q_PROPERTY(bool offscreen READ offscreen WRITE setOffscreen NOTIFY offscreenChanged)
+    QML_NAMED_ELEMENT(InWindowBlur)
 
 public:
     explicit DQuickInWindowBlur(QQuickItem *parent = nullptr);

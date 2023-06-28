@@ -21,6 +21,7 @@ class DQuickBehindWindowBlur : public QQuickItem
     Q_PROPERTY(qreal cornerRadius READ cornerRadius WRITE setCornerRadius NOTIFY cornerRadiusChanged)
     Q_PROPERTY(QColor blendColor READ blendColor WRITE setBlendColor NOTIFY blendColorChanged)
     Q_PROPERTY(bool valid READ valid NOTIFY validChanged)
+    QML_NAMED_ELEMENT(BehindWindowBlur)
 
 public:
     explicit DQuickBehindWindowBlur(QQuickItem *parent = nullptr);

@@ -22,6 +22,7 @@ class DQuickItemViewport : public QQuickItem, public DCORE_NAMESPACE::DObject
     Q_PROPERTY(bool fixed READ fixed WRITE setFixed NOTIFY fixedChanged)
     Q_PROPERTY(bool hideSource READ hideSource WRITE setHideSource NOTIFY hideSourceChanged)
     D_DECLARE_PRIVATE(DQuickItemViewport)
+    QML_NAMED_ELEMENT(ItemViewport)
 
 public:
     explicit DQuickItemViewport(QQuickItem *parent = nullptr);
