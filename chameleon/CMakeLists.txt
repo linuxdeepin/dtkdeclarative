@@ -10,20 +10,56 @@ if(EnableQt5)
     find_package(Qt${QT_VERSION_MAJOR}QuickCompiler)
 endif()
 
-file(GLOB QML_FILES "imports/Chameleon/*.qml")
-file(GLOB JS_FILES "imports/Chameleon/*.js")
-file(GLOB SRC_FILES "src/*.h" "src/*.cpp")
+set(QML_FILES
+    ApplicationWindow.qml
+    BusyIndicator.qml
+    Button.qml
+    CheckBox.qml
+    CheckDelegate.qml
+    ComboBox.qml
+    Control.qml
+    DelayButton.qml
+    DialogButtonBox.qml
+    Dial.qml
+    Frame.qml
+    GroupBox.qml
+    ItemDelegate.qml
+    MenuItem.qml
+    Menu.qml
+    MenuSeparator.qml
+    PageIndicator.qml
+    Pane.qml
+    Popup.qml
+    ProgressBar.qml
+    RadioButton.qml
+    RoundButton.qml
+    ScrollBar.qml
+    ScrollIndicator.qml
+    Slider.qml
+    SpinBox.qml
+    StackView.qml
+    Switch.qml
+    TextArea.qml
+    TextField.qml
+    ToolTip.qml
+)
+set(JS_FILES PixelMetric.js)
+set(SRC_FILES
+    qtquickcontrols2chameleonstyleplugin.h qtquickcontrols2chameleonstyleplugin.cpp
+)
 
 if(EnableQt5)
+    file(GLOB _qml_files ${QML_FILES})
+    file(GLOB _js_files ${JS_FILES})
     set(TARGETPATH "QtQuick/Controls.2/Chameleon")
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/plugins/Chameleon")
     set(PLUGIN_INSTALL_DIR "${QML_INSTALL_DIR}/${TARGETPATH}")
 
-    qtquick_compiler_add_resources(RESOURCES ${CMAKE_CURRENT_LIST_DIR}/imports/Chameleon/qml.qrc)
+    qtquick_compiler_add_resources(RESOURCES ${CMAKE_CURRENT_LIST_DIR}/qml.qrc)
 
     add_library(${PLUGIN_NAME} SHARED
         ${SRC_FILES}
-        ${RESOURCES} #   imports/Chameleon/qml.qrc
+        ${RESOURCES} #   qml.qrc
         ${QML_DIR}
     )
 
@@ -33,7 +69,7 @@ if(EnableQt5)
     )
 
     set(QMLC_FILES)
-    foreach(QML_FILE ${QML_FILES})
+    foreach(QML_FILE ${_qml_files})
         get_filename_component(EXTENSION ${QML_FILE} EXT)
         if(EXTENSION STREQUAL ".qml" OR EXTENSION STREQUAL ".js" OR EXTENSION STREQUAL ".ui.qml")
             set(OUTPUT_FILE "${QML_FILE}c")
@@ -43,7 +79,7 @@ if(EnableQt5)
     endforeach()
 
     set(QML_DIR "${CMAKE_CURRENT_BINARY_DIR}/qmldir")
-    configure_file("${CMAKE_CURRENT_LIST_DIR}/imports/Chameleon/qmldir.in" "${QML_DIR}" @ONLY)
+    configure_file("${CMAKE_CURRENT_LIST_DIR}/qmldir.in" "${QML_DIR}" @ONLY)
     set(OUT_QML_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/qmldir")
     # copy qmldir
     add_custom_command(TARGET ${PLUGIN_NAME}
@@ -57,8 +93,8 @@ if(EnableQt5)
     install(TARGETS ${PLUGIN_NAME} DESTINATION ${PLUGIN_INSTALL_DIR})
     install(FILES
         ${QML_DIR}
-        ${JS_FILES}
-        ${QML_FILES}
+        ${_js_files}
+        ${_qml_files}
         ${QMLC_FILES}
         DESTINATION ${PLUGIN_INSTALL_DIR}
     )
@@ -75,7 +111,8 @@ if(EnableQt6)
         NO_PLUGIN_OPTIONAL
         NO_GENERATE_PLUGIN_SOURCE
         SOURCES ${SRC_FILES}
-        RESOURCES ${CMAKE_CURRENT_LIST_DIR}/imports/Chameleon/qml.qrc #   imports/Chameleon/qml.qrc
+        QML_FILES ${QML_FILES}
+        RESOURCES qml.qrc
     )
 endif()
 
