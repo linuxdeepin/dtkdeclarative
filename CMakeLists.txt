@@ -76,6 +76,10 @@ add_subdirectory(chameleon)
 add_subdirectory(qmlplugin)
 add_subdirectory(examples)
 
+if(EnableQt6)
+    add_subdirectory(qt6)
+endif()
+
 if(BUILD_DOCS)
     add_subdirectory(docs)
 endif()

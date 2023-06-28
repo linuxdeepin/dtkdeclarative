@@ -1,0 +1,124 @@
+#####################################################################
+## qtquickcontrols2basicstyleimplplugin Plugin:
+#####################################################################
+
+set(QML_DTK
+    "RectangularShadow.qml"
+    "FocusBoxBorder.qml"
+    "CicleSpreadAnimation.qml"
+    "BoxShadow.qml"
+    "BoxInsetShadow.qml"
+    "InsideBoxBorder.qml"
+    "OutsideBoxBorder.qml"
+    "SortFilterModel.qml"
+)
+
+set(QML_DTK_AND_QT_CONTROLS
+    "ApplicationWindow.qml"
+    "Button.qml"
+    "Menu.qml"
+    "MenuItem.qml"
+    "MenuSeparator.qml"
+    "ScrollIndicator.qml"
+    "Popup.qml"
+    "ScrollBar.qml"
+)
+
+set(QML_DTK_CONTROLS
+    "LineEdit.qml"
+    "SearchEdit.qml"
+    "PasswordEdit.qml"
+    "WarningButton.qml"
+    "RecommandButton.qml"
+    "ToolButton.qml"
+    "IconButton.qml"
+    "FloatingButton.qml"
+    "ButtonBox.qml"
+    "TitleBar.qml"
+    "DialogTitleBar.qml"
+    "WindowButton.qml"
+    "WindowButtonGroup.qml"
+    "DialogWindow.qml"
+    "AboutDialog.qml"
+    "HelpAction.qml"
+    "AboutAction.qml"
+    "QuitAction.qml"
+    "ThemeMenu.qml"
+    "AlertToolTip.qml"
+    "FlowStyle.qml"
+    "Control.qml"
+    "SpinBox.qml"
+    "TextField.qml"
+    "TextArea.qml"
+    "PlusMinusSpinBox.qml"
+    "FloatingPanel.qml"
+    "FloatingMessage.qml"
+    "HighlightPanel.qml"
+    "ArrowListView.qml"
+    "StyledBehindWindowBlur.qml"
+    "PopupWindow.qml"
+    "Switch.qml"
+    "Slider.qml"
+    "ComboBox.qml"
+    "ActionButton.qml"
+    "ItemDelegate.qml"
+    "CheckDelegate.qml"
+    "TipsSlider.qml"
+    "SliderTipItem.qml"
+    "CheckBox.qml"
+    "IpV4LineEdit.qml"
+    "StyledArrowShapeWindow.qml"
+    "Action.qml"
+    "ActionGroup.qml"
+    "Label.qml"
+    "Container.qml"
+    "ButtonGroup.qml"
+    "ScrollView.qml"
+    "MenuBar.qml"
+    "AbstractButton.qml"
+    "TabBar.qml"
+    "SwipeDelegate.qml"
+    "SwipeView.qml"
+    "Drawer.qml"
+    "Dial.qml"
+    "Dialog.qml"
+    "DelayButton.qml"
+    "RoundButton.qml"
+    "RadioButton.qml"
+    "ToolTip.qml"
+    "DialogButtonBox.qml"
+    "Frame.qml"
+    "GroupBox.qml"
+    "PageIndicator.qml"
+    "Pane.qml"
+    "StackView.qml"
+    "BusyIndicator.qml"
+    "ProgressBar.qml"
+    "BoxPanel.qml"
+    "KeySequenceEdit.qml"
+    "ButtonIndicator.qml"
+    "EmbeddedProgressBar.qml"
+    "WaterProgressBar.qml"
+)
+
+qt_add_qml_module(dtkdeclarativecontrolsplugin
+    PLUGIN_TARGET dtkdeclarativecontrolsplugin
+    URI "org.deepin.dtk"
+    VERSION "1.0"
+    QML_FILES
+        ${QML_DTK}
+        ${QML_DTK_AND_QT_CONTROLS}
+        ${QML_DTK_CONTROLS}
+    OUTPUT_DIRECTORY
+        "${PROJECT_BINARY_DIR}/plugins/org/deepin/dtk/controls"
+)
+
+target_link_libraries(dtkdeclarativecontrolsplugin
+PRIVATE
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Quick
+    Qt${QT_VERSION_MAJOR}::CorePrivate
+    Qt${QT_VERSION_MAJOR}::QuickPrivate
+    Qt${QT_VERSION_MAJOR}::Qml
+    Qt${QT_VERSION_MAJOR}::QmlPrivate
+)

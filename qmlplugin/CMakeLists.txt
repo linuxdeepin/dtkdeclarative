@@ -35,13 +35,13 @@ if(EnableQt6)
     qt_add_qml_module(${PLUGIN_NAME}
         PLUGIN_TARGET ${PLUGIN_NAME}
         URI "org.deepin.dtk"
-        VERSION "${PROJECT_VERSION}"
+        VERSION "1.0"
         NO_GENERATE_PLUGIN_SOURCE
         SOURCES
             ${CMAKE_CURRENT_LIST_DIR}/qmlplugin_plugin.cpp
             ${CMAKE_CURRENT_LIST_DIR}/qmlplugin_plugin.h
         OUTPUT_DIRECTORY
-            "${PROJECT_BINARY_DIR}/plugins/${URI}"
+            "${PROJECT_BINARY_DIR}/plugins2/${URI}"
     )
 endif()
 

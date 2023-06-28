@@ -28,13 +28,13 @@ D.ApplicationWindow {
     D.DWindow.borderWidth: 1
     D.DWindow.alphaBufferSize: 8
 
-    D.FontManager {
-        id: font_manager
-        baseFont: font_manager.get(13, Qt.application.font)
-        onFontChanged: {
-            console.log("font_manager fontChanged ..........");
-        }
-    }
+//    D.FontManager {
+//        id: font_manager
+//        baseFont: font_manager.get(13, Qt.application.font)
+//        onFontChanged: {
+//            console.log("font_manager fontChanged ..........");
+//        }
+//    }
 
 //    D.MessageManager.layout: Column {
 //        anchors {

@@ -346,18 +346,18 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     // for org.deepin.dtk.style(allowed to override)
     dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");
 
-    // for org.deepin.dtk.settings
-    dtkRegisterType<SettingsOption>(settingsUri, implUri, 1, 0, "SettingsOption");
-    dtkRegisterType<SettingsGroup>(settingsUri, implUri, 1, 0, "SettingsGroup");
-    dtkRegisterType<SettingsContainer>(settingsUri, implUri, 1, 0, "SettingsContainer");
-    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "SettingsDialog");
-    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "OptionDelegate");
-    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "CheckBox");
-    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "LineEdit");
-    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "ComboBox");
-    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "NavigationTitle");
-    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "ContentTitle");
-    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "ContentBackground");
+//    // for org.deepin.dtk.settings
+//    dtkRegisterType<SettingsOption>(settingsUri, implUri, 1, 0, "SettingsOption");
+//    dtkRegisterType<SettingsGroup>(settingsUri, implUri, 1, 0, "SettingsGroup");
+//    dtkRegisterType<SettingsContainer>(settingsUri, implUri, 1, 0, "SettingsContainer");
+//    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "SettingsDialog");
+//    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "OptionDelegate");
+//    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "CheckBox");
+//    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "LineEdit");
+//    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "ComboBox");
+//    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "NavigationTitle");
+//    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "ContentTitle");
+//    dtkSettingsRegisterType(settingsUri, nullptr, 1, 0, "ContentBackground");
 
     // for org.deepin.dtk.private
     dtkRegisterType(privateUri, implUri, 1, 0, "ButtonPanel");
