@@ -17,6 +17,7 @@ class ObjectModelProxy : public QQmlInstanceModel
     Q_OBJECT
     Q_PROPERTY(QQmlObjectModel *sourceModel READ sourceModel WRITE setSourceModel)
     Q_PROPERTY(QJSValue filterAcceptsItem READ filterAcceptsItem WRITE setFilterAcceptsItem NOTIFY filterAcceptsItemChanged)
+    QML_NAMED_ELEMENT(ObjectModelProxy)
 public:
     explicit ObjectModelProxy(QObject *parent = nullptr);
 

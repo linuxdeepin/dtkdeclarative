@@ -34,6 +34,8 @@ class DColor
 {
     Q_GADGET
     QML_ANONYMOUS
+    QML_NAMED_ELEMENT(Color)
+    QML_UNCREATABLE("Color is only available as enums.")
 public:
     enum Type : quint8 {
         Invalid = 0,
@@ -129,10 +131,19 @@ class DQMLGlobalObject : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(QString deepinDistributionOrgLogo READ deepinDistributionOrgLogo CONSTANT)
     Q_PROPERTY(QString deepinWebsiteName READ deepinWebsiteName CONSTANT)
     Q_PROPERTY(QString deepinWebsiteLink READ deepinWebsiteLink CONSTANT)
+    QML_NAMED_ELEMENT(DTK)
+    QML_SINGLETON
 
 public:
     explicit DQMLGlobalObject(QObject *parent = nullptr);
     ~DQMLGlobalObject() override;
+
+    static DQMLGlobalObject *create(QQmlEngine *qmlEngine, QJSEngine *jsEngine)
+    {
+        Q_UNUSED(qmlEngine)
+        Q_UNUSED(jsEngine)
+        return new DQMLGlobalObject;
+    }
 
     enum ControlState {
         NormalState,

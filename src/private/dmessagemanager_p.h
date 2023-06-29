@@ -55,6 +55,9 @@ class MessageManager : public QObject
     Q_PROPERTY(QQuickItem *layout READ layout WRITE setLayout)
     Q_PROPERTY(int capacity READ capacity WRITE setCapacity)
     Q_PROPERTY(int count READ count NOTIFY countChanged)
+    QML_UNCREATABLE("MessageManager Attached.")
+    QML_NAMED_ELEMENT(MessageManager)
+    QML_ATTACHED(MessageManager)
 
 public:
     explicit MessageManager(QQuickWindow *parent = nullptr);

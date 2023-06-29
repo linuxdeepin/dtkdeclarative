@@ -259,6 +259,9 @@ class DQuickControlColorSelector : public QObject
 {
     friend class CustomMetaObject;
     Q_OBJECT
+    QML_UNCREATABLE("ColorSelector is only available as an attached property.")
+    QML_NAMED_ELEMENT(ColorSelector)
+    QML_ATTACHED(DQuickControlColorSelector)
     Q_DISABLE_COPY(DQuickControlColorSelector)
 public:
     Q_PROPERTY(QQuickItem *control READ control NOTIFY controlChanged)

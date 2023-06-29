@@ -31,6 +31,7 @@ class DQuickDciIconImage : public QQuickItem, DCORE_NAMESPACE::DObject
     Q_PROPERTY(bool mirror READ mirror WRITE setMirror NOTIFY mirrorChanged)
     Q_PROPERTY(bool fallbackToQIcon READ fallbackToQIcon WRITE setFallbackToQIcon NOTIFY fallbackToQIconChanged)
     QML_NAMED_ELEMENT(DciIcon)
+    QML_ATTACHED(DQuickIconAttached)
 
 public:
     explicit DQuickDciIconImage(QQuickItem *parent = nullptr);

@@ -72,6 +72,7 @@ class SettingsGroup : public QObject
     Q_PROPERTY(QQmlComponent *background READ background WRITE setBackground NOTIFY backgroundChanged)
     Q_CLASSINFO("DefaultProperty", "options")
     QML_NAMED_ELEMENT(SettingsGroup)
+    QML_ATTACHED(SettingsGroup)
 
 public:
     explicit SettingsGroup(QObject * parent = nullptr);

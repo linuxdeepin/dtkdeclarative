@@ -24,6 +24,9 @@ class Q_DECL_EXPORT DPopupWindowHandle : public QObject
     Q_PROPERTY(QQmlComponent *delegate READ delegate WRITE setDelegate)
     Q_PROPERTY(QQuickWindow *window READ window NOTIFY windowChanged)
     Q_PROPERTY(bool forceWindowMode READ forceWindowMode WRITE setForceWindowMode)
+    QML_UNCREATABLE("PopupWindow Attached.")
+    QML_NAMED_ELEMENT(PopupHandle)
+    QML_ATTACHED(DPopupWindowHandle)
 
 public:
     explicit DPopupWindowHandle(QObject *parent = nullptr);

@@ -27,6 +27,9 @@ class DQuickWindowAttachedPrivate;
 class DQuickWindow : public QQuickWindow, public DTK_CORE_NAMESPACE::DObject
 {
     Q_OBJECT
+    QML_UNCREATABLE("DQuickWindow Attached.")
+    QML_NAMED_ELEMENT(DWindow)
+    QML_ATTACHED(DQuickWindowAttached)
 public:
     explicit DQuickWindow(QWindow *parent = nullptr);
     ~DQuickWindow() override;
@@ -63,6 +66,7 @@ class DQuickWindowAttached : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(QQuickTransition *overlayExited READ overlayExited WRITE setOverlayExited NOTIFY overlayExitedChanged FINAL)
     Q_PROPERTY(QQmlComponent *loadingOverlay READ loadingOverlay WRITE setLoadingOverlay NOTIFY loadingOverlayChanged FINAL)
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickAppLoaderItem *appLoader READ appLoader NOTIFY appLoaderChanged)
+    QML_ANONYMOUS
 
 public:
     explicit DQuickWindowAttached(QWindow *window);
