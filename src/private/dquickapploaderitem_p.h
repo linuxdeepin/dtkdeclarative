@@ -20,6 +20,9 @@ class DQuickAppLoaderItem : public QQuickItem, public DCORE_NAMESPACE::DObject
     Q_PROPERTY(bool loaded READ loaded NOTIFY loadedChanged)
     Q_PROPERTY(qreal progress READ progress NOTIFY progressChanged)
     Q_PROPERTY(bool asynchronous READ asynchronous WRITE setAsynchronous NOTIFY asynchronousChanged)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QML_NAMED_ELEMENT(AppLoader)
+#endif
 
 public:
     explicit DQuickAppLoaderItem(QQuickItem *parentItem = nullptr);

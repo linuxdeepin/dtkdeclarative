@@ -24,6 +24,9 @@ class DQuickArrowBoxPath : public QQuickCurve
     Q_PROPERTY(qreal arrowHeight READ arrowHeight WRITE setArrowHeight NOTIFY arrowHeightChanged)
     Q_PROPERTY(qreal roundedRadius READ roundedRadius WRITE setRoundedRadius NOTIFY roundedRadiusChanged)
     Q_PROPERTY(qreal spread READ spread WRITE setSpread NOTIFY spreadChanged)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QML_NAMED_ELEMENT(ArrowBoxPath)
+#endif
 
 public:
     enum Direction {

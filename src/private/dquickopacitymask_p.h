@@ -18,6 +18,9 @@ class DQuickOpacityMask : public QQuickItem
     Q_PROPERTY(bool invert READ invert WRITE setInvert NOTIFY invertChanged)
     Q_PROPERTY(QQuickItem *source READ source WRITE setSource NOTIFY sourceChanged)
     Q_PROPERTY(QQuickItem *maskSource READ maskSource WRITE setMaskSource NOTIFY maskSourceChanged)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QML_NAMED_ELEMENT(SoftwareOpacityMask)
+#endif
 
 public:
     explicit DQuickOpacityMask(QQuickItem *parent = nullptr);

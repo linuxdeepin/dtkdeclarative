@@ -9,6 +9,7 @@
 
 #include <DObject>
 #include <QObject>
+#include <QtQml/qqml.h>
 
 class QQuickItem;
 DQUICK_BEGIN_NAMESPACE
@@ -21,6 +22,9 @@ class DQuickKeyListener : public QObject, DCORE_NAMESPACE::DObject
     Q_PROPERTY(QQuickItem *target READ target WRITE setTarget NOTIFY targetChanged)
     Q_PROPERTY(QStringList keys READ keys WRITE setKeys NOTIFY keysChanged)
     Q_PROPERTY(int maxKeyCount READ maxKeyCount WRITE setMaxKeyCount NOTIFY maxKeyCountChanged)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QML_NAMED_ELEMENT(KeySequenceListener)
+#endif
 
 public:
     explicit DQuickKeyListener(QObject *parent = nullptr);

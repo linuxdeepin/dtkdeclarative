@@ -7,6 +7,7 @@
 
 #include <dtkdeclarative_global.h>
 #include <QQmlParserStatus>
+#include <QtQml/qqml.h>
 
 DCORE_BEGIN_NAMESPACE
 class DConfig;
@@ -19,6 +20,9 @@ class DConfigWrapper : public QObject, public QQmlParserStatus
     Q_INTERFACES(QQmlParserStatus)
     Q_PROPERTY(QString name READ name WRITE setName)
     Q_PROPERTY(QString subpath READ subpath WRITE setSubpath)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QML_NAMED_ELEMENT(Config)
+#endif
 public:
     explicit DConfigWrapper(QObject *parent = nullptr);
     ~DConfigWrapper() override;

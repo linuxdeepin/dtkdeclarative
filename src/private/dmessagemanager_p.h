@@ -19,6 +19,9 @@ class FloatingMessageContainer : public QObject
     Q_PROPERTY(QVariant message READ message WRITE setMessage NOTIFY messageChanged)
     Q_PROPERTY(int duration READ duration WRITE setDuration NOTIFY durationChanged)
     Q_CLASSINFO("DefaultProperty", "panel")
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QML_NAMED_ELEMENT(FloatingMessageContainer)
+#endif
 public:
     explicit FloatingMessageContainer(QObject *parent = nullptr);
 
@@ -54,6 +57,11 @@ class MessageManager : public QObject
     Q_PROPERTY(QQuickItem *layout READ layout WRITE setLayout)
     Q_PROPERTY(int capacity READ capacity WRITE setCapacity)
     Q_PROPERTY(int count READ count NOTIFY countChanged)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QML_UNCREATABLE("MessageManager Attached.")
+    QML_NAMED_ELEMENT(MessageManager)
+    QML_ATTACHED(MessageManager)
+#endif
 
 public:
     explicit MessageManager(QQuickWindow *parent = nullptr);
