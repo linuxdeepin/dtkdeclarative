@@ -2,32 +2,27 @@
 ## qtquickcontrols2basicstyleimplplugin Plugin:
 #####################################################################
 
-qt_add_qml_module(dtkdeclarativesettingsplugin
-    PLUGIN_TARGET dtkdeclarativesettingsplugin
-    URI "org.deepin.dtk.settings"
+qt_add_qml_module(dtkdeclarativeprivateplugin
+    PLUGIN_TARGET dtkdeclarativeprivateplugin
+    URI "org.deepin.dtk.private"
     VERSION "1.0"
-    SOURCES
-        ${PROJECT_SOURCE_DIR}/src/private/dsettingscontainer_p.h
-        ${PROJECT_SOURCE_DIR}/src/private/dsettingscontainer.cpp
     QML_FILES
-        "SettingsDialog.qml"
-        "OptionDelegate.qml"
-        "CheckBox.qml"
-        "LineEdit.qml"
-        "ComboBox.qml"
-        "NavigationTitle.qml"
-        "ContentTitle.qml"
-        "ContentBackground.qml"
+        "ProgressBarImpl.qml"
+        "ProgressBarPanel.qml"
+        "ColorOverlay.qml"
+        "SoftwareColorOverlay.qml"
+        "ArrowListViewButton.qml"
+        "ButtonPanel.qml"
     OUTPUT_DIRECTORY
-        "${PROJECT_BINARY_DIR}/plugins/org/deepin/dtk/settings"
+        "${PROJECT_BINARY_DIR}/plugins/org/deepin/dtk/private"
 )
 
-target_include_directories(dtkdeclarativesettingsplugin
+target_include_directories(dtkdeclarativeprivateplugin
 PRIVATE
     ${PROJECT_SOURCE_DIR}/src/private
 )
 
-target_link_libraries(dtkdeclarativesettingsplugin
+target_link_libraries(dtkdeclarativeprivateplugin
 PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Quick

@@ -3,8 +3,9 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 import QtQuick 2.11
-import org.deepin.dtk.impl 1.0 as D
-import org.deepin.dtk.style 1.0 as DS
+import org.deepin.dtk 1.0 as D
+import org.deepin.dtk 1.0 as DS
+import org.deepin.dtk 1.0
 
 BoxPanel {
     id: control
@@ -48,30 +49,30 @@ BoxPanel {
         GradientStop { position: 0.96; color: control.D.ColorSelector.color2 }
     }
 
-    CicleSpreadAnimation {
-        id: hoverAnimation
-        anchors.fill: parent
-        visible: control.D.ColorSelector.controlState === D.DTK.HoveredState
-                 && control.D.ColorSelector.family === D.Palette.CommonColor
+//    CicleSpreadAnimation {
+//        id: hoverAnimation
+//        anchors.fill: parent
+//        visible: control.D.ColorSelector.controlState === D.DTK.HoveredState
+//                 && control.D.ColorSelector.family === D.Palette.CommonColor
 
-        Rectangle {
-            anchors.fill: parent
-            radius: control.radius
-            gradient: control.D.ColorSelector.color1 === control.D.ColorSelector.color2 ? null : hoverBackgroundGradient
-            color: control.D.ColorSelector.color1
-        }
-        function triggle() {
-            if (button.hovered) {
-                var pos = D.DTK.cursorPosition()
-                hoverAnimation.centerPoint = hoverAnimation.mapFromGlobal(pos.x, pos.y)
-                hoverAnimation.start()
-            } else {
-                hoverAnimation.stop()
-            }
-        }
+//        Rectangle {
+//            anchors.fill: parent
+//            radius: control.radius
+//            gradient: control.D.ColorSelector.color1 === control.D.ColorSelector.color2 ? null : hoverBackgroundGradient
+//            color: control.D.ColorSelector.color1
+//        }
+//        function triggle() {
+//            if (button.hovered) {
+//                var pos = D.DTK.cursorPosition()
+//                hoverAnimation.centerPoint = hoverAnimation.mapFromGlobal(pos.x, pos.y)
+//                hoverAnimation.start()
+//            } else {
+//                hoverAnimation.stop()
+//            }
+//        }
 
-        Component.onCompleted: {
-            button.hoveredChanged.connect(hoverAnimation.triggle)
-        }
-    }
+//        Component.onCompleted: {
+//            button.hoveredChanged.connect(hoverAnimation.triggle)
+//        }
+//    }
 }

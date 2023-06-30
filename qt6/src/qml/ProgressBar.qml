@@ -4,8 +4,8 @@
 
 import QtQuick 2.11
 import QtQuick.Templates as T
-import org.deepin.dtk.style 1.0 as DS
-import "private"
+import org.deepin.dtk 1.0 as DS
+import org.deepin.dtk.private 1.0
 
 T.ProgressBar {
     id: control

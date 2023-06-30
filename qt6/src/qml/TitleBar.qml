@@ -5,8 +5,9 @@
 import QtQuick 2.11
 import QtQuick.Window 2.11
 import QtQuick.Layouts 1.11
-import org.deepin.dtk.impl 1.0 as D
-import org.deepin.dtk.style 1.0 as DS
+import org.deepin.dtk 1.0 as D
+import org.deepin.dtk 1.0 as DS
+import org.deepin.dtk 1.0 as DD
 
 Control {
     id: control
@@ -44,7 +45,7 @@ Control {
 
     property alias enableInWindowBlendBlur: background.active
 
-    property D.Palette textColor: DS.Style.button.text
+    property DD.Palette textColor: DS.Style.button.text
     palette.windowText: D.ColorSelector.textColor
     MouseArea {
         id: mouseArea
@@ -80,7 +81,7 @@ Control {
         id: background
         active: false
         anchors.fill: parent
-        sourceComponent: D.InWindowBlur {
+        sourceComponent: DD.InWindowBlur {
             radius: 30
         }
     }
@@ -109,7 +110,7 @@ Control {
             Layout.fillWidth: true
             Layout.leftMargin: DS.Style.titleBar.leftMargin
 
-            D.DciIcon {
+            DD.DciIcon {
                 id: iconLabel
                 sourceSize {
                     width: DS.Style.titleBar.iconSize

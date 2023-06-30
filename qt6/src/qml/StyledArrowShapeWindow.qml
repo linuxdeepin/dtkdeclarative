@@ -2,8 +2,8 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-import org.deepin.dtk.impl 1.0 as D
-import org.deepin.dtk.style 1.0 as DS
+import org.deepin.dtk 1.0 as D
+import org.deepin.dtk 1.0 as DS
 
 ArrowShapeWindow {
     property alias control: blur.control

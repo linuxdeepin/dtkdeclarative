@@ -24,6 +24,7 @@ qt_add_qml_module(dtkdeclarativesettingsplugin
 
 target_include_directories(dtkdeclarativesettingsplugin
 PRIVATE
+    ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/src/private
 )
 

@@ -5,8 +5,8 @@
 import QtQuick 2.11
 import QtQuick.Window 2.11
 import QtQuick.Layouts 1.11
-import org.deepin.dtk.style 1.0 as DS
-import "private"
+import org.deepin.dtk 1.0 as DS
+import org.deepin.dtk.private
 
 FocusScope {
     id: control

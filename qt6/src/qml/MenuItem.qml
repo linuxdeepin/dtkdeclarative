@@ -4,8 +4,8 @@
 
 import QtQuick 2.11
 import QtQuick.Templates as T
-import org.deepin.dtk.impl 1.0 as D
-import org.deepin.dtk.style 1.0 as DS
+import org.deepin.dtk 1.0 as D
+import org.deepin.dtk 1.0 as DS
 
 T.MenuItem {
     id: control

@@ -3,8 +3,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 import QtQuick 2.11
-import org.deepin.dtk.style 1.0 as DS
-import ".."
+import org.deepin.dtk 1.0 as DS
 
 Loader {
     enum Direction {
@@ -16,7 +15,7 @@ Loader {
     property int direction
     active: view.interactive
 
-    sourceComponent: Button {
+    sourceComponent: DS.Button {
         flat: true
         enabled: direction === ArrowListViewButton.UpButton ? !view.atYBeginning : !itemsView.atYEnd
         width: DS.Style.arrowListView.stepButtonSize.width
