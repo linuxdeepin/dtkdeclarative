@@ -14,26 +14,26 @@ if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips64")
 endif()
 
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick DBus QuickControls2 LinguistTools)
-find_package(Qt${QT_VERSION_MAJOR}QuickCompiler)
+
+find_package(Qt${QT_DEFAULT_MAJOR_VERSION}ShaderTools)
 find_package(Dtk${DTK_VERSION_MAJOR}Core REQUIRED)
 find_package(Dtk${DTK_VERSION_MAJOR}Gui REQUIRED)
 find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(GL REQUIRED IMPORTED_TARGET gl)
 
-file(GLOB PUBLIC_HEADERS "./*.h")
-file(GLOB_RECURSE HEADERS "./*.h")
-file(GLOB_RECURSE SRCS   "./*.cpp")
-file(GLOB D_HEADERS   "./D*")
-file(GLOB ASSETS_RCS ${CMAKE_CURRENT_LIST_DIR}/dtkdeclarative_assets.qrc)
-file(GLOB TS_FILES "translations/*.ts")
-# Quick compiler gen qmlc
+file(GLOB PUBLIC_HEADERS "${PROJECT_SOURCE_DIR}/src/*.h")
+file(GLOB_RECURSE HEADERS "${PROJECT_SOURCE_DIR}/src/*.h")
+file(GLOB_RECURSE SRCS   "${PROJECT_SOURCE_DIR}/src/*.cpp")
+file(GLOB D_HEADERS   "${PROJECT_SOURCE_DIR}/src/D*")
+file(GLOB ASSETS_RCS ${PROJECT_SOURCE_DIR}/src/dtkdeclarative_assets.qrc)
+file(GLOB TS_FILES "${PROJECT_SOURCE_DIR}/src/translations/*.ts")
+
 file(GLOB QML_RCS ${CMAKE_CURRENT_LIST_DIR}/dtkdeclarative_qml.qrc)
-qtquick_compiler_add_resources(RESOURCES
+qt_add_resources(RESOURCES
     ${QML_RCS}
 )
-# Add translation source file
-qt5_add_translation(QM_FILES ${TS_FILES})
+qt_add_translation(QM_FILES ${TS_FILES})
 
 add_library(${LIB_NAME} SHARED
     ${SRCS}
@@ -42,6 +42,22 @@ add_library(${LIB_NAME} SHARED
     ${RESOURCES}
     ${ASSETS_RCS}
     ${QM_FILES}
+)
+
+qt_add_shaders(${LIB_NAME} "_shaders_ng"
+    BATCHABLE
+    PRECOMPILE
+    PREFIX
+        "/dtk/declarative"
+    FILES
+        "shaders_ng/quickitemviewport.vert"
+        "shaders_ng/quickitemviewport.frag"
+        "shaders_ng/quickitemviewport-opaque.vert"
+        "shaders_ng/quickitemviewport-opaque.frag"
+        "shaders_ng/cornerscolorshader.vert"
+        "shaders_ng/cornerscolorshader.frag"
+        "shaders_ng/shadowmaterial.vert"
+        "shaders_ng/shadowmaterial.frag"
 )
 
 set_target_properties(${LIB_NAME} PROPERTIES
