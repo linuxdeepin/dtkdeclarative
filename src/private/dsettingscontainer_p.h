@@ -8,6 +8,7 @@
 #include <dtkdeclarative_global.h>
 
 #include <QQmlParserStatus>
+#include <QQmlComponent>
 #include <private/qqmlobjectmodel_p.h>
 #include "dconfigwrapper_p.h"
 

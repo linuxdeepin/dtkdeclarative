@@ -40,7 +40,7 @@ Q_LOGGING_CATEGORY(appLoaderLog, "dtk.quick.apploader");
 static const QQuickItemPrivate::ChangeTypes changedTypes = QQuickItemPrivate::Geometry;
 DAppLoader *DAppLoader::self = nullptr;
 
-static inline const bool heightValid(QQuickItemPrivate *item)
+static inline bool heightValid(QQuickItemPrivate *item)
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     return item->heightValid;
