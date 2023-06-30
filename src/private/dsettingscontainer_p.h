@@ -8,9 +8,10 @@
 #include <dtkdeclarative_global.h>
 
 #include <QQmlParserStatus>
+#include <QQmlComponent>
 #include <private/qqmlobjectmodel_p.h>
+#include "dconfigwrapper_p.h"
 
-class DConfigWrapper;
 DQUICK_BEGIN_NAMESPACE
 
 class SettingsOption : public QObject
@@ -21,6 +22,9 @@ class SettingsOption : public QObject
     Q_PROPERTY(QVariant value READ value WRITE setValue RESET resetValue NOTIFY valueChanged)
     Q_PROPERTY(QQmlComponent *delegate READ delegate WRITE setDelegate NOTIFY delegateChanged)
     Q_CLASSINFO("DefaultProperty", "delegate")
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QML_NAMED_ELEMENT(SettingsOption)
+#endif
 
 public:
     explicit SettingsOption(QObject *parent = nullptr);
@@ -70,6 +74,10 @@ class SettingsGroup : public QObject
     Q_PROPERTY(QQmlListProperty<DTK_QUICK_NAMESPACE::SettingsGroup> children READ children NOTIFY childrenChanged)
     Q_PROPERTY(QQmlComponent *background READ background WRITE setBackground NOTIFY backgroundChanged)
     Q_CLASSINFO("DefaultProperty", "options")
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QML_NAMED_ELEMENT(SettingsGroup)
+    QML_ATTACHED(SettingsGroup)
+#endif
 
 public:
     explicit SettingsGroup(QObject * parent = nullptr);
@@ -188,6 +196,9 @@ class SettingsContainer : public QObject, public QQmlParserStatus
     Q_PROPERTY(SettingsNavigationModel *navigationModel READ navigationModel NOTIFY navigationModelChanged)
     Q_PROPERTY(QQmlComponent *navigationTitle READ navigationTitle WRITE setNavigationTitle NOTIFY navigationTitleChanged)
     Q_CLASSINFO("DefaultProperty", "groups")
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QML_NAMED_ELEMENT(SettingsContainer)
+#endif
 
 public:
     explicit SettingsContainer(QObject *parent = nullptr);

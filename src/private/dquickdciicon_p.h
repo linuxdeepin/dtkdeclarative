@@ -31,6 +31,9 @@ class DQuickDciIcon
     // for Qt icon
     Q_PROPERTY(QUrl source READ source WRITE setSource RESET resetSource FINAL)
     Q_PROPERTY(bool fallbackToQIcon READ fallbackToQIcon WRITE setFallbackToQIcon RESET resetFallbackToQIcon)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QML_ANONYMOUS
+#endif
 
 public:
     DQuickDciIcon();

@@ -70,7 +70,7 @@ inline void dtkRegisterUncreatableType(const char *uri1, const char *uri2, int v
 }
 template <typename T>
 inline void dtkRegisterSingletonType(const char *uri1, const char *uri2, int versionMajor, int versionMinor, const char *qmlName,
-                                     QObject *(*callback)(QQmlEngine *, QJSEngine *)) {
+                                     T *(*callback)(QQmlEngine *, QJSEngine *)) {
     qmlRegisterSingletonType<T>(uri1, versionMajor, versionMinor, qmlName, callback);
     if (uri2)
         qmlRegisterSingletonType<T>(uri2, versionMajor, versionMinor, qmlName, callback);
@@ -206,22 +206,19 @@ void QmlpluginPlugin::registerTypes(const char *uri)
 
     //DQMLGlobalObject 依赖 DWindowManagerHelper中枚举的定义，所以需要先注册
     dtkRegisterSingletonType<DWindowManagerHelper>(uri, implUri, 1, 0, "WindowManagerHelper",
-                                                   [](QQmlEngine *, QJSEngine *) -> QObject * {
+                                                   [](QQmlEngine *, QJSEngine *) -> DWindowManagerHelper * {
         auto helper = DWindowManagerHelper::instance();
         QQmlEngine::setObjectOwnership(helper, QQmlEngine::CppOwnership);
         return helper;
     });
     dtkRegisterSingletonType<DGuiApplicationHelper>(uri, implUri, 1, 0, "ApplicationHelper",
-                                                    [](QQmlEngine *, QJSEngine *) -> QObject * {
+                                                    [](QQmlEngine *, QJSEngine *) -> DGuiApplicationHelper * {
         auto helper = DGuiApplicationHelper::instance();
         QQmlEngine::setObjectOwnership(helper, QQmlEngine::CppOwnership);
         return helper;
     });
     qRegisterMetaType<DGuiApplicationHelper::ColorType>("Dtk::Gui::DGuiApplicationHelper::ColorType");
-    dtkRegisterSingletonType<DQMLGlobalObject>(uri, implUri, 1, 0, "DTK",
-                                               [](QQmlEngine *, QJSEngine *) -> QObject * {
-        return new DQMLGlobalObject;
-    });
+    dtkRegisterSingletonType<DQMLGlobalObject>(uri, implUri, 1, 0, "DTK", &DQMLGlobalObject::create);
 
     // 自定义的 QML 控件可以通过把 QML 文件注册到环境中的方式来实现
     // for org.deepin.dtk

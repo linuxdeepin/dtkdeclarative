@@ -28,6 +28,9 @@ class DQuickControlColor
     Q_GADGET
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DColor common READ common WRITE setCommon FINAL)
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DColor crystal READ crystal WRITE setCrystal FINAL)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QML_ANONYMOUS
+#endif
 
 public:
     DQuickControlColor();
@@ -113,6 +116,9 @@ class DQuickControlPalette : public QObject
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor disabled READ disabled WRITE setDisabled NOTIFY disabledChanged)
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickControlColor disabledDark READ disabledDark WRITE setDisabledDark NOTIFY disabledDarkChanged)
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QML_NAMED_ELEMENT(Palette)
+#endif
 public:
     enum ColorFamily {
         CommonColor = 0,
@@ -257,6 +263,11 @@ class DQuickControlColorSelector : public QObject
 {
     friend class CustomMetaObject;
     Q_OBJECT
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QML_UNCREATABLE("ColorSelector is only available as an attached property.")
+    QML_NAMED_ELEMENT(ColorSelector)
+    QML_ATTACHED(DQuickControlColorSelector)
+#endif
     Q_DISABLE_COPY(DQuickControlColorSelector)
 public:
     Q_PROPERTY(QQuickItem *control READ control NOTIFY controlChanged)

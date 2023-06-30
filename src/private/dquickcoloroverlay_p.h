@@ -20,6 +20,9 @@ class DQuickColorOverlay : public QQuickItem
     Q_PROPERTY(QQuickItem *source READ source WRITE setSource NOTIFY sourceChanged)
     Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
     Q_PROPERTY(bool cached READ cached WRITE setCached NOTIFY cachedChanged)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QML_NAMED_ELEMENT(SoftwareColorOverlay)
+#endif
 
 public:
     explicit DQuickColorOverlay(QQuickItem *parent = nullptr);

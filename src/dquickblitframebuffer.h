@@ -16,6 +16,9 @@ class Q_DECL_EXPORT DQuickBlitFramebuffer : public QQuickItem, public DCORE_NAME
 {
     Q_OBJECT
     D_DECLARE_PRIVATE(DQuickBlitFramebuffer)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QML_NAMED_ELEMENT(BlitFramebuffer)
+#endif
 public:
     explicit DQuickBlitFramebuffer(QQuickItem *parent = nullptr);
     ~DQuickBlitFramebuffer();

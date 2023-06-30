@@ -9,6 +9,9 @@
 
 class DHandleContextMenuWindow : public QQuickWindow
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QML_NAMED_ELEMENT(ContextMenuWindow)
+#endif
 public:
     DHandleContextMenuWindow(QWindow *parent = nullptr);
 

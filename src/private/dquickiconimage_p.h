@@ -28,6 +28,9 @@ class DQuickIconImage : public QQuickImage
     Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged FINAL)
     Q_PROPERTY(QUrl fallbackSource READ fallbackSource WRITE setFallbackSource NOTIFY fallbackSourceChanged FINAL)
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QML_NAMED_ELEMENT(QtIcon)
+#endif
 public:
     enum class Mode {
         Invalid = QIcon::Normal - 1,
