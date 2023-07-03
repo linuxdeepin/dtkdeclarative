@@ -6,7 +6,7 @@ import QtQuick 2.11
 import QtQuick.Window 2.11
 import QtQuick.Layouts 1.11
 import org.deepin.dtk.style 1.0 as DS
-import "private"
+import org.deepin.dtk.private 1.0 as P
 
 FocusScope {
     id: control
@@ -20,13 +20,13 @@ FocusScope {
     ColumnLayout {
         id: contentLayout
         anchors.fill: parent
-        ArrowListViewButton {
+        P.ArrowListViewButton {
             visible: itemsView.interactive
             Layout.alignment: Qt.AlignHCenter
             Layout.preferredWidth: width
             Layout.preferredHeight: height
             view: itemsView
-            direction: ArrowListViewButton.UpButton
+            direction: P.ArrowListViewButton.UpButton
         }
 
         ListView {
@@ -50,13 +50,13 @@ FocusScope {
             ScrollIndicator.vertical: ScrollIndicator { }
         }
 
-        ArrowListViewButton {
+        P.ArrowListViewButton {
             visible: itemsView.interactive
             Layout.alignment: Qt.AlignHCenter
             Layout.preferredWidth: width
             Layout.preferredHeight: height
             view: itemsView
-            direction: ArrowListViewButton.DownButton
+            direction: P.ArrowListViewButton.DownButton
         }
     }
 }

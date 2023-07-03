@@ -5,7 +5,7 @@
 import QtQuick 2.0
 import QtQuick.Shapes 1.11
 import Qt5Compat.GraphicalEffects
-import org.deepin.dtk.impl 1.0 as D
+import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
 Popup {

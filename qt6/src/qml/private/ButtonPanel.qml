@@ -3,8 +3,9 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 import QtQuick 2.11
-import org.deepin.dtk.impl 1.0 as D
+import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
+import org.deepin.dtk 1.0
 
 BoxPanel {
     id: control
@@ -60,17 +61,18 @@ BoxPanel {
             gradient: control.D.ColorSelector.color1 === control.D.ColorSelector.color2 ? null : hoverBackgroundGradient
             color: control.D.ColorSelector.color1
         }
+        function triggle() {
+            if (button.hovered) {
+                var pos = D.DTK.cursorPosition()
+                hoverAnimation.centerPoint = hoverAnimation.mapFromGlobal(pos.x, pos.y)
+                hoverAnimation.start()
+            } else {
+                hoverAnimation.stop()
+            }
+        }
 
         Component.onCompleted: {
-            button.hoveredChanged.connect(function () {
-                if (button.hovered) {
-                    var pos = D.DTK.cursorPosition()
-                    hoverAnimation.centerPoint = hoverAnimation.mapFromGlobal(pos.x, pos.y)
-                    hoverAnimation.start()
-                } else {
-                    hoverAnimation.stop()
-                }
-            })
+            button.hoveredChanged.connect(hoverAnimation.triggle)
         }
     }
 }
