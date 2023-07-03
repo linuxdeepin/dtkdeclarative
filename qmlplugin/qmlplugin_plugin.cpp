@@ -3,11 +3,11 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 #include "qmlplugin_plugin.h"
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include "dquickwindow.h"
 #include "dquickitemviewport.h"
 #include "dquickblitframebuffer.h"
 #include "private/dhandlecontextmenuwindow_p.h"
-#include "private/dquickimageprovider_p.h"
 #include "private/dquickglow_p.h"
 #include "private/dquickinwindowblur_p.h"
 #include "private/dquickrectangle_p.h"
@@ -20,7 +20,6 @@
 #include "private/dquickiconimage_p.h"
 #include "private/dquickdciiconimage_p.h"
 #include "private/dquickiconlabel_p.h"
-#include "private/dquickcontrolpalette_p.h"
 #include "private/dsettingscontainer_p.h"
 #include "private/dmessagemanager_p.h"
 #include "private/dpopupwindowhandle_p.h"
@@ -29,6 +28,10 @@
 #include "private/dquickarrowboxpath_p.h"
 #include "private/dquickcoloroverlay_p.h"
 #include "private/dquickapploaderitem_p.h"
+#endif
+
+#include "private/dquickimageprovider_p.h"
+#include "private/dquickcontrolpalette_p.h"
 
 #include <DFontManager>
 
@@ -49,6 +52,8 @@ inline void dtkRegisterType(const char *uri1, const char *uri2, int versionMajor
     if (uri2)
         qmlRegisterType<T>(uri2, versionMajor, versionMinor, qmlName);
 }
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 template<typename T>
 inline void dtkRegisterAnonymousType(const char *uri1, const char *uri2, int versionMajor) {
 #if (QT_VERSION > QT_VERSION_CHECK(5, 14, 0))
@@ -75,6 +80,15 @@ inline void dtkRegisterSingletonType(const char *uri1, const char *uri2, int ver
     if (uri2)
         qmlRegisterSingletonType<T>(uri2, versionMajor, versionMinor, qmlName, callback);
 }
+inline void dtkSettingsRegisterType(const char *uri1, const char *uri2, int versionMajor, int versionMinor, const char *qmlName) {
+    static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml/settings/%1.qml");
+    const QUrl url(urlTemplate.arg(qmlName));
+    qmlRegisterType(url, uri1, versionMajor, versionMinor, qmlName);
+    if (uri2)
+        qmlRegisterType(url, uri2, versionMajor, versionMinor, qmlName);
+}
+#endif
+
 inline void dtkRegisterType(const char *uri1, const char *uri2, int versionMajor, int versionMinor, const char *qmlName, const char *subdir = "") {
     static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml/%1%2.qml");
     const QUrl url(urlTemplate.arg(subdir).arg(qmlName));
@@ -97,13 +111,6 @@ inline void dtkStyleRegisterSingletonType(const char *uri1, const char *uri2, in
     qmlRegisterSingletonType(url, uri1, versionMajor, versionMinor, qmlName);
     if (uri2)
         qmlRegisterSingletonType(url, uri2, versionMajor, versionMinor, qmlName);
-}
-inline void dtkSettingsRegisterType(const char *uri1, const char *uri2, int versionMajor, int versionMinor, const char *qmlName) {
-    static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml/settings/%1.qml");
-    const QUrl url(urlTemplate.arg(qmlName));
-    qmlRegisterType(url, uri1, versionMajor, versionMinor, qmlName);
-    if (uri2)
-        qmlRegisterType(url, uri2, versionMajor, versionMinor, qmlName);
 }
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -140,6 +147,12 @@ void QmlpluginPlugin::registerTypes(const char *uri)
 {
     // @uri org.deepin.dtk
     qmlRegisterModule(uri, 1, 0);
+    // @uri org.deepin.dtk.style
+    const QByteArray styleUri = QByteArray(uri).append(".style");
+    qmlRegisterModule(styleUri.constData(), 1, 0);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QByteArray implUri;
+#else
     // @uri org.deepin.dtk.impl
     const QByteArray implUri = QByteArray(uri).append(".impl");
     qmlRegisterModule(implUri.constData(), 1, 0);
@@ -149,9 +162,6 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     // @uri org.deepin.dtk.controls
     const QByteArray controlsUri = QByteArray(uri).append(".controls");
     qmlRegisterModule(controlsUri.constData(), 1, 0);
-    // @uri org.deepin.dtk.style
-    const QByteArray styleUri = QByteArray(uri).append(".style");
-    qmlRegisterModule(styleUri.constData(), 1, 0);
     // @uri org.deepin.dtk.settings
     const QByteArray settingsUri = QByteArray(uri) + ".settings";
     qmlRegisterModule(settingsUri, 1, 0);
@@ -172,7 +182,6 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterUncreatableType<MessageManager>(uri, implUri, 1, 0, "MessageManager", "Window Attached");
     dtkRegisterType<DQuickRectangle>(uri, implUri, 1, 0, "RoundRectangle");
     dtkRegisterType<DQuickBehindWindowBlur>(uri, implUri, 1, 0, "BehindWindowBlur");
-    dtkRegisterType<QSortFilterProxyModel>(uri, implUri, 1, 0, "SortFilterProxyModel");
     dtkRegisterType<ObjectModelProxy>(uri, implUri, 1, 0, "ObjectModelProxy");
     dtkRegisterType<DQuickOpacityMask>(uri, implUri, 1, 0, "SoftwareOpacityMask");
     dtkRegisterType<DQuickKeyListener>(uri, implUri, 1, 0, "KeySequenceListener");
@@ -180,12 +189,6 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType<DQuickArrowBoxPath>(uri, implUri, 1, 0, "ArrowBoxPath");
     dtkRegisterType<DQuickAppLoaderItem>(uri, implUri, 1, 0, "AppLoader");
     dtkRegisterType<DQuickColorOverlay>(uri, implUri, 1, 0, "SoftwareColorOverlay");
-    if (softwareBackend == QQuickWindow::sceneGraphBackend()) {
-        dtkRegisterTypeAlias(uri, implUri, 1, 0, "SoftwareColorOverlay", "ColorOverlay", "private/");
-    } else {
-        dtkRegisterType(uri, implUri, 1, 0, "ColorOverlay", "private/");
-    }
-
 
     dtkRegisterAnonymousType<DQUICK_NAMESPACE::DQuickDciIcon>(uri, implUri, 1);
     dtkRegisterAnonymousType<DQuickControlColor>(uri, implUri, 1);
@@ -287,11 +290,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "StyledArrowShapeWindow");
     // TODO(xiaoyaobing): software rendering has not been completed
     dtkRegisterType(uri, controlsUri, 1, 0, "ArrowShapePopup");
-    if (softwareBackend == QQuickWindow::sceneGraphBackend()) {
-        dtkRegisterTypeAlias(uri, implUri, 1, 0, "SoftwareOpacityMask", "OpacityMask", "private/");
-    } else {
-        dtkRegisterType(uri, implUri, 1, 0, "OpacityMask", "private/");
-    }
+
     dtkRegisterType(uri, controlsUri, 1, 0, "Action");
     dtkRegisterType(uri, controlsUri, 1, 0, "ActionGroup");
     dtkRegisterType(uri, controlsUri, 1, 0, "Label");
@@ -324,9 +323,6 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType(uri, controlsUri, 1, 0, "EmbeddedProgressBar");
     dtkRegisterType(uri, controlsUri, 1, 0, "WaterProgressBar");
 
-    // for org.deepin.dtk.style(allowed to override)
-    dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");
-
     // for org.deepin.dtk.settings
     dtkRegisterType<SettingsOption>(settingsUri, implUri, 1, 0, "SettingsOption");
     dtkRegisterType<SettingsGroup>(settingsUri, implUri, 1, 0, "SettingsGroup");
@@ -342,6 +338,24 @@ void QmlpluginPlugin::registerTypes(const char *uri)
 
     // for org.deepin.dtk.private
     dtkRegisterType(privateUri, implUri, 1, 0, "ButtonPanel");
+#endif
+
+    dtkRegisterType<QSortFilterProxyModel>(uri, implUri, 1, 0, "SortFilterProxyModel");
+
+    // for org.deepin.dtk.style(allowed to override)
+    dtkStyleRegisterSingletonType(uri, styleUri, 1, 0, "Style");
+
+    if (softwareBackend == QQuickWindow::sceneGraphBackend()) {
+        dtkRegisterTypeAlias(uri, implUri, 1, 0, "SoftwareColorOverlay", "ColorOverlay", "private/");
+    } else {
+        dtkRegisterType(uri, implUri, 1, 0, "ColorOverlay", "private/");
+    }
+
+    if (softwareBackend == QQuickWindow::sceneGraphBackend()) {
+        dtkRegisterTypeAlias(uri, implUri, 1, 0, "SoftwareOpacityMask", "OpacityMask", "private/");
+    } else {
+        dtkRegisterType(uri, implUri, 1, 0, "OpacityMask", "private/");
+    }
 
     // for custom type
     QMetaType::registerConverter<QColor, DQuickControlColor>(convertColorToQuickColorType<DQuickControlColor>);

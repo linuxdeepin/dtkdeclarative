@@ -73,12 +73,12 @@ endif ()
 
 if(EnableQt5)
     add_subdirectory(src)
+    add_subdirectory(qmlplugin)
 endif()
 if(EnableQt6)
     add_subdirectory(qt6)
 endif()
 add_subdirectory(chameleon)
-add_subdirectory(qmlplugin)
 add_subdirectory(examples)
 
 if(BUILD_DOCS)

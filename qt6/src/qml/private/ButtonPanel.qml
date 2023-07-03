@@ -60,18 +60,17 @@ BoxPanel {
             gradient: control.D.ColorSelector.color1 === control.D.ColorSelector.color2 ? null : hoverBackgroundGradient
             color: control.D.ColorSelector.color1
         }
-        function triggle() {
-            if (button.hovered) {
-                var pos = D.DTK.cursorPosition()
-                hoverAnimation.centerPoint = hoverAnimation.mapFromGlobal(pos.x, pos.y)
-                hoverAnimation.start()
-            } else {
-                hoverAnimation.stop()
-            }
-        }
 
         Component.onCompleted: {
-            button.hoveredChanged.connect(hoverAnimation.triggle)
+            button.hoveredChanged.connect(function () {
+                if (button.hovered) {
+                    var pos = D.DTK.cursorPosition()
+                    hoverAnimation.centerPoint = hoverAnimation.mapFromGlobal(pos.x, pos.y)
+                    hoverAnimation.start()
+                } else {
+                    hoverAnimation.stop()
+                }
+            })
         }
     }
 }

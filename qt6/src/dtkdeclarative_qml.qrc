@@ -61,7 +61,7 @@
         <file>qml/SliderHandle.qml</file>
         <file>qml/ScrollBar.qml</file>
         <file>qml/ComboBox.qml</file>
-        <file>qml/ButtonPanel.qml</file>
+        <file>qml/private/ButtonPanel.qml</file>
         <file>qml/ActionButton.qml</file>
         <file>qml/ItemDelegate.qml</file>
         <file>qml/CheckDelegate.qml</file>

@@ -28,20 +28,48 @@ file(GLOB_RECURSE SRCS   "${PROJECT_SOURCE_DIR}/src/*.cpp")
 file(GLOB D_HEADERS   "${PROJECT_SOURCE_DIR}/src/D*")
 file(GLOB ASSETS_RCS ${PROJECT_SOURCE_DIR}/src/dtkdeclarative_assets.qrc)
 file(GLOB TS_FILES "${PROJECT_SOURCE_DIR}/src/translations/*.ts")
-
 file(GLOB QML_RCS ${CMAKE_CURRENT_LIST_DIR}/dtkdeclarative_qml.qrc)
-qt_add_resources(RESOURCES
-    ${QML_RCS}
-)
+
 qt_add_translation(QM_FILES ${TS_FILES})
 
-add_library(${LIB_NAME} SHARED
-    ${SRCS}
-    ${HEADERS}
-    ${D_HEADERS}
-    ${RESOURCES}
+include(qml.cmake)
+
+set_source_files_properties(${PROJECT_SOURCE_DIR}/chameleon/PixelMetric.js
+    PROPERTIES QT_RESOURCE_ALIAS "PixelMetric.js"
+)
+
+qt_add_qml_module(${LIB_NAME}
+    PLUGIN_TARGET ${LIB_NAME}plugin
+    URI "org.deepin.dtk"
+    VERSION "1.0"
+    SHARED
+    NO_GENERATE_PLUGIN_SOURCE
+    NO_PLUGIN_OPTIONAL
+    QML_FILES
+        ${QML_DTK_CONTROLS}
+        ${PROJECT_SOURCE_DIR}/chameleon/PixelMetric.js
+    SOURCES
+        ${SRCS} ${HEADERS}
+        dquickextendregister_p.h
+    OUTPUT_DIRECTORY
+        "${PROJECT_BINARY_DIR}/plugins/org/deepin/dtk"
+)
+
+qt_add_resources(RESOURCES
+    ${QML_RCS}
     ${ASSETS_RCS}
-    ${QM_FILES}
+)
+target_sources(${LIB_NAME} PRIVATE
+    ${RESOURCES}
+)
+
+target_link_libraries(${LIB_NAME}plugin PRIVATE
+    ${LIB_NAME}
+)
+
+target_sources(${LIB_NAME}plugin PRIVATE
+    ${PROJECT_SOURCE_DIR}/qmlplugin/qmlplugin_plugin.h
+    ${PROJECT_SOURCE_DIR}/qmlplugin/qmlplugin_plugin.cpp
 )
 
 qt_add_shaders(${LIB_NAME} "_shaders_ng"
@@ -58,6 +86,11 @@ qt_add_shaders(${LIB_NAME} "_shaders_ng"
         "shaders_ng/cornerscolorshader.frag"
         "shaders_ng/shadowmaterial.vert"
         "shaders_ng/shadowmaterial.frag"
+)
+
+target_include_directories(${LIB_NAME} PRIVATE
+    ${PROJECT_SOURCE_DIR}/src
+    ${PROJECT_SOURCE_DIR}/src/private
 )
 
 set_target_properties(${LIB_NAME} PROPERTIES
@@ -84,8 +117,8 @@ PUBLIC
     Qt${QT_VERSION_MAJOR}::Quick
     Dtk${DTK_VERSION_MAJOR}::Core
     Dtk${DTK_VERSION_MAJOR}::Gui
-PRIVATE
     Qt${QT_VERSION_MAJOR}::QuickPrivate
+PRIVATE
     Qt${QT_VERSION_MAJOR}::DBus
     PkgConfig::GL
 )
@@ -93,6 +126,7 @@ PRIVATE
 target_include_directories(${LIB_NAME} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/private>
 )
 
 target_include_directories(${LIB_NAME} INTERFACE
