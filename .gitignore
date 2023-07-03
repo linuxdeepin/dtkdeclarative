@@ -60,3 +60,6 @@ build
 
 #idea
 .idea
+
+#doxygen-theme
+/docs/doxygen/
