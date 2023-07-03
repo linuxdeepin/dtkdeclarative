@@ -5,7 +5,7 @@
 import QtQuick 2.11
 import QtQuick.Layouts 1.11
 import org.deepin.dtk.settings 1.0
-import ".."
+import org.deepin.dtk 1.0
 
 RowLayout {
     id: control

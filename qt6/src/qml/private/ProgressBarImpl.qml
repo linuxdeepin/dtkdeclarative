@@ -4,9 +4,9 @@
 
 import QtQuick 2.11
 import QtQuick.Controls.impl 2.4
-import org.deepin.dtk.impl 1.0 as D
+import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
-import ".."
+import org.deepin.dtk 1.0
 
 Item {
     id: control
