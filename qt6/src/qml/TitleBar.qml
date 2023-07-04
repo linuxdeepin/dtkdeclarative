@@ -15,6 +15,7 @@ Control {
     // it's binding `height` instead of `visible` property,
     // because MouseArea should accept event keeping visible.
     implicitHeight: (!__isFullScreen || __isVisible) ? DS.Style.titleBar.height : 0
+    hoverEnabled: __isFullScreen && autoHideOnFullscreen // TODO can't drag in qt6
 
     property string title: Window.window.title
     property alias icon: iconLabel
