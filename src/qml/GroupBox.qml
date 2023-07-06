@@ -4,7 +4,7 @@
 
 import QtQuick 2.11
 import QtQuick.Templates 2.4 as T
-import "PixelMetric.js" as PM
+import org.deepin.dtk.style 1.0 as DS
 
 T.GroupBox {
     id: control
@@ -21,7 +21,7 @@ T.GroupBox {
     topPadding: padding + (label && label.implicitWidth > 0 ? label.implicitHeight + spacing : 0)
 
     label: Label {
-        x: PM.ControlRadius
+        x: DS.Style.control.radius
         text: control.title
         color: control.palette.windowText
         elide: Text.ElideRight
@@ -33,7 +33,7 @@ T.GroupBox {
     background: Rectangle {
         y: label.height / 2
         width: parent.width
-        radius: PM.ControlRadius
+        radius: DS.Style.control.radius
 
         color: control.palette.window
     }

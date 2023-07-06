@@ -6,7 +6,6 @@ import QtQuick 2.0
 import org.deepin.dtk.impl 1.0 as D
 
 QtObject {
-    // PixelMetric
     property QtObject control: QtObject {
         property int radius: 8
         property int spacing: 6

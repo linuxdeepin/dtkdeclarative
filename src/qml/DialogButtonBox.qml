@@ -4,7 +4,7 @@
 
 import QtQuick 2.11
 import QtQuick.Templates 2.4 as T
-import "PixelMetric.js" as PM
+import org.deepin.dtk.style 1.0 as DS
 
 T.DialogButtonBox {
     id: control
@@ -14,15 +14,15 @@ T.DialogButtonBox {
     implicitHeight: Math.max(background ? background.implicitHeight : 0,
                              contentItem.implicitHeight + topPadding + bottomPadding)
 
-    padding: PM.ControlPadding
-    spacing: PM.ControlSpacing
+    padding: DS.Style.control.padding
+    spacing: DS.Style.control.spacing
     alignment: Qt.AlignRight
 
     delegate: Button { }
 
     contentItem: ListView {
         implicitWidth: contentWidth
-        implicitHeight: PM.Button_MiniSize
+        implicitHeight: DS.Style.control.button.height
 
         model: control.contentModel
         spacing: control.spacing

@@ -31,6 +31,5 @@
     <file>TextArea.qml</file>
     <file>TextField.qml</file>
     <file>ToolTip.qml</file>
-    <file>PixelMetric.js</file>
 </qresource>
 </RCC>

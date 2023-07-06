@@ -6,11 +6,11 @@ import QtQuick 2.0
 import org.deepin.dtk 1.0 as D
 
 QtObject {
-    // PixelMetric
     property QtObject control: QtObject {
         property int radius: 8
         property int spacing: 6
         property int padding: 6
+        property int margin: 6
         property int borderWidth: 1
         property real focusBorderWidth: 2
         property real focusBorderPaddings: 1
@@ -866,5 +866,16 @@ QtObject {
                 normalDark: Qt.rgba(1, 1, 1, 0.4)
             }
         }
+    }
+
+    // Dial
+    property QtObject dial: QtObject {
+        property int size: 100
+    }
+
+    // PageIndicator
+    property QtObject pageIndicator: QtObject {
+        property int width: 8
+        property int height: 8
     }
 }

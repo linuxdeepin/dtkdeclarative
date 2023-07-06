@@ -4,7 +4,7 @@
 
 import QtQuick 2.11
 import QtQuick.Templates as T
-import "PixelMetric.js" as PM
+import org.deepin.dtk.style 1.0 as DS
 
 T.PageIndicator {
     id: control
@@ -14,8 +14,8 @@ T.PageIndicator {
     implicitHeight: Math.max(background ? background.implicitHeight : 0,
                              contentItem.implicitHeight + topPadding + bottomPadding)
 
-    padding: PM.ControlPadding
-    spacing: PM.ControlPadding
+    padding: DS.Style.control.padding
+    spacing: DS.Style.control.padding
 
     delegate: Rectangle {
         implicitWidth: PM.PageIndicator_ImplicitWidth

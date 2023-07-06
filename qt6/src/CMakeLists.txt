@@ -34,10 +34,6 @@ qt_add_translation(QM_FILES ${TS_FILES})
 
 include(qml.cmake)
 
-set_source_files_properties(${PROJECT_SOURCE_DIR}/chameleon/PixelMetric.js
-    PROPERTIES QT_RESOURCE_ALIAS "PixelMetric.js"
-)
-
 qt_add_qml_module(${LIB_NAME}
     PLUGIN_TARGET ${LIB_NAME}plugin
     URI "org.deepin.dtk"
@@ -47,7 +43,6 @@ qt_add_qml_module(${LIB_NAME}
     NO_PLUGIN_OPTIONAL
     QML_FILES
         ${QML_DTK_CONTROLS}
-        ${PROJECT_SOURCE_DIR}/chameleon/PixelMetric.js
     SOURCES
         ${SRCS} ${HEADERS}
         dquickextendregister_p.h

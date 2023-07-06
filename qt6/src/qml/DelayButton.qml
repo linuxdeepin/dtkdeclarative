@@ -5,7 +5,7 @@
 import QtQuick 2.11
 import QtQuick.Controls.impl 2.4
 import QtQuick.Templates as T
-import "PixelMetric.js" as PM
+import org.deepin.dtk.style 1.0 as DS
 
 T.DelayButton {
     id: control
@@ -16,8 +16,8 @@ T.DelayButton {
                              Math.max(contentItem.implicitHeight,
                                       indicator ? indicator.implicitHeight : 0) + topPadding + bottomPadding)
 
-    padding: PM.ControlPadding
-    spacing: PM.ControlSpacing
+    padding: DS.Style.control.padding
+    spacing: DS.Style.control.spacing
 
     transition: Transition {
         NumberAnimation {
@@ -56,9 +56,9 @@ T.DelayButton {
     }
 
     background: Rectangle {
-        implicitWidth: control.text.length ? PM.Button_MiniSize + (4 * PM.ControlRadius) : PM.Button_MiniSize + (2 * PM.ControlRadius)
-        implicitHeight: PM.Button_MiniSize
-        radius: PM.ControlRadius
+        implicitWidth: control.text.length ? DS.Style.control.button.height + (4 * DS.Style.control.radius) : DS.Style.control.button.height + (2 * DS.Style.control.radius)
+        implicitHeight: DS.Style.control.button.height
+        radius: DS.Style.control.radius
         color: control.palette.button
 
        FocusBoxBorder {
@@ -76,7 +76,7 @@ T.DelayButton {
             Rectangle {
                 width: parent.parent.width
                 height: parent.parent.height
-                radius: PM.ControlRadius
+                radius: DS.Style.control.radius
                 color: control.palette.highlight
             }
         }
