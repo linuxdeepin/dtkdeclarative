@@ -158,17 +158,6 @@ Control {
                         AboutAction { aboutDialog: control.aboutDialog }
                         QuitAction { }
                     }
-                    onLoaded: {
-                        for (var i = 0; i < item.count; i++) {
-                            var action = item.actionAt(i)
-                            if (action && action.objectName === "_d_about_action") {
-                                if (!action.aboutDialog) {
-                                    action.aboutDialog = control.aboutDialog
-                                    break
-                                }
-                            }
-                        }
-                    }
                 }
             }
 
