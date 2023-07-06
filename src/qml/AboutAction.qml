@@ -5,16 +5,17 @@
 import QtQuick 2.11
 
 Action {
-    id: control; objectName: "_d_about_action"
+    id: control
     text: qsTr("About")
     property Component aboutDialog
-    property QtObject object
+    property QtObject __object
     onTriggered: {
         if (aboutDialog) {
-            if (!object) {
-                object = aboutDialog.createObject(parent)
+            if (!__object) {
+                __object = aboutDialog.createObject(parent)
             }
-            object.show()
+            __object.show()
         }
     }
+    Component.onDestruction: __object.destroy()
 }
