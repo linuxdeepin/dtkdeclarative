@@ -5,7 +5,7 @@
 import QtQuick 2.11
 import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.4 as T
-import "PixelMetric.js" as PM
+import org.deepin.dtk.style 1.0 as DS
 
 T.Dial {
     id: control
@@ -16,8 +16,8 @@ T.Dial {
                              contentItem ? contentItem.implicitHeight + topPadding + bottomPadding : 0)
 
     background: DialImpl {
-        implicitWidth: PM.Dial_miniSize
-        implicitHeight: PM.Dial_miniSize
+        implicitWidth: DS.Style.dial.size
+        implicitHeight: DS.Style.dial.size
         color: control.palette.highlight
         progress: control.position
     }
@@ -25,10 +25,10 @@ T.Dial {
     handle: Rectangle {
         id: handleItem
         anchors.centerIn: control.background
-        width: 2 * PM.ControlRadius
-        height: 2 * PM.ControlRadius
+        width: 2 * DS.Style.control.radius
+        height: 2 * DS.Style.control.radius
         color: control.palette.highlight
-        radius: PM.ControlRadius
+        radius: DS.Style.control.radius
         antialiasing: true
         transform: [
             Translate {

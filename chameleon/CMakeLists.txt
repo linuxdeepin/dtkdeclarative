@@ -43,14 +43,12 @@ set(QML_FILES
     TextField.qml
     ToolTip.qml
 )
-set(JS_FILES PixelMetric.js)
 set(SRC_FILES
     qtquickcontrols2chameleonstyleplugin.h qtquickcontrols2chameleonstyleplugin.cpp
 )
 
 if(EnableQt5)
     file(GLOB _qml_files ${QML_FILES})
-    file(GLOB _js_files ${JS_FILES})
     set(TARGETPATH "QtQuick/Controls.2/Chameleon")
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/plugins/Chameleon")
     set(PLUGIN_INSTALL_DIR "${QML_INSTALL_DIR}/${TARGETPATH}")
@@ -93,7 +91,6 @@ if(EnableQt5)
     install(TARGETS ${PLUGIN_NAME} DESTINATION ${PLUGIN_INSTALL_DIR})
     install(FILES
         ${QML_DIR}
-        ${_js_files}
         ${_qml_files}
         ${QMLC_FILES}
         DESTINATION ${PLUGIN_INSTALL_DIR}

@@ -11,7 +11,6 @@
         <file>qml/ToolButton.qml</file>
         <file>qml/WarningButton.qml</file>
         <file>qml/FocusBoxBorder.qml</file>
-        <file alias="qml/PixelMetric.js">../../chameleon/PixelMetric.js</file>
         <file>qml/CicleSpreadAnimation.qml</file>
         <file>qml/TitleBar.qml</file>
         <file>qml/DialogTitleBar.qml</file>
