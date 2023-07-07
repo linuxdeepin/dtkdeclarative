@@ -40,7 +40,7 @@ include(CMakeParseArguments)
 #    ==== file content end ====
 #
 function(GEN_DTK_CONFIG_HEADER)
-    set(oneValueArgs MODULE_NAME DEST_DIR)
+    set(oneValueArgs MODULE_NAME DEST_DIR OUTPUT_VARIABLE)
     set(multiValueArgs HEADERS EXT_CONTENTS)
 
     cmake_parse_arguments(_CONFIG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
@@ -80,5 +80,6 @@ function(GEN_DTK_CONFIG_HEADER)
         string(TOUPPER ${_CONFIG_MODULE_NAME} _UP_MODULE_NAME)
         file(APPEND ${config_file_path} "#define ${_UP_MODULE_NAME}_CLASS_${classname}\n")
     endforeach()
-   
+
+    set(${_CONFIG_OUTPUT_VARIABLE} ${config_file_path} PARENT_SCOPE)
 endfunction()

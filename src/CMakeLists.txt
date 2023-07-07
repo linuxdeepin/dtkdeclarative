@@ -91,7 +91,8 @@ target_link_directories(${LIB_NAME} INTERFACE
 # gen dtkdeclarative_config.h
 include(DtkBuildConfig)
 set(options MSG) # print MODULE_NAME D_HEADERS DEST_DIR
-gen_dtk_config_header(MODULE_NAME ${LIB_NAME} HEADERS ${D_HEADERS})
+gen_dtk_config_header(MODULE_NAME ${LIB_NAME} HEADERS ${D_HEADERS} DEST_DIR ${CMAKE_CURRENT_LIST_DIR}/src OUTPUT_VARIABLE CONFIG_PATH)
+list(APPEND PUBLIC_HEADERS ${CONFIG_PATH})
 
 # Install library
 install(TARGETS ${LIB_NAME} EXPORT DtkDeclarativeTargets DESTINATION "${LIB_INSTALL_DIR}")
