@@ -15,7 +15,7 @@
 DQUICK_BEGIN_NAMESPACE
 
 class DQuickSystemPalettePrivate;
-class DQuickSystemPalette : public QObject, public DTK_CORE_NAMESPACE::DObject
+class D_DECL_DEPRECATED_X("Use DQMLGlobalObject::palette.") DQuickSystemPalette : public QObject, public DTK_CORE_NAMESPACE::DObject
 {
     Q_OBJECT
 

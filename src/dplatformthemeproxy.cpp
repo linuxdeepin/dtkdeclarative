@@ -31,6 +31,7 @@ DPlatformThemeProxy::DPlatformThemeProxy(DPlatformTheme *proxy, QObject *parent)
     connect(proxy, &DPlatformTheme::dndDragThresholdChanged, this, &DPlatformThemeProxy::dndDragThresholdChanged);
     connect(proxy, &DPlatformTheme::windowRadiusChanged, this, &DPlatformThemeProxy::windowRadiusChanged);
 
+#if DTK_VERSION < DTK_VERSION_CHECK(6, 0, 0, 0)
     // QPalette
     connect(proxy, &DPlatformTheme::windowChanged, this, &DPlatformThemeProxy::windowChanged);
     connect(proxy, &DPlatformTheme::windowTextChanged, this, &DPlatformThemeProxy::windowTextChanged);
@@ -61,6 +62,7 @@ DPlatformThemeProxy::DPlatformThemeProxy(DPlatformTheme *proxy, QObject *parent)
     connect(proxy, &DPlatformTheme::lightLivelyChanged, this, &DPlatformThemeProxy::lightLivelyChanged);
     connect(proxy, &DPlatformTheme::darkLivelyChanged, this, &DPlatformThemeProxy::darkLivelyChanged);
     connect(proxy, &DPlatformTheme::frameBorderChanged, this, &DPlatformThemeProxy::frameBorderChanged);
+#endif
 
     // theme
     connect(proxy, &DPlatformTheme::themeNameChanged, this, &DPlatformThemeProxy::themeNameChanged);
@@ -197,6 +199,7 @@ bool DPlatformThemeProxy::isValidPalette() const
     return d->proxy->isValidPalette();
 }
 
+#if DTK_VERSION < DTK_VERSION_CHECK(6, 0, 0, 0)
 QColor DPlatformThemeProxy::window() const
 {
     D_DC(DPlatformThemeProxy);
@@ -385,6 +388,7 @@ QColor DPlatformThemeProxy::frameBorder() const
 
     return d->proxy->frameBorder();
 }
+#endif
 
 int DPlatformThemeProxy::dotsPerInch(const QString &screenName) const
 {
@@ -491,6 +495,7 @@ void DPlatformThemeProxy::setActiveColor(const QColor activeColor)
     return d->proxy->setActiveColor(activeColor);
 }
 
+#if DTK_VERSION < DTK_VERSION_CHECK(6, 0, 0, 0)
 void DPlatformThemeProxy::setWindow(const QColor &window)
 {
     D_D(DPlatformThemeProxy);
@@ -679,6 +684,7 @@ void DPlatformThemeProxy::setFrameBorder(const QColor &frameBorder)
 
     return d->proxy->setFrameBorder(frameBorder);
 }
+#endif
 
 void DPlatformThemeProxy::setDotsPerInch(const QString &screenName, int dpi)
 {

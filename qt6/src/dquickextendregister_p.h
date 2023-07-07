@@ -8,6 +8,7 @@
 #include <DWindowManagerHelper>
 #include <DGuiApplicationHelper>
 #include <DFontManager>
+#include <DPlatformTheme>
 #include <QQmlEngine>
 
 DQUICK_BEGIN_NAMESPACE

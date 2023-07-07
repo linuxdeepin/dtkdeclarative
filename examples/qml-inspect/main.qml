@@ -85,7 +85,7 @@ D.ApplicationWindow {
             console.log("windowManagerName : OtherWM");
         }
 
-        console.log("test platformTheme info : " , D.DTK.platformTheme.window, D.DTK.platformTheme.themeName);
+        console.log("test platformTheme info : " , D.DTK.platformTheme.activeColor, D.DTK.platformTheme.themeName);
 
         //测试DPlatformThemeProxy信号传递(控制中心切换主题测试)
         D.DTK.platformTheme.themeNameChanged.connect(function(themeName) {

@@ -21,10 +21,31 @@ find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(GL REQUIRED IMPORTED_TARGET gl)
 
-file(GLOB PUBLIC_HEADERS "./*.h")
 file(GLOB_RECURSE HEADERS "./*.h")
 file(GLOB_RECURSE SRCS   "./*.cpp")
-file(GLOB D_HEADERS   "./D*")
+file(GLOB_RECURSE HEADERS "${PROJECT_SOURCE_DIR}/src/*.h")
+file(GLOB_RECURSE SRCS   "${PROJECT_SOURCE_DIR}/src/*.cpp")
+file(GLOB D_HEADERS
+    ${PROJECT_SOURCE_DIR}/src/DAppLoader
+    ${PROJECT_SOURCE_DIR}/src/DQmlAppMainWindowInterface
+    ${PROJECT_SOURCE_DIR}/src/DQmlAppPreloadInterface
+    ${PROJECT_SOURCE_DIR}/src/DQuickBlitFramebuffer
+    ${PROJECT_SOURCE_DIR}/src/DQuickItemViewport
+    ${PROJECT_SOURCE_DIR}/src/DQuickWindow
+    ${PROJECT_SOURCE_DIR}/src/DPlatformThemeProxy
+    ${PROJECT_SOURCE_DIR}/src/DQuickSystemPalette
+)
+file(GLOB PUBLIC_HEADERS
+    ${PROJECT_SOURCE_DIR}/src/dapploader.h
+    ${PROJECT_SOURCE_DIR}/src/dqmlappmainwindowinterface.h
+    ${PROJECT_SOURCE_DIR}/src/dqmlapppreloadinterface.h
+    ${PROJECT_SOURCE_DIR}/src/dquickblitframebuffer.h
+    ${PROJECT_SOURCE_DIR}/src/dquickitemviewport.h
+    ${PROJECT_SOURCE_DIR}/src/dquickwindow.h
+    ${PROJECT_SOURCE_DIR}/src/dtkdeclarative_global.h
+    ${PROJECT_SOURCE_DIR}/src/dplatformthemeproxy.h
+    ${PROJECT_SOURCE_DIR}/src/dquicksystempalette.h
+)
 file(GLOB ASSETS_RCS ${CMAKE_CURRENT_LIST_DIR}/dtkdeclarative_assets.qrc)
 file(GLOB TS_FILES "translations/*.ts")
 # Quick compiler gen qmlc

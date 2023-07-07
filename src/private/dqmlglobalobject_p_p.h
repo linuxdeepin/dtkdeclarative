@@ -8,7 +8,6 @@
 #include <DObjectPrivate>
 #include <DObject>
 #include <DWindowManagerHelper>
-#include <DPlatformThemeProxy>
 
 #include "dqmlglobalobject_p.h"
 
