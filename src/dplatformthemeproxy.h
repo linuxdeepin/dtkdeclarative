@@ -36,6 +36,7 @@ class DPlatformThemeProxy : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(QByteArray gtkFontName READ gtkFontName WRITE setGtkFontName NOTIFY gtkFontNameChanged)
 
     Q_PROPERTY(QColor activeColor READ activeColor WRITE setActiveColor NOTIFY activeColorChanged)
+#if DTK_VERSION < DTK_VERSION_CHECK(6, 0, 0, 0)
     // QPalette
     Q_PROPERTY(QColor window READ window WRITE setWindow NOTIFY windowChanged)
     Q_PROPERTY(QColor windowText READ windowText WRITE setWindowText NOTIFY windowTextChanged)
@@ -65,6 +66,7 @@ class DPlatformThemeProxy : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(QColor lightLively READ lightLively WRITE setLightLively NOTIFY lightLivelyChanged)
     Q_PROPERTY(QColor darkLively READ darkLively WRITE setDarkLively NOTIFY darkLivelyChanged)
     Q_PROPERTY(QColor frameBorder READ frameBorder WRITE setFrameBorder NOTIFY frameBorderChanged)
+#endif
 
 public:
     explicit DPlatformThemeProxy(DPlatformTheme *proxy, QObject *parent = nullptr);
@@ -91,6 +93,7 @@ public:
 
     bool isValidPalette() const;
 
+#if DTK_VERSION < DTK_VERSION_CHECK(6, 0, 0, 0)
     QColor window() const;
     QColor windowText() const;
     QColor base() const;
@@ -118,6 +121,7 @@ public:
     QColor lightLively() const;
     QColor darkLively() const;
     QColor frameBorder() const;
+#endif
 
     Q_INVOKABLE int dotsPerInch(const QString &screenName = QString()) const;
 
@@ -136,6 +140,7 @@ public Q_SLOTS:
     void setFontPointSize(qreal fontPointSize);
     void setGtkFontName(const QByteArray &fontName);
     void setActiveColor(const QColor activeColor);
+#if DTK_VERSION < DTK_VERSION_CHECK(6, 0, 0, 0)
     void setWindow(const QColor &window);
     void setWindowText(const QColor &windowText);
     void setBase(const QColor &base);
@@ -163,6 +168,7 @@ public Q_SLOTS:
     void setLightLively(const QColor &lightLively);
     void setDarkLively(const QColor &darkLively);
     void setFrameBorder(const QColor &frameBorder);
+#endif
 
     Q_INVOKABLE void setDotsPerInch(const QString &screenName, int dpi);
     void setWindowRadius(int windowRadius);
@@ -183,6 +189,7 @@ Q_SIGNALS:
     void gtkFontNameChanged(QByteArray fontName);
     void activeColorChanged(QColor activeColor);
     void paletteChanged(DTK_GUI_NAMESPACE::DPalette palette);
+#if DTK_VERSION < DTK_VERSION_CHECK(6, 0, 0, 0)
     void windowChanged(QColor window);
     void windowTextChanged(QColor windowText);
     void baseChanged(QColor base);
@@ -210,6 +217,7 @@ Q_SIGNALS:
     void lightLivelyChanged(QColor lightLively);
     void darkLivelyChanged(QColor darkLively);
     void frameBorderChanged(QColor frameBorder);
+#endif
     void dotsPerInchChanged(const QString &screen, int dpi);
     void windowRadiusChanged(int r);
 

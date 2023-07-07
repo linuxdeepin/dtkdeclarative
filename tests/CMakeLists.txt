@@ -5,8 +5,16 @@ find_package(Dtk${DTK_VERSION_MAJOR}Gui REQUIRED)
 find_package(GTest REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Quick QuickControls2 Qml Test)
 
-file(GLOB TEST_HEADER  ut_.*h)
-file(GLOB TEST_SOURCE  *.cpp)
+file(GLOB TEST_SOURCES
+    ut_colorselector.cpp
+    ut_dconfigwrapper.cpp
+    ut_dqmlglobalobject.cpp
+)
+if (EnableDtk5)
+    list(APPEND TEST_SOURCES
+        ut_dplatformthemeproxy.cpp
+    )
+endif()
 
 set(CHAMELEON_PATH "${PROJECT_BINARY_DIR}/plugins")
 add_definitions(
@@ -14,8 +22,7 @@ add_definitions(
 )
 
 add_executable(${BIN_NAME}
-    ${TEST_HEADER}
-    ${TEST_SOURCE}
+    main.cpp ${TEST_SOURCES}
     ${CMAKE_CURRENT_LIST_DIR}/data.qrc
 )
 
