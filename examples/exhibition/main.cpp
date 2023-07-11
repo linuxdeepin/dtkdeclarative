@@ -14,6 +14,8 @@
 #include <QQuickWindow>
 #include <QSGRendererInterface>
 
+#include <DLog>
+
 class Object : public QObject {
     Q_OBJECT
 
@@ -76,7 +78,7 @@ int main(int argc, char **argv)
 //    QQuickWindow::setGraphicsApi(QSGRendererInterface::Software);
 #endif
     QQuickStyle::setStyle("Chameleon");
-
+    Dtk::Core::DLogManager::registerConsoleAppender();
     engine.rootContext()->setContextProperty("examplesFiles",
                                              QDir(":/examples").entryList({"*.qml"}));
     engine.rootContext()->setContextProperty("globalObject", new Object());
