@@ -232,30 +232,30 @@ Column {
                 DciIcon { name: "entry_voice"; sourceSize: Qt.size(16, 16); Layout.alignment: Qt.AlignHCenter}
             }
 
-            StyledArrowShapeBlur {
-                width: 60
-                height: 250
-                control: voiceVerticalSlider2
-                ColumnLayout {
-                    height: 200
-                    spacing: 10
-                    anchors {
-                        horizontalCenter: parent.horizontalCenter
-                        verticalCenter: parent.verticalCenter
-                    }
-                    Label { text:toPercent(voiceVerticalSlider2.value); Layout.alignment: Qt.AlignHCenter}
-                    Slider {
-                        id: voiceVerticalSlider2
-                        Layout.fillHeight: true
-                        Layout.alignment: Qt.AlignHCenter
-                        highlightedPassedGroove: true
-                        handleType: Slider.HandleType.NoArrowVertical
-                        value: 0.5
-                        orientation: Qt.Vertical
-                    }
-                    DciIcon { name: "entry_voice"; sourceSize: Qt.size(16, 16); Layout.alignment: Qt.AlignHCenter}
-                }
-            }
+            //StyledArrowShapeBlur {
+            //    width: 60
+            //    height: 250
+            //    control: voiceVerticalSlider2
+            //    ColumnLayout {
+            //        height: 200
+            //        spacing: 10
+            //        anchors {
+            //            horizontalCenter: parent.horizontalCenter
+            //            verticalCenter: parent.verticalCenter
+            //        }
+            //        Label { text:toPercent(voiceVerticalSlider2.value); Layout.alignment: Qt.AlignHCenter}
+            //        Slider {
+            //            id: voiceVerticalSlider2
+            //            Layout.fillHeight: true
+            //            Layout.alignment: Qt.AlignHCenter
+            //            highlightedPassedGroove: true
+            //            handleType: Slider.HandleType.NoArrowVertical
+            //            value: 0.5
+            //            orientation: Qt.Vertical
+            //        }
+            //        DciIcon { name: "entry_voice"; sourceSize: Qt.size(16, 16); Layout.alignment: Qt.AlignHCenter}
+            //    }
+            //}
         }
     }
 }
