@@ -22,33 +22,7 @@ find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(GL REQUIRED IMPORTED_TARGET gl)
 
-file(GLOB_RECURSE HEADERS "${PROJECT_SOURCE_DIR}/src/*.h")
-file(GLOB_RECURSE SRCS   "${PROJECT_SOURCE_DIR}/src/*.cpp")
-file(GLOB D_HEADERS
-    ${PROJECT_SOURCE_DIR}/src/DAppLoader
-    ${PROJECT_SOURCE_DIR}/src/DQmlAppMainWindowInterface
-    ${PROJECT_SOURCE_DIR}/src/DQmlAppPreloadInterface
-    ${PROJECT_SOURCE_DIR}/src/DQuickBlitFramebuffer
-    ${PROJECT_SOURCE_DIR}/src/DQuickItemViewport
-    ${PROJECT_SOURCE_DIR}/src/DQuickWindow
-)
-file(GLOB PUBLIC_HEADERS
-    ${PROJECT_SOURCE_DIR}/src/dapploader.h
-    ${PROJECT_SOURCE_DIR}/src/dqmlappmainwindowinterface.h
-    ${PROJECT_SOURCE_DIR}/src/dqmlapppreloadinterface.h
-    ${PROJECT_SOURCE_DIR}/src/dquickblitframebuffer.h
-    ${PROJECT_SOURCE_DIR}/src/dquickitemviewport.h
-    ${PROJECT_SOURCE_DIR}/src/dquickwindow.h
-    ${PROJECT_SOURCE_DIR}/src/dtkdeclarative_global.h
-)
-
-list(REMOVE_ITEM HEADERS
-  ${PROJECT_SOURCE_DIR}/src/dquicksystempalette.h
-  ${PROJECT_SOURCE_DIR}/src/private/dquicksystempalette_p.h
-)
-list(REMOVE_ITEM SRCS
-  ${PROJECT_SOURCE_DIR}/src/dquicksystempalette.cpp
-)
+include(${PROJECT_SOURCE_DIR}/src/src.cmake)
 
 file(GLOB ASSETS_RCS ${PROJECT_SOURCE_DIR}/src/dtkdeclarative_assets.qrc)
 file(GLOB TS_FILES "${PROJECT_SOURCE_DIR}/src/translations/*.ts")
