@@ -9,6 +9,7 @@ file(GLOB TEST_SOURCES
     ut_colorselector.cpp
     ut_dconfigwrapper.cpp
     ut_dqmlglobalobject.cpp
+    ut_dapploader.cpp
 )
 if (EnableDtk5)
     list(APPEND TEST_SOURCES
