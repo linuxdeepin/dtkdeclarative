@@ -70,11 +70,11 @@ int main(int argc, char **argv)
 
     QQmlApplicationEngine engine;
 
+    engine.addImportPath(CHAMELEON_PATH);
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QQuickStyle::addStylePath(CHAMELEON_PATH);
 //    QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
 #else
-    engine.addImportPath(CHAMELEON_PATH);
 //    QQuickWindow::setGraphicsApi(QSGRendererInterface::Software);
 #endif
     QQuickStyle::setStyle("Chameleon");
