@@ -158,7 +158,7 @@ Column {
             }
 
             IconButton {
-                icon.name: "add"
+                icon.name: "list-add"
             }
             IconButton {
                 icon.name: "remove"

@@ -1,4 +1,11 @@
 <RCC>
+    <qresource prefix="icons/deepin/builtin">
+        <file alias="icons/music_24px.svg">assets/icons/music_24px.svg</file>
+        <file alias="icons/deepin-browser_24px.svg">assets/icons/deepin-browser_24px.svg</file>
+        <file alias="icons/deepin-app-store_24px.svg">assets/icons/deepin-app-store_24px.svg</file>
+        <file alias="icons/deepin-editor_24px.svg">assets/icons/deepin-app-store_24px.svg</file>
+        <file alias="icons/deepin-diskmanager_24px.svg">assets/icons/deepin-diskmanager_24px.svg</file>
+    </qresource>
     <qresource prefix="/">
         <file>assets/menu/cancle.svg</file>
         <file>assets/menu/font.svg</file>
