@@ -9,8 +9,9 @@
 
 int main(int argc, char *argv[])
 {
-    // gerrit编译时没有显示器，需要指定环境变量
-    qputenv("QT_QPA_PLATFORM", "offscreen");
+    // 编译时没有显示器，需要指定环境变量
+    if (qEnvironmentVariable("DISPLAY").isEmpty())
+        qputenv("QT_QPA_PLATFORM", "offscreen");
 
 #ifdef QT_NO_DEBUG
     QQuickStyle::setStyle("Chameleon");

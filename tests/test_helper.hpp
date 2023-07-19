@@ -4,7 +4,16 @@
 
 #pragma once
 
+#include <gtest/gtest.h>
+
+#include <QQmlComponent>
+#include <QQmlEngine>
 #include <QString>
+#include <DGuiApplicationHelper>
+
+#define TEST_OFFSCREEN_SKIP() \
+if (qEnvironmentVariable("QT_QPA_PLATFORM") == "offscreen") \
+    GTEST_SKIP();
 
 class EnvGuard {
 public:
@@ -21,4 +30,52 @@ public:
 private:
     QByteArray m_originValue;
     const char* m_name = nullptr;
+};
+
+template<class T = QObject>
+class ControlHeler
+{
+public:
+    ControlHeler(const QString &url)
+    {
+        engine.setImportPathList(QStringList {QString::fromLocal8Bit(QML_PLUGIN_PATH)} + engine.importPathList());
+
+        component = new QQmlComponent(&engine);
+        component->loadUrl(QUrl(url), QQmlComponent::PreferSynchronous);
+        if (!component->isReady()) {
+            qWarning() << "component is not ready" << component->errorString();
+            return;
+        }
+
+        auto tmp = component->create();
+        if (!tmp)
+            qWarning() << "create object is wrong." << component->errorString();
+
+        object = qobject_cast<T *>(tmp);
+    }
+    ~ControlHeler()
+    {
+        component->deleteLater();
+        if (object)
+            object->deleteLater();
+    }
+    QQmlEngine engine;
+    QQmlComponent *component = nullptr;
+    T *object = nullptr;
+};
+
+DGUI_USE_NAMESPACE
+class ThemeTypeGuard {
+public:
+    ThemeTypeGuard(DGuiApplicationHelper::ColorType expectedType)
+    {
+        oldType = DGuiApplicationHelper::instance()->themeType();
+        DGuiApplicationHelper::instance()->setPaletteType(expectedType);
+    }
+    ~ThemeTypeGuard()
+    {
+        DGuiApplicationHelper::instance()->setPaletteType(oldType);
+    }
+private:
+    DGuiApplicationHelper::ColorType oldType;
 };

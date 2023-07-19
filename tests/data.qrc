@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>data/dconf-example.meta.json</file>
         <file>qml/ColorSelector_GetColorFromProperty.qml</file>
+        <file>qml/CustomThemeMenu.qml</file>
+        <file>qml/WindowButtonGroup.qml</file>
     </qresource>
 </RCC>

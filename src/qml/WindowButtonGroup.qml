@@ -6,6 +6,7 @@ import QtQuick 2.11
 import QtQuick.Window 2.11
 import QtQuick.Layouts 1.11
 import org.deepin.dtk.impl 1.0 as D
+import org.deepin.dtk.style 1.0 as DS
 
 RowLayout {
     id: control
@@ -33,6 +34,7 @@ RowLayout {
     }
 
     Loader {
+        objectName: "minimizeBtn"
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowMinimizeButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowMinimizeButtonHint)
         active: hasWindowFlag &&  !__forceHind
@@ -48,6 +50,7 @@ RowLayout {
     }
 
     Loader {
+        objectName: "quitFullBtn"
         active: !(!control.fullScreenButtonVisible ||
                   !__dwindow.enabled ||
                   Window.window.visibility !== Window.FullScreen)
@@ -67,7 +70,7 @@ RowLayout {
     }
 
     Loader {
-        id: maxOrWindedBtn
+        id: maxOrWindedBtn; objectName: "maxOrWindedBtn"
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowMaximizeButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowMaximizeButtonHint)
 
@@ -89,6 +92,7 @@ RowLayout {
     }
 
     Loader {
+        objectName: "closeBtn"
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowCloseButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowCloseButtonHint)
         active: hasWindowFlag && __dwindow.enabled
