@@ -10,6 +10,8 @@ file(GLOB TEST_SOURCES
     ut_dconfigwrapper.cpp
     ut_dqmlglobalobject.cpp
     ut_dapploader.cpp
+    ut_thememenu.cpp
+    ut_windowbuttongroup.cpp
 )
 if (EnableDtk5)
     list(APPEND TEST_SOURCES

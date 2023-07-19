@@ -1,0 +1,58 @@
+// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+//
+// SPDX-License-Identifier: LGPL-3.0-or-later
+
+#include <gtest/gtest.h>
+
+#include "test_helper.hpp"
+
+#include <QTest>
+#include <QSignalSpy>
+#include <QQuickItem>
+#include <QQuickWindow>
+
+#include <DQuickWindow>
+DQUICK_USE_NAMESPACE
+
+class ut_WindowButtonGroup : public ::testing::Test
+{
+public:
+};
+
+TEST_F(ut_WindowButtonGroup, windowFlags)
+{
+    ControlHeler<QQuickWindow> helper("qrc:/qml/WindowButtonGroup.qml");
+    ASSERT_TRUE(helper.object);
+
+    QQuickItem *minimizeBtn = helper.object->findChild<QQuickItem *>("minimizeBtn");
+    ASSERT_FALSE(minimizeBtn->property("hasWindowFlag").toBool());
+
+    QQuickItem *maxOrWindedBtn = helper.object->findChild<QQuickItem *>("maxOrWindedBtn");
+    ASSERT_TRUE(maxOrWindedBtn->property("hasWindowFlag").toBool());
+
+    QQuickItem *closeBtn = helper.object->findChild<QQuickItem *>("closeBtn");
+    ASSERT_TRUE(closeBtn->property("hasWindowFlag").toBool());
+}
+
+TEST_F(ut_WindowButtonGroup, maxOrWinded)
+{
+    TEST_OFFSCREEN_SKIP();
+
+    ControlHeler<QQuickWindow> helper("qrc:/qml/WindowButtonGroup.qml");
+    ASSERT_TRUE(helper.object);
+    helper.object->show();
+    QVERIFY(QTest::qWaitForWindowExposed(helper.object));
+
+    qmlRegisterAnonymousType<DQuickWindow>("", 1);
+    auto dwAttached = qobject_cast<DQuickWindowAttached *>(qmlAttachedPropertiesObject<DQuickWindow>(helper.object));
+    ASSERT_TRUE(dwAttached && dwAttached->property("enabled").toBool());
+
+    auto content = qvariant_cast<QObject *>(helper.object->property("group"));
+    QSignalSpy maxOrWindedSpy(content, SIGNAL(maxOrWinded()));
+
+    QQuickItem *maxOrWindedBtn = helper.object->findChild<QQuickItem *>("maxOrWindedBtn");
+
+    QTest::mouseClick(helper.object, Qt::LeftButton, Qt::KeyboardModifiers(), maxOrWindedBtn->mapToItem(helper.object->contentItem(), QPoint(10, 10)).toPoint());
+
+    ASSERT_EQ(maxOrWindedSpy.count(), 1);
+}
