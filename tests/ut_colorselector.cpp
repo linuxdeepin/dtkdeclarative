@@ -4,8 +4,7 @@
 
 #include <gtest/gtest.h>
 
-#include <QSignalSpy>
-#include <QTest>
+#include "test_helper.hpp"
 #include <QQmlEngine>
 #include <QQmlComponent>
 #include <QQuickItem>
@@ -27,14 +26,10 @@ void ut_ColorSelector::TearDown()
 
 TEST_F(ut_ColorSelector, getColorFromProperty)
 {
-    QQmlEngine engine;
-    engine.setImportPathList(QStringList {QString::fromLocal8Bit(QML_PLUGIN_PATH)} + engine.importPathList());
+    ControlHeler<QQuickItem> helper("qrc:/qml/ColorSelector_GetColorFromProperty.qml");
+    ASSERT_TRUE(helper.object);
 
-    QQmlComponent component(&engine);
-
-    component.loadUrl(QUrl("qrc:/qml/ColorSelector_GetColorFromProperty.qml"), QQmlComponent::PreferSynchronous);
-    ASSERT_TRUE(component.isReady());
-    auto listView = component.create();
+    auto listView = helper.object->property("view").value<QQuickItem*>();
     ASSERT_NE(listView, nullptr);
 
     QObject *buttonPanel = qvariant_cast<QObject*>(listView->property("buttonPanel"));
@@ -43,6 +38,10 @@ TEST_F(ut_ColorSelector, getColorFromProperty)
     QObject *background = buttonPanel->findChild<QQuickItem*>("background");
     ASSERT_NE(background, nullptr);
 
+    QQmlEngine &engine = helper.engine;
     engine.globalObject().setProperty("background", engine.newQObject(background));
+
+    ThemeTypeGuard themeGurad(DGuiApplicationHelper::LightType);
+    Q_UNUSED(themeGurad);
     ASSERT_EQ(background->property("color"), engine.evaluate("background.color1.normal.common.color()").toVariant());
 }
