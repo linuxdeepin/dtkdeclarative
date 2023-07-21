@@ -34,6 +34,7 @@ RowLayout {
     }
 
     Loader {
+        objectName: "minimizeBtn"
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowMinimizeButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowMinimizeButtonHint)
         active: hasWindowFlag &&  !__forceHind
@@ -49,6 +50,7 @@ RowLayout {
     }
 
     Loader {
+        objectName: "quitFullBtn"
         active: !(!control.fullScreenButtonVisible ||
                   !__dwindow.enabled ||
                   Window.window.visibility !== Window.FullScreen)
@@ -68,7 +70,7 @@ RowLayout {
     }
 
     Loader {
-        id: maxOrWindedBtn
+        id: maxOrWindedBtn; objectName: "maxOrWindedBtn"
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowMaximizeButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowMaximizeButtonHint)
 
@@ -90,6 +92,7 @@ RowLayout {
     }
 
     Loader {
+        objectName: "closeBtn"
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowCloseButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowCloseButtonHint)
         active: hasWindowFlag && __dwindow.enabled

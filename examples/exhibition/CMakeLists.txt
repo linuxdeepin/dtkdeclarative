@@ -25,7 +25,6 @@ target_link_libraries(${BIN_NAME} PRIVATE
     Qt${QT_VERSION_MAJOR}::QuickControls2
     Dtk${DTK_VERSION_MAJOR}::Core
     Dtk${DTK_VERSION_MAJOR}::Gui
-    ${LIB_NAME}
 )
 
 install(TARGETS ${BIN_NAME} DESTINATION "${CMAKE_INSTALL_BINDIR}")

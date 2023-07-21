@@ -19,62 +19,27 @@ if (EnableDtk5)
     )
 endif()
 
-include(${PROJECT_SOURCE_DIR}/src/src.cmake)
-
-set(CHAMELEON_PATH "${PROJECT_BINARY_DIR}/plugins")
-add_definitions(
-    -DCHAMELEON_PATH="${CHAMELEON_PATH}"
-)
-
 add_executable(${BIN_NAME}
-    main.cpp ${TEST_SOURCES} ${HEADERS} ${SRCS}
+    main.cpp ${TEST_SOURCES}
     ${CMAKE_CURRENT_LIST_DIR}/data.qrc
-)
-
-target_compile_definitions(${BIN_NAME} PRIVATE
-    BIN_NAME="${BIN_NAME}"
 )
 
 target_compile_options(${BIN_NAME} PRIVATE
     "-fno-access-control"
 )
-if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    target_compile_options(${BIN_NAME} PRIVATE -fprofile-instr-generate -ftest-coverage)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_compile_options(${BIN_NAME} PRIVATE -fprofile-arcs -ftest-coverage)
-endif()
-
-add_definitions(-DQML_PLUGIN_PATH="${PROJECT_BINARY_DIR}/plugins/")
 
 target_compile_definitions(${BIN_NAME} PRIVATE
-    DTK_QML_APP_PLUGIN_PATH="${DTK_QML_APP_PLUGIN_PATH}"
-    DTK_QML_APP_PLUGIN_SUBPATH="${DTK_QML_APP_PLUGIN_SUBPATH}"
-    DDECLARATIVE_TRANSLATIONS_DIR="${DDECLARATIVE_TRANSLATIONS_DIR}"
+    QML_PLUGIN_PATH="${PLUGIN_OUTPUT_DIR}"
+    CHAMELEON_PATH="${PLUGIN_OUTPUT_DIR}"
+    BIN_NAME="${BIN_NAME}"
 )
 
-find_package(PkgConfig REQUIRED)
-
-pkg_check_modules(GL REQUIRED IMPORTED_TARGET gl)
-
 target_link_libraries(${BIN_NAME} PRIVATE
-    Qt${QT_VERSION_MAJOR}::Gui
-    Qt${QT_VERSION_MAJOR}::Core
-    Qt${QT_VERSION_MAJOR}::CorePrivate
     Qt${QT_VERSION_MAJOR}::Test
-    Qt${QT_VERSION_MAJOR}::Qml
-    Qt${QT_VERSION_MAJOR}::Quick
     Qt${QT_VERSION_MAJOR}::QuickControls2
-    Dtk${DTK_VERSION_MAJOR}::Core
-    Dtk${DTK_VERSION_MAJOR}::Gui
-    Qt${QT_VERSION_MAJOR}::QuickPrivate
+    ${LIB_NAME}
     GTest::GTest
-    PkgConfig::GL
     pthread
     dl
     m
-    gcov
-)
-
-target_include_directories(${BIN_NAME} PRIVATE
-    ${PROJECT_SOURCE_DIR}/src
 )

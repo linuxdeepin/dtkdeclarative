@@ -7,6 +7,19 @@
 #include <QGuiApplication>
 #include <QQuickStyle>
 
+#include <QTimer>
+
+int runTest(QGuiApplication &app)
+{
+    int ret = 0;
+    QTimer::singleShot(0, &app, [&app, &ret]() {
+        ret = RUN_ALL_TESTS();
+        app.quit();
+    });
+    app.exec();
+    return ret;
+}
+
 int main(int argc, char *argv[])
 {
     // 编译时没有显示器，需要指定环境变量
@@ -23,5 +36,5 @@ int main(int argc, char *argv[])
     app.setApplicationName(BIN_NAME);
     ::testing::InitGoogleTest(&argc, argv);
 
-    return RUN_ALL_TESTS();
+    return runTest(app);
 }

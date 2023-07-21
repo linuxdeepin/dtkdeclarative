@@ -4,7 +4,7 @@
 
 qt_add_qml_module(dtkdeclarativesettingsplugin
     PLUGIN_TARGET dtkdeclarativesettingsplugin
-    URI "org.deepin.dtk.settings"
+    URI "${URI}.settings"
     VERSION "1.0"
     SOURCES
         ${PROJECT_SOURCE_DIR}/src/private/dsettingscontainer_p.h
@@ -19,8 +19,10 @@ qt_add_qml_module(dtkdeclarativesettingsplugin
         "ContentTitle.qml"
         "ContentBackground.qml"
     OUTPUT_DIRECTORY
-        "${PROJECT_BINARY_DIR}/plugins/org/deepin/dtk/settings"
+        "${PLUGIN_OUTPUT_DIR}/${URI_PATH}/settings"
 )
+
+dtk_extend_target(dtkdeclarativesettingsplugin EnableCov ${ENABLE_COV})
 
 target_link_libraries(dtkdeclarativesettingsplugin
 PRIVATE

@@ -4,7 +4,7 @@
 
 qt_add_qml_module(dtkdeclarativeprivatesplugin
     PLUGIN_TARGET dtkdeclarativeprivatesplugin
-    URI "org.deepin.dtk.private"
+    URI "${URI}.private"
     VERSION "1.0"
     QML_FILES
         "ProgressBarImpl.qml"
@@ -15,8 +15,10 @@ qt_add_qml_module(dtkdeclarativeprivatesplugin
         "ButtonPanel.qml"
         "KeySequenceLabel.qml"
     OUTPUT_DIRECTORY
-        "${PROJECT_BINARY_DIR}/plugins/org/deepin/dtk/private"
+        "${PLUGIN_OUTPUT_DIR}/${URI_PATH}/private"
 )
+
+dtk_extend_target(dtkdeclarativeprivatesplugin EnableCov ${ENABLE_COV})
 
 target_link_libraries(dtkdeclarativeprivatesplugin
 PRIVATE

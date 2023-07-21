@@ -1,38 +1,25 @@
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Qml Quick)
-find_package(Dtk${DTK_VERSION_MAJOR}Core REQUIRED)
-find_package(Dtk${DTK_VERSION_MAJOR}Gui REQUIRED)
+include(${PROJECT_SOURCE_DIR}/qmlplugin/targets.cmake)
+add_library(${PLUGIN_NAME} SHARED)
 
-set(URI "org/deepin/dtk")
-set(PLUGIN_NAME dtkdeclarativeplugin)
+dtk_extend_target(${PLUGIN_NAME} EnableCov ${ENABLE_COV})
 
-set(PLUGIN_INSTALL_DIR "${QML_INSTALL_DIR}/${URI}")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/plugins/${URI}")
-
-add_library(${PLUGIN_NAME} SHARED
-    ${CMAKE_CURRENT_LIST_DIR}/qmlplugin_plugin.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/qmlplugin_plugin.h
-    ${CMAKE_CURRENT_LIST_DIR}/qmldir
+target_link_libraries(${PLUGIN_NAME} PRIVATE
+    ${PLUGIN_NAME}_interface
+    ${LIB_NAME}
 )
 
-set(QML_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/qmldir")
+set_target_properties(${PLUGIN_NAME} PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY "${PLUGIN_OUTPUT_DIR}/${URI_PATH}"
+)
+
 # copy qmldir
 add_custom_command(TARGET ${PLUGIN_NAME}
    POST_BUILD
    COMMAND ${CMAKE_COMMAND} -E
    copy_if_different
-   "${CMAKE_CURRENT_SOURCE_DIR}/qmldir"    #in-file
-   "${QML_DIR}"                            #out-file
+   "${PROJECT_SOURCE_DIR}/qmlplugin/qmldir"    #in-file
+   "${PLUGIN_OUTPUT_DIR}/${URI_PATH}/qmldir"    #out-file
 )
 
-install(TARGETS ${PLUGIN_NAME} DESTINATION ${PLUGIN_INSTALL_DIR})
-install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/qmldir" DESTINATION ${PLUGIN_INSTALL_DIR})
-
-target_link_libraries(${PLUGIN_NAME} PRIVATE
-    Qt${QT_VERSION_MAJOR}::Qml
-    Qt${QT_VERSION_MAJOR}::QmlPrivate
-    Qt${QT_VERSION_MAJOR}::Quick
-    Qt${QT_VERSION_MAJOR}::QuickPrivate
-    Dtk${DTK_VERSION_MAJOR}::Core
-    Dtk${DTK_VERSION_MAJOR}::Gui
-    ${LIB_NAME}
-)
+install(TARGETS ${PLUGIN_NAME} DESTINATION "${QML_INSTALL_DIR}/${URI_PATH}")
+install(FILES "${PROJECT_SOURCE_DIR}/qmlplugin/qmldir" DESTINATION "${QML_INSTALL_DIR}/${URI_PATH}")
