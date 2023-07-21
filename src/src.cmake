@@ -21,11 +21,11 @@ file(GLOB PUBLIC_HEADERS
 
 # exclusive to dtk5
 if (EnableDtk5)
-    file(GLOB D_HEADERS
+    list(APPEND D_HEADERS
         ${PROJECT_SOURCE_DIR}/src/DPlatformThemeProxy
         ${PROJECT_SOURCE_DIR}/src/DQuickSystemPalette
     )
-    file(GLOB PUBLIC_HEADERS
+    list(APPEND PUBLIC_HEADERS
         ${PROJECT_SOURCE_DIR}/src/dplatformthemeproxy.h
         ${PROJECT_SOURCE_DIR}/src/dquicksystempalette.h
     )
