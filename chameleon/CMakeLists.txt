@@ -50,7 +50,6 @@ set(SRC_FILES
 if(EnableQt5)
     file(GLOB _qml_files ${QML_FILES})
     set(TARGETPATH "QtQuick/Controls.2/Chameleon")
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/plugins/Chameleon")
     set(PLUGIN_INSTALL_DIR "${QML_INSTALL_DIR}/${TARGETPATH}")
 
     qtquick_compiler_add_resources(RESOURCES ${CMAKE_CURRENT_LIST_DIR}/qml.qrc)
@@ -58,7 +57,9 @@ if(EnableQt5)
     add_library(${PLUGIN_NAME} SHARED
         ${SRC_FILES}
         ${RESOURCES} #   qml.qrc
-        ${QML_DIR}
+    )
+    set_target_properties(${PLUGIN_NAME} PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY "${PLUGIN_OUTPUT_DIR}/Chameleon"
     )
 
     find_program(COMPILER
@@ -78,14 +79,13 @@ if(EnableQt5)
 
     set(QML_DIR "${CMAKE_CURRENT_BINARY_DIR}/qmldir")
     configure_file("${CMAKE_CURRENT_LIST_DIR}/qmldir.in" "${QML_DIR}" @ONLY)
-    set(OUT_QML_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/qmldir")
     # copy qmldir
     add_custom_command(TARGET ${PLUGIN_NAME}
        POST_BUILD
        COMMAND ${CMAKE_COMMAND} -E
        copy_if_different
        "${QML_DIR}"    #in-file
-       "${OUT_QML_DIR}"                            #out-file
+       "${PLUGIN_OUTPUT_DIR}/Chameleon/qmldir"                            #out-file
     )
 
     install(TARGETS ${PLUGIN_NAME} DESTINATION ${PLUGIN_INSTALL_DIR})
@@ -104,7 +104,7 @@ if(EnableQt6)
         CLASS_NAME QtQuickControls2ChameleonStylePlugin
         PLUGIN_TARGET ${PLUGIN_NAME}
         OUTPUT_DIRECTORY
-            "${PROJECT_BINARY_DIR}/plugins/Chameleon"
+            "${PLUGIN_OUTPUT_DIR}/Chameleon"
         NO_PLUGIN_OPTIONAL
         NO_GENERATE_PLUGIN_SOURCE
         SOURCES ${SRC_FILES}
@@ -112,6 +112,8 @@ if(EnableQt6)
         RESOURCES qml.qrc
     )
 endif()
+
+dtk_extend_target(${PLUGIN_NAME} EnableCov ${ENABLE_COV})
 
 target_link_libraries(${PLUGIN_NAME} PRIVATE
     Qt${QT_VERSION_MAJOR}::Qml

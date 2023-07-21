@@ -83,3 +83,20 @@ function(GEN_DTK_CONFIG_HEADER)
 
     set(${_CONFIG_OUTPUT_VARIABLE} ${config_file_path} PARENT_SCOPE)
 endfunction()
+
+function(dtk_extend_target TARGET)
+    set(args_option)
+    set(args_single
+        EnableCov
+    )
+    cmake_parse_arguments(PARSE_ARGV 1 arg "${args_option}" "${args_single}" "${args_multi}")
+
+    if (arg_EnableCov)
+        if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+            target_compile_options(${TARGET} PRIVATE -fprofile-instr-generate -ftest-coverage)
+        elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+            target_compile_options(${TARGET} PRIVATE -fprofile-arcs -ftest-coverage)
+        endif()
+        target_link_libraries(${TARGET} PRIVATE gcov)
+    endif()
+endfunction()

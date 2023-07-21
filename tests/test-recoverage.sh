@@ -24,18 +24,18 @@ export ASAN_OPTIONS="halt_on_error=0"
 
 cd ${SOURCE_DIR}
 
-cmake -B${BUILD_DIR} -DCMAKE_BUILD_TYPE=Debug -GNinja
+cmake -B${BUILD_DIR} -DCMAKE_BUILD_TYPE=Debug -GNinja -DENABLE_COV=ON
 
 cmake --build ${BUILD_DIR} --target ${TESTS_TARGET}
 
-cd ${TESTS_BUILD_DIR}
+cd ${BUILD_DIR}
 
-./${TESTS_TARGET}
+${TESTS_BUILD_DIR}/${TESTS_TARGET}
 lcov -d ./ -c -o coverage_all.info
 
-lcov --remove coverage_all.info "*/tests/*" "/usr/include*" "*build/src*" ${filter_files[*]} --output-file coverage.info
+lcov --remove coverage_all.info "*/tests/*" "/usr/include*" "*build/*" ${filter_files[*]} --output-file coverage.info
 
 cd ${BUILD_DIR}
-genhtml -o ${HTML_DIR} ${TESTS_BUILD_DIR}/coverage.info && ln -sf ${HTML_DIR}/index.html ${BUILD_DIR}/cov_index.html
+genhtml -o ${HTML_DIR} ${BUILD_DIR}/coverage.info && ln -sf ${HTML_DIR}/index.html ${BUILD_DIR}/cov_index.html
 
 test -e ${TESTS_BUILD_DIR}/asan.log* && mv ${TESTS_BUILD_DIR}/asan.log* ${BUILD_DIR}/asan_index.log

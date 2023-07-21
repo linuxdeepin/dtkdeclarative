@@ -8,6 +8,7 @@ project(DtkDeclarative
     LANGUAGES CXX
 )
 set(LIB_NAME dtkdeclarative)
+set(ENABLE_COV OFF CACHE BOOL "Generate coverage info")
 
 if (${PROJECT_VERSION_MAJOR} STREQUAL "5")
     set(QT_DEFAULT_MAJOR_VERSION "5")
@@ -41,6 +42,8 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 endif()
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
+
+include(DtkBuildConfig)
 set(BUILD_DOCS ON CACHE BOOL "Generate doxygen-based documentation")
 
 set(LIB_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}" CACHE STRING "Library install path")
@@ -74,6 +77,15 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 else ()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast")
 endif ()
+
+set(DDECLARATIVE_TRANSLATIONS_DIR "dtk5/DDeclarative/translations" CACHE STRING "DDeclarative translations directory")
+set(DDECLARATIVE_TRANSLATIONS_PATH "share/${DDECLARATIVE_TRANSLATIONS_DIR}")
+set(TRANSLATIONS_INSTALL_PATH "${DDECLARATIVE_TRANSLATIONS_PATH}")
+
+set(URI "org.deepin.dtk")
+string(REPLACE "." "/" URI_PATH ${URI})
+set(PLUGIN_NAME dtkdeclarativeplugin)
+set(PLUGIN_OUTPUT_DIR ${PROJECT_BINARY_DIR}/plugins)
 
 if(EnableQt5)
     add_subdirectory(src)

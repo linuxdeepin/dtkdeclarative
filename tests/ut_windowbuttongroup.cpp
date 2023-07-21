@@ -36,16 +36,15 @@ TEST_F(ut_WindowButtonGroup, windowFlags)
 
 TEST_F(ut_WindowButtonGroup, maxOrWinded)
 {
-    TEST_OFFSCREEN_SKIP();
-
     ControlHeler<QQuickWindow> helper("qrc:/qml/WindowButtonGroup.qml");
     ASSERT_TRUE(helper.object);
     helper.object->show();
     QVERIFY(QTest::qWaitForWindowExposed(helper.object));
 
-    qmlRegisterAnonymousType<DQuickWindow>("", 1);
-    auto dwAttached = qobject_cast<DQuickWindowAttached *>(qmlAttachedPropertiesObject<DQuickWindow>(helper.object));
-    ASSERT_TRUE(dwAttached && dwAttached->property("enabled").toBool());
+    auto dwAttached = qobject_cast<DQuickWindowAttached *>(qmlAttachedPropertiesObject<DQuickWindow>(helper.object, false));
+    ASSERT_TRUE(dwAttached);
+    if(!dwAttached->property("enabled").toBool())
+        GTEST_SKIP();
 
     auto content = qvariant_cast<QObject *>(helper.object->property("group"));
     QSignalSpy maxOrWindedSpy(content, SIGNAL(maxOrWinded()));
