@@ -5,5 +5,7 @@
         <file>qml/CustomThemeMenu.qml</file>
         <file>qml/WindowButtonGroup.qml</file>
         <file>qml/DQuickRectangle.qml</file>
+        <file>qml/DQuickWindow.qml</file>
+        <file>qml/QmlGlobalObject.qml</file>
     </qresource>
 </RCC>
