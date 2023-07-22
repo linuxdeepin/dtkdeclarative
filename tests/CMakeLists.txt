@@ -13,6 +13,7 @@ file(GLOB TEST_SOURCES
     ut_thememenu.cpp
     ut_windowbuttongroup.cpp
     ut_dquickrectangle.cpp
+    ut_dquickwindow.cpp
 )
 if (EnableDtk5)
     list(APPEND TEST_SOURCES

@@ -2,6 +2,8 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
+#include "test_helper.hpp"
+
 #include <gtest/gtest.h>
 
 #include <QPointer>
@@ -105,3 +107,48 @@ TEST_F(ut_DQMLGlobalObject, inactivePalette)
         ASSERT_EQ(expected.color(QPalette::Inactive, role), actual.color(QPalette::Active, role));
     }
 }
+
+TEST_F(ut_DQMLGlobalObject, makeColor)
+{
+    ControlHeler<> helper("qrc:/qml/QmlGlobalObject.qml");
+    ASSERT_TRUE(helper.object);
+
+    DColor color1 = helper.object->property("color1").value<DColor>();
+    ASSERT_TRUE(color1.isTypedColor());
+
+    DColor color2 = helper.object->property("color2").value<DColor>();
+    ASSERT_TRUE(!color2.isTypedColor());
+
+    const QPalette &pt = helper.object->property("palette").value<QPalette>();
+    ASSERT_EQ(color1.toColor(pt), pt.highlight().color());
+}
+
+TEST(ut_DColor, construct)
+{
+    DColor invalidColor;
+    ASSERT_FALSE(invalidColor.isValid());
+
+    DColor color(DColor::Highlight);
+    ASSERT_TRUE(color.isTypedColor());
+    ASSERT_TRUE(color.isValid());
+
+    QPalette pt;
+    pt.setBrush(QPalette::Highlight, Qt::red);
+
+    ASSERT_EQ(color.toColor(pt), Qt::red);
+
+    DColor color2(Qt::red);
+    ASSERT_EQ(color2.color(), Qt::red);
+}
+
+TEST(ut_DColor, common)
+{
+    DColor color(Qt::red);
+    DColor color2(color.hue(1).opacity(1).saturation(1).lightness(1));
+
+    EXPECT_NE(color.data.hue, color2.data.hue);
+    EXPECT_NE(color.data.opacity, color2.data.opacity);
+    EXPECT_NE(color.data.saturation, color2.data.saturation);
+    EXPECT_NE(color.data.lightness, color2.data.lightness);
+}
+
