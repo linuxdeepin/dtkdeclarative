@@ -7,5 +7,6 @@
         <file>qml/DQuickRectangle.qml</file>
         <file>qml/DQuickWindow.qml</file>
         <file>qml/QmlGlobalObject.qml</file>
+        <file>qml/WaterProgressBar.qml</file>
     </qresource>
 </RCC>
