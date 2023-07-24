@@ -67,11 +67,13 @@ Flow {
 
                 WaterProgressBar {
                     NumberAnimation on value {
+                        id: valueAnimation
                         loops: Animation.Infinite
                         from: 0
                         to: 100
                         duration: 10000
                     }
+                    running: valueAnimation.running
                 }
             }
 
