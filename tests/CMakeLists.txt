@@ -14,6 +14,7 @@ file(GLOB TEST_SOURCES
     ut_windowbuttongroup.cpp
     ut_dquickrectangle.cpp
     ut_dquickwindow.cpp
+    ut_waterprogressbar.cpp
 )
 if (EnableDtk5)
     list(APPEND TEST_SOURCES
