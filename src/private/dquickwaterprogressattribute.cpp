@@ -20,8 +20,8 @@ public:
     qreal m_popYSpeed = 0;
     qreal m_popX = 0;
     qreal m_popY = 0;
-    qreal m_width;
-    qreal m_height;
+    qreal m_width = 0;
+    qreal m_height = 0;
     qreal m_yOffset = 0;
 };
 
