@@ -16,6 +16,7 @@ file(GLOB TEST_SOURCES
     ut_dquickwindow.cpp
     ut_waterprogressbar.cpp
     ut_keysequencelistener.cpp
+    ut_dsettingscontainer.cpp
 )
 if (EnableDtk5)
     list(APPEND TEST_SOURCES

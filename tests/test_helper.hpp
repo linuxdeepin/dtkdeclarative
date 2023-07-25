@@ -38,22 +38,32 @@ template<class T = QObject>
 class ControlHelper
 {
 public:
-    ControlHelper(const QString &url)
+    ControlHelper()
     {
         engine.setImportPathList(QStringList {QString::fromLocal8Bit(QML_PLUGIN_PATH)} + engine.importPathList());
-
         component = new QQmlComponent(&engine);
+    }
+    ControlHelper(const QString &url)
+        : ControlHelper()
+    {
+        load(url);
+    }
+    bool load(const QString &url)
+    {
         component->loadUrl(QUrl(url), QQmlComponent::PreferSynchronous);
         if (!component->isReady()) {
             qWarning() << "component is not ready" << component->errorString();
-            return;
+            return false;
         }
 
         auto tmp = component->create();
-        if (!tmp)
+        if (!tmp) {
             qWarning() << "create object is wrong." << component->errorString();
+            return false;
+        }
 
         object = qobject_cast<T *>(tmp);
+        return object != nullptr;
     }
     ~ControlHelper()
     {
