@@ -85,6 +85,11 @@ public:
 
         object = qobject_cast<T *>(rootItem);
     }
+    void requestActivate()
+    {
+        view->requestActivate();
+        QVERIFY(QTest::qWaitForWindowActive(view));
+    }
     QQuickView *view = nullptr;
     T *object = nullptr;
 };
