@@ -14,7 +14,7 @@ DQUICK_USE_NAMESPACE
 
 TEST(ut_DQuickWaterProgressAttribute, properties)
 {
-    QQuickItem *water = new QQuickItem;
+    QScopedPointer<QQuickItem> water(new QQuickItem);
     water->setSize(QSize(100, 100));
     water->setProperty("value", 10);
 
@@ -22,8 +22,8 @@ TEST(ut_DQuickWaterProgressAttribute, properties)
     auto attrPops = attr.pops();
     EXPECT_GE(attrPops.count(&attrPops), 3);
 
-    attr.setWaterProgress(water);
-    ASSERT_EQ(attr.waterProgress(), water);
+    attr.setWaterProgress(water.data());
+    ASSERT_EQ(attr.waterProgress(), water.data());
 
     attr.setFrontXOffset(10);
     ASSERT_EQ(attr.frontXOffset(), 10);
