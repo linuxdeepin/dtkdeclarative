@@ -116,7 +116,7 @@ private:
 
     QString m_key;
     QString m_name;
-    int m_level;
+    int m_level = -1;
     bool m_visible = true;
     int m_index;
     QList<SettingsOption*> m_options;
@@ -241,12 +241,12 @@ Q_SIGNALS:
 
 private:
     QList<SettingsGroup*> m_groups;
-    SettingsNavigationModel *m_navigationModel;
-    SettingsContentModel *m_contentModel;
-    QQmlComponent *m_contentTitle;
-    QQmlComponent *m_navigationTitle;
-    QQmlComponent * m_contentBackground;
-    DConfigWrapper *m_config;
+    SettingsNavigationModel *m_navigationModel = nullptr;
+    SettingsContentModel *m_contentModel = nullptr;
+    QQmlComponent *m_contentTitle = nullptr;
+    QQmlComponent *m_navigationTitle = nullptr;
+    QQmlComponent * m_contentBackground = nullptr;
+    DConfigWrapper *m_config = nullptr;
 };
 
 DQUICK_END_NAMESPACE
