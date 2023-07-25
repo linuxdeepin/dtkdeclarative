@@ -17,7 +17,7 @@ public:
 
 TEST_F(ut_ThemeMenu, checkedWithThemeType)
 {
-    ControlHeler<> root("qrc:/qml/CustomThemeMenu.qml");
+    ControlHelper<> root("qrc:/qml/CustomThemeMenu.qml");
     ASSERT_TRUE(root.object);
 
     QQuickItem *action = nullptr;

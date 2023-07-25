@@ -24,7 +24,7 @@ TEST_F(ut_DQuickWindow, enabled)
 {
     TEST_OFFSCREEN_SKIP();
 
-    ControlHeler<QQuickWindow> helper("qrc:/qml/DQuickWindow.qml");
+    ControlHelper<QQuickWindow> helper("qrc:/qml/DQuickWindow.qml");
     ASSERT_TRUE(helper.object);
     auto attached = qobject_cast<DQuickWindowAttached *>(qmlAttachedPropertiesObject<DQuickWindow>(helper.object, false));
     ASSERT_TRUE(attached);
@@ -36,7 +36,7 @@ TEST_F(ut_DQuickWindow, windowProperties)
 {
     TEST_OFFSCREEN_SKIP();
 
-    ControlHeler<QQuickWindow> helper("qrc:/qml/DQuickWindow.qml");
+    ControlHelper<QQuickWindow> helper("qrc:/qml/DQuickWindow.qml");
     ASSERT_TRUE(helper.object);
 
     auto attached = qobject_cast<DQuickWindowAttached *>(qmlAttachedPropertiesObject<DQuickWindow>(helper.object, false));

@@ -110,7 +110,7 @@ TEST_F(ut_DQMLGlobalObject, inactivePalette)
 
 TEST_F(ut_DQMLGlobalObject, makeColor)
 {
-    ControlHeler<> helper("qrc:/qml/QmlGlobalObject.qml");
+    ControlHelper<> helper("qrc:/qml/QmlGlobalObject.qml");
     ASSERT_TRUE(helper.object);
 
     DColor color1 = helper.object->property("color1").value<DColor>();
@@ -151,4 +151,3 @@ TEST(ut_DColor, common)
     EXPECT_NE(color.data.saturation, color2.data.saturation);
     EXPECT_NE(color.data.lightness, color2.data.lightness);
 }
-

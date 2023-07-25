@@ -21,7 +21,7 @@ public:
 
 TEST_F(ut_WindowButtonGroup, windowFlags)
 {
-    ControlHeler<QQuickWindow> helper("qrc:/qml/WindowButtonGroup.qml");
+    ControlHelper<QQuickWindow> helper("qrc:/qml/WindowButtonGroup.qml");
     ASSERT_TRUE(helper.object);
 
     QQuickItem *minimizeBtn = helper.object->findChild<QQuickItem *>("minimizeBtn");
@@ -36,7 +36,7 @@ TEST_F(ut_WindowButtonGroup, windowFlags)
 
 TEST_F(ut_WindowButtonGroup, maxOrWinded)
 {
-    ControlHeler<QQuickWindow> helper("qrc:/qml/WindowButtonGroup.qml");
+    ControlHelper<QQuickWindow> helper("qrc:/qml/WindowButtonGroup.qml");
     ASSERT_TRUE(helper.object);
     helper.object->show();
     QVERIFY(QTest::qWaitForWindowExposed(helper.object));
