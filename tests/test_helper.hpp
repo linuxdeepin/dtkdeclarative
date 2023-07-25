@@ -35,10 +35,10 @@ private:
 };
 
 template<class T = QObject>
-class ControlHeler
+class ControlHelper
 {
 public:
-    ControlHeler(const QString &url)
+    ControlHelper(const QString &url)
     {
         engine.setImportPathList(QStringList {QString::fromLocal8Bit(QML_PLUGIN_PATH)} + engine.importPathList());
 
@@ -55,7 +55,7 @@ public:
 
         object = qobject_cast<T *>(tmp);
     }
-    ~ControlHeler()
+    ~ControlHelper()
     {
         component->deleteLater();
         if (object)

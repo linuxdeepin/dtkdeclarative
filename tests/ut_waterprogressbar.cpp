@@ -60,7 +60,7 @@ TEST(ut_DQuickWaterProgressAttribute, properties)
 
 TEST(ut_DQuickWaterProgressBar, waterProgressBar)
 {
-    ControlHeler<> root("qrc:/qml/WaterProgressBar.qml");
+    ControlHelper<> root("qrc:/qml/WaterProgressBar.qml");
     ASSERT_TRUE(root.object);
 
     EXPECT_EQ(root.object->property("value"), 20);

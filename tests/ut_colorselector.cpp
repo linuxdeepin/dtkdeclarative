@@ -26,7 +26,7 @@ void ut_ColorSelector::TearDown()
 
 TEST_F(ut_ColorSelector, getColorFromProperty)
 {
-    ControlHeler<QQuickItem> helper("qrc:/qml/ColorSelector_GetColorFromProperty.qml");
+    ControlHelper<QQuickItem> helper("qrc:/qml/ColorSelector_GetColorFromProperty.qml");
     ASSERT_TRUE(helper.object);
 
     auto listView = helper.object->property("view").value<QQuickItem*>();

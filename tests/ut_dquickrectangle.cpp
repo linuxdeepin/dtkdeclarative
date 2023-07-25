@@ -14,7 +14,7 @@ DQUICK_USE_NAMESPACE
 
 TEST(ut_DQuickRectangle, properties)
 {
-    ControlHeler<DQuickRectangle> helper("qrc:/qml/DQuickRectangle.qml");
+    ControlHelper<DQuickRectangle> helper("qrc:/qml/DQuickRectangle.qml");
     ASSERT_TRUE(helper.object);
 
     EXPECT_EQ(helper.object->color(), Qt::red);
