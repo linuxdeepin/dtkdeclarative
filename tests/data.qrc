@@ -11,5 +11,6 @@
         <file>qml/KeySequenceEdit.qml</file>
         <file>qml/SettingsContainer.qml</file>
         <file>qml/SettingsContainer_View.qml</file>
+        <file>qml/ObjectModelProxy.qml</file>
     </qresource>
 </RCC>
