@@ -17,6 +17,7 @@ file(GLOB TEST_SOURCES
     ut_waterprogressbar.cpp
     ut_keysequencelistener.cpp
     ut_dsettingscontainer.cpp
+    ut_buttonbox.cpp
     ut_dobjectmodelproxy.cpp
     ut_dmessagemanager.cpp
 )
