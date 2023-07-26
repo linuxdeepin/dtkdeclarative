@@ -18,6 +18,7 @@ file(GLOB TEST_SOURCES
     ut_keysequencelistener.cpp
     ut_dsettingscontainer.cpp
     ut_dobjectmodelproxy.cpp
+    ut_dmessagemanager.cpp
 )
 if (EnableDtk5)
     list(APPEND TEST_SOURCES

@@ -12,5 +12,6 @@
         <file>qml/SettingsContainer.qml</file>
         <file>qml/SettingsContainer_View.qml</file>
         <file>qml/ObjectModelProxy.qml</file>
+        <file>qml/MessageManager.qml</file>
     </qresource>
 </RCC>
