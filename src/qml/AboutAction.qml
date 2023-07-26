@@ -17,5 +17,5 @@ Action {
             __object.show()
         }
     }
-    Component.onDestruction: __object.destroy()
+    Component.onDestruction: __object && __object.destroy()
 }
