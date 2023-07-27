@@ -14,5 +14,6 @@
         <file>qml/ObjectModelProxy.qml</file>
         <file>qml/MessageManager.qml</file>
         <file>qml/ButtonBox.qml</file>
+        <file>qml/ArrowBoxPath.qml</file>
     </qresource>
 </RCC>
