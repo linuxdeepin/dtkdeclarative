@@ -20,6 +20,7 @@ file(GLOB TEST_SOURCES
     ut_buttonbox.cpp
     ut_dobjectmodelproxy.cpp
     ut_dmessagemanager.cpp
+    ut_dquickarrowboxpath.cpp
 )
 if (EnableDtk5)
     list(APPEND TEST_SOURCES
