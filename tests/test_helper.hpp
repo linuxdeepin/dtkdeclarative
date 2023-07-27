@@ -41,7 +41,6 @@ public:
     ControlHelper()
     {
         engine.setImportPathList(QStringList {QString::fromLocal8Bit(QML_PLUGIN_PATH)} + engine.importPathList());
-        component = new QQmlComponent(&engine);
     }
     ControlHelper(const QString &url)
         : ControlHelper()
@@ -50,15 +49,17 @@ public:
     }
     bool load(const QString &url)
     {
-        component->loadUrl(QUrl(url), QQmlComponent::PreferSynchronous);
-        if (!component->isReady()) {
-            qWarning() << "component is not ready" << component->errorString();
+        clear();
+
+        QQmlComponent component(&engine, QUrl(url), QQmlComponent::PreferSynchronous);
+        if (!component.isReady()) {
+            qWarning() << "component is not ready" << component.errorString();
             return false;
         }
 
-        auto tmp = component->create();
+        auto tmp = component.create();
         if (!tmp) {
-            qWarning() << "create object is wrong." << component->errorString();
+            qWarning() << "create object is wrong." << component.errorString();
             return false;
         }
 
@@ -67,12 +68,14 @@ public:
     }
     ~ControlHelper()
     {
-        component->deleteLater();
+        clear();
+    }
+    void clear()
+    {
         if (object)
             object->deleteLater();
     }
     QQmlEngine engine;
-    QQmlComponent *component = nullptr;
     T *object = nullptr;
 };
 
