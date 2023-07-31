@@ -15,5 +15,6 @@
         <file>qml/MessageManager.qml</file>
         <file>qml/ButtonBox.qml</file>
         <file>qml/ArrowBoxPath.qml</file>
+        <file>qml/GlowEffect.qml</file>
     </qresource>
 </RCC>
