@@ -6,7 +6,6 @@
 
 #include <QGuiApplication>
 #include <QQuickStyle>
-
 #include <QTimer>
 
 int runTest(QGuiApplication &app)

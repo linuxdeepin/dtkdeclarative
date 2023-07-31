@@ -21,6 +21,7 @@ file(GLOB TEST_SOURCES
     ut_dobjectmodelproxy.cpp
     ut_dmessagemanager.cpp
     ut_dquickarrowboxpath.cpp
+    ut_dquickglow.cpp
 )
 if (EnableDtk5)
     list(APPEND TEST_SOURCES
