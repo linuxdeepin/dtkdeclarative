@@ -22,6 +22,7 @@ file(GLOB TEST_SOURCES
     ut_dmessagemanager.cpp
     ut_dquickarrowboxpath.cpp
     ut_dquickglow.cpp
+    ut_dsoftwareroundedimagenode.cpp
 )
 if (EnableDtk5)
     list(APPEND TEST_SOURCES

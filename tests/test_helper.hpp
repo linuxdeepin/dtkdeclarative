@@ -12,10 +12,15 @@
 #include <DGuiApplicationHelper>
 #include <QQuickView>
 #include <QTest>
+#include <private/qsgplaintexture_p.h>
 
 #define TEST_OFFSCREEN_SKIP() \
 if (qEnvironmentVariable("QT_QPA_PLATFORM") == "offscreen") \
     GTEST_SKIP();
+
+#define TEST_NOTSOFTWARE_SKIP() \
+if (QQuickWindow::sceneGraphBackend() != "software") \
+        GTEST_SKIP_("Only test `QSGRendererInterface::Software` backend");
 
 class EnvGuard {
 public:
@@ -122,3 +127,18 @@ public:
 private:
     DGuiApplicationHelper::ColorType oldType;
 };
+
+namespace TestUtil {
+    inline QSGTexture *simpleTexture(const QColor &color = Qt::blue, const QSize &size = QSize(100, 100))
+    {
+        QImage image(size, QImage::Format_RGB32);
+        image.fill(color);
+        return QSGPlainTexture::fromImage(image);
+    }
+
+    template<class T>
+    inline void registerType(const char* type)
+    {
+        qmlRegisterType<T>("test", 1, 0, type);
+    }
+}
