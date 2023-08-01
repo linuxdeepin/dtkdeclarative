@@ -76,6 +76,8 @@ void DSoftwareRoundedImageNode::render(const RenderState *state)
         return;
 
     QSGRendererInterface *rif = item->window()->rendererInterface();
+    Q_ASSERT(rif->graphicsApi() == QSGRendererInterface::Software);
+
     QPainter *p = static_cast<QPainter *>(rif->getResource(item->window(),
                                                            QSGRendererInterface::PainterResource));
     Q_ASSERT(p);
