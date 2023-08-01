@@ -17,5 +17,6 @@
         <file>qml/ArrowBoxPath.qml</file>
         <file>qml/GlowEffect.qml</file>
         <file>qml/DSoftwareRoundedImageNodeItem.qml</file>
+        <file>qml/DBlitFramebufferNodeItem.qml</file>
     </qresource>
 </RCC>
