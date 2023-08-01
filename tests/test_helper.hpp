@@ -12,6 +12,8 @@
 #include <DGuiApplicationHelper>
 #include <QQuickView>
 #include <QTest>
+#include <QQmlExpression>
+#include <QQuickItem>
 #include <private/qsgplaintexture_p.h>
 
 #define TEST_OFFSCREEN_SKIP() \
@@ -38,6 +40,31 @@ private:
     QByteArray m_originValue;
     const char* m_name = nullptr;
 };
+
+template<typename T = QQuickItem>
+T *findItem(QQuickItem *parent, const QString &objectName = QString(), int index = -1)
+{
+    const QMetaObject &mo = T::staticMetaObject;
+    for (int i = 0; i < parent->childItems().count(); ++i) {
+        QQuickItem *item = qobject_cast<QQuickItem*>(parent->childItems().at(i));
+        if (!item)
+            continue;
+        if (mo.cast(item) && (objectName.isEmpty() || item->objectName() == objectName)) {
+            if (index != -1) {
+                QQmlExpression e(qmlContext(item), item, "index");
+                if (e.evaluate().toInt() == index)
+                    return static_cast<T*>(item);
+            } else {
+                return static_cast<T*>(item);
+            }
+        }
+        item = findItem<T>(item, objectName, index);
+        if (item)
+            return static_cast<T*>(item);
+    }
+
+    return nullptr;
+}
 
 template<class T = QObject>
 class ControlHelper
@@ -87,26 +114,36 @@ public:
 template<class T = QQuickItem>
 class QuickViewHelper {
 public:
-    QuickViewHelper(const QString &url)
+    QuickViewHelper()
         : view(new QQuickView)
     {
         view->engine()->setImportPathList(QStringList {QString::fromLocal8Bit(QML_PLUGIN_PATH)} + view->engine()->importPathList());
-
+    }
+    QuickViewHelper(const QString &url)
+        : QuickViewHelper()
+    {
+        load(url);
+        requestExposed();
+    }
+    bool load(const QString &url)
+    {
         view->setSource(url);
 
-        QCOMPARE(view->status(), QQuickView::Ready);
-        view->show();
-        QVERIFY(QTest::qWaitForWindowExposed(view));
-
         QQuickItem *rootItem = view->rootObject();
-        QVERIFY(rootItem);
 
         object = qobject_cast<T *>(rootItem);
+        return object != nullptr;
+
     }
     void requestActivate()
     {
         view->requestActivate();
         QVERIFY(QTest::qWaitForWindowActive(view));
+    }
+    void requestExposed()
+    {
+        view->show();
+        QVERIFY(QTest::qWaitForWindowExposed(view));
     }
     QQuickView *view = nullptr;
     T *object = nullptr;
@@ -140,5 +177,17 @@ namespace TestUtil {
     inline void registerType(const char* type)
     {
         qmlRegisterType<T>("test", 1, 0, type);
+    }
+
+    inline bool supportOpengl(const QSGRendererInterface::GraphicsApi ga)
+    {
+#ifndef QT_NO_OPENGL
+        return (ga == QSGRendererInterface::OpenGL
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+                || ga == QSGRendererInterface::OpenGLRhi
+                );
+#endif
+#endif
+        return false;
     }
 }
