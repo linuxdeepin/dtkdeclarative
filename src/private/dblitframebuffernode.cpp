@@ -86,6 +86,11 @@ public:
 
     }
 
+    QImage toImage() const override
+    {
+        return fbo ? fbo->toImage() : QImage();
+    }
+
     void render(const RenderState *state) override {
         Q_UNUSED(state)
         if (!QOpenGLFramebufferObject::hasOpenGLFramebufferBlit())
@@ -195,6 +200,11 @@ public:
         : DBlitFramebufferNode(item)
     {
 
+    }
+
+    QImage toImage() const override
+    {
+        return image ? *image : QImage();
     }
 
     void render(const RenderState *state) override {
