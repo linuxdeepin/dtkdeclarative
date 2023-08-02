@@ -18,5 +18,6 @@
         <file>qml/GlowEffect.qml</file>
         <file>qml/DSoftwareRoundedImageNodeItem.qml</file>
         <file>qml/DBlitFramebufferNodeItem.qml</file>
+        <file>qml/IconLabel.qml</file>
     </qresource>
 </RCC>
