@@ -24,6 +24,7 @@ file(GLOB TEST_SOURCES
     ut_dquickglow.cpp
     ut_dsoftwareroundedimagenode.cpp
     ut_dblitframebuffernode.cpp
+    ut_dquickiconlabel.cpp
 )
 if (EnableDtk5)
     list(APPEND TEST_SOURCES
