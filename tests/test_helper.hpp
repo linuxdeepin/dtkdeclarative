@@ -166,9 +166,10 @@ private:
 };
 
 namespace TestUtil {
-    inline QSGTexture *simpleTexture(const QColor &color = Qt::blue, const QSize &size = QSize(100, 100))
+    const QColor simpleColor(0, 0, 255, 55);
+    inline QSGTexture *simpleTexture(const QColor &color = simpleColor, const QSize &size = QSize(100, 100))
     {
-        QImage image(size, QImage::Format_RGB32);
+        QImage image(size, QImage::Format_ARGB32_Premultiplied);
         image.fill(color);
         return QSGPlainTexture::fromImage(image);
     }
