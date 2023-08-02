@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>data/dconf-example.meta.json</file>
+        <file>icon/red.svg</file>
         <file>qml/ColorSelector_GetColorFromProperty.qml</file>
         <file>qml/CustomThemeMenu.qml</file>
         <file>qml/WindowButtonGroup.qml</file>
@@ -19,5 +20,6 @@
         <file>qml/DSoftwareRoundedImageNodeItem.qml</file>
         <file>qml/DBlitFramebufferNodeItem.qml</file>
         <file>qml/IconLabel.qml</file>
+        <file>qml/QtIcon.qml</file>
     </qresource>
 </RCC>
