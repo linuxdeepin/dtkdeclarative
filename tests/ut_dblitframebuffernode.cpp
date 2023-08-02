@@ -42,10 +42,11 @@ protected:
 
             auto subNode = new QSGSimpleTextureNode();
             subNode->setTexture(TestUtil::simpleTexture(Qt::blue));
-            node->setRenderCallback([](DBlitFramebufferNode *, void *argu) -> void {
+            node->setRenderCallback([](DBlitFramebufferNode *node, void *argu) -> void {
                 auto item = reinterpret_cast<DBlitFramebufferNodeItem*>(argu);
                 ASSERT_TRUE(item);
                 Q_EMIT item->callbackCalled();
+                item->nodeTextureImg = node->toImage();
             }, this);
             node->appendChildNode(subNode);
         }
@@ -60,6 +61,9 @@ protected:
 
 signals:
     void callbackCalled();
+
+public:
+    QImage nodeTextureImg;
 };
 
 TEST(ut_DBlitFramebufferNode, properties)
@@ -81,6 +85,9 @@ TEST(ut_DBlitFramebufferNode, properties)
     ASSERT_EQ(img.pixelColor(QPoint(50, 40)), Qt::red);
     // in RoundedNode
     ASSERT_EQ(img.pixelColor(QPoint(60, 60)), Qt::blue);
+
+    // node texture
+    ASSERT_EQ(target->nodeTextureImg.pixelColor(QPoint(60, 60)), Qt::red);
 }
 
 #include "ut_dblitframebuffernode.moc"

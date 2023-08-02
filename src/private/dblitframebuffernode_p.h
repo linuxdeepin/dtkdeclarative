@@ -47,6 +47,7 @@ public:
             return;
         m_renderCallback(this, m_callbackData);
     }
+    virtual QImage toImage() const { return QImage(); }
 
 protected:
     DBlitFramebufferNode(QQuickItem *item);
