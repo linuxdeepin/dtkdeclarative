@@ -174,6 +174,25 @@ namespace TestUtil {
         return QSGPlainTexture::fromImage(image);
     }
 
+    inline QSGTexture *simpleTextureThreePart(const int opacity = 255, const QSize &size = QSize(100, 100))
+    {
+        QImage image(size, QImage::Format_ARGB32_Premultiplied);
+        const QVector<QColor> partColors = {
+            QColor(255, 0, 0, opacity),
+            QColor(0, 255, 0, opacity),
+            QColor(0, 0, 255, opacity),
+        };
+        int offset = 0;
+        const int pHeight = image.height() / partColors.count();
+        for (int i = 0; i < partColors.count(); i++) {
+            int height = i < partColors.count() - 1 ? pHeight : image.height() - pHeight * i;
+            QImage img(image.bits() + offset, image.width(), height, image.format());
+            img.fill(partColors.at(i));
+            offset += img.sizeInBytes();
+        }
+        return QSGPlainTexture::fromImage(image);
+    }
+
     template<class T>
     inline void registerType(const char* type)
     {
