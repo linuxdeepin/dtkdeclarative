@@ -21,5 +21,6 @@
         <file>qml/DBlitFramebufferNodeItem.qml</file>
         <file>qml/IconLabel.qml</file>
         <file>qml/QtIcon.qml</file>
+        <file>qml/DciIcon.qml</file>
     </qresource>
 </RCC>
