@@ -193,6 +193,13 @@ namespace TestUtil {
         return QSGPlainTexture::fromImage(image);
     }
 
+    Q_GLOBAL_STATIC_WITH_ARGS(QImage, simpleImage, (":/icon/deepin.png"))
+    inline QSGTexture *imageTexture(const QSize &size = QSize(100, 100))
+    {
+        QImage tmp = simpleImage->scaled(size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        return QSGPlainTexture::fromImage(tmp);
+    }
+
     template<class T>
     inline void registerType(const char* type)
     {

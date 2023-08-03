@@ -29,6 +29,7 @@ file(GLOB TEST_SOURCES
     ut_dquickdciiconimage.cpp
     ut_dmaskeffectnode.cpp
     ut_dquickdciicon.cpp
+    ut_dblurimagenode.cpp
 )
 if (EnableDtk5)
     list(APPEND TEST_SOURCES

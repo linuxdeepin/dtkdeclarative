@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>data/dconf-example.meta.json</file>
         <file>icon/red.svg</file>
+        <file>icon/deepin.png</file>
         <file>qml/ColorSelector_GetColorFromProperty.qml</file>
         <file>qml/CustomThemeMenu.qml</file>
         <file>qml/WindowButtonGroup.qml</file>
@@ -24,5 +25,6 @@
         <file>qml/DciIcon.qml</file>
         <file>qml/DMaskEffectNode.qml</file>
         <file>qml/DMaskEffectNode_TextureMaterial.qml</file>
+        <file>qml/DSGBlurImageNode.qml</file>
     </qresource>
 </RCC>
