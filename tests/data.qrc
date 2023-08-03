@@ -22,5 +22,7 @@
         <file>qml/IconLabel.qml</file>
         <file>qml/QtIcon.qml</file>
         <file>qml/DciIcon.qml</file>
+        <file>qml/DMaskEffectNode.qml</file>
+        <file>qml/DMaskEffectNode_TextureMaterial.qml</file>
     </qresource>
 </RCC>
