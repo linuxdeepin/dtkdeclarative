@@ -48,9 +48,9 @@ target_link_libraries(${LIB_NAME}_properties INTERFACE
     Qt${QT_VERSION_MAJOR}::Quick
     Dtk${DTK_VERSION_MAJOR}::Core
     Dtk${DTK_VERSION_MAJOR}::Gui
-    Qt${QT_VERSION_MAJOR}::QuickPrivate
-    Qt${QT_VERSION_MAJOR}::DBus
-    PkgConfig::GL
+    $<BUILD_INTERFACE:Qt${QT_VERSION_MAJOR}::QuickPrivate>
+    $<BUILD_INTERFACE:Qt${QT_VERSION_MAJOR}::DBus>
+    $<BUILD_INTERFACE:PkgConfig::GL>
 )
 
 target_include_directories(${LIB_NAME}_properties INTERFACE
@@ -74,3 +74,7 @@ gen_dtk_config_header(MODULE_NAME ${LIB_NAME} HEADERS ${D_HEADERS} DEST_DIR ${CM
 list(APPEND PUBLIC_HEADERS ${CONFIG_PATH})
 # Install headers
 install(FILES ${PUBLIC_HEADERS} ${D_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}")
+
+# Install ${LIB_NAME}_properties
+install(TARGETS ${LIB_NAME}_properties EXPORT DtkDeclarativeProperties DESTINATION "${LIB_INSTALL_DIR}")
+install(EXPORT DtkDeclarativeProperties NAMESPACE Dtk:: FILE DtkDeclarativeTargets-Properties.cmake DESTINATION "${CONFIG_INSTALL_DIR}")

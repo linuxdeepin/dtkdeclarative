@@ -32,7 +32,7 @@ set_target_properties(${LIB_NAME} PROPERTIES
 
 target_link_libraries(${LIB_NAME}
 PUBLIC
-    $<BUILD_INTERFACE:${LIB_NAME}_properties>
+    ${LIB_NAME}_properties
 PRIVATE
     ${LIB_NAME}_sources
 )
