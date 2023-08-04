@@ -31,6 +31,7 @@ file(GLOB TEST_SOURCES
     ut_dquickdciicon.cpp
     ut_dblurimagenode.cpp
     ut_dhandlecontextmenuwindow.cpp
+    ut_dquickbehindwindowblur.cpp
 )
 if (EnableDtk5)
     list(APPEND TEST_SOURCES

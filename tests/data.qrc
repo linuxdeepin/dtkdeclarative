@@ -27,5 +27,6 @@
         <file>qml/DMaskEffectNode_TextureMaterial.qml</file>
         <file>qml/DSGBlurImageNode.qml</file>
         <file>qml/ContextMenuWindow.qml</file>
+        <file>qml/DQuickBehindWindowBlur.qml</file>
     </qresource>
 </RCC>
