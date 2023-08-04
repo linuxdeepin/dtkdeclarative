@@ -10,6 +10,8 @@ filter_files=(
  "QtGui/*"
  "QtQml/*"
  "QtQuick/*"
+ "*dquickbusyindicator*"
+ "*dquicksystempalette*"
 )
 
 SHELL_FOLDER=$(dirname $(readlink -f "$0"))
