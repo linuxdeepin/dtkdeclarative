@@ -8,6 +8,12 @@
 
 #include <DAppLoader>
 #include <DPathBuf>
+#include <QSignalSpy>
+
+#include "private/dapploader_p.h"
+#include <DQmlAppPreloadInterface>
+#include <DQmlAppMainWindowInterface>
+#include <QQmlApplicationEngine>
 
 DQUICK_USE_NAMESPACE
 DCORE_USE_NAMESPACE
@@ -77,4 +83,52 @@ TEST_F(ut_AppLoader, addPluginPath)
         const QString path = loader.pluginPaths().first();
         ASSERT_TRUE(path.startsWith(apiPaths[1]));
     }
+}
+
+class AppLoaderSimulator : public DAppLoader
+{
+public:
+    AppLoaderSimulator()
+        : DAppLoader(AppId, APPLOADER_PLUGINDUMP_OUTPUT_DIR)
+    {
+        d = DAppLoader::d_func();
+
+        d->engine = new QQmlApplicationEngine();
+        d->engine->setImportPathList(QStringList {QString::fromLocal8Bit(QML_PLUGIN_PATH)} + d->engine->importPathList());
+    }
+    ~AppLoaderSimulator()
+    {
+        // don't release app.
+        d->app.take();
+    }
+    int load()
+    {
+        d->ensureLoadPreload();
+        int argc = 0;
+        d->app.reset(d->preloadInstance->creatApplication(argc, nullptr));
+
+        if (!d->app)
+            return -1;
+
+        d->preloadInstance->aboutToPreload(d->engine);
+        QObject::connect(d->engine, &QQmlApplicationEngine::objectCreated, this, [this](QObject *obj, const QUrl &url) {
+            d->_q_onPreloadCreated(obj, url);
+        });
+        d->engine->load(d->preloadInstance->preloadComponentPath());
+        if (d->engine->rootObjects().isEmpty())
+            return -1;
+        return 0;
+    }
+    DAppLoaderPrivate *d;
+};
+
+TEST_F(ut_AppLoader, exec)
+{
+    AppLoaderSimulator loader;
+    QSignalSpy spy(&loader, SIGNAL(loadFinished()));
+    int exitCode = loader.load();
+    ASSERT_EQ(exitCode, 0);
+
+    QTest::qWait(10);
+    EXPECT_EQ(spy.count(), 1);
 }
