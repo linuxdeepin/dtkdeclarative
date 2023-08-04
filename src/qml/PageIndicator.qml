@@ -19,7 +19,7 @@ T.PageIndicator {
 
     delegate: Rectangle {
         implicitWidth: DS.Style.control.width
-        implicitHeight: PDS.Style.control.height
+        implicitHeight: DS.Style.control.height
 
         radius: width / 2
         color: control.enabled ? control.palette.highlight : "gray"
