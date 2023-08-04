@@ -95,8 +95,16 @@ public:
             return false;
         }
 
-        object = qobject_cast<T *>(tmp);
+        object = static_cast<T *>(tmp);
         return object != nullptr;
+    }
+    void requestExposed()
+    {
+        if (!object)
+            return;
+
+        object->show();
+        QVERIFY(QTest::qWaitForWindowExposed(object));
     }
     ~ControlHelper()
     {

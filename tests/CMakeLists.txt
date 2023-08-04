@@ -30,6 +30,7 @@ file(GLOB TEST_SOURCES
     ut_dmaskeffectnode.cpp
     ut_dquickdciicon.cpp
     ut_dblurimagenode.cpp
+    ut_dhandlecontextmenuwindow.cpp
 )
 if (EnableDtk5)
     list(APPEND TEST_SOURCES
