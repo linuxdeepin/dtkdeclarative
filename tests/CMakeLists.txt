@@ -61,3 +61,12 @@ target_link_libraries(${BIN_NAME} PRIVATE
     dl
     m
 )
+
+set(APPLOADER_PLUGINDUMP_OUTPUT_DIR ${PROJECT_BINARY_DIR}/plugins)
+target_compile_definitions(${BIN_NAME} PRIVATE
+    APPLOADER_PLUGINDUMP_OUTPUT_DIR="${APPLOADER_PLUGINDUMP_OUTPUT_DIR}"
+)
+set(PRELOAD_LIB_NAME apploader-plugindump-preload)
+set(MAINCOMPONENT_LIB_NAME apploader-plugindump-main)
+add_subdirectory(apploaderplugindump)
+add_dependencies(${BIN_NAME} ${PRELOAD_LIB_NAME} ${MAINCOMPONENT_LIB_NAME})
