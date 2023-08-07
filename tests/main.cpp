@@ -25,11 +25,7 @@ int main(int argc, char *argv[])
     if (qEnvironmentVariable("DISPLAY").isEmpty())
         qputenv("QT_QPA_PLATFORM", "offscreen");
 
-#ifdef QT_NO_DEBUG
     QQuickStyle::setStyle("Chameleon");
-#else
-    QQuickStyle::setStyle(CHAMELEON_PATH"/Chameleon");
-#endif
 
     QGuiApplication app(argc, argv);
     app.setApplicationName(BIN_NAME);
