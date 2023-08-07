@@ -33,6 +33,7 @@ file(GLOB TEST_SOURCES
     ut_dhandlecontextmenuwindow.cpp
     ut_dquickbehindwindowblur.cpp
     ut_dquickinwindowblur.cpp
+    ut_dquickcoloroverlay.cpp
 )
 if (EnableDtk5)
     list(APPEND TEST_SOURCES
