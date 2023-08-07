@@ -30,5 +30,7 @@
         <file>qml/DQuickBehindWindowBlur.qml</file>
         <file>qml/DQuickInWindowBlur.qml</file>
         <file>qml/SoftwareColorOverlay.qml</file>
+        <file>qml/DQuickItemViewport.qml</file>
+        <file>qml/DQuickItemViewport_HideSource.qml</file>
     </qresource>
 </RCC>
