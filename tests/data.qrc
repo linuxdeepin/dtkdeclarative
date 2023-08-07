@@ -32,5 +32,6 @@
         <file>qml/SoftwareColorOverlay.qml</file>
         <file>qml/DQuickItemViewport.qml</file>
         <file>qml/DQuickItemViewport_HideSource.qml</file>
+        <file>qml/SoftwareOpacityMask.qml</file>
     </qresource>
 </RCC>
