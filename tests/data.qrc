@@ -29,5 +29,6 @@
         <file>qml/ContextMenuWindow.qml</file>
         <file>qml/DQuickBehindWindowBlur.qml</file>
         <file>qml/DQuickInWindowBlur.qml</file>
+        <file>qml/SoftwareColorOverlay.qml</file>
     </qresource>
 </RCC>
