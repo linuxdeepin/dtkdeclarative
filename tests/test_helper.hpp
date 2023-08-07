@@ -127,6 +127,10 @@ public:
     {
         view->engine()->setImportPathList(QStringList {QString::fromLocal8Bit(QML_PLUGIN_PATH)} + view->engine()->importPathList());
     }
+    ~QuickViewHelper()
+    {
+        clear();
+    }
     QuickViewHelper(const QString &url)
         : QuickViewHelper()
     {
@@ -135,6 +139,8 @@ public:
     }
     bool load(const QString &url)
     {
+        clear();
+
         view->setSource(url);
 
         QQuickItem *rootItem = view->rootObject();
@@ -146,14 +152,19 @@ public:
     void requestActivate()
     {
         view->requestActivate();
-        QVERIFY(QTest::qWaitForWindowActive(view));
+        QVERIFY(QTest::qWaitForWindowActive(view.data()));
     }
     void requestExposed()
     {
         view->show();
-        QVERIFY(QTest::qWaitForWindowExposed(view));
+        QVERIFY(QTest::qWaitForWindowExposed(view.data()));
     }
-    QQuickView *view = nullptr;
+    void clear()
+    {
+        if (object)
+            object->deleteLater();
+    }
+    QScopedPointer<QQuickView> view;
     T *object = nullptr;
 };
 
