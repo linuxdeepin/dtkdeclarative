@@ -35,6 +35,7 @@ file(GLOB TEST_SOURCES
     ut_dquickinwindowblur.cpp
     ut_dquickcoloroverlay.cpp
     ut_dquickitemviewport.cpp
+    ut_dquickopacitymask.cpp
 )
 if (EnableDtk5)
     list(APPEND TEST_SOURCES
