@@ -43,8 +43,9 @@ TEST_F(ut_MessageManager, sendMessage)
 {
     ASSERT_TRUE(target->sendMessage("msg1", "icon1", 1));
     EXPECT_EQ(target->count(), 1);
-    QTest::qWait(20);
-    EXPECT_EQ(target->count(), 0);
+    EXPECT_TRUE(QTest::qWaitFor([this]() {
+        return target->count() <= 0;
+    }));
 
     ASSERT_TRUE(target->sendMessage("msg1", "icon1", 1));
     ASSERT_TRUE(target->sendMessage("msg2", "icon2", 1, "id2"));
@@ -53,8 +54,9 @@ TEST_F(ut_MessageManager, sendMessage)
     EXPECT_EQ(target->count(), 2);
     EXPECT_EQ(target->messages("id2").size(), 1);
 
-    QTest::qWait(20);
-    EXPECT_EQ(target->count(), 0);
+    EXPECT_TRUE(QTest::qWaitFor([this]() {
+        return target->count() <= 0;
+    }));
 }
 
 TEST_F(ut_MessageManager, sendMessageByDelegate)

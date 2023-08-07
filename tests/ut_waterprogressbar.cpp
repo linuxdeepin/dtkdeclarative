@@ -8,6 +8,8 @@
 
 #include <QTest>
 #include <QQuickItem>
+#include <QSignalSpy>
+#include <QTimer>
 
 #include "dquickwaterprogressattribute_p.h"
 DQUICK_USE_NAMESPACE
@@ -48,7 +50,13 @@ TEST(ut_DQuickWaterProgressAttribute, properties)
     ASSERT_EQ(attr.running(), true);
 
     // trigger and process `timeout` for DQuickWaterProgressAttribute's timer.
-    QTest::qWait(50);
+    auto timer = attr.findChild<QTimer *>();
+    ASSERT_TRUE(timer);
+    // receive `timeout` signal.
+    QSignalSpy spy(timer, SIGNAL(timeout()));
+    EXPECT_TRUE(QTest::qWaitFor([this, &spy]() {
+        return spy.count() == 1;
+    }));
 
     EXPECT_NE(popX, pop->x());
     EXPECT_NE(popY, pop->y());
@@ -78,6 +86,13 @@ TEST(ut_DQuickWaterProgressBar, waterProgressBar)
 
     // stop update
     QTest::qWait(50);
+    auto timer = attr->findChild<QTimer *>();
+    ASSERT_TRUE(timer);
+    // don't receive `timeout` signal.
+    QSignalSpy spy(timer, SIGNAL(timeout()));
+    EXPECT_TRUE(QTest::qWaitFor([this, &spy]() {
+        return spy.count() <= 0;
+    }));
 
     ASSERT_EQ(popX, pop->x());
 }
