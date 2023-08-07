@@ -9,6 +9,7 @@ import org.deepin.dtk.style 1.0 as DS
 Control {
     id: control
     property int value /*0~100*/
+    property bool running: false
     property D.Palette backgroundColor1: DS.Style.waterProgressBar.background1
     property D.Palette backgroundColor2: DS.Style.waterProgressBar.background2
     property D.Palette dropShadowColor: DS.Style.waterProgressBar.dropShadow
@@ -39,7 +40,7 @@ Control {
             anchors.fill: parent
             D.WaterProgressAttribute {
                 id: attribute
-                running: control.value > 0
+                running: control.running && control.value > 0
                 waterProgress: control
                 imageWidth: 5 * control.width
                 imageHeight: 1.1 * control.height

@@ -10,6 +10,7 @@
 class DHandleContextMenuWindow : public QQuickWindow
 {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    Q_OBJECT
     QML_NAMED_ELEMENT(ContextMenuWindow)
 #endif
 public:

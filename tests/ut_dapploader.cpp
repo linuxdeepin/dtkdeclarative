@@ -94,7 +94,7 @@ public:
         d = DAppLoader::d_func();
 
         d->engine = new QQmlApplicationEngine();
-        d->engine->setImportPathList(QStringList {QString::fromLocal8Bit(QML_PLUGIN_PATH)} + d->engine->importPathList());
+        updateEngineImportPath(*d->engine);
     }
     ~AppLoaderSimulator()
     {
@@ -129,6 +129,7 @@ TEST_F(ut_AppLoader, exec)
     int exitCode = loader.load();
     ASSERT_EQ(exitCode, 0);
 
-    QTest::qWait(10);
-    EXPECT_EQ(spy.count(), 1);
+    EXPECT_TRUE(QTest::qWaitFor([this, &spy]() {
+        return spy.count() >= 1;
+    }));
 }

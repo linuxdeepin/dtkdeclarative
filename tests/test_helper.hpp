@@ -66,13 +66,23 @@ T *findItem(QQuickItem *parent, const QString &objectName = QString(), int index
     return nullptr;
 }
 
+static inline void updateEngineImportPath(QQmlEngine &engine)
+{
+    QStringList paths {
+        QString::fromLocal8Bit(QML_PLUGIN_PATH),
+        QString::fromLocal8Bit(CHAMELEON_PATH)
+    };
+    paths << engine.importPathList();
+    engine.setImportPathList(paths);
+}
+
 template<class T = QObject>
 class ControlHelper
 {
 public:
     ControlHelper()
     {
-        engine.setImportPathList(QStringList {QString::fromLocal8Bit(QML_PLUGIN_PATH)} + engine.importPathList());
+        updateEngineImportPath(engine);
     }
     ControlHelper(const QString &url)
         : ControlHelper()
@@ -125,7 +135,7 @@ public:
     QuickViewHelper()
         : view(new QQuickView)
     {
-        view->engine()->setImportPathList(QStringList {QString::fromLocal8Bit(QML_PLUGIN_PATH)} + view->engine()->importPathList());
+        updateEngineImportPath(*view->engine());
     }
     ~QuickViewHelper()
     {

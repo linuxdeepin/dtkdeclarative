@@ -137,13 +137,13 @@ TEST(ut_DColor, construct)
 
     ASSERT_EQ(color.toColor(pt), Qt::red);
 
-    DColor color2(Qt::red);
+    DColor color2(QColor(Qt::red));
     ASSERT_EQ(color2.color(), Qt::red);
 }
 
 TEST(ut_DColor, common)
 {
-    DColor color(Qt::red);
+    DColor color(QColor(Qt::red));
     DColor color2(color.hue(1).opacity(1).saturation(1).lightness(1));
 
     EXPECT_NE(color.data.hue, color2.data.hue);
