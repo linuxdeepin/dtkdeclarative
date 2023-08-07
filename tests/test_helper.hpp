@@ -208,6 +208,17 @@ namespace TestUtil {
         return QSGPlainTexture::fromImage(tmp);
     }
 
+    inline bool equalBlurColor(const QColor &color1, const QColor &color2)
+    {
+        const qreal delta = 0.1;
+        if ((qAbs(color1.redF() - color2.redF()) < delta) &&
+            qAbs(color1.greenF() - color2.greenF()) < delta &&
+            qAbs(color1.blueF() - color2.blueF()) < delta)
+            return true;
+
+        return false;
+    }
+
     template<class T>
     inline void registerType(const char* type)
     {
