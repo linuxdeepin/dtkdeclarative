@@ -32,6 +32,7 @@ file(GLOB TEST_SOURCES
     ut_dblurimagenode.cpp
     ut_dhandlecontextmenuwindow.cpp
     ut_dquickbehindwindowblur.cpp
+    ut_dquickinwindowblur.cpp
 )
 if (EnableDtk5)
     list(APPEND TEST_SOURCES
