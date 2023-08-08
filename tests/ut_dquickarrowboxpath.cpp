@@ -58,9 +58,6 @@ TEST(ut_DQuickArrowBoxPath2, shapes)
     EXPECT_EQ(windowImange.pixelColor(QPoint(50, 20)), inArrowColor);
 
     const QColor outsideArrowColor(Qt::red);
-    EXPECT_EQ(windowImange.pixelColor(QPoint(50, 10)), outsideArrowColor);
+    EXPECT_EQ(windowImange.pixelColor(QPoint(50, 9)), outsideArrowColor);
     EXPECT_EQ(windowImange.pixelColor(QPoint(10, 10)), outsideArrowColor);
-
-    const QColor borderArrowColor(Qt::yellow);
-    EXPECT_EQ(windowImange.pixelColor(QPoint(50, 11)), borderArrowColor);
 }

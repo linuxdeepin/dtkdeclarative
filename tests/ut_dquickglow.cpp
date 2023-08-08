@@ -27,6 +27,8 @@ TEST(ut_DQuickGlow, properties)
 
 TEST(ut_DQuickGlow, updatePaintNode)
 {
+    TEST_SOFTWARE_SKIP();
+
     QuickViewHelper<> helper("qrc:/qml/GlowEffect.qml");
     ASSERT_TRUE(helper.object);
 

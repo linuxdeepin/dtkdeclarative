@@ -24,6 +24,10 @@ if (qEnvironmentVariable("QT_QPA_PLATFORM") == "offscreen") \
 if (QQuickWindow::sceneGraphBackend() != "software") \
         GTEST_SKIP_("Only test `QSGRendererInterface::Software` backend");
 
+#define TEST_SOFTWARE_SKIP() \
+if (QQuickWindow::sceneGraphBackend() == "software") \
+        GTEST_SKIP_("Only test non `QSGRendererInterface::Software` backend");
+
 class EnvGuard {
 public:
     EnvGuard(const char *name, const QString &value)
@@ -225,6 +229,9 @@ namespace TestUtil {
     Q_GLOBAL_STATIC_WITH_ARGS(QImage, simpleImage, (":/icon/deepin.png"))
     inline QSGTexture *imageTexture(const QSize &size = QSize(100, 100))
     {
+        if (!simpleImage.exists())
+            simpleImage->convertTo(QImage::Format_ARGB32_Premultiplied);
+
         QImage tmp = simpleImage->scaled(size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
         return QSGPlainTexture::fromImage(tmp);
     }

@@ -1,4 +1,4 @@
-set(PLUGIN_NAME qtquickcontrolschameleonstyleplugin)
+set(PLUGIN_NAME ${STYLE_PLUGIN_NAME})
 
 find_package(DtkGui REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS
