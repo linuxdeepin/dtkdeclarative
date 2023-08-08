@@ -11,6 +11,7 @@ Rectangle {
     Image {
         id: img
         width: 100; height: 100
+        sourceSize: Qt.size(100, 100)
         source: "qrc:/icon/deepin.png"
         D.ItemViewport {
             width: 100; height: 100
@@ -19,6 +20,7 @@ Rectangle {
             fixed: true
             hideSource: false
             sourceItem: img
+            smooth: true
         }
     }
 }

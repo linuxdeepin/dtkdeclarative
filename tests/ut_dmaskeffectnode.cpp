@@ -51,6 +51,8 @@ protected:
 
 TEST(ut_MaskEffectNode, textureMaterial)
 {
+    TEST_SOFTWARE_SKIP();
+
     TestUtil::registerType<TextureMaterialItem>("TextureMaterialItem");
     QuickViewHelper<> helper("qrc:/qml/DMaskEffectNode_TextureMaterial.qml");
     ASSERT_TRUE(helper.object);
@@ -103,6 +105,8 @@ protected:
 
 TEST(ut_MaskEffectNode, properties)
 {
+    TEST_SOFTWARE_SKIP();
+
     TestUtil::registerType<MaskEffectNodeItem>("MaskEffectNodeItem");
     QuickViewHelper<> helper("qrc:/qml/DMaskEffectNode.qml");
     ASSERT_TRUE(helper.object);

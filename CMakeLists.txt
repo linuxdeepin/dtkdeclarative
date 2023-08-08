@@ -85,6 +85,7 @@ set(TRANSLATIONS_INSTALL_PATH "${DDECLARATIVE_TRANSLATIONS_PATH}")
 set(URI "org.deepin.dtk")
 string(REPLACE "." "/" URI_PATH ${URI})
 set(PLUGIN_NAME dtkdeclarativeplugin)
+set(STYLE_PLUGIN_NAME qtquickcontrolschameleonstyleplugin)
 set(PLUGIN_OUTPUT_DIR ${PROJECT_BINARY_DIR}/plugins)
 
 if(EnableQt5)
@@ -103,7 +104,10 @@ endif()
 
 if(BUILD_TESTING)
     add_subdirectory(tests)
-    add_dependencies(unit-test dtkdeclarativeplugin)
+    add_dependencies(unit-test ${PLUGIN_NAME} ${STYLE_PLUGIN_NAME})
+    if(EnableQt6)
+        add_dependencies(unit-test dtkdeclarativeprivatesplugin dtkdeclarativesettingsplugin)
+    endif()
 endif()
 
 # Install wizards template

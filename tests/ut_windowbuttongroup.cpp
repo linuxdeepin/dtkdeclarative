@@ -38,8 +38,7 @@ TEST_F(ut_WindowButtonGroup, maxOrWinded)
 {
     ControlHelper<QQuickWindow> helper("qrc:/qml/WindowButtonGroup.qml");
     ASSERT_TRUE(helper.object);
-    helper.object->show();
-    QVERIFY(QTest::qWaitForWindowExposed(helper.object));
+    helper.requestExposed();
 
     auto dwAttached = qobject_cast<DQuickWindowAttached *>(qmlAttachedPropertiesObject<DQuickWindow>(helper.object, false));
     ASSERT_TRUE(dwAttached);
@@ -50,6 +49,8 @@ TEST_F(ut_WindowButtonGroup, maxOrWinded)
     QSignalSpy maxOrWindedSpy(content, SIGNAL(maxOrWinded()));
 
     QQuickItem *maxOrWindedBtn = helper.object->findChild<QQuickItem *>("maxOrWindedBtn");
+
+    ASSERT_TRUE(maxOrWindedBtn->isVisible());
 
     QTest::mouseClick(helper.object, Qt::LeftButton, Qt::KeyboardModifiers(), maxOrWindedBtn->mapToItem(helper.object->contentItem(), QPoint(10, 10)).toPoint());
 
