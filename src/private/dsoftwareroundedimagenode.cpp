@@ -14,6 +14,9 @@
 
 DQUICK_BEGIN_NAMESPACE
 
+// defined in dsoftwareeffectrendernode.cpp
+QImage _d_textureConvertToImage(const QSGTexture *texture);
+
 DSoftwareRoundedImageNode::DSoftwareRoundedImageNode(QQuickItem *owner)
     : item(owner)
 {
@@ -120,10 +123,9 @@ QRectF DSoftwareRoundedImageNode::rect() const
 void DSoftwareRoundedImageNode::updateCachedImage()
 {
     Q_ASSERT(m_texture);
-    if (auto image = qobject_cast<QSGPlainTexture*>(m_texture)) {
-        cachedImage = image->image();
-    } else if (QSGLayer *pt = qobject_cast<QSGLayer *>(m_texture)) {
-        cachedImage = pt->toImage();
+    auto image = _d_textureConvertToImage(m_texture);
+    if (!image.isNull()) {
+        cachedImage = image;
     } else {
         DSoftwareRoundedImageNode::releaseResources();
     }

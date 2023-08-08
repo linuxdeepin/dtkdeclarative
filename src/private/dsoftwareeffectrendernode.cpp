@@ -18,7 +18,7 @@
 
 DQUICK_BEGIN_NAMESPACE
 
-static inline bool _d_isSoftwarePixmapTexture(QSGTexture *texture) {
+static inline bool _d_isSoftwarePixmapTexture(const QSGTexture *texture) {
 #if defined(QT_NAMESPACE)
 #define NAMESPACE_STR1(NAME) #NAME"::QSGSoftwarePixmapTexture"
 #define NAMESPACE_STR(R) NAMESPACE_STR1(R)
@@ -27,6 +27,25 @@ static inline bool _d_isSoftwarePixmapTexture(QSGTexture *texture) {
 #define PixmapTextureClassName "QSGSoftwarePixmapTexture"
 #endif
     return texture->inherits(PixmapTextureClassName);
+}
+
+QImage _d_textureConvertToImage(const QSGTexture *texture)
+{
+    if (texture) {
+        if (auto plainTexture = qobject_cast<const QSGPlainTexture*>(texture))
+            return const_cast<QSGPlainTexture *>(plainTexture)->image();
+
+        if (auto layer = qobject_cast<const QSGLayer*>(texture))
+            return layer->toImage();
+
+        if (_d_isSoftwarePixmapTexture(texture)) {
+            auto pixmapTexture = static_cast<const QSGSoftwarePixmapTexture *>(texture);
+            return pixmapTexture->pixmap().toImage();
+        }
+    }
+
+    static QImage nullImage;
+    return nullImage;
 }
 
 DSoftwareEffectRenderNode::DSoftwareEffectRenderNode(QSGTextureProvider *sourceProvider)
@@ -122,22 +141,7 @@ void DSoftwareEffectRenderNode::onRenderTextureChanged()
 
 QImage DSoftwareEffectRenderNode::updateCachedImage(QSGTextureProvider *provider)
 {
-    if (provider) {
-        auto texture = provider->texture();
-        if (auto plainTexture = qobject_cast<QSGPlainTexture*>(texture))
-            return plainTexture->image();
-
-        if (QSGLayer *layer = qobject_cast<QSGLayer*>(texture))
-            return layer->toImage();
-
-        if (_d_isSoftwarePixmapTexture(texture)) {
-            auto pixmapTexture = static_cast<QSGSoftwarePixmapTexture *>(texture);
-            return pixmapTexture->pixmap().toImage();
-        }
-    }
-
-    static QImage nullImage;
-    return nullImage;
+    return _d_textureConvertToImage(provider ? provider->texture() : nullptr);
 }
 
 bool DSoftwareEffectRenderNode::updateTexture(QSGTexture *texture)
