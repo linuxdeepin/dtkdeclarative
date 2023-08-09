@@ -13,6 +13,8 @@ DQUICK_USE_NAMESPACE
 
 TEST(ut_DQuickInWindowBlur, properties)
 {
+    TEST_QRHI_SKIP();
+
     QuickViewHelper<> helper("qrc:/qml/DQuickInWindowBlur.qml");
     ASSERT_TRUE(helper.object);
 

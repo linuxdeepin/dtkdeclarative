@@ -68,6 +68,8 @@ public:
 
 TEST(ut_DBlitFramebufferNode, properties)
 {
+    TEST_QRHI_SKIP();
+
     TestUtil::registerType<DBlitFramebufferNodeItem>("DBlitFramebufferNodeItem");
     QuickViewHelper<> helper;
     ASSERT_TRUE(helper.load("qrc:/qml/DBlitFramebufferNodeItem.qml"));

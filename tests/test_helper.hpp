@@ -28,6 +28,10 @@ if (QQuickWindow::sceneGraphBackend() != "software") \
 if (QQuickWindow::sceneGraphBackend() == "software") \
         GTEST_SKIP_("Only test non `QSGRendererInterface::Software` backend");
 
+#define TEST_QRHI_SKIP() \
+if (TestUtil::isRunningOnRhi()) \
+    GTEST_SKIP_("Only test non RHI Render, Render nodes not yet supported with QRhi");
+
 class EnvGuard {
 public:
     EnvGuard(const char *name, const QString &value)
@@ -263,5 +267,16 @@ namespace TestUtil {
 #endif
 #endif
         return false;
+    }
+
+    inline bool isRunningOnRhi()
+    {
+        static int retval = -1;
+        if (retval == -1) {
+            QuickViewHelper<> helper;
+            helper.requestExposed();
+            retval = QSGRendererInterface::isApiRhiBased(helper.view->rendererInterface()->graphicsApi());
+        }
+        return static_cast<bool>(retval);
     }
 }
