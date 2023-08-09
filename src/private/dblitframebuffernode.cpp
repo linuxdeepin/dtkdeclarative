@@ -101,6 +101,9 @@ public:
 
         const qreal scale = m_item->window() ? m_item->window()->effectiveDevicePixelRatio() : 1;
         QRectF sourceRect = matrix()->mapRect(m_rect);
+        if (!sourceRect.isValid())
+            return;
+
         sourceRect.moveTopLeft(sourceRect.topLeft() * scale);
         sourceRect.setSize(sourceRect.size() * scale);
         const QSize textureSize = sourceRect.size().toSize();
@@ -218,6 +221,9 @@ public:
 
         const auto device = p->device();
         QRectF sourceRect = matrix()->mapRect(m_rect);
+        if (!sourceRect.isValid())
+            return;
+
         sourceRect.moveTopLeft(sourceRect.topLeft() * device->devicePixelRatioF());
         sourceRect.setSize(sourceRect.size() * device->devicePixelRatioF());
         const QSize textureSize = sourceRect.size().toSize();
