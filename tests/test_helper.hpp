@@ -174,8 +174,12 @@ public:
     }
     void requestExposed()
     {
+        requestExposed(view.data());
+    }
+    static void requestExposed(QQuickWindow *view)
+    {
         view->show();
-        QVERIFY(QTest::qWaitForWindowExposed(view.data()));
+        QVERIFY(QTest::qWaitForWindowExposed(view));
     }
     void clear()
     {

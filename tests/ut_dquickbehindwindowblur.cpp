@@ -25,6 +25,10 @@ TEST(ut_DQuickBehindWindowBlur, properties)
     EXPECT_EQ(target->blendColor(), QColor(0, 255, 0, 0.4 * 255));
     EXPECT_EQ(target->cornerRadius(), 10);
 
+    QQuickWindow *subWindow = helper.object->findChild<QQuickWindow *>();
+    ASSERT_TRUE(subWindow);
+    helper.requestExposed(subWindow);
+
     QImage img = helper.view->grabWindow();
     EXPECT_NE(img.pixelColor(QPoint(50, 50)), QColor(0, 255, 0, 0.4));
     EXPECT_EQ(img.pixelColor(QPoint(150, 50)), Qt::red);
