@@ -9,6 +9,7 @@
         <file>qml/DQuickRectangle.qml</file>
         <file>qml/DQuickWindow.qml</file>
         <file>qml/QmlGlobalObject.qml</file>
+        <file>qml/QmlGlobalObject_MessageManager.qml</file>
         <file>qml/WaterProgressBar.qml</file>
         <file>qml/KeySequenceEdit.qml</file>
         <file>qml/SettingsContainer.qml</file>
