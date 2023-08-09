@@ -104,13 +104,12 @@ TEST_F(ut_DQMLGlobalObject, paletteChanged)
 {
     Q_UNUSED(pObj->palette());
 
-    DPalette oldPalatte = pAppIns->applicationPalette();
-    DPalette newPalatte = oldPalatte;
-    newPalatte.setColor(DPalette::TextTitle, Qt::red);
+    DPalette palatte = pAppIns->applicationPalette();
+    palatte.setColor(DPalette::TextTitle, Qt::red);
     QSignalSpy spy(pObj, &DQMLGlobalObject::paletteChanged);
-    pAppIns->setApplicationPalette(newPalatte);
+    pAppIns->setApplicationPalette(palatte);
     EXPECT_EQ(spy.count(), 1);
-    pAppIns->setApplicationPalette(oldPalatte);
+    pAppIns->setApplicationPalette(DPalette());
 }
 
 TEST_F(ut_DQMLGlobalObject, inactivePalette)
