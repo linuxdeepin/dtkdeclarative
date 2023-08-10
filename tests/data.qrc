@@ -34,5 +34,6 @@
         <file>qml/DQuickItemViewport.qml</file>
         <file>qml/DQuickItemViewport_HideSource.qml</file>
         <file>qml/SoftwareOpacityMask.qml</file>
+        <file>qml/DQuickBlitFramebuffer.qml</file>
     </qresource>
 </RCC>
