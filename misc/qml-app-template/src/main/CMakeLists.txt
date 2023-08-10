@@ -11,19 +11,19 @@ add_definitions(-DAPP_NAME="${APP_NAME}")
 # Set sources
 set(SRC
     main.cpp
-    )
+)
 
-# Find the Qt5Quick library
-find_package(Qt5Quick CONFIG REQUIRED)
+# Find the QtQuick library
+find_package(Qt${QT_VERSION_MAJOR}Quick CONFIG REQUIRED)
 
 # Add EXE
 add_executable(${APP_NAME} ${SRC})
 
 # 由于 EXE 只是作为启动程序加载 LIB 使用，一般来说，只需链接 ${LIB_NAME} 既可。
 target_link_libraries(${APP_NAME}
-    Qt5::Quick
-    Dtk::Declarative
-    )
+    Qt${QT_VERSION_MAJOR}::Quick
+    Dtk${DTK_VERSION_MAJOR}::Declarative
+)
 
 add_definitions(-DAPP_PLUGIN_PATH=\"${DTK_QML_APP_PLUGIN_PATH}\")
 

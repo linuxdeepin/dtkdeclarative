@@ -12,6 +12,7 @@
         { "key": "DtkQmlAppMake", "value": "make" },
         { "key": "ProjectFile", "value": "%{CMakeFile}" },
         { "key": "CMakeFile", "value": "%{ProjectDirectory}/CMakeLists.txt" },
+        { "key": "QT_VERSION_MAJOR", "value": "%{JS: %{QtVersion}.QT_VERSION_MAJOR}" },
 	{ "key": "QtQuickVersion", "value": "%{JS: %{QtVersion}.QtQuickVersion}" },
         { "key": "QtQuickWindowVersion", "value": "%{JS: %{QtVersion}.QtQuickWindowVersion}" },
         { "key": "QtQuickVirtualKeyboardImport", "value": "%{JS: %{QtVersion}.QtQuickVirtualKeyboardImport}" },
@@ -42,12 +43,23 @@
                         "items":
                         [
                             {
+                                "trKey": "Qt 6.2",
+                                "value":
+                                "({
+                                    'QtQuickVersion': '',
+                                    'QtQuickWindowVersion': '',
+                                    'QtQuickVirtualKeyboardImport': 'QtQuick.VirtualKeyboard',
+                                    'QT_VERSION_MAJOR': '6'
+                                })"
+                            },
+                            {
                                 "trKey": "Qt 5.12",
                                 "value":
                                 "({
                                     'QtQuickVersion': '2.12',
                                     'QtQuickWindowVersion': '2.12',
-                                    'QtQuickVirtualKeyboardImport': 'QtQuick.VirtualKeyboard 2.4'
+                                    'QtQuickVirtualKeyboardImport': 'QtQuick.VirtualKeyboard 2.4',
+                                    'QT_VERSION_MAJOR': '5'
                                 })"
                             },
                             {
@@ -56,7 +68,8 @@
                                 "({
                                     'QtQuickVersion': '2.11',
                                     'QtQuickWindowVersion': '2.11',
-                                    'QtQuickVirtualKeyboardImport': 'QtQuick.VirtualKeyboard 2.3'
+                                    'QtQuickVirtualKeyboardImport': 'QtQuick.VirtualKeyboard 2.3',
+                                    'QT_VERSION_MAJOR': '5'
                                 })"
                             },
                             {
@@ -65,7 +78,8 @@
                                 "({
                                     'QtQuickVersion': '2.10',
                                     'QtQuickWindowVersion': '2.10',
-                                    'QtQuickVirtualKeyboardImport': 'QtQuick.VirtualKeyboard 2.3'
+                                    'QtQuickVirtualKeyboardImport': 'QtQuick.VirtualKeyboard 2.3',
+                                    'QT_VERSION_MAJOR': '5'
                                 })"
                             },
                             {
@@ -74,7 +88,8 @@
                                 "({
                                     'QtQuickVersion': '2.9',
                                     'QtQuickWindowVersion': '2.2',
-                                    'QtQuickVirtualKeyboardImport': 'QtQuick.VirtualKeyboard 2.2'
+                                    'QtQuickVirtualKeyboardImport': 'QtQuick.VirtualKeyboard 2.2',
+                                    'QT_VERSION_MAJOR': '5'
                                 })"
                             },
                             {
@@ -83,7 +98,8 @@
                                 "({
                                     'QtQuickVersion': '2.8',
                                     'QtQuickWindowVersion': '2.2',
-                                    'QtQuickVirtualKeyboardImport': 'QtQuick.VirtualKeyboard 2.1'
+                                    'QtQuickVirtualKeyboardImport': 'QtQuick.VirtualKeyboard 2.1',
+                                    'QT_VERSION_MAJOR': '5'
                                 })"
                             },
                             {
@@ -92,7 +108,8 @@
                                 "({
                                     'QtQuickVersion': '2.7',
                                     'QtQuickWindowVersion': '2.2',
-                                    'QtQuickVirtualKeyboardImport': 'QtQuick.VirtualKeyboard 2.1'
+                                    'QtQuickVirtualKeyboardImport': 'QtQuick.VirtualKeyboard 2.1',
+                                    'QT_VERSION_MAJOR': '5'
                                 })"
                             },
                             {
@@ -101,7 +118,8 @@
                                 "({
                                     'QtQuickVersion': '2.6',
                                     'QtQuickWindowVersion': '2.2',
-                                    'QtQuickVirtualKeyboardImport': 'QtQuick.Enterprise.VirtualKeyboard 2.0'
+                                    'QtQuickVirtualKeyboardImport': 'QtQuick.Enterprise.VirtualKeyboard 2.0',
+                                    'QT_VERSION_MAJOR': '5'
                                 })"
                             }
                         ]
