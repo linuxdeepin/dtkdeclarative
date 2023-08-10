@@ -102,19 +102,32 @@ public:
         clear();
 
         QQmlComponent component(&engine, QUrl(url), QQmlComponent::PreferSynchronous);
+
+        return (object = create(component));
+    }
+    bool setData(const QByteArray &data)
+    {
+        clear();
+
+        QQmlComponent component(&engine);
+        component.setData(data, QUrl());
+
+        return (object = create(component));
+    }
+    T *create(QQmlComponent &component)
+    {
         if (!component.isReady()) {
             qWarning() << "component is not ready" << component.errorString();
-            return false;
+            return nullptr;
         }
 
         auto tmp = component.create();
         if (!tmp) {
             qWarning() << "create object is wrong." << component.errorString();
-            return false;
+            return nullptr;
         }
 
-        object = static_cast<T *>(tmp);
-        return object != nullptr;
+        return static_cast<T *>(tmp);
     }
     void requestExposed()
     {

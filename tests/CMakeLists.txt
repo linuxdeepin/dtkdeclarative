@@ -37,6 +37,7 @@ file(GLOB TEST_SOURCES
     ut_dquickitemviewport.cpp
     ut_dquickopacitymask.cpp
     ut_dquickblitframebuffer.cpp
+    ut_dtkdeclatative_qmls.cpp
 )
 if (EnableDtk5)
     list(APPEND TEST_SOURCES
