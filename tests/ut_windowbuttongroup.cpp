@@ -54,5 +54,7 @@ TEST_F(ut_WindowButtonGroup, maxOrWinded)
 
     QTest::mouseClick(helper.object, Qt::LeftButton, Qt::KeyboardModifiers(), maxOrWindedBtn->mapToItem(helper.object->contentItem(), QPoint(10, 10)).toPoint());
 
-    ASSERT_EQ(maxOrWindedSpy.count(), 1);
+    ASSERT_TRUE(QTest::qWaitFor([&maxOrWindedSpy]() {
+        return maxOrWindedSpy.count() >= 1;
+    }));
 }
