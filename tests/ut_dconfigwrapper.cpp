@@ -8,6 +8,7 @@
 #include <QTest>
 
 #include "private/dconfigwrapper_p.h"
+#include "test_helper.hpp"
 
 static constexpr char const *LocalPrefix = "/tmp/example";
 static constexpr char const *APP_ID = BIN_NAME;
@@ -16,7 +17,6 @@ class ut_DConfigWrapper : public ::testing::Test
 {
 public:
     virtual void SetUp();
-    virtual void TearDown();
 
     static void SetUpTestCase() {
         const QString &target = QString("%1/usr/share/dsg/configs/%2/%3.json").arg(LocalPrefix, APP_ID, FILE_NAME);
@@ -34,35 +34,26 @@ public:
         QDir(LocalPrefix).removeRecursively();
     }
 
+    ControlHelper<QQuickItem> helper;
     DConfigWrapper *config;
     QString origiAppId;
 };
 
 void ut_DConfigWrapper::SetUp()
 {
-    config = new DConfigWrapper();
-}
-
-void ut_DConfigWrapper::TearDown()
-{
-    delete config;
-}
-
-TEST_F(ut_DConfigWrapper, componentComplete)
-{
-    config->classBegin();
-    config->setName("example");
-    config->componentComplete();
-
+    ASSERT_TRUE(helper.load("qrc:/qml/Config.qml"));
+    config = helper.object->findChild<DConfigWrapper *>();
+    ASSERT_TRUE(config);
     ASSERT_TRUE(config->isValid());
 }
 
 TEST_F(ut_DConfigWrapper, setValue)
 {
-    config->classBegin();
-    config->setName("example");
-    config->setSubpath("");
-    config->componentComplete();
+    ASSERT_EQ(config->name(), "example");
+    config->setName("example1");
+    ASSERT_EQ(config->name(), "example");
+
+    ASSERT_EQ(config->subpath(), "");
 
     ASSERT_TRUE(config->keyList().contains("key3"));
 
@@ -76,4 +67,18 @@ TEST_F(ut_DConfigWrapper, setValue)
     ASSERT_TRUE(QTest::qWaitFor([&spy](){
         return spy.count() == 1;
     }, 500));
+
+    config->setProperty("key3", "23");
+    ASSERT_EQ(config->value("key3").toString(), "23");
+
+    config->resetValue("key3");
+    ASSERT_EQ(config->value("key3").toString(), "application");
+}
+
+TEST_F(ut_DConfigWrapper, setValueByQML)
+{
+    QSignalSpy key3Change(helper.object, SIGNAL(key3Changed()));
+    config->metaObject()->invokeMethod(helper.object, "setKey3", Q_ARG(QVariant, QString("2")));
+    EXPECT_EQ(key3Change.count(), 1);
+    EXPECT_EQ(config->value("key3").toString(), "2");
 }
