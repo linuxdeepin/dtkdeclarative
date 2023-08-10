@@ -18,8 +18,8 @@ T.PageIndicator {
     spacing: DS.Style.control.padding
 
     delegate: Rectangle {
-        implicitWidth: DS.Style.control.width
-        implicitHeight: DS.Style.control.height
+        implicitWidth: DS.Style.pageIndicator.width
+        implicitHeight: DS.Style.pageIndicator.height
 
         radius: width / 2
         color: control.enabled ? control.palette.highlight : "gray"
