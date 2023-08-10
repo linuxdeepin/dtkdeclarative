@@ -10,7 +10,6 @@ QtObject {
         property int radius: 8
         property int spacing: 6
         property int padding: 6
-        property int margin: 6
         property int borderWidth: 1
         property real focusBorderWidth: 2
         property real focusBorderPaddings: 1

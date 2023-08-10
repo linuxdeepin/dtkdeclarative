@@ -866,4 +866,15 @@ QtObject {
             }
         }
     }
+
+    // Dial
+    property QtObject dial: QtObject {
+        property int size: 100
+    }
+
+    // PageIndicator
+    property QtObject pageIndicator: QtObject {
+        property int width: 8
+        property int height: 8
+    }
 }
