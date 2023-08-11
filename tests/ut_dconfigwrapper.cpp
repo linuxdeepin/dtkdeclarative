@@ -16,9 +16,8 @@ static constexpr char const *FILE_NAME = "example";
 class ut_DConfigWrapper : public ::testing::Test
 {
 public:
-    virtual void SetUp();
-
-    static void SetUpTestCase() {
+    virtual void SetUp()
+    {
         const QString &target = QString("%1/usr/share/dsg/configs/%2/%3.json").arg(LocalPrefix, APP_ID, FILE_NAME);
 
         if (!QFile::exists(QFileInfo(target).path()))
@@ -30,34 +29,38 @@ public:
         qputenv("DSG_DCONFIG_BACKEND_TYPE", "FileBackend");
         qputenv("DSG_DATA_DIRS", "/usr/share/dsg");
     }
-    static void TearDownTestCase() {
+    virtual void TearDown() {
         QDir(LocalPrefix).removeRecursively();
     }
-
-    ControlHelper<QQuickItem> helper;
-    DConfigWrapper *config;
-    QString origiAppId;
 };
 
-void ut_DConfigWrapper::SetUp()
+TEST_F(ut_DConfigWrapper, componentComplete)
 {
-    ASSERT_TRUE(helper.load("qrc:/qml/Config.qml"));
-    config = helper.object->findChild<DConfigWrapper *>();
-    ASSERT_TRUE(config);
+    QScopedPointer<DConfigWrapper> config(new DConfigWrapper());
+
+    config->classBegin();
+    config->setName("example");
+    config->setSubpath("");
+    config->componentComplete();
+
     ASSERT_TRUE(config->isValid());
 }
 
 TEST_F(ut_DConfigWrapper, setValue)
 {
-    ASSERT_EQ(config->name(), "example");
-    config->setName("example1");
-    ASSERT_EQ(config->name(), "example");
+    QScopedPointer<DConfigWrapper> config(new DConfigWrapper());
 
-    ASSERT_EQ(config->subpath(), "");
+    config->classBegin();
+    config->setName("example");
+    config->componentComplete();
+
+    ASSERT_TRUE(config->isValid());
+
+    EXPECT_EQ(config->subpath(), "");
 
     ASSERT_TRUE(config->keyList().contains("key3"));
 
-    QSignalSpy spy(config, &DConfigWrapper::valueChanged);
+    QSignalSpy spy(config.data(), &DConfigWrapper::valueChanged);
 
     QString newValue = config->value("key3", QString("default")).toString() + QString("abc");
     config->setValue("key3", newValue);
@@ -75,8 +78,21 @@ TEST_F(ut_DConfigWrapper, setValue)
     ASSERT_EQ(config->value("key3").toString(), "application");
 }
 
-TEST_F(ut_DConfigWrapper, setValueByQML)
+TEST_F(ut_DConfigWrapper, setValueByQml)
 {
+    ControlHelper<QQuickItem> helper("qrc:/qml/Config.qml");
+    ASSERT_TRUE(helper.object);
+
+    DConfigWrapper *config = helper.object->findChild<DConfigWrapper *>();
+    ASSERT_TRUE(config);
+    ASSERT_TRUE(config->isValid());
+
+    EXPECT_EQ(config->property("key2"), "key2");
+    EXPECT_EQ(config->value("key2"), "key2");
+
+    EXPECT_EQ(config->property("key3"), "1");
+    EXPECT_EQ(config->value("key3"), "1");
+
     QSignalSpy key3Change(helper.object, SIGNAL(key3Changed()));
     config->metaObject()->invokeMethod(helper.object, "setKey3", Q_ARG(QVariant, QString("2")));
     EXPECT_EQ(key3Change.count(), 1);

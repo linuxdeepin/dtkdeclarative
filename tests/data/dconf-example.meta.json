@@ -11,6 +11,11 @@
             "description": "I am description",
             "permissions": "readwrite",
             "visibility": "public"
+        },
+        "key2": {
+            "value": "key2",
+            "serial": 0,
+            "flags": ["global"]
         }
     }
 }

@@ -12,6 +12,7 @@ Item {
         id: exampleConfig
         name: "example"
         subpath: ""
+        property string key2
         property string key3 : "1"
         onKey3Changed: control.key3Changed()
     }
