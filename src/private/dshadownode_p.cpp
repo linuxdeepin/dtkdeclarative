@@ -96,6 +96,7 @@ void ShadowMaterialShader::initialize()
 #else
 
 // Mapping shader's ubuf of shadowmaterial
+// NOTE: The byte alignment in`glsl` and `cpp` are different.
 enum Ubuf {
     QtMatrixSize = 64,
     QtOpacitySize = 4,
@@ -106,12 +107,17 @@ enum Ubuf {
 
     QtMatrixOffset = 0,
     QtOpacityOffset = QtMatrixOffset + QtMatrixSize,
-    ColorOffset = QtOpacityOffset + QtOpacitySize,
-    RelativeSizeXOffset = ColorOffset + ColorSize,
+    RelativeSizeXOffset = QtOpacityOffset + QtOpacitySize,
     RelativeSizeYOffset = RelativeSizeXOffset + RelativeSizeXSize,
     SpreadOffset = RelativeSizeYOffset + RelativeSizeYSize,
+    ColorOffset = SpreadOffset + SpreadSize,
+    TotalSize = ColorOffset + ColorSize
 };
 
+static inline QColor qsg_premultiply_color(const QColor &c)
+{
+    return QColor::fromRgbF(c.redF() * c.alphaF(), c.greenF() * c.alphaF(), c.blueF() * c.alphaF(), c.alphaF());
+}
 class ShadowMaterialShader : public QSGMaterialShader
 {
 public:
@@ -124,7 +130,7 @@ public:
     {
         bool changed = false;
         QByteArray *buf = state.uniformData();
-        Q_ASSERT(buf->size() >= SpreadOffset + SpreadSize);
+        Q_ASSERT(buf->size() >= TotalSize);
 
         if (state.isMatrixDirty()) {
             const QMatrix4x4 m = state.combinedMatrix();
@@ -140,11 +146,11 @@ public:
 
         ShadowMaterial *customMaterial = static_cast<ShadowMaterial *>(newMaterial);
         if (oldMaterial != newMaterial) {
-            const QColor color = customMaterial->color();
-            const QVector4D c = { customMaterial->color().redF(),
-                          color.greenF(),
-                          color.blueF(),
-                          color.alphaF() };
+            const QColor color = qsg_premultiply_color(customMaterial->color());
+            QVector4D c(color.redF(),
+                        color.greenF(),
+                        color.blueF(),
+                        color.alphaF());
             const float relativeSizeX = customMaterial->relativeSizeX();
             const float relativeSizeY = customMaterial->relativeSizeY();
             const float spread = customMaterial->spread();
