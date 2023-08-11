@@ -1,3 +1,46 @@
+dtkdeclarative (5.6.15) unstable; urgency=medium
+
+  * feat: add UT for ButtonBox
+  * feat: add UT for ArrowBoxPath
+  * chore: add unit test ut_dquickglow
+  * feat: Add UT for DSoftwareRoundedImageNode
+  * feat: Add UT for DBlitFramebufferNode
+  * chore: add unit test ut-iconlabel
+  * feat: Add toImage function for DBlitFramebufferNode
+  * chore: Can't support alpha for simpleTexture in UT
+  * chore: add unit test ut-iconimage
+  * chore: add unit test ut-dciiconimage
+  * feat: Add UT for MaskEffectNode
+  * chore: add unit test ut_dquickdciicon
+  * fix: Compiling error for missing dependency
+  * feat: Add UT for DSGBlurNode
+  * fix: crash in ut_dquickdciiconimage
+  * feat: Add UT for AppLoader-plugin
+  * fix: PDS is not defined
+  * chore: Remove some file for recoverage
+  * chore: add unit test ut-contextMenuWindow
+  * feat: Add UT for BehindWindowBlur
+  * feat: Add UT for DQuickInWindowBlur
+  * chore: Add unit test ut-dquickcoloroverlay
+  * feat: Add UT for DQuickItemViewport
+  * fix: UT failed sometimes
+  * fix: UT failed in qt6
+  * chore: Add unit test ut_dquickopacitymask
+  * fix: UT failed in qt6 and Software renderer backend
+  * fix:  DQuickItemViewport is error in software renderer
+  * chore: Complementary unit test ut-globalobject
+  * fix: UT failed in qt6
+  * chore(UT): Wait for blur window exposed
+  * fix: UT failed when unreset palette
+  * feat: Add UT for DQuickBlitFrameBuffer
+  * fix: PageIndicator is invalid
+  * feat: Add UT to determine whether QML can load successfully
+  * fix: UT failde sometimes
+  * chore: Complementary unit test ut-dconfigwrapper
+  * feat: Adapt to switch qt6 and qtf for qml-app-template
+
+ -- Yixue Wang <wangyixue@deepin.org>  Fri, 11 Aug 2023 14:06:39 +0800
+
 dtkdeclarative (5.6.14) unstable; urgency=medium
 
   * fix: typo
