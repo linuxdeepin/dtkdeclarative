@@ -90,8 +90,9 @@ TEST_F(ut_DConfigWrapper, setValueByQml)
     EXPECT_EQ(config->property("key2"), "key2");
     EXPECT_EQ(config->value("key2"), "key2");
 
-    EXPECT_EQ(config->property("key3"), "1");
-    EXPECT_EQ(config->value("key3"), "1");
+    // `key3`'s value(defined in qml) is only fallback value instead of current value.
+    EXPECT_EQ(config->property("key3"), "application");
+    EXPECT_EQ(config->value("key3"), "application");
 
     QSignalSpy key3Change(helper.object, SIGNAL(key3Changed()));
     config->metaObject()->invokeMethod(helper.object, "setKey3", Q_ARG(QVariant, QString("2")));

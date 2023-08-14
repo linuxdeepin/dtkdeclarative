@@ -241,13 +241,8 @@ void DConfigWrapper::componentComplete()
     for (auto iter = properties.begin(); iter != properties.end(); iter++) {
         // it's need to emit signal, because other qml object maybe read the old value
         // when binding the property before the component completed, also it has a performance problem.
-        if (iter.value().isNull()) {
-            // sync backend's value to `Wrapper`
-            mo->setValue(iter.key(), impl->value(iter.key()));
-        } else {
-            // sync Wrapper's value(defined in qml) to backend.
-            setProperty(iter.key(), iter.value());
-        }
+        // sync backend's value to `Wrapper`, we only use Wrapper's value(defined in qml) as fallback value.
+        mo->setValue(iter.key(), impl->value(iter.key(), iter.value()));
     }
 
      // Using QueuedConnection because impl->setValue maybe emit sync signal in `propertyWriteValue`.
