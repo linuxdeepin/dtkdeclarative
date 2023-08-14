@@ -25,6 +25,7 @@ build() {
   cd $sourcedir
   cmake -GNinja \
       -DMKSPECS_INSTALL_DIR=lib/qt/mkspecs/modules/\
+      -DQML_INSTALL_DIR=lib/qt/qml \
       -DBUILD_DOCS=ON \
       -DBUILD_EXAMPLES=OFF \
       -DQCH_INSTALL_DESTINATION=share/doc/qt \
