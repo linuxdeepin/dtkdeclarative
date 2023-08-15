@@ -523,10 +523,14 @@ bool DOpenGLBlurEffectNode::writeToTexture(QSGPlainTexture *targetTexture) const
     const auto fbo = m_fboVector.first();
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     targetTexture->setTextureId(fbo->texture());
-#else
+#elif QT_VERSION <= QT_VERSION_CHECK(6, 2, 4)
     auto wp = QQuickWindowPrivate::get(m_item->window());
     targetTexture->setTextureFromNativeTexture(wp->rhi, static_cast<quint64>(fbo->texture()),
                                            0, fbo->size(), {}, {});
+#else
+    auto wp = QQuickWindowPrivate::get(m_item->window());
+    targetTexture->setTextureFromNativeTexture(wp->rhi, static_cast<quint64>(fbo->texture()),
+                                           0, 0, fbo->size(), {}, {});
 #endif
     targetTexture->setHasAlphaChannel(m_texture->hasAlphaChannel());
     targetTexture->setTextureSize(fbo->size());

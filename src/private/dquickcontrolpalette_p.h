@@ -15,10 +15,11 @@
 #include <QVector>
 #include <QPointer>
 
+#include <private/qqmldata_p.h>
+
 QT_BEGIN_NAMESPACE
 class QQuickItem;
 class QQuickWindow;
-class QQmlPropertyCache;
 QT_END_NAMESPACE
 
 DQUICK_BEGIN_NAMESPACE
@@ -376,7 +377,11 @@ private:
     typedef QPair<QByteArray, DQuickControlPalette*> ControlPaletteData;
     QList<ControlPaletteData> m_palettes;
     CustomMetaObject *m_metaObject = nullptr;
+#if QT_VERSION <= QT_VERSION_CHECK(6, 2, 4)
     QQmlPropertyCache *m_propertyCache = nullptr;
+#else
+    QQmlPropertyCache::ConstPtr m_propertyCache;
+#endif
     struct PaletteState {
         PaletteState(DQuickControlColorSelector *owner)
             : owner(owner)

@@ -247,8 +247,13 @@ public:
     // property in QQmlOpenMetaObject, this is a bug, so we must ensure the QQmlData::propertyCache awlays
     // from QQmlOpenMetaObject.
     int createProperty(const char *name, const char *data) override {
+#if QT_VERSION <= QT_VERSION_CHECK(6, 2, 4)
         QQmlData *qmldata = QQmlData::get(owner());
-        QQmlPropertyCache *cache = qmldata ? qmldata->propertyCache : nullptr;
+#else
+        QObjectPrivate *priv = QObjectPrivate::get(owner());
+        QQmlData *qmldata = QQmlData::get(priv);
+#endif
+        auto cache = qmldata ? qmldata->propertyCache : nullptr;
         Q_ASSERT(!cache || cache == owner()->m_propertyCache);
 
         int ret = QQmlOpenMetaObject::createProperty(name, data);
