@@ -39,7 +39,7 @@ target_compile_definitions(${LIB_NAME}_properties INTERFACE
 
 if(USE_QQuickStylePluginPrivate)
     target_link_libraries(${LIB_NAME}_properties INTERFACE
-        Qt${QT_VERSION_MAJOR}::QuickControls2Private
+        $<BUILD_INTERFACE:Qt${QT_VERSION_MAJOR}::QuickControls2Private>
     )
 endif()
 
@@ -76,5 +76,5 @@ list(APPEND PUBLIC_HEADERS ${CONFIG_PATH})
 install(FILES ${PUBLIC_HEADERS} ${D_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}")
 
 # Install ${LIB_NAME}_properties
-install(TARGETS ${LIB_NAME}_properties EXPORT DtkDeclarativeProperties DESTINATION "${LIB_INSTALL_DIR}")
-install(EXPORT DtkDeclarativeProperties NAMESPACE Dtk:: FILE DtkDeclarativeTargets-Properties.cmake DESTINATION "${CONFIG_INSTALL_DIR}")
+install(TARGETS ${LIB_NAME}_properties EXPORT Dtk${DTK_VERSION_MAJOR}DeclarativeProperties DESTINATION "${LIB_INSTALL_DIR}")
+install(EXPORT Dtk${DTK_VERSION_MAJOR}DeclarativeProperties NAMESPACE Dtk${DTK_VERSION_MAJOR}:: FILE Dtk${DTK_VERSION_MAJOR}DeclarativeTargets-Properties.cmake DESTINATION "${CONFIG_INSTALL_DIR}")

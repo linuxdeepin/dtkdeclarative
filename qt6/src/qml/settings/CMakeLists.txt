@@ -35,3 +35,4 @@ PRIVATE
     ${LIB_NAME}
 )
 
+install(DIRECTORY "${PLUGIN_OUTPUT_DIR}/${URI_PATH}/settings/" DESTINATION "${QML_INSTALL_DIR}/${URI_PATH}/settings")

@@ -7,8 +7,6 @@ project(DtkDeclarative
     HOMEPAGE_URL "https://github.com/linuxdeepin/dtkdeclarative"
     LANGUAGES CXX
 )
-set(LIB_NAME dtkdeclarative)
-set(ENABLE_COV OFF CACHE BOOL "Generate coverage info")
 
 if (${PROJECT_VERSION_MAJOR} STREQUAL "5")
     set(QT_DEFAULT_MAJOR_VERSION "5")
@@ -28,6 +26,9 @@ elseif(${PROJECT_VERSION_MAJOR} STREQUAL "6")
 else()
     message(FATAL_ERROR "Only support DTK_VERSION is 5 or 6")
 endif()
+
+set(ENABLE_COV OFF CACHE BOOL "Generate coverage info")
+set(LIB_NAME dtk${DTK_VERSION_MAJOR}declarative)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -49,7 +50,7 @@ set(BUILD_DOCS ON CACHE BOOL "Generate doxygen-based documentation")
 set(LIB_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}" CACHE STRING "Library install path")
 set(INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}/dtk${PROJECT_VERSION_MAJOR}/DDeclarative" CACHE STRING "Headers install path")
 set(TEMPLATE_INSTALL_DIR "share/qtcreator/templates/wizards/projects/qml-app-template" CACHE STRING "Directory to install QtCreator template")
-set(CONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/DtkDeclarative" CACHE STRING "CMake config file install directory")
+set(CONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/Dtk${DTK_VERSION_MAJOR}Declarative" CACHE STRING "CMake config file install directory")
 set(PKGCONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/pkgconfig" CACHE STRING "Directory to install pkg-config file")
 set(MKSPECS_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt${QT_VERSION_MAJOR}/mkspecs/modules" CACHE STRING "Qt pri module install directory")
 set(QML_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt${QT_VERSION_MAJOR}/qml" CACHE STRING "Qml plugin install directory")
@@ -78,7 +79,7 @@ else ()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast")
 endif ()
 
-set(DDECLARATIVE_TRANSLATIONS_DIR "dtk5/DDeclarative/translations" CACHE STRING "DDeclarative translations directory")
+set(DDECLARATIVE_TRANSLATIONS_DIR "dtk${PROJECT_VERSION_MAJOR}/DDeclarative/translations" CACHE STRING "DDeclarative translations directory")
 set(DDECLARATIVE_TRANSLATIONS_PATH "share/${DDECLARATIVE_TRANSLATIONS_DIR}")
 set(TRANSLATIONS_INSTALL_PATH "${DDECLARATIVE_TRANSLATIONS_PATH}")
 
@@ -115,20 +116,20 @@ install(DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/misc/qml-app-template/" DESTINATION
 
 configure_package_config_file(
     "${CMAKE_CURRENT_LIST_DIR}/misc/DtkDeclarativeConfig.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/DtkDeclarativeConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/Dtk${DTK_VERSION_MAJOR}DeclarativeConfig.cmake"
     INSTALL_DESTINATION "${CONFIG_INSTALL_DIR}"
 )
 write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/DtkDeclarativeConfigVersion.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/Dtk${DTK_VERSION_MAJOR}DeclarativeConfigVersion.cmake"
     VERSION ${VERSION}
     COMPATIBILITY SameMajorVersion
 )
 # Install cmake config file
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/DtkDeclarativeConfig.cmake" DESTINATION "${CONFIG_INSTALL_DIR}")
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/DtkDeclarativeConfigVersion.cmake" DESTINATION "${CONFIG_INSTALL_DIR}")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/Dtk${DTK_VERSION_MAJOR}DeclarativeConfig.cmake" DESTINATION "${CONFIG_INSTALL_DIR}")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/Dtk${DTK_VERSION_MAJOR}DeclarativeConfigVersion.cmake" DESTINATION "${CONFIG_INSTALL_DIR}")
 # Install pkg-config file
-configure_file("${PROJECT_SOURCE_DIR}/misc/dtkdeclarative.pc.in" "${CMAKE_CURRENT_BINARY_DIR}/dtkdeclarative.pc" @ONLY)
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/dtkdeclarative.pc" DESTINATION "${PKGCONFIG_INSTALL_DIR}")
+configure_file("${PROJECT_SOURCE_DIR}/misc/dtkdeclarative.pc.in" "${CMAKE_CURRENT_BINARY_DIR}/dtk${DTK_VERSION_MAJOR}declarative.pc" @ONLY)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/dtk${DTK_VERSION_MAJOR}declarative.pc" DESTINATION "${PKGCONFIG_INSTALL_DIR}")
 # Install qmake module config file
 configure_file("${CMAKE_CURRENT_LIST_DIR}/misc/qt_lib_dtkdeclarative.pri.in" "${CMAKE_CURRENT_BINARY_DIR}/qt_lib_dtkdeclarative.pri" @ONLY)
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/qt_lib_dtkdeclarative.pri" DESTINATION "${MKSPECS_INSTALL_DIR}")

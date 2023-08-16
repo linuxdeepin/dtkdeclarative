@@ -34,6 +34,6 @@ PRIVATE
 install(FILES ${QM_FILES} DESTINATION "${TRANSLATIONS_INSTALL_PATH}")
 
 # Install library
-install(TARGETS ${LIB_NAME} EXPORT DtkDeclarativeTargets DESTINATION "${LIB_INSTALL_DIR}")
+install(TARGETS ${LIB_NAME} EXPORT Dtk${DTK_VERSION_MAJOR}DeclarativeTargets DESTINATION "${LIB_INSTALL_DIR}")
 # Install export targets
-install(EXPORT DtkDeclarativeTargets NAMESPACE Dtk:: FILE DtkDeclarativeTargets.cmake DESTINATION "${CONFIG_INSTALL_DIR}")
+install(EXPORT Dtk${DTK_VERSION_MAJOR}DeclarativeTargets NAMESPACE Dtk:: FILE Dtk${DTK_VERSION_MAJOR}DeclarativeTargets.cmake DESTINATION "${CONFIG_INSTALL_DIR}")
