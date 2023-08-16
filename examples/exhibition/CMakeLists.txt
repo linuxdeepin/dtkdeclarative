@@ -27,5 +27,15 @@ target_link_libraries(${BIN_NAME} PRIVATE
     Dtk${DTK_VERSION_MAJOR}::Gui
 )
 
-install(TARGETS ${BIN_NAME} DESTINATION "${CMAKE_INSTALL_BINDIR}")
-install(FILES ${CMAKE_CURRENT_LIST_DIR}/dtk-exhibition.desktop DESTINATION "${CMAKE_INSTALL_DATADIR}/applications")
+set(EXAMPLE_INSTALL_DIR "${CMAKE_INSTALL_BINDIR}")
+if (EnableQt6)
+    set(EXAMPLE_INSTALL_DIR "${LIB_INSTALL_DIR}/dtk${PROJECT_VERSION_MAJOR}/DDeclarative")
+endif()
+configure_package_config_file(
+    "${CMAKE_CURRENT_LIST_DIR}/dtk-exhibition.desktop.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/dtk${DTK_VERSION_MAJOR}-exhibition.desktop"
+    INSTALL_DESTINATION "${EXAMPLE_INSTALL_DIR}"
+)
+
+install(TARGETS ${BIN_NAME} DESTINATION ${EXAMPLE_INSTALL_DIR})
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/dtk${DTK_VERSION_MAJOR}-exhibition.desktop DESTINATION "${CMAKE_INSTALL_DATADIR}/applications")
