@@ -49,7 +49,7 @@ set(BUILD_DOCS ON CACHE BOOL "Generate doxygen-based documentation")
 
 set(LIB_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}" CACHE STRING "Library install path")
 set(INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}/dtk${PROJECT_VERSION_MAJOR}/DDeclarative" CACHE STRING "Headers install path")
-set(TEMPLATE_INSTALL_DIR "share/qtcreator/templates/wizards/projects/qml-app-template" CACHE STRING "Directory to install QtCreator template")
+set(TEMPLATE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/share/qtcreator/templates/wizards/projects/qml${DTK_VERSION_MAJOR}-app-template" CACHE STRING "Directory to install QtCreator template")
 set(CONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/Dtk${DTK_VERSION_MAJOR}Declarative" CACHE STRING "CMake config file install directory")
 set(PKGCONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/pkgconfig" CACHE STRING "Directory to install pkg-config file")
 set(MKSPECS_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt${QT_VERSION_MAJOR}/mkspecs/modules" CACHE STRING "Qt pri module install directory")
@@ -112,7 +112,17 @@ if(BUILD_TESTING)
 endif()
 
 # Install wizards template
-install(DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/misc/qml-app-template/" DESTINATION "${TEMPLATE_INSTALL_DIR}")
+set(QML_TEMPLATE_QTVERSION_INDEX 0)
+if(EnableQt5)
+    set(QML_TEMPLATE_QTVERSION_INDEX 3)
+endif()
+configure_package_config_file(
+    "${CMAKE_CURRENT_LIST_DIR}/misc/qml-app-template/wizard.json.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/wizard.json"
+    INSTALL_DESTINATION "${TEMPLATE_INSTALL_DIR}"
+)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/wizard.json" DESTINATION "${TEMPLATE_INSTALL_DIR}")
+install(DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/misc/qml-app-template/" DESTINATION "${TEMPLATE_INSTALL_DIR}" FILES_MATCHING PATTERN "*" PATTERN "*.in" EXCLUDE)
 
 configure_package_config_file(
     "${CMAKE_CURRENT_LIST_DIR}/misc/DtkDeclarativeConfig.cmake.in"
