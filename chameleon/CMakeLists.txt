@@ -109,8 +109,8 @@ if(EnableQt6)
         NO_GENERATE_PLUGIN_SOURCE
         SOURCES ${SRC_FILES}
         QML_FILES ${QML_FILES}
-        RESOURCES qml.qrc
     )
+    install(DIRECTORY "${PLUGIN_OUTPUT_DIR}/Chameleon/" DESTINATION "${QML_INSTALL_DIR}/Chameleon")
 endif()
 
 dtk_extend_target(${PLUGIN_NAME} EnableCov ${ENABLE_COV})
