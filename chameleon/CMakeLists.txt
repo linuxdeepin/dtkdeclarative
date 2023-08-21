@@ -1,6 +1,6 @@
 set(PLUGIN_NAME ${STYLE_PLUGIN_NAME})
 
-find_package(DtkGui REQUIRED)
+find_package(Dtk${DTK_VERSION_MAJOR}Gui REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS
     Qml
     Quick
