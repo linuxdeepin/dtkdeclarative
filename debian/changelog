@@ -1,3 +1,13 @@
+dtkdeclarative (5.6.16) unstable; urgency=medium
+
+  * feat: Adapt to qt6.4.2
+  * feat: Support install lib and plugins for qt6
+  * feat: Support install for example and template in qt6
+  * fix: dpkg-buildpackage faild in qt6
+  * fix: PKGBUILD qml_install_dir needs to be override
+
+ -- Deepin Packages Builder <packages@deepin.org>  Tue, 22 Aug 2023 06:13:45 +0000
+
 dtkdeclarative (5.6.15) unstable; urgency=medium
 
   * feat: add UT for ButtonBox
