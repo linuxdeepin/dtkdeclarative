@@ -22,7 +22,7 @@ T.DialogButtonBox {
 
     contentItem: ListView {
         implicitWidth: contentWidth
-        implicitHeight: DS.Style.control.button.height
+        implicitHeight: DS.Style.button.height
 
         model: control.contentModel
         spacing: control.spacing
