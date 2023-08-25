@@ -22,7 +22,7 @@ file(GLOB TS_FILES "${PROJECT_SOURCE_DIR}/src/translations/*.ts")
 
 add_library(${LIB_NAME}_properties INTERFACE)
 add_library(${LIB_NAME}_sources INTERFACE)
-target_sources(${LIB_NAME}_sources PUBLIC
+target_sources(${LIB_NAME}_sources INTERFACE
     ${SRCS}
     ${HEADERS}
     ${D_HEADERS}
