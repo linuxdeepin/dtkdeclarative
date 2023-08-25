@@ -246,13 +246,9 @@ public:
     // a DynamicMetaObject(QQmlOpenMetaObject), and not update QQmlData::propertyCache when create new
     // property in QQmlOpenMetaObject, this is a bug, so we must ensure the QQmlData::propertyCache awlays
     // from QQmlOpenMetaObject.
-    int createProperty(const char *name, const char *data) override {
 #if QT_VERSION <= QT_VERSION_CHECK(6, 2, 4)
-        QQmlData *qmldata = QQmlData::get(owner());
-#else
-        QObjectPrivate *priv = QObjectPrivate::get(owner());
-        QQmlData *qmldata = QQmlData::get(priv);
-#endif
+    int createProperty(const char *name, const char *data) override {
+        QQmlData *qmldata = QQmlData::get(owner(), false);
         auto cache = qmldata ? qmldata->propertyCache : nullptr;
         Q_ASSERT(!cache || cache == owner()->m_propertyCache);
 
@@ -266,6 +262,7 @@ public:
 
         return ret;
     }
+#endif
 };
 
 DQuickControlColorSelector::DQuickControlColorSelector(QQuickItem *parent)
