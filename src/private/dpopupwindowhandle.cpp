@@ -33,6 +33,9 @@ static inline bool shouldCreatePopupWindowForMode(const DQMLGlobalObject::PopupM
     case DQMLGlobalObject::EmbedMode:
         return false;
     case DQMLGlobalObject::AutoMode:
+        // TODO https://github.com/linuxdeepin/dtk/issues/70
+        if (qEnvironmentVariableIsEmpty("D_POPUP_MODE"))
+            return false;
         return qEnvironmentVariable("D_POPUP_MODE") != "embed";
     }
     return false;

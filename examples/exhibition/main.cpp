@@ -66,7 +66,6 @@ int main(int argc, char **argv)
     QGuiApplication app(argc, argv);
     app.setOrganizationName("deepin");
     app.setApplicationName("dtk-exhibition");
-    qputenv("D_POPUP_MODE", "embed");
 
     QQmlApplicationEngine engine;
 
