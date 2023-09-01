@@ -16,8 +16,6 @@ int main(int argc, char *argv[])
     app.setApplicationName("Example");
     app.setApplicationVersion("1.0.0");
 
-    qputenv("D_POPUP_MODE", "embed");
-
     QQmlApplicationEngine engine;
 
     engine.addImportPath(CHAMELEON_PATH);
