@@ -67,6 +67,7 @@ protected:
                 blurNode->setOffscreen(false);
                 blurNode->setBlendColor(TestUtil::simpleColor);
                 blurNode->setRadius(10);
+                blurNode->setWindow(window());
                 blurNode->setRect(QRectF(0, 0, 100, 100));
                 blurNode->setSourceRect(QRectF(0, 0, 100, 100));
 

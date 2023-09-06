@@ -17,6 +17,7 @@ QT_BEGIN_NAMESPACE
 class QQuickItem;
 class QSGTexture;
 class QSGPlainTexture;
+class QQuickWindow;
 #ifndef QT_NO_OPENGL
 class QOpenGLShaderProgram;
 class QOpenGLFramebufferObject;
@@ -59,6 +60,7 @@ public:
 
     RenderingFlags flags() const override;
     QRectF rect() const override;
+    void setWindow(QQuickWindow *window);
 
 protected:
     RenderCallback m_renderCallback = nullptr;
@@ -73,6 +75,7 @@ protected:
     QColor m_blendColor = Qt::transparent;
     bool m_disabledOpaqueRendering = false;
     bool m_followMatrixForSource = false;
+    QPointer<QQuickWindow> m_window;
 };
 
 class DSoftwareBlurImageNode : public DSGBlurNode

@@ -297,6 +297,11 @@ QRectF DSGBlurNode::rect() const
     return m_targetRect;
 }
 
+void DSGBlurNode::setWindow(QQuickWindow *window)
+{
+    m_window = window;
+}
+
 DSoftwareBlurImageNode::DSoftwareBlurImageNode(QQuickItem *owner)
     : DSGBlurNode(owner)
 {
@@ -315,7 +320,7 @@ void DSoftwareBlurImageNode::render(const RenderState *state)
     if (!m_sourceRect.isValid() || !m_texture)
         return;
 
-    if (!m_item->window())
+    if (!m_item->window() || !m_window)
         return;
 
     updateCachedImage();
@@ -323,8 +328,8 @@ void DSoftwareBlurImageNode::render(const RenderState *state)
     if (cachedSource.isNull())
         return;
 
-    QSGRendererInterface *rif = m_item->window()->rendererInterface();
-    QPainter *p = static_cast<QPainter *>(rif->getResource(m_item->window(),
+    QSGRendererInterface *rif = m_window->rendererInterface();
+    QPainter *p = static_cast<QPainter *>(rif->getResource(m_window,
                                                            QSGRendererInterface::PainterResource));
     Q_ASSERT(p);
 
@@ -457,13 +462,13 @@ void DOpenGLBlurEffectNode::render(const QSGRenderNode::RenderState *state)
     if (Q_UNLIKELY(!m_sourceRect.isValid() || !m_texture))
         return;
 
-    if (Q_UNLIKELY(!m_item || !m_item->window()))
+    if (Q_UNLIKELY(!m_item || !m_item->window() || !m_window))
         return;
 
 #if(QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
-    const bool needsWrap = QSGRendererInterface::isApiRhiBased(m_item->window()->rendererInterface()->graphicsApi());
+    const bool needsWrap = QSGRendererInterface::isApiRhiBased(m_window->rendererInterface()->graphicsApi());
     if (Q_LIKELY(needsWrap)) {
-        m_item->window()->beginExternalCommands();
+        m_window->beginExternalCommands();
     }
 #endif
 
@@ -502,7 +507,7 @@ void DOpenGLBlurEffectNode::render(const QSGRenderNode::RenderState *state)
 
 #if(QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
     if (Q_LIKELY(needsWrap))
-        m_item->window()->endExternalCommands();
+        m_window->endExternalCommands();
 #endif
 
     doRenderCallback();
@@ -524,11 +529,11 @@ bool DOpenGLBlurEffectNode::writeToTexture(QSGPlainTexture *targetTexture) const
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     targetTexture->setTextureId(fbo->texture());
 #elif QT_VERSION <= QT_VERSION_CHECK(6, 2, 4)
-    auto wp = QQuickWindowPrivate::get(m_item->window());
+    auto wp = QQuickWindowPrivate::get(m_window);
     targetTexture->setTextureFromNativeTexture(wp->rhi, static_cast<quint64>(fbo->texture()),
                                            0, fbo->size(), {}, {});
 #else
-    auto wp = QQuickWindowPrivate::get(m_item->window());
+    auto wp = QQuickWindowPrivate::get(m_window);
     targetTexture->setTextureFromNativeTexture(wp->rhi, static_cast<quint64>(fbo->texture()),
                                            0, 0, fbo->size(), {}, {});
 #endif
@@ -587,7 +592,7 @@ void DOpenGLBlurEffectNode::initBlurSahder()
 void DOpenGLBlurEffectNode::applyDaulBlur(QOpenGLFramebufferObject *targetFBO, GLuint sourceTexture, QOpenGLShaderProgram *shader
                                   , const QSGRenderNode::RenderState *state, int matrixUniform, int scale)
 {
-    if (Q_UNLIKELY(!m_item || !m_item->window()))
+    if (Q_UNLIKELY(!m_item || !m_window))
         return;
 
     auto context = QOpenGLContext::currentContext();
@@ -604,7 +609,7 @@ void DOpenGLBlurEffectNode::applyDaulBlur(QOpenGLFramebufferObject *targetFBO, G
     shader->setUniformValue("offset", QVector2D(8, 8));
     shader->setUniformValue("iResolution", QVector2D(targetFBO->size().width(), targetFBO->size().height()));
     shader->setUniformValue("halfpixel", QVector2D(0.5 / targetFBO->size().width(), 0.5 / targetFBO->size().height()));
-    float yOffset = m_item->window()->height() - qRound(m_targetRect.height() / scale);
+    float yOffset = m_window->height() - qRound(m_targetRect.height() / scale);
     shader->setUniformValue(matrixUniform, *state->projectionMatrix() * QMatrix4x4(1, 0, 0, 0,
                                                                                    0, 1, 0, yOffset,
                                                                                    0, 0, 1, 0,
@@ -757,7 +762,7 @@ void DOpenGLBlurEffectNode::initFBOTextures()
     if (m_radius <= 0)
         return;
 
-    qreal scale = m_item->window()->effectiveDevicePixelRatio();
+    qreal scale = m_window->effectiveDevicePixelRatio();
     QSize size;
     /* when opengl rendering, the projectionmatrix matrix has high accuracy,
        which will lead to deviation from the FBO size. When i reduce the FBO size by 1,

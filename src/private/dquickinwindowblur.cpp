@@ -154,6 +154,7 @@ QSGNode *DQuickInWindowBlur::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeDa
     DSGBlurNode *blurNode = static_cast<DSGBlurNode*>(node->firstChild());
     Q_ASSERT(blurNode);
     blurNode->setRadius(m_radius);
+    blurNode->setWindow(window());
     const QRectF rect(0, 0, width(), height());
     blurNode->setSourceRect(rect);
     blurNode->setRect(rect);
