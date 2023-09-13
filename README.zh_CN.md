@@ -36,16 +36,14 @@
 
 ```shell
 $ git clone https://github.com/linuxdeepin/dtkdeclarative.git
-$ mkdir build
-$ cd build
-$ qmake ..
-$ make
+$ cmake -Bbuild -GNinja
+$ cmake --build build
 ```
 
 3. 安装
 
 ```shell
-$ sudo make install
+$ sudo cmake --install build
 ```
 
 ## 帮助
@@ -70,5 +68,4 @@ dtkdeclarative is licensed under the [LGPL-3.0-or-later](LICENSE)
 ## TODO
 
 1. 添加 plugins.qmltypes 文件，支持代码补全
-2. 支持 Qt6
-3. 支持 Vulkan
+2. 支持 Vulkan

@@ -37,16 +37,14 @@ dtkdeclarative is a widget development toolkit based on QtQuick/QtQml, which is 
 
 ```shell
 $ git clone https://github.com/linuxdeepin/dtkdeclarative.git
-$ mkdir build
-$ cd build
-$ qmake ..
-$ make
+$ cmake -Bbuild -GNinja
+$ cmake --build build
 ```
 
 3. Install
 
 ```shell
-$ sudo make install
+$ sudo cmake --install build
 ```
 
 ## Getting help
@@ -73,5 +71,4 @@ dtkdeclarative is licensed under the [LGPL-3.0-or-later](LICENSE)
 ## TODO
 
 1. Add plugins.qmltypes, support code completion
-2. Support Qt6
-3. Support Vulkan
+2. Support Vulkan
