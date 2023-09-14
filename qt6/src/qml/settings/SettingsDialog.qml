@@ -50,9 +50,9 @@ DialogWindow {
 
     ScrollView {
         id: contentBg
-        width: control.width - navigationBg.width
         anchors {
             right: parent.right
+            left: navigationBg.right
             top: control.top
         }
         padding: DS.Style.settings.content.margin
