@@ -175,7 +175,7 @@
             key: "key2"
             name: "ComboBox"
             ComboBox {
-                model: ["first", "sceond", "third"]
+                model: ["first", "second", "third"]
             }
         }
     }
@@ -447,7 +447,7 @@
         key: "key2"
         name: "ComboBox"
         Settings.ComboBox {
-            model: ["first", "sceond", "third"]
+            model: ["first", "second", "third"]
         }
     }
 ```
