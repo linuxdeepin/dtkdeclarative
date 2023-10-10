@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: dtkdeclarative
-Source: https://github.com/linuxdeepin/dtkdeclarative
+Upstream-Name: dtk6declarative
+Source: https://github.com/linuxdeepin/dtk6declarative
 
 Files: *
 Copyright: 2022-2023 UnionTech Software Technology Co., Ltd.

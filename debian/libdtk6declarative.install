@@ -1,3 +1,3 @@
 usr/lib/*/lib*.so.*
-usr/lib/*/qt5/qml/org/deepin/dtk/*
+usr/lib/*/qt6/qml/org/deepin/dtk/*
 usr/share/*/*/translations/*.qm
