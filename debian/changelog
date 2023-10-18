@@ -1,3 +1,13 @@
+dtkdeclarative (5.6.18) unstable; urgency=medium
+
+  * fix: NavigationTitle is partially obscured(Issue: #44)
+  * fix: PlaceholderText out of range(Issue: #42)
+  * chore: Update README
+  * chore: correct typos in docs of Settings.ComboBox
+    Thanks to Felix Yan
+
+ -- Deepin Packages Builder <packages@deepin.org>  Wed, 18 Oct 2023 06:01:44 +0000
+
 dtkdeclarative (5.6.17) unstable; urgency=medium
 
   * Release 5.6.17
