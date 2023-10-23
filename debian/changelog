@@ -1,3 +1,10 @@
+dtkdeclarative (5.6.19) unstable; urgency=medium
+
+  [ root ]
+  * UNRELEASED
+
+ -- Deepin Packages Builder <packages@deepin.org>  Mon, 23 Oct 2023 07:33:18 +0000
+
 dtkdeclarative (5.6.18) unstable; urgency=medium
 
   * fix: NavigationTitle is partially obscured(Issue: #44)
