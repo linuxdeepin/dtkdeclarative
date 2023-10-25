@@ -1,28 +1,26 @@
 # Maintainer: zccrs <zhangjide@deepin.org>
-pkgname=dtkdeclarative-git
-pkgver=1.0.0
+pkgname=dtk6declarative-git
+pkgver=6.0.0
 pkgrel=1
-sourcename=dtkdeclarative
+sourcename=dtk6declarative
 sourcetars=("$sourcename"_"$pkgver".tar.xz)
 sourcedir="$sourcename"
 pkgdesc='Deepin Toolkit, declarative module for DDE look and feel'
 arch=('x86_64' 'aarch64')
-url="https://github.com/linuxdeepin/dtkdeclarative"
+url="https://github.com/linuxdeepin/dtk6declarative"
 license=('LGPL3')
-depends=('qt5-declarative' 'qt5-quickcontrols2' 'dtkcommon-git' 'dtkcore-git' 'dtkgui-git')
-makedepends=('git' 'qt5-tools' 'gtest' 'cmake'  'ninja' 'doxygen')
-conflicts=('dtkdeclarative')
-provides=('dtkdeclarative')
+depends=('qt6-declarative' 'qt6-shadertools' 'qt6-5compat'
+	'dtkcommon-git' 'dtk6core-git' 'dtk6gui-git')
+makedepends=('git' 'qt6-tools' 'gtest' 'cmake'  'ninja' 'doxygen')
+conflicts=('dtk6declarative')
+provides=('dtk6declarative')
 groups=('deepin-git')
 source=("${sourcetars[@]}")
 sha512sums=('SKIP')
 
-prepare() {
-    cd $sourcedir
-}
-
 build() {
   cd $sourcedir
+  version=$(echo $pkgver | awk -F'[+_~-]' '{print $1}')
   cmake -GNinja \
       -DMKSPECS_INSTALL_DIR=lib/qt/mkspecs/modules/\
       -DQML_INSTALL_DIR=lib/qt/qml \
@@ -31,7 +29,8 @@ build() {
       -DQCH_INSTALL_DESTINATION=share/doc/qt \
       -DCMAKE_INSTALL_LIBDIR=lib \
       -DCMAKE_INSTALL_PREFIX=/usr \
-      -DCMAKE_BUILD_TYPE=Release
+      -DCMAKE_BUILD_TYPE=Release \
+      -DDTK_VERSION=$version
 }
 
 package() {
