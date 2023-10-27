@@ -1,3 +1,11 @@
+dtk6declarative (6.0.1) unstable; urgency=medium
+
+  * fix: should be libdtk6core instead of libdtkcore6
+  * feat: support build archlinux package for qt6
+  * fix: missing qml package for dpkg
+
+ -- YeShanShan <yeshanshan@deepin.org>  Fri, 27 Oct 2023 17:10:16 +0800
+
 dtk6declarative (6.0.0) unstable; urgency=medium
 
   * fix: NavigationTitle is partially obscured(Issue: #44)
