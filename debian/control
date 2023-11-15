@@ -18,6 +18,7 @@ Build-Depends:
  pkg-kde-tools,
  libgtest-dev,
  doxygen,
+ doxyqml,
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org
 
