@@ -17,6 +17,7 @@ Build-Depends:
  doxygen,
  qttools5-dev-tools,
  qttools5-dev,
+ doxyqml,
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org
 
