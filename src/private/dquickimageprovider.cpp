@@ -239,9 +239,13 @@ QImage DQuickDciIconProvider::requestImage(const QString &id, QSize *size, const
     // the boundingSize should typically divide by devicePixelRatio,
     // see Qt::AA_UseHighDpiPixmaps.
     int boundingSize = qMax(requestedSize.width(), requestedSize.height());
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     if (qApp->testAttribute(Qt::AA_UseHighDpiPixmaps)) {
         boundingSize = qRound(boundingSize / devicePixelRatio);
     }
+#else
+    boundingSize = qRound(boundingSize / devicePixelRatio);
+#endif
 
     const auto currentTheme = toDciTheme(theme);
     auto currentMode = mode;
