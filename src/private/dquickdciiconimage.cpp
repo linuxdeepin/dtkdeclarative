@@ -28,8 +28,7 @@ void DQuickDciIconImageItemPrivate::maybeUpdateUrl()
 {
     Q_Q(DQuickIconImage);
     if (parentPriv->name.isEmpty()) {
-        q->setSource(QUrl());
-        return;
+        return DQuickIconImagePrivate::maybeUpdateUrl();
     }
 
     QUrl url;
