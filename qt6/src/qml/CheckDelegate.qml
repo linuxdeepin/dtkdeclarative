@@ -10,9 +10,7 @@ import org.deepin.dtk.style 1.0 as DS
 
 T.CheckDelegate {
     id: control
-    property Component content: Label {
-        text: control.text
-    }
+    property Component content
     property D.Palette backgroundColor: DS.Style.itemDelegate.checkBackgroundColor
 
     implicitWidth: DS.Style.control.implicitWidth(control)
@@ -41,15 +39,20 @@ T.CheckDelegate {
     }
 
     contentItem: RowLayout {
-        spacing: control.spacing
-        D.DciIcon {
-            palette: D.DTK.makeIconPalette(control.palette)
-            mode: control.D.ColorSelector.controlState
-            theme: control.D.ColorSelector.controlTheme
-            name: control.icon.name
-            sourceSize: Qt.size(control.icon.width, control.icon.height)
+        D.IconLabel {
+            spacing: control.spacing
+            mirrored: control.mirrored
+            display: control.display
+            alignment: control.display === D.IconLabel.IconOnly || control.display === D.IconLabel.TextUnderIcon
+                       ? Qt.AlignCenter : Qt.AlignLeft | Qt.AlignVCenter
+            text: control.text
+            font: control.font
+            color: control.palette.windowText
+            icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
+            Layout.fillWidth: !control.content
         }
         Loader {
+            active: control.content
             sourceComponent: control.content
             Layout.fillWidth: true
         }
