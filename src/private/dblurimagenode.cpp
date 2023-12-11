@@ -633,12 +633,11 @@ void DOpenGLBlurEffectNode::applyDaulBlur(QOpenGLFramebufferObject *targetFBO, G
     shader->enableAttributeArray(1);
     m_sampleVbo->release();
 
-    glEnable(GL_TEXTURE_2D);
+    f->glActiveTexture(GL_TEXTURE0);
     f->glBindTexture(GL_TEXTURE_2D, sourceTexture);
     f->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     f->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     f->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    glDisable(GL_TEXTURE_2D);
     shader->release();
     targetFBO->release();
 

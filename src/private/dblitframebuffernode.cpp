@@ -133,13 +133,29 @@ public:
             m_texture->subRect.setSize(QSizeF(sourceRect.width() / fbo->width(),
                                               sourceRect.height() / fbo->height()));
         }
-        const QSizeF ss = QOpenGLContext::currentContext()->surface()->size() * scale;
+        const QSizeF ss = surfaceSize() * scale;
         const QRectF transfromSR(sourceRect.x(), ss.height() - sourceRect.y(),
                                  sourceRect.width(), -sourceRect.height());
         QOpenGLFramebufferObject::blitFramebuffer(fbo.data(), QRect(QPoint(0, 0), textureSize),
                                                   nullptr, transfromSR.toRect());
 
         doRenderCallback();
+    }
+
+    QSizeF surfaceSize() const
+    {
+        QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
+        const GLuint InvalidFBOId = 0;
+        GLuint currentFBO = InvalidFBOId;
+        f->glGetIntegerv(GL_FRAMEBUFFER_BINDING, (GLint*)&currentFBO);
+        if (currentFBO != InvalidFBOId) {
+            int width, height;
+            f->glBindRenderbuffer(GL_RENDERBUFFER, currentFBO);
+            f->glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, (GLint*)&width);
+            f->glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, (GLint*)&height);
+            return QSizeF(width, height);
+        }
+        return QOpenGLContext::currentContext()->surface()->size();
     }
 
 private:
