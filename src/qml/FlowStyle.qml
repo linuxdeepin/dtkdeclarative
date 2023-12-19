@@ -294,8 +294,11 @@ QtObject {
 
         property D.Palette text : D.Palette {
             normal: D.DTK.makeColor(D.Color.HighlightedText)
+            normalDark: D.DTK.makeColor(D.Color.HighlightedText)
             hovered: D.DTK.makeColor(D.Color.HighlightedText).lightness(+10)
+            hoveredDark: D.DTK.makeColor(D.Color.HighlightedText).lightness(+10)
             pressed: D.DTK.makeColor(D.Color.HighlightedText).opacity(-20)
+            pressedDark: D.DTK.makeColor(D.Color.HighlightedText).opacity(-20)
         }
 
         property D.Palette dropShadow : D.Palette {
@@ -655,13 +658,17 @@ QtObject {
 
         property D.Palette background: D.Palette {
             normal: D.DTK.makeColor(D.Color.Highlight)
+            normalDark: D.DTK.makeColor(D.Color.Highlight)
             hovered: D.DTK.makeColor(D.Color.Highlight).lightness(+10)
+            hoveredDark: D.DTK.makeColor(D.Color.Highlight).lightness(+10)
         }
         property D.Palette dropShadow:  D.Palette {
             normal: D.DTK.makeColor(D.Color.Highlight).lightness(+20)
+            normalDark: D.DTK.makeColor(D.Color.Highlight).lightness(+20)
         }
         property D.Palette innerShadow:  D.Palette {
             normal: D.DTK.makeColor(D.Color.Highlight).lightness(-20)
+            normalDark: D.DTK.makeColor(D.Color.Highlight).lightness(-20)
         }
     }
 
