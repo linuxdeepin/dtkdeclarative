@@ -15,6 +15,12 @@ DQUICK_BEGIN_NAMESPACE
 
 bool DQuickIconImagePrivate::updateDevicePixelRatio(qreal targetDevicePixelRatio)
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    if (!qApp->testAttribute(Qt::AA_UseHighDpiPixmaps)) {
+        devicePixelRatio = 1.0;
+        return true;
+    }
+#endif
     devicePixelRatio = targetDevicePixelRatio > 1.0 ? targetDevicePixelRatio : calculateDevicePixelRatio();
     return true;
 }

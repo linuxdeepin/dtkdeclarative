@@ -983,7 +983,7 @@ Settings.SettingsDialog {
                 key: "key"  // Option中的键可以直接绑定到config中同名的属性值
                 name: "ComboBox"
                 Settings.ComboBox {  // Settings封装的基础控件类型
-                    model: ["first", "sceond", "three"]
+                    model: ["first", "second", "three"]
                 }
             }
             Settings.SettingsOption {
@@ -1028,7 +1028,7 @@ Settings.SettingsDialog {
                         key: "key"  // Option中的键可以直接绑定到config中同名的属性值
                         name: "ComboBox"
                         Settings.ComboBox {  // Settings封装的基础控件类型
-                          model: ["first", "sceond", "three"]
+                          model: ["first", "second", "three"]
                         }
                     }
                 },

@@ -20,7 +20,9 @@ qt_add_qml_module(${LIB_NAME}
 )
 
 dtk_extend_target(${LIB_NAME} EnableCov ${ENABLE_COV})
-dtk_extend_target(${PLUGIN_NAME} EnableCov ${ENABLE_COV})
+dtk_extend_target(${PLUGIN_NAME} EnableCov ${ENABLE_COV}
+    SkipRPATH ON
+)
 
 qt_add_translations(${LIB_NAME}
     TS_FILES ${TS_FILES}

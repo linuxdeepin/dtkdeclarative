@@ -88,6 +88,7 @@ function(dtk_extend_target TARGET)
     set(args_option)
     set(args_single
         EnableCov
+        SkipRPATH
     )
     cmake_parse_arguments(PARSE_ARGV 1 arg "${args_option}" "${args_single}" "${args_multi}")
 
@@ -98,5 +99,10 @@ function(dtk_extend_target TARGET)
             target_compile_options(${TARGET} PRIVATE -fprofile-arcs -ftest-coverage)
         endif()
         target_link_libraries(${TARGET} PRIVATE gcov)
+    endif()
+
+    # skip RUNPATH avoid to `Insecure RUNPATH`
+    if (arg_SkipRPATH)
+        set_target_properties(${TARGET} PROPERTIES SKIP_BUILD_RPATH ${arg_SkipRPATH})
     endif()
 endfunction()

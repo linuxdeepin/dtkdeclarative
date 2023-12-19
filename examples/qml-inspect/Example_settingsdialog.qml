@@ -80,7 +80,7 @@ Rectangle {
                             key: "key2"
                             name: "ComboBox"
                             Settings.ComboBox {
-                                model: ["first", "sceond", "three"]
+                                model: ["first", "second", "three"]
                             }
                         }
                         Settings.SettingsOption {
@@ -146,7 +146,7 @@ Rectangle {
                             key: "option1"
                             name: "option1"
                             ComboBox {
-                                model: ["first", "sceond", "three"]
+                                model: ["first", "second", "three"]
                             }
                         }
                     }

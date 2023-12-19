@@ -8,6 +8,7 @@ find_package(Qt@QT_VERSION_MAJOR@ COMPONENTS
     REQUIRED
 )
 include(${CMAKE_CURRENT_LIST_DIR}/Dtk@DTK_VERSION_MAJOR@DeclarativeTargets.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/Dtk@DTK_VERSION_MAJOR@DeclarativePropertiesTargets.cmake)
 set(DTK_QML_APP_PLUGIN_PATH @DTK_QML_APP_PLUGIN_PATH@)
 get_target_property(DtkDeclarative_INCLUDE_DIRS Dtk@DTK_VERSION_MAJOR@::Declarative INTERFACE_INCLUDE_DIRECTORIES)
 get_target_property(DtkDeclarative_LIBRARY_DIRS Dtk@DTK_VERSION_MAJOR@::Declarative INTERFACE_LINK_DIRECTORIES)

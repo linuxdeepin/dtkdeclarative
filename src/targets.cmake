@@ -77,4 +77,4 @@ install(FILES ${PUBLIC_HEADERS} ${D_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}
 
 # Install ${LIB_NAME}_properties
 install(TARGETS ${LIB_NAME}_properties EXPORT Dtk${DTK_VERSION_MAJOR}DeclarativeProperties DESTINATION "${LIB_INSTALL_DIR}")
-install(EXPORT Dtk${DTK_VERSION_MAJOR}DeclarativeProperties NAMESPACE Dtk${DTK_VERSION_MAJOR}:: FILE Dtk${DTK_VERSION_MAJOR}DeclarativeTargets-Properties.cmake DESTINATION "${CONFIG_INSTALL_DIR}")
+install(EXPORT Dtk${DTK_VERSION_MAJOR}DeclarativeProperties NAMESPACE Dtk${DTK_VERSION_MAJOR}:: FILE Dtk${DTK_VERSION_MAJOR}DeclarativePropertiesTargets.cmake DESTINATION "${CONFIG_INSTALL_DIR}")
