@@ -53,4 +53,59 @@ T.TextField {
         implicitWidth: DS.Style.edit.width
         implicitHeight: DS.Style.edit.textFieldHeight
     }
+
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.RightButton
+
+        onClicked: {
+            contextMenu.popup(mouse.x, mouse.y)
+        }
+    }
+
+    Menu {
+        id: contextMenu
+
+        MenuItem
+        {
+            text: qsTr("Copy")
+            onTriggered: control.copy()
+            enabled: control.selectedText.length
+        }
+
+        MenuItem
+        {
+            text: qsTr("Cut")
+            onTriggered: control.cut()
+            enabled: control.selectedText.length
+        }
+
+        MenuItem
+        {
+            text: qsTr("Paste")
+            onTriggered: control.paste()
+        }
+
+        MenuItem
+        {
+            text: qsTr("Select All")
+            onTriggered: control.selectAll()
+            enabled: control.text.length
+        }
+
+        MenuItem
+        {
+            text: qsTr("Undo")
+            onTriggered: control.undo()
+            enabled: control.canUndo
+        }
+
+        MenuItem
+        {
+            text: qsTr("Redo")
+            onTriggered: control.redo()
+            enabled: control.canRedo
+        }
+    }
+
 }
