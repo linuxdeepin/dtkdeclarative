@@ -22,9 +22,7 @@ qt_add_qml_module(dtkdeclarativesettingsplugin
         "${PLUGIN_OUTPUT_DIR}/${URI_PATH}/settings"
 )
 
-dtk_extend_target(dtkdeclarativesettingsplugin EnableCov ${ENABLE_COV}
-    SkipRPATH ON
-)
+dtk_extend_target(dtkdeclarativesettingsplugin EnableCov ${ENABLE_COV})
 
 target_link_libraries(dtkdeclarativesettingsplugin
 PRIVATE
@@ -37,4 +35,5 @@ PRIVATE
     ${LIB_NAME}
 )
 
+install(TARGETS dtkdeclarativesettingsplugin DESTINATION "${QML_INSTALL_DIR}/${URI_PATH}/settings")
 install(DIRECTORY "${PLUGIN_OUTPUT_DIR}/${URI_PATH}/settings/" DESTINATION "${QML_INSTALL_DIR}/${URI_PATH}/settings")
