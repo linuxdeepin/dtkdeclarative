@@ -27,7 +27,7 @@ public:
     int compare(const QSGMaterial *other) const override;
 
     void setMaskTexture(QSGTexture *texture);
-    QSGTexture *maskTexture() const { return m_maskTexture; }
+    QSGTexture *maskTexture() const { return m_maskTexture.data(); }
 
     void setMaskScale(QVector2D maskScale);
     QVector2D maskScale() const { return m_maskScale; }
@@ -39,7 +39,7 @@ public:
     QVector2D sourceScale() const { return m_sourceScale; }
 
 private:
-    QSGTexture *m_maskTexture = nullptr;
+    QPointer<QSGTexture> m_maskTexture = nullptr;
     QVector2D m_maskScale;
     QVector2D m_maskOffset;
     QVector2D m_sourceScale;
