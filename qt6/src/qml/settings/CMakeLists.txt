@@ -35,4 +35,5 @@ PRIVATE
     ${LIB_NAME}
 )
 
+install(TARGETS dtkdeclarativesettingsplugin DESTINATION "${QML_INSTALL_DIR}/${URI_PATH}/settings")
 install(DIRECTORY "${PLUGIN_OUTPUT_DIR}/${URI_PATH}/settings/" DESTINATION "${QML_INSTALL_DIR}/${URI_PATH}/settings")
