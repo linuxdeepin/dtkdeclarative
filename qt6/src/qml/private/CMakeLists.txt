@@ -26,4 +26,5 @@ PRIVATE
     Qt${QT_VERSION_MAJOR}::Quick
 )
 
+install(TARGETS dtkdeclarativeprivatesplugin DESTINATION "${QML_INSTALL_DIR}/${URI_PATH}/private")
 install(DIRECTORY "${PLUGIN_OUTPUT_DIR}/${URI_PATH}/private/" DESTINATION "${QML_INSTALL_DIR}/${URI_PATH}/private")
