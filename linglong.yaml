@@ -22,6 +22,8 @@ depends:
   - id: dtkcommon/5.6.0
   - id: dtkcore/5.6.0
   - id: dtkgui/5.6.0
+  - id: fmtlib/10.1.2
+  - id: spdlog/1.10.0
     #- id: googletest/1.8.1
 
 source:
@@ -29,7 +31,10 @@ source:
 
 variables:
   extra_args: |
-   -DDTK_VERSION=${VERSION}
+   -DBUILD_EXAMPLE=OFF \
+   -DBUILD_DOCS=OFF \
+   -DDTK_VERSION=${VERSION} \
+   -DVERSION=${VERSION}
 
 build:
   kind: cmake
