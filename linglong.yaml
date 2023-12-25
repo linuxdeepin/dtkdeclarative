@@ -19,9 +19,9 @@ depends:
   - id: qtquickcontrols2/5.15.7
   - id: qtdeclarative/5.15.7
   - id: qttools/5.15.7
-  - id: dtkcommon/5.6.3
-  - id: dtkcore/5.6.3
-  - id: dtkgui/5.6.3
+  - id: dtkcommon/5.6.0
+  - id: dtkcore/5.6.0
+  - id: dtkgui/5.6.0
     #- id: googletest/1.8.1
 
 source:
