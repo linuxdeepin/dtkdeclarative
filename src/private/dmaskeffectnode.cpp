@@ -508,6 +508,8 @@ void OpaqueTextureMaterial::setMaskTexture(QSGTexture *texture)
         m_maskTexture = texture;
         return;
     }
+    if (!texture || !m_maskTexture)
+        return;
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     if (texture->textureId() == m_maskTexture->textureId())
