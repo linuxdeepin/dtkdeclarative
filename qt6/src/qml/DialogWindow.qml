@@ -23,10 +23,9 @@ Window {
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.MSWindowsFixedSizeDialogHint
     D.ColorSelector.family: D.Palette.CrystalColor
     color: active ? D.DTK.palette.window : D.DTK.inactivePalette.window
+    height: content.height
+    width: content.width
 
-    readonly property int maxContentHeight: height - titleBar.height
-    readonly property int implicitWidth: content.width
-    readonly property int implicitHeight: content.height
     property alias header: titleBar.sourceComponent
     property string icon
     default property alias content: contentLoader.children
@@ -35,9 +34,7 @@ Window {
     Control {
         id: content
         palette: control.active ? D.DTK.palette : D.DTK.inactivePalette
-        width: layout.implicitWidth
-        height: titleBar.height + contentLoader.childrenRect.height
-        ColumnLayout {
+        contentItem: ColumnLayout {
             id: layout
             spacing: 0
 
@@ -45,25 +42,17 @@ Window {
                 id: titleBar
                 z: D.DTK.TopOrder
                 sourceComponent: DialogTitleBar {
-                    enableInWindowBlendBlur: true
+                    enableInWindowBlendBlur: false // TODO blur anomaly in qt6.
                     icon.name: control.icon
                 }
             }
 
             Item {
                 id: contentLoader
-                Layout.preferredHeight: control.height - titleBar.height
                 Layout.fillWidth: true
+                Layout.preferredHeight: childrenRect.height
                 Layout.leftMargin: DS.Style.dialogWindow.contentHMargin
                 Layout.rightMargin: DS.Style.dialogWindow.contentHMargin
-            }
-        }
-        Component.onCompleted: {
-            if (control.width <= 0) {
-                control.width = control.implicitWidth
-            }
-            if (control.height <= 0) {
-                control.height = control.implicitHeight
             }
         }
     }
