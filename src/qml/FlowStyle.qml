@@ -401,7 +401,7 @@ QtObject {
 
         property QtObject edit: QtObject {
             property int indicatorSpacing: 7
-            property int indicatorSize: 22
+            property int indicatorSize: 24
 
             property D.Palette separator: D.Palette {
                 normal: Qt.rgba(0, 0, 0, 0.05)
@@ -412,7 +412,7 @@ QtObject {
     // Edit
     property QtObject edit: QtObject {
         property int width: 180
-        property int actionIconSize: 22
+        property int actionIconSize: 24
         property int textFieldHeight: 36
         property int textAreaHeight: 100
 
@@ -546,7 +546,7 @@ QtObject {
     property QtObject floatingMessage: QtObject {
         property int maximumWidth: 450
         property int minimumHeight: 40
-        property int closeButtonSize: 22
+        property int closeButtonSize: 24
     }
 
     property QtObject floatingPanel: QtObject {
@@ -707,8 +707,8 @@ QtObject {
         property int height: 40
         property color normalColor: Qt.rgba(0, 0, 0, 0.05)
         property color cascadeColor: Qt.rgba(0, 0, 0, 0.15)
-        property int iconSize: 22
-        property int checkIndicatorIconSize: 22
+        property int iconSize: 24
+        property int checkIndicatorIconSize: 24
         property D.Palette checkBackgroundColor: D.Palette {
             hovered: Qt.rgba(0, 0, 0, 0.1)
             normal: Qt.rgba(0, 0, 0, 0.05)
