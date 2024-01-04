@@ -85,7 +85,6 @@ T.Menu {
             implicitHeight: DS.Style.menu.item.height
             radius: DS.Style.menu.radius
             backgroundColor: control.backgroundColor
-            enableOffScreen: false
         }
     }
 }
