@@ -516,7 +516,7 @@ void DOpenGLBlurEffectNode::render(const QSGRenderNode::RenderState *state)
 QSGRenderNode::StateFlags DOpenGLBlurEffectNode::changedStates() const
 {
     if (m_offscreen)
-        return StateFlags();
+        return BlendState;
     return BlendState | StencilState | ScissorState;
 }
 
@@ -603,6 +603,9 @@ void DOpenGLBlurEffectNode::applyDaulBlur(QOpenGLFramebufferObject *targetFBO, G
     targetFBO->bind();
     QOpenGLFunctions *f = context->functions();
     shader->bind();
+
+    glEnable(GL_BLEND);
+    f->glBlendFunc(GL_ONE, GL_ZERO);
 
     // TODO(xiaoyaobing): Shader pixel offset value during hardware rendering, because software rendering
     //                    does not, so write a fixed value here
