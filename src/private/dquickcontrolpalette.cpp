@@ -11,6 +11,9 @@
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QDebug>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <private/qquickpalette_p.h>
+#endif
 
 #include <private/qqmlopenmetaobject_p.h>
 #include <private/qqmlglobal_p.h>
@@ -427,6 +430,10 @@ void DQuickControlColorSelector::setControl(QQuickItem *newControl)
     m_control = newControl;
 
     if (m_control) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        auto palette = m_control->property("palette").value<QQuickPalette*>();
+        connect(palette, &QQuickPalette::changed, this, &DQuickControlColorSelector::updateControlTheme);
+#endif
         connect(m_control, SIGNAL(paletteChanged()), this, SLOT(updateControlTheme()));
         connect(m_control, SIGNAL(hoveredChanged()), this, SLOT(updateControlState()));
         if (m_control->metaObject()->indexOfSignal("pressedChanged()") != -1) {
