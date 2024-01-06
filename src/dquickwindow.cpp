@@ -190,6 +190,12 @@ void DQuickWindowAttachedPrivate::_q_updateClipPath()
     q->setClipPathByWM(clipPath->path());
 }
 
+void DQuickWindowAttachedPrivate::_q_ensurePlatformHandle()
+{
+    if (explicitEnable && DWindowManagerHelper::instance()->hasNoTitlebar())
+        ensurePlatformHandle();
+}
+
 DQuickWindowAttached::DQuickWindowAttached(QWindow *window)
     : QObject(window)
     , DObject(*new DQuickWindowAttachedPrivate(window, this))
@@ -490,13 +496,8 @@ void DQuickWindowAttached::setEnabled(bool e)
     }
 
     if (!d->ensurePlatformHandle()) {
-        QObject::connect(DWindowManagerHelper::instance(), &DWindowManagerHelper::hasNoTitlebarChanged, this,
-                         [this] () {
-            D_D(DQuickWindowAttached);
-            if (d->explicitEnable && DWindowManagerHelper::instance()->hasNoTitlebar())
-                d->ensurePlatformHandle();
-
-        }, Qt::UniqueConnection);
+        QObject::connect(DWindowManagerHelper::instance(), SIGNAL(hasNoTitlebarChanged()), this, SLOT(_q_ensurePlatformHandle())
+                         , Qt::UniqueConnection);
     }
 }
 

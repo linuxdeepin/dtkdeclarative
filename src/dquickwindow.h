@@ -168,6 +168,7 @@ private:
     D_PRIVATE_SLOT(void _q_onWindowMotifHintsChanged(quint32))
     D_PRIVATE_SLOT(void _q_updateBlurAreaForWindow())
     D_PRIVATE_SLOT(void _q_updateClipPath())
+    D_PRIVATE_SLOT(void _q_ensurePlatformHandle())
 
     friend class DQuickBehindWindowBlur;
     friend class DQuickBehindWindowBlurPrivate;
