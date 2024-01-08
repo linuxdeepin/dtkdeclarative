@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="zh_CN">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="zh_CN">
 <context>
     <name>AboutAction</name>
     <message>
@@ -10,17 +12,17 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../qml/AboutDialog.qml" line="80"/>
+        <location filename="../qml/AboutDialog.qml" line="83"/>
         <source>Version</source>
         <translation>版本</translation>
     </message>
     <message>
-        <location filename="../qml/AboutDialog.qml" line="94"/>
+        <location filename="../qml/AboutDialog.qml" line="97"/>
         <source>Homepage</source>
         <translation>主页</translation>
     </message>
     <message>
-        <location filename="../qml/AboutDialog.qml" line="109"/>
+        <location filename="../qml/AboutDialog.qml" line="112"/>
         <source>Description</source>
         <translation>描述</translation>
     </message>
@@ -55,6 +57,39 @@
         <location filename="../qml/settings/SettingsDialog.qml" line="79"/>
         <source>Restore Defaults</source>
         <translation>恢复默认</translation>
+    </message>
+</context>
+<context>
+    <name>TextField</name>
+    <message>
+        <location filename="../qml/TextField.qml" line="71"/>
+        <source>Copy</source>
+        <translation>复制</translation>
+    </message>
+    <message>
+        <location filename="../qml/TextField.qml" line="78"/>
+        <source>Cut</source>
+        <translation>剪切</translation>
+    </message>
+    <message>
+        <location filename="../qml/TextField.qml" line="85"/>
+        <source>Paste</source>
+        <translation>粘贴</translation>
+    </message>
+    <message>
+        <location filename="../qml/TextField.qml" line="91"/>
+        <source>Select All</source>
+        <translation>全选</translation>
+    </message>
+    <message>
+        <location filename="../qml/TextField.qml" line="98"/>
+        <source>Undo</source>
+        <translation>撤销</translation>
+    </message>
+    <message>
+        <location filename="../qml/TextField.qml" line="105"/>
+        <source>Redo</source>
+        <translation>重做</translation>
     </message>
 </context>
 <context>
