@@ -1,3 +1,30 @@
+dtkdeclarative (5.6.21) unstable; urgency=medium
+
+  * chore: remove dtk-exhibition's desktop in debian
+  * chore: remove dtk-exhibition's dekstop in cmake
+  * fix: DciIcon can't load icon by source
+  * fix: find Qt Core before QuickControls2
+  * fix: insecure RUNPATH in arch
+  * fix: can't find so
+  * feat: add workflow to sync dtk6
+  * fix: Wrong highlight color in dark theme(Issue: https://github.com/linuxdeepin/developer-center/issues/6015)
+  * fix: missing DeclarativePropertiesTarget
+  * fix: Wrong highlight color in dark theme (Qt6)(Issue: #6015)
+  * fix: There isn't context menu in TextField(Issue: https://github.com/linuxdeepin/developer-center/issues/6521)
+  * Revert "fix: insecure RUNPATH in arch"
+  * fix: insecure RUNPATH in arch
+  * chore: Modify dependecy version in linglong.yaml
+  * chore: Modify field value (kind) in linglong.yaml
+  * chore: Update extra_args and depends in linglong.yaml
+  * fix: Menu's radius following system(Issue: https://github.com/linuxdeepin/developer-center/issues/6380)
+  * fix: DialogWindow abnormal(Issue: https://github.com/linuxdeepin/developer-center/issues/6654)
+  * refact: modify icon's size to 24(Issue: https://github.com/linuxdeepin/developer-center/issues/6291)
+  * fix: blur abnormal in qt6(Issue: https://github.com/linuxdeepin/developer-center/issues/6722)
+  * fix: Menu's rectangle background(Issue: https://github.com/linuxdeepin/developer-center/issues/6363)
+  * Revert "fix: Menu'popup can only work once"
+
+ -- Deepin Packages Builder <packages@deepin.org>  Tue, 09 Jan 2024 01:45:44 +0000
+
 dtkdeclarative (5.6.20) unstable; urgency=medium
 
   [ root ]
