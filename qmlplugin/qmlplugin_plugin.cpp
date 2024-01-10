@@ -105,6 +105,10 @@ inline void dtkRegisterTypeAlias(const char *uri1, const char *uri2, int version
         qmlRegisterType(url, uri2, versionMajor, versionMinor, alias);
 }
 
+inline void dtkRegisterTypeOverridable(const char *uri1, const char *uri2, int versionMajor, int versionMinor, const char *qmlFileName) {
+    dtkRegisterTypeAlias(uri1, uri2, versionMajor, versionMinor, qmlFileName, qmlFileName, "overridable/");
+}
+
 inline void dtkStyleRegisterSingletonType(const char *uri1, const char *uri2, int versionMajor, int versionMinor, const char *qmlName) {
     static QString urlTemplate = QStringLiteral("qrc:/dtk/declarative/qml/style/%1.qml");
     QUrl url(urlTemplate.arg(qmlName));
@@ -152,6 +156,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     qmlRegisterModule(styleUri.constData(), 1, 0);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QByteArray implUri;
+    dtkRegisterTypeOverridable(uri, nullptr, 1, 0, "InWindowBlur");
 #else
     // @uri org.deepin.dtk.impl
     const QByteArray implUri = QByteArray(uri).append(".impl");

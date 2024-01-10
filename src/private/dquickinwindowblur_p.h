@@ -27,7 +27,7 @@ class DQuickInWindowBlur : public QQuickItem
     Q_PROPERTY(qreal radius READ radius WRITE setRadius NOTIFY radiusChanged)
     Q_PROPERTY(bool offscreen READ offscreen WRITE setOffscreen NOTIFY offscreenChanged)
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    QML_NAMED_ELEMENT(InWindowBlur)
+    QML_NAMED_ELEMENT(InWindowBlurImpl)
 #endif
 
 public:
