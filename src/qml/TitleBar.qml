@@ -144,8 +144,12 @@ Control {
                 enabled: !menuDisabled
                 Layout.alignment: Qt.AlignRight
                 onClicked: {
-                    var pos = Qt.point(optionMenuLoader.x, control.height)
-                    optionMenuLoader.item.popup(optionMenuBtn, pos)
+                    if (optionMenuLoader.item && optionMenuLoader.item.visible) {
+                        optionMenuLoader.item.close()
+                    } else {
+                        var pos = Qt.point(optionMenuLoader.x, control.height)
+                        optionMenuLoader.item.popup(optionMenuBtn, pos)
+                    }
                 }
 
                 Loader {
@@ -157,6 +161,7 @@ Control {
                         AboutAction { aboutDialog: control.aboutDialog }
                         QuitAction { }
                     }
+                    onLoaded: item.closePolicy = item.closePolicy | Popup.CloseOnPressOutsideParent
                 }
             }
 
