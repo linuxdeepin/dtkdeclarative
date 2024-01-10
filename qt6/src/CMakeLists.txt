@@ -40,7 +40,7 @@ PRIVATE
     ${LIB_NAME}_sources
 )
 
-file(GLOB QML_RCS dtkdeclarative_qml.qrc)
+file(GLOB QML_RCS dtkdeclarative_qml.qrc dtkdeclarative_overridable_qml.qrc)
 qt_add_resources(RESOURCES
     ${QML_RCS}
     ${ASSETS_RCS}
