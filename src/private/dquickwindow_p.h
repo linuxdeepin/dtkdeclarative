@@ -39,6 +39,7 @@ public:
     void updateBlurAreaFor(DQuickBehindWindowBlur *blur);
     void _q_updateBlurAreaForWindow();
     void _q_updateClipPath();
+    void _q_ensurePlatformHandle();
 
     QWindow *window = nullptr;
     DPlatformHandle *handle = nullptr;
