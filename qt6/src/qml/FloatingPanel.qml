@@ -21,6 +21,7 @@ Control {
     property int blurRadius: DS.Style.floatingPanel.radius
 
     background: D.InWindowBlur {
+        id: blur
         implicitWidth: DS.Style.floatingPanel.width
         implicitHeight: DS.Style.floatingPanel.height
         radius: blurRadius
@@ -29,7 +30,7 @@ Control {
         D.ItemViewport {
             anchors.fill: parent
             fixed: true
-            sourceItem: parent
+            sourceItem: blur.content
             radius: control.radius
             hideSource: false
         }
