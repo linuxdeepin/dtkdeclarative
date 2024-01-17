@@ -10,6 +10,8 @@ import org.deepin.dtk.style 1.0 as DS
 T.Popup {
     id: control
 
+    property bool closeOnInactive: true
+    readonly property bool active: parent && parent.Window.active
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
 
@@ -21,6 +23,12 @@ T.Popup {
             implicitHeight: DS.Style.popup.height
             implicitWidth: DS.Style.popup.width
             radius: DS.Style.popup.radius
+        }
+    }
+
+    onActiveChanged: {
+        if (!active && closeOnInactive) {
+            control.close()
         }
     }
 }
