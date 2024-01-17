@@ -11,6 +11,7 @@ import org.deepin.dtk.style 1.0 as DS
 T.Menu {
     id: control
 
+    property bool closeOnInactive: true
     property int maxVisibleItems : DS.Style.arrowListView.maxVisibleItems
     property D.Palette backgroundColor: DS.Style.menu.background
     property var model: control.contentModel
@@ -24,6 +25,7 @@ T.Menu {
         }
         return false
     }
+    readonly property bool active: parent && parent.Window.active
 
     implicitHeight: DS.Style.control.implicitHeight(control)
     implicitWidth: DS.Style.control.implicitWidth(control)
@@ -85,6 +87,12 @@ T.Menu {
             implicitHeight: DS.Style.menu.item.height
             radius: DS.Style.menu.radius
             backgroundColor: control.backgroundColor
+        }
+    }
+
+    onActiveChanged: {
+        if (!active && closeOnInactive) {
+            control.close()
         }
     }
 }
