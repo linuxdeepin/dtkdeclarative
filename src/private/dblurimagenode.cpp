@@ -286,7 +286,7 @@ void DSGBlurNode::setFollowMatrixForSource(bool on)
 
 QSGRenderNode::RenderingFlags DSGBlurNode::flags() const
 {
-    RenderingFlags rf = BoundedRectRendering;
+    RenderingFlags rf = BoundedRectRendering | DepthAwareRendering;
     if (!m_disabledOpaqueRendering &&( !m_texture || !m_texture->hasAlphaChannel()))
         rf |= OpaqueRendering;
     return rf;
