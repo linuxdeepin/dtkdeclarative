@@ -130,7 +130,7 @@ QSGRenderNode::StateFlags DSGBlendNode::changedStates() const
 
 QSGRenderNode::RenderingFlags DSGBlendNode::flags() const
 {
-    return BoundedRectRendering;
+    return BoundedRectRendering | DepthAwareRendering;
 }
 
 QRectF DSGBlendNode::rect() const
