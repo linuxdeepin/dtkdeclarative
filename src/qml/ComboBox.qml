@@ -33,6 +33,7 @@ T.ComboBox {
         icon.name: (control.iconNameRole && model[control.iconNameRole] !== undefined) ? model[control.iconNameRole] : null
         highlighted: control.highlightedIndex === index
         hoverEnabled: control.hoverEnabled
+        autoExclusive: true
         checked: control.currentIndex === index
     }
 
@@ -149,7 +150,6 @@ T.ComboBox {
         implicitWidth: control.width
         contentItem: ArrowListView {
             maxVisibleItems: control.maxVisibleItems
-            implicitHeight: childrenRect.height
             view.model: control.delegateModel
             view.currentIndex: control.highlightedIndex
             view.highlightRangeMode: ListView.ApplyRange
