@@ -42,7 +42,7 @@ Window {
                 id: titleBar
                 z: D.DTK.TopOrder
                 sourceComponent: DialogTitleBar {
-                    enableInWindowBlendBlur: false // TODO blur anomaly in qt6.
+                    enableInWindowBlendBlur: true
                     icon.name: control.icon
                 }
             }
