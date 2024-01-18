@@ -49,7 +49,7 @@ Window {
 
             Item {
                 id: contentLoader
-                Layout.preferredWidth: childrenRect.width
+                Layout.fillWidth: true
                 Layout.preferredHeight: childrenRect.height
                 Layout.leftMargin: DS.Style.dialogWindow.contentHMargin
                 Layout.rightMargin: DS.Style.dialogWindow.contentHMargin
