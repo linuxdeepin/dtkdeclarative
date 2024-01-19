@@ -1,3 +1,17 @@
+dtkdeclarative (5.6.23) unstable; urgency=medium
+
+  * feat: support to override for external caller
+  * feat: close popup or menu on window deactivate
+  * feat: Optimize flags of RenderNode
+  * fix: failure passing implicit width
+  * chore: enable blur for DialogTitleBar
+  * fix: Multi options selected for Combobox(Issue: https://github.com/linuxdeepin/developer-center/issues/6187)
+  * Revert "fix: failure passing implicit width"
+  * chore: TypeError warning
+  * chore: TypeError warning
+
+ -- YeShanShan <yeshanshan@deepin.org>  Fri, 19 Jan 2024 14:18:56 +0800
+
 dtkdeclarative (5.6.22) unstable; urgency=medium
 
   * fix: no translations for context menu(Issue: https://github.com/linuxdeepin/developer-center/issues/6712)
