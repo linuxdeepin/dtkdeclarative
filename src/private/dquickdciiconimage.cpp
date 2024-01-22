@@ -44,6 +44,7 @@ QUrlQuery DQuickDciIconImageItemPrivate::getUrlQuery()
     query.addQueryItem(QLatin1String("name"), parentPriv->name);
     query.addQueryItem(QLatin1String("mode"), QString::number(parentPriv->mode));
     query.addQueryItem(QLatin1String("theme"), QString::number(parentPriv->theme));
+    query.addQueryItem(QLatin1String("themeName"), QIcon::themeName());
     DDciIconPalette pal = parentPriv->palette;
     if (!parentPriv->palette.foreground().isValid() && q_func()->color().isValid()) {
         pal.setForeground(q_func()->color());
