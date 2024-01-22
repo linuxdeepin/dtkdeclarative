@@ -167,11 +167,12 @@ QImage DQuickDciIconProvider::requestImage(const QString &id, QSize *size, const
         name.prepend(DSGApplication::id() + "/");
     }
 
+    const QString themeName = urlQuery.queryItemValue("themeName");
     QString iconPath;
     if (auto cached = DIconTheme::cached()) {
-        iconPath = cached->findDciIconFile(name, DGuiApplicationHelper::instance()->applicationTheme()->iconThemeName());
+        iconPath = cached->findDciIconFile(name, themeName);
     } else {
-        iconPath = DIconTheme::findDciIconFile(name, DGuiApplicationHelper::instance()->applicationTheme()->iconThemeName());
+        iconPath = DIconTheme::findDciIconFile(name, themeName);
     }
 
     const bool fallbackToQIcon = urlQuery.queryItemValue("fallbackToQIcon").toInt();
