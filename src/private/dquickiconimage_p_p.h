@@ -29,6 +29,10 @@ public:
     qreal calculateDevicePixelRatio() const;
     bool updateDevicePixelRatio(qreal targetDevicePixelRatio) override;
 
+    void updateBase64Image();
+
+    static QImage requestImageFromBase64(const QString &name, const QSize &requestedSize, qreal devicePixelRatio);
+
 private:
     QString name;
     DQuickIconImage::State state = DQuickIconImage::State::Off;
@@ -36,6 +40,7 @@ private:
     QColor color;
     QUrl fallbackSource;
 
+protected:
     enum IconType : qint8 {
         ThemeIconName, // 图标名称
         Base64Data, // base64编码的图标图片数据

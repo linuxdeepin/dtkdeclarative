@@ -25,6 +25,35 @@ bool DQuickIconImagePrivate::updateDevicePixelRatio(qreal targetDevicePixelRatio
     return true;
 }
 
+void DQuickIconImagePrivate::updateBase64Image()
+{
+    Q_ASSERT(iconType == Base64Data);
+
+    D_Q(DQuickIconImage);
+    QImage image = requestImageFromBase64(name, q->sourceSize(), devicePixelRatio);
+    setImage(image);
+}
+
+QImage DQuickIconImagePrivate::requestImageFromBase64(const QString &name, const QSize &requestedSize, qreal devicePixelRatio)
+{
+    const QString flag("base64,");
+    const auto index = name.indexOf(flag);
+    if (index < 0)
+        return QImage();
+
+    const QString &imgData(name.sliced(index + flag.size()));
+    QImage image = QImage::fromData(QByteArray::fromBase64(imgData.toLatin1()));
+    QSize icon_size = requestedSize;
+    if (icon_size.isEmpty()) {
+        icon_size = image.size();
+    } else {
+        icon_size /= devicePixelRatio;
+    }
+    image = image.scaled(icon_size * devicePixelRatio, Qt::KeepAspectRatio);
+
+    return image;
+}
+
 void DQuickIconImagePrivate::init()
 {
     D_Q(DQuickIconImage);
@@ -54,8 +83,11 @@ void DQuickIconImagePrivate::maybeUpdateUrl()
     D_Q(DQuickIconImage);
 
     // 不要为非主题中的图标更新url地址
-    if (iconType != ThemeIconName)
+    if (iconType != ThemeIconName) {
+        if (iconType == Base64Data)
+            updateBase64Image();
         return;
+    }
 
     // 当图标名为空视为清理图片内容
     if (name.isEmpty()) {
@@ -156,7 +188,6 @@ void DQuickIconImage::setName(const QString &name)
     d->iconType = DQuickIconImagePrivate::ThemeIconName;
 
     if (name.startsWith("data:image/")) {
-        // TODO(zccrs): 此处可能为base64编码的图片数据
         d->iconType = DQuickIconImagePrivate::Base64Data;
     } else if (name.indexOf(":/") >= 0) {
         QUrl url(name);
