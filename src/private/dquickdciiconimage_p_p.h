@@ -37,7 +37,6 @@ public:
     void layout();
     void updateImageSourceUrl();
 
-    QString name;
     DDciIconPalette palette;
     DQuickIconImage *imageItem;
     DQMLGlobalObject::ControlState mode = DQMLGlobalObject::NormalState;
