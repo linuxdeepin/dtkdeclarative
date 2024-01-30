@@ -45,7 +45,7 @@ Item {
             id: backgroundGradient
             // Use the backgroundRect's colorselecor can filter the hovered state.
             GradientStop { position: 0.0; color: backgroundRect.D.ColorSelector.color1}
-            GradientStop { position: 0.96; color: backgroundRect.D.ColorSelector.color2}
+            GradientStop { position: 1.0; color: backgroundRect.D.ColorSelector.color2}
         }
 
         anchors.fill: parent

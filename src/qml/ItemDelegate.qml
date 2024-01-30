@@ -44,6 +44,7 @@ T.ItemDelegate {
         width: DS.Style.itemDelegate.iconSize
         height: DS.Style.itemDelegate.iconSize
     }
+    font: D.DTK.fontManager.t9
 
     indicator: Loader {
         x: control.text ? (control.mirrored ? control.leftPadding : control.width - width - control.rightPadding)
