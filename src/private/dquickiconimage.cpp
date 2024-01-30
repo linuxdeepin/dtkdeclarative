@@ -41,7 +41,11 @@ QImage DQuickIconImagePrivate::requestImageFromBase64(const QString &name, const
     if (index < 0)
         return QImage();
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     const QString &imgData(name.sliced(index + flag.size()));
+#else
+    const QString &imgData(name.left(index + flag.size()));
+#endif
     QImage image = QImage::fromData(QByteArray::fromBase64(imgData.toLatin1()));
     QSize icon_size = requestedSize;
     if (icon_size.isEmpty()) {
