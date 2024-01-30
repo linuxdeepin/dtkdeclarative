@@ -69,5 +69,6 @@ T.ToolButton {
         implicitWidth: DS.Style.toolButton.width
         implicitHeight: DS.Style.toolButton.height
         button: control
+        outsideBorderColor: null
     }
 }

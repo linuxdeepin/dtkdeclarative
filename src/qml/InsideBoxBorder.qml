@@ -6,7 +6,7 @@ import QtQuick 2.0
 
 Item {
     property real borderWidth: 1
-    property color color: "white"
+    property color color: Qt.rgba(1, 1, 1, 0.15)
     property alias radius: rect.radius
 
     Rectangle {

@@ -106,6 +106,10 @@ QtObject {
                 common: ("#f7f7f7")
                 crystal: Qt.rgba(0, 0, 0, 0.1)
             }
+            normalDark {
+                common: Qt.rgba(1, 1, 1, 0.1)
+                crystal: Qt.rgba(1, 1, 1, 0.1)
+            }
             hovered {
                 common: ("#e1e1e1")
                 crystal:  Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.2)
@@ -120,6 +124,10 @@ QtObject {
             normal {
                 common: ("#f0f0f0")
                 crystal: Qt.rgba(0, 0, 0, 0.1)
+            }
+            normalDark {
+                common: Qt.rgba(1, 1, 1, 0.1)
+                crystal: Qt.rgba(1, 1, 1, 0.1)
             }
             hovered {
                 common: ("#d2d2d2")
@@ -152,8 +160,18 @@ QtObject {
                 common: Qt.rgba(1, 1, 1, 0.1)
                 crystal: Qt.rgba(1, 1, 1, 0.1)
             }
-            hovered: Qt.rgba(1, 1, 1, 0.2)
-            pressed: Qt.rgba(0, 0, 0, 0.03)
+            normalDark {
+                common: Qt.rgba(1, 1, 1, 0.1)
+                crystal: Qt.rgba(1, 1, 1, 0.1)
+            }
+            hovered {
+                common: Qt.rgba(1, 1, 1, 0.2)
+                crystal: Qt.rgba(0, 0, 0, 0.05)
+            }
+            pressed {
+                common: Qt.rgba(1, 1, 1, 0.03)
+                crystal: Qt.rgba(0, 0, 0, 0.03)
+            }
         }
 
         property D.Palette outsideBorder: D.Palette {
@@ -167,8 +185,8 @@ QtObject {
 
         property D.Palette text: D.Palette {
             normal {
-                common: Qt.rgba(0, 0, 0, 0.7)
-                crystal: Qt.rgba(0, 0, 0, 0.9)
+                common: Qt.rgba(0, 0, 0, 1)
+                crystal: Qt.rgba(0, 0, 0, 1)
             }
             pressed {
                 common: D.DTK.makeColor(D.Color.Highlight)
@@ -238,12 +256,11 @@ QtObject {
 
         property D.Palette dropShadow: D.Palette {
             normal {
-                common: D.DTK.makeColor(D.Color.Highlight).saturation(+50).lightness(-10).opacity(+30)
+                common: D.DTK.makeColor(D.Color.Highlight).saturation(+50).lightness(-10).opacity(-60)
                 crystal: Qt.rgba(0, 0, 0, 0.1)
             }
             normalDark: D.DTK.makeColor(D.Color.Highlight).saturation(+15).lightness(+12).opacity(+20)
-            hovered: D.DTK.makeColor(D.Color.Highlight).saturation(+50).lightness(-10).opacity(+30)
-            pressed: D.DTK.makeColor(D.Color.Highlight).saturation(+50).lightness(-10).opacity(+20)
+            pressed: D.DTK.makeColor(D.Color.Highlight).saturation(+50).lightness(-10).opacity(-80)
             disabled: D.DTK.makeColor(D.Color.Highlight).saturation(+50).lightness(-10).opacity(+30)
         }
 
@@ -356,14 +373,14 @@ QtObject {
 
     property QtObject iconButton: QtObject {
         property int backgroundSize: 36
-        property int iconSize: 18
+        property int iconSize: 16
         property int padding: 9
     }
 
     property QtObject toolButton: QtObject {
-        property int width: 36
-        property int height: 36
-        property int iconSize: 14
+        property int width: 30
+        property int height: 30
+        property int iconSize: 16
         property int indicatorRightMargin: 6
     }
 
@@ -385,10 +402,10 @@ QtObject {
     }
 
     property QtObject buttonBox: QtObject {
-        property int width: 80
-        property int height: 36
-        property int padding: 3
-        property int spacing: 6
+        property int width: 30
+        property int height: 30
+        property int padding: 0
+        property int spacing: 0
     }
 
     property QtObject comboBox: QtObject {
