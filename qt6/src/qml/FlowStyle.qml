@@ -429,13 +429,13 @@ QtObject {
     // Edit
     property QtObject edit: QtObject {
         property int width: 180
-        property int actionIconSize: 24
+        property int actionIconSize: 16
         property int textFieldHeight: 36
         property int textAreaHeight: 100
 
         property D.Palette background: D.Palette {
             normal: Qt.rgba(0, 0, 0, 0.08)
-            normalDark: Qt.rgba(1, 1, 1, 0.05)
+            normalDark: Qt.rgba(1, 1, 1, 0.1)
         }
 
         property D.Palette alertBackground: D.Palette {
