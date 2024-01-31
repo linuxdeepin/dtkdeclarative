@@ -1,3 +1,13 @@
+dtkdeclarative (5.6.24) unstable; urgency=medium
+
+  * fix: icon doesn't change when iconTheme changed
+  * feat: support base64 format for icons
+  * fix: build on qt5
+  * fix: adjust style for launchpad used
+  * fix: adjust style for launchpad used
+
+ -- YeShanShan <yeshanshan@deepin.org>  Wed, 31 Jan 2024 18:54:10 +0800
+
 dtkdeclarative (5.6.23) unstable; urgency=medium
 
   * feat: support to override for external caller
