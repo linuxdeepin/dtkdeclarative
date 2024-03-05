@@ -85,6 +85,7 @@ T.TextField {
         {
             text: qsTr("Paste")
             onTriggered: control.paste()
+            enabled: control.canPaste
         }
 
         MenuItem
