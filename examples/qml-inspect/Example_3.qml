@@ -43,6 +43,25 @@ Item {
         invert: true
     }
 
+    BoxShadow {
+        hollow: true
+        anchors.fill: shadowedRect
+        shadowBlur: 20
+        shadowColor: "red"
+        topLeftRadius: shadowedRect.radius
+        bottomRightRadius: shadowedRect.radius
+    }
+    RoundRectangle {
+        id: shadowedRect
+        x: 50
+        y: 300
+        width: 100
+        height: 100
+        color: "blue"
+        radius: 30
+        corners: RoundRectangle.TopLeftCorner | RoundRectangle.BottomRightCorner
+    }
+
     ListView {
         id: testView
 

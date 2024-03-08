@@ -290,7 +290,13 @@ DColor DQMLGlobalObject::makeColor(const QColor &color)
 QUrl DQMLGlobalObject::makeShadowImageUrl(qreal boxSize, qreal cornerRadius, qreal shadowBlur, QColor color,
                                           qreal xOffset, qreal yOffset, qreal spread, bool hollow, bool inner)
 {
-    return DQuickShadowProvider::toUrl(boxSize, cornerRadius, shadowBlur, color, xOffset, yOffset, spread, hollow, inner);
+    return makeShadowImageUrl(boxSize, cornerRadius, cornerRadius, cornerRadius, cornerRadius, shadowBlur, color, xOffset, yOffset, spread, hollow, inner);
+}
+
+QUrl DQMLGlobalObject::makeShadowImageUrl(qreal boxSize, qreal topLeftRadius, qreal topRightRadius, qreal bottomLeftRadius, qreal bottomRightRadius,
+                                          qreal shadowBlur, QColor color, qreal xOffset, qreal yOffset, qreal spread, bool hollow, bool inner)
+{
+    return DQuickShadowProvider::toUrl(boxSize, topLeftRadius, topRightRadius, bottomLeftRadius, bottomRightRadius, shadowBlur, color, xOffset, yOffset, spread, hollow, inner);
 }
 
 DGuiApplicationHelper::ColorType DQMLGlobalObject::toColorType(const QColor &color)
