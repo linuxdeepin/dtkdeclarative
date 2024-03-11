@@ -9,6 +9,10 @@ Item {
     id: root
 
     property real cornerRadius: 0
+    property variant topLeftRadius
+    property variant topRightRadius
+    property variant bottomLeftRadius
+    property variant bottomRightRadius
     property real shadowBlur: 10
     property real shadowOffsetX: 0
     property real shadowOffsetY: 0
@@ -33,7 +37,11 @@ Item {
         width: parent.width + (shadowBlur + spread) * 2
         height: parent.height + (shadowBlur + spread) * 2
 
-        source: D.DTK.makeShadowImageUrl(__boxSize, cornerRadius, shadowBlur, shadowColor, __offsetX, __offsetY, __spread, hollow, false)
+        source: D.DTK.makeShadowImageUrl(__boxSize, shadowRadius(topLeftRadius), shadowRadius(topRightRadius), shadowRadius(bottomLeftRadius), shadowRadius(bottomRightRadius),
+                                         shadowBlur, shadowColor, __offsetX, __offsetY, __spread, hollow, false)
+        function shadowRadius(radius) {
+            return radius !== undefined ? radius : cornerRadius
+        }
 
         function bound(min, val, max) {
             if (val <= min)

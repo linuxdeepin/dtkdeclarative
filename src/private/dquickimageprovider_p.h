@@ -38,14 +38,16 @@ public:
 
     enum Type : quint8 {
         Rectangle = 0,
-        Circular = 1,
 
         Inner = 2
     };
 
     struct ShadowConfig {
         quint8 type;
-        qreal cornerRadius;
+        qreal topLeftRadius;
+        qreal topRightRadius;
+        qreal bottomLeftRadius;
+        qreal bottomRightRadius;
         qreal blurRadius;
         qreal spread;
         qreal boxSize;
@@ -53,7 +55,10 @@ public:
         ShadowConfig() {}
         ShadowConfig(const ShadowConfig &other)
             : type(other.type)
-            , cornerRadius(other.cornerRadius)
+            , topLeftRadius(other.topLeftRadius)
+            , topRightRadius(other.topRightRadius)
+            , bottomLeftRadius(other.bottomLeftRadius)
+            , bottomRightRadius(other.bottomRightRadius)
             , blurRadius(other.blurRadius)
             , spread(other.spread)
             , boxSize(other.boxSize) {}
@@ -61,16 +66,19 @@ public:
         inline bool isInner() const {
             return type & Inner;
         }
-        inline bool isCircular() const {
-            return type & Circular;
-        }
+
         inline QString toString() const {
-            return QString("%1.%2.%3.%4.%5").arg(type).arg(cornerRadius).arg(blurRadius).arg(spread).arg(boxSize);
+            return QString("%1.%2.%3.%4.%5.%6.%7.%8").arg(type).
+                arg(topLeftRadius).arg(topRightRadius).arg(bottomLeftRadius).arg(bottomRightRadius).
+                arg(blurRadius).arg(spread).arg(boxSize);
         }
 
         inline ShadowConfig &operator=(const ShadowConfig &other) {
             type = other.type;
-            cornerRadius = other.cornerRadius;
+            topLeftRadius =  other.topLeftRadius;
+            topRightRadius =  other.topRightRadius;
+            bottomLeftRadius =  other.bottomLeftRadius;
+            bottomRightRadius =  other.bottomRightRadius;
             blurRadius = other.blurRadius;
             spread = other.spread;
 
@@ -79,7 +87,10 @@ public:
 
         inline bool operator==(const ShadowConfig &other) const {
             return type == other.type
-                    && qFuzzyCompare(cornerRadius, other.cornerRadius)
+                    && qFuzzyCompare(topLeftRadius, other.topLeftRadius)
+                    && qFuzzyCompare(topRightRadius, other.topRightRadius)
+                    && qFuzzyCompare(bottomLeftRadius, other.bottomLeftRadius)
+                    && qFuzzyCompare(bottomRightRadius, other.bottomRightRadius)
                     && qFuzzyCompare(blurRadius, other.blurRadius)
                     && qFuzzyCompare(spread, other.spread)
                     && qFuzzyCompare(boxSize, other.boxSize);
@@ -91,7 +102,7 @@ public:
         friend Q_CORE_EXPORT uint qHash(const ShadowConfig &config, uint seed) noexcept;
     };
 
-    static QUrl toUrl(qreal boxSize, qreal cornerRadius, qreal shadowBlur, QColor color,
+    static QUrl toUrl(qreal boxSize, qreal topLeftRadius, qreal topRightRadius, qreal bottomLeftRadius, qreal bottomRightRadius, qreal shadowBlur, QColor color,
                       qreal xOffset, qreal yOffset, qreal spread, bool hollow, bool inner);
 
 protected:
@@ -110,7 +121,10 @@ private:
 
 inline uint qHash(const DTK_QUICK_NAMESPACE::DQuickShadowProvider::ShadowConfig &config, uint seed = 0) noexcept {
     return QT_PREPEND_NAMESPACE(qHash)(static_cast<uint>(config.type), seed) ^
-            QT_PREPEND_NAMESPACE(qHash)(config.cornerRadius, seed) ^
+            QT_PREPEND_NAMESPACE(qHash)(config.topLeftRadius, seed) ^
+            QT_PREPEND_NAMESPACE(qHash)(config.topRightRadius, seed) ^
+            QT_PREPEND_NAMESPACE(qHash)(config.bottomLeftRadius, seed) ^
+            QT_PREPEND_NAMESPACE(qHash)(config.bottomRightRadius, seed) ^
             QT_PREPEND_NAMESPACE(qHash)(config.blurRadius, seed) ^
             QT_PREPEND_NAMESPACE(qHash)(config.spread, seed);
 }

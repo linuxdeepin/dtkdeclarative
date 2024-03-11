@@ -304,7 +304,7 @@ DQuickShadowProvider::~DQuickShadowProvider()
     qDeleteAll(cache.values());
 }
 
-QUrl DQuickShadowProvider::toUrl(qreal boxSize, qreal cornerRadius, qreal shadowBlur, QColor color,
+QUrl DQuickShadowProvider::toUrl(qreal boxSize, qreal topLeftRadius, qreal topRightRadius, qreal bottomLeftRadius, qreal bottomRightRadius, qreal shadowBlur, QColor color,
                                  qreal xOffset, qreal yOffset, qreal spread, bool hollow, bool inner)
 {
     QUrl url;
@@ -313,7 +313,10 @@ QUrl DQuickShadowProvider::toUrl(qreal boxSize, qreal cornerRadius, qreal shadow
     QUrlQuery args;
     args.setQueryItems({
                            {"boxSize", QString::number(boxSize)},
-                           {"cornerRadius", QString::number(cornerRadius)},
+                           {"topLeftRadius", QString::number(topLeftRadius)},
+                           {"topRightRadius", QString::number(topRightRadius)},
+                           {"bottomLeftRadius", QString::number(bottomLeftRadius)},
+                           {"bottomRightRadius", QString::number(bottomRightRadius)},
                            {"shadowBlur", QString::number(shadowBlur)},
                            {"color", color.name(QColor::HexArgb)},
                            {"xOffset", QString::number(xOffset)},
@@ -338,22 +341,28 @@ inline static bool getNumberFromString(const QString &string, bool *number) {
     return ok;
 }
 
-static bool fromString(const QString &string, qreal *boxSize, qreal *cornerRadius, qreal *shadowBlur,
-                       QColor *color, qreal *xOffset, qreal *yOffset, qreal *spread, bool *hollow, bool *inner)
+static bool fromString(const QString &string, DQuickShadowProvider::ShadowConfig &config,
+                       QColor *color, qreal *xOffset, qreal *yOffset, bool *hollow, bool *inner)
 {
     QUrlQuery args(string);
 
-    if (!getNumberFromString(args.queryItemValue("boxSize"), boxSize))
+    if (!getNumberFromString(args.queryItemValue("boxSize"), &config.boxSize))
         return false;
-    if (!getNumberFromString(args.queryItemValue("cornerRadius"), cornerRadius))
+    if (!getNumberFromString(args.queryItemValue("topLeftRadius"), &config.topLeftRadius))
         return false;
-    if (!getNumberFromString(args.queryItemValue("shadowBlur"), shadowBlur))
+    if (!getNumberFromString(args.queryItemValue("topRightRadius"), &config.topRightRadius))
+        return false;
+    if (!getNumberFromString(args.queryItemValue("bottomLeftRadius"), &config.bottomLeftRadius))
+        return false;
+    if (!getNumberFromString(args.queryItemValue("bottomRightRadius"), &config.bottomRightRadius))
+        return false;
+    if (!getNumberFromString(args.queryItemValue("shadowBlur"), &config.blurRadius))
         return false;
     if (!getNumberFromString(args.queryItemValue("xOffset"), xOffset))
         return false;
     if (!getNumberFromString(args.queryItemValue("yOffset"), yOffset))
         return false;
-    if (!getNumberFromString(args.queryItemValue("spread"), spread))
+    if (!getNumberFromString(args.queryItemValue("spread"), &config.spread))
         return false;
     if (!getNumberFromString(args.queryItemValue("hollow"), hollow))
         return false;
@@ -371,6 +380,62 @@ static bool fromString(const QString &string, qreal *boxSize, qreal *cornerRadiu
     return true;
 }
 
+static QPainterPath roundedRectPath(const QRectF &rect,
+                                    qreal topLeftRadius,
+                                    qreal topRightRadius,
+                                    qreal bottomLeftRadius,
+                                    qreal bottomRightRadius)
+{
+    QPainterPath roundedPath;
+    roundedPath.addRect(rect);
+
+    const auto width = rect.width();
+    const auto height = rect.height();
+
+    QPainterPath path;
+    if (topLeftRadius > 0.0) {
+        int radius = topLeftRadius;
+        path.moveTo(0, 0);
+        path.arcTo(0, 0,  radius * 2,  radius * 2, 90, 90);
+        path.lineTo(0, 0);
+    }
+
+    if (topRightRadius > 0.0) {
+        int radius = topRightRadius;
+        path.moveTo(width, 0);
+        QRectF rect1(width -  radius * 2, 0, radius * 2,  radius * 2);
+        path.arcTo(rect1, 0, 90);
+        path.lineTo(width, 0);
+    }
+
+    if (bottomLeftRadius > 0.0) {
+        int radius = bottomLeftRadius;
+        path.moveTo(0, height);
+        QRectF rect2(0, height -  radius * 2, radius * 2, radius * 2);
+        path.arcTo(rect2, 180, 90);
+        path.lineTo(0, height);
+    }
+
+    if (bottomRightRadius > 0.0) {
+        int radius = bottomRightRadius;
+        path.moveTo(width, height);
+        QRectF f2(width -  radius * 2, height - radius * 2, radius * 2,  radius * 2);
+        path.arcTo(f2, 270, 90);
+        path.lineTo(width,  height);
+    }
+
+    if (!path.isEmpty()) {
+        path.translate(rect.x(), rect.y());
+        roundedPath = roundedPath - path;
+    }
+    return roundedPath;
+}
+
+static QPainterPath roundedRectPath(const QRectF &rect, const DQuickShadowProvider::ShadowConfig &config)
+{
+    return roundedRectPath(rect, config.topLeftRadius, config.topRightRadius, config.bottomLeftRadius, config.bottomRightRadius);
+}
+
 QImage DQuickShadowProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
 {
     ShadowConfig config;
@@ -383,13 +448,10 @@ QImage DQuickShadowProvider::requestImage(const QString &id, QSize *size, const 
     QImage image;
 
     do {
-        if (!fromString(id, &config.boxSize, &config.cornerRadius, &config.blurRadius,
-                        &color, &xOffset, &yOffset, &config.spread, &hollow, &isInner)) {
+        if (!fromString(id, config, &color, &xOffset, &yOffset, &hollow, &isInner)) {
             break;
         }
 
-        config.type = (requestedSize.width() == requestedSize.height()
-                       && requestedSize.width() == qRound(2 * config.cornerRadius)) ? Circular : Rectangle;
         if (isInner)
             config.type |= Inner;
 
@@ -408,11 +470,8 @@ QImage DQuickShadowProvider::requestImage(const QString &id, QSize *size, const 
         painter.setRenderHint(QPainter::Antialiasing, true);
         painter.setPen(Qt::NoPen);
 
-        if (config.cornerRadius > 0) {
-            QPainterPath clipPath;
-            clipPath.addRoundedRect(image.rect(), config.cornerRadius, config.cornerRadius);
-            painter.setClipPath(clipPath);
-        }
+        QPainterPath clipPath = roundedRectPath(image.rect(), config);
+        painter.setClipPath(clipPath);
 
         QPointF offset(xOffset, yOffset);
         if (config.isInner()) {
@@ -438,11 +497,9 @@ QImage DQuickShadowProvider::requestImage(const QString &id, QSize *size, const 
             QRectF boxRect(0, 0, image.width() - 2 * (config.blurRadius + config.spread),
                            image.height() - 2 * (config.blurRadius + config.spread));
             boxRect.moveCenter(QRectF(image.rect()).center() - offset);
-            if (config.cornerRadius > 0) {
-                painter.drawRoundedRect(boxRect, config.cornerRadius, config.cornerRadius);
-            } else {
-                painter.drawRect(boxRect);
-            }
+
+            painter.drawPath(roundedRectPath(boxRect, config));
+
             painter.end();
         }
     } while (false);
@@ -654,11 +711,8 @@ ShadowImage *DQuickShadowProvider::getRawShadow(const ShadowConfig &config)
             boxRect += QMarginsF(config.spread, config.spread, config.spread, config.spread);
         }
 
-        if (config.cornerRadius > 0) {
-            sourcePainter.drawRoundedRect(boxRect, config.cornerRadius, config.cornerRadius);
-        } else {
-            sourcePainter.drawRect(boxRect);
-        }
+        sourcePainter.drawPath(roundedRectPath(boxRect, config));
+
         sourcePainter.end();
         const QRect blurRect(0, 0, qCeil(imageSize * 0.5), qCeil(imageSize * 0.5));
         doBoxShdowBlur(source, static_cast<int>(config.blurRadius), blurRect);

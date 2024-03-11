@@ -200,6 +200,9 @@ public:
     Q_INVOKABLE QUrl makeShadowImageUrl(qreal boxSize, qreal cornerRadius, qreal shadowBlur,
                                         QColor color, qreal xOffset, qreal yOffset, qreal spread,
                                         bool hollow, bool inner);
+    Q_INVOKABLE QUrl makeShadowImageUrl(qreal boxSize, qreal topLeftRadius, qreal topRightRadius, qreal bottomLeftRadius, qreal bottomRightRadius,
+                                        qreal shadowBlur, QColor color, qreal xOffset, qreal yOffset, qreal spread,
+                                        bool hollow, bool inner);
 
     Q_INVOKABLE DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType toColorType(const QColor &color);
     Q_INVOKABLE QColor selectColor(const QColor &windowColor, const QColor &light, const QColor &dark);
