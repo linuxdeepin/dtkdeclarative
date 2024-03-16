@@ -586,6 +586,7 @@ QtObject {
         }
 
         property D.Palette insideBorder: D.Palette {
+            normal: Qt.rgba(1, 1, 1, 0.05)
             normalDark: Qt.rgba(1, 1, 1, 0.05)
         }
     }
