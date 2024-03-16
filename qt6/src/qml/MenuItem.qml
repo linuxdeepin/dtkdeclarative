@@ -10,7 +10,7 @@ import org.deepin.dtk.style 1.0 as DS
 T.MenuItem {
     id: control
 
-    property bool useIndicatorPadding: menu && menu.existsChecked
+    property bool useIndicatorPadding: menu && menu.existsChecked || false
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
     baselineOffset: contentItem.y + contentItem.baselineOffset
@@ -104,7 +104,7 @@ T.MenuItem {
 
         Loader {
             anchors.fill: parent
-            active: control.hovered
+            active: control.down || control.highlighted
             sourceComponent: HighlightPanel {}
         }
     }
