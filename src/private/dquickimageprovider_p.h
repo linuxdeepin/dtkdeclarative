@@ -43,14 +43,14 @@ public:
     };
 
     struct ShadowConfig {
-        quint8 type;
-        qreal topLeftRadius;
-        qreal topRightRadius;
-        qreal bottomLeftRadius;
-        qreal bottomRightRadius;
-        qreal blurRadius;
-        qreal spread;
-        qreal boxSize;
+        quint8 type = Rectangle;
+        qreal topLeftRadius {0.0};
+        qreal topRightRadius {0.0};
+        qreal bottomLeftRadius {0.0};
+        qreal bottomRightRadius {0.0};
+        qreal blurRadius {0.0};
+        qreal spread {0.0};
+        qreal boxSize {0.0};
 
         ShadowConfig() {}
         ShadowConfig(const ShadowConfig &other)
