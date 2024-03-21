@@ -12,6 +12,7 @@
 #include <private/qquickpath_p.h>
 #include <private/qquickpath_p_p.h>
 #include <private/qquicktransition_p.h>
+#include <private/qquickwindow_p.h>
 
 #include <QPlatformSurfaceEvent>
 
@@ -195,6 +196,52 @@ void DQuickWindowAttachedPrivate::_q_ensurePlatformHandle()
     if (explicitEnable && DWindowManagerHelper::instance()->hasNoTitlebar())
         ensurePlatformHandle();
 }
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+void DQuickWindowAttachedPrivate::ensurePalette()
+{
+    Q_Q(DQuickWindowAttached);
+
+    if (paletteInit)
+        return;
+    paletteInit = true;
+
+    quickPalette = new QQuickPalette(q);
+    inactiveQuickPalette = new QQuickPalette(q);
+
+    paletteConnections = std::array<QMetaObject::Connection, 2> {
+        QObject::connect(DGuiApplicationHelper::instance(), SIGNAL(applicationPaletteChanged()),
+                         q, SLOT(_q_onPaletteChanged())),
+        QObject::connect(window, SIGNAL(activeChanged()), q, SLOT(_q_updateWindowPalette()))
+    };
+}
+
+void DQuickWindowAttachedPrivate::_q_onPaletteChanged()
+{
+    DPalette palette = DGuiApplicationHelper::instance()->applicationPalette(themeType);
+    DPalette inactivePalette;
+
+    for (int i = 0; i < QPalette::NColorRoles; ++i) {
+        QPalette::ColorRole role = static_cast<QPalette::ColorRole>(i);
+        inactivePalette.setBrush(QPalette::All, role, palette.brush(QPalette::Inactive, role));
+        // The QML control will set the opacity property to 0.4 on the disabled state
+        // The palette don't need set color for the QPalette::Disabled group.
+        palette.setBrush(QPalette::All, role, palette.brush(QPalette::Active, role));
+    }
+
+    quickPalette->fromQPalette(palette);
+    inactiveQuickPalette->fromQPalette(inactivePalette);
+
+    _q_updateWindowPalette();
+}
+
+void DQuickWindowAttachedPrivate::_q_updateWindowPalette()
+{
+    Q_Q(DQuickWindowAttached);
+    auto pt = window->isActive() ? quickPalette : inactiveQuickPalette;
+    QQuickWindowPrivate::get(q->window())->setPalette(pt);
+}
+#endif
 
 DQuickWindowAttached::DQuickWindowAttached(QWindow *window)
     : QObject(window)
@@ -476,6 +523,52 @@ DWindowManagerHelper::MotifDecorations DQuickWindowAttached::motifDecorations() 
 
     return d->motifDecorations;
 }
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType DQuickWindowAttached::themeType() const
+{
+    D_DC(DQuickWindowAttached);
+    return d->themeType;
+}
+
+void DQuickWindowAttached::setThemeType(const DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType &newThemeType)
+{
+    D_D(DQuickWindowAttached);
+
+    if (d->themeType == newThemeType)
+        return;
+    d->themeType = newThemeType;
+
+    d->ensurePalette();
+    d->_q_onPaletteChanged();
+
+    emit themeTypeChanged();
+}
+
+void DQuickWindowAttached::resetThemeType()
+{
+    D_D(DQuickWindowAttached);
+    if (!d->paletteInit) {
+        return;
+    }
+
+    d->paletteInit = false;
+
+    for (const QMetaObject::Connection &connection : std::as_const(d->paletteConnections))
+        disconnect(connection);
+    d->paletteConnections = {};
+    delete d->quickPalette;
+    d->quickPalette = nullptr;
+    delete d->inactiveQuickPalette;
+    d->inactiveQuickPalette = nullptr;
+
+    if (d->themeType != DGuiApplicationHelper::UnknownType) {
+        d->themeType = DGuiApplicationHelper::UnknownType;
+        emit themeTypeChanged();
+    }
+    QQuickWindowPrivate::get(window())->resetPalette();
+}
+#endif
 
 /*!
  * \~chinese \brief DQuickWindowAttached::setEnabled　设置当前的窗口为 DTK 风格。
