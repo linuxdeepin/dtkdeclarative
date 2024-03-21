@@ -49,6 +49,20 @@ static inline bool _d_isWindowRootItem(QQuickItem *item) {
     return item->inherits(RootItemClassName);
 }
 
+// it's maybe an bug for qt, to use qvariant_cast to get Control's palette.
+// `qvariant_cast` gets application's palette, and `toQPalette` gets root window's
+// palette.
+static inline QPalette _d_getControlPalette(QQuickItem *item) {
+    const QVariant &palette = item->property("palette");
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    const QQuickPalette *pa = palette.value<QQuickPalette *>();
+    Q_ASSERT(pa);
+    return pa->toQPalette();
+#else
+    return qvariant_cast<QPalette>(palette);
+#endif
+}
+
 static QMetaProperty findMetaPropertyFromSignalIndex(const QObject *obj, int signal_index) {
     QMetaProperty itemProperty;
     if (signal_index < 0)
@@ -790,7 +804,7 @@ QColor DQuickControlColorSelector::getColorOf(const DQuickControlPalette *palett
     QColor colorValue;
     if (targetColor.isTypedColor()) {
         if (m_control)
-            colorValue = targetColor.toColor(qvariant_cast<QPalette>(m_control->property("palette")));
+            colorValue = targetColor.toColor(_d_getControlPalette(m_control));
     } else {
         colorValue = targetColor.color();
     }
@@ -939,8 +953,7 @@ void DQuickControlColorSelector::updateControlTheme()
     if (!m_control)
         return;
 
-    const QVariant &palette = m_control->property("palette");
-    const QPalette pa = qvariant_cast<QPalette>(palette);
+    const QPalette pa = _d_getControlPalette(m_control);
     const QColor windowColor = pa.color(QPalette::Window);
 
     if (!windowColor.isValid()) {
