@@ -11,6 +11,7 @@
 #include <dtkdeclarative_global.h>
 #include <DWindowManagerHelper>
 #include <DPlatformHandle>
+#include <DGuiApplicationHelper>
 
 QT_BEGIN_NAMESPACE
 class QQmlComponent;
@@ -69,6 +70,9 @@ class DQuickWindowAttached : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(QQmlComponent *loadingOverlay READ loadingOverlay WRITE setLoadingOverlay NOTIFY loadingOverlayChanged FINAL)
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickAppLoaderItem *appLoader READ appLoader NOTIFY appLoaderChanged)
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    Q_PROPERTY(DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType themeType READ themeType WRITE setThemeType RESET resetThemeType NOTIFY themeTypeChanged)
+#endif
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QML_ANONYMOUS
 #endif
 
@@ -106,6 +110,12 @@ public:
     DTK_GUI_NAMESPACE::DWindowManagerHelper::WmWindowTypes wmWindowTypes() const;
     DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifFunctions motifFunctions() const;
     DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifDecorations motifDecorations() const;
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType themeType() const;
+    void setThemeType(const DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType &newThemeType);
+    void resetThemeType();
+#endif
 
 public Q_SLOTS:
     void setEnabled(bool e);
@@ -162,6 +172,9 @@ Q_SIGNALS:
     void overlayExitedChanged();
     void loadingOverlayChanged();
     void appLoaderChanged();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    void themeTypeChanged();
+#endif
 
 private:
     D_DECLARE_PRIVATE(DQuickWindowAttached)
@@ -169,6 +182,10 @@ private:
     D_PRIVATE_SLOT(void _q_updateBlurAreaForWindow())
     D_PRIVATE_SLOT(void _q_updateClipPath())
     D_PRIVATE_SLOT(void _q_ensurePlatformHandle())
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    D_PRIVATE_SLOT(void _q_onPaletteChanged())
+    D_PRIVATE_SLOT(void _q_updateWindowPalette())
+#endif
 
     friend class DQuickBehindWindowBlur;
     friend class DQuickBehindWindowBlurPrivate;
