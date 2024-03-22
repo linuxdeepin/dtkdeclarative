@@ -40,6 +40,11 @@ public:
     void _q_updateBlurAreaForWindow();
     void _q_updateClipPath();
     void _q_ensurePlatformHandle();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    void ensurePalette();
+    void _q_updateWindowPalette();
+    void _q_onPaletteChanged();
+#endif
 
     QWindow *window = nullptr;
     DPlatformHandle *handle = nullptr;
@@ -54,6 +59,13 @@ public:
     QQuickTransition *overlayExitedTransition = nullptr;
     QQmlComponent *loadingOverlay = nullptr;
     DQuickAppLoaderItem *appLoaderItem;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    DGuiApplicationHelper::ColorType themeType{DGuiApplicationHelper::UnknownType};
+    bool paletteInit = false;
+    QQuickPalette *quickPalette = nullptr;
+    QQuickPalette *inactiveQuickPalette = nullptr;
+    std::array<QMetaObject::Connection, 2> paletteConnections;
+#endif
 private:
     D_DECLARE_PUBLIC(DQuickWindowAttached)
 };
