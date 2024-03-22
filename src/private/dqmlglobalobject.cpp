@@ -50,6 +50,11 @@ bool DColor::isTypedColor() const noexcept
     return data.color.type >= VARIANT_COLOR_TYPE_OFFSET;
 }
 
+quint8 DColor::type() const noexcept
+{
+    return data.color.type;
+}
+
 static inline QPalette::ColorRole toPaletteColorRole(quint8 type)
 {
     auto color = static_cast<DColor::Type>(type - VARIANT_COLOR_TYPE_OFFSET);

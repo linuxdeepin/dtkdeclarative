@@ -783,7 +783,9 @@ QColor DQuickControlColorSelector::getColorOf(const DQuickControlPalette *palett
             // create the dark color from the light theme
             targetColor = getColor(palette, DQuickControlPalette::Light, familyIndex, stateIndex);
             // inverse the color to dark
-            shouldInverseColor = true;
+            if (targetColor.type() != DColor::Highlight && targetColor.type() != DColor::HighlightedText) {
+                shouldInverseColor = true;
+            }
         }
     } while (false);
 

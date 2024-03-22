@@ -63,6 +63,7 @@ public:
 
     [[nodiscard]] bool isValid() const noexcept;
     [[nodiscard]] bool isTypedColor() const noexcept;
+    [[nodiscard]] quint8 type() const noexcept;
 
     bool operator==(const DColor &c) const noexcept;
     bool operator!=(const DColor &c) const noexcept;
