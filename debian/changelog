@@ -1,3 +1,15 @@
+dtkdeclarative (5.6.26) unstable; urgency=medium
+
+  * feat: add corners for BoxShadow
+  * fix: warning for insideBorderColor is invalid
+  * fix: missing initialization value for ShadowConfig
+  * fix: MenuItem can't be highlight by keyboard
+  * fix: incorrect palette in ColorSelector
+  * chore: keep consistent highlight color in different themes
+  * feat: support to specify theme type for window
+
+ -- Deepin Packages Builder <packages@deepin.org>  Tue, 26 Mar 2024 05:47:35 +0000
+
 dtkdeclarative (5.6.25) unstable; urgency=medium
 
   * fix: can't disable paste(Issue: https://github.com/linuxdeepin/developer-center/issues/7052)
