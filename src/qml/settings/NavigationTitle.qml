@@ -30,8 +30,8 @@ Control {
             switch(level) {
             case 0:
                 return D.DTK.fontManager.t4
-            case 1:
-                return D.DTK.fontManager.t5
+            // case 1:
+            //     return D.DTK.fontManager.t5
             }
             return D.DTK.fontManager.t6
         }
