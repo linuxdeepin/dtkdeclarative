@@ -52,6 +52,8 @@ bool DColor::isTypedColor() const noexcept
 
 quint8 DColor::type() const noexcept
 {
+    if (!isTypedColor())
+        return DColor::Invalid;
     return data.color.type;
 }
 
