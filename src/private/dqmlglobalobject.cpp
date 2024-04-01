@@ -54,7 +54,7 @@ quint8 DColor::type() const noexcept
 {
     if (!isTypedColor())
         return DColor::Invalid;
-    return data.color.type;
+    return data.color.type - VARIANT_COLOR_TYPE_OFFSET;
 }
 
 static inline QPalette::ColorRole toPaletteColorRole(quint8 type)
