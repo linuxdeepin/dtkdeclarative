@@ -26,15 +26,27 @@ DQUICK_BEGIN_NAMESPACE
 #define COLORPROPERTYCHANGEFUNC "notifyColorPropertyChanged()"
 
 static inline bool _d_isControlItem(QQuickItem *item) {
+#define _D_FOR_EACH_SIMILAR_CONTROL_ITEM(F) \
+    F(QQuickControl), \
+    F(QQuickTextField)
+
 #if defined(QT_NAMESPACE)
-#define CONTROL_BASE_NAMESPACE_STR1(NAME) #NAME"::QQuickControl"
-#define CONTROL_BASE_NAMESPACE_STR(R) CONTROL_BASE_NAMESPACE_STR1(R)
-#define ControlBaseClassName CONTROL_BASE_NAMESPACE_STR(QT_NAMESPACE)
+#define SIMILAR_CONTROL_ITEM_NAMESPACE_STR1(NAME, Item) #NAME "::" #Item
+#define SIMILAR_CONTROL_ITEM_NAMESPACE_STR(R, Item) SIMILAR_CONTROL_ITEM_NAMESPACE_STR1(R, Item)
+#define _D_SIMILAR_CONTROL_ITEM(Item) SIMILAR_CONTROL_ITEM_NAMESPACE_STR(QT_NAMESPACE, Item)
 #else
-#define ControlBaseClassName "QQuickControl"
+#define _D_SIMILAR_CONTROL_ITEM(Item) #Item
 #endif
 
-    return item->inherits(ControlBaseClassName);
+    static QStringList controlItems {
+        _D_FOR_EACH_SIMILAR_CONTROL_ITEM(_D_SIMILAR_CONTROL_ITEM)
+    };
+
+    auto iter = std::find_if(controlItems.cbegin(), controlItems.cend(), [item] (const QString &name) {
+        return item->inherits(name.toLatin1());
+    });
+
+    return iter != controlItems.cend();
 }
 
 static inline bool _d_isWindowRootItem(QQuickItem *item) {
