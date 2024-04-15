@@ -18,6 +18,7 @@ class Q_DECL_EXPORT DQuickBackdropBlitter : public QQuickItem, public DCORE_NAME
     Q_PRIVATE_PROPERTY(DQuickBackdropBlitter::d_func(), QQmlListProperty<QObject> data READ data DESIGNABLE false)
     Q_PROPERTY(QQuickItem* content READ content CONSTANT)
     Q_PROPERTY(bool offscreen READ offscreen WRITE setOffscreen NOTIFY offscreenChanged FINAL)
+    Q_PROPERTY(bool blitterEnabled READ blitterEnabled WRITE setBlitterEnabled NOTIFY blitterEnabledChanged FINAL)
     QML_NAMED_ELEMENT(BackdropBlitter)
 
 public:
@@ -29,8 +30,12 @@ public:
     bool offscreen() const;
     void setOffscreen(bool newOffscreen);
 
+    bool blitterEnabled() const;
+    void setBlitterEnabled(bool newBlitterEnabled);
+
 Q_SIGNALS:
     void offscreenChanged();
+    void blitterEnabledChanged();
 
 private Q_SLOTS:
     void invalidateSceneGraph();

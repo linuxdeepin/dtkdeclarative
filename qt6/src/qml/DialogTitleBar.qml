@@ -41,7 +41,6 @@ Control {
 
     background: D.InWindowBlur {
         id: background
-        radius: 30
         visible: false
     }
 

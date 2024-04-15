@@ -571,8 +571,13 @@ QtObject {
         property int height: 40
         property int radius: 14
         property D.Palette background: D.Palette {
-            normal: Qt.rgba(247 / 255.0, 247 / 255.0, 247 / 255.0, 0.6)
-            normalDark: Qt.rgba(20 / 255.0, 20 / 255.0, 20 / 255.0, 0.6)
+            normal: behindWindowBlur.lightColor
+            normalDark: behindWindowBlur.darkColor
+        }
+
+        property D.Palette backgroundNoBlur: D.Palette {
+            normal: behindWindowBlur.lightNoBlurColor
+            normalDark: behindWindowBlur.darkNoBlurColor
         }
 
         property D.Palette dropShadow: D.Palette {
@@ -649,8 +654,13 @@ QtObject {
         }
 
         property D.Palette background: D.Palette {
-            normal: Qt.rgba(238 / 255.0, 238 / 255.0, 238 / 255.0, 0.8)
-            normalDark: Qt.rgba(20 / 255.0, 20 / 255.0, 20 / 255.0, 0.8)
+            normal: behindWindowBlur.lightColor
+            normalDark: behindWindowBlur.darkColor
+        }
+
+        property D.Palette backgroundNoBlur: D.Palette {
+            normal: behindWindowBlur.lightNoBlurColor
+            normalDark: behindWindowBlur.darkNoBlurColor
         }
 
         property D.Palette subMenuOpenedBackground: D.Palette {
@@ -703,8 +713,10 @@ QtObject {
         property color darkOutBorderColor: Qt.rgba(0, 0, 0, 0.8)
         property color inBorderColor: Qt.rgba(1, 1, 1, 0.1)
         property color darkInBorderColor: Qt.rgba(1, 1, 1, 0.8)
-        property color backgroundColor: Qt.rgba(238.0 / 255, 238.0 / 255, 238.0 / 255, 0.8)
-        property color darkBackgroundColor: Qt.rgba(20.0 / 255, 20.0 / 255, 20.0 / 255, 0.8)
+        property color backgroundColor: behindWindowBlur.lightColor
+        property color darkBackgroundColor: behindWindowBlur.darkColor
+        property color backgroundNoBlurColor: behindWindowBlur.lightNoBlurColor
+        property color darkBackgroundNoBlurColor: behindWindowBlur.darkNoBlurColor
         property color shadowColor: Qt.rgba(0, 0, 0, 0.2)
         property color darkShadowColor: Qt.rgba(0, 0, 0, 0.2)
     }
