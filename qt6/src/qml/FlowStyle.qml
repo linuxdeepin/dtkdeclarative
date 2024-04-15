@@ -772,8 +772,8 @@ QtObject {
             normal: Qt.rgba(0, 0, 0, 0.5)
             normalDark: Qt.rgba(1, 1, 1, 0.3)
 
-            hovered: Qt.rgba(0, 0, 0, 0.7)
-            hoveredDark: Qt.rgba(1, 1, 1, 0.7)
+            hovered: Qt.rgba(0, 0, 0, 0.6)
+            hoveredDark: Qt.rgba(1, 1, 1, 0.6)
 
             pressed: Qt.rgba(0, 0, 0, 0.4)
             pressedDark: Qt.rgba(1, 1, 1, 0.3)
