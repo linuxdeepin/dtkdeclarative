@@ -147,7 +147,7 @@ qreal DQuickIconImagePrivate::calculateDevicePixelRatio() const
 DQuickIconImage::DQuickIconImage(QQuickItem *parent)
     : QQuickImage(*(new DQuickIconImagePrivate), parent)
 {
-
+    setAsynchronous(true); // asynchronous by default
 }
 
 DQuickIconImage::~DQuickIconImage()

@@ -225,7 +225,9 @@
 
     该属性默认时 false.
 
+@property bool DciIcon::asynchronous
 
+    指定图标是否异步加载，默认异步加载，该属性和Image的asynchronous属性效果一致。
 
 @attachedproperty enumeration DciIcon::mode
 

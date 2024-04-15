@@ -125,7 +125,7 @@ static QImage generateDciIconImage(const QImage &src, DDciIcon::Theme theme, DDc
 }
 
 DQuickIconProvider::DQuickIconProvider()
-    : QQuickImageProvider(QQuickImageProvider::Image, QQuickImageProvider::ForceAsynchronousImageLoading)
+    : QQuickImageProvider(QQuickImageProvider::Image)
 {
 
 }
@@ -136,8 +136,7 @@ QImage DQuickIconProvider::requestImage(const QString &id, QSize *size, const QS
 }
 
 DQuickDciIconProvider::DQuickDciIconProvider()
-    : QQuickImageProvider(QQuickImageProvider::Image,
-                          QQuickImageProvider::ForceAsynchronousImageLoading)
+    : QQuickImageProvider(QQuickImageProvider::Image)
 {
 }
 
