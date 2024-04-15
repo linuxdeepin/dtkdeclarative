@@ -5,11 +5,12 @@
 @ingroup Item
 
     \keyword DQuickIconImage
-@brief 提供一种使用 Qt 方式加在图标的控件
+@brief 提供一种使用 Qt 方式加载图标的控件
 
     QtIcon 作为 DTK 程序访问和插件 Qt 图标的控件，虽然 DTK Quick 极力推荐
     应用在大多数的场景下使用 Qt 图标，但是不乏存在应用能需要使用 Qt 图标的情况。
-    因此 DTK 提供 QtIcon 来访问和获取 Qt 图标。 其使用方式如下所示代码：
+    因此 DTK 提供 QtIcon 来访问和获取 Qt 图标（默认使用异步的方式加载）。
+    其使用方式（同步加载）如下所示代码：
 
 @
     QtIcon {
@@ -22,6 +23,7 @@
         mode: QtIcon.Selected
         color: "gray"
         state: QtIcon.On
+        asynchronous: false
     }
 ```
 
@@ -94,4 +96,3 @@
 
     用于当 name 属性无法获取到图标时， fallbackSource 能够提供次选方案。
     如果两种方式都无法找到图标，应用程序将出现一些警告信息。
-
