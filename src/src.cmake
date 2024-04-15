@@ -29,6 +29,15 @@ if (EnableDtk5)
         ${PROJECT_SOURCE_DIR}/src/dplatformthemeproxy.h
         ${PROJECT_SOURCE_DIR}/src/dquicksystempalette.h
     )
+
+    list(REMOVE_ITEM HEADERS
+        ${PROJECT_SOURCE_DIR}/src/private/dbackdropnode_p.h
+        ${PROJECT_SOURCE_DIR}/src/private/dquickbackdropblitter_p.h
+    )
+    list(REMOVE_ITEM SRCS
+        ${PROJECT_SOURCE_DIR}/src/private/dbackdropnode.cpp
+        ${PROJECT_SOURCE_DIR}/src/private/dquickbackdropblitter.cpp
+    )
 endif()
 
 # exclusive to dtk6
