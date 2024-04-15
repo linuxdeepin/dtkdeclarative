@@ -149,19 +149,29 @@ int DQuickKeyListenerPrivate::doNativeShiftKey(QKeyEvent *e, int nativeKey)
     auto possibleKeys = QKeyMapper::possibleKeys(e);
     int pkTotal = possibleKeys.count();
     if (!pkTotal)
-        return false;
+        return 0;
     bool found = false;
     for (int i = 0; i < possibleKeys.size(); ++i) {
-        if (possibleKeys.at(i) - nativeKey == int(e->modifiers())
-            || (possibleKeys.at(i) == nativeKey && e->modifiers() == Qt::ShiftModifier)) {
-            key = possibleKeys.at(i);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+        const auto combinedKey = possibleKeys.at(i).toCombined();
+#else
+        const auto combinedKey = possibleKeys.at(i);
+#endif
+
+        if (combinedKey - nativeKey == int(e->modifiers())
+            || (combinedKey == nativeKey && e->modifiers() == Qt::ShiftModifier)) {
+            key = combinedKey;
             found = true;
             break;
         }
     }
     // Use as fallback
     if (!found)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+        key = possibleKeys.first().toCombined();
+#else
         key = possibleKeys.first();
+#endif
 
     return key;
 }
