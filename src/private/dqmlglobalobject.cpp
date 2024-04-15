@@ -2,6 +2,10 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
+#define private public
+#include <QSGNode>
+#undef private
+
 #include "dqmlglobalobject_p.h"
 #include "dqmlglobalobject_p_p.h"
 #include "dquickcontrolpalette_p.h"
@@ -20,6 +24,7 @@
 #include <QQuickItem>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 #include <private/qquickpalette_p.h>
+#include <private/qquickitem_p.h>
 #endif
 
 #ifdef Q_OS_UNIX
@@ -211,7 +216,7 @@ bool DQMLGlobalObject::hasNoTitlebar() const
     return DWindowManagerHelper::instance()->hasNoTitlebar();
 }
 
-bool DQMLGlobalObject::isSoftwareRender() const
+bool DQMLGlobalObject::isSoftwareRender()
 {
     static bool isSoftware = QQuickWindow::sceneGraphBackend() == QLatin1String("software");
     return isSoftware;
@@ -529,6 +534,40 @@ bool DQMLGlobalObject::loadTranslator()
 #endif
     return DGuiApplicationHelper::loadTranslator("dtkdeclarative", translateDirs, QList<QLocale>() << QLocale::system());
 }
+
+#if QT_VERSION_MAJOR > 5
+QSGRootNode *DQMLGlobalObject::getRootNode(QQuickItem *item)
+{
+    const auto d = QQuickItemPrivate::get(item);
+    QSGNode *root = d->itemNode();
+    if (!root)
+        return nullptr;
+
+    while (root->firstChild() && root->type() != QSGNode::RootNodeType)
+        root = root->firstChild();
+    return root->type() == QSGNode::RootNodeType ? static_cast<QSGRootNode*>(root) : nullptr;
+}
+
+int &DQMLGlobalObject::QSGNode_subtreeRenderableCount(QSGNode *node)
+{
+    return node->m_subtreeRenderableCount;
+}
+
+QSGNode *&DQMLGlobalObject::QSGNode_firstChild(QSGNode *node)
+{
+    return node->m_firstChild;
+}
+
+QSGNode *&DQMLGlobalObject::QSGNode_lastChild(QSGNode *node)
+{
+    return node->m_lastChild;
+}
+
+QSGNode *&DQMLGlobalObject::QSGNode_parent(QSGNode *node)
+{
+    return node->m_parent;
+}
+#endif
 
 DQUICK_END_NAMESPACE
 
