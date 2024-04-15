@@ -82,7 +82,6 @@ Control {
         active: false
         anchors.fill: parent
         sourceComponent: D.InWindowBlur {
-            radius: 30
         }
     }
 

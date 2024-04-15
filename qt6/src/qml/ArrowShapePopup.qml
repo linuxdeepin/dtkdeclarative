@@ -117,8 +117,14 @@ Popup {
                 width: maskPath.width
                 height: maskPath.height
                 ShapePath {
-                    fillColor: DS.Style.selectColor(palette.window, DS.Style.arrowRectangleBlur.backgroundColor,
-                                                    DS.Style.arrowRectangleBlur.darkBackgroundColor)
+                    fillColor: {
+                        if (blur.valid)
+                            return DS.Style.selectColor(palette.window, DS.Style.arrowRectangleBlur.backgroundColor,
+                                                        DS.Style.arrowRectangleBlur.darkBackgroundColor)
+                        return DS.Style.selectColor(palette.window, DS.Style.arrowRectangleBlur.backgroundNoBlurColor,
+                                                    DS.Style.arrowRectangleBlur.darkBackgroundNoBlurColor)
+                    }
+
                     strokeColor: DS.Style.selectColor(palette.window, DS.Style.arrowRectangleBlur.outBorderColor,
                                                       DS.Style.arrowRectangleBlur.darkOutBorderColor)
                     strokeWidth: DS.Style.arrowRectangleBlur.borderWidth

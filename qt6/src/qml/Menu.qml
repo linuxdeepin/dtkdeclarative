@@ -15,6 +15,7 @@ T.Menu {
     property bool closeOnInactive: true
     property int maxVisibleItems : DS.Style.arrowListView.maxVisibleItems
     property D.Palette backgroundColor: DS.Style.menu.background
+    property D.Palette backgroundNoBlurColor: DS.Style.menu.backgroundNoBlur
     property var model: control.contentModel
     property Component header
     property Component footer
@@ -88,6 +89,7 @@ T.Menu {
             implicitHeight: DS.Style.menu.item.height
             radius: DS.Style.menu.radius
             backgroundColor: control.backgroundColor
+            backgroundNoBlurColor: control.backgroundNoBlurColor
         }
     }
 

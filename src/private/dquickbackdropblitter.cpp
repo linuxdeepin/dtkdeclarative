@@ -49,6 +49,7 @@ public:
     }
 
     void init();
+    void onBlitterEnabledChanged();
 
     inline QQmlListProperty<QObject> data() {
         if (!container)
@@ -144,9 +145,23 @@ void DQuickBackdropBlitterPrivate::init()
 
     if (q->window()->graphicsApi() != QSGRendererInterface::Software) {
         container = new QQuickItem(q);
+        onBlitterEnabledChanged();
+    }
+}
 
-        auto d = QQuickItemPrivate::get(container);
+void DQuickBackdropBlitterPrivate::onBlitterEnabledChanged()
+{
+    D_Q(DQuickBackdropBlitter);
+
+    if (!container)
+        return;
+
+    auto d = QQuickItemPrivate::get(container);
+
+    if (q->blitterEnabled()) {
         d->refFromEffectItem(true);
+    } else {
+        d->derefFromEffectItem(true);
     }
 }
 
@@ -194,6 +209,23 @@ void DQuickBackdropBlitter::setOffscreen(bool newOffscreen)
     D_D(DQuickBackdropBlitter);
     if (d->content->setOffscreen(newOffscreen))
         Q_EMIT offscreenChanged();
+}
+
+bool DQuickBackdropBlitter::blitterEnabled() const
+{
+    return flags().testFlag(ItemHasContents);
+}
+
+void DQuickBackdropBlitter::setBlitterEnabled(bool newBlitterEnabled)
+{
+    if (blitterEnabled() == newBlitterEnabled)
+        return;
+    setFlag(ItemHasContents, newBlitterEnabled);
+
+    D_D(DQuickBackdropBlitter);
+    d->onBlitterEnabledChanged();
+
+    Q_EMIT blitterEnabledChanged();
 }
 
 void DQuickBackdropBlitter::invalidateSceneGraph()
