@@ -146,7 +146,7 @@ int DQuickKeyListenerPrivate::doNativeShiftKey(QKeyEvent *e, int nativeKey)
     if (!(e->modifiers() & Qt::ShiftModifier))
         return key;
 
-    QList<int> possibleKeys = QKeyMapper::possibleKeys(e);
+    auto possibleKeys = QKeyMapper::possibleKeys(e);
     int pkTotal = possibleKeys.count();
     if (!pkTotal)
         return false;
