@@ -660,7 +660,6 @@ QtObject {
         property D.Palette itemText: D.Palette {
             normal: ("black")
             normalDark: Qt.rgba(1, 1, 1, 0.6)
-            hovered: D.DTK.makeColor(D.Color.HighlightedText)
         }
 
         property D.Palette separatorText: D.Palette {

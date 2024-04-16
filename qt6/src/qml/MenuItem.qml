@@ -22,7 +22,8 @@ T.MenuItem {
         width: DS.Style.menu.item.iconSize.height
     }
 
-    property D.Palette textColor: DS.Style.menu.itemText
+    property D.Palette textColor: control.highlighted ? DS.Style.checkedButton.text
+                                                      : DS.Style.menu.itemText
     property D.Palette subMenuBackgroundColor: DS.Style.menu.subMenuOpenedBackground
 
     palette.windowText: D.ColorSelector.textColor
