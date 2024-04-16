@@ -314,6 +314,7 @@ void DQuickIconImage::setFallbackSource(const QUrl &newSource)
 DQuickIconImage::DQuickIconImage(DQuickIconImagePrivate &dd, QQuickItem *parent)
     : QQuickImage(dd, parent)
 {
+    setAsynchronous(true);
 }
 
 void DQuickIconImage::itemChange(ItemChange change, const ItemChangeData &value)
