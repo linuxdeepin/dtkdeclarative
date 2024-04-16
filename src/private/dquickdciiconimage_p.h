@@ -30,7 +30,7 @@ class DQuickDciIconImage : public QQuickItem, DCORE_NAMESPACE::DObject
     Q_PROPERTY(QSize sourceSize READ sourceSize WRITE setSourceSize NOTIFY sourceSizeChanged)
     Q_PROPERTY(bool mirror READ mirror WRITE setMirror NOTIFY mirrorChanged)
     Q_PROPERTY(bool fallbackToQIcon READ fallbackToQIcon WRITE setFallbackToQIcon NOTIFY fallbackToQIconChanged)
-    Q_PROPERTY(bool asynchornous READ asynchronous WRITE setAsynchronous NOTIFY asynchronousChanged)
+    Q_PROPERTY(bool asynchronous READ asynchronous WRITE setAsynchronous NOTIFY asynchronousChanged)
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QML_NAMED_ELEMENT(DciIcon)
     QML_ATTACHED(DQuickIconAttached)
