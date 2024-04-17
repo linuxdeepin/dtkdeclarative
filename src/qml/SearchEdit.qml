@@ -39,7 +39,6 @@ LineEdit {
             Text {
                 id: centerIndicatorLabel
                 text: qsTr("Search")
-                color: palette.text
                 verticalAlignment: Text.AlignVCenter
             }
         }
@@ -82,7 +81,7 @@ LineEdit {
                 }
                 PropertyChanges {
                     target: centerIndicatorLabel
-                    color: palette.text
+                    color: control.D.ColorSelector.placeholderTextColor
                 }
             }
         ]
