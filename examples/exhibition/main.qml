@@ -36,9 +36,15 @@ ApplicationWindow {
         menu: Menu {
             Action {
                 text: "Light Theme"
+                onTriggered: {
+                    ApplicationHelper.setPaletteType(ApplicationHelper.LightType)
+                }
             }
             Action {
                 text: "Dark Theme"
+                onTriggered: {
+                    ApplicationHelper.setPaletteType(ApplicationHelper.DarkType)
+                }
             }
             MenuItem {
                 contentItem: Item {
