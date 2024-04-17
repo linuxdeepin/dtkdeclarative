@@ -680,8 +680,8 @@ QtObject {
             hoveredDark: D.DTK.makeColor(D.Color.Highlight).lightness(+10)
         }
         property D.Palette dropShadow:  D.Palette {
-            normal: D.DTK.makeColor(D.Color.Highlight).lightness(+20)
-            normalDark: D.DTK.makeColor(D.Color.Highlight).lightness(+20)
+            normal: D.DTK.makeColor(D.Color.Highlight).lightness(+20).opacity(-80)
+            normalDark: D.DTK.makeColor(D.Color.Highlight).lightness(+20).opacity(-80)
         }
         property D.Palette innerShadow:  D.Palette {
             normal: D.DTK.makeColor(D.Color.Highlight).lightness(-20)
