@@ -42,7 +42,7 @@ public:
 
     DQuickWindowAttached *windowAttach = nullptr;
 
-    qreal radius;
+    qreal radius = 0;
     QColor blendColor;
     DPlatformHandle::WMBlurArea blurArea;
     QPainterPath blurPath;
