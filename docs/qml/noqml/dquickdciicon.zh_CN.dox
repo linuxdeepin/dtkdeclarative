@@ -229,6 +229,10 @@
 
     指定图标是否异步加载，默认异步加载，该属性和Image的asynchronous属性效果一致。
 
+@property bool DciIcon::cache
+
+    指定图标是否缓存，该属性的默认值和行为与Image的cache属性一致。
+
 @attachedproperty enumeration DciIcon::mode
 
     该属性用于附加一个图标 mode 状态值。其使用方式如下
@@ -265,4 +269,3 @@
 @attachedproperty bool DciIcon::fallbackToQIcon
 
     指定附加一个当无法找到 Dci Icon 时是否回滚到 QIcon 中。
-

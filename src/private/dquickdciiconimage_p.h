@@ -31,6 +31,7 @@ class DQuickDciIconImage : public QQuickItem, DCORE_NAMESPACE::DObject
     Q_PROPERTY(bool mirror READ mirror WRITE setMirror NOTIFY mirrorChanged)
     Q_PROPERTY(bool fallbackToQIcon READ fallbackToQIcon WRITE setFallbackToQIcon NOTIFY fallbackToQIconChanged)
     Q_PROPERTY(bool asynchronous READ asynchronous WRITE setAsynchronous NOTIFY asynchronousChanged)
+    Q_PROPERTY(bool cache READ cache WRITE setCache NOTIFY cacheChanged FINAL)
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QML_NAMED_ELEMENT(DciIcon)
     QML_ATTACHED(DQuickIconAttached)
@@ -64,6 +65,9 @@ public:
     bool asynchronous() const;
     void setAsynchronous(bool async);
 
+    bool cache() const;
+    void setCache(bool cache);
+
     DQuickIconImage *imageItem() const;
 
     static bool isNull(const QString &iconName);
@@ -78,6 +82,7 @@ Q_SIGNALS:
     void mirrorChanged();
     void fallbackToQIconChanged();
     void asynchronousChanged();
+    void cacheChanged();
 
 protected:
     void classBegin() override;

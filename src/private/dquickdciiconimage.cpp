@@ -61,7 +61,8 @@ DQuickDciIconImagePrivate::DQuickDciIconImagePrivate(DQuickDciIconImage *qq)
     , imageItem(new DQuickIconImage(*new DQuickDciIconImageItemPrivate(this), qq))
 {
     QObject::connect(imageItem, &DQuickIconImage::nameChanged, qq, &DQuickDciIconImage::nameChanged);
-    QObject::connect(imageItem, &QQuickImage::asynchronousChanged, qq, &DQuickDciIconImage::asynchronousChanged);
+    QObject::connect(imageItem, &DQuickIconImage::asynchronousChanged, qq, &DQuickDciIconImage::asynchronousChanged);
+    QObject::connect(imageItem, &DQuickIconImage::cacheChanged, qq, &DQuickDciIconImage::cacheChanged);
 }
 
 void DQuickDciIconImagePrivate::layout()
@@ -203,6 +204,18 @@ void DQuickDciIconImage::setAsynchronous(bool async)
 {
     D_D(DQuickDciIconImage);
     d->imageItem->setAsynchronous(async);
+}
+
+bool DQuickDciIconImage::cache() const
+{
+    D_DC(DQuickDciIconImage);
+    return d->imageItem->cache();
+}
+
+void DQuickDciIconImage::setCache(bool cache)
+{
+    D_D(DQuickDciIconImage);
+    d->imageItem->setCache(cache);
 }
 
 Dtk::Quick::DQuickIconImage *DQuickDciIconImage::imageItem() const
