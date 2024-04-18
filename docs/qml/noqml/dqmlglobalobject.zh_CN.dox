@@ -306,7 +306,8 @@
     当themeType为UnknownType时, 将自动根据
     GuiApplication::palette的QPalette::background颜色计算主题
     类型, 否则与 paletteType 的值一致. 程序中应当使用此值作为
-    暗色/亮色主题类型的判断.
+    暗色/亮色主题类型的判断. 设置该属性会重新设置palette, 并且会
+    覆盖qml中的属性赋值, 与qml中的属性绑定冲突.
 
 @property int DTK::windowManagerName
 @note 此属性为只读属性

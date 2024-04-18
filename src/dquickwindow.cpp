@@ -239,7 +239,9 @@ void DQuickWindowAttachedPrivate::_q_updateWindowPalette()
 {
     Q_Q(DQuickWindowAttached);
     auto pt = window->isActive() ? quickPalette : inactiveQuickPalette;
-    QQuickWindowPrivate::get(q->window())->setPalette(pt);
+    // Write qml property to cancle any binding on palette.
+    // NOTE: this is not recoverable, i.e. setting DWindow.themeType will invalidate binding on palette.
+    QQmlProperty::write(q->window(), "palette", QVariant::fromValue(pt));
 }
 #endif
 
