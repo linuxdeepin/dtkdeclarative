@@ -1,3 +1,29 @@
+dtkdeclarative (5.6.27) unstable; urgency=medium
+
+  * chore: settings dialog navigation font size tweak(Issue: https://github.com/linuxdeepin/developer-center/issues/7086)
+  * fix: incorrect color type
+  * fix: incorrect color type(Issue: https://github.com/linuxdeepin/developer-center/issues/6841)
+  * chore: update entry_clear.dci(Influence: )
+  * fix: incorrect control for ColorSelector
+  * refact: export asynchronous property to user
+  * chore: scrollbar hover color tweak(Issue: https://github.com/linuxdeepin/developer-center/issues/7784)
+  * fix: support qt 6.7
+  * fix: typo and uninitialized asynchronous property
+  * fix: incorrect text color for MenuItem
+  * fix: adjust style for HighlightPanel
+  * fix: can't set placeholder text color for SearchEdit
+  * fix: incorrect control themetype for ColorSelector(issue: 7952)
+  * fix: build on Qt 6.7
+  * feat: add BackdropBlitter on Qt6
+  * feat: use BackdropBlitter for InWindowBlur on Qt6
+  * chore: change theme type for exhibition
+  * feat: export cache property to user
+  * fix: not initialized for BehindWindowBlur
+  * fix: duplicate updates of palette(Issue: https://github.com/linuxdeepin/developer-center/issues/7826)
+  * fix: dci icon not centered(Issue: https://github.com/linuxdeepin/developer-center/issues/7941)
+
+ -- Deepin Packages Builder <packages@deepin.org>  Fri, 19 Apr 2024 08:55:37 +0000
+
 dtkdeclarative (5.6.26) unstable; urgency=medium
 
   * feat: add corners for BoxShadow
