@@ -780,10 +780,10 @@ QtObject {
         property int hideDuration: 1500
 
         property D.Palette background: D.Palette {
-            normal: Qt.rgba(0, 0, 0, 0.5)
+            normal: Qt.rgba(0, 0, 0, 0.3)
             normalDark: Qt.rgba(1, 1, 1, 0.3)
 
-            hovered: Qt.rgba(0, 0, 0, 0.6)
+            hovered: Qt.rgba(0, 0, 0, 0.4)
             hoveredDark: Qt.rgba(1, 1, 1, 0.6)
 
             pressed: Qt.rgba(0, 0, 0, 0.4)
