@@ -49,6 +49,16 @@ public:
     QWindow *window = nullptr;
     DPlatformHandle *handle = nullptr;
     bool explicitEnable = false;
+    int explicitWindowRadius = -1;
+    int explicitBorderWidth = -1;
+    QColor explicitBorderColor;
+    int explicitShadowRadius = -1;
+    QPoint explicitShadowOffset;
+    QColor explicitShadowColor;
+    bool explicitTranslucentBackground = false;
+    bool explicitEnableSystemResize = false;
+    bool explicitEnableSystemMove = false;
+    bool explicitEnableBlurWindow = false;
 
     DWindowManagerHelper::WmWindowTypes wmWindowTypes;
     DWindowManagerHelper::MotifFunctions motifFunctions;
