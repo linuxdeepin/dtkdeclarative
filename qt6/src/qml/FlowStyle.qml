@@ -600,6 +600,10 @@ QtObject {
         property int verticalPadding: 4
         property int horizontalPadding: 5
         property int height: 24
+        property D.Palette text: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 1)
+            normalDark: Qt.rgba(1, 1, 1, 1)
+        }
     }
 
     property QtObject alertToolTip: QtObject {

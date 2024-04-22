@@ -28,7 +28,8 @@ DQUICK_BEGIN_NAMESPACE
 static inline bool _d_isControlItem(QQuickItem *item) {
 #define _D_FOR_EACH_SIMILAR_CONTROL_ITEM(F) \
     F(QQuickControl), \
-    F(QQuickTextField)
+    F(QQuickTextField), \
+    F(QQuickText)
 
 #if defined(QT_NAMESPACE)
 #define SIMILAR_CONTROL_ITEM_NAMESPACE_STR1(NAME, Item) #NAME "::" #Item
@@ -461,7 +462,9 @@ void DQuickControlColorSelector::setControl(QQuickItem *newControl)
         connect(palette, &QQuickPalette::changed, this, &DQuickControlColorSelector::updateControlTheme);
 #endif
         connect(m_control, SIGNAL(paletteChanged()), this, SLOT(updateControlTheme()));
-        connect(m_control, SIGNAL(hoveredChanged()), this, SLOT(updateControlState()));
+        if (m_control->metaObject()->indexOfSignal("hoveredChanged()") != -1) {
+            connect(m_control, SIGNAL(hoveredChanged()), this, SLOT(updateControlState()));
+        }
         if (m_control->metaObject()->indexOfSignal("pressedChanged()") != -1) {
             connect(m_control, SIGNAL(pressedChanged()), this, SLOT(updateControlState()));
         }

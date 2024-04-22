@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-import QtQuick 2.11
+import QtQuick
 import QtQuick.Templates as T
 import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
@@ -12,6 +12,8 @@ T.ToolTip {
 
     x: parent ? (parent.width - implicitWidth) / 2 : 0
     y: -implicitHeight - 3
+
+    property D.Palette textColor: DS.Style.toolTip.text
 
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
@@ -23,13 +25,14 @@ T.ToolTip {
     closePolicy: T.Popup.CloseOnEscape | T.Popup.CloseOnPressOutsideParent | T.Popup.CloseOnReleaseOutsideParent
 
     contentItem: Text {
+        property alias textColor: control.textColor
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
         text: control.text
         font: control.font
         wrapMode: Text.WordWrap
         opacity: enabled ? 1.0 : 0.4
-        color: control.palette.toolTipText
+        color: D.ColorSelector.textColor
     }
 
     background: FloatingPanel {
