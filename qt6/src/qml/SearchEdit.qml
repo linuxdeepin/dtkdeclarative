@@ -39,6 +39,7 @@ LineEdit {
             Text {
                 id: centerIndicatorLabel
                 text: qsTr("Search")
+                font: control.font
                 verticalAlignment: Text.AlignVCenter
             }
         }
