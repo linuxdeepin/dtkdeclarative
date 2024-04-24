@@ -41,15 +41,18 @@ Control {
             hideSource: false
         }
 
-        BoxShadow {
+        Loader {
             anchors.fill: backgroundRect
-            shadowOffsetX: 0
-            shadowOffsetY: 6
-            shadowColor: control.D.ColorSelector.dropShadowColor
-            shadowBlur: 20
-            cornerRadius: backgroundRect.radius
-            spread: 0
-            hollow: true
+            active: control.dropShadowColor
+            BoxShadow {
+                shadowOffsetX: 0
+                shadowOffsetY: 6
+                shadowColor: control.D.ColorSelector.dropShadowColor
+                shadowBlur: 20
+                cornerRadius: backgroundRect.radius
+                spread: 0
+                hollow: true
+            }
         }
 
         Rectangle {
@@ -62,7 +65,7 @@ Control {
 
         Loader {
             anchors.fill: backgroundRect
-            active: control.D.ColorSelector.controlTheme === D.ApplicationHelper.DarkType
+            active: control.insideBorderColor && control.D.ColorSelector.controlTheme === D.ApplicationHelper.DarkType
             sourceComponent: InsideBoxBorder {
                 radius: backgroundRect.radius
                 color: control.D.ColorSelector.insideBorderColor
@@ -70,11 +73,14 @@ Control {
             }
         }
 
-        OutsideBoxBorder {
+        Loader {
             anchors.fill: backgroundRect
-            radius: backgroundRect.radius
-            color: control.D.ColorSelector.outsideBorderColor
-            borderWidth: DS.Style.control.borderWidth
+            active: control.outsideBorderColor
+            OutsideBoxBorder {
+                radius: backgroundRect.radius
+                color: control.D.ColorSelector.outsideBorderColor
+                borderWidth: DS.Style.control.borderWidth
+            }
         }
     }
 }
