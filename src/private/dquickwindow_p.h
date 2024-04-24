@@ -28,6 +28,12 @@ private:
 class DQuickWindowAttachedPrivate : public DTK_CORE_NAMESPACE::DObjectPrivate
 {
 public:
+    enum BoolOptional : qint8 {
+        Invalid = -1,
+        False = 0,
+        True = 1
+    };
+
     explicit DQuickWindowAttachedPrivate(QWindow *window, DQuickWindowAttached *qq);
     ~DQuickWindowAttachedPrivate() override;
 
@@ -48,17 +54,17 @@ public:
 
     QWindow *window = nullptr;
     DPlatformHandle *handle = nullptr;
-    bool explicitEnable = false;
-    int explicitWindowRadius = -1;
-    int explicitBorderWidth = -1;
-    QColor explicitBorderColor;
-    int explicitShadowRadius = -1;
+    BoolOptional explicitEnable {Invalid};
+    BoolOptional explicitTranslucentBackground {Invalid};
+    BoolOptional explicitEnableSystemResize {Invalid};
+    BoolOptional explicitEnableSystemMove {Invalid};
+    BoolOptional explicitEnableBlurWindow {Invalid};
+    qint8 explicitWindowRadius = -1;
+    qint8 explicitBorderWidth = -1;
+    qint8 explicitShadowRadius = -1;
     QPoint explicitShadowOffset;
+    QColor explicitBorderColor;
     QColor explicitShadowColor;
-    bool explicitTranslucentBackground = false;
-    bool explicitEnableSystemResize = false;
-    bool explicitEnableSystemMove = false;
-    bool explicitEnableBlurWindow = false;
 
     DWindowManagerHelper::WmWindowTypes wmWindowTypes;
     DWindowManagerHelper::MotifFunctions motifFunctions;

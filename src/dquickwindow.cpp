@@ -75,6 +75,39 @@ DQuickWindowAttachedPrivate::~DQuickWindowAttachedPrivate()
     }
 }
 
+template<class Func>
+inline static void updateValue(DQuickWindowAttachedPrivate::BoolOptional &value, Func call)
+{
+    if (value != DQuickWindowAttachedPrivate::Invalid) {
+        call(value == DQuickWindowAttachedPrivate::True);
+        value = DQuickWindowAttachedPrivate::Invalid;
+    }
+}
+template<class Func>
+inline static void updateValue(qint8 &value, Func call)
+{
+    if (value >= 0) {
+        call(value);
+        value = -1;
+    }
+}
+template<class Func>
+inline static void updateValue(QColor &value, Func call)
+{
+    if (value.isValid()) {
+        call(value);
+        value = QColor();
+    }
+}
+template<class Func>
+inline static void updateValue(QPoint &value, Func call)
+{
+    if (value.isNull()) {
+        call(value);
+        value = QPoint();
+    }
+}
+
 bool DQuickWindowAttachedPrivate::ensurePlatformHandle()
 {
     if (handle)
@@ -86,29 +119,20 @@ bool DQuickWindowAttachedPrivate::ensurePlatformHandle()
     }
 
     Q_ASSERT(DPlatformHandle::isEnabledNoTitlebar(window));
+    explicitEnable = Invalid;
     D_Q(DQuickWindowAttached);
     handle = new DPlatformHandle(window);
-    if (q->windowRadius() != explicitWindowRadius && explicitWindowRadius >= 0)
-        handle->setWindowRadius(explicitWindowRadius);
-    if (q->borderWidth() != explicitBorderWidth && explicitBorderWidth >= 0)
-        handle->setBorderWidth(explicitBorderWidth);
-    if (q->borderColor() != explicitBorderColor && explicitBorderColor.isValid())
-        handle->setBorderColor(explicitBorderColor);
-    if (q->shadowRadius() != explicitShadowRadius && explicitShadowRadius >= 0)
-        handle->setShadowRadius(explicitShadowRadius);
-    if (q->shadowOffset() != explicitShadowOffset && !explicitShadowOffset.isNull())
-        handle->setShadowOffset(explicitShadowOffset);
-    if (q->shadowColor() != explicitShadowColor && !explicitShadowColor.isValid())
-        handle->setShadowColor(explicitShadowColor);
-    if (q->translucentBackground() != explicitTranslucentBackground)
-        handle->setTranslucentBackground(explicitTranslucentBackground);
-    if (q->enableSystemResize() != explicitEnableSystemResize)
-        handle->setEnableSystemResize(explicitEnableSystemResize);
-    if (q->enableSystemMove() != explicitEnableSystemMove)
-        handle->setEnableSystemMove(explicitEnableSystemMove);
-    if (q->enableBlurWindow() != explicitEnableBlurWindow)
-        handle->setEnableBlurWindow(explicitEnableBlurWindow);
 
+    updateValue(explicitWindowRadius, std::bind(&DPlatformHandle::setWindowRadius, handle, std::placeholders::_1));
+    updateValue(explicitBorderWidth, std::bind(&DPlatformHandle::setBorderWidth, handle, std::placeholders::_1));
+    updateValue(explicitBorderColor, std::bind(&DPlatformHandle::setBorderColor, handle, std::placeholders::_1));
+    updateValue(explicitShadowRadius, std::bind(&DPlatformHandle::setShadowRadius, handle, std::placeholders::_1));
+    updateValue(explicitShadowOffset, std::bind(&DPlatformHandle::setShadowOffset, handle, std::placeholders::_1));
+    updateValue(explicitShadowColor, std::bind(&DPlatformHandle::setShadowColor, handle, std::placeholders::_1));
+    updateValue(explicitTranslucentBackground, std::bind(&DPlatformHandle::setTranslucentBackground, handle, std::placeholders::_1));
+    updateValue(explicitEnableSystemResize, std::bind(&DPlatformHandle::setEnableSystemResize, handle, std::placeholders::_1));
+    updateValue(explicitEnableSystemMove, std::bind(&DPlatformHandle::setEnableSystemMove, handle, std::placeholders::_1));
+    updateValue(explicitEnableBlurWindow, std::bind(&DPlatformHandle::setEnableBlurWindow, handle, std::placeholders::_1));
 
     QObject::connect(handle, &DPlatformHandle::borderColorChanged, q, &DQuickWindowAttached::borderColorChanged);
     QObject::connect(handle, &DPlatformHandle::borderWidthChanged, q, &DQuickWindowAttached::borderWidthChanged);
@@ -217,7 +241,7 @@ void DQuickWindowAttachedPrivate::_q_updateClipPath()
 
 void DQuickWindowAttachedPrivate::_q_ensurePlatformHandle()
 {
-    if (explicitEnable && DWindowManagerHelper::instance()->hasNoTitlebar())
+    if (explicitEnable == True && DWindowManagerHelper::instance()->hasNoTitlebar())
         ensurePlatformHandle();
 }
 
@@ -604,7 +628,6 @@ void DQuickWindowAttached::resetThemeType()
 void DQuickWindowAttached::setEnabled(bool e)
 {
     D_D(DQuickWindowAttached);
-    d->explicitEnable = e;
     if (e == isEnabled())
         return;
 
@@ -615,6 +638,7 @@ void DQuickWindowAttached::setEnabled(bool e)
     }
 
     if (!d->ensurePlatformHandle()) {
+        d->explicitEnable = static_cast<DQuickWindowAttachedPrivate::BoolOptional>(e);
         QObject::connect(DWindowManagerHelper::instance(), SIGNAL(hasNoTitlebarChanged()), this, SLOT(_q_ensurePlatformHandle())
                          , Qt::UniqueConnection);
     }
@@ -628,10 +652,11 @@ void DQuickWindowAttached::setWindowRadius(int windowRadius)
 {
     D_D(DQuickWindowAttached);
 
-    d->explicitWindowRadius = windowRadius;
     d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setWindowRadius(windowRadius);
+    else
+        d->explicitWindowRadius = windowRadius;
 }
 
 /*!
@@ -642,10 +667,11 @@ void DQuickWindowAttached::setBorderWidth(int borderWidth)
 {
     D_D(DQuickWindowAttached);
 
-    d->explicitBorderWidth = borderWidth;
     d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setBorderWidth(borderWidth);
+    else
+        d->explicitBorderWidth = borderWidth;
 }
 
 /*!
@@ -656,10 +682,11 @@ void DQuickWindowAttached::setBorderColor(const QColor &borderColor)
 {
     D_D(DQuickWindowAttached);
 
-    d->explicitBorderColor = borderColor;
     d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setBorderColor(borderColor);
+    else
+        d->explicitBorderColor = borderColor;
 }
 
 /*!
@@ -670,10 +697,11 @@ void DQuickWindowAttached::setShadowRadius(int shadowRadius)
 {
     D_D(DQuickWindowAttached);
 
-    d->explicitShadowRadius = shadowRadius;
     d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setShadowRadius(shadowRadius);
+    else
+        d->explicitShadowRadius = shadowRadius;
 }
 
 /*!
@@ -684,10 +712,11 @@ void DQuickWindowAttached::setShadowOffset(const QPoint &shadowOffset)
 {
     D_D(DQuickWindowAttached);
 
-    d->explicitShadowOffset = shadowOffset;
     d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setShadowOffset(shadowOffset);
+    else
+        d->explicitShadowOffset = shadowOffset;
 }
 
 /*!
@@ -698,10 +727,11 @@ void DQuickWindowAttached::setShadowColor(const QColor &shadowColor)
 {
     D_D(DQuickWindowAttached);
 
-    d->explicitShadowColor = shadowColor;
     d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setShadowColor(shadowColor);
+    else
+        d->explicitShadowColor = shadowColor;
 }
 
 /*!
@@ -712,10 +742,11 @@ void DQuickWindowAttached::setTranslucentBackground(bool translucentBackground)
 {
     D_D(DQuickWindowAttached);
 
-    d->explicitTranslucentBackground = translucentBackground;
     d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setTranslucentBackground(translucentBackground);
+    else
+        d->explicitTranslucentBackground = static_cast<DQuickWindowAttachedPrivate::BoolOptional>(translucentBackground);
 }
 
 /*!
@@ -726,10 +757,11 @@ void DQuickWindowAttached::setEnableSystemResize(bool enableSystemResize)
 {
     D_D(DQuickWindowAttached);
 
-    d->explicitEnableSystemResize = enableSystemResize;
     d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setEnableSystemResize(enableSystemResize);
+    else
+        d->explicitEnableSystemResize = static_cast<DQuickWindowAttachedPrivate::BoolOptional>(enableSystemResize);
 }
 
 /*!
@@ -740,10 +772,11 @@ void DQuickWindowAttached::setEnableSystemMove(bool enableSystemMove)
 {
     D_D(DQuickWindowAttached);
 
-    d->explicitEnableSystemMove = enableSystemMove;
     d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setEnableSystemMove(enableSystemMove);
+    else
+        d->explicitEnableSystemMove = static_cast<DQuickWindowAttachedPrivate::BoolOptional>(enableSystemMove);
 }
 
 /*!
@@ -754,10 +787,11 @@ void DQuickWindowAttached::setEnableBlurWindow(bool enableBlurWindow)
 {
     D_D(DQuickWindowAttached);
 
-    d->explicitEnableBlurWindow = enableBlurWindow;
     d->ensurePlatformHandle();
     if (d->handle)
         d->handle->setEnableBlurWindow(enableBlurWindow);
+    else
+        d->explicitEnableBlurWindow = static_cast<DQuickWindowAttachedPrivate::BoolOptional>(enableBlurWindow);
 }
 
 /*!
