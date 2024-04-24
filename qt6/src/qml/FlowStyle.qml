@@ -706,6 +706,13 @@ QtObject {
         property color darkNoBlurColor: Qt.rgba(35 / 255.0, 35 / 255.0, 35 / 255.0, 1.0)
     }
 
+    property QtObject inWindowBlur: QtObject {
+        property D.Palette overlay: D.Palette {
+            normal: ("#333333")
+            normalDark: ("#eeeeee")
+        }
+    }
+
     property QtObject arrowRectangleBlur: QtObject {
         property int borderWidth: 1
         property int roundJoinRadius: 8

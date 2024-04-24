@@ -13,11 +13,18 @@ Item {
     property alias content: blur
     default property alias data: blitter.data
     readonly property bool valid: blitter.blitterEnabled
+    property Component overlay
 
     D.BackdropBlitter {
         id: blitter
         anchors.fill: parent
         blitterEnabled: !D.DTK.isSoftwareRender
+
+        Loader {
+            active: control.overlay && Window.window && Window.window.color.a <= 0
+            anchors.fill: parent
+            sourceComponent: control.overlay
+        }
 
         MultiEffect {
             id: blur

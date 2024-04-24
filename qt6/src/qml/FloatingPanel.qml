@@ -16,6 +16,7 @@ Control {
     property D.Palette dropShadowColor: DS.Style.floatingPanel.dropShadow
     property D.Palette outsideBorderColor: DS.Style.floatingPanel.outsideBorder
     property D.Palette insideBorderColor: DS.Style.floatingPanel.insideBorder
+    property D.Palette overlayColor: DS.Style.inWindowBlur.overlay
     // corner radius
     property int radius: DS.Style.floatingPanel.radius
     // blur radius
@@ -27,6 +28,10 @@ Control {
         implicitHeight: DS.Style.floatingPanel.height
         radius: blurRadius
         offscreen: true
+        overlay: Rectangle {
+            radius: control.radius
+            color: control.D.ColorSelector.overlayColor
+        }
 
         D.ItemViewport {
             anchors.fill: parent
