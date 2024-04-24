@@ -631,7 +631,7 @@ QtObject {
     property QtObject menu: QtObject {
         property int padding: 10
         property int radius: D.DTK.platformTheme.windowRadius < 0 ? 18 : D.DTK.platformTheme.windowRadius
-        property int margins: 0
+        property int margins: 10
         property int overlap: 1
 
         property QtObject item: QtObject {
