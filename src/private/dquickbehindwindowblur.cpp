@@ -68,6 +68,9 @@ void DSGBlendNode::render(const QSGRenderNode::RenderState *state)
     }
 
     const auto blurData = m_item->d_func();
+    if (!blurData->effectiveBlurEnabled)
+        return;
+
     const bool dirtyMatrix = m_lastMatrix != *matrix();
     const bool dirtyClip = state->clipRegion() ? m_lastClip != *state->clipRegion() : !m_lastClip.isEmpty();
     const bool dirtyRadius = !qFuzzyCompare(m_lastRadius, blurData->radius);
@@ -153,13 +156,42 @@ DQuickBehindWindowBlurPrivate::~DQuickBehindWindowBlurPrivate()
         windowAttach->d_func()->removeBlur(q_func());
 }
 
+void DQuickBehindWindowBlurPrivate::_q_onHasBlurWindowChanged()
+{
+    if (blurEnabled)
+        Q_EMIT q_func()->validChanged();
+
+    if (!updateBlurEnable())
+        _q_updateBlurArea();
+}
+
 void DQuickBehindWindowBlurPrivate::_q_updateBlurArea()
 {
-    if (Q_UNLIKELY(!windowAttach))
+    if (!effectiveBlurEnabled)
         return;
-    if (!DWindowManagerHelper::instance()->hasBlurWindow())
-        return;
-    windowAttach->d_func()->updateBlurAreaFor(q_func());
+
+    Q_Q(DQuickBehindWindowBlur);
+    windowAttach->d_func()->updateBlurAreaFor(q);
+}
+
+bool DQuickBehindWindowBlurPrivate::updateBlurEnable()
+{
+    Q_Q(DQuickBehindWindowBlur);
+    const bool enabled = q->isVisible() && q->valid() && windowAttach;
+    if (effectiveBlurEnabled == enabled)
+        return false;
+    effectiveBlurEnabled = enabled;
+    // Needs DSGBlendNode::render to map blur area
+    q->update();
+
+    if (enabled) {
+        Q_ASSERT(windowAttach);
+        windowAttach->d_func()->addBlur(q);
+    } else if (windowAttach) {
+        windowAttach->d_func()->removeBlur(q);
+    }
+
+    return true;
 }
 
 DQuickBehindWindowBlur::DQuickBehindWindowBlur(QQuickItem *parent)
@@ -167,10 +199,8 @@ DQuickBehindWindowBlur::DQuickBehindWindowBlur(QQuickItem *parent)
 {
     setFlag(ItemHasContents);
 
-    connect(DWindowManagerHelper::instance(), &DWindowManagerHelper::hasBlurWindowChanged,
-            this, &DQuickBehindWindowBlur::validChanged);
     connect(DWindowManagerHelper::instance(), SIGNAL(hasBlurWindowChanged()),
-            this, SLOT(_q_updateBlurArea()));
+            this, SLOT(_q_onHasBlurWindowChanged()));
 }
 
 DQuickBehindWindowBlur::~DQuickBehindWindowBlur()
@@ -217,7 +247,28 @@ void DQuickBehindWindowBlur::setBlendColor(const QColor &newBlendColor)
 
 bool DQuickBehindWindowBlur::valid() const
 {
-    return DWindowManagerHelper::instance()->hasBlurWindow();
+    Q_D(const DQuickBehindWindowBlur);
+    return d->blurEnabled && DWindowManagerHelper::instance()->hasBlurWindow();
+}
+
+bool DQuickBehindWindowBlur::blurEnabled() const
+{
+    Q_D(const DQuickBehindWindowBlur);
+    return d->blurEnabled;
+}
+
+void DQuickBehindWindowBlur::setBlurEnabled(bool newBlurEnabled)
+{
+    Q_D(DQuickBehindWindowBlur);
+    if (d->blurEnabled == newBlurEnabled)
+        return;
+    bool oldValid = valid();
+    d->blurEnabled = newBlurEnabled;
+    d->updateBlurEnable();
+    Q_EMIT blurEnabledChanged();
+
+    if (oldValid != valid())
+        Q_EMIT validChanged();
 }
 
 QSGNode *DQuickBehindWindowBlur::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
@@ -266,13 +317,7 @@ void DQuickBehindWindowBlur::itemChange(ItemChange change, const ItemChangeData 
         setWindowAttached(windowAttached(value.window));
     } else if (change == ItemVisibleHasChanged) {
         Q_D(DQuickBehindWindowBlur);
-        if (value.boolValue) {
-            if (d->windowAttach)
-                d->windowAttach->d_func()->addBlur(this);
-        } else {
-            if (d->windowAttach)
-                d->windowAttach->d_func()->removeBlur(this);
-        }
+        d->updateBlurEnable();
     }
 
     QQuickItem::itemChange(change, value);
@@ -288,10 +333,7 @@ void DQuickBehindWindowBlur::setWindowAttached(DQuickWindowAttached *wa)
     }
 
     d->windowAttach = wa;
-
-    if (wa) {
-        wa->d_func()->addBlur(this);
-    }
+    d->updateBlurEnable();
 }
 
 void DQuickBehindWindowBlur::componentComplete()
