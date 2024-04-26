@@ -21,6 +21,7 @@ class DQuickBehindWindowBlur : public QQuickItem
     Q_PROPERTY(qreal cornerRadius READ cornerRadius WRITE setCornerRadius NOTIFY cornerRadiusChanged)
     Q_PROPERTY(QColor blendColor READ blendColor WRITE setBlendColor NOTIFY blendColorChanged)
     Q_PROPERTY(bool valid READ valid NOTIFY validChanged)
+    Q_PROPERTY(bool blurEnabled READ blurEnabled WRITE setBlurEnabled NOTIFY blurEnabledChanged)
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QML_NAMED_ELEMENT(BehindWindowBlur)
 #endif
@@ -37,10 +38,14 @@ public:
 
     bool valid() const;
 
+    bool blurEnabled() const;
+    void setBlurEnabled(bool newBlurEnabled);
+
 Q_SIGNALS:
     void cornerRadiusChanged();
     void blendColorChanged();
     void validChanged();
+    void blurEnabledChanged();
 
 protected:
     QSGNode *updatePaintNode(QSGNode *, UpdatePaintNodeData *) override;
@@ -53,6 +58,7 @@ private:
 private:
     Q_DISABLE_COPY(DQuickBehindWindowBlur)
     Q_DECLARE_PRIVATE(DQuickBehindWindowBlur)
+    Q_PRIVATE_SLOT(d_func(), void _q_onHasBlurWindowChanged())
     Q_PRIVATE_SLOT(d_func(), void _q_updateBlurArea())
     friend class DQuickWindowAttachedPrivate;
     friend class DSGBlendNode;

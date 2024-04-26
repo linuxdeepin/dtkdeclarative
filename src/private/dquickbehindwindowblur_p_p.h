@@ -25,8 +25,12 @@ public:
     }
     ~DQuickBehindWindowBlurPrivate();
 
+    void _q_onHasBlurWindowChanged();
     void _q_updateBlurArea();
+    bool updateBlurEnable();
+
     inline bool isValidBlur() const {
+        Q_ASSERT(effectiveBlurEnabled);
         if (!blurPath.isEmpty())
             return true;
         return blurArea.width > 0 && blurArea.height > 0;
@@ -46,6 +50,8 @@ public:
     QColor blendColor;
     DPlatformHandle::WMBlurArea blurArea;
     QPainterPath blurPath;
+    bool blurEnabled = true;
+    bool effectiveBlurEnabled = false;
 };
 
 DQUICK_END_NAMESPACE

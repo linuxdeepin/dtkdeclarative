@@ -48,4 +48,8 @@
 @brief 用于判断当前窗口状态是否支持窗口外模糊。
 @details 如果支持窗口外模糊，返回 true，否则返回 false。该属性在窗口管理器层访问其是否支持模糊效果。
 
+@property bool BehindWindowBlur::blurEnabled
+@brief 用于控制是否开启模糊效果。
+@details 属性为 false 时，将禁用模糊效果，为 true 时则开启。便于在程序运行过程中临时开启或关闭模糊特效。
+
 */
