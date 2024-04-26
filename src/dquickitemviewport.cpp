@@ -503,8 +503,7 @@ QSGNode *DQuickItemViewport::updatePaintNode(QSGNode *old, QQuickItem::UpdatePai
             maskNode->setMaskTexture(d->textureForRadiusMask());
             maskNode->setMaskScale(d->getMaskSizeRatio());
         }
-    } else {
-        Q_ASSERT(softwareNode);
+    } else if (softwareNode) {
         softwareNode->setSmooth(smooth());
         softwareNode->setRect(QRectF(QPointF(0, 0), size()));
         softwareNode->setRadius(d->radius);
