@@ -785,8 +785,7 @@ public:
                 QRectF region = renderMatrix.mapRect(m_rect);
                 region.moveTopLeft(region.topLeft() * devicePixelRatio);
                 region.setSize(region.size() * devicePixelRatio);
-                // glfbManager->updateTexture(region.toRect());
-                glfbManager->updateTexture(QRect(0, 0, 1200, 1600));
+                glfbManager->updateTexture(region.toRect());
             }
 #endif
 
