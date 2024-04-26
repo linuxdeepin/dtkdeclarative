@@ -853,62 +853,54 @@ public:
             auto saveFlags = textureRT->flags();
             textureRT->setFlags(QRhiTextureRenderTarget::PreserveColorContents);
 
-            if (clipList() || inheritedOpacity() < 1.0) {
-                if (!node)
-                    node.reset(new Node);
+            if (!node)
+                node.reset(new Node);
 
-                node->opacityNode.setOpacity(inheritedOpacity());
-                node->transformNode.setMatrix(*this->matrix());
+            node->opacityNode.setOpacity(inheritedOpacity());
+            node->transformNode.setMatrix(*this->matrix());
 
-                QSGNode *childContainer = &node->opacityNode;
-                if (clipList()) {
-                    if (!node->clipNode) {
-                        node->clipNode = new QQuickDefaultClipNode(QRectF(0, 0, 65535, 65535));
-                        node->clipNode->setFlag(QSGNode::OwnedByParent, false);
-                        node->clipNode->setClipRect(node->clipNode->rect());
-                        node->clipNode->update();
+            QSGNode *childContainer = &node->opacityNode;
+            if (clipList()) {
+                if (!node->clipNode) {
+                    node->clipNode = new QQuickDefaultClipNode(QRectF(0, 0, 65535, 65535));
+                    node->clipNode->setFlag(QSGNode::OwnedByParent, false);
+                    node->clipNode->setClipRect(node->clipNode->rect());
+                    node->clipNode->update();
 
-                        node->rootNode.reparentChildNodesTo(node->clipNode);
-                        node->rootNode.appendChildNode(node->clipNode);
-                    }
-                } else {
-                    if (node->clipNode)
-                        node->clipNode->reparentChildNodesTo(&node->rootNode);
-
-                    delete node->clipNode;
-                    node->clipNode = nullptr;
+                    node->rootNode.reparentChildNodesTo(node->clipNode);
+                    node->rootNode.appendChildNode(node->clipNode);
                 }
-
-                overrideChildNodesTo(contentNode, childContainer);
-
-                rhi->sync(textureRT->pixelSize(), &node->rootNode, {}, nullptr,
-                          {devicePixelRatio, devicePixelRatio}, !isTextureRenderTarget);
-                qreal oldDPR;
-                QRhiCommandBuffer *oldCB;
-                if (rhi->preprocess(textureRT, oldDPR, oldCB, renderWindow())) {
-                    if (node->clipNode) {
-                        if (!node->clipNode->clipList()) {
-                            node->clipNode->setRendererClipList(clipList());
-                        } else {
-                            auto lastClipNode = node->clipNode->clipList();
-                            while (auto cliplist = lastClipNode->clipList())
-                                lastClipNode = cliplist;
-                            Q_ASSERT(lastClipNode->clipList());
-                            const_cast<QSGClipNode*>(lastClipNode)->setRendererClipList(clipList());
-                        }
-                    }
-
-                    rhi->render(oldDPR, oldCB);
-                }
-
-                restoreChildNodesTo(childContainer, contentNode);
             } else {
-                node.reset();
+                if (node->clipNode)
+                    node->clipNode->reparentChildNodesTo(&node->rootNode);
 
-                rhi->sync(textureRT->pixelSize(), contentNode, *this->matrix(), nullptr,
-                          {devicePixelRatio, devicePixelRatio}, !isTextureRenderTarget);
-                rhi->render(textureRT, renderWindow());
+                delete node->clipNode;
+                node->clipNode = nullptr;
             }
+
+            overrideChildNodesTo(contentNode, childContainer);
+
+            rhi->sync(textureRT->pixelSize(), &node->rootNode, {}, nullptr,
+                      {devicePixelRatio, devicePixelRatio}, !isTextureRenderTarget);
+            qreal oldDPR;
+            QRhiCommandBuffer *oldCB;
+            if (rhi->preprocess(textureRT, oldDPR, oldCB, renderWindow())) {
+                if (node->clipNode) {
+                    if (!node->clipNode->clipList()) {
+                        node->clipNode->setRendererClipList(clipList());
+                    } else {
+                        auto lastClipNode = node->clipNode->clipList();
+                        while (auto cliplist = lastClipNode->clipList())
+                            lastClipNode = cliplist;
+                        Q_ASSERT(lastClipNode->clipList());
+                        const_cast<QSGClipNode*>(lastClipNode)->setRendererClipList(clipList());
+                    }
+                }
+
+                rhi->render(oldDPR, oldCB);
+            }
+
+            restoreChildNodesTo(childContainer, contentNode);
 
             textureRT->setFlags(saveFlags);
         }
