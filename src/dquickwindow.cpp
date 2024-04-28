@@ -102,7 +102,7 @@ inline static void updateValue(QColor &value, Func call)
 template<class Func>
 inline static void updateValue(QPoint &value, Func call)
 {
-    if (value.isNull()) {
+    if (!value.isNull()) {
         call(value);
         value = QPoint();
     }
