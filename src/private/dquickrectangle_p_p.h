@@ -30,7 +30,7 @@ public:
         if (!maskTexture && radius > 0) {
             QQuickItemPrivate *d = QQuickItemPrivate::get(q_func());
             maskTexture = MaskTextureCache::instance()->getTexture(d->sceneGraphRenderContext(),
-                                                                   radius * d->window->effectiveDevicePixelRatio(), true);
+                                                                   qRound(radius * d->window->effectiveDevicePixelRatio()), true);
         }
         return maskTexture->texture;
     }
