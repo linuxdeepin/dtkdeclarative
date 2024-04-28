@@ -29,7 +29,7 @@ LineEdit {
             D.DciIcon {
                 id: searchIcon
                 name: "action_search"
-                sourceSize.width: DS.Style.searchEdit.iconSize
+                sourceSize: Qt.size(DS.Style.searchEdit.iconSize, DS.Style.searchEdit.iconSize)
                 palette: D.DTK.makeIconPalette(control.palette)
                 mode: control.D.ColorSelector.controlState
                 theme: control.D.ColorSelector.controlTheme
