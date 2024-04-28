@@ -43,14 +43,14 @@ public:
     }
 
     // 根据圆角大小获取一个蒙版材质，此材质将用于片段着色器中实现圆角效果
-    TextureData getTexture(QSGRenderContext *context, float radius, bool antialiasing)
+    TextureData getTexture(QSGRenderContext *context, int radius, bool antialiasing)
     {
         // 排除无效的数据
-        if (qIsNull(radius))
+        if (radius <= 0)
             return TextureData();
 
         // 用于获取材质缓存key的key
-        qint8 to_cache_key_key = ((antialiasing << 7) | qRound(radius));
+        qint8 to_cache_key_key = ((antialiasing << 7) | radius);
         Texture *texture = nullptr;
 
         if (m_radiusToCacheKey.contains(to_cache_key_key)) {
@@ -59,7 +59,7 @@ public:
 
         if (!texture) {
             // 在边缘额外加一个像素，用于 ClampToEdge 时不会取到边缘的透明像素点
-            QImage mask(QSize(qRound(radius) + 1, qRound(radius) + 1), QImage::Format_ARGB32);
+            QImage mask(QSize(radius + 1, radius + 1), QImage::Format_ARGB32);
             mask.fill(Qt::transparent);
             // 必须填充为白色，在着色器中运算时会使用rgb三个通道相乘
             const QColor maskColor = Qt::white;
@@ -220,7 +220,7 @@ public:
         if (Q_UNLIKELY(dirtyState.testFlag(DirtyMaskTexture) || !maskTexture)) {
             QQuickItemPrivate *d = QQuickItemPrivate::get(q_func());
             maskTexture = MaskTextureCache::instance()->getTexture(d->sceneGraphRenderContext(),
-                                                                   static_cast<float>(radius * d->window->effectiveDevicePixelRatio()),
+                                                                   qRound(radius * d->window->effectiveDevicePixelRatio()),
                                                                    true);
 
             markDirty(DirtyMaskTexture, false);
