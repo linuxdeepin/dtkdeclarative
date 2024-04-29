@@ -15,6 +15,9 @@
 
 #include <QQuickWindow>
 #include <QQmlComponent>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <QPainter>
+#endif
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 QT_BEGIN_NAMESPACE
@@ -174,6 +177,17 @@ public:
         EmbedMode
     };
     Q_ENUM(PopupMode)
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    enum class CompositionMode {
+        Source = QPainter::CompositionMode_Source,
+        SourceOver = QPainter::CompositionMode_SourceOver,
+        Destination = QPainter::CompositionMode_Destination,
+        DestinationOver = QPainter::CompositionMode_DestinationOver,
+        Clear = QPainter::CompositionMode_Clear,
+    };
+    Q_ENUM(CompositionMode)
+#endif
 
     bool hasBlurWindow() const;
     bool hasComposite() const;

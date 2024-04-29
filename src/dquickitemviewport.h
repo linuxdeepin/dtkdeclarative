@@ -9,6 +9,9 @@
 #include <DObject>
 
 #include <QQuickItem>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <QPainter>
+#endif
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -21,6 +24,9 @@ class DQuickItemViewport : public QQuickItem, public DCORE_NAMESPACE::DObject
     Q_PROPERTY(float radius READ radius WRITE setRadius NOTIFY radiusChanged)
     Q_PROPERTY(bool fixed READ fixed WRITE setFixed NOTIFY fixedChanged)
     Q_PROPERTY(bool hideSource READ hideSource WRITE setHideSource NOTIFY hideSourceChanged)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    Q_PROPERTY(QPainter::CompositionMode compositionMode READ compositionMode WRITE setCompositionMode NOTIFY compositionModeChanged RESET resetCompositionMode)
+#endif
     D_DECLARE_PRIVATE(DQuickItemViewport)
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QML_NAMED_ELEMENT(ItemViewport)
@@ -48,12 +54,21 @@ public:
     bool isTextureProvider() const override { return true; }
     QSGTextureProvider *textureProvider() const override;
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QPainter::CompositionMode compositionMode() const;
+    void setCompositionMode(QPainter::CompositionMode newCompositionMode);
+    void resetCompositionMode();
+#endif
+
 Q_SIGNALS:
     void sourceItemChanged();
     void sourceRectChanged();
     void radiusChanged();
     void fixedChanged();
     void hideSourceChanged();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    void compositionModeChanged();
+#endif
 
 private Q_SLOTS:
     void invalidateSceneGraph();

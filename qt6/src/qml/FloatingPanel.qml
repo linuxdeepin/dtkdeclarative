@@ -37,6 +37,19 @@ Control {
         }
 
         Loader {
+            anchors.fill: parent
+            active: Window.window && Window.window.color.a < 1
+            sourceComponent: D.ItemViewport {
+                anchors.fill: parent
+                fixed: true
+                sourceItem: blur.content
+                radius: control.radius
+                hideSource: false
+                compositionMode: DTK.CompositionMode.Source
+            }
+        }
+
+        Loader {
             anchors.fill: backgroundRect
             active: control.dropShadowColor
             sourceComponent: BoxShadow {

@@ -9,6 +9,7 @@
 #include <QSGRenderNode>
 #include <QImage>
 #include <QPainterPath>
+#include <QPainter>
 
 QT_BEGIN_NAMESPACE
 class QQuickItem;
@@ -29,6 +30,7 @@ public:
     void setSmooth(bool smooth);
     void setSourceRect(const QRectF &source);
     void setRect(const QRectF &target);
+    void setCompositionMode(QPainter::CompositionMode mode);
 
     void render(const RenderState *state) override;
     void releaseResources() override;
@@ -44,6 +46,7 @@ private:
     QRectF sourceRect;
     QRectF targetRect;
     QPainterPath clipPath;
+    QPainter::CompositionMode m_compositionMode = QPainter::CompositionMode_SourceOver;
 
     QSGTexture *m_texture = nullptr;
     QQuickItem *item = nullptr;

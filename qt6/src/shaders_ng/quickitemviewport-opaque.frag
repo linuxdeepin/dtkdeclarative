@@ -38,10 +38,13 @@ void main()
     lowp vec4 mask_bottom_left = texture(mask, tex_bottom_left);
     lowp vec4 mask_top_right = texture(mask, tex_top_right);
     lowp vec4 mask_bottom_right = texture(mask, tex_bottom_right);
+    lowp vec4 mask_tex = mask_top_left * mask_bottom_left * mask_top_right * mask_bottom_right;
+
+    if (mask_tex.a < 1.0)
+        discard;
 
     lowp vec4 tex = texture(qt_Texture, qt_TexCoord);
-
     // 统一计算此像素点被模板遮盖后的颜色，此处不需要区分点是否在某个区域，不在此区域时取出的mask颜色的alpha值必为1
-    tex *= mask_top_left * mask_bottom_left * mask_top_right * mask_bottom_right;
+    tex *= mask_tex;
     fragColor = tex * tex.a;
 }

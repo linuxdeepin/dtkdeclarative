@@ -230,7 +230,11 @@ public:
     }
 
     inline bool needMaskNode() const {
-        return radius > 0;
+        return radius > 0
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+               || compositionMode != DefaultCompositionMode
+#endif
+            ;
     }
 
     inline bool updateOffset(const QPointF &offset) {
@@ -291,6 +295,11 @@ public:
     bool hideSource = false;
     QSGLayer *texture = nullptr;
     DQuickViewportTextureProvider *provider = nullptr;
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    constexpr static QPainter::CompositionMode DefaultCompositionMode = QPainter::CompositionMode_SourceOver;
+    QPainter::CompositionMode compositionMode = DefaultCompositionMode;
+#endif
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(DQuickItemViewportPrivate::DirtyState)
 DQUICK_END_NAMESPACE

@@ -73,6 +73,14 @@ void DSoftwareRoundedImageNode::setRect(const QRectF &target)
     markDirty(DirtyMaterial);
 }
 
+void DSoftwareRoundedImageNode::setCompositionMode(QPainter::CompositionMode mode)
+{
+    if (m_compositionMode == mode)
+        return;
+    m_compositionMode = mode;
+    markDirty(DirtyForceUpdate);
+}
+
 void DSoftwareRoundedImageNode::render(const RenderState *state)
 {
     if (!sourceRect.isValid())

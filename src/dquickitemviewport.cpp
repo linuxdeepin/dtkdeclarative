@@ -264,6 +264,34 @@ QSGTextureProvider *DQuickItemViewport::textureProvider() const
     return d->provider;
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+QPainter::CompositionMode DQuickItemViewport::compositionMode() const
+{
+    D_DC(DQuickItemViewport);
+    return d->compositionMode;
+}
+
+void DQuickItemViewport::setCompositionMode(QPainter::CompositionMode newCompositionMode)
+{
+    D_D(DQuickItemViewport);
+    if (d->compositionMode == newCompositionMode)
+        return;
+
+    if (d->compositionMode == DQuickItemViewportPrivate::DefaultCompositionMode
+        || newCompositionMode == DQuickItemViewportPrivate::DefaultCompositionMode) {
+        d->markDirty(DQuickItemViewportPrivate::DirtyContentNode);
+    }
+
+    d->compositionMode = newCompositionMode;
+    Q_EMIT compositionModeChanged();
+}
+
+void DQuickItemViewport::resetCompositionMode()
+{
+    setCompositionMode(DQuickItemViewportPrivate::DefaultCompositionMode);
+}
+#endif
+
 void DQuickItemViewport::invalidateSceneGraph()
 {
     D_D(DQuickItemViewport);
@@ -462,6 +490,13 @@ QSGNode *DQuickItemViewport::updatePaintNode(QSGNode *old, QQuickItem::UpdatePai
     QSGImageNode *imageNode = preNode->imageNode;
     DSoftwareRoundedImageNode *softwareNode = preNode->softwareNode;
     const bool useMaskNode = d->needMaskNode();
+    const bool usingMaskNode = preNode->maskNode || preNode->softwareNode;
+
+    if (useMaskNode != usingMaskNode) {
+        Q_ASSERT(!preNode->maskNode);
+        Q_ASSERT(!preNode->softwareNode);
+    }
+
     if (Q_UNLIKELY(!imageNode && !softwareNode) && Q_LIKELY(tp->texture())) {
         if (useMaskNode) {
             // 创建image node
@@ -502,11 +537,17 @@ QSGNode *DQuickItemViewport::updatePaintNode(QSGNode *old, QQuickItem::UpdatePai
             maskNode->setSourceScale(d->getSoureSizeRatio());
             maskNode->setMaskTexture(d->textureForRadiusMask());
             maskNode->setMaskScale(d->getMaskSizeRatio());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            maskNode->setCompositionMode(d->compositionMode);
+#endif
         }
     } else if (softwareNode) {
         softwareNode->setSmooth(smooth());
         softwareNode->setRect(QRectF(QPointF(0, 0), size()));
         softwareNode->setRadius(d->radius);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        softwareNode->setCompositionMode(d->compositionMode);
+#endif
         d->updateSourceRect(softwareNode);
     }
 
