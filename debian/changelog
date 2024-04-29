@@ -1,3 +1,24 @@
+dtkdeclarative (5.6.28) unstable; urgency=medium
+
+  * chore: incorrect font for SearchEdit's indicator text(Issue: https://github.com/linuxdeepin/developer-center/issues/8040)
+  * chore: Adjusting the transparency of the scrollbar
+    Thanks to zhangkun(Issue: https://github.com/linuxdeepin/developer-center/issues/8049)
+  * fix: icon blurry when half aligned
+  * chore: add margins for Popup with window's edges
+  * fix: lost user settings when Handler is equal user settings(Issue: https://github.com/linuxdeepin/developer-center/issues/7647)
+  * feat: support to disable shadow for FloatingPanel
+  * fix: crash at DQuickItemViewport::updatePaintNode
+  * fix: set shadowOffset when using DWindow
+  * feat: add "blurEnabled" property to BehindWindowBlur
+  * fix: remove debug code
+  * fix: QSGRenderNode::matrix is error if the item in BackdropBlitter
+  * fix: search icon not visible(Issue: https://github.com/linuxdeepin/developer-center/issues/8306)
+  * fix: mask area exist two line for viewport(Issue: https://github.com/linuxdeepin/developer-center/issues/8313)
+  * feat: add "compositionMode" property in ItemViewport
+  * fix: inconsistent implicit size in dci icon
+
+ -- Deepin Packages Builder <packages@deepin.org>  Mon, 29 Apr 2024 08:23:45 +0000
+
 dtkdeclarative (5.6.27) unstable; urgency=medium
 
   * chore: settings dialog navigation font size tweak(Issue: https://github.com/linuxdeepin/developer-center/issues/7086)
