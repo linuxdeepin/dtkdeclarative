@@ -274,6 +274,19 @@
         \li \l{DTK::setPopupMode()}{DTK.setPopupMode()}
     \endlist\m
 
+@enum Dtk::Declarative::DTK::CompositionMode
+@brief 合成模式，与 @sa QPainter::CompositionMode 等价。
+@var DTK::CompositionMode::Source
+@brief 与 @sa QPainter::CompositionMode_Source 等价
+@var DTK::CompositionMode::SourceOver
+@brief 与 @sa QPainter::CompositionMode_SourceOver 等价
+@var DTK::CompositionMode::Destination
+@brief 与 @sa QPainter::CompositionMode_Destination 等价
+@var DTK::CompositionMode::DestinationOver
+@brief 与 @sa QPainter::CompositionMode_DestinationOver 等价
+@var DTK::CompositionMode::Clear
+@brief 与 @sa QPainter::CompositionMode_Clear 等价
+
 @property bool DTK::hasBlurWindow
 @note 此属性为只读属性
 

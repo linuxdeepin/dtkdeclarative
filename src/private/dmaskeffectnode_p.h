@@ -11,6 +11,7 @@
 
 #include <QSGImageNode>
 #include <QPointer>
+#include <QPainter>
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -38,11 +39,26 @@ public:
     void setSourceScale(QVector2D sourceScale);
     QVector2D sourceScale() const { return m_sourceScale; }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QSGMaterialShader::GraphicsPipelineState::BlendFactor blendSrcColor() const
+    { return m_blendSrcColor; }
+
+    QSGMaterialShader::GraphicsPipelineState::BlendFactor blendDstColor() const
+    { return m_blendDstColor; }
+
+    void setBlendSrcColor(QSGMaterialShader::GraphicsPipelineState::BlendFactor factor);
+    void setBlendDstColor(QSGMaterialShader::GraphicsPipelineState::BlendFactor factor);
+#endif
+
 private:
     QPointer<QSGTexture> m_maskTexture = nullptr;
     QVector2D m_maskScale;
     QVector2D m_maskOffset;
     QVector2D m_sourceScale;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QSGMaterialShader::GraphicsPipelineState::BlendFactor m_blendSrcColor = QSGMaterialShader::GraphicsPipelineState::One;
+    QSGMaterialShader::GraphicsPipelineState::BlendFactor m_blendDstColor = QSGMaterialShader::GraphicsPipelineState::OneMinusSrcAlpha;
+#endif
 };
 
 class TextureMaterial : public OpaqueTextureMaterial
@@ -90,6 +106,9 @@ public:
     void setMaskScale(QVector2D maskScale);
     void setMaskOffset(QVector2D maskOffset);
     void setSourceScale(QVector2D sourceScale);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    void setCompositionMode(QPainter::CompositionMode mode);
+#endif
 
     QSGTexture::AnisotropyLevel anisotropyLevel() const;
 private:
@@ -99,6 +118,10 @@ private:
     QRectF m_rect;
     QRectF m_sourceRect;
     TextureCoordinatesTransformMode m_texCoordMode;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QPainter::CompositionMode m_compositionMode = QPainter::CompositionMode_SourceOver;
+#endif
+
     uint m_isAtlasTexture : 1;
     uint m_ownsTexture : 1;
 };

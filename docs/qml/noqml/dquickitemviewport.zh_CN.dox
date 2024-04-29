@@ -179,3 +179,8 @@
     则表示隐藏 sourceItem 的内容，即隐藏源控件的样式，展示 ItemViewport 的内容，即加工
     后的内容。默认情况下，该属性为 false.
 
+@property DTK::CompositionMode ItemViewport::compositionMode
+@brief 用于控制合成时所使用的混合模式。
+@details 此属性与 @sa QPainter::setCompositionMode 功能类似，请参考其文档介绍。
+
+*/

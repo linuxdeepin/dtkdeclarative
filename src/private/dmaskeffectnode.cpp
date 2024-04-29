@@ -37,9 +37,11 @@ class OpaqueTextureMaterialShader : public QSGOpaqueTextureMaterialRhiShader
 public:
     OpaqueTextureMaterialShader();
 
-    bool updateUniformData(RenderState &state, QSGMaterial *newMaterial, QSGMaterial *oldMaterial);
+    bool updateUniformData(RenderState &state, QSGMaterial *newMaterial, QSGMaterial *oldMaterial)  override;
 
-    void updateSampledImage(RenderState &state, int binding, QSGTexture **texture, QSGMaterial *newMaterial, QSGMaterial *oldMaterial);
+    void updateSampledImage(RenderState &state, int binding, QSGTexture **texture, QSGMaterial *newMaterial, QSGMaterial *oldMaterial)  override;
+    bool updateGraphicsPipelineState(RenderState &state, GraphicsPipelineState *ps,
+                                     QSGMaterial *newMaterial, QSGMaterial *oldMaterial) override;
 };
 #endif
 
@@ -69,6 +71,7 @@ OpaqueTextureMaterialShader::OpaqueTextureMaterialShader()
 #else
     setShaderFileName(QSGMaterialShader::VertexStage, QStringLiteral(":/dtk/declarative/shaders_ng/quickitemviewport-opaque.vert.qsb"));
     setShaderFileName(QSGMaterialShader::FragmentStage, QStringLiteral(":/dtk/declarative/shaders_ng/quickitemviewport-opaque.frag.qsb"));
+    setFlag(UpdatesGraphicsPipelineState);
 #endif
 }
 
@@ -211,6 +214,25 @@ void OpaqueTextureMaterialShader::updateSampledImage(RenderState &state, int bin
 
     t->commitTextureOperations(state.rhi(), state.resourceUpdateBatch());
     *texture = t;
+}
+
+bool OpaqueTextureMaterialShader::updateGraphicsPipelineState(RenderState &state, GraphicsPipelineState *ps,
+                                                              QSGMaterial *newMaterial, QSGMaterial *oldMaterial)
+{
+    auto material = static_cast<OpaqueTextureMaterial*>(newMaterial);
+    if (!material)
+        return QSGOpaqueTextureMaterialRhiShader::updateGraphicsPipelineState(state, ps, newMaterial, oldMaterial);
+
+    bool changed = false;
+
+    if (material->blendSrcColor() != ps->srcColor || material->blendDstColor() != ps->dstColor) {
+        ps->srcColor = material->blendSrcColor();
+        ps->dstColor = material->blendDstColor();
+        changed = true;
+    }
+
+    changed = QSGOpaqueTextureMaterialRhiShader::updateGraphicsPipelineState(state, ps, newMaterial, oldMaterial) || changed;
+    return changed;
 }
 #endif
 
@@ -365,6 +387,46 @@ void MaskEffectNode::setSourceScale(QVector2D sourceScale)
     m_opaque_material.setSourceScale(sourceScale);
     markDirty(DirtyMaterial);
 }
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+void MaskEffectNode::setCompositionMode(QPainter::CompositionMode mode)
+{
+    if (m_compositionMode == mode)
+        return;
+    m_compositionMode = mode;
+
+    QSGMaterialShader::GraphicsPipelineState::BlendFactor srcColor
+        = QSGMaterialShader::GraphicsPipelineState::BlendFactor::One;
+    QSGMaterialShader::GraphicsPipelineState::BlendFactor dstColor
+        = QSGMaterialShader::GraphicsPipelineState::BlendFactor::OneMinusSrcAlpha;
+
+    switch (mode) {
+    case QPainter::CompositionMode_Source:
+        dstColor = QSGMaterialShader::GraphicsPipelineState::BlendFactor::Zero;
+        break;
+    case QPainter::CompositionMode_Destination:
+        srcColor = QSGMaterialShader::GraphicsPipelineState::BlendFactor::Zero;
+        dstColor = QSGMaterialShader::GraphicsPipelineState::BlendFactor::One;
+        break;
+    case QPainter::CompositionMode_DestinationOver:
+        srcColor = QSGMaterialShader::GraphicsPipelineState::BlendFactor::OneMinusDstAlpha;
+        dstColor = QSGMaterialShader::GraphicsPipelineState::BlendFactor::One;
+        break;
+    case QPainter::CompositionMode_Clear:
+        srcColor = QSGMaterialShader::GraphicsPipelineState::BlendFactor::Zero;
+        dstColor = QSGMaterialShader::GraphicsPipelineState::BlendFactor::Zero;
+        break;
+    default: break;
+    }
+
+    m_material.setBlendSrcColor(srcColor);
+    m_material.setBlendDstColor(dstColor);
+    m_opaque_material.setBlendSrcColor(srcColor);
+    m_opaque_material.setBlendDstColor(dstColor);
+
+    markDirty(DirtyForceUpdate);
+}
+#endif
 
 QSGTexture::AnisotropyLevel MaskEffectNode::anisotropyLevel() const
 {
@@ -548,5 +610,23 @@ void OpaqueTextureMaterial::setSourceScale(QVector2D sourceScale)
 
     m_sourceScale = sourceScale;
 }
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+void OpaqueTextureMaterial::setBlendSrcColor(QSGMaterialShader::GraphicsPipelineState::BlendFactor factor)
+{
+    if (m_blendSrcColor == factor)
+        return;
+
+    m_blendSrcColor = factor;
+}
+
+void OpaqueTextureMaterial::setBlendDstColor(QSGMaterialShader::GraphicsPipelineState::BlendFactor factor)
+{
+    if (m_blendDstColor == factor)
+        return;
+
+    m_blendDstColor = factor;
+}
+#endif
 
 DQUICK_END_NAMESPACE
