@@ -63,8 +63,6 @@ DQuickDciIconImagePrivate::DQuickDciIconImagePrivate(DQuickDciIconImage *qq)
     QObject::connect(imageItem, &DQuickIconImage::nameChanged, qq, &DQuickDciIconImage::nameChanged);
     QObject::connect(imageItem, &DQuickIconImage::asynchronousChanged, qq, &DQuickDciIconImage::asynchronousChanged);
     QObject::connect(imageItem, &DQuickIconImage::cacheChanged, qq, &DQuickDciIconImage::cacheChanged);
-    // auto dd = QQuickItemPrivate::get(imageItem);
-    // dd->anchors()->setAlignWhenCentered(false); // Don't align to a whole pixel, keep it centered.
 }
 
 void DQuickDciIconImagePrivate::layout()
@@ -82,7 +80,9 @@ DQuickDciIconImage::DQuickDciIconImage(QQuickItem *parent)
     : QQuickItem(parent)
     , DObject(*new DQuickDciIconImagePrivate(this))
 {
-
+    D_D(DQuickDciIconImage);
+    connect(d->imageItem, &QQuickImage::implicitWidthChanged, this, [this, d]() { setImplicitWidth(d->imageItem->implicitWidth()); });
+    connect(d->imageItem, &QQuickImage::implicitHeightChanged, this, [this, d]() { setImplicitHeight(d->imageItem->implicitHeight()); });
 }
 
 DQuickDciIconImage::~DQuickDciIconImage()
@@ -162,10 +162,6 @@ QSize DQuickDciIconImage::sourceSize() const
 void DQuickDciIconImage::setSourceSize(const QSize &size)
 {
     D_D(DQuickDciIconImage);
-    this->setImplicitWidth(size.width());
-    this->setImplicitHeight(size.height());
-    d->imageItem->setWidth(size.width());
-    d->imageItem->setHeight(size.height());
     d->imageItem->setSourceSize(size);
     Q_EMIT sourceSizeChanged();
 }
