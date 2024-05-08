@@ -9,6 +9,7 @@
 #include <DPlatformTheme>
 #include <QTimer>
 #include <QUrlQuery>
+#include <QQmlFile>
 
 DGUI_USE_NAMESPACE
 DQUICK_BEGIN_NAMESPACE
@@ -177,6 +178,10 @@ QString DQuickIconImage::name() const
 /**
  * @brief DQuickIconImage::setName
  * @param name can set to show the icon used in QML Application.
+ * Name can be the icon's theme name, icon's base64 data, or icon's local file,
+ * theme name: it's icon name, and using DIconTheme to find.
+ * base64: name starts with "data:image/".
+ * local file: it's a local file, and have either a file: or qrc: scheme.
  */
 void DQuickIconImage::setName(const QString &name)
 {
@@ -193,7 +198,7 @@ void DQuickIconImage::setName(const QString &name)
 
     if (name.startsWith("data:image/")) {
         d->iconType = DQuickIconImagePrivate::Base64Data;
-    } else if (name.indexOf(":/") >= 0) {
+    } else if (QQmlFile::isLocalFile(name)) {
         QUrl url(name);
 
         // 如果name指定的是一个url，则直接将其当作url使用
