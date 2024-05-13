@@ -35,8 +35,9 @@ T.Switch {
             id: handle
             x: Math.max(0, Math.min(parent.width - width, control.visualPosition * parent.width - (width / 2)))
             y: (parent.height - height) / 2
-            sourceSize.width: DS.Style.switchButton.handleWidth
-            sourceSize.height: DS.Style.switchButton.handleHeight
+            width: DS.Style.switchButton.handleWidth
+            height: DS.Style.switchButton.handleHeight
+            sourceSize: Qt.size(DS.Style.switchButton.handleWidth, DS.Style.switchButton.handleHeight)
             name: DS.Style.switchButton.iconName
             opacity: control.D.ColorSelector.controlState === D.DTK.DisabledState && control.checked ? 0.4 : 1
             palette {

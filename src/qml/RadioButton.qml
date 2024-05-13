@@ -31,6 +31,7 @@ T.RadioButton {
         implicitHeight: implicitWidth
 
         D.DciIcon {
+            anchors.centerIn: parent
             palette: control.D.DTK.makeIconPalette(control.palette)
             mode: control.D.ColorSelector.controlState
             theme: control.D.ColorSelector.controlTheme
@@ -41,6 +42,7 @@ T.RadioButton {
 
         Loader {
             active: control.activeFocus
+            anchors.centerIn: parent
             sourceComponent: D.DciIcon {
                 palette: control.D.DTK.makeIconPalette(control.palette)
                 mode: control.D.ColorSelector.controlState
