@@ -58,8 +58,15 @@ T.TextField {
         anchors.fill: parent
         acceptedButtons: Qt.RightButton
 
-        onClicked: {
-            contextMenu.popup(mouse.x, mouse.y)
+        onClicked: function (mouse) {
+            var point = Qt.point(mouse.x, mouse.y)
+            if (Window.window && Window.window.width > Screen.desktopAvailableWidth) {
+                point.x = control.mapFromGlobal(Screen.desktopAvailableWidth - contextMenu.width).x
+            }
+            if (Window.window && Window.window.height > Screen.desktopAvailableHeight) {
+                point.y = control.mapFromGlobal(0, Screen.desktopAvailableHeight - contextMenu.height).y
+            }
+            contextMenu.popup(point.x, point.y)
         }
     }
 
