@@ -18,7 +18,7 @@ class Q_DECL_HIDDEN MaskTextureCache {
 public:
     class Texture : public QSharedData {
     public:
-        Texture(QSGTexture *t, const qint8 key)
+        explicit Texture(QSGTexture *t, const qint8 key)
             : cacheKey(key)
             , texture(t)
         {
@@ -30,8 +30,8 @@ public:
             delete texture;
         }
 
-        qint8 cacheKey;
-        QSGTexture *texture;
+        qint8 cacheKey = 0;
+        QSGTexture *texture = nullptr;
     };
 
     typedef QExplicitlySharedDataPointer<Texture> TextureData;
@@ -45,10 +45,6 @@ public:
     // 根据圆角大小获取一个蒙版材质，此材质将用于片段着色器中实现圆角效果
     TextureData getTexture(QSGRenderContext *context, int radius, bool antialiasing)
     {
-        // 排除无效的数据
-        if (radius <= 0)
-            return TextureData();
-
         // 用于获取材质缓存key的key
         qint8 to_cache_key_key = ((antialiasing << 7) | radius);
         Texture *texture = nullptr;
@@ -194,11 +190,10 @@ public:
             return maskSizeRatio;
         }
 
-        Q_ASSERT(radius > 0);
         markDirty(DirtyMaskSizeRatio, false);
         const auto &sr = getSourceRect();
-        maskSizeRatio.setX(static_cast<float>(sr.width() / static_cast<qreal>(radius)));
-        maskSizeRatio.setY(static_cast<float>(sr.height() / static_cast<qreal>(radius)));
+        maskSizeRatio.setX(radius <= 0 ? sr.width() : static_cast<float>(sr.width() / static_cast<qreal>(radius)));
+        maskSizeRatio.setY(radius <= 0 ? sr.height() : static_cast<float>(sr.height() / static_cast<qreal>(radius)));
         return maskSizeRatio;
     }
     inline const QVector2D &getMaskOffset() {
@@ -216,7 +211,6 @@ public:
 
     inline QSGTexture *textureForRadiusMask()
     {
-        Q_ASSERT(radius > 0);
         if (Q_UNLIKELY(dirtyState.testFlag(DirtyMaskTexture) || !maskTexture)) {
             QQuickItemPrivate *d = QQuickItemPrivate::get(q_func());
             maskTexture = MaskTextureCache::instance()->getTexture(d->sceneGraphRenderContext(),
@@ -229,6 +223,7 @@ public:
         return maskTexture->texture;
     }
 
+    // MaskNode is required when need composition in transparent window.
     inline bool needMaskNode() const {
         return radius > 0
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
