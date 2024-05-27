@@ -629,7 +629,7 @@ QtObject {
     }
 
     property QtObject menu: QtObject {
-        property int padding: 10
+        property int padding: 0
         property int radius: D.DTK.platformTheme.windowRadius < 0 ? 18 : D.DTK.platformTheme.windowRadius
         property int margins: 10
         property int overlap: 1
@@ -639,6 +639,7 @@ QtObject {
             property int height: 34
             property size iconSize: Qt.size(14, 14)
             property int count: 0
+            property int contentPadding: 36
         }
 
         property QtObject separator: QtObject {

@@ -34,8 +34,8 @@ T.MenuItem {
         readonly property real arrowPadding: control.subMenu && control.arrow ? control.arrow.width + control.spacing : 0
         readonly property real indicatorPadding: control.useIndicatorPadding && control.indicator ? control.indicator.width + control.spacing : 0
 
-        leftPadding: !control.mirrored ? indicatorPadding : arrowPadding
-        rightPadding: control.mirrored ? indicatorPadding : arrowPadding
+        leftPadding: (!control.mirrored ? indicatorPadding : arrowPadding) + DS.Style.menu.item.contentPadding
+        rightPadding: (control.mirrored ? indicatorPadding : arrowPadding) + DS.Style.menu.item.contentPadding
         spacing: control.spacing
         mirrored: control.mirrored
         display: control.display
@@ -106,7 +106,11 @@ T.MenuItem {
         Loader {
             anchors.fill: parent
             active: control.down || control.highlighted
-            sourceComponent: HighlightPanel {}
+            sourceComponent: Rectangle {
+                property D.Palette backgroundColor: DS.Style.highlightPanel.background
+                color: D.ColorSelector.backgroundColor
+                radius: 1 // TODO can't display background when using dtk's InWindowBlur.
+            }
         }
     }
 }
