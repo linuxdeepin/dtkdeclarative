@@ -42,6 +42,11 @@ T.Menu {
     }
 
     contentItem: Control {
+        topPadding: 10 // TODO how to clip radius
+        bottomPadding: topPadding
+        leftPadding: 0
+        rightPadding: leftPadding
+
         contentItem:  ColumnLayout {
             id: viewLayout
 
