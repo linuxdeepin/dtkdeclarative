@@ -1,3 +1,10 @@
+dtkdeclarative (5.6.30) unstable; urgency=medium
+
+  * fix: assert when radius is 0 in transparent window(Issue: https://github.com/linuxdeepin/developer-center/issues/8668)
+  * fix: incomplete display for menu(Issue: https://github.com/linuxdeepin/developer-center/issues/8472)
+
+ -- Deepin Packages Builder <packages@deepin.org>  Thu, 30 May 2024 02:46:31 +0000
+
 dtkdeclarative (5.6.29) unstable; urgency=medium
 
   * fix: can't display local file for DciIcon
