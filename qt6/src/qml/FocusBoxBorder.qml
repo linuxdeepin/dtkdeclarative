@@ -12,13 +12,14 @@ Item {
     property real borderWidth: DS.Style.control.focusBorderWidth
     property real radius: 0
 
-    BoxShadow {
-        anchors.fill: _border
-        shadowColor: D.DTK.makeColor(parent.color).opacity(-50).color()
-        cornerRadius: _border.radius
-        shadowBlur: 4
-        hollow: true
-    }
+    // 暂时保持和QWidget的搜索框样式一致，等后期应用全部改为qml后，再考虑放开
+    // BoxShadow {
+    //     anchors.fill: _border
+    //     shadowColor: D.DTK.makeColor(parent.color).opacity(-50).color()
+    //     cornerRadius: _border.radius
+    //     shadowBlur: 4
+    //     hollow: true
+    // }
 
     Rectangle {
         id: _border
@@ -30,7 +31,7 @@ Item {
             margins: -paddings
         }
 
-        radius: parent.radius + paddings
+        radius: parent.radius
         border { width: borderWidth; color: parent.color }
         color: "transparent"
     }
