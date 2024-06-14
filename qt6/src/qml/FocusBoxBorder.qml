@@ -12,14 +12,6 @@ Item {
     property real borderWidth: DS.Style.control.focusBorderWidth
     property real radius: 0
 
-    BoxShadow {
-        anchors.fill: _border
-        shadowColor: D.DTK.makeColor(parent.color).opacity(-50).color()
-        cornerRadius: _border.radius
-        shadowBlur: 4
-        hollow: true
-    }
-
     Rectangle {
         id: _border
 
@@ -30,7 +22,7 @@ Item {
             margins: -paddings
         }
 
-        radius: parent.radius + paddings
+        radius: parent.radius
         border { width: borderWidth; color: parent.color }
         color: "transparent"
     }
