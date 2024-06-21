@@ -20,12 +20,15 @@ Control {
     property int radius: DS.Style.floatingPanel.radius
     // blur radius
     property int blurRadius: 64
+    // blur blurMultiplier
+    property real blurMultiplier: 0.0
 
     background: D.InWindowBlur {
         id: blur
         implicitWidth: DS.Style.floatingPanel.width
         implicitHeight: DS.Style.floatingPanel.height
         radius: blurRadius
+        multiplier: blurMultiplier
         offscreen: true
 
         D.ItemViewport {
