@@ -10,6 +10,7 @@ Item {
     id :control
     property bool offscreen: false
     property alias radius: blur.blurMax
+    property alias multiplier: blur.blurMultiplier
     property alias content: blur
     default property alias data: blitter.data
     readonly property bool valid: blitter.blitterEnabled
