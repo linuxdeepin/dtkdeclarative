@@ -26,6 +26,8 @@ T.MenuItem {
                                                       : DS.Style.menu.itemText
     property D.Palette subMenuBackgroundColor: DS.Style.menu.subMenuOpenedBackground
 
+    property D.Palette hoveredColor: DS.Style.highlightPanel.background
+
     palette.windowText: D.ColorSelector.textColor
     D.DciIcon.mode: D.ColorSelector.controlState
     D.DciIcon.theme: D.ColorSelector.controlTheme
@@ -107,8 +109,7 @@ T.MenuItem {
             anchors.fill: parent
             active: control.down || control.highlighted
             sourceComponent: Rectangle {
-                property D.Palette backgroundColor: DS.Style.highlightPanel.background
-                color: D.ColorSelector.backgroundColor
+                color: control.D.ColorSelector.hoveredColor
                 radius: 1 // TODO can't display background when using dtk's InWindowBlur.
             }
         }
