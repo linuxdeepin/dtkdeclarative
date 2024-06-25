@@ -26,19 +26,11 @@ DQUICK_BEGIN_NAMESPACE
 DGUI_USE_NAMESPACE
 DCORE_USE_NAMESPACE
 
-static inline QImage invalidIcon(QSize *size) {
-#ifdef QT_NO_DEBUG
-    static QImage invalid(10, 10, QImage::Format_Grayscale8);
-    invalid.fill(Qt::black);
-    if (size) {
-        size->rwidth() = invalid.width();
-        size->rheight() = invalid.height();
-    }
-    return invalid;
-#else
-    Q_UNUSED(size);
-    return QImage();
-#endif
+static inline QImage invalidIcon(QSize *size, const QSize &requestedSize) {
+    QIcon icon = DIconTheme::findQIcon("application-x-desktop");
+    const QImage img = icon.pixmap(requestedSize).toImage();
+    *size = img.size();
+    return img;
 }
 
 static QImage requestImageFromQIcon(const QString &id, QSize *size, const QSize &requestedSize) {
@@ -55,7 +47,7 @@ static QImage requestImageFromQIcon(const QString &id, QSize *size, const QSize 
         icon = DIconTheme::findQIcon(name);
     }
     if (icon.isNull())
-        return invalidIcon(size);
+        return invalidIcon(size, requestedSize);
 
     QIcon::Mode qMode = QIcon::Normal;
     QIcon::State qState = QIcon::Off;
@@ -178,14 +170,14 @@ QImage DQuickDciIconProvider::requestImage(const QString &id, QSize *size, const
 
     if (Q_UNLIKELY(iconPath.isEmpty())) {
         if (!fallbackToQIcon)
-            return invalidIcon(size);
+            return invalidIcon(size, requestedSize);
         // Fallback to normal qicon.
        return requestImageFromQIcon(id, size, requestedSize);
     }
     DDciIcon dciIcon(iconPath);
     if (dciIcon.isNull()) {
         if (!fallbackToQIcon)
-            return invalidIcon(size);
+            return invalidIcon(size, requestedSize);
         return requestImageFromQIcon(id, size, requestedSize);
     }
 
@@ -256,11 +248,11 @@ QImage DQuickDciIconProvider::requestImage(const QString &id, QSize *size, const
     }
 
     if (!result)
-        return invalidIcon(size);
+        return invalidIcon(size, requestedSize);
 
     const QPixmap &pixmap = dciIcon.pixmap(devicePixelRatio, boundingSize, result, palette);
     if (pixmap.isNull())
-        return invalidIcon(size);
+        return invalidIcon(size, requestedSize);
 
     QImage image = pixmap.toImage();
     if (currentMode != mode && currentMode == DDciIcon::Normal
