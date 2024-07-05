@@ -52,8 +52,8 @@ T.MenuItem {
         active: control.checked
         anchors {
             left: control.left
-            leftMargin: control.mirrored ? control.width - width - control.rightPadding
-                                         : control.leftPadding
+            leftMargin: control.mirrored ? control.width - width - DS.Style.menu.item.indicatorMargin
+                                         : DS.Style.menu.item.indicatorMargin
             verticalCenter: parent.verticalCenter
         }
 
