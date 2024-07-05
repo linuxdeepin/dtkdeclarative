@@ -40,7 +40,7 @@ void main()
     lowp vec4 mask_bottom_right = texture(mask, tex_bottom_right);
     lowp vec4 mask_tex = mask_top_left * mask_bottom_left * mask_top_right * mask_bottom_right;
 
-    if (mask_tex.a < 1.0)
+    if (mask_tex.a == 0.0)
         discard;
 
     lowp vec4 tex = texture(qt_Texture, qt_TexCoord);
