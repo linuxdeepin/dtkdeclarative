@@ -93,6 +93,7 @@ T.Menu {
             implicitWidth: DS.Style.menu.item.width
             implicitHeight: DS.Style.menu.item.height
             radius: DS.Style.menu.radius
+            blurMultiplier: 8.0
             backgroundColor: control.backgroundColor
             backgroundNoBlurColor: control.backgroundNoBlurColor
         }

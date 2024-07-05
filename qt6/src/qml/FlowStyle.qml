@@ -640,6 +640,7 @@ QtObject {
             property size iconSize: Qt.size(14, 14)
             property int count: 0
             property int contentPadding: 36
+            property int indicatorMargin: 10
         }
 
         property QtObject separator: QtObject {
