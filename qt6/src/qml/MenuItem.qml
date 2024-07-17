@@ -102,15 +102,5 @@ T.MenuItem {
                 radius: DS.Style.control.radius
             }
         }
-
-        Loader {
-            anchors.fill: parent
-            active: control.down || control.highlighted
-            sourceComponent: Rectangle {
-                property D.Palette backgroundColor: DS.Style.highlightPanel.background
-                color: D.ColorSelector.backgroundColor
-                radius: 1 // TODO can't display background when using dtk's InWindowBlur.
-            }
-        }
     }
 }
