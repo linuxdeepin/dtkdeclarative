@@ -96,6 +96,8 @@ set(QML_DTK_CONTROLS
     "qml/EmbeddedProgressBar.qml"
     "qml/WaterProgressBar.qml"
     "qml/PlaceholderText.qml"
+    "qml/ControlGroup.qml"
+    "qml/ControlGroupItem.qml"
 )
 
 foreach(QML_FILE ${QML_DTK_CONTROLS})
