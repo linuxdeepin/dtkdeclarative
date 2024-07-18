@@ -46,7 +46,10 @@
         <file alias="built-in-icons/slider_point_left.dci">icons/bloom/slider_point_left.dci</file>
         <file alias="built-in-icons/slider_round_hor.dci">icons/bloom/slider_round_hor.dci</file>
         <file alias="built-in-icons/slider_round_ver.dci">icons/bloom/slider_round_ver.dci</file>
-        <file alias="built-in-icons/switch_button.dci">icons/bloom/switch_button.dci</file>
+        <file alias="built-in-icons/switch_on.dci">icons/bloom/switch_on.dci</file>
+        <file alias="built-in-icons/switch_off.dci">icons/bloom/switch_off.dci</file>
+        <file alias="built-in-icons/switch_on_static.dci">icons/bloom/switch_on_static.dci</file>
+        <file alias="built-in-icons/switch_off_static.dci">icons/bloom/switch_off_static.dci</file>
         <file alias="built-in-icons/slider_point_up.dci">icons/bloom/slider_point_up.dci</file>
         <file alias="built-in-icons/checkbox_mix.dci">icons/bloom/checkbox_mix.dci</file>
         <file alias="built-in-icons/checkbox_checked.dci">icons/bloom/checkbox_checked.dci</file>

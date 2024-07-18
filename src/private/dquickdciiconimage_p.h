@@ -46,6 +46,7 @@ public:
 
     DQMLGlobalObject::ControlState mode() const;
     void setMode(DQMLGlobalObject::ControlState mode);
+    Q_INVOKABLE void play(DQMLGlobalObject::ControlState mode);
 
     DGuiApplicationHelper::ColorType theme() const;
     void setTheme(DGuiApplicationHelper::ColorType theme);

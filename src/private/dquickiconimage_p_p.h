@@ -23,6 +23,7 @@ class DQuickIconImagePrivate : public QQuickImagePrivate
 public:
     void init();
     virtual void maybeUpdateUrl();
+    virtual void play(int mode);
     QUrlQuery getUrlQuery();
     DQuickIconImage::Mode getIconMode() const;
 

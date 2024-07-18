@@ -108,6 +108,11 @@ void DQuickIconImagePrivate::maybeUpdateUrl()
     q->setSource(url);
 }
 
+void DQuickIconImagePrivate::play(int mode)
+{
+    Q_UNUSED(mode)
+}
+
 QUrlQuery DQuickIconImagePrivate::getUrlQuery()
 {
     QUrlQuery query;
@@ -314,6 +319,12 @@ void DQuickIconImage::setFallbackSource(const QUrl &newSource)
 
     // 尝试重设图标的url地址
     d->maybeUpdateUrl();
+}
+
+void DQuickIconImage::setImage(const QImage &img)
+{
+    D_D(DQuickIconImage);
+    d->setImage(img);
 }
 
 DQuickIconImage::DQuickIconImage(DQuickIconImagePrivate &dd, QQuickItem *parent)
