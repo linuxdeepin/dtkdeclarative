@@ -25,5 +25,6 @@
         <file>ToolBar.qml</file>
         <file>Dialog.qml</file>
         <file>ProgressBar.qml</file>
+        <file>ControlGroup.qml</file>
     </qresource>
 </RCC>
