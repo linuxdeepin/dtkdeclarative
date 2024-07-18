@@ -12,6 +12,7 @@
 
 #include <dobject_p.h>
 #include <DDciIconPalette>
+#include <DDciIconPlayer>
 
 DQUICK_BEGIN_NAMESPACE
 class DQuickDciIconImageItemPrivate;
@@ -22,10 +23,15 @@ class DQuickDciIconImageItemPrivate : public DQuickIconImagePrivate
 public:
     DQuickDciIconImageItemPrivate(DQuickDciIconImagePrivate *pqq);
     void maybeUpdateUrl();
+    void play(int mode);
     QUrlQuery getUrlQuery();
 
+    void updatePlayer();
+    void updatePlayerIconSize();
 private:
     DQuickDciIconImagePrivate *parentPriv;
+    DDciIconPlayer *player = nullptr;
+    QString iconPathCache;
 };
 
 class DQuickDciIconImagePrivate : public DCORE_NAMESPACE::DObjectPrivate
@@ -36,6 +42,7 @@ public:
     DQuickDciIconImagePrivate(DQuickDciIconImage *qq);
     void layout();
     void updateImageSourceUrl();
+    void play(DQMLGlobalObject::ControlState mode);
 
     DDciIconPalette palette;
     DQuickIconImage *imageItem;

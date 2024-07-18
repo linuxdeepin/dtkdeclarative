@@ -18,6 +18,47 @@ static QString appIconThemeName()
     return DGuiApplicationHelper::instance()->applicationTheme()->iconThemeName();
 }
 
+static QString findDciIconPath(const QString &iconName, const QString &themeName)
+{
+    QString iconPath;
+    auto cached = DIconTheme::cached();
+
+    if (cached) {
+        iconPath = cached->findDciIconFile(iconName, themeName);
+    } else {
+        iconPath = DIconTheme::findDciIconFile(iconName, themeName);
+    }
+    return iconPath;
+}
+
+static DDciIcon::Mode controlState2DciMode(int state)
+{
+    DDciIcon::Mode dcimode = DDciIcon::Normal;
+    switch (state) {
+    case DQMLGlobalObject::NormalState:
+        dcimode = DDciIcon::Normal;
+        break;
+    case DQMLGlobalObject::DisabledState:
+        dcimode = DDciIcon::Disabled;
+        break;
+    case DQMLGlobalObject::HoveredState:
+        dcimode = DDciIcon::Hover;
+        break;
+    case DQMLGlobalObject::PressedState:
+        dcimode = DDciIcon::Pressed;
+        break;
+    default:
+        break;
+    }
+
+    return dcimode;
+}
+
+static inline DDciIcon::Theme dciTheme(DGuiApplicationHelper::ColorType type)
+{
+    return type == DGuiApplicationHelper::DarkType ? DDciIcon::Dark : DDciIcon::Light;
+}
+
 DQuickDciIconImageItemPrivate::DQuickDciIconImageItemPrivate(DQuickDciIconImagePrivate *pqq)
     : parentPriv(pqq)
 {
@@ -31,11 +72,27 @@ void DQuickDciIconImageItemPrivate::maybeUpdateUrl()
         return DQuickIconImagePrivate::maybeUpdateUrl();
     }
 
-    QUrl url;
-    url.setScheme(QLatin1String("image"));
-    url.setHost(QLatin1String("dtk.dci.icon"));
-    url.setQuery(getUrlQuery());
-    q->setSource(url);
+    QString iconPath = findDciIconPath(parentPriv->imageItem->name(), appIconThemeName());
+    if (iconPath.isEmpty())
+        return DQuickIconImagePrivate::maybeUpdateUrl();
+
+    updatePlayer();
+
+    if (player)
+        player->setMode(controlState2DciMode(parentPriv->mode));
+}
+
+void DQuickDciIconImageItemPrivate::play(int mode)
+{
+    Q_Q(DQuickIconImage);
+    if (parentPriv->imageItem->name().isEmpty() || iconType != ThemeIconName) {
+        return;
+    }
+
+    updatePlayer();
+
+    if (player)
+        player->play(controlState2DciMode(mode));
 }
 
 QUrlQuery DQuickDciIconImageItemPrivate::getUrlQuery()
@@ -56,6 +113,57 @@ QUrlQuery DQuickDciIconImageItemPrivate::getUrlQuery()
     return query;
 }
 
+void DQuickDciIconImageItemPrivate::updatePlayerIconSize()
+{
+    if (!player)
+        return;
+
+    int boundingSize = qMax(q_func()->sourceSize().width(), q_func()->sourceSize().height());
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    if (qApp->testAttribute(Qt::AA_UseHighDpiPixmaps))
+#endif
+        boundingSize = qRound(boundingSize / devicePixelRatio);
+    player->setIconSize(boundingSize);
+
+}
+
+void DQuickDciIconImageItemPrivate::updatePlayer()
+{
+    if (!player) {
+        Q_Q(DQuickIconImage);
+        player = new DDciIconPlayer(parentPriv->imageItem);
+        QObject::connect(player, &DDciIconPlayer::updated, parentPriv->imageItem, [this](){
+            parentPriv->imageItem->setImage(player->currentImage());
+        });
+        QObject::connect(parentPriv->imageItem, &DQuickIconImage::sourceSizeChanged, player, [this](){
+            updatePlayerIconSize();
+        });
+    }
+
+    QString iconPath = findDciIconPath(parentPriv->imageItem->name(), appIconThemeName());
+
+    // 防止频繁构造 dciicon
+    if (iconPathCache != iconPath) {
+        DDciIcon dciIcon(iconPath);
+        if (!dciIcon.isNull()) {
+            player->setIcon(dciIcon);
+            iconPathCache =  iconPath;
+        }
+    }
+
+    player->setTheme(dciTheme(parentPriv->theme));
+
+    DDciIconPalette palette = parentPriv->palette;
+    if (!parentPriv->palette.foreground().isValid() && q_func()->color().isValid())
+        palette.setForeground(q_func()->color());
+
+    player->setPalette(palette);
+
+    updatePlayerIconSize();
+
+    player->setDevicePixelRatio(devicePixelRatio);
+}
+
 DQuickDciIconImagePrivate::DQuickDciIconImagePrivate(DQuickDciIconImage *qq)
     : DObjectPrivate(qq)
     , imageItem(new DQuickIconImage(*new DQuickDciIconImageItemPrivate(this), qq))
@@ -74,6 +182,11 @@ void DQuickDciIconImagePrivate::layout()
 void DQuickDciIconImagePrivate::updateImageSourceUrl()
 {
     imageItem->d_func()->maybeUpdateUrl();
+}
+
+void DQuickDciIconImagePrivate::play(DQMLGlobalObject::ControlState mode)
+{
+    imageItem->d_func()->play(mode);
 }
 
 DQuickDciIconImage::DQuickDciIconImage(QQuickItem *parent)
@@ -117,6 +230,13 @@ void DQuickDciIconImage::setMode(DQMLGlobalObject::ControlState mode)
     d->mode = mode;
     d->updateImageSourceUrl();
     Q_EMIT modeChanged();
+}
+
+void DQuickDciIconImage::play(DQMLGlobalObject::ControlState mode)
+{
+    D_D(DQuickDciIconImage);
+    if (d->imageItem)
+        d->play(mode);
 }
 
 DGuiApplicationHelper::ColorType DQuickDciIconImage::theme() const
@@ -226,15 +346,7 @@ Dtk::Quick::DQuickIconImage *DQuickDciIconImage::imageItem() const
 
 bool DQuickDciIconImage::isNull(const QString &iconName)
 {
-    QString iconPath;
-    auto cached = DIconTheme::cached();
-
-    if (cached) {
-        iconPath = cached->findDciIconFile(iconName, appIconThemeName());
-    } else {
-        iconPath = DIconTheme::findDciIconFile(iconName, appIconThemeName());
-    }
-    return iconPath.isEmpty();
+    return findDciIconPath(iconName,  appIconThemeName()).isEmpty();
 }
 
 DQuickIconAttached *DQuickDciIconImage::qmlAttachedProperties(QObject *object)
