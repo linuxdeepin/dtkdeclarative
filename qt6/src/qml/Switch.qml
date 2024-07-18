@@ -20,41 +20,55 @@ T.Switch {
     topPadding: DS.Style.control.vPadding
     bottomPadding: DS.Style.control.vPadding
     spacing: DS.Style.control.spacing
+    D.ColorSelector.hovered: false // disable hover ==> normal animation
 
-    indicator: Rectangle {
+    indicator: D.DciIcon {
+        id: handle
         implicitWidth: DS.Style.switchButton.indicatorWidth
         implicitHeight: DS.Style.switchButton.indicatorHeight
 
         x: text ? (control.mirrored ? control.width - width - control.rightPadding : control.leftPadding) : control.leftPadding + (control.availableWidth - width) / 2
         y: control.topPadding + (control.availableHeight - height) / 2
-        radius: DS.Style.control.radius
-        color: control.D.ColorSelector.backgroundColor
-        opacity: control.D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
 
-        D.DciIcon {
-            id: handle
-            x: Math.max(0, Math.min(parent.width - width, control.visualPosition * parent.width - (width / 2)))
-            y: (parent.height - height) / 2
-            width: DS.Style.switchButton.handleWidth
-            height: DS.Style.switchButton.handleHeight
-            sourceSize: Qt.size(DS.Style.switchButton.handleWidth, DS.Style.switchButton.handleHeight)
-            name: DS.Style.switchButton.iconName
-            opacity: control.D.ColorSelector.controlState === D.DTK.DisabledState && control.checked ? 0.4 : 1
-            palette {
-                highlight: control.checked ? control.palette.highlight : control.D.ColorSelector.handleColor
-                highlightForeground: control.palette.highlightedText
-                foreground: control.palette.windowText
-                background: control.palette.window
-            }
-            mode: control.D.ColorSelector.controlState
-            theme: control.D.ColorSelector.controlTheme
-            fallbackToQIcon: false
-
-            Behavior on x {
-                enabled: !control.down
-                SmoothedAnimation { velocity: 200 }
-            }
+        width: DS.Style.switchButton.handleWidth
+        height: DS.Style.switchButton.handleHeight
+        sourceSize: Qt.size(DS.Style.switchButton.indicatorWidth, DS.Style.switchButton.indicatorWidth)
+        name: control.checked ? "switch_on_static" : "switch_off_static"
+        opacity: control.D.ColorSelector.controlState === D.DTK.DisabledState && control.checked ? 0.4 : 1
+        palette {
+            highlight: control.checked ? control.palette.highlight : control.D.ColorSelector.handleColor
+            highlightForeground: control.palette.highlightedText
+            foreground: control.palette.windowText
+            background: control.palette.window
         }
+        mode: control.D.ColorSelector.controlState
+        theme: control.D.ColorSelector.controlTheme
+        fallbackToQIcon: false
+    }
+
+    Timer {
+        id: toggletimer
+        interval: 200
+        onTriggered: {
+            control.toggle()
+            handle.name = control.checked ? "switch_on_static" : "switch_off_static"
+        }
+    }
+
+    function palyAndSetImage() {
+        handle.name = !control.checked ? "switch_on" : "switch_off"
+        handle.play(D.DTK.NormalState)
+        toggletimer.start();
+    }
+
+    Keys.onSpacePressed: palyAndSetImage()
+    Keys.onEnterPressed: palyAndSetImage()
+    Keys.onReturnPressed: palyAndSetImage()
+
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.LeftButton
+        onClicked: palyAndSetImage()
     }
 
     contentItem: Label {
