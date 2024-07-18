@@ -65,6 +65,7 @@ public Q_SLOTS:
     void setMode(Mode mode);
     void setColor(const QColor &color);
     void setFallbackSource(const QUrl &newSource);
+    void setImage(const QImage &img);
 
 Q_SIGNALS:
     void nameChanged();
