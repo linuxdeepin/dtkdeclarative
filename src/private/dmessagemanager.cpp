@@ -188,11 +188,15 @@ void MessageManager::ensureLayout()
         QQmlComponent columnCom(qmlEngine(parent()));
         columnCom.setData("import QtQuick 2.11\n"
                           "Column {\n"
+                          "  spacing: 0\n"
                           "  anchors {\n"
                           "      bottom: parent.bottom\n"
-                          "      bottomMargin: 10;\n"
+                          "      bottomMargin: 20;\n"
                           "      horizontalCenter: parent.horizontalCenter\n"
                           "  }\n"
+                          " Component.onCompleted: {\n"
+                          "     console.log(\"parent onCompleted\", children.length);\n"
+                          " }"
                           "}\n", QUrl());
         auto layout = columnCom.beginCreate(qmlContext(parent()));
         setLayout(qobject_cast<QQuickItem *>(layout));
