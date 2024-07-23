@@ -23,8 +23,17 @@ D.FloatingMessageContainer {
             width: DS.Style.floatingMessage.closeButtonSize
             height: DS.Style.floatingMessage.closeButtonSize
         }
-        onClicked: D.DTK.closeMessage(control)
+        onClicked: {
+             floatingPanel.state = "small"
+             destroyTimer.running = true
+        }
+        Timer {
+           id: destroyTimer
+           interval: 1200; running: false; repeat: true
+           onTriggered: D.DTK.closeMessage(control)
+        }
     }
+
 
     duration: 4000
     panel: FloatingPanel {
@@ -34,12 +43,24 @@ D.FloatingMessageContainer {
         rightPadding: 10
         topPadding: 0
         bottomPadding: 0
-
+        opacity: 0.0
+        state: "small"
+        Timer {
+            id: timer
+            interval: 100; running: false; repeat: false
+            onTriggered: {
+                floatingPanel.y = floatingPanel.parent.height
+                floatingPanel.state = "normal"
+                console.log("onCompleted", floatingPanel.y, floatingPanel.parent.width, floatingPanel.parent.height)
+            }
+        }
+        Component.onCompleted: {
+            timer.running = true
+        }
         contentItem: RowLayout {
             height: DS.Style.floatingMessage.minimumHeight
             width: Math.min(DS.Style.floatingMessage.maximumWidth, children.width + floatingPanel.leftPadding - floatingPanel.rightPadding)
             spacing: 10
-
             Loader {
                 id: iconLoader
                 Layout.alignment: Qt.AlignVCenter
@@ -77,6 +98,46 @@ D.FloatingMessageContainer {
                 visible: active
                 sourceComponent: button
             }
+
+            ParallelAnimation {
+                running: closeButton.item.hovered
+                NumberAnimation { target: closeButton; property: "scale"; to: 1.25; duration: 500 }
+                NumberAnimation { target: closeButton; property: "rotation"; to: 90; duration: 500 }
+            }
+            ParallelAnimation {
+                running: !closeButton.item.hovered
+                NumberAnimation { target: closeButton; property: "scale"; to: 1; duration: 500 }
+                NumberAnimation { target: closeButton; property: "rotation"; to: 0; duration: 500 }
+            }
         }
+
+        states: [
+            State {
+                name: "normal"
+                PropertyChanges {
+                    target: floatingPanel
+                    y: 0
+                    opacity: 1.0
+                    scale: 1.0
+                }
+            },
+            State {
+                name: "small"
+                PropertyChanges {
+                    target: floatingPanel
+                    y: floatingPanel.parent.height
+                    opacity: 0.0
+                    scale: 0.2
+                }
+            }
+        ]
+
+        transitions: Transition {
+            NumberAnimation {
+                properties: "y, opacity, scale"
+                easing.type: Easing.Linear
+                duration: 1000
+            }
+         }
     }
 }
