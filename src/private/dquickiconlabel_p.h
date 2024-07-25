@@ -21,7 +21,7 @@ class DQuickIconLabel : public QQuickItem
     Q_PROPERTY(DTK_QUICK_NAMESPACE::DQuickDciIcon icon READ icon WRITE setIcon FINAL)
     Q_PROPERTY(QString text READ text WRITE setText FINAL)
     Q_PROPERTY(QFont font READ font WRITE setFont FINAL)
-    Q_PROPERTY(QColor color READ color WRITE setColor FINAL)
+    Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged FINAL)
     Q_PROPERTY(Display display READ display WRITE setDisplay FINAL)
     Q_PROPERTY(qreal spacing READ spacing WRITE setSpacing FINAL)
     Q_PROPERTY(bool mirrored READ isMirrored WRITE setMirrored FINAL)
@@ -86,6 +86,9 @@ public:
     qreal bottomPadding() const;
     void setBottomPadding(qreal padding);
     void resetBottomPadding();
+
+Q_SIGNALS:
+    void colorChanged(const QColor &color);
 
 protected:
     void componentComplete() override;

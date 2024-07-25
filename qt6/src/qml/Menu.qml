@@ -79,6 +79,27 @@ T.Menu {
 
                 onCountChanged: refreshContentItemWidth()
                 onWidthChanged: refreshContentItemWidth()
+                view.highlightFollowsCurrentItem: true
+                view.highlightMoveDuration: 50
+                view.highlightMoveVelocity: -1
+
+                view.highlight: Rectangle {
+                    anchors.left: parent ? parent.left : undefined
+                    anchors.right: parent ? parent.right : undefined
+                    anchors.leftMargin: 6
+                    anchors.rightMargin: 6
+                    scale: 0.9
+                    property D.Palette backgroundColor: DS.Style.highlightPanel.background
+                    color: D.ColorSelector.backgroundColor
+                    radius: 6
+                    Component.onCompleted: {
+                        scale = 1.0
+                    }
+                    Behavior on scale {
+                        NumberAnimation { duration: 100 }
+                    }
+
+                }
             }
             Loader {
                 Layout.fillWidth: true
