@@ -473,6 +473,7 @@ void DQuickIconLabel::setColor(const QColor &color)
     d->color = color;
     if (d->label)
         d->label->setColor(color);
+    Q_EMIT colorChanged(color);
 }
 
 DQuickIconLabel::Display DQuickIconLabel::display() const
