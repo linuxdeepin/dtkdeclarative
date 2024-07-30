@@ -24,6 +24,7 @@ set(QML_FILES
     Frame.qml
     GroupBox.qml
     ItemDelegate.qml
+    ListView.qml
     MenuItem.qml
     Menu.qml
     MenuSeparator.qml

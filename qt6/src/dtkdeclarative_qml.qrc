@@ -63,6 +63,7 @@
         <file>qml/private/ButtonPanel.qml</file>
         <file>qml/ActionButton.qml</file>
         <file>qml/ItemDelegate.qml</file>
+        <file>qml/ListView.qml</file>
         <file>qml/CheckDelegate.qml</file>
         <file>qml/TipsSlider.qml</file>
         <file>qml/SliderTipItem.qml</file>
