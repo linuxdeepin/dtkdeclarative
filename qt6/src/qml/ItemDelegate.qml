@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2024 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -7,6 +7,7 @@ import QtQuick.Templates as T
 import QtQuick.Layouts 1.11
 import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
+import org.deepin.dtk.private 1.0 as P
 
 T.ItemDelegate {
     id: control
@@ -35,7 +36,7 @@ T.ItemDelegate {
     spacing: DS.Style.control.spacing
     checkable: true
     autoExclusive: true
-    palette.windowText: checked && !control.cascadeSelected ? D.ColorSelector.checkedTextColor : undefined
+    palette.windowText: checked && !control.cascadeSelected && control.backgroundVisible ? D.ColorSelector.checkedTextColor : undefined
 
     D.DciIcon.mode: D.ColorSelector.controlState
     D.DciIcon.theme: D.ColorSelector.controlTheme
@@ -83,6 +84,7 @@ T.ItemDelegate {
     }
 
     background: Item {
+        visible: backgroundVisible
         implicitWidth: DS.Style.itemDelegate.width
         implicitHeight: DS.Style.itemDelegate.height
 
@@ -101,15 +103,13 @@ T.ItemDelegate {
                 corners: control.corners
             }
         }
+    }
 
-        Loader {
-            anchors.fill: parent
-            active: !checked && control.backgroundVisible
-            sourceComponent: D.RoundRectangle {
-                color: DS.Style.itemDelegate.normalColor
-                radius: DS.Style.control.radius
-                corners: control.corners
-            }
-        }
+    onHoveredChanged: {
+        if (checked || control.cascadeSelected || !backgroundVisible)
+            return
+
+        if (ListView.view)
+            ListView.view.setHoverItem(control.hovered ? control : null)
     }
 }
