@@ -39,12 +39,32 @@ Item {
                 visible: progressBar.visualPosition > 0
 
                 Rectangle {
+                    id: rect
                     anchors.fill: parent
                     radius: parent.cornerRadius
+                    property int count
+                    property real lightPosition
                     gradient: Gradient {
-                        GradientStop { position: 1 - 1 / progressBar.visualPosition; color: progressBar.palette.highlight }
-                        GradientStop {position:  1 - 0.28 / progressBar.visualPosition; color: progressBar.palette.highlight }
-                        GradientStop { position: 1; color: control.D.ColorSelector.handleGradientColor }
+                        GradientStop { position: 0; color: progressBar.palette.highlight }
+                        GradientStop { position: rect.lightPosition; color: control.D.ColorSelector.handleGradientColor }
+                        GradientStop { position: 1; color: progressBar.palette.highlight }
+                    }
+                    Timer {
+                        id: moveTimer
+                        interval: 10
+                        repeat: true
+                        running: rect.visible
+                        onTriggered: {
+                            moveTimer.interval = 10
+                            if (rect.count === 100) {
+                                rect.count = 0
+                                rect.lightPosition = 0.0
+                                moveTimer.interval = 2000
+                                return;
+                            }
+                            rect.count += 1
+                            rect.lightPosition = rect.count * 0.01
+                        }
                     }
                 }
             }
@@ -98,12 +118,31 @@ Item {
                 rotation: -90
 
                 Rectangle {
+                    id: indeterminateRect
                     anchors.fill: parent
                     radius: indeterminateProgressContent.cornerRadius
+                    property int count
+                    property real lightPosition
                     gradient: Gradient {
                         GradientStop { position: 0.0; color: progressBar.palette.highlight }
-                        GradientStop { position: 0.39; color: control.D.ColorSelector.handleGradientColor }
+                        GradientStop { position: indeterminateRect.lightPosition; color: control.D.ColorSelector.handleGradientColor }
                         GradientStop { position: 1.0; color: progressBar.palette.highlight }
+                    }
+                    Timer {
+                        id: indeterminateMoveTimer
+                        interval: 50
+                        repeat: true
+                        running: indeterminateRect.visible
+                        onTriggered: {
+                            indeterminateMoveTimer.interval = 50
+                            if (indeterminateRect.count === 100) {
+                                indeterminateRect.count = 0
+                                indeterminateMoveTimer.interval = 2000
+                                return;
+                            }
+                            indeterminateRect.count += 5
+                            indeterminateRect.lightPosition = indeterminateRect.count * 0.01
+                        }
                     }
                 }
 
