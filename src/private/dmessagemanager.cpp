@@ -54,6 +54,19 @@ void FloatingMessageContainer::setDuration(int duration)
     Q_EMIT durationChanged();
 }
 
+bool FloatingMessageContainer::immediateClose() const
+{
+    return m_immediateClose;
+}
+
+void FloatingMessageContainer::setImmediateClose(bool immediateClose)
+{
+     if (m_immediateClose == immediateClose)
+         return;
+
+     m_immediateClose = immediateClose;
+}
+  
 void FloatingMessageContainer::close()
 {
     if (auto manager = qobject_cast<MessageManager *>(parent())) {
@@ -194,9 +207,6 @@ void MessageManager::ensureLayout()
                           "      bottomMargin: 20;\n"
                           "      horizontalCenter: parent.horizontalCenter\n"
                           "  }\n"
-                          " Component.onCompleted: {\n"
-                          "     console.log(\"parent onCompleted\", children.length);\n"
-                          " }"
                           "}\n", QUrl());
         auto layout = columnCom.beginCreate(qmlContext(parent()));
         setLayout(qobject_cast<QQuickItem *>(layout));
@@ -311,7 +321,11 @@ void MessageManager::timerEvent(QTimerEvent *e)
         killTimer(e->timerId());
         e->accept();
         if (auto container = item.second) {
-            close(container);
+            if (container->immediateClose()) {
+                close(container);
+            } else {
+                Q_EMIT container->delayClose();
+            }
         }
         break;
     }

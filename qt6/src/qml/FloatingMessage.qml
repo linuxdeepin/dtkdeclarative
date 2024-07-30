@@ -23,21 +23,14 @@ D.FloatingMessageContainer {
             width: DS.Style.floatingMessage.closeButtonSize
             height: DS.Style.floatingMessage.closeButtonSize
         }
-        onClicked: {
-             floatingPanel.state = "small"
-             destroyTimer.running = true
-        }
-        Timer {
-           id: destroyTimer
-           interval: 1200; running: false; repeat: true
-           onTriggered: D.DTK.closeMessage(control)
-        }
+        onClicked: floatingPanel.state = "small"
     }
 
-
+    onDelayClose: floatingPanel.state = "small"
     duration: 4000
     panel: FloatingPanel {
         id: floatingPanel
+        property bool animationFinished: false
         implicitWidth: DS.Style.control.contentImplicitWidth(floatingPanel)
         leftPadding: 10
         rightPadding: 10
@@ -45,14 +38,16 @@ D.FloatingMessageContainer {
         bottomPadding: 0
         opacity: 0.0
         state: "small"
+        onAnimationFinishedChanged: (finished) => {
+            if (floatingPanel.animationFinished === true) {
+                D.DTK.closeMessage(control)
+            }
+        }
+
         Timer {
             id: timer
             interval: 100; running: false; repeat: false
-            onTriggered: {
-                floatingPanel.y = floatingPanel.parent.height
-                floatingPanel.state = "normal"
-                console.log("onCompleted", floatingPanel.y, floatingPanel.parent.width, floatingPanel.parent.height)
-            }
+            onTriggered: floatingPanel.state = "normal"
         }
         Component.onCompleted: {
             timer.running = true
@@ -100,12 +95,12 @@ D.FloatingMessageContainer {
             }
 
             ParallelAnimation {
-                running: closeButton.item.hovered
+                running: closeButton.item ? closeButton.item.hovered : false
                 NumberAnimation { target: closeButton; property: "scale"; to: 1.25; duration: 500 }
                 NumberAnimation { target: closeButton; property: "rotation"; to: 90; duration: 500 }
             }
             ParallelAnimation {
-                running: !closeButton.item.hovered
+                running: closeButton.item ? !closeButton.item.hovered : false
                 NumberAnimation { target: closeButton; property: "scale"; to: 1; duration: 500 }
                 NumberAnimation { target: closeButton; property: "rotation"; to: 0; duration: 500 }
             }
@@ -125,19 +120,42 @@ D.FloatingMessageContainer {
                 name: "small"
                 PropertyChanges {
                     target: floatingPanel
-                    y: floatingPanel.parent.height
+                    y: floatingPanel.parent ? floatingPanel.parent.height : 0
                     opacity: 0.0
                     scale: 0.2
                 }
             }
         ]
 
-        transitions: Transition {
-            NumberAnimation {
-                properties: "y, opacity, scale"
-                easing.type: Easing.Linear
-                duration: 1000
+        transitions: [
+            Transition {
+                from: "normal"
+                to: "small"
+                SequentialAnimation {
+                    NumberAnimation {
+                        properties: "y, opacity, scale"
+                        easing.type: Easing.Linear
+                        duration: 300
+                    }
+                    PropertyAction { target: floatingPanel; property: "animationFinished"; value: true; }
+                }
+            },
+            Transition {
+                from: "small"
+                to: "normal"
+                SequentialAnimation {
+                    PropertyAction {
+                        target: floatingPanel
+                        property: "y"
+                        value: floatingPanel.parent ? floatingPanel.parent.height : 0
+                    }
+                    NumberAnimation {
+                        properties: "y, opacity, scale"
+                        easing.type: Easing.Linear
+                        duration: 300
+                    }
+                }
             }
-         }
+        ]
     }
 }
