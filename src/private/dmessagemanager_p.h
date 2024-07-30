@@ -18,6 +18,7 @@ class FloatingMessageContainer : public QObject
     Q_PROPERTY(QQuickItem *panel READ panel WRITE setPanel)
     Q_PROPERTY(QVariant message READ message WRITE setMessage NOTIFY messageChanged)
     Q_PROPERTY(int duration READ duration WRITE setDuration NOTIFY durationChanged)
+    Q_PROPERTY(bool immediateClose READ immediateClose WRITE setImmediateClose)
     Q_CLASSINFO("DefaultProperty", "panel")
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QML_NAMED_ELEMENT(FloatingMessageContainer)
@@ -33,6 +34,8 @@ public:
     void setMessageId(const QString &msgId);
     int duration() const;
     void setDuration(int duration);
+    bool immediateClose() const;
+    void setImmediateClose(bool immediateClose);
 
 public Q_SLOT:
     void close();
@@ -40,6 +43,7 @@ public Q_SLOT:
 Q_SIGNALS:
     void messageChanged();
     void durationChanged();
+    void delayClose();
 
 private:
     friend MessageManager;
@@ -48,6 +52,7 @@ private:
     QVariant m_message;
     QString m_msgId;
     int m_duration = 4000;
+    bool m_immediateClose = false;
 };
 
 class MessageManager : public QObject
