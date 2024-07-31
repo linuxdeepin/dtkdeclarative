@@ -12,6 +12,8 @@ T.CheckDelegate {
     id: control
     property Component content
     property D.Palette backgroundColor: DS.Style.itemDelegate.checkBackgroundColor
+    property string indicatorIcon: control.checkState === Qt.Unchecked ? "item_unchecked" : "item_checked"
+    property bool indicatorVisible: control.checked
 
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
@@ -26,15 +28,22 @@ T.CheckDelegate {
     indicator: Loader {
         x: control.mirrored ? control.leftPadding : control.width - width - control.rightPadding
         y: control.topPadding + (control.availableHeight - height) / 2
-        active: control.checked
+        active: indicatorVisible
 
         sourceComponent: D.DciIcon {
             palette: control.D.DTK.makeIconPalette(control.palette)
             mode: control.D.ColorSelector.controlState
             theme: control.D.ColorSelector.controlTheme
-            name: "menu_select"
+            name: indicatorIcon
             sourceSize: Qt.size(DS.Style.itemDelegate.checkIndicatorIconSize, DS.Style.itemDelegate.checkIndicatorIconSize)
             fallbackToQIcon: false
+            onNameChanged: {
+                play(D.DTK.NormalState);
+            }
+            Component.onCompleted: {
+                if (indicatorVisible)
+                    play(D.DTK.NormalState);
+            }
         }
     }
 
@@ -58,12 +67,12 @@ T.CheckDelegate {
         }
     }
 
-    background: Item {
+    background: Control {
         implicitWidth: DS.Style.itemDelegate.width
         implicitHeight: DS.Style.itemDelegate.height
         Rectangle {
             anchors.fill: parent
-            visible: !checked
+            visible: !checked && !control.ListView.view
             color: control.D.ColorSelector.backgroundColor
             radius: DS.Style.control.radius
         }
@@ -73,5 +82,13 @@ T.CheckDelegate {
             color: DS.Style.itemDelegate.checkedColor
             radius: DS.Style.control.radius
         }
+    }
+
+    onHoveredChanged: {
+        if (checked || !ListView.view)
+            return
+
+        if (ListView.view)
+            ListView.view.setHoverItem(control.hovered ? control : null)
     }
 }
