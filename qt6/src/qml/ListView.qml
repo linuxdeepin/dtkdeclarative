@@ -2,8 +2,9 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-import QtQuick 2.11
+import QtQuick 2.15
 import QtQuick.Templates as T
+import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 import org.deepin.dtk.private 1.0 as P
 
@@ -12,16 +13,8 @@ ListView {
     property int duration: 100
     property bool bgVisible: false
     property Item hoveredItem
-
-    onContentXChanged: {
-        if (hoveredItem && hoveredItem.hovered && background)
-            background.x = hoveredItem.x - contentX
-    }
-
-    onContentYChanged: {
-        if (hoveredItem && hoveredItem.hovered && background)
-            background.y =  hoveredItem.y - contentY
-    }
+    property list<Item> checkedItems
+    property alias dragItem: dragItem
 
     function setHoverItem(item) {
         if (item) {
@@ -37,6 +30,42 @@ ListView {
         } else {
             hideTimer.start()
         }
+    }
+
+    function updateCheckedItems() {
+        var items = []
+        for (var i = 0; i < count; ++i) {
+            let item = itemAtIndex(i)
+            if (item && item.checked) {
+                items.push(item)
+            }
+        }
+
+        checkedItems = items
+    }
+
+    DragItemsImage {
+        id: dragItem
+        items: checkedItems
+        visible: Drag.active
+        // Drag.mimeData: {"text/plain": ""}
+
+        onAboutToGrabToImage: function(item) {
+            item.dragActive = true
+        }
+        onGrabToImageFinished: function(item) {
+            item.dragActive = false
+        }
+    }
+
+    onContentXChanged: {
+        if (hoveredItem && hoveredItem.hovered && background)
+            background.x = hoveredItem.x - contentX
+    }
+
+    onContentYChanged: {
+        if (hoveredItem && hoveredItem.hovered && background)
+            background.y =  hoveredItem.y - contentY
     }
 
     // ItemDelegate hover item0 ==> item1, add timer ignore [item0.unhovered]

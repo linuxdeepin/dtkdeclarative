@@ -99,6 +99,7 @@ set(QML_DTK_CONTROLS
     "qml/PlaceholderText.qml"
     "qml/ControlGroup.qml"
     "qml/ControlGroupItem.qml"
+    "qml/DragItemsImage.qml"
 )
 
 foreach(QML_FILE ${QML_DTK_CONTROLS})
