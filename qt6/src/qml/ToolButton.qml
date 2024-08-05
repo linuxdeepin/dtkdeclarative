@@ -74,6 +74,11 @@ T.ToolButton {
                 target: contentItem
                 scale : 1.2
             }
+            PropertyChanges {
+                target: background
+                scale : 1.0
+            }
+
         },
         State {
             name: "checked"
@@ -91,6 +96,7 @@ T.ToolButton {
 
     background: P.ButtonPanel {
         visible: control.state === "hovered"
+        scale : 0.9
         implicitWidth: DS.Style.toolButton.width
         implicitHeight: DS.Style.toolButton.height
         button: control
