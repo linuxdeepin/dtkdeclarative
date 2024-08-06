@@ -119,12 +119,8 @@ void DQuickDciIconImageItemPrivate::updatePlayerIconSize()
         return;
 
     int boundingSize = qMax(q_func()->sourceSize().width(), q_func()->sourceSize().height());
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    if (qApp->testAttribute(Qt::AA_UseHighDpiPixmaps))
-#endif
-        boundingSize = qRound(boundingSize / devicePixelRatio);
-    player->setIconSize(boundingSize);
 
+    player->setIconSize(boundingSize);
 }
 
 void DQuickDciIconImageItemPrivate::updatePlayer()
