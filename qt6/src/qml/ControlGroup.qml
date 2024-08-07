@@ -10,7 +10,6 @@ import org.deepin.dtk.style 1.0 as DS
 ColumnLayout {
     id: root
     spacing: 10
-    clip: true
 
     property string title
     property bool isExpanded: true
@@ -143,6 +142,7 @@ ColumnLayout {
 
     ColumnLayout {
         id: itemLayout
+        Layout.fillHeight: false
     }
 
     onIsExpandedChanged: (isExpanded) => {
