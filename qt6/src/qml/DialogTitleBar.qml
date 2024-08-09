@@ -2,13 +2,13 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-import QtQuick 2.11
-import QtQuick.Window 2.11
-import QtQuick.Layouts 1.11
+import QtQuick
+import QtQuick.Window
+import QtQuick.Layouts
 import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
-Control {
+Item {
     id: control
     z: D.DTK.TopOrder
     width: Window.window.width
@@ -39,15 +39,17 @@ Control {
         }
     }
 
-    background: D.InWindowBlur {
+    D.InWindowBlur {
         id: background
         visible: false
+        anchors.fill: parent
     }
 
-    contentItem: ColumnLayout {
+    ColumnLayout {
         id: content
         spacing: 0
 
+        anchors.fill: parent
         Rectangle {
             id: separatorTop
             Layout.preferredWidth: parent.width
@@ -63,15 +65,18 @@ Control {
             Layout.preferredWidth: parent.width
             Layout.leftMargin: DS.Style.titleBar.leftMargin
 
-            D.DciIcon {
-                id: iconLabel
-                visible: name !== ""
-                mode: control.D.ColorSelector.controlState
-                theme: control.D.ColorSelector.controlTheme
-                palette: D.DTK.makeIconPalette(control.palette)
-                sourceSize {
-                    width: DS.Style.dialogWindow.iconSize
-                    height: DS.Style.dialogWindow.iconSize
+            Control {
+                id: iconControl
+                visible: iconLabel.name !== ""
+                contentItem: D.DciIcon {
+                    id: iconLabel
+                    mode: iconControl.D.ColorSelector.controlState
+                    theme: iconControl.D.ColorSelector.controlTheme
+                    palette: D.DTK.makeIconPalette(iconControl.palette)
+                    sourceSize {
+                        width: DS.Style.dialogWindow.iconSize
+                        height: DS.Style.dialogWindow.iconSize
+                    }
                 }
             }
 
