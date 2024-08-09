@@ -160,8 +160,19 @@ ListView {
             active: hoveredItem
             sourceComponent: P.ButtonPanel {
                 button: hoveredItem
+                enableAnimation: false // avoid hover animation
                 outsideBorderColor: null
+                insideBorderColor: null
                 visible: hoveredItem && !hoveredItem.checked && hoveredItem.enabled
+                color1: D.Palette {
+                    normal {
+                        common: Qt.rgba(0, 0, 0, 0.1)
+                    }
+                    normalDark {
+                        common: Qt.rgba(1, 1, 1, 0.1)
+                    }
+                }
+                color2: color1
             }
         }
 
