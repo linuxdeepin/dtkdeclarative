@@ -33,14 +33,9 @@ T.Switch {
         width: DS.Style.switchButton.handleWidth
         height: DS.Style.switchButton.handleHeight
         sourceSize: Qt.size(DS.Style.switchButton.indicatorWidth, DS.Style.switchButton.indicatorWidth)
-        name: control.checked ? "switch_on_static" : "switch_off_static"
+        name: !control.checked ? "switch_on" : "switch_off"
         opacity: control.D.ColorSelector.controlState === D.DTK.DisabledState && control.checked ? 0.4 : 1
-        palette {
-            highlight: control.checked ? control.palette.highlight : control.D.ColorSelector.handleColor
-            highlightForeground: control.palette.highlightedText
-            foreground: control.palette.windowText
-            background: control.palette.window
-        }
+        palette: DTK.makeIconPalette(control.palette)
         mode: control.D.ColorSelector.controlState
         theme: control.D.ColorSelector.controlTheme
         fallbackToQIcon: false
@@ -48,15 +43,13 @@ T.Switch {
 
     Timer {
         id: toggletimer
-        interval: 200
+        interval: 300
         onTriggered: {
             control.toggle()
-            handle.name = control.checked ? "switch_on_static" : "switch_off_static"
         }
     }
 
     function palyAndSetImage() {
-        handle.name = !control.checked ? "switch_on" : "switch_off"
         handle.play(D.DTK.NormalState)
         toggletimer.start();
     }
