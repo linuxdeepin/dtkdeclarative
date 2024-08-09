@@ -11,6 +11,7 @@ BoxPanel {
     id: control
     property Item button
 
+    property bool enableAnimation: control.D.ColorSelector.controlState === D.DTK.HoveredState && control.D.ColorSelector.family === D.Palette.CommonColor
     color1: selectValue(DS.Style.button.background1, DS.Style.checkedButton.background, DS.Style.highlightedButton.background1)
     color2: selectValue(DS.Style.button.background2, DS.Style.checkedButton.background, DS.Style.highlightedButton.background2)
     insideBorderColor: selectValue(DS.Style.button.insideBorder, null, DS.Style.highlightedButton.border)
@@ -52,8 +53,7 @@ BoxPanel {
     CicleSpreadAnimation {
         id: hoverAnimation
         anchors.fill: parent
-        visible: control.D.ColorSelector.controlState === D.DTK.HoveredState
-                 && control.D.ColorSelector.family === D.Palette.CommonColor
+        visible: enableAnimation
 
         Rectangle {
             anchors.fill: parent
