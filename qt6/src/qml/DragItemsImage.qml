@@ -55,7 +55,9 @@ Item {
                 if (!item)
                     return
 
-                // item.dragActive = true
+                img.width = item.width
+                img.height = item.height
+
                 aboutToGrabToImage(item)
                 item.grabToImage(function(result) {
                     img.source = result.url
