@@ -22,6 +22,7 @@ BoxPanel {
     boxShadowOffsetY: selectValue(control.D.ColorSelector.controlState === D.DTK.PressedState ? 2 : 4, 4, 4)
     innerShadowOffsetY1: selectValue(control.D.ColorSelector.controlState === D.DTK.HoveredState ? -3 : -1, -1, -1)
     visible: !button.flat || button.checked || button.highlighted || button.visualFocus || control.D.ColorSelector.controlState === D.DTK.PressedState || control.D.ColorSelector.controlState === D.DTK.HoveredState
+    property bool animationVisible: control.D.ColorSelector.controlState === D.DTK.HoveredState && control.D.ColorSelector.family === D.Palette.CommonColor
 
     function selectValue(normal, checked, highlighted) {
         if (button.checked) {
@@ -52,8 +53,7 @@ BoxPanel {
     CicleSpreadAnimation {
         id: hoverAnimation
         anchors.fill: parent
-        visible: control.D.ColorSelector.controlState === D.DTK.HoveredState
-                 && control.D.ColorSelector.family === D.Palette.CommonColor
+        visible: animationVisible
 
         Rectangle {
             anchors.fill: parent
