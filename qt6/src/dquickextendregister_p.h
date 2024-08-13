@@ -9,6 +9,7 @@
 #include <DGuiApplicationHelper>
 #include <DFontManager>
 #include <DPlatformTheme>
+#include <DPlatformHandle>
 #include <QQmlEngine>
 
 DQUICK_BEGIN_NAMESPACE
@@ -49,6 +50,13 @@ struct DFontManagerForeign
     Q_GADGET
     QML_FOREIGN(DFontManager)
     QML_NAMED_ELEMENT(FontManager)
+};
+
+struct DPlatformHandleForeign
+{
+    Q_GADGET
+    QML_FOREIGN(DPlatformHandle)
+    QML_NAMED_ELEMENT(PlatformHandle)
 };
 
 DQUICK_END_NAMESPACE

@@ -72,6 +72,8 @@ class DQuickWindowAttached : public QObject, public DTK_CORE_NAMESPACE::DObject
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType themeType READ themeType WRITE setThemeType RESET resetThemeType NOTIFY themeTypeChanged)
 #endif
+    Q_PROPERTY(DTK_GUI_NAMESPACE::DPlatformHandle::EffectScene windowEffect READ windowEffect WRITE setWindowEffect NOTIFY windowEffectChanged)
+    Q_PROPERTY(DTK_GUI_NAMESPACE::DPlatformHandle::EffectType windowStartUpEffect READ windowStartUpEffect WRITE setWindowStartUpEffect NOTIFY windowStartUpEffectChanged)
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QML_ANONYMOUS
 #endif
@@ -117,6 +119,9 @@ public:
     void resetThemeType();
 #endif
 
+    DTK_GUI_NAMESPACE::DPlatformHandle::EffectScene windowEffect() const;
+    DTK_GUI_NAMESPACE::DPlatformHandle::EffectType windowStartUpEffect() const;
+
 public Q_SLOTS:
     void setEnabled(bool e);
 
@@ -149,6 +154,9 @@ public Q_SLOTS:
     void setOverlayExited(QQuickTransition *exit);
     void setLoadingOverlay(QQmlComponent *component);
 
+    void setWindowEffect(DTK_GUI_NAMESPACE::DPlatformHandle::EffectScenes effect);
+    void setWindowStartUpEffect(DTK_GUI_NAMESPACE::DPlatformHandle::EffectTypes type);
+
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
 
@@ -175,6 +183,8 @@ Q_SIGNALS:
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     void themeTypeChanged();
 #endif
+    void windowEffectChanged();
+    void windowStartUpEffectChanged();
 
 private:
     D_DECLARE_PRIVATE(DQuickWindowAttached)
