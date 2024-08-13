@@ -108,6 +108,24 @@ inline static void updateValue(QPoint &value, Func call)
     }
 }
 
+template<class Func>
+inline static void updateValue(DTK_GUI_NAMESPACE::DPlatformHandle::EffectScenes &value, Func call)
+{
+    if (value != DTK_GUI_NAMESPACE::DPlatformHandle::EffectScene(0)) {
+        call(value);
+        value = DTK_GUI_NAMESPACE::DPlatformHandle::EffectScene(0);
+    }
+}
+
+template<class Func>
+inline static void updateValue(DTK_GUI_NAMESPACE::DPlatformHandle::EffectTypes &value, Func call)
+{
+    if (value != DTK_GUI_NAMESPACE::DPlatformHandle::EffectType(0)) {
+        call(value);
+        value = DTK_GUI_NAMESPACE::DPlatformHandle::EffectType(0);
+    }
+}
+
 bool DQuickWindowAttachedPrivate::ensurePlatformHandle()
 {
     if (handle)
@@ -133,6 +151,8 @@ bool DQuickWindowAttachedPrivate::ensurePlatformHandle()
     updateValue(explicitEnableSystemResize, std::bind(&DPlatformHandle::setEnableSystemResize, handle, std::placeholders::_1));
     updateValue(explicitEnableSystemMove, std::bind(&DPlatformHandle::setEnableSystemMove, handle, std::placeholders::_1));
     updateValue(explicitEnableBlurWindow, std::bind(&DPlatformHandle::setEnableBlurWindow, handle, std::placeholders::_1));
+    updateValue(explicitEffectScene, std::bind(&DPlatformHandle::setWindowEffect, handle, std::placeholders::_1));
+    updateValue(explicitEffectType, std::bind(&DPlatformHandle::setWindowStartUpEffect, handle, std::placeholders::_1));
 
     QObject::connect(handle, &DPlatformHandle::borderColorChanged, q, &DQuickWindowAttached::borderColorChanged);
     QObject::connect(handle, &DPlatformHandle::borderWidthChanged, q, &DQuickWindowAttached::borderWidthChanged);
@@ -145,6 +165,8 @@ bool DQuickWindowAttachedPrivate::ensurePlatformHandle()
     QObject::connect(handle, &DPlatformHandle::enableSystemResizeChanged, q, &DQuickWindowAttached::enableSystemResizeChanged);
     QObject::connect(handle, &DPlatformHandle::enableBlurWindowChanged, q, &DQuickWindowAttached::enableBlurWindowChanged);
     QObject::connect(handle, SIGNAL(enableBlurWindowChanged()), q, SLOT(_q_updateBlurAreaForWindow()));
+    QObject::connect(handle, &DPlatformHandle::windowEffectChanged, q, &DQuickWindowAttached::windowEffectChanged);
+    QObject::connect(handle, &DPlatformHandle::windowStartUpEffectChanged, q, &DQuickWindowAttached::windowStartUpEffectChanged);
     Q_EMIT q->enabledChanged();
     return true;
 }
@@ -486,6 +508,28 @@ void DQuickWindowAttached::setLoadingOverlay(QQmlComponent *component)
     Q_EMIT loadingOverlayChanged();
 }
 
+void DQuickWindowAttached::setWindowEffect(DTK_GUI_NAMESPACE::DPlatformHandle::EffectScenes effect)
+{
+    D_D(DQuickWindowAttached);
+
+    d->ensurePlatformHandle();
+    if (d->handle)
+        d->handle->setWindowEffect(effect);
+    else
+        d->explicitEffectScene = effect;
+}
+
+void DQuickWindowAttached::setWindowStartUpEffect(DTK_GUI_NAMESPACE::DPlatformHandle::EffectTypes type)
+{
+    D_D(DQuickWindowAttached);
+
+    d->ensurePlatformHandle();
+    if (d->handle)
+        d->handle->setWindowStartUpEffect(type);
+    else
+        d->explicitEffectType = type;
+}
+
 /*!
  * \~chinese \property DQuickWindowAttached::translucentBackground
  * \~chinese \brief 如果此属性值为 true，则在更新窗口绘制内容之前会先清空要更新区域内的图像，否则不清空。
@@ -619,6 +663,29 @@ void DQuickWindowAttached::resetThemeType()
     QQuickWindowPrivate::get(window())->resetPalette();
 }
 #endif
+
+
+DTK_GUI_NAMESPACE::DPlatformHandle::EffectScene DQuickWindowAttached::windowEffect() const
+{
+    D_DC(DQuickWindowAttached);
+
+    if (!d->handle) {
+        return DTK_GUI_NAMESPACE::DPlatformHandle::EffectScene(0);
+    }
+
+    return d->handle->windowEffect();
+}
+
+DTK_GUI_NAMESPACE::DPlatformHandle::EffectType DQuickWindowAttached::windowStartUpEffect() const
+{
+    D_DC(DQuickWindowAttached);
+
+    if (!d->handle) {
+        return DTK_GUI_NAMESPACE::DPlatformHandle::EffectType(0);
+    }
+
+    return d->handle->windowStartUpEffect();
+}
 
 /*!
  * \~chinese \brief DQuickWindowAttached::setEnabled　设置当前的窗口为 DTK 风格。

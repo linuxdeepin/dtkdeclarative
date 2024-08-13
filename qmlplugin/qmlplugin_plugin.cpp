@@ -34,6 +34,7 @@
 #include "private/dquickcontrolpalette_p.h"
 
 #include <DFontManager>
+#include <DPlatformHandle>
 
 #include <QQmlEngine>
 #include <QSortFilterProxyModel>
@@ -206,6 +207,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterUncreatableType<DColor>(uri, implUri, 1, 0, "Color",
                                        QStringLiteral("Color is only available as enums."));
     dtkRegisterUncreatableType<DPopupWindowHandle>(uri, implUri, 1, 0, "PopupHandle", "PopupWindow Attached");
+    dtkRegisterUncreatableType<DPlatformHandle>(uri, implUri, 1, 0, "PlatformHandle", "PlatformHandle");
 
     qRegisterMetaType<DQUICK_NAMESPACE::DQuickDciIcon>();
     qRegisterMetaType<DQuickControlColor>("ControlColor");
