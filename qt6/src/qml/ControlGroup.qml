@@ -100,10 +100,12 @@ ColumnLayout {
                 verticalAlignment: Qt.AlignVCenter
             }
             D.DciIcon {
-                Layout.preferredWidth: 36
-                Layout.preferredHeight: 36
                 rotation: root.isExpanded ? 0 : - 90
                 name: "arrow_ordinary_down"
+                mode: title.D.ColorSelector.controlState
+                theme: title.D.ColorSelector.controlTheme
+                palette: D.DTK.makeIconPalette(title.palette)
+                sourceSize: Qt.size(36, 36)
 
                 Behavior on rotation {
                     NumberAnimation {
