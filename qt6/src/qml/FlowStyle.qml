@@ -814,7 +814,7 @@ QtObject {
         }
 
         property D.Palette handleGradientColor:  D.Palette {
-            normal: D.DTK.makeColor(D.Color.Highlight).hue(-10).saturation(+40).lightness(+20)
+            normal: D.DTK.makeColor(D.Color.Highlight).hue(-0).saturation(+30).lightness(+30)
         }
     }
 
