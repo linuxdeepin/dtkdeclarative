@@ -276,6 +276,10 @@ QSGNode *DQuickBackdropBlitter::updatePaintNode(QSGNode *oldNode, QQuickItem::Up
 
     node->setContentItem(d->container);
     node->setTextureChangedCallback(onTextureChanged, d);
+    connect(this, &QObject::destroyed, this, [node](){
+        // fix callback crashed...
+        node->setTextureChangedCallback(nullptr, nullptr);
+    });
     node->resize(size());
     onTextureChanged(node, d);
 
