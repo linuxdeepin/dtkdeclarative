@@ -134,6 +134,10 @@ void DQuickDciIconImageItemPrivate::updatePlayer()
         QObject::connect(parentPriv->imageItem, &DQuickIconImage::sourceSizeChanged, player, [this](){
             updatePlayerIconSize();
         });
+
+        // 只在初始化和 sourceSizeChanged 时更新图标大小
+        // 防止出现 dpr > 1.0 时未设置 sourceSize 的 item 在 updatePlayer 时图标一直放大
+        updatePlayerIconSize();
     }
 
     QString iconPath = findDciIconPath(parentPriv->imageItem->name(), appIconThemeName());
@@ -154,8 +158,6 @@ void DQuickDciIconImageItemPrivate::updatePlayer()
         palette.setForeground(q_func()->color());
 
     player->setPalette(palette);
-
-    updatePlayerIconSize();
 
     player->setDevicePixelRatio(devicePixelRatio);
 }
