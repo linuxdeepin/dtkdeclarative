@@ -44,6 +44,10 @@ public:
 
     }
 
+    ~DQuickBackdropBlitterPrivate() {
+        cleanTextureProvider();
+    }
+
     static inline DQuickBackdropBlitterPrivate *get(DQuickBackdropBlitter *qq) {
         return qq->d_func();
     }
@@ -59,6 +63,7 @@ public:
     }
 
     BlitTextureProvider *ensureTextureProvider() const;
+    void cleanTextureProvider();
 
     D_DECLARE_PUBLIC(DQuickBackdropBlitter)
     Content *content;
@@ -178,6 +183,14 @@ BlitTextureProvider *DQuickBackdropBlitterPrivate::ensureTextureProvider() const
     return tp;
 }
 
+void DQuickBackdropBlitterPrivate::cleanTextureProvider()
+{
+    if (tp) {
+        QQuickWindowQObjectCleanupJob::schedule(q_func()->window(), tp);
+        tp = nullptr;
+    }
+}
+
 DQuickBackdropBlitter::DQuickBackdropBlitter(QQuickItem *parent)
     : QQuickItem(parent)
     , DObject(*new DQuickBackdropBlitterPrivate(this))
@@ -240,23 +253,8 @@ static void onTextureChanged(DBackdropNode *node, void *data) {
     if (!d->tp)
         return;
 
-    const bool textureChanged = node->texture() != d->tp->texture();
     d->tp->setTexture(node->texture());
-
-    struct Notifer : public QRunnable {
-        void run() override {
-            if (tp)
-                Q_EMIT tp->textureChanged();
-        }
-
-        QPointer<QSGTextureProvider> tp;
-    };
-
-    auto notifer = new Notifer();
-    notifer->tp = d->tp;
-
-    if (textureChanged)
-        d->content->window()->scheduleRenderJob(notifer, QQuickWindow::BeforeSynchronizingStage);
+    Q_EMIT d->tp->textureChanged();
 }
 
 QSGNode *DQuickBackdropBlitter::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *oldData)
@@ -307,10 +305,7 @@ void DQuickBackdropBlitter::geometryChange(const QRectF &newGeometry, const QRec
 void DQuickBackdropBlitter::releaseResources()
 {
     D_D(DQuickBackdropBlitter);
-    if (d->tp) {
-        QQuickWindowQObjectCleanupJob::schedule(window(), d->tp);
-        d->tp = nullptr;
-    }
+    d->cleanTextureProvider();
 }
 
 DQUICK_END_NAMESPACE
