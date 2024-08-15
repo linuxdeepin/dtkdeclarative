@@ -161,34 +161,51 @@ public:
         return static_cast<QQuickWindow*>(parent());
     }
 
-    Data *resolve(Data *data, DataKeys&&... keys) {
-        if (data && get()->check(data->data, std::forward<DataKeys>(keys)...)
-            && dataList.contains(data)) {
-            return data;
-        }
-        if (data)
-            release(data);
+    std::weak_ptr<Data> resolve(std::weak_ptr<Data> data, DataKeys&&... keys) {
+        struct TryClean {
+            TryClean(DataManager *m)
+                : manager(m) {}
+            ~TryClean() {
+                manager->tryClean();
+            }
+            DataManager *manager;
+        };
 
-        for (auto data : dataList) {
+        TryClean cleanJob(this);
+        Q_UNUSED(cleanJob)
+
+        {
+            auto d = data.lock();
+            if (d && dataList.contains(d)) {
+                if (get()->check(d->data, std::forward<DataKeys>(keys)...)) {
+                    d->released = 0;
+                    return data;
+                }
+                release(data);
+            }
+        }
+
+        for (auto data : std::as_const(dataList)) {
             if (get()->check(data->data, std::forward<DataKeys>(keys)...)) {
                 data->released = 0;
                 return data;
             }
         }
 
-        data = new Data();
-        if ((data->data = get()->create(std::forward<DataKeys>(keys)...))) {
-            dataList.append(data);
-            return data;
+        auto newData = std::shared_ptr<Data>(new Data());
+        if ((newData->data = get()->create(std::forward<DataKeys>(keys)...))) {
+            dataList.append(newData);
+            return newData;
         }
 
-        delete data;
-        return nullptr;
+        return {};
     }
 
-    inline void release(Data *data) {
-        data->released++;
-        ensureCleanJob();
+    inline void release(std::weak_ptr<Data> data) {
+        auto d = data.lock();
+        if (!d)
+            return;
+        d->released++;
     }
 
 protected:
@@ -202,21 +219,18 @@ protected:
 
             manager->cleanJob = nullptr;
 
-            QList<Data*> tmp;
+            QList<std::shared_ptr<Data>> tmp;
             std::swap(manager->dataList, tmp);
             manager->dataList.reserve(tmp.size());
 
-            for (Data *data : tmp) {
+            for (const auto &data : std::as_const(tmp)) {
                 if (data->released > 2) {
                     manager->get()->destroy(data->data);
-                    delete data;
                 } else {
                     manager->dataList << data;
 
-                    if (data->released > 0) {
-                        data->released++;
-                        manager->ensureCleanJob();
-                    }
+                    if (data->released > 0)
+                        ++data->released;
                 }
             }
         }
@@ -224,8 +238,8 @@ protected:
         QPointer<DataManager> manager;
     };
 
-    inline void ensureCleanJob() {
-        if (!cleanJob) {
+    inline void tryClean() {
+        if (Q_LIKELY(!cleanJob)) {
             cleanJob = new CleanJob(this);
             owner()->scheduleRenderJob(cleanJob, QQuickWindow::AfterRenderingStage);
         }
@@ -246,13 +260,12 @@ protected:
 
     using QObject::deleteLater;
     ~DataManager() {
-        for (auto data : dataList) {
+        for (auto data : std::as_const(dataList)) {
             Derive::destroy(data->data);
-            delete data;
         }
     }
 
-    QList<Data*> dataList;
+    QList<std::shared_ptr<Data>> dataList;
     QRunnable *cleanJob = nullptr;
 };
 
@@ -706,8 +719,9 @@ public:
 
         if (oldManager != manager) {
             sgTexture()->setTexture(nullptr);
-            if (oldManager && texture)
+            if (oldManager)
                 oldManager->release(texture);
+            texture.reset();
         }
 
         rhi = rhi->resolve(rhi, window);
@@ -747,10 +761,11 @@ public:
         }
 
         texture = manager->resolve(texture, ct ? ct->format() : glfbManager->format(), itemPixelSize);
-        if (Q_UNLIKELY(!texture)) {
+        if (Q_UNLIKELY(texture.expired())) {
             reset();
             return;
         }
+        auto texture = this->texture.lock();
         Q_ASSERT(texture->data);
 
         if (renderData) {
@@ -800,6 +815,7 @@ public:
                        texture->data->pixelSize().height() / float(m_rect.height() * devicePixelRatio)});
             rhi->render(renderData->rt.get());
         } else {
+            auto rhi = this->rhi->rhi();
             QPointF sourcePos = renderMatrix.map(m_rect.topLeft()) * devicePixelRatio;
 
             if (ct) {
@@ -914,9 +930,9 @@ private:
         if (!sgTexture()->rhiTexture() && notifyTexture)
             doNotifyTextureChanged();
         sgTexture()->setTexture(nullptr);
-        if (texture && manager)
-            manager->release(texture);
-        texture = nullptr;
+        if (!texture.expired() && manager)
+            manager->release(texture.lock());
+        texture.reset();
 
 #ifndef QT_NO_OPENGL
         if (glfbManager)
@@ -929,14 +945,14 @@ private:
         renderData.reset();
         node.reset();
         manager = nullptr;
-        texture = nullptr;
+        texture.reset();
 #ifndef QT_NO_OPENGL
         glfbManager = nullptr;
 #endif
     }
 
     DataManagerPointer<RhiTextureManager> manager;
-    RhiTextureManager::Data *texture = nullptr;
+    std::weak_ptr<RhiTextureManager::Data> texture;
     DataManagerPointer<RhiManager> rhi;
 
 #ifndef QT_NO_OPENGL
@@ -1078,7 +1094,7 @@ public:
 
     QImage toImage() const override
     {
-        return image ? *image->data : QImage();
+        return image.expired() ? QImage() : *image.lock()->data;
     }
 
     void render(const RenderState *state) override {
@@ -1097,8 +1113,9 @@ public:
 
         if (oldManager != manager) {
             texture()->setTexture(nullptr);
-            if (oldManager && image)
+            if (oldManager)
                 oldManager->release(image);
+            image.reset();
         }
 
         const bool hasRotation = matrix.flags().testAnyFlags(QMatrix4x4::Rotation2D | QMatrix4x4::Rotation);
@@ -1137,6 +1154,7 @@ public:
             image = manager->resolve(image, sourceImage.format(), pixelSize);
         }
 
+        auto image = this->image.lock();
         painter.begin(image->data);
         painter.setRenderHint(QPainter::SmoothPixmapTransform);
         painter.setCompositionMode(QPainter::CompositionMode_Source);
@@ -1170,20 +1188,19 @@ private:
         if (!texture()->image().isNull() && notifyTexture)
             doNotifyTextureChanged();
         texture()->setTexture(nullptr);
-        if (image && manager)
+        if (manager)
             manager->release(image);
-        image = nullptr;
+        image.reset();
     }
 
     void destroy() {
         reset(false);
         manager = nullptr;
-        image = nullptr;
     }
 
     friend class DBackdropNode;
     DataManagerPointer<QImageManager> manager;
-    QImageManager::Data *image = nullptr;
+    std::weak_ptr<QImageManager::Data> image;
     QPainter painter;
 };
 
