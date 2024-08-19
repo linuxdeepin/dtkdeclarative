@@ -125,6 +125,11 @@ QSGNode *DQuickInWindowBlur::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeDa
             blurNode->setRenderCallback(onRender, this);
             node->appendChildNode(blurNode);
             node->setRenderCallback(updateBlurNodeTexture, blurNode);
+            connect(this, &QObject::destroyed, this, [node, blurNode](){
+                // fix callback crashed...
+                blurNode->setRenderCallback(nullptr, nullptr);
+                node->setRenderCallback(nullptr, nullptr);
+            });
         }
 #ifndef QT_NO_OPENGL
         else if (ga == QSGRendererInterface::OpenGL
@@ -138,6 +143,11 @@ QSGNode *DQuickInWindowBlur::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeDa
             blurNode->setRenderCallback(onRender, this);
             node->appendChildNode(blurNode);
             node->setRenderCallback(updateBlurNodeTexture, blurNode);
+            connect(this, &QObject::destroyed, this, [node, blurNode](){
+                // fix callback crashed...
+                blurNode->setRenderCallback(nullptr, nullptr);
+                node->setRenderCallback(nullptr, nullptr);
+            });
         }
 #endif
         else {
