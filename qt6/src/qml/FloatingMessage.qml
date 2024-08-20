@@ -96,13 +96,13 @@ D.FloatingMessageContainer {
 
             ParallelAnimation {
                 running: closeButton.item ? closeButton.item.hovered : false
-                NumberAnimation { target: closeButton; property: "scale"; to: 1.25; duration: 500 }
-                NumberAnimation { target: closeButton; property: "rotation"; to: 90; duration: 500 }
+                NumberAnimation { target: closeButton; property: "scale"; to: 1.25; duration: 300; easing.type: Easing.InOutQuart }
+                NumberAnimation { target: closeButton; property: "rotation"; to: 90; duration: 300; easing.type: Easing.InOutQuart }
             }
             ParallelAnimation {
                 running: closeButton.item ? !closeButton.item.hovered : false
-                NumberAnimation { target: closeButton; property: "scale"; to: 1; duration: 500 }
-                NumberAnimation { target: closeButton; property: "rotation"; to: 0; duration: 500 }
+                NumberAnimation { target: closeButton; property: "scale"; to: 1; duration: 300; easing.type: Easing.InOutQuart }
+                NumberAnimation { target: closeButton; property: "rotation"; to: 0; duration: 300; easing.type: Easing.InOutQuart }
             }
         }
 
@@ -134,8 +134,8 @@ D.FloatingMessageContainer {
                 SequentialAnimation {
                     NumberAnimation {
                         properties: "y, opacity, scale"
-                        easing.type: Easing.Linear
-                        duration: 300
+                        easing.type: Easing.InOutQuart
+                        duration: 400
                     }
                     PropertyAction { target: floatingPanel; property: "animationFinished"; value: true; }
                 }
@@ -151,8 +151,8 @@ D.FloatingMessageContainer {
                     }
                     NumberAnimation {
                         properties: "y, opacity, scale"
-                        easing.type: Easing.Linear
-                        duration: 300
+                        easing.type: Easing.InOutQuart
+                        duration: 400
                     }
                 }
             }
