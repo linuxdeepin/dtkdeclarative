@@ -43,7 +43,7 @@ T.Switch {
 
     Timer {
         id: toggletimer
-        interval: 300
+        interval: 500
         onTriggered: {
             control.toggle()
         }
