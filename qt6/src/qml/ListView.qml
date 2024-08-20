@@ -23,8 +23,8 @@ ListView {
             bgVisible = (background.x <= 0 && background.y <= 0) ? false : hoveredItem.hovered
             background.x = hoveredItem.x - contentX
             background.y = hoveredItem.y - contentY
-            background.width = hoveredItem.implicitWidth
-            background.height = hoveredItem.implicitHeight
+            background.width = hoveredItem.background.width
+            background.height = hoveredItem.background.height
             bgVisible = hoveredItem.hovered
             control.state = bgVisible ? "Visible" : "Invisible"
         } else {
@@ -151,8 +151,8 @@ ListView {
 
     Item {
         id: background
-        implicitWidth: DS.Style.itemDelegate.width
-        implicitHeight: DS.Style.itemDelegate.height
+        implicitWidth: hoveredItem ? hoveredItem.background.width : DS.Style.itemDelegate.width
+        implicitHeight: hoveredItem ? hoveredItem.background.height : DS.Style.itemDelegate.height
         z: -1
 
         Loader {
@@ -163,6 +163,8 @@ ListView {
                 enableAnimation: false // avoid hover animation
                 outsideBorderColor: null
                 insideBorderColor: null
+                innerShadowColor1: null
+                innerShadowColor2: null
                 visible: hoveredItem && !hoveredItem.checked && hoveredItem.enabled
                 color1: D.Palette {
                     normal {
