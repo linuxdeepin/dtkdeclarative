@@ -1,3 +1,10 @@
+dtkdeclarative (5.6.34) unstable; urgency=medium
+
+  * feat: support to change window effects(Issue: https://github.com/linuxdeepin/developer-center/issues/10322)
+  * fix: can't move dialog window(Issue: #190)
+
+ -- Deepin Packages Builder <packages@deepin.org>  Tue, 20 Aug 2024 05:03:51 +0000
+
 dtkdeclarative (5.6.32) unstable; urgency=medium
 
   * fix: DCiicon has aliasing when using base64 data(Issue: https://github.com/linuxdeepin/developer-center/issues/8941)
