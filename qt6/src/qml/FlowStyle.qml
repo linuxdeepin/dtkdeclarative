@@ -630,7 +630,7 @@ QtObject {
 
     property QtObject menu: QtObject {
         property int padding: 0
-        property int radius: D.DTK.platformTheme.windowRadius < 0 ? 18 : D.DTK.platformTheme.windowRadius
+        property int radius: D.DTK.platformTheme.windowRadius < 0 ? 12 : D.DTK.platformTheme.windowRadius
         property int margins: 10
         property int overlap: 1
 
@@ -667,6 +667,17 @@ QtObject {
 
         property D.Palette subMenuOpenedBackground: D.Palette {
             normal: Qt.rgba(0, 0, 0, 0.15)
+        }
+
+        // the highlight color of main menu item, when submenu is opened.
+        property D.Palette submenuOpenedItemHighlight: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.15)
+            normalDark: Qt.rgba(1, 1, 1, 0.2)
+        }
+
+        property D.Palette itemHighlightShadow: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.2)
+            normalDark: Qt.rgba(1, 1, 1, 0.1)
         }
 
         property D.Palette itemText: D.Palette {
