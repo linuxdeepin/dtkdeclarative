@@ -72,7 +72,7 @@ T.ToolButton {
             when: control.hovered && !control.checked
             PropertyChanges {
                 target: contentItem
-                scale : 1.2
+                scale : 1.1
             }
             PropertyChanges {
                 target: background

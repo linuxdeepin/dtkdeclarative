@@ -25,13 +25,6 @@ Control {
         children: control.buttons
     }
 
-    background: BoxPanel {
-        implicitWidth: DS.Style.buttonBox.width
-        implicitHeight: DS.Style.buttonBox.height
-        backgroundFlowsHovered: D.ColorSelector.family === D.Palette.CrystalColor
-        outsideBorderColor: null
-        color2: color1
-    }
 
     ParallelAnimation {
         running:  btnGroup.checkedButton && (btnGroup.checkedButton.x !== backgroundPanel.x || btnGroup.checkedButton.y !== backgroundPanel.y)
