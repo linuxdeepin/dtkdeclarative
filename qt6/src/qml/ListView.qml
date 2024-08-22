@@ -161,10 +161,13 @@ ListView {
             sourceComponent: P.ButtonPanel {
                 button: hoveredItem
                 enableAnimation: false // avoid hover animation
+                enableBoxShadow: false
                 outsideBorderColor: null
                 insideBorderColor: null
                 innerShadowColor1: null
                 innerShadowColor2: null
+                dropShadowColor: null
+
                 visible: hoveredItem && !hoveredItem.checked && hoveredItem.enabled
                 color1: D.Palette {
                     normal {

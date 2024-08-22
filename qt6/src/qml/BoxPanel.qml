@@ -22,10 +22,11 @@ Item {
     property int innerShadowOffsetY1: -1
     // Background color changes with hover state if `backgroundFlowingHovered` is `true`.
     property bool backgroundFlowsHovered: true
+    property bool enableBoxShadow: control.D.ColorSelector.family === D.Palette.CommonColor
 
     Loader {
         anchors.fill: backgroundRect
-        active: control.D.ColorSelector.family === D.Palette.CommonColor
+        active: enableBoxShadow
         sourceComponent: BoxShadow {
             shadowBlur: control.boxShadowBlur
             shadowOffsetY: control.boxShadowOffsetY
