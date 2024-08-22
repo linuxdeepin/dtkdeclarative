@@ -4,6 +4,7 @@
 
 #include "dquickcontrolpalette_p.h"
 #include "dquickglobal_p.h"
+#include "dqmlglobalobject_p_p.h"
 
 #include <DGuiApplicationHelper>
 
@@ -937,7 +938,7 @@ void DQuickControlColorSelector::notifyColorPropertyChanged()
 
 void DQuickControlColorSelector::updatePropertyFromName(const QByteArray &name, const DQuickControlPalette *palette)
 {
-    if (QCoreApplication::closingDown())
+    if (QCoreApplication::closingDown() || DQMLGlobalObjectPrivate::g_appAboutToQuit)
         return;
     Q_ASSERT(!name.isEmpty());
     QColor color;
