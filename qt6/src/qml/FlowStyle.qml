@@ -7,7 +7,7 @@ import org.deepin.dtk 1.0 as D
 
 QtObject {
     property QtObject control: QtObject {
-        property int radius: 8
+        property int radius: 6
         property int spacing: 6
         property int padding: 6
         property int borderWidth: 1
@@ -185,6 +185,10 @@ QtObject {
 
         property D.Palette text: D.Palette {
             normal {
+                common: Qt.rgba(0, 0, 0, 0.7)
+                crystal: Qt.rgba(0, 0, 0, 0.7)
+            }
+            hovered {
                 common: Qt.rgba(0, 0, 0, 1)
                 crystal: Qt.rgba(0, 0, 0, 1)
             }
