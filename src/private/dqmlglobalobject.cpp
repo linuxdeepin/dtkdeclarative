@@ -128,9 +128,13 @@ DColor DColor::opacity(qint8 floatValue) const
     return newColor;
 }
 
+bool DQMLGlobalObjectPrivate::g_appAboutToQuit = false;
 DQMLGlobalObjectPrivate::DQMLGlobalObjectPrivate(DQMLGlobalObject *qq)
     : DTK_CORE_NAMESPACE::DObjectPrivate(qq)
 {
+    QObject::connect(qApp, &QCoreApplication::aboutToQuit, [](){
+        g_appAboutToQuit = true;
+    });
 }
 
 void DQMLGlobalObjectPrivate::ensurePalette()
