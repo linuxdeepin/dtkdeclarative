@@ -43,6 +43,28 @@ Item {
         invert: true
     }
 
+    Rectangle {
+        id: sourceItem1
+        x: 300
+        y: 50
+        width: 200
+        height: 200
+        color: "green"
+    }
+
+    DRadiusEffect {
+        x: 300
+        y: 300
+        width: 200
+        height: 200
+        sourceItem: sourceItem1
+        radius: 30
+        topRightRadius: 10
+        topLeftRadius: 20
+        bottomRightRadius: 30
+        bottomLeftRadius: 40
+    }
+
     BoxShadow {
         hollow: true
         anchors.fill: shadowedRect

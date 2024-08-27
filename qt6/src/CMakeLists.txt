@@ -61,6 +61,8 @@ qt_add_shaders(${LIB_NAME} "_shaders_ng"
         "shaders_ng/cornerscolorshader.frag"
         "shaders_ng/shadowmaterial.vert"
         "shaders_ng/shadowmaterial.frag"
+        "shaders_ng/radiussmoothtexture.vert"
+        "shaders_ng/radiussmoothtexture.frag"
 )
 
 include(${PROJECT_SOURCE_DIR}/qmlplugin/targets.cmake)
