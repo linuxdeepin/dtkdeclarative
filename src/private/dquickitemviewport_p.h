@@ -215,7 +215,7 @@ public:
             QQuickItemPrivate *d = QQuickItemPrivate::get(q_func());
             maskTexture = MaskTextureCache::instance()->getTexture(d->sceneGraphRenderContext(),
                                                                    qRound(radius * d->window->effectiveDevicePixelRatio()),
-                                                                   true);
+                                                                   d->antialiasing);
 
             markDirty(DirtyMaskTexture, false);
         }
