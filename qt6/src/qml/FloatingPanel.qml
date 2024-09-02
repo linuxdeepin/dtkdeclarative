@@ -49,6 +49,7 @@ Control {
                 radius: control.radius
                 hideSource: false
                 compositionMode: DTK.CompositionMode.Source
+                antialiasing: false
             }
         }
 
