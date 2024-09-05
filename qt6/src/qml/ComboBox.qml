@@ -147,9 +147,9 @@ T.ComboBox {
     }
 
     popup: Popup {
-        clip: true
         implicitWidth: control.width
         contentItem: ArrowListView {
+            clip: true
             maxVisibleItems: control.maxVisibleItems
             view.model: control.delegateModel
             view.currentIndex: control.highlightedIndex
