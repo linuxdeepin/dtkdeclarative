@@ -49,6 +49,9 @@ Control {
                 radius: control.radius
                 hideSource: false
                 compositionMode: DTK.CompositionMode.Source
+                // The rounded corners are mainly clipped by the itemViewport above, 
+                // and this is primarily used for rendering the interior pixels of the rectangle during the second pass. 
+                // If anti-aliasing is enabled, it may result in extra pixels around the rounded edges, causing the clipping to be incomplete.
                 antialiasing: false
             }
         }
