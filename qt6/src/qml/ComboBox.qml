@@ -29,7 +29,7 @@ T.ComboBox {
 
     delegate: MenuItem {
         useIndicatorPadding: true
-        width: parent.width
+        width: control.width
         text: control.textRole ? (Array.isArray(control.model) ? modelData[control.textRole] : model[control.textRole]) : modelData
         icon.name: (control.iconNameRole && model[control.iconNameRole] !== undefined) ? model[control.iconNameRole] : null
         highlighted: control.highlightedIndex === index
