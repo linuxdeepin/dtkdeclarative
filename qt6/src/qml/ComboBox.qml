@@ -18,6 +18,7 @@ T.ComboBox {
     property bool showAlert
     property int maxVisibleItems : DS.Style.comboBox.maxVisibleItems
     property D.Palette separatorColor: DS.Style.comboBox.edit.separator
+    property alias alignment: textField.horizontalAlignment
 
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
@@ -101,6 +102,7 @@ T.ComboBox {
         }
 
         T.TextField {
+            id: textField
             Layout.fillWidth: true
             Layout.fillHeight: true
             text: control.editable ? control.editText : control.displayText
@@ -116,6 +118,12 @@ T.ComboBox {
             selectionColor: control.palette.highlight
             selectedTextColor: control.palette.highlightedText
             verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: control.flat ? Text.AlignRight : Text.AlignLeft
+        }
+
+        Item {
+            implicitWidth: 0
+            Layout.fillHeight: true
         }
     }
 
