@@ -157,17 +157,22 @@ public:
         }
     }
 
+    bool isValidData(const Data *data) const {
+        return dataList.contains(data);
+    }
+
     inline QQuickWindow *owner() const {
         return static_cast<QQuickWindow*>(parent());
     }
 
     Data *resolve(Data *data, DataKeys&&... keys) {
-        if (data && get()->check(data->data, std::forward<DataKeys>(keys)...)
-            && dataList.contains(data)) {
-            return data;
+        if (isValidData(data)) {
+            if (data && get()->check(data->data, std::forward<DataKeys>(keys)...)) {
+                return data;
+            }
+            if (data)
+                release(data);
         }
-        if (data)
-            release(data);
 
         for (auto data : dataList) {
             if (get()->check(data->data, std::forward<DataKeys>(keys)...)) {
@@ -706,7 +711,7 @@ public:
 
         if (oldManager != manager) {
             sgTexture()->setTexture(nullptr);
-            if (oldManager && texture)
+            if (oldManager && oldManager->isValidData(texture))
                 oldManager->release(texture);
         }
 
