@@ -35,7 +35,7 @@ public:
     typedef void(*TextureChangedNotifer)(DBackdropNode *node, void *data);
     void setTextureChangedCallback(TextureChangedNotifer callback, void *data);
     inline void doNotifyTextureChanged() {
-        if (!m_renderCallback)
+        if (!m_renderCallback || !m_item)
             return;
         m_renderCallback(this, m_callbackData);
     }
