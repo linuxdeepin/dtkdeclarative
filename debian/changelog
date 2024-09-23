@@ -1,3 +1,9 @@
+dtkdeclarative (5.0.35) unstable; urgency=medium
+
+  * release 5.0.35
+
+ -- Mike Chen <chenke@deepin.org>  Mon, 23 Sep 2024 11:14:20 +0800
+
 dtkdeclarative (5.6.34) unstable; urgency=medium
 
   * feat: support to change window effects(Issue: https://github.com/linuxdeepin/developer-center/issues/10322)
