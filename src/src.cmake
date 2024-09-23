@@ -17,6 +17,7 @@ file(GLOB PUBLIC_HEADERS
     ${PROJECT_SOURCE_DIR}/src/dquickitemviewport.h
     ${PROJECT_SOURCE_DIR}/src/dquickwindow.h
     ${PROJECT_SOURCE_DIR}/src/dtkdeclarative_global.h
+    ${PROJECT_SOURCE_DIR}/src/dquickradiuseffect.h
 )
 
 # exclusive to dtk5
