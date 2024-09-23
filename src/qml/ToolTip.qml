@@ -27,7 +27,7 @@ T.ToolTip {
         verticalAlignment: Text.AlignVCenter
         text: control.text
         font: control.font
-        wrapMode: Text.WordWrap
+        wrapMode: Text.Wrap
         opacity: enabled ? 1.0 : 0.4
         color: control.palette.toolTipText
     }
