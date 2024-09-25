@@ -1,3 +1,9 @@
+dtkdeclarative (5.6.35) unstable; urgency=medium
+
+  * feat: Use normal wrap mode instead of WordWrap for ToolTip.Text(Bug: 271423)
+
+ -- Deepin Packages Builder <packages@deepin.org>  Wed, 25 Sep 2024 06:34:25 +0000
+
 dtkdeclarative (5.0.35) unstable; urgency=medium
 
   * release 5.0.35
