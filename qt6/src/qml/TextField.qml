@@ -30,22 +30,21 @@ T.TextField {
     verticalAlignment: TextInput.AlignVCenter
     onEffectiveHorizontalAlignmentChanged: placeholder.effectiveHorizontalAlignmentChanged()
 
-    Loader {
+    // use Loader will cause placeholdertext horizontalAlignment not work
+    // QQuickPlaceholderText will assume it's parent item is QQuickTextInput or QQuickTextInput
+    // see QQuickPlaceholderText::updateAlignment()
+    PlaceholderText {
         id: placeholder
-        active: !control.length && !control.preeditText && (!control.activeFocus || control.horizontalAlignment !== Qt.AlignHCenter)
         x: control.leftPadding
         y: control.topPadding
         width: control.width - (control.leftPadding + control.rightPadding)
         height: control.height - (control.topPadding + control.bottomPadding)
-        signal effectiveHorizontalAlignmentChanged
-
-        sourceComponent: PlaceholderText {
-            text: control.placeholderText
-            font: control.font
-            color: control.placeholderTextColor
-            verticalAlignment: control.verticalAlignment
-            renderType: control.renderType
-        }
+        text: control.placeholderText
+        visible: !control.length && !control.preeditText && (!control.activeFocus || control.horizontalAlignment !== Qt.AlignHCenter)
+        font: control.font
+        color: control.placeholderTextColor
+        verticalAlignment: control.verticalAlignment
+        renderType: control.renderType
     }
 
     background: EditPanel {
