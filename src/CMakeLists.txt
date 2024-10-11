@@ -13,6 +13,7 @@ qt5_add_translation(QM_FILES ${TS_FILES})
 add_library(${LIB_NAME} SHARED
     ${RESOURCES}
     ${QM_FILES}
+    ${PROJECT_SOURCE_DIR}/src/dtkdeclarative_shaders.qrc
 )
 
 dtk_extend_target(${LIB_NAME} EnableCov ${ENABLE_COV})

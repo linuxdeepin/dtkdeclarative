@@ -1,15 +1,6 @@
 <RCC>
     <qresource prefix="/dtk/declarative">
-        <file>shaders/quickitemviewport.frag</file>
-        <file>shaders/quickitemviewport-opaque.frag</file>
-        <file>shaders/quickitemviewport-opaque.vert</file>
         <file>qml/style/Style.qml</file>
-        <file>shaders/dualkawasedown.frag</file>
-        <file>shaders/dualkawasedown.vert</file>
-        <file>shaders/dualkawaseup.frag</file>
-        <file>shaders/dualkawaseup.vert</file>
-        <file>shaders/noise.vert</file>
-        <file>shaders/noise.frag</file>
         <file>shadow/0.0.0.0.0.4.0.9.png</file>
         <file>shadow/0.4.4.4.4.4.0.17.png</file>
         <file>shadow/0.5.5.5.5.10.1.31.png</file>
