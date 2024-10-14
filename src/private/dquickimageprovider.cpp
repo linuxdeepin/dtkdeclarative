@@ -46,8 +46,6 @@ static QImage requestImageFromQIcon(const QString &id, QSize *size, const QSize 
     } else {
         icon = DIconTheme::findQIcon(name);
     }
-    if (icon.isNull())
-        return invalidIcon(size, requestedSize);
 
     QIcon::Mode qMode = QIcon::Normal;
     QIcon::State qState = QIcon::Off;
@@ -64,6 +62,11 @@ static QImage requestImageFromQIcon(const QString &id, QSize *size, const QSize 
         devicePixelRatio = urlQuery.queryItemValue("devicePixelRatio").toDouble();
         if (qIsNull(devicePixelRatio))
             devicePixelRatio = 1.0;
+    }
+
+    if (icon.isNull()) {
+        QSize icon_size = requestedSize;
+        return invalidIcon(size, icon_size /= devicePixelRatio);
     }
 
     QSize icon_size = requestedSize;
