@@ -1,3 +1,11 @@
+dtkdeclarative (5.7.1) unstable; urgency=medium
+
+  * feat: Use normal wrap mode instead of WordWrap for ToolTip.Text(Bug: 271423)
+  * fix: the default icon is displayed incorrectly when zooming(Bug: 277471)
+  * fix: shaders conflicting in qt6
+
+ -- Deepin Packages Builder <packages@deepin.org>  Wed, 16 Oct 2024 03:30:45 +0000
+
 dtkdeclarative (5.0.35) unstable; urgency=medium
 
   * release 5.0.35
