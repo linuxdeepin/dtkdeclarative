@@ -35,6 +35,7 @@ public:
     QString deepinWebsiteName;
     QString deepinWebsiteLink;
     QString deepinDistributionOrgLogo;
+    static bool g_appAboutToQuit;
 
 private:
     D_DECLARE_PUBLIC(DQMLGlobalObject)
