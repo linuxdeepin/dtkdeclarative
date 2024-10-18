@@ -336,7 +336,8 @@ QQuickWindow *DQuickWindowAttached::window() const
 bool DQuickWindowAttached::isEnabled() const
 {
     D_DC(DQuickWindowAttached);
-    return d->handle && DPlatformHandle::isEnabledDXcb(window());
+    return d->handle && (DGuiApplicationHelper::testAttribute(DGuiApplicationHelper::IsDXcbPlatform) 
+        || DGuiApplicationHelper::testAttribute(DGuiApplicationHelper::IsTreelandPlatform));
 }
 
 /*!
