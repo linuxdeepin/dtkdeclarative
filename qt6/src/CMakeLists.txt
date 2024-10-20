@@ -25,6 +25,7 @@ dtk_extend_target(${PLUGIN_NAME} EnableCov ${ENABLE_COV})
 qt_add_translations(${LIB_NAME}
     TS_FILES ${TS_FILES}
     QM_FILES_OUTPUT_VARIABLE QM_FILES
+    IMMEDIATE_CALL
 )
 
 set_target_properties(${LIB_NAME} PROPERTIES

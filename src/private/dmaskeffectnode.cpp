@@ -35,7 +35,11 @@ protected:
 class OpaqueTextureMaterialShader : public QSGOpaqueTextureMaterialRhiShader
 {
 public:
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+    OpaqueTextureMaterialShader(int viewCount);
+#else
     OpaqueTextureMaterialShader();
+#endif
 
     bool updateUniformData(RenderState &state, QSGMaterial *newMaterial, QSGMaterial *oldMaterial)  override;
 
@@ -48,7 +52,11 @@ public:
 class TextureMaterialShader : public OpaqueTextureMaterialShader
 {
 public:
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+    TextureMaterialShader(int viewCount);
+#else
     TextureMaterialShader();
+#endif
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     void updateState(const RenderState &state, QSGMaterial *newEffect, QSGMaterial *oldEffect) override;
@@ -61,7 +69,12 @@ protected:
 #endif
 };
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+OpaqueTextureMaterialShader::OpaqueTextureMaterialShader(int viewCount)
+ : QSGOpaqueTextureMaterialRhiShader(viewCount)
+#else
 OpaqueTextureMaterialShader::OpaqueTextureMaterialShader()
+#endif
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #if QT_CONFIG(opengl)
@@ -236,8 +249,13 @@ bool OpaqueTextureMaterialShader::updateGraphicsPipelineState(RenderState &state
 }
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+TextureMaterialShader::TextureMaterialShader(int viewCount)
+    : OpaqueTextureMaterialShader(viewCount)
+#else
 TextureMaterialShader::TextureMaterialShader()
     : OpaqueTextureMaterialShader()
+#endif
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) // TODO qt6
 #if QT_CONFIG(opengl)
@@ -529,7 +547,11 @@ QSGMaterialShader *TextureMaterial::createShader() const
 QSGMaterialShader *TextureMaterial::createShader(QSGRendererInterface::RenderMode renderMode) const
 {
     Q_UNUSED(renderMode)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+    return new TextureMaterialShader(viewCount());
+#else
     return new TextureMaterialShader;
+#endif
 }
 #endif
 
@@ -553,7 +575,11 @@ QSGMaterialShader *OpaqueTextureMaterial::createShader() const
 QSGMaterialShader *OpaqueTextureMaterial::createShader(QSGRendererInterface::RenderMode renderMode) const
 {
     Q_UNUSED(renderMode)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+    return new OpaqueTextureMaterialShader(viewCount());
+#else
     return new OpaqueTextureMaterialShader;
+#endif
 }
 #endif
 
