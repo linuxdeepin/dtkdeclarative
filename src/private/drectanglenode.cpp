@@ -72,7 +72,12 @@ void CornerColorShader::initialize()
     m_idQtOpacity = program->uniformLocation("qt_Opacity");
 }
 #else
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+CornerColorShader::CornerColorShader(int viewCount)
+    : QSGOpaqueTextureMaterialRhiShader(viewCount)
+#else
 CornerColorShader::CornerColorShader()
+#endif
 {
     setShaderFileName(QSGMaterialShader::VertexStage, QStringLiteral(":/dtk/declarative/shaders_ng/cornerscolorshader.vert.qsb"));
     setShaderFileName(QSGMaterialShader::FragmentStage, QStringLiteral(":/dtk/declarative/shaders_ng/cornerscolorshader.frag.qsb"));
@@ -128,7 +133,11 @@ QSGMaterialShader *CornerColorMaterial::createShader() const
 QSGMaterialShader *CornerColorMaterial::createShader(QSGRendererInterface::RenderMode renderMode) const
 {
     Q_UNUSED(renderMode)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+    return new CornerColorShader(viewCount());
+#else
     return new CornerColorShader;
+#endif
 }
 #endif
 
