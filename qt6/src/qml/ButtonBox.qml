@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2024 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -25,27 +25,51 @@ Control {
         children: control.buttons
     }
 
+    Loader {
+        active: D.DTK.hasAnimation
+        sourceComponent: P.ButtonPanel {
+            id: backgroundPanel
+            visible: btnGroup.checkedButton
+            implicitWidth: visible ? btnGroup.checkedButton.width : 0
+            implicitHeight: visible ? btnGroup.checkedButton.height : 0
+            button: control
+            outsideBorderColor: null
+            color1: D.Palette {
+                normal {
+                    common: Qt.rgba(0, 0, 0, 0.2)
+                }
+            }
+            color2: color1
 
-    ParallelAnimation {
-        running:  btnGroup.checkedButton && (btnGroup.checkedButton.x !== backgroundPanel.x || btnGroup.checkedButton.y !== backgroundPanel.y)
-        NumberAnimation { target: backgroundPanel; property: "x"; to: btnGroup.checkedButton ? btnGroup.checkedButton.x : backgroundPanel.x; duration: 200 }
-        NumberAnimation { target: backgroundPanel; property: "y"; to: btnGroup.checkedButton ? btnGroup.checkedButton.y : backgroundPanel.y; duration: 200 }
-        NumberAnimation { target: backgroundPanel; property: "width"; to: btnGroup.checkedButton ? btnGroup.checkedButton.width : backgroundPanel.width; duration: 200 }
-        NumberAnimation { target: backgroundPanel; property: "height"; to: btnGroup.checkedButton ? btnGroup.checkedButton.height : backgroundPanel.height; duration: 200 }
-    }
-
-    P.ButtonPanel {
-        id: backgroundPanel
-        visible: btnGroup.checkedButton
-        implicitWidth: visible ? btnGroup.checkedButton.width : 0
-        implicitHeight: visible ? btnGroup.checkedButton.height : 0
-        button: control
-        outsideBorderColor: null
-        color1: D.Palette {
-            normal {
-                common: Qt.rgba(0, 0, 0, 0.2)
+            ParallelAnimation {
+                running: btnGroup.checkedButton
+                         && (btnGroup.checkedButton.x !== backgroundPanel.x
+                             || btnGroup.checkedButton.y !== backgroundPanel.y)
+                NumberAnimation {
+                    target: backgroundPanel
+                    property: "x"
+                    to: btnGroup.checkedButton ? btnGroup.checkedButton.x : backgroundPanel.x
+                    duration: 200
+                }
+                NumberAnimation {
+                    target: backgroundPanel
+                    property: "y"
+                    to: btnGroup.checkedButton ? btnGroup.checkedButton.y : backgroundPanel.y
+                    duration: 200
+                }
+                NumberAnimation {
+                    target: backgroundPanel
+                    property: "width"
+                    to: btnGroup.checkedButton ? btnGroup.checkedButton.width : backgroundPanel.width
+                    duration: 200
+                }
+                NumberAnimation {
+                    target: backgroundPanel
+                    property: "height"
+                    to: btnGroup.checkedButton ? btnGroup.checkedButton.height : backgroundPanel.height
+                    duration: 200
+                }
             }
         }
-        color2: color1
     }
 }
