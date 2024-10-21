@@ -72,6 +72,15 @@ void DQuickDciIconImageItemPrivate::maybeUpdateUrl()
         return DQuickIconImagePrivate::maybeUpdateUrl();
     }
 
+    if (!DQMLGlobalObject::hasAnimation()) {
+        QUrl url;
+        url.setScheme(QLatin1String("image"));
+        url.setHost(QLatin1String("dtk.dci.icon"));
+        url.setQuery(getUrlQuery());
+        q->setSource(url);
+        return;
+    }
+
     QString iconPath = findDciIconPath(parentPriv->imageItem->name(), appIconThemeName());
     if (iconPath.isEmpty())
         return DQuickIconImagePrivate::maybeUpdateUrl();
