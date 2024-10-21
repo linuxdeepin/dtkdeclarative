@@ -121,6 +121,7 @@ class DQMLGlobalObject : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(bool hasBlurWindow READ hasBlurWindow NOTIFY hasBlurWindowChanged)
     Q_PROPERTY(bool hasComposite READ hasComposite NOTIFY hasCompositeChanged)
     Q_PROPERTY(bool hasNoTitlebar READ hasNoTitlebar NOTIFY hasNoTitlebarChanged)
+    Q_PROPERTY(bool hasAnimation READ hasAnimation NOTIFY hasAnimationChanged)
     Q_PROPERTY(bool isSoftwareRender READ isSoftwareRender FINAL CONSTANT)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::WMName windowManagerName READ windowManagerName CONSTANT)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType themeType READ themeType NOTIFY themeTypeChanged)
@@ -192,6 +193,7 @@ public:
     bool hasBlurWindow() const;
     bool hasComposite() const;
     bool hasNoTitlebar() const;
+    static bool hasAnimation();
     static bool isSoftwareRender();
 
     DWindowManagerHelper::WMName windowManagerName() const;
@@ -254,13 +256,16 @@ public:
     static QSGNode* &QSGNode_parent(QSGNode *node);
 #endif
 
+
 Q_SIGNALS:
     void hasBlurWindowChanged();
     void hasCompositeChanged();
     void hasNoTitlebarChanged();
+    void hasAnimationChanged();
     void paletteChanged();
     void inactivePaletteChanged();
     void themeTypeChanged(DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType themeType);
+
 
 private:
     D_DECLARE_PRIVATE(DQMLGlobalObject)
