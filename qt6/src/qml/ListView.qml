@@ -47,7 +47,7 @@ ListView {
     DragItemsImage {
         id: dragItem
         items: checkedItems
-        visible: Drag.active
+        visible: Drag.active && D.DTK.hasAnimation
         // Drag.mimeData: {"text/plain": ""}
 
         onAboutToGrabToImage: function(item) {
@@ -157,7 +157,7 @@ ListView {
 
         Loader {
             anchors.fill: parent
-            active: hoveredItem
+            active: hoveredItem && D.DTK.hasAnimation
             sourceComponent: P.ButtonPanel {
                 button: hoveredItem
                 enableAnimation: false // avoid hover animation
