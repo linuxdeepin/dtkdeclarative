@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2024 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -10,7 +10,12 @@ import org.deepin.dtk.private 1.0 as P
 
 T.ToolButton {
     id: control
-    property D.Palette textColor: checked ? DS.Style.highlightedButton.text : (highlighted ? DS.Style.highlightedButton.text : DS.Style.button.text)
+    property D.Palette textColor: {
+        if (D.DTK.hasAnimation)
+            return checked ? DS.Style.highlightedButton.text : (highlighted ? DS.Style.highlightedButton.text : DS.Style.button.text)
+
+        return checked ? DS.Style.checkedButton.text : (highlighted ? DS.Style.highlightedButton.text : DS.Style.button.text)
+    }
 
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
@@ -69,7 +74,7 @@ T.ToolButton {
     states: [
         State {
             name: "hovered"
-            when: control.hovered && !control.checked
+            when: control.hovered && !control.checked && D.DTK.hasAnimation
             PropertyChanges {
                 target: contentItem
                 scale : 1.1
@@ -82,7 +87,7 @@ T.ToolButton {
         },
         State {
             name: "checked"
-            when: control.checked
+            when: control.checked && D.DTK.hasAnimation
             PropertyChanges {
                 target: contentItem
                 scale : 1.0
@@ -94,18 +99,32 @@ T.ToolButton {
         NumberAnimation { properties: "scale"; easing.type: Easing.InOutQuad }
     }
 
+    onHoveredChanged: {
+        if (!D.DTK.hasAnimation)
+            return
+
+        buttonPanel.visible = control.hovered && !control.checked
+    }
+
     background: P.ButtonPanel {
-        visible: control.state === "hovered"
-        scale : 0.9
-        implicitWidth: DS.Style.toolButton.width
-        implicitHeight: DS.Style.toolButton.height
-        button: control
-        outsideBorderColor: null
-        color1: D.Palette {
+        id: buttonPanel
+        property var customColor: D.Palette {
             normal {
                 common: Qt.rgba(0, 0, 0, 0.1)
             }
         }
-        color2 : color1
+        implicitWidth: DS.Style.toolButton.width
+        implicitHeight: DS.Style.toolButton.height
+        button: control
+        outsideBorderColor: null
+
+        Component.onCompleted: {
+            if (!D.DTK.hasAnimation)
+                return
+
+            buttonPanel.scale = 0.9
+            buttonPanel.color1 = buttonPanel.customColor
+            buttonPanel.color2 = buttonPanel.customColor
+        }
     }
 }
