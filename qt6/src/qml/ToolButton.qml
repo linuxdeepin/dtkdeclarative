@@ -73,6 +73,15 @@ T.ToolButton {
 
     states: [
         State {
+            name: "normal"
+            when: !control.hovered && !control.checked && D.DTK.hasAnimation
+            PropertyChanges {
+                target: background
+                scale : 0.9
+            }
+
+        },
+        State {
             name: "hovered"
             when: control.hovered && !control.checked && D.DTK.hasAnimation
             PropertyChanges {
@@ -99,32 +108,28 @@ T.ToolButton {
         NumberAnimation { properties: "scale"; easing.type: Easing.InOutQuad }
     }
 
-    onHoveredChanged: {
-        if (!D.DTK.hasAnimation)
-            return
-
-        buttonPanel.visible = control.hovered && !control.checked
-    }
-
     background: P.ButtonPanel {
         id: buttonPanel
-        property var customColor: D.Palette {
-            normal {
-                common: Qt.rgba(0, 0, 0, 0.1)
-            }
-        }
         implicitWidth: DS.Style.toolButton.width
         implicitHeight: DS.Style.toolButton.height
         button: control
         outsideBorderColor: null
 
-        Component.onCompleted: {
-            if (!D.DTK.hasAnimation)
-                return
-
-            buttonPanel.scale = 0.9
-            buttonPanel.color1 = buttonPanel.customColor
-            buttonPanel.color2 = buttonPanel.customColor
+        Binding on color1 {
+            when: D.DTK.hasAnimation
+            value: D.Palette {
+                normal {
+                    common: Qt.rgba(0, 0, 0, 0.1)
+                }
+            }
+        }
+        Binding on color2 {
+            when: D.DTK.hasAnimation
+            value: buttonPanel.color1
+        }
+        Binding on visible {
+            when: D.DTK.hasAnimation
+            value: control.hovered && !control.checked
         }
     }
 }
