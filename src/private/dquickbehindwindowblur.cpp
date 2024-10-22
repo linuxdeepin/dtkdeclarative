@@ -32,7 +32,7 @@ protected:
     }
 
     bool m_isRestore = false;
-    DQuickBehindWindowBlur *m_item = nullptr;
+    QPointer<DQuickBehindWindowBlur> m_item = nullptr;
     QMatrix4x4 m_lastMatrix;
     QRegion m_lastClip;
     qreal m_lastRadius = -1;
@@ -47,7 +47,10 @@ DSGBlendNode::DSGBlendNode(bool restore)
 
 void DSGBlendNode::render(const QSGRenderNode::RenderState *state)
 {
-    Q_ASSERT(m_item);
+    // m_item may become invalid when the referred blur behind item get destroyed by a Loader.
+    // Give up rendering in this case.
+    if (!m_item)
+        return;
 
     if (m_isRestore)
         return;
