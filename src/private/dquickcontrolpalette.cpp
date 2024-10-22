@@ -2,6 +2,10 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
+#define protected public
+#include <private/qcoreapplication_p.h>
+#undef protected
+
 #include "dquickcontrolpalette_p.h"
 #include "dquickglobal_p.h"
 
@@ -937,7 +941,9 @@ void DQuickControlColorSelector::notifyColorPropertyChanged()
 
 void DQuickControlColorSelector::updatePropertyFromName(const QByteArray &name, const DQuickControlPalette *palette)
 {
-    if (QCoreApplication::closingDown())
+    auto appriv = static_cast<QCoreApplicationPrivate*>(qApp->QCoreApplication::d_ptr.data());
+    Q_ASSERT(appriv);
+    if (QCoreApplication::closingDown() || !appriv || appriv->aboutToQuitEmitted)
         return;
     Q_ASSERT(!name.isEmpty());
     QColor color;
