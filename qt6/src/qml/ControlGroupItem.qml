@@ -5,7 +5,7 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.11
 import QtQml.Models 2.11
-import org.deepin.dtk 1.0
+import org.deepin.dtk 1.0 as D
 
 RowLayout {
     id: root
@@ -21,12 +21,14 @@ RowLayout {
     Layout.fillHeight: true
 
     Behavior on y {
+        enabled : D.DTK.hasAnimation
         NumberAnimation {
             duration: parent.parent.interval
             easing.type: Easing.Linear
         }
     }
     Behavior on opacity {
+        enabled : D.DTK.hasAnimation
         NumberAnimation {
             duration: parent.parent.interval
             easing.type: Easing.Linear

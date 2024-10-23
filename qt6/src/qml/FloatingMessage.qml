@@ -10,6 +10,15 @@ import org.deepin.dtk.style 1.0 as DS
 D.FloatingMessageContainer {
     id: control
 
+    function closeMessage() {
+        if (D.DTK.hasAnimation) {
+            floatingPanel.state = "small"
+        } else {
+            floatingPanel.animationFinished = true
+            floatingPanel.state = "normal"
+        }
+    }
+
     property Component contentItem: Label {
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignLeft
@@ -23,10 +32,10 @@ D.FloatingMessageContainer {
             width: DS.Style.floatingMessage.closeButtonSize
             height: DS.Style.floatingMessage.closeButtonSize
         }
-        onClicked: floatingPanel.state = "small"
+        onClicked: closeMessage()
     }
 
-    onDelayClose: floatingPanel.state = "small"
+    onDelayClose: closeMessage()
     duration: 4000
     panel: FloatingPanel {
         id: floatingPanel
@@ -37,7 +46,7 @@ D.FloatingMessageContainer {
         topPadding: 0
         bottomPadding: 0
         opacity: 0.0
-        state: "small"
+        state: D.DTK.hasAnimation ? "small" : "normal"
         onAnimationFinishedChanged: (finished) => {
             if (floatingPanel.animationFinished === true) {
                 D.DTK.closeMessage(control)
@@ -95,12 +104,12 @@ D.FloatingMessageContainer {
             }
 
             ParallelAnimation {
-                running: closeButton.item ? closeButton.item.hovered : false
+                running: D.DTK.hasAnimation ? (closeButton.item ? closeButton.item.hovered : false) : false
                 NumberAnimation { target: closeButton; property: "scale"; to: 1.25; duration: 300; easing.type: Easing.InOutQuart }
                 NumberAnimation { target: closeButton; property: "rotation"; to: 90; duration: 300; easing.type: Easing.InOutQuart }
             }
             ParallelAnimation {
-                running: closeButton.item ? !closeButton.item.hovered : false
+                running: D.DTK.hasAnimation ? (closeButton.item ? !closeButton.item.hovered : false) : false
                 NumberAnimation { target: closeButton; property: "scale"; to: 1; duration: 300; easing.type: Easing.InOutQuart }
                 NumberAnimation { target: closeButton; property: "rotation"; to: 0; duration: 300; easing.type: Easing.InOutQuart }
             }

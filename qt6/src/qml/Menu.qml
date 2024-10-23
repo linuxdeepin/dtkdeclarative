@@ -89,7 +89,7 @@ T.Menu {
                     anchors.right: parent ? parent.right : undefined
                     anchors.leftMargin: 6
                     anchors.rightMargin: 6
-                    scale: 0.9
+                    scale: D.DTK.hasAnimation ? 0.9 : 1.0
                     property D.Palette backgroundColor: DS.Style.highlightPanel.background
                     property D.Palette submenuOpenedItemHighlightColor: DS.Style.menu.submenuOpenedItemHighlight
                     property D.Palette itemHighlightShadowColor: DS.Style.menu.itemHighlightShadow
