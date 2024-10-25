@@ -218,7 +218,7 @@ bool DQMLGlobalObject::hasNoTitlebar() const
 
 bool DQMLGlobalObject::hasAnimation()
 {
-    return !qEnvironmentVariableIsSet("D_DTK_DISABLE_ANIMATIONS");
+    return DGuiApplicationHelper::testAttribute(DGuiApplicationHelper::HasAnimations);
 }
 
 bool DQMLGlobalObject::isSoftwareRender()
