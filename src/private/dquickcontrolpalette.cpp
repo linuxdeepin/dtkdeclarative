@@ -470,6 +470,7 @@ void DQuickControlColorSelector::setControl(QQuickItem *newControl)
         connect(m_control, &QQuickItem::windowChanged, this, &DQuickControlColorSelector::updateControlWindow);
         updateControlWindow();
         updateControlTheme();
+        updateControlState();
 
         if (m_control != parent()) {
             auto csForControl = qobject_cast<DQuickControlColorSelector *>(

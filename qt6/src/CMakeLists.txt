@@ -48,7 +48,7 @@ qt_add_resources(RESOURCES
 )
 target_sources(${LIB_NAME} PRIVATE ${RESOURCES})
 
-qt_add_shaders(${LIB_NAME} "_shaders_ng"
+qt_add_shaders(${LIB_NAME} "_dtkdeclarative_shaders_ng"
     BATCHABLE
     PRECOMPILE
     PREFIX
