@@ -42,7 +42,7 @@ T.Menu {
     }
 
     contentItem: Control {
-        topPadding: 6 // TODO how to clip radius
+        topPadding: 15 // TODO how to clip radius
         bottomPadding: topPadding
         leftPadding: 0
         rightPadding: leftPadding
@@ -87,8 +87,8 @@ T.Menu {
                     id: highlightRect
                     anchors.left: parent ? parent.left : undefined
                     anchors.right: parent ? parent.right : undefined
-                    anchors.leftMargin: 6
-                    anchors.rightMargin: 6
+                    anchors.leftMargin: 0
+                    anchors.rightMargin: 0
                     scale: D.DTK.hasAnimation ? 0.9 : 1.0
                     property D.Palette backgroundColor: DS.Style.highlightPanel.background
                     property D.Palette submenuOpenedItemHighlightColor: DS.Style.menu.submenuOpenedItemHighlight
@@ -101,7 +101,7 @@ T.Menu {
                             return D.ColorSelector.backgroundColor
                         }
                     }
-                    radius: 6
+                    radius: 1
                     Component.onCompleted: {
                         scale = 1.0
                     }
@@ -138,6 +138,7 @@ T.Menu {
             blurMultiplier: 8.0
             backgroundColor: control.backgroundColor
             backgroundNoBlurColor: control.backgroundNoBlurColor
+            outsideBorderColor: null
         }
     }
 

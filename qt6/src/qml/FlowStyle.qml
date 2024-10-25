@@ -643,13 +643,13 @@ QtObject {
             property int height: 34
             property size iconSize: Qt.size(14, 14)
             property int count: 0
-            property int contentPadding: 36
+            property int contentPadding: 30
             property int indicatorMargin: 10
         }
 
         property QtObject separator: QtObject {
-            property int lineTopPadding : 6
-            property int lineBottomPadding : 4
+            property int lineTopPadding : 0
+            property int lineBottomPadding : 0
             property int lineHeight : 2
             property int topPadding: 11
             property int bottomPadding: 2
@@ -660,8 +660,8 @@ QtObject {
         }
 
         property D.Palette background: D.Palette {
-            normal: behindWindowBlur.lightColor
-            normalDark: behindWindowBlur.darkColor
+            normal: Qt.rgba(235 / 255., 235 / 255., 235 / 255., 0.6)
+            normalDark: ("#80000000")
         }
 
         property D.Palette backgroundNoBlur: D.Palette {
@@ -686,7 +686,7 @@ QtObject {
 
         property D.Palette itemText: D.Palette {
             normal: ("black")
-            normalDark: Qt.rgba(1, 1, 1, 0.6)
+            normalDark: ("white")
         }
 
         property D.Palette separatorText: D.Palette {
@@ -814,7 +814,7 @@ QtObject {
 
         property D.Palette insideBorder: D.Palette {
             normal: Qt.rgba(0, 0, 0, 0.05)
-            normalDark: Qt.rgba(1, 1, 1, 0.05)
+            normalDark: Qt.rgba(1, 1, 1, 0.1)
         }
     }
 
