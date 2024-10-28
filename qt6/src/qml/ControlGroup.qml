@@ -27,7 +27,7 @@ ColumnLayout {
         rightInset: inset
         topInset: inset
         bottomInset: inset
-        state: "normal"
+        state: D.DTK.hasAnimation ? "normal" : "hovered"
         states: [
             State {
                 name: "normal"
@@ -108,6 +108,7 @@ ColumnLayout {
                 sourceSize: Qt.size(36, 36)
 
                 Behavior on rotation {
+                    enabled : D.DTK.hasAnimation
                     NumberAnimation {
                         duration: root.interval
                         easing.type: Easing.Linear
@@ -120,10 +121,10 @@ ColumnLayout {
             anchors.fill: parent
             hoverEnabled: true
             onClicked: root.isExpanded = !root.isExpanded
-            onPressed: title.state = "pressed"
+            onPressed: title.state = D.DTK.hasAnimation ? "pressed" : "hovered"
             onReleased: title.state = "hovered"
             onEntered: title.state = "hovered"
-            onExited: title.state = "normal"
+            onExited: title.state = D.DTK.hasAnimation ? "normal" : "hovered"
         }
         background: Item {
             Loader {

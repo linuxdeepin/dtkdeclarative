@@ -13,6 +13,7 @@ T.ItemDelegate {
     id: control
     property bool indicatorVisible
     property bool backgroundVisible: true
+    property bool normalBackgroundVisible: true
     property bool cascadeSelected
     property bool contentFlow
     property Component content
@@ -42,7 +43,10 @@ T.ItemDelegate {
     spacing: DS.Style.control.spacing
     checkable: true
     autoExclusive: true
-    palette.windowText: checked && !control.cascadeSelected && control.backgroundVisible && !dragActive? D.ColorSelector.checkedTextColor : undefined
+    palette.windowText: {
+        let undraged = D.DTK.hasAnimation ? control.backgroundVisible && !dragActive : true
+        return checked && !control.cascadeSelected && undraged ? D.ColorSelector.checkedTextColor : undefined
+    }
 
     D.DciIcon.mode: D.ColorSelector.controlState
     D.DciIcon.theme: D.ColorSelector.controlTheme
@@ -112,7 +116,7 @@ T.ItemDelegate {
 
         Loader {
             anchors.fill: parent
-            active: !control.ListView.view && !checked && control.backgroundVisible
+            active: !checked && control.normalBackgroundVisible
             sourceComponent: D.RoundRectangle {
                 color: DS.Style.itemDelegate.normalColor
                 radius: DS.Style.control.radius
@@ -154,7 +158,7 @@ T.ItemDelegate {
     }
 
     onHoveredChanged: {
-        if (checked || control.cascadeSelected || !backgroundVisible || dragActive)
+        if (checked || control.cascadeSelected || !backgroundVisible || dragActive || !D.DTK.hasAnimation)
             return
 
         if (ListView.view)
@@ -162,7 +166,7 @@ T.ItemDelegate {
     }
 
     onCheckedChanged: {
-        if (ListView.view)
+        if (ListView.view && D.DTK.hasAnimation)
             ListView.view.updateCheckedItems()
     }
 }

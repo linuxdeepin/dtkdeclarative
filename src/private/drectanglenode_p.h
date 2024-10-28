@@ -37,7 +37,11 @@ private:
 class CornerColorShader : public QSGOpaqueTextureMaterialRhiShader
 {
 public:
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+    CornerColorShader(int viewCount);
+#else
     CornerColorShader();
+#endif
     bool updateUniformData(RenderState &state, QSGMaterial *newMaterial, QSGMaterial *oldMaterial);
 };
 #endif
