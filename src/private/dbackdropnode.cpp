@@ -543,11 +543,11 @@ public:
             QRhiTextureRenderTargetDescription rtDesc;
             const auto flags = QRhiTextureRenderTarget::PreserveColorContents;
             m_rtProxy = static_cast<QGles2TextureRenderTarget*>(rhi->newTextureRenderTarget(rtDesc, flags));
-            m_rtProxy->d.pixelSize = pixelSize;
             m_rtProxy->framebuffer = fbo;
         }
 
         Q_ASSERT(m_rtProxy->framebuffer == fbo);
+        m_rtProxy->d.pixelSize = pixelSize;
         return m_rtProxy;
     }
 
