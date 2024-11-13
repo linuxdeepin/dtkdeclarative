@@ -1,3 +1,10 @@
+dtkdeclarative (5.7.2) unstable; urgency=medium
+
+  * fix: StyledBehindWindowBlur crash in render thread
+  * fix: Adjust menu styles
+
+ -- Deepin Packages Builder <packages@deepin.org>  Wed, 13 Nov 2024 01:53:26 +0000
+
 dtkdeclarative (5.7.1) unstable; urgency=medium
 
   * feat: Use normal wrap mode instead of WordWrap for ToolTip.Text(Bug: 271423)
