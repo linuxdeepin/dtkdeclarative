@@ -77,14 +77,14 @@ T.TextField {
         {
             text: qsTr("Copy")
             onTriggered: control.copy()
-            enabled: control.selectedText.length
+            enabled: control.selectedText.length && control.echoMode === TextInput.Normal
         }
 
         MenuItem
         {
             text: qsTr("Cut")
             onTriggered: control.cut()
-            enabled: control.selectedText.length
+            enabled: !control.readonly && control.selectedText.length && control.echoMode === TextInput.Normal
         }
 
         MenuItem
