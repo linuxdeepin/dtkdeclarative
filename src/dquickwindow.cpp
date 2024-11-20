@@ -64,7 +64,7 @@ DQuickWindowAttachedPrivate::DQuickWindowAttachedPrivate(QWindow *window, DQuick
     : DObjectPrivate(qq)
     , window(window)
     , wmWindowTypes(DWindowManagerHelper::UnknowWindowType)
-    , appLoaderItem(new DQuickAppLoaderItem())
+    , appLoaderItem(nullptr)
 {
 }
 
@@ -482,6 +482,10 @@ QQmlComponent *DQuickWindowAttached::loadingOverlay() const
 DQuickAppLoaderItem *DQuickWindowAttached::appLoader() const
 {
     D_DC(DQuickWindowAttached);
+    if (!d->appLoaderItem) {
+        const_cast<DQuickWindowAttachedPrivate *>(d)->appLoaderItem =
+                new DQuickAppLoaderItem(window()->contentItem());
+    }
     return d->appLoaderItem;
 }
 
@@ -494,7 +498,9 @@ void DQuickWindowAttached::setAppLoader(DQuickAppLoaderItem *item)
     // AppLoaderItem 会在窗口加载完毕后进行创建，因此
     // 在窗口创建初期，AppLoaderItem 需要指定一个默认
     // 值，防止 Qt 在运行时出现警告和报错
-    d->appLoaderItem->deleteLater();
+    if (d->appLoaderItem) {
+        d->appLoaderItem->deleteLater();
+    }
     d->appLoaderItem = item;
     Q_EMIT appLoaderChanged();
 }

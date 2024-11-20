@@ -191,9 +191,11 @@ public:
 
     }
 
-    ~CustomMetaObject()
+    ~CustomMetaObject() override
     {
-
+        if (auto item = type()) {
+            item->release();
+        }
     }
 
     inline DQuickControlColorSelector *owner() const {
