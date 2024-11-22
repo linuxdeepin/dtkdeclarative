@@ -18,6 +18,7 @@
 #include <private/qqmlopenmetaobject_p.h>
 #include <private/qqmlglobal_p.h>
 #include <private/qmetaobjectbuilder_p.h>
+#include <private/qcoreapplication_p.h>
 
 DGUI_USE_NAMESPACE
 DQUICK_BEGIN_NAMESPACE
@@ -938,7 +939,9 @@ void DQuickControlColorSelector::notifyColorPropertyChanged()
 
 void DQuickControlColorSelector::updatePropertyFromName(const QByteArray &name, const DQuickControlPalette *palette)
 {
-    if (QCoreApplication::closingDown())
+    auto appriv = dynamic_cast<QCoreApplicationPrivate *>(QObjectPrivate::get(qApp));
+    Q_ASSERT(appriv);
+    if (QCoreApplication::closingDown() || !appriv || appriv->aboutToQuitEmitted)
         return;
     Q_ASSERT(!name.isEmpty());
     QColor color;
