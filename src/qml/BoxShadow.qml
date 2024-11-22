@@ -26,7 +26,7 @@ Item {
     readonly property real __minImageSize: 2 * __borderBase
     readonly property real __boxSize: __minImageSize - 2 * shadowBlur - 2 * __spread + 1
 
-    BorderImage {
+    D.DBorderImage {
         id: image
 
         anchors {
