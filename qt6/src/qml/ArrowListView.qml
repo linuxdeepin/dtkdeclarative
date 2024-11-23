@@ -49,6 +49,20 @@ FocusScope {
             }
             interactive: Window.window ? (contentHeight > Window.window.height || model.count > maxVisibleItems) : false
             ScrollIndicator.vertical: ScrollIndicator { }
+            highlight: Rectangle {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.leftMargin: 6
+                anchors.rightMargin: 6
+                anchors.topMargin: 6
+                anchors.bottomMargin: 6
+                property D.Palette backgroundColor: DS.Style.highlightPanel.background
+                color: D.ColorSelector.backgroundColor
+                radius: 6 // TODO can't display background when using dtk's InWindowBlur.
+            }
+            highlightFollowsCurrentItem: true
+            highlightMoveDuration: -1
+            highlightMoveVelocity: 400
         }
 
         P.ArrowListViewButton {
