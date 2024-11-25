@@ -101,7 +101,7 @@ endif()
 if(EnableQt6)
     qt_add_qml_module(${PLUGIN_NAME}
         URI "Chameleon"
-        VERSION "${PROJECT_VERSION}"
+        VERSION "1.0"
         CLASS_NAME QtQuickControls2ChameleonStylePlugin
         PLUGIN_TARGET ${PLUGIN_NAME}
         OUTPUT_DIRECTORY
