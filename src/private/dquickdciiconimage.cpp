@@ -178,6 +178,9 @@ DQuickDciIconImagePrivate::DQuickDciIconImagePrivate(DQuickDciIconImage *qq)
     QObject::connect(imageItem, &DQuickIconImage::nameChanged, qq, &DQuickDciIconImage::nameChanged);
     QObject::connect(imageItem, &DQuickIconImage::asynchronousChanged, qq, &DQuickDciIconImage::asynchronousChanged);
     QObject::connect(imageItem, &DQuickIconImage::cacheChanged, qq, &DQuickDciIconImage::cacheChanged);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+    QObject::connect(imageItem, &DQuickIconImage::retainWhileLoadingChanged, qq, &DQuickDciIconImage::retainWhileLoadingChanged);
+#endif
 }
 
 void DQuickDciIconImagePrivate::layout()
@@ -332,6 +335,20 @@ void DQuickDciIconImage::setAsynchronous(bool async)
     D_D(DQuickDciIconImage);
     d->imageItem->setAsynchronous(async);
 }
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+bool DQuickDciIconImage::retainWhileLoading() const
+{
+    D_DC(DQuickDciIconImage);
+    return d->imageItem->retainWhileLoading();
+}
+
+void DQuickDciIconImage::setRetainWhileLoading(bool retain)
+{
+    D_D(DQuickDciIconImage);
+    d->imageItem->setRetainWhileLoading(retain);
+}
+#endif
 
 bool DQuickDciIconImage::cache() const
 {
