@@ -14,9 +14,7 @@ DQUICK_BEGIN_NAMESPACE
 class DQuickBorderImage : public QQuickBorderImage
 {
     Q_OBJECT
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QML_NAMED_ELEMENT(DBorderImage)
-#endif
 public:
     explicit DQuickBorderImage(QQuickItem *parent=nullptr);
 
