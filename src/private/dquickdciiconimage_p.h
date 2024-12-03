@@ -32,6 +32,9 @@ class DQuickDciIconImage : public QQuickItem, DCORE_NAMESPACE::DObject
     Q_PROPERTY(bool fallbackToQIcon READ fallbackToQIcon WRITE setFallbackToQIcon NOTIFY fallbackToQIconChanged)
     Q_PROPERTY(bool asynchronous READ asynchronous WRITE setAsynchronous NOTIFY asynchronousChanged)
     Q_PROPERTY(bool cache READ cache WRITE setCache NOTIFY cacheChanged FINAL)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+    Q_PROPERTY(bool retainWhileLoading READ retainWhileLoading WRITE setRetainWhileLoading NOTIFY retainWhileLoadingChanged)
+#endif
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QML_NAMED_ELEMENT(DciIcon)
     QML_ATTACHED(DQuickIconAttached)
@@ -69,6 +72,11 @@ public:
     bool cache() const;
     void setCache(bool cache);
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+    bool retainWhileLoading() const;
+    void setRetainWhileLoading(bool retain);
+#endif
+
     DQuickIconImage *imageItem() const;
 
     static bool isNull(const QString &iconName);
@@ -84,6 +92,10 @@ Q_SIGNALS:
     void fallbackToQIconChanged();
     void asynchronousChanged();
     void cacheChanged();
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+    void retainWhileLoadingChanged();
+#endif
 
 protected:
     void classBegin() override;
