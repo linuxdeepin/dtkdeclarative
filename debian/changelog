@@ -1,3 +1,13 @@
+dtkdeclarative (5.7.4) unstable; urgency=medium
+
+  * fix: memory leak
+  * fix: combobox highlight missing
+  * fix: combobox does not display content
+  * fix: Boxshadow displays abnormally in fractional scaling scenarios
+  * fix(build): chameleon version 1.0
+
+ -- Deepin Packages Builder <packages@deepin.org>  Tue, 03 Dec 2024 02:00:46 +0000
+
 dtkdeclarative (5.7.3) unstable; urgency=medium
 
   [ root ]
