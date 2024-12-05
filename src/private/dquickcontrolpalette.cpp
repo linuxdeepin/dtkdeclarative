@@ -862,7 +862,7 @@ void DQuickControlColorSelector::ensureMetaObject()
 
     m_metaObject = new CustomMetaObject(this);
     // TODO setCached will cause builtin property is undefined firstly in qml.
-#if QT_VERSION <= QT_VERSION_CHECK(6, 8, 0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 8, 0)
     // Must true, see CustomMetaObject::createProperty
     m_metaObject->setCached(true);
     QQmlData *qmldata = QQmlData::get(this);
