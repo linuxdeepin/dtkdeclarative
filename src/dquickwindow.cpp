@@ -16,6 +16,27 @@
 
 #include <QPlatformSurfaceEvent>
 
+// Fix top level window flags in case only the type flags are passed.
+static inline void fixTopLevelWindowFlags(Qt::WindowFlags &flags)
+{
+    // Not supported on Windows, also do correction when it is set.
+    flags &= ~Qt::WindowFullscreenButtonHint;
+    switch (flags) {
+    case Qt::Window:
+        flags |= Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint;
+        break;
+    case Qt::Dialog:
+        Q_FALLTHROUGH
+    case Qt::Tool:
+        flags |= Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint;
+        break;
+    default:
+        break;
+    }
+    if ((flags & Qt::WindowType_Mask) == Qt::SplashScreen)
+        flags |= Qt::FramelessWindowHint;
+}
+
 DQUICK_BEGIN_NAMESPACE
 
 DQuickWindowPrivate::DQuickWindowPrivate(DQuickWindow *qq)
@@ -319,6 +340,12 @@ DQuickWindowAttached::DQuickWindowAttached(QWindow *window)
     : QObject(window)
     , DObject(*new DQuickWindowAttachedPrivate(window, this))
 {
+    auto windowFlags = window->flags();
+    if (window->isTopLevel()) {
+        fixTopLevelWindowFlags(windowFlags);
+        window->setFlags(windowFlags);
+    }
+
     window->installEventFilter(this);
     QObject::connect(DWindowManagerHelper::instance(), SIGNAL(windowMotifWMHintsChanged(quint32)),
                      this, SLOT(_q_onWindowMotifHintsChanged(quint32)));
