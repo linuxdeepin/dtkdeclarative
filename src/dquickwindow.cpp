@@ -237,9 +237,11 @@ void DQuickWindowAttachedPrivate::_q_updateBlurAreaForWindow()
         }
     }
 
+    bool blurSuc = false;
+
     if (blurPathList.isEmpty()) {
-        q->setWindowBlurAreaByWM(blurPathList);
-        q->setWindowBlurAreaByWM(blurAreaList);
+        blurSuc = q->setWindowBlurAreaByWM(blurPathList);
+        blurSuc = q->setWindowBlurAreaByWM(blurAreaList);
     } else {
         // convert to QPainterPath
         for (const DPlatformHandle::WMBlurArea &area : qAsConst(blurAreaList)) {
@@ -248,8 +250,12 @@ void DQuickWindowAttachedPrivate::_q_updateBlurAreaForWindow()
             blurPathList << path;
         }
 
-        q->setWindowBlurAreaByWM(QVector<DPlatformHandle::WMBlurArea>{});
-        q->setWindowBlurAreaByWM(blurPathList);
+        blurSuc = q->setWindowBlurAreaByWM(QVector<DPlatformHandle::WMBlurArea>{});
+        blurSuc = q->setWindowBlurAreaByWM(blurPathList);
+    }
+
+    if (!blurSuc) {
+        q->setEnableBlurWindow(true);
     }
 }
 
