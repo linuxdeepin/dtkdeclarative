@@ -32,7 +32,7 @@ Rectangle {
     }
 
     Loader {
-        active: showAlert
+        active: showAlert && alertText.length !== 0
         sourceComponent: AlertToolTip {
             target: control
             timeout: alertDuration
