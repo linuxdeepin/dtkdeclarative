@@ -116,7 +116,7 @@ T.ItemDelegate {
 
         Loader {
             anchors.fill: parent
-            active: !checked && control.normalBackgroundVisible
+            active: !checked && control.normalBackgroundVisible && !D.DTK.hasAnimation && control.hovered
             sourceComponent: D.RoundRectangle {
                 color: DS.Style.itemDelegate.normalColor
                 radius: DS.Style.control.radius

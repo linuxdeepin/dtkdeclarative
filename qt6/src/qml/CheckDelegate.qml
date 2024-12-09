@@ -72,7 +72,7 @@ T.CheckDelegate {
         implicitHeight: DS.Style.itemDelegate.height
         Rectangle {
             anchors.fill: parent
-            visible: !checked && !control.ListView.view
+            visible: !control.checked && !D.DTK.hasAnimation && control.hovered
             color: control.D.ColorSelector.backgroundColor
             radius: DS.Style.control.radius
         }
