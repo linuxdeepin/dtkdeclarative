@@ -1,3 +1,12 @@
+dtkdeclarative (5.7.5) unstable; urgency=medium
+
+  * chore: typo for QT_VERSION
+  * fix: StyledBehindWindowBlur blur failure
+  * fix: ItemDelegate/Checkdelegate hover background missing
+  * feat: Export the alignment property of Combobox
+
+ -- Deepin Packages Builder <packages@deepin.org>  Thu, 12 Dec 2024 03:03:54 +0000
+
 dtkdeclarative (5.7.4) unstable; urgency=medium
 
   * fix: memory leak
