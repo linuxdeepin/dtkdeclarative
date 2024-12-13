@@ -5,5 +5,5 @@
 import QtQuick.Controls 2.4
 
 Label {
-
+    opacity: enabled ? 1 : 0.4
 }
