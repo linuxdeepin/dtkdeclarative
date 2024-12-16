@@ -22,7 +22,12 @@ bool DQuickIconImagePrivate::updateDevicePixelRatio(qreal targetDevicePixelRatio
         return true;
     }
 #endif
+    qreal ratio = devicePixelRatio;
     devicePixelRatio = targetDevicePixelRatio > 1.0 ? targetDevicePixelRatio : calculateDevicePixelRatio();
+
+    if (ratio != devicePixelRatio)
+        maybeUpdateUrl();
+
     return true;
 }
 
