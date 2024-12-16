@@ -19,6 +19,7 @@ T.ComboBox {
     property int maxVisibleItems : DS.Style.comboBox.maxVisibleItems
     property D.Palette separatorColor: DS.Style.comboBox.edit.separator
     property var horizontalAlignment: control.flat ? Text.AlignRight : Text.AlignLeft
+    opacity: enabled ? 1.0 : 0.4
 
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
