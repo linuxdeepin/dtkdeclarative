@@ -32,6 +32,7 @@ FocusScope {
 
         ListView {
             id: itemsView
+            clip: true
             Layout.fillWidth: true
             Layout.fillHeight: true
             implicitHeight: Math.min(contentHeight, maxVisibleItems * itemHeight)
