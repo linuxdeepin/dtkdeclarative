@@ -34,6 +34,7 @@ FocusScope {
             Layout.fillWidth: true
             Layout.fillHeight: true
             implicitHeight: Math.min(contentHeight, maxVisibleItems * itemHeight)
+            clip: true
             implicitWidth:{
                 var maxWidth = DS.Style.arrowListView.width
                 if (!itemsView.model || !itemsView.model.hasOwnProperty("get"))
