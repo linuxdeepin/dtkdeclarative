@@ -10,7 +10,7 @@ TextField {
     id: control
     readonly property alias clearButton: clearBtn
 
-    rightPadding: clearBtn.active ? (clearBtn.width + clearBtn.anchors.rightMargin) : 0
+    rightPadding: clearBtn.active ? (clearBtn.width + clearBtn.anchors.rightMargin) : 10
     selectByMouse: true
 
     Loader {
