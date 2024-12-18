@@ -55,6 +55,7 @@ DialogWindow {
             }
             Image {
                 id: companyLogoLabel
+                retainWhileLoading: true
                 Layout.alignment: Qt.AlignCenter
                 Layout.topMargin: 30
             }

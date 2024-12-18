@@ -36,6 +36,7 @@ Item {
         }
         width: parent.width + (shadowBlur + spread) * 2
         height: parent.height + (shadowBlur + spread) * 2
+        retainWhileLoading: true
 
         source: D.DTK.makeShadowImageUrl(__boxSize, shadowRadius(topLeftRadius), shadowRadius(topRightRadius), shadowRadius(bottomLeftRadius), shadowRadius(bottomRightRadius),
                                          shadowBlur, shadowColor, __offsetX, __offsetY, __spread, hollow, false)
