@@ -21,6 +21,7 @@ T.BusyIndicator {
         Image {
             id: indicatorSource
             anchors.fill: parent
+            retainWhileLoading: true
             source: DS.Style.busyIndicator.spinnerSource
             sourceSize {
                 width: parent.width

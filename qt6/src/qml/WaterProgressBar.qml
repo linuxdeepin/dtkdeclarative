@@ -50,6 +50,7 @@ Control {
                 model: 4
                 Image {
                     readonly property real xoffset: index < 2 ? attribute.backXOffset : attribute.frontXOffset
+                    retainWhileLoading: true
                     source: index < 2 ? DS.Style.waterProgressBar.waterBackImagePath
                                       : DS.Style.waterProgressBar.waterFrontImagePath
                     x: index % 2 ? xoffset - width : xoffset
