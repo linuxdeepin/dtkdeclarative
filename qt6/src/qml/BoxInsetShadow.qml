@@ -26,6 +26,7 @@ Item {
         id: image
 
         anchors.fill: parent
+        retainWhileLoading: true
         source: D.DTK.makeShadowImageUrl(__boxSize, shadowRadius(topLeftRadius), shadowRadius(topRightRadius), shadowRadius(bottomLeftRadius), shadowRadius(bottomRightRadius),
                                          shadowBlur, shadowColor, shadowOffsetX, shadowOffsetY, spread, false, true)
         function shadowRadius(radius) {
