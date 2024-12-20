@@ -3,8 +3,8 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 import QtQuick
-import QtQuick.Controls 2.4
-import QtQuick.Controls.impl 2.4 as I
+import QtQuick.Controls
+import QtQuick.Controls.impl as I
 
 I.PlaceholderText {
     elide: Text.ElideRight
