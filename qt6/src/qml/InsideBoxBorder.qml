@@ -2,8 +2,8 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-import QtQuick 2.0
-import QtQuick.Window 2.11
+import QtQuick
+import QtQuick.Window
 
 Item {
     // The width of the window's inner and outer borders do not change as the screen scales, and always remain 1px size

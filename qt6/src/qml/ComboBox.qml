@@ -2,8 +2,8 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-import QtQuick 2.11
-import QtQuick.Layouts 1.11
+import QtQuick
+import QtQuick.Layouts
 import QtQuick.Templates as T
 import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
@@ -18,6 +18,8 @@ T.ComboBox {
     property bool showAlert
     property int maxVisibleItems : DS.Style.comboBox.maxVisibleItems
     property D.Palette separatorColor: DS.Style.comboBox.edit.separator
+    property var horizontalAlignment: control.flat ? Text.AlignRight : Text.AlignLeft
+    opacity: enabled ? 1.0 : 0.4
 
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
@@ -103,6 +105,7 @@ T.ComboBox {
         T.TextField {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.rightMargin: DS.Style.comboBox.spacing
             text: control.editable ? control.editText : control.displayText
 
             enabled: control.editable
@@ -116,6 +119,7 @@ T.ComboBox {
             selectionColor: control.palette.highlight
             selectedTextColor: control.palette.highlightedText
             verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: control.horizontalAlignment
         }
     }
 

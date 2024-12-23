@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-import QtQuick 2.0
+import QtQuick
 import org.deepin.dtk 1.0 as D
 
 Item {
@@ -36,6 +36,7 @@ Item {
         }
         width: parent.width + (shadowBlur + spread) * 2
         height: parent.height + (shadowBlur + spread) * 2
+        retainWhileLoading: true
 
         source: D.DTK.makeShadowImageUrl(__boxSize, shadowRadius(topLeftRadius), shadowRadius(topRightRadius), shadowRadius(bottomLeftRadius), shadowRadius(bottomRightRadius),
                                          shadowBlur, shadowColor, __offsetX, __offsetY, __spread, hollow, false)

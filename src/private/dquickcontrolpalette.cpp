@@ -944,9 +944,10 @@ void DQuickControlColorSelector::notifyColorPropertyChanged()
 
 void DQuickControlColorSelector::updatePropertyFromName(const QByteArray &name, const DQuickControlPalette *palette)
 {
+    if (QCoreApplication::closingDown())
+        return;
     auto appriv = dynamic_cast<QCoreApplicationPrivate *>(QObjectPrivate::get(qApp));
-    Q_ASSERT(appriv);
-    if (QCoreApplication::closingDown() || !appriv || appriv->aboutToQuitEmitted)
+    if (!appriv || appriv->aboutToQuitEmitted)
         return;
     Q_ASSERT(!name.isEmpty());
     QColor color;

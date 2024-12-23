@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-import QtQuick 2.0
+import QtQuick
 import org.deepin.dtk 1.0 as D
 
 Item {
@@ -26,6 +26,7 @@ Item {
         id: image
 
         anchors.fill: parent
+        retainWhileLoading: true
         source: D.DTK.makeShadowImageUrl(__boxSize, shadowRadius(topLeftRadius), shadowRadius(topRightRadius), shadowRadius(bottomLeftRadius), shadowRadius(bottomRightRadius),
                                          shadowBlur, shadowColor, shadowOffsetX, shadowOffsetY, spread, false, true)
         function shadowRadius(radius) {

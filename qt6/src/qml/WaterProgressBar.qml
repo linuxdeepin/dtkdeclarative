@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-import QtQuick 2.11
+import QtQuick
 import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
@@ -50,6 +50,7 @@ Control {
                 model: 4
                 Image {
                     readonly property real xoffset: index < 2 ? attribute.backXOffset : attribute.frontXOffset
+                    retainWhileLoading: true
                     source: index < 2 ? DS.Style.waterProgressBar.waterBackImagePath
                                       : DS.Style.waterProgressBar.waterFrontImagePath
                     x: index % 2 ? xoffset - width : xoffset

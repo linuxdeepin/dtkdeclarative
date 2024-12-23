@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-import QtQuick 2.11
+import QtQuick
 import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
@@ -10,7 +10,7 @@ TextField {
     id: control
     readonly property alias clearButton: clearBtn
 
-    rightPadding: clearBtn.active ? (clearBtn.width + clearBtn.anchors.rightMargin) : 0
+    rightPadding: clearBtn.active ? (clearBtn.width + clearBtn.anchors.rightMargin) : 10
     selectByMouse: true
 
     Loader {
