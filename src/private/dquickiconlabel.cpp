@@ -53,6 +53,9 @@ void DQuickIconLabelPrivate::createIconImage()
     image->setMode(icon.mode());
     image->setFallbackToQIcon(icon.fallbackToQIcon());
     image->imageItem()->setFallbackSource(icon.source());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+    image->setRetainWhileLoading(true);
+#endif
 }
 
 bool DQuickIconLabelPrivate::ensureImage()
