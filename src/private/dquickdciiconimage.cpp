@@ -168,6 +168,9 @@ void DQuickDciIconImageItemPrivate::updatePlayer()
 
     player->setPalette(palette);
 
+    // treeland下拿qApp的缩放不准确，初始化的时候尝试去更新一次缩放
+    updateDevicePixelRatio(1.0);
+
     player->setDevicePixelRatio(devicePixelRatio);
 }
 
