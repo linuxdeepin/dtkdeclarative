@@ -22,13 +22,13 @@ bool DQuickIconImagePrivate::updateDevicePixelRatio(qreal targetDevicePixelRatio
         return true;
     }
 #endif
-    qreal ratio = devicePixelRatio;
-    devicePixelRatio = targetDevicePixelRatio > 1.0 ? targetDevicePixelRatio : calculateDevicePixelRatio();
-
-    if (ratio != devicePixelRatio)
-        maybeUpdateUrl();
-
-    return true;
+    auto lastRatio = devicePixelRatio;
+    if (targetDevicePixelRatio > 1.0) {
+        devicePixelRatio = targetDevicePixelRatio;
+    } else {
+        devicePixelRatio = calculateDevicePixelRatio();
+    }
+    return lastRatio != devicePixelRatio;
 }
 
 void DQuickIconImagePrivate::updateBase64Image()
@@ -172,6 +172,13 @@ void DQuickIconImage::componentComplete()
     D_D(DQuickIconImage);
     // 初始化信号链接和url地址
     d->init();
+
+    connect(this, &QQuickItem::windowChanged, this, [this](){
+        D_D(DQuickIconImage);
+        if (d->updateDevicePixelRatio(1.0)) {
+            d->maybeUpdateUrl();
+        }
+    });
 }
 
 /**
@@ -367,8 +374,11 @@ void DQuickIconImage::pixmapChange()
     // QQuickImage中只会在设置了souceSize的前提下才会计算图片自身的缩放比例
     // 此处强制确保图标的缩放比例正确
     D_D(DQuickIconImage);
-    if (d->iconType == DQuickIconImagePrivate::ThemeIconName)
-        d->updateDevicePixelRatio(1.0);
+    if (d->iconType == DQuickIconImagePrivate::ThemeIconName) {
+        if (d->updateDevicePixelRatio(1.0)) {
+            d->maybeUpdateUrl();
+        }
+    }
 
     QQuickImage::pixmapChange();
 
