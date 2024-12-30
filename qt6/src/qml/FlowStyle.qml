@@ -633,18 +633,20 @@ QtObject {
     }
 
     property QtObject menu: QtObject {
-        property int padding: 0
+        property int padding: 6
+        property int topPadding: 8
         property int radius: D.DTK.platformTheme.windowRadius < 0 ? 12 : D.DTK.platformTheme.windowRadius
         property int margins: 10
         property int overlap: 1
 
         property QtObject item: QtObject {
             property int width: 180
-            property int height: 34
+            property int height: 30
             property size iconSize: Qt.size(14, 14)
             property int count: 0
             property int contentPadding: 30
             property int indicatorMargin: 10
+            property int radius: 6
         }
 
         property QtObject separator: QtObject {
@@ -699,6 +701,7 @@ QtObject {
     property QtObject highlightPanel: QtObject {
         property int width: 180
         property int height: 30
+        property int radius: 6
 
         property D.Palette background: D.Palette {
             normal: D.DTK.makeColor(D.Color.Highlight)

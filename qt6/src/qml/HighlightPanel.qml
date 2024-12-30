@@ -12,11 +12,13 @@ Item {
     property D.Palette backgroundColor: DS.Style.highlightPanel.background
     property D.Palette outerShadowColor: DS.Style.highlightPanel.dropShadow
     property D.Palette innerShadowColor: DS.Style.highlightPanel.innerShadow
+    property int radius: DS.Style.highlightPanel.radius
 
     implicitWidth: DS.Style.highlightPanel.width
     implicitHeight: DS.Style.highlightPanel.height
     BoxShadow {
         anchors.fill: backgroundRect
+        visible: panel.outerShadowColor
         shadowColor: panel.D.ColorSelector.outerShadowColor
         shadowOffsetY: 4
         shadowBlur: 6
@@ -27,11 +29,12 @@ Item {
         id: backgroundRect
         anchors.fill: parent
         color: panel.D.ColorSelector.backgroundColor
-        radius: DS.Style.control.radius
+        radius: panel.radius
     }
 
     BoxInsetShadow {
         anchors.fill: backgroundRect
+        visible: panel.innerShadowColor
         shadowColor: panel.D.ColorSelector.innerShadowColor
         shadowOffsetY: -1
         shadowBlur: 2
