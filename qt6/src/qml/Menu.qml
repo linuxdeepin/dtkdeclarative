@@ -34,6 +34,8 @@ T.Menu {
     margins: DS.Style.menu.margins
     overlap: DS.Style.menu.overlap
     padding: DS.Style.menu.padding
+    topPadding: DS.Style.menu.topPadding
+    bottomPadding: topPadding
 
     delegate: MenuItem { }
 
@@ -42,7 +44,7 @@ T.Menu {
     }
 
     contentItem: Control {
-        topPadding: 15 // TODO how to clip radius
+        topPadding: 0
         bottomPadding: topPadding
         leftPadding: 0
         rightPadding: leftPadding
@@ -83,41 +85,22 @@ T.Menu {
                 view.highlightMoveDuration: 50
                 view.highlightMoveVelocity: -1
 
-                view.highlight: Rectangle {
+                view.highlight: HighlightPanel {
                     id: highlightRect
                     anchors.left: parent ? parent.left : undefined
                     anchors.right: parent ? parent.right : undefined
                     anchors.leftMargin: 0
                     anchors.rightMargin: 0
                     scale: D.DTK.hasAnimation ? 0.9 : 1.0
-                    property D.Palette backgroundColor: DS.Style.highlightPanel.background
-                    property D.Palette submenuOpenedItemHighlightColor: DS.Style.menu.submenuOpenedItemHighlight
-                    property D.Palette itemHighlightShadowColor: DS.Style.menu.itemHighlightShadow
-                    color: {
-                        let item = control.itemAt(control.currentIndex)
-                        if (item && item.subMenu) {
-                            return D.ColorSelector.submenuOpenedItemHighlightColor
-                        } else {
-                            return D.ColorSelector.backgroundColor
-                        }
-                    }
-                    radius: 1
+
+                    radius: DS.Style.menu.item.radius
+                    outerShadowColor: null
+                    innerShadowColor: null
                     Component.onCompleted: {
                         scale = 1.0
                     }
                     Behavior on scale {
                         NumberAnimation { duration: 100 }
-                    }
-                    BoxInsetShadow {
-                        visible: highlightRect.color === highlightRect.D.ColorSelector.backgroundColor
-                        anchors.fill: parent
-                        z: DTK.AboveOrder
-                        cornerRadius: parent.radius
-                        shadowOffsetX: 0
-                        shadowOffsetY: -1
-                        shadowBlur: 1
-                        spread: 1
-                        shadowColor: highlightRect.D.ColorSelector.itemHighlightShadowColor
                     }
                 }
             }

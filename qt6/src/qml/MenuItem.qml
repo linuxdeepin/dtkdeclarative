@@ -99,10 +99,11 @@ T.MenuItem {
         implicitHeight: DS.Style.menu.item.height
         Loader {
             anchors.fill: parent
-            active: !control.hovered && control.subMenu && control.subMenu.opened
-            sourceComponent: Rectangle {
-                color: control.D.ColorSelector.subMenuBackgroundColor
-                radius: DS.Style.control.radius
+            active: control.highlighted
+            sourceComponent: HighlightPanel {
+                outerShadowColor: null
+                innerShadowColor: null
+                radius: DS.Style.menu.item.radius
             }
         }
     }
