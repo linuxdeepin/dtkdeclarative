@@ -166,7 +166,9 @@ ListView {
                 insideBorderColor: null
                 innerShadowColor1: null
                 innerShadowColor2: null
-                dropShadowColor: null
+                dropShadowColor0: null
+                dropShadowColor1: null
+                dropShadowColor2: null
 
                 visible: hoveredItem && !hoveredItem.checked && hoveredItem.enabled
                 color1: D.Palette {

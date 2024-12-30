@@ -14,7 +14,9 @@ Item {
     property D.Palette color2: DS.Style.button.background2
     property D.Palette insideBorderColor: DS.Style.button.insideBorder
     property D.Palette outsideBorderColor: DS.Style.button.outsideBorder
-    property D.Palette dropShadowColor: DS.Style.button.dropShadow
+    property D.Palette dropShadowColor0: DS.Style.button.dropShadow0
+    property D.Palette dropShadowColor1: DS.Style.button.dropShadow1
+    property D.Palette dropShadowColor2: DS.Style.button.dropShadow2
     property D.Palette innerShadowColor1: DS.Style.button.innerShadow1
     property D.Palette innerShadowColor2: DS.Style.button.innerShadow2
     property int boxShadowBlur: 6
@@ -28,9 +30,31 @@ Item {
         anchors.fill: backgroundRect
         active: enableBoxShadow
         sourceComponent: BoxShadow {
-            shadowBlur: control.boxShadowBlur
-            shadowOffsetY: control.boxShadowOffsetY
-            shadowColor: control.D.ColorSelector.dropShadowColor
+            shadowBlur: 2
+            shadowOffsetY: 0
+            shadowColor: control.D.ColorSelector.dropShadowColor0//"red"
+            cornerRadius: backgroundRect.radius
+        }
+    }
+
+    Loader {
+        anchors.fill: backgroundRect
+        active: enableBoxShadow
+        sourceComponent: BoxShadow {
+            shadowBlur: 2
+            shadowOffsetY: 1
+            shadowColor: control.D.ColorSelector.dropShadowColor1//"green"
+            cornerRadius: backgroundRect.radius
+        }
+    }
+
+    Loader {
+        anchors.fill: backgroundRect
+        active: enableBoxShadow
+        sourceComponent: BoxShadow {
+            shadowBlur: 2
+            shadowOffsetY: 2
+            shadowColor: control.D.ColorSelector.dropShadowColor2//"yellow"
             cornerRadius: backgroundRect.radius
         }
     }
@@ -62,27 +86,27 @@ Item {
         z: D.DTK.AboveOrder
 
         sourceComponent: BoxInsetShadow {
-            shadowBlur: 2
-            shadowOffsetY: control.innerShadowOffsetY1
-            spread: 1
-            shadowColor: innerShadowColor
-            cornerRadius: backgroundRect.radius
-        }
-    }
-
-    Loader {
-        anchors.fill: backgroundRect
-        readonly property color innerShadowColor: control.D.ColorSelector.innerShadowColor2
-        active: innerShadowColor2 && innerShadowColor.a !== 0 && control.D.ColorSelector.family === D.Palette.CommonColor
-        z: D.DTK.AboveOrder
-
-        sourceComponent: BoxInsetShadow {
             shadowBlur: 1
             shadowOffsetY: 1
-            shadowColor: innerShadowColor
+            spread: 0
+            shadowColor: innerShadowColor // "red"
             cornerRadius: backgroundRect.radius
         }
     }
+
+    // Loader {
+    //     anchors.fill: backgroundRect
+    //     readonly property color innerShadowColor: control.D.ColorSelector.innerShadowColor2
+    //     active: innerShadowColor2 && innerShadowColor.a !== 0 && control.D.ColorSelector.family === D.Palette.CommonColor
+    //     z: D.DTK.AboveOrder
+    //
+    //     sourceComponent: BoxInsetShadow {
+    //         shadowBlur: 1
+    //         shadowOffsetY: 1
+    //         shadowColor: "red"
+    //         cornerRadius: backgroundRect.radius
+    //     }
+    // }
 
     Loader {
         active: insideBorderColor

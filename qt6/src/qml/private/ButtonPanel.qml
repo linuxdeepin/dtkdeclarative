@@ -16,7 +16,9 @@ BoxPanel {
     color2: selectValue(DS.Style.button.background2, DS.Style.checkedButton.background, DS.Style.highlightedButton.background2)
     insideBorderColor: selectValue(DS.Style.button.insideBorder, null, DS.Style.highlightedButton.border)
     outsideBorderColor: selectValue(DS.Style.button.outsideBorder, null, null)
-    dropShadowColor: selectValue(DS.Style.button.dropShadow, DS.Style.checkedButton.dropShadow, DS.Style.highlightedButton.dropShadow)
+    dropShadowColor0: selectValue(DS.Style.button.dropShadow0, DS.Style.checkedButton.dropShadow, DS.Style.highlightedButton.dropShadow)
+    dropShadowColor1: selectValue(DS.Style.button.dropShadow1, DS.Style.checkedButton.dropShadow, DS.Style.highlightedButton.dropShadow)
+    dropShadowColor2: selectValue(DS.Style.button.dropShadow2, DS.Style.checkedButton.dropShadow, DS.Style.highlightedButton.dropShadow)
     innerShadowColor1: selectValue(DS.Style.button.innerShadow1, DS.Style.checkedButton.innerShadow, DS.Style.highlightedButton.innerShadow1)
     innerShadowColor2: selectValue(DS.Style.button.innerShadow2, null, DS.Style.highlightedButton.innerShadow2)
     boxShadowBlur: selectValue(control.D.ColorSelector.controlState === D.DTK.PressedState ? 4 : 6, 6, 4)
@@ -47,7 +49,7 @@ BoxPanel {
     Gradient {
         id: hoverBackgroundGradient
         GradientStop { position: 0.0; color: control.D.ColorSelector.color1 }
-        GradientStop { position: 0.96; color: control.D.ColorSelector.color2 }
+        GradientStop { position: 1.0; color: control.D.ColorSelector.color2 }
     }
 
     CicleSpreadAnimation {
