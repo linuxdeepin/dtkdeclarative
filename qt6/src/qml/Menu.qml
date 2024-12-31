@@ -37,7 +37,9 @@ T.Menu {
     topPadding: DS.Style.menu.topPadding
     bottomPadding: topPadding
 
-    delegate: MenuItem { }
+    delegate: MenuItem { 
+        background: null
+    }
 
     D.PopupHandle.delegate: PopupWindow {
         blurControl: control
