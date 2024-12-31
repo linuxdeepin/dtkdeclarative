@@ -63,6 +63,7 @@ DPlatformThemeProxy::DPlatformThemeProxy(DPlatformTheme *proxy, QObject *parent)
     connect(proxy, &DPlatformTheme::darkLivelyChanged, this, &DPlatformThemeProxy::darkLivelyChanged);
     connect(proxy, &DPlatformTheme::frameBorderChanged, this, &DPlatformThemeProxy::frameBorderChanged);
 #endif
+    connect(proxy, &DPlatformTheme::scrollBarPolicyChanged, this, &DPlatformThemeProxy::scrollBarPolicyChanged);
 
     // theme
     connect(proxy, &DPlatformTheme::themeNameChanged, this, &DPlatformThemeProxy::themeNameChanged);
@@ -389,6 +390,12 @@ QColor DPlatformThemeProxy::frameBorder() const
     return d->proxy->frameBorder();
 }
 #endif
+
+int DPlatformThemeProxy::scrollBarPolicy() const
+{
+    D_DC(DPlatformThemeProxy);
+    return d->proxy->scrollBarPolicy();
+}
 
 int DPlatformThemeProxy::dotsPerInch(const QString &screenName) const
 {
