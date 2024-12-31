@@ -15,12 +15,13 @@ T.ScrollBar {
 
     padding: DS.Style.scrollBar.padding
     visible: control.policy !== T.ScrollBar.AlwaysOff
+    policy: D.DTK.platformTheme.scrollBarPolicy
 
     state: "hide"
     states: [
         State {
             name: "hide"
-            when: control.policy === T.ScrollBar.AlwaysOff || !control.active || control.size >= 1.0
+            when: control.policy === T.ScrollBar.AlwaysOff || (control.policy !== T.ScrollBar.AlwaysOn && (!control.active || control.size >= 1.0))
             PropertyChanges {
                 target: control.contentItem
                 implicitWidth: DS.Style.scrollBar.width

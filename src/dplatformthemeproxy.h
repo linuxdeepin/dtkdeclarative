@@ -67,6 +67,7 @@ class DPlatformThemeProxy : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(QColor darkLively READ darkLively WRITE setDarkLively NOTIFY darkLivelyChanged)
     Q_PROPERTY(QColor frameBorder READ frameBorder WRITE setFrameBorder NOTIFY frameBorderChanged)
 #endif
+    Q_PROPERTY(int scrollBarPolicy READ scrollBarPolicy NOTIFY scrollBarPolicyChanged)
 
 public:
     explicit DPlatformThemeProxy(DPlatformTheme *proxy, QObject *parent = nullptr);
@@ -122,6 +123,7 @@ public:
     QColor darkLively() const;
     QColor frameBorder() const;
 #endif
+    int scrollBarPolicy() const;
 
     Q_INVOKABLE int dotsPerInch(const QString &screenName = QString()) const;
 
@@ -220,6 +222,7 @@ Q_SIGNALS:
 #endif
     void dotsPerInchChanged(const QString &screen, int dpi);
     void windowRadiusChanged(int r);
+    void scrollBarPolicyChanged();
 
 private:
     D_DECLARE_PRIVATE(DPlatformThemeProxy)
