@@ -1,3 +1,19 @@
+dtkdeclarative (5.7.6) unstable; urgency=medium
+
+  * fix: arrowlistview not clip
+  * fix: lineedit rightpadding to small
+  * fix: image cache cleared
+    Thanks to Yixue Wang
+  * chore: remove version of imported uri for qt6
+  * fix: access nullptr when app exited
+  * fix: itemdelegate icon flashed
+  * fix: incorrect scaling of icons under Treeland
+  * fix: adjust UI for MenuItem
+  * fix: adjust UI for Menu and ComboBox
+  * feat: support to flow system settings for scrollBarPolicy
+
+ -- Deepin Packages Builder <packages@deepin.org>  Thu, 02 Jan 2025 06:46:45 +0000
+
 dtkdeclarative (5.7.5) unstable; urgency=medium
 
   * chore: typo for QT_VERSION
