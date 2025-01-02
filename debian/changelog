@@ -1,5 +1,12 @@
 dtkdeclarative (5.7.6) unstable; urgency=medium
 
+  [ root ]
+  * UNRELEASED
+
+ -- Deepin Packages Builder <packages@deepin.org>  Thu, 02 Jan 2025 06:49:25 +0000
+
+dtkdeclarative (5.7.6) unstable; urgency=medium
+
   * fix: arrowlistview not clip
   * fix: lineedit rightpadding to small
   * fix: image cache cleared
