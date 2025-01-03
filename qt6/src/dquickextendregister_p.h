@@ -5,6 +5,7 @@
 
 #include <dtkdeclarative_global.h>
 
+#include "dqmlglobalobject_p.h"
 #include <DWindowManagerHelper>
 #include <DGuiApplicationHelper>
 #include <DFontManager>
@@ -14,6 +15,13 @@
 
 DQUICK_BEGIN_NAMESPACE
 DGUI_USE_NAMESPACE
+
+namespace DColorForeign
+{
+    Q_NAMESPACE
+    QML_NAMED_ELEMENT(Color)
+    QML_FOREIGN_NAMESPACE(DTK_QUICK_NAMESPACE::DColor)
+};
 
 struct WindowManagerHelperForeign
 {
@@ -57,6 +65,7 @@ struct DPlatformHandleForeign
     Q_GADGET
     QML_FOREIGN(DPlatformHandle)
     QML_NAMED_ELEMENT(PlatformHandle)
+    QML_UNCREATABLE("PlatformHandle")
 };
 
 DQUICK_END_NAMESPACE
