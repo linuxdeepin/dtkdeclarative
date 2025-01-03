@@ -36,11 +36,7 @@ DQUICK_BEGIN_NAMESPACE
 class DColor
 {
     Q_GADGET
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    QML_ANONYMOUS
-    QML_NAMED_ELEMENT(Color)
-    QML_UNCREATABLE("Color is only available as enums.")
-#endif
+    QML_VALUE_TYPE(color)
 public:
     enum Type : quint8 {
         Invalid = 0,
