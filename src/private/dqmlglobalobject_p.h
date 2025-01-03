@@ -37,9 +37,7 @@ class DColor
 {
     Q_GADGET
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    QML_ANONYMOUS
-    QML_NAMED_ELEMENT(Color)
-    QML_UNCREATABLE("Color is only available as enums.")
+    QML_VALUE_TYPE(dcolor)
 #endif
 public:
     enum Type : quint8 {
