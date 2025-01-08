@@ -37,9 +37,7 @@ T.Menu {
     topPadding: DS.Style.menu.topPadding
     bottomPadding: topPadding
 
-    delegate: MenuItem { 
-        background: null
-    }
+    delegate: MenuItem { }
 
     D.PopupHandle.delegate: PopupWindow {
         blurControl: control
@@ -89,6 +87,7 @@ T.Menu {
 
                 view.highlight: HighlightPanel {
                     id: highlightRect
+                    visible: false // TODO listview's highlight is confict with Item's highlight.
                     anchors.left: parent ? parent.left : undefined
                     anchors.right: parent ? parent.right : undefined
                     anchors.leftMargin: 0
