@@ -51,8 +51,7 @@ FocusScope {
             interactive: Window.window ? (contentHeight > Window.window.height || model.count > maxVisibleItems) : false
             ScrollIndicator.vertical: ScrollIndicator { }
             highlight: HighlightPanel {
-                anchors.left: parent.left
-                anchors.right: parent.right
+                visible: false // TODO listview's highlight is confict with Item's highlight.
                 outerShadowColor: null
                 innerShadowColor: null
                 scale: D.DTK.hasAnimation ? 0.9 : 1.0
