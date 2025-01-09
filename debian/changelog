@@ -1,3 +1,11 @@
+dtkdeclarative (5.7.7) unstable; urgency=medium
+
+  * fix: incorrect registering way for qt6
+  * fix: incorrect Highlight for Menu
+  * fix: item_checked icon was clipped
+
+ -- Deepin Packages Builder <packages@deepin.org>  Thu, 09 Jan 2025 09:28:39 +0000
+
 dtkdeclarative (5.7.6) unstable; urgency=medium
 
   * fix: arrowlistview not clip
