@@ -72,3 +72,7 @@ License: CC0-1.0
 Files: *.ts .tx/*
 Copyright: None
 License: CC0-1.0
+
+Files: toolGenerate/**/*
+Copyright: None
+License: CC0-1.0
