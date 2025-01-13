@@ -43,13 +43,11 @@ T.Menu {
         blurControl: control
     }
 
-    contentItem: Control {
-        topPadding: 0
-        bottomPadding: topPadding
-        leftPadding: 0
-        rightPadding: leftPadding
-
-        contentItem:  ColumnLayout {
+    contentItem: FocusScope {
+        // QTBUG-99897 focus doesn't be clear.
+        width: viewLayout.width
+        height: viewLayout.height
+        ColumnLayout {
             id: viewLayout
             spacing: 0
 
