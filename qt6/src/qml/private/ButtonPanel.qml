@@ -58,7 +58,7 @@ BoxPanel {
         Rectangle {
             anchors.fill: parent
             radius: control.radius
-            gradient: control.D.ColorSelector.color1 === control.D.ColorSelector.color2 ? null : hoverBackgroundGradient
+            // gradient: control.D.ColorSelector.color1 === control.D.ColorSelector.color2 ? null : hoverBackgroundGradient
             color: control.D.ColorSelector.color1
         }
         function triggle() {
