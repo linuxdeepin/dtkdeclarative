@@ -16,14 +16,15 @@ Item {
 
     implicitWidth: DS.Style.highlightPanel.width
     implicitHeight: DS.Style.highlightPanel.height
-    BoxShadow {
-        anchors.fill: backgroundRect
-        visible: panel.outerShadowColor
-        shadowColor: panel.D.ColorSelector.outerShadowColor
-        shadowOffsetY: 4
-        shadowBlur: 6
-        cornerRadius: backgroundRect.radius
-    }
+    // TODO drop shadow temporarily.
+    // BoxShadow {
+    //     anchors.fill: backgroundRect
+    //     visible: panel.outerShadowColor
+    //     shadowColor: panel.D.ColorSelector.outerShadowColor
+    //     shadowOffsetY: 4
+    //     shadowBlur: 6
+    //     cornerRadius: backgroundRect.radius
+    // }
 
     Rectangle {
         id: backgroundRect
@@ -32,13 +33,13 @@ Item {
         radius: panel.radius
     }
 
-    BoxInsetShadow {
-        anchors.fill: backgroundRect
-        visible: panel.innerShadowColor
-        shadowColor: panel.D.ColorSelector.innerShadowColor
-        shadowOffsetY: -1
-        shadowBlur: 2
-        spread: 1
-        cornerRadius: backgroundRect.radius
-    }
+    // BoxInsetShadow {
+    //     anchors.fill: backgroundRect
+    //     visible: panel.innerShadowColor
+    //     shadowColor: panel.D.ColorSelector.innerShadowColor
+    //     shadowOffsetY: -1
+    //     shadowBlur: 2
+    //     spread: 1
+    //     cornerRadius: backgroundRect.radius
+    // }
 }

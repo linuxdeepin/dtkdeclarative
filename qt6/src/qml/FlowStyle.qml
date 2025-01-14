@@ -7,7 +7,7 @@ import org.deepin.dtk 1.0 as D
 
 QtObject {
     property QtObject control: QtObject {
-        property int radius: 6
+        property int radius: 8
         property int spacing: 6
         property int padding: 6
         property int borderWidth: 1
@@ -701,7 +701,7 @@ QtObject {
     property QtObject highlightPanel: QtObject {
         property int width: 180
         property int height: 30
-        property int radius: 6
+        property int radius: 8
 
         property D.Palette background: D.Palette {
             normal: D.DTK.makeColor(D.Color.Highlight)
