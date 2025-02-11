@@ -45,8 +45,8 @@ T.Menu {
 
     contentItem: FocusScope {
         // QTBUG-99897 focus doesn't be clear.
-        width: viewLayout.width
-        height: viewLayout.height
+        implicitWidth: viewLayout.width
+        implicitHeight: viewLayout.height
         ColumnLayout {
             id: viewLayout
             spacing: 0
