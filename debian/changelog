@@ -1,3 +1,9 @@
+dtkdeclarative (5.7.10) unstable; urgency=medium
+
+  * fix: incorrect height for Menu when height is large
+
+ -- YeShanShan <yeshanshan@uniontech.com>  Thu, 13 Feb 2025 17:19:23 +0800
+
 dtkdeclarative (5.7.9) unstable; urgency=medium
 
   [ root ]
