@@ -157,6 +157,11 @@ public Q_SLOTS:
     void setWindowEffect(DTK_GUI_NAMESPACE::DPlatformHandle::EffectScenes effect);
     void setWindowStartUpEffect(DTK_GUI_NAMESPACE::DPlatformHandle::EffectTypes type);
 
+    void showMinimized();
+    void showMaximized();
+    void showFullScreen();
+    void showNormal();
+
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
 
