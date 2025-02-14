@@ -26,10 +26,10 @@ RowLayout {
         }
 
         if (Window.window.visibility === Window.Maximized) {
-            Window.window.visibility = Window.Windowed
+            __dwindow.showNormal()
         } else if (Window.window.visibility !== Window.FullScreen &&
                    maxOrWindedBtn.active) {
-            Window.window.visibility = Window.Maximized
+            __dwindow.showMaximized()
         }
     }
 
@@ -45,7 +45,9 @@ RowLayout {
             icon.name: "window_minimize"
             textColor: control.textColor
 
-            onClicked: Window.window.visibility = Window.Minimized
+            onClicked:{
+                __dwindow.showMinimized()
+            }
         }
     }
 
@@ -61,9 +63,9 @@ RowLayout {
 
             onClicked: {
                 if (Window.window.visibility === Window.FullScreen) {
-                    Window.window.visibility = Window.Windowed
+                    __dwindow.showNormal()
                 } else {
-                    Window.window.visibility = Window.FullScreen
+                    __dwindow.showFullScreen()
                 }
             }
         }

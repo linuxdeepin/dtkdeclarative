@@ -543,6 +543,37 @@ void DQuickWindowAttached::setWindowStartUpEffect(DTK_GUI_NAMESPACE::DPlatformHa
         d->explicitEffectType = type;
 }
 
+void DQuickWindowAttached::showMinimized()
+{
+    window()->setWindowStates((window()->windowStates() & ~Qt::WindowActive) | Qt::WindowMinimized);
+    window()->setVisible(true);
+}
+
+void DQuickWindowAttached::showMaximized()
+{
+    window()->setWindowStates((window()->windowStates() & ~(Qt::WindowMinimized | Qt::WindowFullScreen))
+                   | Qt::WindowMaximized);
+    window()->setVisible(true);
+}
+
+void DQuickWindowAttached::showFullScreen()
+{
+    window()->setWindowStates((window()->windowStates() & ~(Qt::WindowMinimized | Qt::WindowMaximized))
+                   | Qt::WindowFullScreen);
+    window()->setVisible(true);
+#if !defined Q_OS_QNX
+    window()->requestActivate();
+#endif
+}
+
+void DQuickWindowAttached::showNormal()
+{
+    window()->setWindowStates(window()->windowStates() & ~(Qt::WindowMinimized
+                                     | Qt::WindowMaximized
+                                     | Qt::WindowFullScreen));
+    window()->setVisible(true);
+}
+
 /*!
  * \~chinese \property DQuickWindowAttached::translucentBackground
  * \~chinese \brief 如果此属性值为 true，则在更新窗口绘制内容之前会先清空要更新区域内的图像，否则不清空。
