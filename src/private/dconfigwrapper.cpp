@@ -9,6 +9,7 @@
 #include <QLoggingCategory>
 #include <QQmlEngine>
 #include <QTimer>
+#include <QQmlInfo>
 #include <private/qqmlopenmetaobject_p.h>
 
 #include <DConfig>
@@ -22,8 +23,7 @@ Q_LOGGING_CATEGORY(cfLog, "dtk.dsg.config");
 DCORE_USE_NAMESPACE;
 
 // the properties and previous values.
-using DefalutProperties = QMap<QByteArray, QVariant>;
-static DefalutProperties propertyAndValues(const QObject* obj)
+static DConfigWrapper::DefalutProperties propertyAndValues(const QObject* obj)
 {
     QMap<QByteArray, QVariant> properties;
     const QMetaObject *mo = obj->metaObject();
@@ -138,12 +138,53 @@ void DConfigWrapper::setSubpath(const QString &subpath)
     m_subpath = subpath;
 }
 
+QObject *DConfigWrapper::proxyTarget() const
+{
+    return m_proxyTarget;
+}
+
+void DConfigWrapper::setProxyTarget(QObject *newProxyTarget)
+{
+    if (m_proxyTarget == newProxyTarget)
+        return;
+
+    if (m_proxyTargetValueChangedConnection) {
+        disconnect(m_proxyTargetValueChangedConnection);
+    }
+
+    m_proxyTarget = newProxyTarget;
+
+    if (m_componentCompleted) {
+        if (m_proxyTarget)
+            initWithProxyTarget();
+        else
+            initWithDConfig();
+    }
+
+    Q_EMIT proxyTargetChanged();
+}
+
 /*!
  * \brief \sa DConfig keyList()
  * \return
  */
 QStringList DConfigWrapper::keyList() const
 {
+    if (m_proxyTarget) {
+        const QMetaObject *mo = m_proxyTarget->metaObject();
+        const int offset = mo->propertyOffset();
+        const int count = mo->propertyCount();
+
+        QStringList keyList = {};
+        keyList.reserve(count);
+
+        for (int i = offset; i < count; ++i) {
+            const QMetaProperty &property = mo->property(i);
+            keyList << property.name();
+        }
+        return keyList;
+    }
+
     if (!impl)
         return QStringList();
 
@@ -156,6 +197,18 @@ QStringList DConfigWrapper::keyList() const
  */
 bool DConfigWrapper::isValid() const
 {
+    if (m_proxyTarget) {
+        int index = m_proxyTarget->metaObject()->indexOfMethod("isInitializeSucceed()");
+        if (index < 0) {
+            qmlEngine(this)->throwError(QString("Can't know whether the DConfig is valid, "
+                                                "because the proxyTarget doesn't have "
+                                                "isInitializeSucceed method"));
+            return false;
+        }
+
+        return m_proxyTarget->metaObject()->method(index).invoke(m_proxyTarget);
+    }
+
     if (!impl)
         return false;
 
@@ -168,6 +221,13 @@ bool DConfigWrapper::isValid() const
  */
 QVariant DConfigWrapper::value(const QString &key, const QVariant &fallback) const
 {
+    if (m_proxyTarget) {
+        if (isDefaultValue(key))
+            return fallback;
+
+        return m_proxyTarget->property(key.toUtf8().constData());
+    }
+
     if (!impl)
         return fallback;
 
@@ -180,6 +240,11 @@ QVariant DConfigWrapper::value(const QString &key, const QVariant &fallback) con
  */
 void DConfigWrapper::setValue(const QString &key, const QVariant &value)
 {
+    if (m_proxyTarget) {
+        m_proxyTarget->setProperty(key.toUtf8().constData(), value);
+        return;
+    }
+
     if (!impl)
         return;
 
@@ -188,6 +253,13 @@ void DConfigWrapper::setValue(const QString &key, const QVariant &value)
 
 void DConfigWrapper::resetValue(const QString &key)
 {
+    if (m_proxyTarget) {
+        int index = m_proxyTarget->metaObject()->indexOfProperty(key.toUtf8().constData());
+        if (index >= 0)
+            m_proxyTarget->metaObject()->property(index).reset(m_proxyTarget);
+        return;
+    }
+
     if (!impl)
         return;
 
@@ -196,7 +268,7 @@ void DConfigWrapper::resetValue(const QString &key)
 
 void DConfigWrapper::classBegin()
 {
-
+    m_componentCompleted = false;
 }
 
 /*!
@@ -207,51 +279,127 @@ void DConfigWrapper::classBegin()
  */
 void DConfigWrapper::componentComplete()
 {
-    impl = new DTK_CORE_NAMESPACE::DConfig(m_name, m_subpath, this);
-
-    if (!impl->isValid()) {
-        qCWarning(cfLog) << QString("create dconfig failed, valid:%1, name:%2, subpath:%3, backend:%4")
-                      .arg(impl->isValid())
-                      .arg(impl->name())
-                      .arg(impl->subpath())
-                      .arg(impl->backendName());
-        impl->deleteLater();
-        impl = nullptr;
-        return;
-    }
-
-    qInfo() << QString("create dconfig successful, valid:%1, name:%2, subpath:%3, backend:%4")
-               .arg(impl->isValid())
-               .arg(impl->name())
-               .arg(impl->subpath())
-               .arg(impl->backendName());
-
+    m_componentCompleted = false;
     // Get the dynamic properties and previous values defined in qml.
-    const DefalutProperties &properties = propertyAndValues(this);
-    qCDebug(cfLog) << "properties" << properties;
+    m_properties = propertyAndValues(this);
+    qCDebug(cfLog) << "properties" << m_properties;
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto objectType = new QQmlOpenMetaObjectType(&DConfigWrapper::staticMetaObject, qmlEngine(this));
 #else
     auto objectType = new QQmlOpenMetaObjectType(&DConfigWrapper::staticMetaObject);
 #endif
-    auto mo = new DConfigWrapperMetaObject(this, objectType);
-    mo->setCached(true);
+    m_metaObject = new DConfigWrapperMetaObject(this, objectType);
+    m_metaObject->setCached(true);
 
-    for (auto iter = properties.begin(); iter != properties.end(); iter++) {
+    if (m_proxyTarget) {
+        initWithProxyTarget();
+    } else {
+        initWithDConfig();
+    }
+}
+
+bool DConfigWrapper::isDefaultValue(const QString &key) const {
+    Q_ASSERT(m_proxyTarget);
+    if (!f_isDefaultValue.enclosingMetaObject())
+        return false;
+
+    return f_isDefaultValue.invoke(m_proxyTarget, Qt::DirectConnection, Q_ARG(QString, key));
+}
+
+void DConfigWrapper::initWithProxyTarget()
+{
+    Q_ASSERT(m_proxyTarget);
+    if (impl) {
+        impl->deleteLater();
+        impl = nullptr;
+    }
+
+    qCInfo(cfLog) << QString("Initialize dconfig with proxy object:") << m_proxyTarget;
+
+    auto mo = m_proxyTarget->metaObject();
+    int index = mo->indexOfMethod(QMetaObject::normalizedSignature("isDefaultValue(const QString&)"));
+
+    if (index < 0) {
+        qmlWarning(this) << "Can't know whether the value is default, because the proxyTarget doesn't have isDefaultValue method.";
+    } else {
+        f_isDefaultValue = mo->method(index);
+    }
+
+    for (auto iter = m_properties.begin(); iter != m_properties.end(); iter++) {
         // it's need to emit signal, because other qml object maybe read the old value
         // when binding the property before the component completed, also it has a performance problem.
         // sync backend's value to `Wrapper`, we only use Wrapper's value(defined in qml) as fallback value.
-        mo->setValue(iter.key(), impl->value(iter.key(), iter.value()));
+        if (isDefaultValue(iter.key()))
+            m_metaObject->setValue(iter.key(), iter.value());
+        else
+            m_metaObject->setValue(iter.key(), m_proxyTarget->property(iter.key()));
     }
 
-     // Using QueuedConnection because impl->setValue maybe emit sync signal in `propertyWriteValue`.
-    connect(impl, &DTK_CORE_NAMESPACE::DConfig::valueChanged, this, [this, mo, properties](const QString &key){
+    Q_ASSERT(!m_proxyTargetValueChangedConnection);
+    m_proxyTargetValueChangedConnection = connect(m_proxyTarget,
+                                                  SIGNAL(valueChanged(QString, QVariant)),
+                                                  this, SLOT(onProxyTargetValueChanged(QString,QVariant)));
+
+    if (!m_proxyTargetValueChangedConnection) {
+        if (auto engine = qmlEngine(this))
+            engine->throwError(QString(QLatin1String("Can't connect to valueChanged signal, proxyTarget is invalid.")));
+        else
+            qCWarning(cfLog) << "Can't connect to valueChanged signal, proxyTarget is invalid.";
+    }
+}
+
+void DConfigWrapper::initWithDConfig()
+{
+    Q_ASSERT(!impl);
+    impl = new DTK_CORE_NAMESPACE::DConfig(m_name, m_subpath, this);
+    Q_ASSERT(!m_proxyTarget);
+
+    if (!impl->isValid()) {
+        qCWarning(cfLog) << QString("create dconfig failed, valid:%1, name:%2, subpath:%3, backend:%4")
+        .arg(impl->isValid())
+            .arg(impl->name())
+            .arg(impl->subpath())
+            .arg(impl->backendName());
+        impl->deleteLater();
+        impl = nullptr;
+        return;
+    }
+
+    qCInfo(cfLog) << QString("create dconfig successful, valid:%1, name:%2, subpath:%3, backend:%4")
+                         .arg(impl->isValid())
+                         .arg(impl->name())
+                         .arg(impl->subpath())
+                         .arg(impl->backendName());
+
+    for (auto iter = m_properties.begin(); iter != m_properties.end(); iter++) {
+        // it's need to emit signal, because other qml object maybe read the old value
+        // when binding the property before the component completed, also it has a performance problem.
+        // sync backend's value to `Wrapper`, we only use Wrapper's value(defined in qml) as fallback value.
+        m_metaObject->setValue(iter.key(), impl->value(iter.key(), iter.value()));
+    }
+
+    // Using QueuedConnection because impl->setValue maybe emit sync signal in `propertyWriteValue`.
+    connect(impl, &DTK_CORE_NAMESPACE::DConfig::valueChanged, this, [this](const QString &key){
         const QByteArray &proName = key.toLocal8Bit();
-        if (properties.contains(proName)) {
+        if (m_properties.contains(proName)) {
             qCDebug(cfLog) << "update value from DConfig by 'valueChanged', key:" << proName;
-            mo->setValue(proName, impl->value(proName, properties.value(proName)));
+            m_metaObject->setValue(proName, impl->value(proName, m_properties.value(proName)));
         }
         Q_EMIT valueChanged(key);
     }, Qt::QueuedConnection);
+}
+
+void DConfigWrapper::onProxyTargetValueChanged(const QString &key, const QVariant &value)
+{
+    const QByteArray &propName = key.toLocal8Bit();
+    if (m_properties.contains(propName)) {
+        qCDebug(cfLog) << "update value from:" << m_proxyTarget << "by valueChanged', key:" << propName
+                       << "value:" << value;
+        if (isDefaultValue(propName))
+            m_metaObject->setValue(propName, m_properties.value(propName));
+        else
+            m_metaObject->setValue(propName, value);
+    }
+    Q_EMIT valueChanged(key);
 }
