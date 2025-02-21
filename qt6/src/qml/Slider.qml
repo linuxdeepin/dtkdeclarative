@@ -43,6 +43,12 @@ T.Slider {
         palette: D.DTK.makeIconPalette(control.palette)
         mode: control.D.ColorSelector.controlState
         theme: control.D.ColorSelector.controlTheme
+
+        Loader {
+            anchors.fill: parent
+            active: control.visualFocus
+            sourceComponent: FocusBoxBorder {}
+        }
     }
 
     // draw panel
