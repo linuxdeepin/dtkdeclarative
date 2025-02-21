@@ -114,4 +114,9 @@ T.Switch {
         text: control.text
         verticalAlignment: Text.AlignVCenter
     }
+
+    background: Loader {
+        active: control.visualFocus
+        sourceComponent: FocusBoxBorder {}
+    }
 }

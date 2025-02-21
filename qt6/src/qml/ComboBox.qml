@@ -148,6 +148,11 @@ T.ComboBox {
                 }
             }
         }
+        Loader {
+            anchors.fill: parent
+            active: control.flat && control.visualFocus
+            sourceComponent: FocusBoxBorder {}
+        }
     }
 
     popup: Popup {

@@ -8,9 +8,9 @@ import org.deepin.dtk.style 1.0 as DS
 
 Item {
     id: control
-    property color color: "transparent"
+    property color color: palette.highlight
     property real borderWidth: DS.Style.control.focusBorderWidth
-    property real radius: 0
+    property real radius: DS.Style.control.radius
 
     Rectangle {
         id: _border
