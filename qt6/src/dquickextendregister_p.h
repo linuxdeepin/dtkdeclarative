@@ -11,6 +11,7 @@
 #include <DFontManager>
 #include <DPlatformTheme>
 #include <DPlatformHandle>
+#include <DSysInfo>
 #include <QQmlEngine>
 
 DQUICK_BEGIN_NAMESPACE
@@ -66,6 +67,13 @@ struct DPlatformHandleForeign
     QML_FOREIGN(DPlatformHandle)
     QML_NAMED_ELEMENT(PlatformHandle)
     QML_UNCREATABLE("PlatformHandle")
+};
+
+namespace DSysInfoForeign
+{
+    Q_NAMESPACE
+    QML_NAMED_ELEMENT(SysInfo)
+    QML_FOREIGN_NAMESPACE(DTK_CORE_NAMESPACE::DSysInfo)
 };
 
 DQUICK_END_NAMESPACE
