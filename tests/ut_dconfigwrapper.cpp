@@ -38,6 +38,7 @@ TEST_F(ut_DConfigWrapper, componentComplete)
 {
     QScopedPointer<DConfigWrapper> config(new DConfigWrapper());
 
+    config->setAsync(false);
     config->classBegin();
     config->setName("example");
     config->setSubpath("");
@@ -50,6 +51,7 @@ TEST_F(ut_DConfigWrapper, setValue)
 {
     QScopedPointer<DConfigWrapper> config(new DConfigWrapper());
 
+    config->setAsync(false);
     config->classBegin();
     config->setName("example");
     config->componentComplete();

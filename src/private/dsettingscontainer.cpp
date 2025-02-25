@@ -277,7 +277,7 @@ void SettingsOption::setConfig(DConfigWrapper *config)
     if (propertyIndex < 0) {
         connect(m_config, &DConfigWrapper::valueChanged, this, [this](const QString &key){
             if (key == m_key) {
-                setValue(m_config->value(key));
+                setValue(m_config->value(key), false);
                 m_valueInitialized = true;
             }
         });
@@ -305,17 +305,22 @@ SettingsOption *SettingsOption::qmlAttachedProperties(QObject *object)
 
 void SettingsOption::onConfigValueChanged()
 {
-    setValue(m_config->value(m_key));
+    setValue(m_config->value(m_key), false);
     m_valueInitialized = true;
 }
 
 void SettingsOption::setValue(QVariant value)
 {
+    setValue(value, true);
+}
+
+void SettingsOption::setValue(const QVariant &value, bool updateConfig)
+{
     if (value == m_value)
         return;
 
     m_value = value;
-    if (m_config)
+    if (updateConfig && m_config)
         m_config->setValue(m_key, value);
 
     Q_EMIT valueChanged(value);

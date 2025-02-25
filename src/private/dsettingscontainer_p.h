@@ -54,6 +54,8 @@ private Q_SLOTS:
     void onConfigValueChanged();
 
 private:
+    void setValue(const QVariant &value, bool updateConfig);
+
     QString m_key;
     QString m_name;
     QVariant m_value;
