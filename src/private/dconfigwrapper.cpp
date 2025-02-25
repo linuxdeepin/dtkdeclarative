@@ -12,6 +12,7 @@
 #include <private/qqmlopenmetaobject_p.h>
 
 #include <DConfig>
+#include <DThreadUtils>
 
 #ifndef QT_DEBUG
 Q_LOGGING_CATEGORY(cfLog, "dtk.dsg.config" , QtInfoMsg);
@@ -31,7 +32,8 @@ static DefalutProperties propertyAndValues(const QObject* obj)
     const int count = mo->propertyCount();
     static const QStringList ReservedPropertyNames {
         "name",
-        "subpath"
+        "subpath",
+        "async"
     };
 
     for (int i = offset; i < count; ++i) {
@@ -63,7 +65,7 @@ protected:
     {
         const QByteArray &proName = name(index);
         qCDebug(cfLog) << "propertyWriteValue" << proName << value;
-        owner->impl->setValue(proName, value);
+        owner->setValue(proName, value);
         // Pre judgment returns the set value first.
         // If the value is different, `valueChanged` will be triggered again to update the value,
         // there are problems when the service is unavailable.
@@ -73,7 +75,8 @@ protected:
     int metaCall(QObject *o, QMetaObject::Call _c, int _id, void **_a) override
     {
         if (_c == QMetaObject::ResetProperty) {
-            owner->impl->reset(name(_id - type()->propertyOffset()));
+            const auto key = name(_id - type()->propertyOffset());
+            owner->resetValue(key);
         }
 
         return QQmlOpenMetaObject::metaCall(o, _c, _id, _a);
@@ -111,8 +114,8 @@ QString DConfigWrapper::name() const
 
 void DConfigWrapper::setName(const QString &name)
 {
-    if (!m_name.isEmpty()) {
-        qWarning() << "name is existed." << m_name;
+    if (mo) {
+        qCWarning(cfLog) << name << ": This name can't be changed after initialized";
         return;
     }
 
@@ -130,8 +133,8 @@ QString DConfigWrapper::subpath() const
 
 void DConfigWrapper::setSubpath(const QString &subpath)
 {
-    if (!m_subpath.isEmpty()) {
-        qWarning() << "subpath is existed." << m_subpath;
+    if (mo) {
+        qCWarning(cfLog) << subpath << ": This subpath can't be changed after initialized";
         return;
     }
 
@@ -147,7 +150,7 @@ QStringList DConfigWrapper::keyList() const
     if (!impl)
         return QStringList();
 
-    return impl->keyList();
+    return configKeyList;
 }
 
 /*!
@@ -159,7 +162,13 @@ bool DConfigWrapper::isValid() const
     if (!impl)
         return false;
 
-    return impl->isValid();
+    // If is invalid, will delete the impl object
+    return true;
+}
+
+bool DConfigWrapper::isDefaultValue(const QString &key) const
+{
+    return !nonDefaultValueKeyList.contains(key);
 }
 
 /*!
@@ -168,10 +177,8 @@ bool DConfigWrapper::isValid() const
  */
 QVariant DConfigWrapper::value(const QString &key, const QVariant &fallback) const
 {
-    if (!impl)
-        return fallback;
-
-    return impl->value(key, fallback);
+    const auto &value = property(key.toLatin1().constData());
+    return value.isValid() ? value : fallback;
 }
 
 /*!
@@ -183,7 +190,13 @@ void DConfigWrapper::setValue(const QString &key, const QVariant &value)
     if (!impl)
         return;
 
-    impl->setValue(key, value);
+    if (m_async) {
+        QMetaObject::invokeMethod(impl.get(), [this, key, value] {
+            impl->setValue(key, value);
+        });
+    } else {
+        impl->setValue(key, value);
+    }
 }
 
 void DConfigWrapper::resetValue(const QString &key)
@@ -191,13 +204,53 @@ void DConfigWrapper::resetValue(const QString &key)
     if (!impl)
         return;
 
-    impl->reset(key);
+    if (m_async) {
+        QMetaObject::invokeMethod(impl.get(), [this, key] {
+            impl->reset(key);
+        });
+    } else {
+        impl->reset(key);
+    }
 }
 
 void DConfigWrapper::classBegin()
 {
 
 }
+
+class Q_DECL_HIDDEN DConfigWrapperThread : public QThread {
+public:
+    DConfigWrapperThread()
+        : QThread()
+    {
+        setObjectName("DConfigWrapperThread");
+        moveToThread(this);
+    }
+    ~DConfigWrapperThread() override
+    {
+        quit();
+        wait();
+    }
+};
+
+static QThread *globalThread() {
+    static QThread *thread = nullptr;
+    if (!thread) {
+        thread = new DConfigWrapperThread();
+        thread->start();
+    }
+    return thread;
+}
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+DTK_CORE_NAMESPACE::DThreadUtils *globalThreadUtils() {
+    static DTK_CORE_NAMESPACE::DThreadUtils *threadUtils = nullptr;
+    if (!threadUtils) {
+        threadUtils = new DTK_CORE_NAMESPACE::DThreadUtils(globalThread());
+    }
+    return threadUtils;
+}
+#endif
 
 /*!
     \brief Initialize `DConfig` and redirect method of property's get and set.
@@ -207,51 +260,149 @@ void DConfigWrapper::classBegin()
  */
 void DConfigWrapper::componentComplete()
 {
-    impl = new DTK_CORE_NAMESPACE::DConfig(m_name, m_subpath, this);
+    Q_ASSERT(!impl);
+
+    // Get the dynamic properties and previous values defined in qml.
+    // Muse before new DConfigWrapperMetaObject
+    initializeConfigs = propertyAndValues(this);
+    qCDebug(cfLog) << "Initialize Properties:" << initializeConfigs;
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    auto objectType = new QQmlOpenMetaObjectType(&DConfigWrapper::staticMetaObject);
+#else
+    auto objectType = new QQmlOpenMetaObjectType(&DConfigWrapper::staticMetaObject, qmlEngine(this));
+#endif
+
+    mo = new DConfigWrapperMetaObject(this, objectType);
+    mo->setCached(true);
+
+    if (m_async) {
+        // Init properties
+        for (auto iter = initializeConfigs.begin(); iter != initializeConfigs.end(); iter++) {
+            mo->setValue(iter.key(), iter.value());
+        }
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        globalThreadUtils()->run(this, &DConfigWrapper::initializeProperties);
+#else
+        QMetaObject::invokeMethod(globalThread(), [this] {
+            initializeProperties();
+        });
+#endif
+    } else {
+        initializeProperties();
+    }
+}
+
+template<typename Fun, typename... Args>
+typename std::result_of<typename std::decay<Fun>::type(Args...)>::type
+callInGuiThread(DConfigWrapper *wrapper, Fun fun, Args&&... args) {
+    if (QThread::currentThread() == qApp->thread()) {
+        return fun(std::forward<Args>(args)...);
+    }
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    return DThreadUtils::gui().exec(wrapper, fun, std::forward<Args>(args)...);
+#else
+    return DThreadUtil::runInMainThread(wrapper, fun, std::forward<Args>(args)...);
+#endif
+}
+
+// in config thread, don't set the member variable directly.
+// Must ensure the member variable is set in the main thread.
+// So there have a "const" flag.
+void DConfigWrapper::initializeProperties() const
+{
+    auto impl = new DTK_CORE_NAMESPACE::DConfig(m_name, m_subpath);
 
     if (!impl->isValid()) {
         qCWarning(cfLog) << QString("create dconfig failed, valid:%1, name:%2, subpath:%3, backend:%4")
-                      .arg(impl->isValid())
-                      .arg(impl->name())
-                      .arg(impl->subpath())
-                      .arg(impl->backendName());
-        impl->deleteLater();
+                                .arg(impl->isValid())
+                                .arg(impl->name())
+                                .arg(impl->subpath())
+                                .arg(impl->backendName());
+        delete impl;
         impl = nullptr;
         return;
     }
 
     qInfo() << QString("create dconfig successful, valid:%1, name:%2, subpath:%3, backend:%4")
-               .arg(impl->isValid())
-               .arg(impl->name())
-               .arg(impl->subpath())
-               .arg(impl->backendName());
+                   .arg(impl->isValid())
+                   .arg(impl->name())
+                   .arg(impl->subpath())
+                   .arg(impl->backendName());
 
-    // Get the dynamic properties and previous values defined in qml.
-    const DefalutProperties &properties = propertyAndValues(this);
-    qCDebug(cfLog) << "properties" << properties;
-
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    auto objectType = new QQmlOpenMetaObjectType(&DConfigWrapper::staticMetaObject, qmlEngine(this));
-#else
-    auto objectType = new QQmlOpenMetaObjectType(&DConfigWrapper::staticMetaObject);
-#endif
-    auto mo = new DConfigWrapperMetaObject(this, objectType);
-    mo->setCached(true);
-
-    for (auto iter = properties.begin(); iter != properties.end(); iter++) {
-        // it's need to emit signal, because other qml object maybe read the old value
-        // when binding the property before the component completed, also it has a performance problem.
-        // sync backend's value to `Wrapper`, we only use Wrapper's value(defined in qml) as fallback value.
-        mo->setValue(iter.key(), impl->value(iter.key(), iter.value()));
+    const auto keyList = impl->keyList();
+    QStringList nonDefaultValueKeyList;
+    for (const auto &key : keyList) {
+        if (!impl->isDefaultValue(key)) {
+            nonDefaultValueKeyList.append(key);
+        }
     }
 
-     // Using QueuedConnection because impl->setValue maybe emit sync signal in `propertyWriteValue`.
-    connect(impl, &DTK_CORE_NAMESPACE::DConfig::valueChanged, this, [this, mo, properties](const QString &key){
-        const QByteArray &proName = key.toLocal8Bit();
-        if (properties.contains(proName)) {
-            qCDebug(cfLog) << "update value from DConfig by 'valueChanged', key:" << proName;
-            mo->setValue(proName, impl->value(proName, properties.value(proName)));
+    auto wrapper = const_cast<DConfigWrapper*>(this);
+    callInGuiThread(wrapper, [wrapper, keyList, nonDefaultValueKeyList, impl] {
+        wrapper->impl.reset(impl);
+        wrapper->configKeyList = keyList;
+        wrapper->nonDefaultValueKeyList = nonDefaultValueKeyList;
+    });
+
+    for (const auto &key : keyList) {
+        const QVariant currentValue = callInGuiThread(wrapper, [wrapper, key] {
+            return wrapper->property(key.toLocal8Bit());
+        });
+
+        const auto initialValue = initializeConfigs.value(key.toLocal8Bit());
+        if (currentValue.isValid() && currentValue != initialValue) {
+            // This key has been set value in QML by user, so we should update the value to DConfig.
+            qCDebug(cfLog) << "Update value from user on initialize, key:" << key
+                           << "value:" << currentValue << "initialize value:" << initialValue
+                           << "config side value:" << impl->value(key, QVariant());
+            impl->setValue(key, currentValue);
+        } else {
+            // Must fallback to the initial value, in the sync mode, the DConfigWrapperMetaObject's
+            // properties is not initialize.
+            const auto value = impl->value(key, initialValue);
+            callInGuiThread(wrapper, [wrapper, key, value] {
+                if (value.isValid())
+                    wrapper->mo->setValue(key.toLocal8Bit(), value);
+            });
         }
-        Q_EMIT valueChanged(key);
-    }, Qt::QueuedConnection);
+    }
+
+    // Using QueuedConnection because impl->setValue maybe emit sync signal in `propertyWriteValue`.
+    connect(impl, &DTK_CORE_NAMESPACE::DConfig::valueChanged, wrapper, [wrapper, impl](const QString &key) {
+        const QByteArray &propName = key.toLocal8Bit();
+
+        qCDebug(cfLog) << "update value from DConfig by 'valueChanged', key:" << propName;
+        const auto value = impl->value(propName, QVariant());
+        const bool isDefault = impl->isDefaultValue(propName);
+        callInGuiThread(wrapper, [wrapper, propName, value, isDefault] {
+            if (isDefault) {
+                wrapper->nonDefaultValueKeyList.removeOne(propName);
+            } else if (!wrapper->nonDefaultValueKeyList.contains(propName)) {
+                wrapper->nonDefaultValueKeyList.append(propName);
+            }
+            if (value.isValid())
+                wrapper->mo->setValue(propName, value);
+        });
+
+        QMetaObject::invokeMethod(wrapper, [wrapper, key] {
+            Q_EMIT wrapper->valueChanged(key);
+        });
+    }, Qt::DirectConnection);
+
+    QMetaObject::invokeMethod(wrapper, &DConfigWrapper::initialized);
+}
+
+bool DConfigWrapper::async() const
+{
+    return m_async;
+}
+
+void DConfigWrapper::setAsync(bool newAsync)
+{
+    m_async = newAsync;
+    if (mo)
+        qCWarning(cfLog) << "Async can't be changed after initialized";
 }
