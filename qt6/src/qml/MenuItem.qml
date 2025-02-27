@@ -44,6 +44,7 @@ T.MenuItem {
         font: control.font
         color: control.palette.windowText
         Behavior on color {
+            enabled: D.DTK.hasAnimation
             ColorAnimation { duration: control.hovered ? 100 : 0; }
         }
         icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
