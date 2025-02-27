@@ -49,7 +49,7 @@ void DSGBlendNode::render(const QSGRenderNode::RenderState *state)
 {
     // m_item may become invalid when the referred blur behind item get destroyed by a Loader.
     // Give up rendering in this case.
-    if (!m_item)
+    if (!m_item || !m_item->window())
         return;
 
     if (m_isRestore)
