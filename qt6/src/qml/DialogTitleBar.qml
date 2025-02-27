@@ -23,19 +23,14 @@ Item {
 
     property var __dwindow: Window.window.D.DWindow
 
-    MouseArea {
-        anchors.fill: parent
-        acceptedButtons: Qt.AllButtons
-        propagateComposedEvents: true
-        onPressed: function(mouse) {
-            if (mouse.button === Qt.RightButton) {
-                if (mouse.x < control.width - closeBtn.width) {
+    TapHandler {
+        acceptedButtons: Qt.RightButton
+        onTapped: function (eventPoint, button) {
+            if (button === Qt.RightButton) {
+                if (eventPoint.position.x < control.width - closeBtn.width) {
                     __dwindow.popupSystemWindowMenu()
-                    mouse.accepted = true
-                    return
                 }
             }
-            mouse.accepted = false
         }
     }
 

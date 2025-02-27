@@ -8,14 +8,13 @@ import QtQuick.Layouts
 import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
-Control {
+Item {
     id: control
     z: D.DTK.TopOrder
     width: Window.window.width
     // it's binding `height` instead of `visible` property,
     // because MouseArea should accept event keeping visible.
-    implicitHeight: (!__isFullScreen || __isVisible) ? DS.Style.titleBar.height : 0
-    hoverEnabled: __isFullScreen && autoHideOnFullscreen // TODO can't drag in qt6
+    implicitHeight: (!__isFullScreen || __isVisible) ? DS.Style.titleBar.height : 1
 
     property string title: Window.window.title
     property alias icon: iconLabel
@@ -40,41 +39,36 @@ Control {
 
     property var __dwindow: Window.window.D.DWindow
     property bool __isFullScreen: Window.window.visibility === Window.FullScreen
-    property bool __isVisible: mouseArea.containsMouse
+    property bool __isVisible: hoverHandler.hovered
     readonly property int __includedAreaX: control.width - optionMenuBtn.width - windowButtonsLoader.width
 
     property alias enableInWindowBlendBlur: background.active
+    // Control's property
+    property alias background: background.sourceComponent
+    property alias hovered: hoverHandler.hovered
+    property alias hoverEnabled: hoverHandler.enabled
 
     property D.Palette textColor: DS.Style.button.text
     palette.windowText: D.ColorSelector.textColor
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-        hoverEnabled: __isFullScreen && autoHideOnFullscreen
-        acceptedButtons: Qt.AllButtons
-        propagateComposedEvents: true
 
-        onPressed: function(mouse) {
-            if (mouse.button === Qt.RightButton) {
-                if (mouse.x < __includedAreaX) {
+    HoverHandler {
+        enabled: __isFullScreen && autoHideOnFullscreen
+        id: hoverHandler
+    }
+    TapHandler {
+        acceptedButtons: Qt.RightButton | Qt.LeftButton
+        onDoubleTapped: function (eventPoint, button) {
+            if (button === Qt.LeftButton) {
+                control.toggleWindowState()
+            }
+        }
+        onTapped: function (eventPoint, button) {
+            if (button === Qt.RightButton) {
+                if (eventPoint.position.x < __includedAreaX) {
                     __dwindow.popupSystemWindowMenu()
-                    mouse.accepted = true
-                    return
                 }
             }
-            mouse.accepted = false
         }
-        onDoubleClicked: function(mouse) {
-            // Windowed or Maximized
-            if (mouse.button === Qt.LeftButton) {
-                control.toggleWindowState()
-                mouse.accepted = true
-                return
-            }
-            mouse.accepted = false
-        }
-        onReleased: function(mouse) { mouse.accepted = false }
-        onClicked: function(mouse) { mouse.accepted = false }
     }
 
     Loader {
@@ -89,7 +83,7 @@ Control {
         id: content
         spacing: 0
         anchors.fill: parent
-        visible: control.height > 0
+        visible: control.height > 1
 
         Loader {
             active: embedMode
