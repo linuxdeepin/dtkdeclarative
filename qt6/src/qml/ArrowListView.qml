@@ -38,11 +38,8 @@ FocusScope {
             implicitHeight: Math.min(contentHeight, maxVisibleItems * itemHeight)
             implicitWidth:{
                 var maxWidth = DS.Style.arrowListView.width
-                if (!itemsView.model || !itemsView.model.hasOwnProperty("get"))
-                    return maxWidth
-
                 for (var i = 0; i < itemsView.count; ++i) {
-                    var item = itemsView.model.get(i)
+                    var item = itemsView.itemAtIndex(i)
                     if (item && item.implicitWidth > maxWidth)
                         maxWidth = item.implicitWidth
                 }

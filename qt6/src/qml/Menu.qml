@@ -67,19 +67,6 @@ T.Menu {
                 view.currentIndex: control.currentIndex
                 maxVisibleItems: control.maxVisibleItems
                 itemHeight: DS.Style.menu.item.height
-
-                function refreshContentItemWidth()
-                {
-                    for (var i = 0; i < view.count; ++i) {
-                        var item = view.model.get(i)
-                        if (item) {
-                            item.width = view.width
-                        }
-                    }
-                }
-
-                onCountChanged: refreshContentItemWidth()
-                onWidthChanged: refreshContentItemWidth()
                 view.highlightFollowsCurrentItem: true
                 view.highlightMoveDuration: 50
                 view.highlightMoveVelocity: -1
