@@ -1,3 +1,15 @@
+dtkdeclarative (5.7.11) unstable; urgency=medium
+
+  * fix: double click doesn't work for TitleBar
+  * chore: replacing a way to get listview's item
+  * fix: delayed color updates for MenuItem
+  * fix: incorrect width for Menu
+  * feat: export DSysInfo for QML
+  * fit: Add focus style
+  * fix: MinimizeButton behavior mismatch with qwidget
+
+ -- YeShanShan <yeshanshan@uniontech.com>  Thu, 27 Feb 2025 20:48:40 +0800
+
 dtkdeclarative (5.7.10) unstable; urgency=medium
 
   * fix: incorrect height for Menu when height is large
