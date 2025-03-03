@@ -156,6 +156,7 @@ T.ComboBox {
     }
 
     popup: Popup {
+        palette: control.palette
         implicitWidth: control.width
         contentItem: ArrowListView {
             clip: true
