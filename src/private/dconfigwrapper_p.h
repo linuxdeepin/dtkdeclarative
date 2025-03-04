@@ -11,6 +11,7 @@
 
 DCORE_BEGIN_NAMESPACE
 class DConfig;
+class DThreadUtils;
 DCORE_END_NAMESPACE
 
 class DConfigWrapperMetaObject;
@@ -42,14 +43,22 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void valueChanged(const QString &key);
+    void initialized();
 
 public:
     virtual void classBegin() override;
     virtual void componentComplete() override;
 
 private:
+    void initializeProperties();
+
     friend DConfigWrapperMetaObject;
-    DTK_CORE_NAMESPACE::DConfig *impl;
+    DConfigWrapperMetaObject *mo = nullptr;
+    std::unique_ptr<DTK_CORE_NAMESPACE::DConfig> impl;
+    QStringList configKeyList;
+    // If the key was set value, add it to the list
+    QStringList nonDefaultValueKeyList;
+
     QString m_name;
     QString m_subpath;
     Q_DISABLE_COPY(DConfigWrapper)
