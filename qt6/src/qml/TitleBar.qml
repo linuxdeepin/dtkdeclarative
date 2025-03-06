@@ -52,8 +52,9 @@ Item {
     palette.windowText: D.ColorSelector.textColor
 
     HoverHandler {
-        enabled: __isFullScreen && autoHideOnFullscreen
         id: hoverHandler
+        // reset it's parent to disable HoverHandler
+        parent: __isFullScreen && autoHideOnFullscreen ? control : null
     }
     TapHandler {
         acceptedButtons: Qt.RightButton | Qt.LeftButton

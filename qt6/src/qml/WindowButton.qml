@@ -6,34 +6,53 @@ import QtQuick
 import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
-Control {
+D.IconButton {
     id: control
-    property alias icon: iconLoader
-    readonly property bool pressed: mouseArea.pressed
-    signal clicked(var mouse)
-    property D.Palette textColor: DS.Style.button.text
-    property D.Palette backgroundColor: DS.Style.windowButton.background
 
-    palette.windowText: D.ColorSelector.textColor
-    hoverEnabled: true
-    contentItem: D.DciIcon {
-        id: iconLoader
-        palette: D.DTK.makeIconPalette(control.palette)
-        sourceSize {
-            width: DS.Style.windowButton.width
-            height: DS.Style.windowButton.height
+    property int topRightRadius: (Window.window.visibility !== Window.Maximized &&
+                                 Window.window.visibility !== Window.FullScreen &&
+                                 isOnRightEdgeOfWindow) ? D.DTK.platformTheme.windowRadius : 0
+    readonly property bool isOnRightEdgeOfWindow: __itemGlobalPoint.x + control.width >= Window.window.width
+
+    readonly property var __itemGlobalPoint: {
+        var a = control
+        var x = 0, y = 0
+        while(a.parent) {
+            x += a.x
+            y += a.y
+            a = a.parent
         }
-        mode: control.D.ColorSelector.controlState
-        theme: control.D.ColorSelector.controlTheme
+        return Qt.point(x, y)
     }
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-        Component.onCompleted: clicked.connect(control.clicked)
+
+    topPadding: 0
+    bottomPadding: 0
+    leftPadding: 0
+    rightPadding: 0
+    icon {
+        width: DS.Style.windowButton.width
+        height: DS.Style.windowButton.height
     }
-    background: Rectangle {
+    background: D.BoxPanel {
         implicitWidth: DS.Style.windowButton.width
         implicitHeight: DS.Style.windowButton.height
-        color: control.D.ColorSelector.backgroundColor
+        insideBorderColor: null
+        outsideBorderColor: null
+        color1: DS.Style.windowButton.background
+        color2: color1
+        radius: 0
+
+        Loader {
+            anchors.fill: parent
+            active: control.visualFocus
+            sourceComponent: Rectangle {
+                topRightRadius: control.topRightRadius
+                color: "transparent"
+                border {
+                    width: DS.Style.control.focusBorderWidth
+                    color: control.palette.highlight
+                }
+            }
+        }
     }
 }
