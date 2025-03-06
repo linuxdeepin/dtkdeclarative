@@ -12,7 +12,7 @@ DialogWindow {
     id: control
 
     property list<Settings.SettingsGroup> groups
-    property D.Config config
+    property QtObject config
     property Settings.SettingsContainer container : Settings.SettingsContainer {
         id: settingsContainer
         config: control.config
