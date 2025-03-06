@@ -14,6 +14,13 @@
 DCORE_USE_NAMESPACE;
 
 DQUICK_BEGIN_NAMESPACE
+
+#ifndef QT_DEBUG
+    Q_LOGGING_CATEGORY(settingLog, "dtk.dsg.settings" , QtInfoMsg);
+#else
+    Q_LOGGING_CATEGORY(settingLog, "dtk.dsg.settings");
+#endif
+
 static constexpr char const *settingsOptionObjectName = "_d_settings_option";
 static constexpr char const *settingsGroupObjectName = "_d_settings_group";
 
@@ -210,12 +217,12 @@ void SettingsContainer::onGroupVisibleChanged(bool visible)
     }
 }
 
-DConfigWrapper *SettingsContainer::config() const
+QObject *SettingsContainer::config() const
 {
     return m_config;
 }
 
-void SettingsContainer::setConfig(DConfigWrapper *config)
+void SettingsContainer::setConfig(QObject *config)
 {
     if (m_config == config)
         return;
@@ -245,9 +252,10 @@ QString SettingsOption::name() const
 
 QVariant SettingsOption::value()
 {
-    if (!m_valueInitialized) {
-        if (m_config->isValid()) {
-            m_value = m_config->value(m_key);
+    if (!m_valueInitialized && m_config) {
+        auto value = m_config->property(m_key.toLocal8Bit());
+        if (value.isValid()) {
+            m_value = value;
             m_valueInitialized = true;
         }
     }
@@ -270,17 +278,16 @@ static int indexOfProperty(const QObject * obj, const QString &name)
     return -1;
 }
 
-void SettingsOption::setConfig(DConfigWrapper *config)
+void SettingsOption::setConfig(QObject *config)
 {
     m_config = config;
     int propertyIndex = indexOfProperty(m_config, m_key);
     if (propertyIndex < 0) {
-        connect(m_config, &DConfigWrapper::valueChanged, this, [this](const QString &key){
-            if (key == m_key) {
-                setValue(m_config->value(key), false);
-                m_valueInitialized = true;
-            }
-        });
+        const auto ok = connect(m_config, SIGNAL(valueChanged(QString, QVariant)),
+                                this, SLOT(onValueChanged(QString, QVariant)));
+        if (!ok) {
+            qCWarning(settingLog) << "Failed to connect valueChanged signal from Config object:" << m_config;
+        }
     } else {
         // valueChanged is not emitted when the key of Config defined in qml
         const auto mo = m_config->metaObject();
@@ -305,8 +312,19 @@ SettingsOption *SettingsOption::qmlAttachedProperties(QObject *object)
 
 void SettingsOption::onConfigValueChanged()
 {
-    setValue(m_config->value(m_key), false);
+    const auto value = m_config->property(m_key.toLocal8Bit());
+    if (!value.isValid())
+        return;
+    setValue(value, false);
     m_valueInitialized = true;
+}
+
+void SettingsOption::onValueChanged(const QString &key, const QVariant &value)
+{
+    if (key == m_key && value.isValid()) {
+        setValue(value, false);
+        m_valueInitialized = true;
+    }
 }
 
 void SettingsOption::setValue(QVariant value)
@@ -321,14 +339,30 @@ void SettingsOption::setValue(const QVariant &value, bool updateConfig)
 
     m_value = value;
     if (updateConfig && m_config)
-        m_config->setValue(m_key, value);
+        m_config->setProperty(m_key.toLocal8Bit(), value);
 
     Q_EMIT valueChanged(value);
 }
 
 void SettingsOption::resetValue()
 {
-    m_config->resetValue(m_key);
+    const auto index = indexOfProperty(m_config, m_key);
+    if (index < 0) {
+        qCWarning(settingLog) << "The key" << m_key << "not found in the Config object:" << m_config;
+        return;
+    }
+
+    const auto mo = m_config->metaObject();
+    const auto p = mo->property(index);
+
+    if (!p.isResettable()) {
+        qCDebug(settingLog) << "The key" << m_key << "can't reset in the Config object:" << m_config;
+        return;
+    }
+
+    if (!p.reset(m_config)) {
+        qCWarning(settingLog) << "The key" << m_key << "reset failed in the Config object:" << m_config;
+    }
 }
 
 void SettingsOption::setKey(QString key)
@@ -404,7 +438,7 @@ void SettingsGroup::setBackground(QQmlComponent *background)
     Q_EMIT backgroundChanged();
 }
 
-void SettingsGroup::setConfig(DConfigWrapper *config)
+void SettingsGroup::setConfig(QObject *config)
 {
     for (auto childGroup : qAsConst(m_children)) {
         childGroup->setConfig(config);
