@@ -10,7 +10,6 @@
 #include <QQmlParserStatus>
 #include <QQmlComponent>
 #include <private/qqmlobjectmodel_p.h>
-#include "dconfigwrapper_p.h"
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -40,7 +39,7 @@ public:
 
     QQmlComponent *delegate() const;
     void setDelegate(QQmlComponent *delegate);
-    void setConfig(DConfigWrapper *config);
+    void setConfig(QObject *config);
 
     static SettingsOption *qmlAttachedProperties(QObject *object);
 
@@ -52,6 +51,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void onConfigValueChanged();
+    void onValueChanged(const QString &key, const QVariant &value);
 
 private:
     void setValue(const QVariant &value, bool updateConfig);
@@ -61,7 +61,7 @@ private:
     QVariant m_value;
     bool m_valueInitialized = false;
     QQmlComponent *m_delegate = nullptr;
-    DConfigWrapper *m_config = nullptr;
+    QObject *m_config = nullptr;
 };
 
 class SettingsGroup : public QObject
@@ -97,7 +97,7 @@ public:
     QQmlListProperty<DTK_QUICK_NAMESPACE::SettingsGroup> children();
     QQmlComponent *background() const;
     void setBackground(QQmlComponent *background);
-    void setConfig(DConfigWrapper *config);
+    void setConfig(QObject *config);
     SettingsGroup *parentGroup() const;
     void setParentGroup(SettingsGroup *parentGroup);
     int index() const;
@@ -190,7 +190,7 @@ class SettingsContainer : public QObject, public QQmlParserStatus
 {
     Q_OBJECT
     Q_INTERFACES(QQmlParserStatus)
-    Q_PROPERTY(DConfigWrapper *config READ config WRITE setConfig NOTIFY configChanged)
+    Q_PROPERTY(QObject *config READ config WRITE setConfig NOTIFY configChanged)
     Q_PROPERTY(QQmlListProperty<DTK_QUICK_NAMESPACE::SettingsGroup> groups READ groups NOTIFY groupsChanged)
     Q_PROPERTY(SettingsContentModel *contentModel READ contentModel NOTIFY contentModelChanged)
     Q_PROPERTY(QQmlComponent *contentTitle READ contentTitle WRITE setContentTitle NOTIFY contentTitleChanged)
@@ -206,8 +206,8 @@ public:
     explicit SettingsContainer(QObject *parent = nullptr);
     virtual ~SettingsContainer() override;
 
-    DConfigWrapper *config() const;
-    void setConfig(DConfigWrapper *config);
+    QObject *config() const;
+    void setConfig(QObject *config);
     QQmlListProperty<DTK_QUICK_NAMESPACE::SettingsGroup> groups();
     SettingsContentModel *contentModel() const;
     SettingsNavigationModel *navigationModel() const;
@@ -248,7 +248,7 @@ private:
     QQmlComponent *m_contentTitle = nullptr;
     QQmlComponent *m_navigationTitle = nullptr;
     QQmlComponent * m_contentBackground = nullptr;
-    DConfigWrapper *m_config = nullptr;
+    QObject *m_config = nullptr;
 };
 
 DQUICK_END_NAMESPACE
