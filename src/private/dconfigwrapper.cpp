@@ -363,9 +363,11 @@ void DConfigWrapper::initializeProperties() const
             // Must fallback to the initial value, in the sync mode, the DConfigWrapperMetaObject's
             // properties is not initialize.
             const auto value = impl->value(key, initialValue);
-            callInGuiThread(wrapper, [wrapper, key, value] {
-                if (value.isValid())
+            callInGuiThread(wrapper, [wrapper, key, value, currentValue] {
+                if (value.isValid() && value != currentValue) {
                     wrapper->mo->setValue(key.toLocal8Bit(), value);
+                    Q_EMIT wrapper->valueChanged(key, value);
+                }
             });
         }
     }
@@ -387,8 +389,8 @@ void DConfigWrapper::initializeProperties() const
                 wrapper->mo->setValue(propName, value);
         });
 
-        QMetaObject::invokeMethod(wrapper, [wrapper, key] {
-            Q_EMIT wrapper->valueChanged(key);
+        QMetaObject::invokeMethod(wrapper, [wrapper, key, value] {
+            Q_EMIT wrapper->valueChanged(key, value);
         });
     }, Qt::DirectConnection);
 

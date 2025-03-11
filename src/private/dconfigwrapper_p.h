@@ -47,7 +47,7 @@ public Q_SLOTS:
     bool isDefaultValue(const QString &key) const;
 
 Q_SIGNALS:
-    void valueChanged(const QString &key);
+    void valueChanged(const QString &key, const QVariant &value);
     void initialized();
 
 private:
