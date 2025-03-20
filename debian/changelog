@@ -1,3 +1,9 @@
+dtkdeclarative (5.7.13) unstable; urgency=medium
+
+  * fix: wrong z order of render buffer blitter
+
+ -- YeShanShan <yeshanshan@uniontech.com>  Thu, 20 Mar 2025 17:06:59 +0800
+
 dtkdeclarative (5.7.12) unstable; urgency=medium
 
   * feat: using DConfig in the non-GUI thread
