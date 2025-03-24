@@ -13,16 +13,16 @@ DelegateModel {
     property alias visibleGroup: visibleItems
 
     function update() {
-        if (items.count > 0) {
-            items.setGroups(0, items.count, "items");
-        }
 
         // Step 1: Filter items
         var visible = [];
+        var unVisible = []
         for (var i = 0; i < items.count; ++i) {
             var item = items.get(i);
             if (filterAcceptsItem(item.model)) {
                 visible.push(item);
+            } else {
+                unVisible.push(item);
             }
         }
 
@@ -33,10 +33,15 @@ DelegateModel {
             });
         }
 
-        // Step 3: Add all items to the visible group:
+        // Step 3: Remove the visible group
+        for (i = 0; i < unVisible.length; ++i) {
+            items.removeGroups(unVisible[i], 1, "visible")
+        }
+
+        // Step 4: Add the visible group
         for (i = 0; i < visible.length; ++i) {
             item = visible[i];
-            item.inVisible = true;
+            items.addGroups(visible[i], 1, "visible")
             if (item.visibleIndex !== i) {
                 visibleItems.move(item.visibleIndex, i, 1);
             }
