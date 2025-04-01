@@ -14,7 +14,7 @@ T.ScrollBar {
     implicitHeight: DS.Style.control.implicitHeight(control)
 
     padding: DS.Style.scrollBar.padding
-    visible: control.policy !== T.ScrollBar.AlwaysOff
+    visible: control.policy !== T.ScrollBar.AlwaysOff && control.size < 1.0
     policy: D.DTK.platformTheme.scrollBarPolicy
 
     state: "hide"
