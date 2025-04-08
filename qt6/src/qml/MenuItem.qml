@@ -34,8 +34,8 @@ T.MenuItem {
         readonly property real arrowPadding: control.subMenu && control.arrow ? control.arrow.width + control.spacing : 0
         readonly property real indicatorPadding: control.useIndicatorPadding && control.indicator ? control.indicator.width + control.spacing : 0
 
-        leftPadding: (!control.mirrored ? indicatorPadding : arrowPadding) + DS.Style.menu.item.contentPadding
-        rightPadding: (control.mirrored ? indicatorPadding : arrowPadding) + DS.Style.menu.item.contentPadding
+        leftPadding: !control.mirrored ? Math.max(DS.Style.menu.item.contentPadding, indicatorPadding) : arrowPadding
+        rightPadding: control.mirrored ? Math.max(DS.Style.menu.item.contentPadding, indicatorPadding) : arrowPadding
         spacing: control.spacing
         mirrored: control.mirrored
         display: control.display
