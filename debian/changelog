@@ -1,3 +1,10 @@
+dtkdeclarative (5.7.15) unstable; urgency=medium
+
+  * feat: Improve the design of SettingsDialog to support code generated
+    by dconfig2cpp
+
+ -- YeShanShan <yeshanshan@uniontech.com>  Thu, 08 May 2025 17:53:35 +0800
+
 dtkdeclarative (5.7.14) unstable; urgency=medium
 
   * fix: incorrect padding for MenuItem
