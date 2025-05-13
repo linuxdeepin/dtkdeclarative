@@ -296,6 +296,7 @@ void DQuickDciIconImage::setSourceSize(const QSize &size)
 {
     D_D(DQuickDciIconImage);
     d->imageItem->setSourceSize(size);
+    d->updateImageSourceUrl();
     Q_EMIT sourceSizeChanged();
 }
 
