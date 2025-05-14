@@ -226,7 +226,7 @@ void DQuickIconImage::setName(const QString &name)
     }
 
     if (isComponentComplete()) {
-        d->init();
+        d->maybeUpdateUrl();
     }
 }
 
