@@ -500,7 +500,7 @@ void DQMLGlobalObject::closeMessage(QObject *target, const QString &msgId)
 void DQMLGlobalObject::sendSystemMessage(const QString &summary, const QString &body, const QString &appIcon, const QStringList &actions, const QVariantMap hints, const int timeout, const uint replaceId)
 {
     QDBusPendingCall reply = DTK_CORE_NAMESPACE::DUtil::DNotifySender(summary)
-            .appName(qAppName())
+            .appName(qApp->applicationDisplayName())
             .appIcon(appIcon)
             .appBody(body)
             .actions(actions)
