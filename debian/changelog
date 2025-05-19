@@ -1,3 +1,13 @@
+dtkdeclarative (5.7.16) unstable; urgency=medium
+
+  * fix: use applicationDisplayName instead of qAppName in
+    DQMLGlobalObject
+  * fix: remove redundant devicePixelRatio division in icon scaling
+  * fix: correct icon image update logic
+  * fix: update image source URL when source size changes
+
+ -- YeShanShan <yeshanshan@uniontech.com>  Mon, 19 May 2025 17:22:37 +0800
+
 dtkdeclarative (5.7.15) unstable; urgency=medium
 
   * feat: Improve the design of SettingsDialog to support code generated
