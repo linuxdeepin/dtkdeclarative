@@ -13,9 +13,13 @@ T.TextArea {
 
     property D.Palette placeholderTextPalette: DS.Style.edit.placeholderText
     placeholderTextColor: D.ColorSelector.placeholderTextPalette
-    implicitWidth: Math.max(DS.Style.control.implicitWidth(control), placeholder.implicitWidth + leftPadding + rightPadding)
-    implicitHeight: Math.max(DS.Style.control.implicitHeight(control), placeholder.implicitHeight + topPadding + bottomPadding)
-
+    implicitWidth: Math.max(contentWidth + leftPadding + rightPadding,
+                            implicitBackgroundWidth + leftInset + rightInset,
+                            placeholder.implicitWidth + leftPadding + rightPadding)
+    implicitHeight: Math.max(contentHeight + topPadding + bottomPadding,
+                             implicitBackgroundHeight + topInset + bottomInset,
+                             placeholder.implicitHeight + topPadding + bottomPadding)
+                             
     padding: DS.Style.control.padding
 
     color: palette.text

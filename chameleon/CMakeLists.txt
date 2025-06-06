@@ -35,6 +35,7 @@ set(QML_FILES
     RadioButton.qml
     RoundButton.qml
     ScrollBar.qml
+    ScrollView.qml
     ScrollIndicator.qml
     Slider.qml
     SpinBox.qml
