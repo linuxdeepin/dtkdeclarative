@@ -23,6 +23,7 @@
     <file>RadioButton.qml</file>
     <file>RoundButton.qml</file>
     <file>ScrollBar.qml</file>
+    <file>ScrollView.qml</file>
     <file>ScrollIndicator.qml</file>
     <file>Slider.qml</file>
     <file>SpinBox.qml</file>
