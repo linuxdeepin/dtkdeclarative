@@ -54,7 +54,7 @@ ColumnLayout {
                         var obj = Qt.createQmlObject(edit.text, codePreview,  url.toString().replace(".qml", "_temporary.qml"))
                         globalObject.replace(lastPreview, obj)
                         lastPreview = obj
-                        obj.width = codePreview.width
+                        obj.width = Qt.binding(function () { return codePreview.width })
                         errorMessage.text = ""
                     } catch (error) {
                         errorMessage.text = String(error.lineNumber ? error.lineNumber : "未知") + "行，"
