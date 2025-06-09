@@ -34,7 +34,7 @@ Copyright: UnionTech Software Technology Co., Ltd.
 License: CC-BY-4.0
 
 # ci
-Files: .github/*  *.yml *.yaml .obs/*
+Files: .github/*  *.yml *.yaml .obs/* .syncexclude
 Copyright: None
 License: CC0-1.0
 
@@ -54,7 +54,7 @@ Copyright: None
 License: CC0-1.0
 
 # cmake
-Files: *.cmake *CMakeLists.txt *.in
+Files: *.cmake *CMakeLists.txt *.in VERSION
 Copyright: None
 License: CC0-1.0
 
