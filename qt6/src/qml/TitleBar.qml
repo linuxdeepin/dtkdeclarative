@@ -12,9 +12,7 @@ Item {
     id: control
     z: D.DTK.TopOrder
     width: Window.window.width
-    // it's binding `height` instead of `visible` property,
-    // because MouseArea should accept event keeping visible.
-    implicitHeight: (!__isFullScreen || __isVisible) ? DS.Style.titleBar.height : 1
+    height: (!__isFullScreen || __isVisible) ? DS.Style.titleBar.height : 1
 
     property string title: Window.window.title
     property alias icon: iconLabel
@@ -75,15 +73,16 @@ Item {
     Loader {
         id: background
         active: false
-        anchors.fill: parent
+        width: control.width
+        height: control.height
         sourceComponent: D.InWindowBlur {
         }
     }
 
     ColumnLayout {
-        id: content
         spacing: 0
-        anchors.fill: parent
+        width: control.width
+        height: control.height
         visible: control.height > 1
 
         Loader {
