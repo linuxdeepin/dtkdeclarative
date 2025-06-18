@@ -20,6 +20,7 @@ T.RadioButton {
     opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
     D.DciIcon.mode: D.ColorSelector.controlState
     D.DciIcon.theme: D.ColorSelector.controlTheme
+    focusPolicy: Qt.TabFocus
     icon {
         width: DS.Style.radioButton.iconSize
         height: DS.Style.radioButton.iconSize

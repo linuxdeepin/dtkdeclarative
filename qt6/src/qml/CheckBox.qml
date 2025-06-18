@@ -25,6 +25,7 @@ T.CheckBox {
     opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
     D.DciIcon.mode: D.ColorSelector.controlState
     D.DciIcon.theme: D.ColorSelector.controlTheme
+    focusPolicy: Qt.TabFocus
     indicator: Item {
         x: control.text ? (!control.mirrored ? control.leftPadding : control.width - width - control.rightPadding) : control.leftPadding + (control.availableWidth - width) / 2
         y: control.topPadding + (control.availableHeight - height) / 2
