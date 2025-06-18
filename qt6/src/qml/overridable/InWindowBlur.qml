@@ -13,7 +13,7 @@ Item {
     property alias multiplier: blur.blurMultiplier
     property alias content: blur
     default property alias data: blitter.data
-    readonly property bool valid: blitter.blitterEnabled
+    property alias valid: blitter.blitterEnabled
 
     D.BackdropBlitter {
         id: blitter
