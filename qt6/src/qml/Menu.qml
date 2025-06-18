@@ -109,6 +109,7 @@ T.Menu {
             backgroundColor: control.backgroundColor
             backgroundNoBlurColor: control.backgroundNoBlurColor
             outsideBorderColor: null
+            enableBlur: false // TODO disable blur temporarily, pms:BUG 300055
         }
     }
 

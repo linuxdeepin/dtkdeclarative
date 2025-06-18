@@ -22,6 +22,7 @@ Control {
     property int blurRadius: 64
     // blur blurMultiplier
     property real blurMultiplier: 0.0
+    property alias enableBlur: blur.valid
 
     background: D.InWindowBlur {
         id: blur
@@ -41,7 +42,7 @@ Control {
 
         Loader {
             anchors.fill: parent
-            active: Window.window && Window.window.color.a < 1
+            active: Window.window && Window.window.color.a < 1 && blur.valid
             sourceComponent: D.ItemViewport {
                 anchors.fill: parent
                 fixed: true
