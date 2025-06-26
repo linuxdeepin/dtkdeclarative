@@ -444,6 +444,7 @@ QtObject {
 
         property D.Palette alertBackground: D.Palette {
             normal: Qt.rgba(0.95, 0.22, 0.20, 0.15)
+            normalDark: normal
         }
 
         property D.Palette placeholderText: D.Palette {
