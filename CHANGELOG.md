@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.7.19] - 2025-07-03
+
+### Changed
+
+- Chore: New release 5.7.18
+- Update checkbox icon assets
+- Update build flags and security hardening
+
 ## [5.7.18] - 2025-06-27
 
 ### Added
