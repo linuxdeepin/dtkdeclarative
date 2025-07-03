@@ -70,6 +70,12 @@ target_link_libraries(${PLUGIN_NAME} PRIVATE
     ${LIB_NAME}
 )
 
+# 禁用此插件的 RPATH/RUNPATH，因为依赖库在标准系统路径中
+set_target_properties(${PLUGIN_NAME} PROPERTIES
+    INSTALL_RPATH ""
+    BUILD_WITH_INSTALL_RPATH TRUE
+)
+
 # Install library
 install(TARGETS ${LIB_NAME} EXPORT Dtk${DTK_VERSION_MAJOR}DeclarativeTargets DESTINATION "${LIB_INSTALL_DIR}")
 # Install export targets
