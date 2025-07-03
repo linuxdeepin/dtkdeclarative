@@ -35,5 +35,11 @@ PRIVATE
     ${LIB_NAME}
 )
 
+# 禁用此插件的 RPATH/RUNPATH，因为依赖库在标准系统路径中
+set_target_properties(dtkdeclarativesettingsplugin PROPERTIES
+    INSTALL_RPATH ""
+    BUILD_WITH_INSTALL_RPATH TRUE
+)
+
 install(TARGETS dtkdeclarativesettingsplugin DESTINATION "${QML_INSTALL_DIR}/${URI_PATH}/settings")
 install(DIRECTORY "${PLUGIN_OUTPUT_DIR}/${URI_PATH}/settings/" DESTINATION "${QML_INSTALL_DIR}/${URI_PATH}/settings")

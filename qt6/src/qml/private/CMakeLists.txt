@@ -26,5 +26,11 @@ PRIVATE
     Qt${QT_VERSION_MAJOR}::Quick
 )
 
+# 禁用此插件的 RPATH/RUNPATH，因为依赖库在标准系统路径中
+set_target_properties(dtkdeclarativeprivatesplugin PROPERTIES
+    INSTALL_RPATH ""
+    BUILD_WITH_INSTALL_RPATH TRUE
+)
+
 install(TARGETS dtkdeclarativeprivatesplugin DESTINATION "${QML_INSTALL_DIR}/${URI_PATH}/private")
 install(DIRECTORY "${PLUGIN_OUTPUT_DIR}/${URI_PATH}/private/" DESTINATION "${QML_INSTALL_DIR}/${URI_PATH}/private")
