@@ -619,8 +619,8 @@ QtObject {
         }
 
         property D.Palette background: D.Palette {
-            normal: Qt.rgba(247 / 255, 247 / 255, 247 / 255, 0.6)
-            normalDark: Qt.rgba(59 / 255, 59 / 255, 59 / 255, 0.6)
+            normal: Qt.rgba(247 / 255.0, 247 / 255.0, 247 / 255.0, 0.5)
+            normalDark: Qt.rgba(59 / 255.0, 59 / 255.0, 59 / 255.0, 0.5)
         }
 
         property D.Palette connecterdropShadow: D.Palette {
@@ -630,6 +630,21 @@ QtObject {
         property D.Palette connecterBackground: D.Palette {
             normal: Qt.rgba(1, 1, 1, 1)
             normalDark: Qt.rgba(0, 0, 0, 0.1)
+        }
+
+        property D.Palette dropShadow: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.1)
+            normalDark: Qt.rgba(0, 0, 0, 0.2)
+        }
+
+        property D.Palette outsideBorder: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.1)
+            normalDark: Qt.rgba(0, 0, 0, 0.7)
+        }
+
+        property D.Palette insideBorder: D.Palette {
+            normal: Qt.rgba(1, 1, 1, 0.3)
+            normalDark: Qt.rgba(1, 1, 1, 0.1)
         }
     }
 
