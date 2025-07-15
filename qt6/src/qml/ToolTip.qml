@@ -21,6 +21,7 @@ T.ToolTip {
     leftPadding: DS.Style.toolTip.horizontalPadding
     rightPadding: leftPadding
     closePolicy: T.Popup.CloseOnEscape | T.Popup.CloseOnPressOutsideParent | T.Popup.CloseOnReleaseOutsideParent
+    palette: D.DTK.palette
 
     contentItem: Text {
         horizontalAlignment: Text.AlignLeft
