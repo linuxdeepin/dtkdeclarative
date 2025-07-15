@@ -81,7 +81,7 @@ Control {
 
         Loader {
             anchors.fill: backgroundRect
-            active: control.insideBorderColor && control.D.ColorSelector.controlTheme === D.ApplicationHelper.DarkType
+            active: control.insideBorderColor
             sourceComponent: InsideBoxBorder {
                 radius: backgroundRect.radius
                 color: control.D.ColorSelector.insideBorderColor

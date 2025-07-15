@@ -20,24 +20,10 @@ ToolTip {
     margins: 0
     closePolicy: Popup.NoAutoClose
 
-    background: Item {
-        BoxShadow {
-            anchors.fill: _background
-            shadowBlur: 20
-            shadowOffsetY: 6
-            shadowColor: Qt.rgba(0, 0, 0, 0.2)
-            cornerRadius: _background.radius
-        }
-
-        Rectangle {
-            property D.Palette backgroundColor: DS.Style.alertToolTip.background
-            property D.Palette borderColor: DS.Style.control.border
-            id: _background
-            anchors.fill: parent
-            color: D.ColorSelector.backgroundColor
-            border.color: D.ColorSelector.borderColor
-            radius: DS.Style.control.radius
-        }
+    background: FloatingPanel {
+        backgroundColor: DS.Style.alertToolTip.background
+        insideBorderColor: DS.Style.alertToolTip.insideBorder
+        outsideBorderColor: DS.Style.alertToolTip.outsideBorder
     }
 
     contentItem: Text {
@@ -58,24 +44,5 @@ ToolTip {
     exit: Transition {
         NumberAnimation { properties: "opacity"; from: 1.0; to: 0.0 }
         NumberAnimation { properties: "y"; from: control.target.height + DS.Style.control.spacing ; to: control.target.height }
-    }
-
-    BoxShadow {
-        property D.Palette dropShadowColor: DS.Style.alertToolTip.connecterdropShadow
-        property D.Palette backgroundColor: DS.Style.alertToolTip.connecterBackground
-        y: - height * (0.75) - control.topMargin - control.topPadding
-        width: DS.Style.alertToolTip.connectorWidth
-        height: DS.Style.alertToolTip.connectorHeight
-        shadowBlur: 4
-        shadowOffsetY: 2
-        shadowColor: D.ColorSelector.dropShadowColor
-        cornerRadius: _background.radius
-
-        Rectangle {
-            anchors.fill: parent
-            color: parent.D.ColorSelector.backgroundColor
-            border.color: _background.D.ColorSelector.borderColor
-            border.width: 1
-        }
     }
 }
