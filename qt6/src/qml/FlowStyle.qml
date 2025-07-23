@@ -504,6 +504,7 @@ QtObject {
             }
 
             property D.Palette shadowInner2: D.Palette {
+                normal: Qt.rgba(0, 0, 0, 0.1)
                 normalDark: Qt.rgba(1, 1, 1, 0.1)
             }
 
@@ -850,6 +851,11 @@ QtObject {
         property D.Palette handleGradientColor:  D.Palette {
             normal: D.DTK.makeColor(D.Color.Highlight).hue(-0).saturation(+30).lightness(+30)
         }
+
+        property D.Palette background: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.1)
+            normalDark: Qt.rgba(1, 1, 1, 0.1)
+        }
     }
 
     property QtObject embeddedProgressBar: QtObject {
@@ -861,7 +867,7 @@ QtObject {
 
         property D.Palette background: D.Palette {
             normal: Qt.rgba(0, 0, 0, 0.7)
-            normalDark: Qt.rgba(0, 0, 0, 0.2)
+            normalDark: Qt.rgba(1, 1, 1, 0.2)
         }
 
         property D.Palette progressBackground: D.Palette {
