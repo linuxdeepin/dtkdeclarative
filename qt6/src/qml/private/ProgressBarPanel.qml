@@ -23,8 +23,9 @@ Item {
     Component {
         id: _normalTextComponent
         Rectangle {
+            property Palette backgroundColor: DS.Style.progressBar.background
             radius: DS.Style.control.radius
-            color: Qt.rgba(0, 0, 0, 0.1);
+            color: ColorSelector.backgroundColor
         }
     }
 }
