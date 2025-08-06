@@ -12,13 +12,13 @@ Loader {
         DownButton = 1
     }
 
-    property Item view
+    required property Item view
     property int direction
     active: view.interactive
 
     sourceComponent: Button {
         flat: true
-        enabled: direction === ArrowListViewButton.UpButton ? !view.atYBeginning : !itemsView.atYEnd
+        enabled: direction === ArrowListViewButton.UpButton ? !view.atYBeginning : !view.atYEnd
         width: DS.Style.arrowListView.stepButtonSize.width
         height: DS.Style.arrowListView.stepButtonSize.height
         icon.name: direction === ArrowListViewButton.UpButton ? DS.Style.arrowListView.upButtonIconName
