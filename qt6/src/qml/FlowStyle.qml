@@ -350,6 +350,7 @@ QtObject {
     property QtObject warningButton: QtObject {
         property D.Palette text: D.Palette {
             normal: ("#ff5736")
+            normalDark: normal
         }
     }
 
