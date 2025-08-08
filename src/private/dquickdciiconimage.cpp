@@ -209,6 +209,7 @@ DQuickDciIconImage::DQuickDciIconImage(QQuickItem *parent)
     D_D(DQuickDciIconImage);
     connect(d->imageItem, &QQuickImage::implicitWidthChanged, this, [this, d]() { setImplicitWidth(d->imageItem->implicitWidth()); });
     connect(d->imageItem, &QQuickImage::implicitHeightChanged, this, [this, d]() { setImplicitHeight(d->imageItem->implicitHeight()); });
+    connect(this, &DQuickDciIconImage::smoothChanged, d->imageItem, &QQuickImage::setSmooth);
 }
 
 DQuickDciIconImage::~DQuickDciIconImage()
@@ -392,6 +393,7 @@ void DQuickDciIconImage::classBegin()
     D_D(DQuickDciIconImage);
     QQmlEngine::setContextForObject(d->imageItem, QQmlEngine::contextForObject(this));
     QQuickItem::classBegin();
+    d->imageItem->setSmooth(smooth());
 }
 
 void DQuickDciIconImage::componentComplete()
