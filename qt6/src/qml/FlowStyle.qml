@@ -108,15 +108,23 @@ QtObject {
             }
             normalDark {
                 common: Qt.rgba(1, 1, 1, 0.1)
-                crystal: Qt.rgba(1, 1, 1, 0.1)
+                crystal: Qt.rgba(1, 1, 1, 0.08)
             }
             hovered {
                 common: ("#e1e1e1")
-                crystal:  Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.2)
+                crystal:  Qt.rgba(0, 0, 0, 0.2)
+            }
+            hoveredDark {
+                common:  Qt.rgba(1, 1, 1, 0.2)
+                crystal:  Qt.rgba(1, 1, 1, 0.2)
             }
             pressed {
                 common: ("#bcc4d0")
-                crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.15)
+                crystal: Qt.rgba(0, 0, 0, 0.15)
+            }
+            pressedDark {
+                common:  Qt.rgba(1, 1, 1, 0.05)
+                crystal:  Qt.rgba(1, 1, 1, 0.05)
             }
         }
 
@@ -207,14 +215,15 @@ QtObject {
             }
             normalDark {
                 common: D.DTK.makeColor(D.Color.Highlight).saturation(+10).lightness(+10)
-                crystal: Qt.rgba(0, 0, 0, 0.1)
+                crystal: Qt.rgba(1, 1, 1, 0.08)
             }
             hovered {
                 common: D.DTK.makeColor(D.Color.Highlight).lightness(+10).saturation(+20).lightness(+10)
-                crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.2)
+                crystal: Qt.rgba(0, 0, 0, 0.2)
             }
             hoveredDark {
                 common: D.DTK.makeColor(D.Color.Highlight).lightness(+10).saturation(+30).lightness(+10)
+                crystal: Qt.rgba(1, 1, 1, 0.2)
             }
             pressed {
                 common: D.DTK.makeColor(D.Color.Highlight).lightness(-10).saturation(+8).lightness(-8)
@@ -222,6 +231,7 @@ QtObject {
             }
             pressedDark {
                 common: D.DTK.makeColor(D.Color.Highlight).saturation(+10).lightness(+2)
+                crystal: Qt.rgba(1, 1, 1, 0.05)
             }
             disabled {
                 common: D.DTK.makeColor(D.Color.Highlight).saturation(+22).lightness(+14)
