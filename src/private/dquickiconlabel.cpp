@@ -208,13 +208,13 @@ static QRectF alignedRect(bool mirrored, Qt::Alignment alignment, const QSizeF &
     const qreal w = size.width();
     const qreal h = size.height();
     if ((alignment & Qt::AlignVCenter) == Qt::AlignVCenter)
-        y += rectangle.height() / 2 - h / 2;
+        y += std::round(rectangle.height() / 2 - h / 2);
     else if ((alignment & Qt::AlignBottom) == Qt::AlignBottom)
         y += rectangle.height() - h;
     if ((alignment & Qt::AlignRight) == Qt::AlignRight)
         x += rectangle.width() - w;
     else if ((alignment & Qt::AlignHCenter) == Qt::AlignHCenter)
-        x += rectangle.width() / 2 - w / 2;
+        x += std::round(rectangle.width() / 2 - w / 2);
     return QRectF(x, y, w, h);
 }
 
