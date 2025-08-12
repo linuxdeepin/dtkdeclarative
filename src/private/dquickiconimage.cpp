@@ -66,10 +66,10 @@ void DQuickIconImagePrivate::init()
 {
     D_Q(DQuickIconImage);
 
-    if (iconType == ThemeIconName) {
-        // 强制确保图标的缩放比例正确
-        updateDevicePixelRatio(1.0);
+    // 强制确保图标的缩放比例正确
+    updateDevicePixelRatio(1.0);
 
+    if (iconType == ThemeIconName) {
         QObject::connect(DGuiApplicationHelper::instance()->applicationTheme(), SIGNAL(iconThemeNameChanged(QByteArray)),
                          q, SLOT(maybeUpdateUrl()));
         // dtk build-in 类型的图标支持区分窗口主题色, 此处需在主题类型变化时更新图标
@@ -372,10 +372,8 @@ void DQuickIconImage::pixmapChange()
     // QQuickImage中只会在设置了souceSize的前提下才会计算图片自身的缩放比例
     // 此处强制确保图标的缩放比例正确
     D_D(DQuickIconImage);
-    if (d->iconType == DQuickIconImagePrivate::ThemeIconName) {
-        if (d->updateDevicePixelRatio(1.0)) {
-            d->maybeUpdateUrl();
-        }
+    if (d->updateDevicePixelRatio(1.0)) {
+        d->maybeUpdateUrl();
     }
 
     QQuickImage::pixmapChange();
