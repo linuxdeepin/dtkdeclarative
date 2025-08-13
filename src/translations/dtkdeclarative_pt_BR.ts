@@ -17,7 +17,7 @@
     <message>
         <location filename="../qml/AboutDialog.qml" line="97"/>
         <source>Homepage</source>
-        <translation>Página na Internet</translation>
+        <translation>Página web</translation>
     </message>
     <message>
         <location filename="../qml/AboutDialog.qml" line="112"/>
@@ -54,7 +54,7 @@
     <message>
         <location filename="../qml/settings/SettingsDialog.qml" line="79"/>
         <source>Restore Defaults</source>
-        <translation>Restaurar Padrões</translation>
+        <translation>Restaurar padrões</translation>
     </message>
 </context>
 <context>
