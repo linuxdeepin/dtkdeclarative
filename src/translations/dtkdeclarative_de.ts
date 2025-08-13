@@ -17,7 +17,7 @@
     <message>
         <location filename="../qml/AboutDialog.qml" line="94"/>
         <source>Homepage</source>
-        <translation type="unfinished"/>
+        <translation>Homepage</translation>
     </message>
     <message>
         <location filename="../qml/AboutDialog.qml" line="109"/>

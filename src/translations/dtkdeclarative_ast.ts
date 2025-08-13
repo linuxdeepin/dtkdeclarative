@@ -8,6 +8,24 @@
     </message>
 </context>
 <context>
+    <name>AboutDialog</name>
+    <message>
+        <location filename="../qml/AboutDialog.qml" line="80"/>
+        <source>Version</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/AboutDialog.qml" line="94"/>
+        <source>Homepage</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/AboutDialog.qml" line="109"/>
+        <source>Description</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>HelpAction</name>
     <message>
         <location filename="../qml/HelpAction.qml" line="10"/>
@@ -47,17 +65,17 @@
         <translation>Estilu</translation>
     </message>
     <message>
-        <location filename="../qml/ThemeMenu.qml" line="21"/>
+        <location filename="../qml/ThemeMenu.qml" line="23"/>
         <source>Light Theme</source>
         <translation>Estilu claru</translation>
     </message>
     <message>
-        <location filename="../qml/ThemeMenu.qml" line="27"/>
+        <location filename="../qml/ThemeMenu.qml" line="29"/>
         <source>Dark Theme</source>
         <translation>Estilu escuru</translation>
     </message>
     <message>
-        <location filename="../qml/ThemeMenu.qml" line="33"/>
+        <location filename="../qml/ThemeMenu.qml" line="35"/>
         <source>System Theme</source>
         <translation>Estilu del sistema</translation>
     </message>

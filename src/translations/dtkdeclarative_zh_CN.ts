@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="zh_CN">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="zh_CN">
 <context>
     <name>AboutAction</name>
     <message>
@@ -12,17 +10,17 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../qml/AboutDialog.qml" line="83"/>
+        <location filename="../qml/AboutDialog.qml" line="80"/>
         <source>Version</source>
         <translation>版本</translation>
     </message>
     <message>
-        <location filename="../qml/AboutDialog.qml" line="97"/>
+        <location filename="../qml/AboutDialog.qml" line="94"/>
         <source>Homepage</source>
         <translation>主页</translation>
     </message>
     <message>
-        <location filename="../qml/AboutDialog.qml" line="112"/>
+        <location filename="../qml/AboutDialog.qml" line="109"/>
         <source>Description</source>
         <translation>描述</translation>
     </message>

@@ -8,6 +8,24 @@
     </message>
 </context>
 <context>
+    <name>AboutDialog</name>
+    <message>
+        <location filename="../qml/AboutDialog.qml" line="80"/>
+        <source>Version</source>
+        <translation>Različica</translation>
+    </message>
+    <message>
+        <location filename="../qml/AboutDialog.qml" line="94"/>
+        <source>Homepage</source>
+        <translation>Domača stran</translation>
+    </message>
+    <message>
+        <location filename="../qml/AboutDialog.qml" line="109"/>
+        <source>Description</source>
+        <translation>Opis</translation>
+    </message>
+</context>
+<context>
     <name>HelpAction</name>
     <message>
         <location filename="../qml/HelpAction.qml" line="10"/>
@@ -47,17 +65,17 @@
         <translation>Tema</translation>
     </message>
     <message>
-        <location filename="../qml/ThemeMenu.qml" line="21"/>
+        <location filename="../qml/ThemeMenu.qml" line="23"/>
         <source>Light Theme</source>
         <translation>Svetla tema</translation>
     </message>
     <message>
-        <location filename="../qml/ThemeMenu.qml" line="27"/>
+        <location filename="../qml/ThemeMenu.qml" line="29"/>
         <source>Dark Theme</source>
         <translation>Temna tema</translation>
     </message>
     <message>
-        <location filename="../qml/ThemeMenu.qml" line="33"/>
+        <location filename="../qml/ThemeMenu.qml" line="35"/>
         <source>System Theme</source>
         <translation>Sistemska tema</translation>
     </message>
