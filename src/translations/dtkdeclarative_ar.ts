@@ -8,6 +8,24 @@
     </message>
 </context>
 <context>
+    <name>AboutDialog</name>
+    <message>
+        <location filename="../qml/AboutDialog.qml" line="80"/>
+        <source>Version</source>
+        <translation>الإصدار</translation>
+    </message>
+    <message>
+        <location filename="../qml/AboutDialog.qml" line="94"/>
+        <source>Homepage</source>
+        <translation>الصفحة الرئيسية</translation>
+    </message>
+    <message>
+        <location filename="../qml/AboutDialog.qml" line="109"/>
+        <source>Description</source>
+        <translation>الوصف</translation>
+    </message>
+</context>
+<context>
     <name>HelpAction</name>
     <message>
         <location filename="../qml/HelpAction.qml" line="10"/>
@@ -47,19 +65,19 @@
         <translation>الموضوع</translation>
     </message>
     <message>
-        <location filename="../qml/ThemeMenu.qml" line="21"/>
+        <location filename="../qml/ThemeMenu.qml" line="23"/>
         <source>Light Theme</source>
-        <translation>موضوع فاتح</translation>
+        <translation>سمة فاتحة</translation>
     </message>
     <message>
-        <location filename="../qml/ThemeMenu.qml" line="27"/>
+        <location filename="../qml/ThemeMenu.qml" line="29"/>
         <source>Dark Theme</source>
-        <translation>موضوع غامق</translation>
+        <translation>سمة غامقة</translation>
     </message>
     <message>
-        <location filename="../qml/ThemeMenu.qml" line="33"/>
+        <location filename="../qml/ThemeMenu.qml" line="35"/>
         <source>System Theme</source>
-        <translation>موضوع النظام</translation>
+        <translation>سمة النظام</translation>
     </message>
 </context>
 </TS>
