@@ -62,17 +62,17 @@
     <message>
         <location filename="../qml/TextField.qml" line="71"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Copiar</translation>
     </message>
     <message>
         <location filename="../qml/TextField.qml" line="78"/>
         <source>Cut</source>
-        <translation type="unfinished"/>
+        <translation>Cortar</translation>
     </message>
     <message>
         <location filename="../qml/TextField.qml" line="85"/>
         <source>Paste</source>
-        <translation type="unfinished"/>
+        <translation>Pegar</translation>
     </message>
     <message>
         <location filename="../qml/TextField.qml" line="91"/>
@@ -82,12 +82,12 @@
     <message>
         <location filename="../qml/TextField.qml" line="98"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>Deshacer</translation>
     </message>
     <message>
         <location filename="../qml/TextField.qml" line="105"/>
         <source>Redo</source>
-        <translation type="unfinished"/>
+        <translation>Rehacer</translation>
     </message>
 </context>
 <context>
