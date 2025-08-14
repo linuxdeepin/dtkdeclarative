@@ -1,10 +1,10 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="pt">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="lo">
 <context>
     <name>AboutAction</name>
     <message>
         <location filename="../qml/AboutAction.qml" line="9"/>
         <source>About</source>
-        <translation>Sobre</translation>
+        <translation>ກ່ຽວກັບ</translation>
     </message>
 </context>
 <context>
@@ -12,17 +12,17 @@
     <message>
         <location filename="../qml/AboutDialog.qml" line="83"/>
         <source>Version</source>
-        <translation>Versão</translation>
+        <translation>ເວີຊັນ</translation>
     </message>
     <message>
         <location filename="../qml/AboutDialog.qml" line="97"/>
         <source>Homepage</source>
-        <translation>Página inicial</translation>
+        <translation>ໜ້າຫຼັກ</translation>
     </message>
     <message>
         <location filename="../qml/AboutDialog.qml" line="112"/>
         <source>Description</source>
-        <translation>Descrição</translation>
+        <translation>ຄຳອະທິບາຍ</translation>
     </message>
 </context>
 <context>
@@ -30,7 +30,7 @@
     <message>
         <location filename="../qml/HelpAction.qml" line="10"/>
         <source>Help</source>
-        <translation>Ajuda</translation>
+        <translation>ຊ່ວຍເຫຼືອ</translation>
     </message>
 </context>
 <context>
@@ -38,7 +38,7 @@
     <message>
         <location filename="../qml/QuitAction.qml" line="9"/>
         <source>Exit</source>
-        <translation>Sair</translation>
+        <translation>ອອກ</translation>
     </message>
 </context>
 <context>
@@ -46,7 +46,7 @@
     <message>
         <location filename="../qml/SearchEdit.qml" line="41"/>
         <source>Search</source>
-        <translation>Pesquisar</translation>
+        <translation>ຄົ້ນຫາ</translation>
     </message>
 </context>
 <context>
@@ -54,7 +54,7 @@
     <message>
         <location filename="../qml/settings/SettingsDialog.qml" line="79"/>
         <source>Restore Defaults</source>
-        <translation>Restaurar predefinições</translation>
+        <translation>ຄືນຄ່າເລີ່ມຕົ້ນ</translation>
     </message>
 </context>
 <context>
@@ -62,32 +62,32 @@
     <message>
         <location filename="../qml/TextField.qml" line="71"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>ຄັດລອກ</translation>
     </message>
     <message>
         <location filename="../qml/TextField.qml" line="78"/>
         <source>Cut</source>
-        <translation type="unfinished"/>
+        <translation>ຕັດ</translation>
     </message>
     <message>
         <location filename="../qml/TextField.qml" line="85"/>
         <source>Paste</source>
-        <translation type="unfinished"/>
+        <translation>ວາງ</translation>
     </message>
     <message>
         <location filename="../qml/TextField.qml" line="91"/>
         <source>Select All</source>
-        <translation>Selecionar tudo</translation>
+        <translation>ເລືອກທັງໝົດ</translation>
     </message>
     <message>
         <location filename="../qml/TextField.qml" line="98"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>ຍົກເລີກ</translation>
     </message>
     <message>
         <location filename="../qml/TextField.qml" line="105"/>
         <source>Redo</source>
-        <translation type="unfinished"/>
+        <translation>ເຮັດຄືນ</translation>
     </message>
 </context>
 <context>
@@ -95,22 +95,22 @@
     <message>
         <location filename="../qml/ThemeMenu.qml" line="11"/>
         <source>Theme</source>
-        <translation>Tema</translation>
+        <translation>ຮູບແບບ</translation>
     </message>
     <message>
         <location filename="../qml/ThemeMenu.qml" line="23"/>
         <source>Light Theme</source>
-        <translation>Tema claro</translation>
+        <translation>ຮູບແບບສະຫວ່າງ</translation>
     </message>
     <message>
         <location filename="../qml/ThemeMenu.qml" line="29"/>
         <source>Dark Theme</source>
-        <translation>Tema escuro</translation>
+        <translation>ຮູບແບບມືດ</translation>
     </message>
     <message>
         <location filename="../qml/ThemeMenu.qml" line="35"/>
         <source>System Theme</source>
-        <translation>Tema do sistema</translation>
+        <translation>ຮູບແບບລະບົບ</translation>
     </message>
 </context>
 </TS>

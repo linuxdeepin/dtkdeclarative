@@ -10,17 +10,17 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../qml/AboutDialog.qml" line="80"/>
+        <location filename="../qml/AboutDialog.qml" line="83"/>
         <source>Version</source>
         <translation>Версія</translation>
     </message>
     <message>
-        <location filename="../qml/AboutDialog.qml" line="94"/>
+        <location filename="../qml/AboutDialog.qml" line="97"/>
         <source>Homepage</source>
         <translation>Домашня сторінка</translation>
     </message>
     <message>
-        <location filename="../qml/AboutDialog.qml" line="109"/>
+        <location filename="../qml/AboutDialog.qml" line="112"/>
         <source>Description</source>
         <translation>Опис</translation>
     </message>
@@ -55,6 +55,39 @@
         <location filename="../qml/settings/SettingsDialog.qml" line="79"/>
         <source>Restore Defaults</source>
         <translation>Відновити значення за замовчуванням</translation>
+    </message>
+</context>
+<context>
+    <name>TextField</name>
+    <message>
+        <location filename="../qml/TextField.qml" line="71"/>
+        <source>Copy</source>
+        <translation>Копіювати</translation>
+    </message>
+    <message>
+        <location filename="../qml/TextField.qml" line="78"/>
+        <source>Cut</source>
+        <translation>Вирізати</translation>
+    </message>
+    <message>
+        <location filename="../qml/TextField.qml" line="85"/>
+        <source>Paste</source>
+        <translation>Вставити</translation>
+    </message>
+    <message>
+        <location filename="../qml/TextField.qml" line="91"/>
+        <source>Select All</source>
+        <translation>Вибрати усі</translation>
+    </message>
+    <message>
+        <location filename="../qml/TextField.qml" line="98"/>
+        <source>Undo</source>
+        <translation>Скасувати</translation>
+    </message>
+    <message>
+        <location filename="../qml/TextField.qml" line="105"/>
+        <source>Redo</source>
+        <translation>Повторити</translation>
     </message>
 </context>
 <context>

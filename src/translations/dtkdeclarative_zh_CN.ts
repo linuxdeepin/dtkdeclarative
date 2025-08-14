@@ -10,17 +10,17 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../qml/AboutDialog.qml" line="80"/>
+        <location filename="../qml/AboutDialog.qml" line="83"/>
         <source>Version</source>
         <translation>版本</translation>
     </message>
     <message>
-        <location filename="../qml/AboutDialog.qml" line="94"/>
+        <location filename="../qml/AboutDialog.qml" line="97"/>
         <source>Homepage</source>
         <translation>主页</translation>
     </message>
     <message>
-        <location filename="../qml/AboutDialog.qml" line="109"/>
+        <location filename="../qml/AboutDialog.qml" line="112"/>
         <source>Description</source>
         <translation>描述</translation>
     </message>
