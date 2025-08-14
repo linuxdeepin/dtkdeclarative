@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.7.21] - 2025-08-14
+
+### Added
+
+- Add smooth property support for DciIconImage
+
+### Changed
+
+- Update translation configurations and translations
+- I18n: [dtkdeclarative] Updates for project Deepin Tool Kit (#514)
+- Update Transifex configuration
+- Translate dtkdeclarative.ts in ca
+
+### Fixed
+
+- Correct arrow list view button behavior
+- Correct dark theme color for warning button
+- Prevent icon blur by rounding alignment positions
+- Prevent icon blurring during scaling
+
 ## [5.7.20] - 2025-07-31
 
 ### Added
