@@ -1,9 +1,7 @@
 [main]
 host = https://www.transifex.com
-minimum_perc = 80
-mode = developer
-
-[o:linuxdeepin:p:deepin-tool-kit:r:dtkdeclarative]
+                                                                                                   
+[o:linuxdeepin:p:deepin-tool-kit:r:6e38a06207e67bc05b7d3345d880e6f4]
 file_filter = src/translations/dtkdeclarative_<lang>.ts
 source_file = src/translations/dtkdeclarative.ts
 source_lang = en
