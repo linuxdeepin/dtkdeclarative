@@ -17,6 +17,9 @@ add_library(${LIB_NAME} SHARED
 )
 
 dtk_extend_target(${LIB_NAME} EnableCov ${ENABLE_COV})
+target_compile_definitions(${LIB_NAME} PRIVATE
+    D_IGNORE_DEPRECATIONS
+)
 
 set_target_properties(${LIB_NAME} PROPERTIES
     VERSION ${CMAKE_PROJECT_VERSION}

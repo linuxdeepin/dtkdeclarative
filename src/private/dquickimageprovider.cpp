@@ -432,6 +432,7 @@ static QPainterPath roundedRectPath(const QRectF &rect, const DQuickShadowProvid
 
 QImage DQuickShadowProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
 {
+    Q_UNUSED(requestedSize)
     ShadowConfig config;
     QColor color;
     qreal xOffset;

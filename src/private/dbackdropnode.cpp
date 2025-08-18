@@ -145,7 +145,6 @@ public:
     }
 
     static DataManagerPointer<Derive> resolve(const DataManagerPointer<Derive> &other, QQuickWindow *owner) {
-        static_assert(&Derive::metaObject);
         Q_ASSERT(owner);
         if (other && other->owner() == owner)
             return other;
@@ -828,7 +827,6 @@ public:
                        texture->data->pixelSize().height() / float(m_rect.height() * devicePixelRatio)});
             rhi->render(renderData->rt.get());
         } else {
-            auto rhi = this->rhi->rhi();
             QPointF sourcePos = renderMatrix.map(m_rect.topLeft()) * devicePixelRatio;
 
             if (ct) {

@@ -56,8 +56,8 @@ public:
 
     qreal sizeRatio() const;
 
-    inline qreal yOffset() const;
-    inline void setYOffset(qreal offset);
+    qreal yOffset() const;
+    void setYOffset(qreal offset);
 
 Q_SIGNALS:
     void xSpeedChanged();

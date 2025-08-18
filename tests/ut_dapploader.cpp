@@ -98,8 +98,7 @@ public:
     }
     ~AppLoaderSimulator()
     {
-        // don't release app.
-        d->app.take();
+        // app will be automatically cleaned up by QScopedPointer
     }
     int load()
     {

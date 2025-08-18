@@ -344,7 +344,11 @@ void DQuickControlColorSelector::findAndSetControlParent()
 {
     QQuickItem *parentItem = qobject_cast<QQuickItem*>(parent());
     Q_ASSERT(parentItem);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     for (const QMetaObject::Connection &conn : qAsConst(m_itemParentChangeConnections)) {
+#else
+    for (const QMetaObject::Connection &conn : std::as_const(m_itemParentChangeConnections)) {
+#endif
         disconnect(conn);
     }
     m_itemParentChangeConnections.clear();
@@ -1028,7 +1032,11 @@ void DQuickControlColorSelector::recvPaletteColorChanged()
     auto palette = qobject_cast<DQuickControlPalette*>(sender());
     Q_ASSERT(palette);
     // Maybe the multiple properties is use a same palette.
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    for (const auto &i : std::as_const(m_palettes)) {
+#else
     for (const auto &i : qAsConst(m_palettes)) {
+#endif
         if (i.second != palette)
             continue;
         updatePropertyFromName(i.first, palette);
@@ -1040,7 +1048,11 @@ void DQuickControlColorSelector::onPaletteDestroyed()
     auto palette = sender();
     Q_ASSERT(palette);
     // Maybe the multiple properties is use a same palette.
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    for (const auto &i : std::as_const(m_palettes)) {
+#else
     for (const auto &i : qAsConst(m_palettes)) {
+#endif
         if (i.second != palette)
             continue;
         setPalette(i.first, nullptr);
