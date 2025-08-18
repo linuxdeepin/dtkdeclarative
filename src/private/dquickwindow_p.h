@@ -65,8 +65,8 @@ public:
     QPoint explicitShadowOffset;
     QColor explicitBorderColor;
     QColor explicitShadowColor;
-    DPlatformHandle::EffectScenes explicitEffectScene = DPlatformHandle::EffectScenes(0);
-    DPlatformHandle::EffectTypes explicitEffectType = DPlatformHandle::EffectTypes(0);
+    DPlatformHandle::EffectScenes explicitEffectScene {};
+    DPlatformHandle::EffectTypes explicitEffectType {};
 
     DWindowManagerHelper::WmWindowTypes wmWindowTypes;
     DWindowManagerHelper::MotifFunctions motifFunctions;

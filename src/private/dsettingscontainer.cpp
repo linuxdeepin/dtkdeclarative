@@ -29,7 +29,13 @@ static constexpr char const *settingsGroupObjectName = "_d_settings_group";
 //     key: 'group1.group2'
 static SettingsGroup *groupByKey(const QList<SettingsGroup *> groups, const QString &key)
 {
-    for (auto group : qAsConst(groups)) {
+    for (auto group : 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        std::as_const(groups)
+#else
+        qAsConst(groups)
+#endif
+    ) {
         if (key == group->key()) {
             return group;
         }
@@ -125,7 +131,13 @@ QVector<SettingsGroup *> SettingsContainer::groupList() const
 {
     QVector<SettingsGroup *> list;
     QStack<SettingsGroup*> stack;
-    for (auto group : qAsConst(m_groups)) {
+    for (auto group : 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        std::as_const(m_groups)
+#else
+        qAsConst(m_groups)
+#endif
+    ) {
         stack.push_back(group);
         while (!stack.isEmpty()) {
             auto group = stack.pop();
@@ -133,7 +145,13 @@ QVector<SettingsGroup *> SettingsContainer::groupList() const
             auto children = *static_cast<QList<SettingsGroup*>*>(group->children().data);
             // keep order when it's declaration.
             std::reverse(children.begin(), children.end());
-            for (auto childGroup : qAsConst(children)) {
+            for (auto childGroup : 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+                std::as_const(children)
+#else
+                qAsConst(children)
+#endif
+            ) {
                 stack.push(childGroup);
             }
             list.push_back(group);
@@ -176,7 +194,13 @@ bool SettingsContainer::groupVisible(const QString &key) const
 
 void SettingsContainer::resetSettings()
 {
-    for (auto group : qAsConst(m_groups)) {
+    for (auto group : 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        std::as_const(m_groups)
+#else
+        qAsConst(m_groups)
+#endif
+    ) {
         QList<SettingsGroup *> gs;
         gs.append(group);
 
@@ -440,10 +464,22 @@ void SettingsGroup::setBackground(QQmlComponent *background)
 
 void SettingsGroup::setConfig(QObject *config)
 {
-    for (auto childGroup : qAsConst(m_children)) {
+    for (auto childGroup : 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        std::as_const(m_children)
+#else
+        qAsConst(m_children)
+#endif
+    ) {
         childGroup->setConfig(config);
     }
-    for (auto option : qAsConst(m_options)) {
+    for (auto option : 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        std::as_const(m_options)
+#else
+        qAsConst(m_options)
+#endif
+    ) {
         option->setConfig(config);
     }
 }
@@ -584,7 +620,13 @@ public:
         for (int i = 0; i < groupItems.count(); i++)
             groupItems[i] = nullptr;
 
-        for (auto group : qAsConst(groups)) {
+        for (auto group : 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            std::as_const(groups)
+#else
+            qAsConst(groups)
+#endif
+        ) {
             if (group->visible()) {
                 currentGroups.push_back(group);
             }
@@ -852,7 +894,13 @@ QObject *SettingsContentModel::object(int index, QQmlIncubator::IncubationMode i
 
         QQuickItem *columnItem = qobject_cast<QQuickItem*>(columnCom.beginCreate(groupContext));
         columnItem->setParentItem(groupItem);
-        for (auto option: qAsConst(*options)) {
+        for (auto option: 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            std::as_const(*options)
+#else
+            qAsConst(*options)
+#endif
+        ) {
 
             if (!option->delegate())
                 continue;

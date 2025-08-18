@@ -40,7 +40,7 @@ Q_LOGGING_CATEGORY(appLoaderLog, "dtk.quick.apploader");
 static const QQuickItemPrivate::ChangeTypes changedTypes = QQuickItemPrivate::Geometry;
 DAppLoader *DAppLoader::self = nullptr;
 
-static inline const bool heightValid(QQuickItemPrivate *item)
+static inline bool heightValid(QQuickItemPrivate *item)
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     return item->heightValid;
@@ -246,7 +246,11 @@ bool DAppLoaderPrivate::createObjects(const char *propertyName)
 void DAppLoaderPrivate::createChildComponents()
 {
     auto components = appRootItem->findChildren<QQmlComponent *>(QStringLiteral(""), Qt::FindDirectChildrenOnly);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    for (auto childCom : std::as_const(components)) {
+#else
     for (auto childCom : qAsConst(components)) {
+#endif
         QObject::connect(childCom, SIGNAL(progressChanged(qreal)), q_func(), SLOT(_q_onComponentProgressChanged()));
         auto asyn = appRootItem->asynchronous() ? DQmlComponentIncubator::Asynchronous : DQmlComponentIncubator::AsynchronousIfNested;
         DQmlComponentIncubator *incubator = new DQmlComponentIncubator(childCom, this, asyn);
@@ -436,7 +440,11 @@ void DAppLoaderPrivate::_q_onComponentProgressChanged()
 {
     qreal progress = 0;
     auto components = appRootItem->findChildren<QQmlComponent *>();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    for (auto childCom : std::as_const(components) {
+#else
     for (auto childCom : qAsConst(components)) {
+#endif
         progress += childCom->progress();
     }
 

@@ -226,7 +226,11 @@ void DQuickWindowAttachedPrivate::_q_updateBlurAreaForWindow()
     QList<QPainterPath> blurPathList;
     QVector<DPlatformHandle::WMBlurArea> blurAreaList;
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    for (const DQuickBehindWindowBlur *blur : std::as_const(blurList)) {
+#else
     for (const DQuickBehindWindowBlur *blur : qAsConst(blurList)) {
+#endif
         if (!blur->d_func()->isValidBlur())
             continue;
 
@@ -244,7 +248,11 @@ void DQuickWindowAttachedPrivate::_q_updateBlurAreaForWindow()
         blurSuc = q->setWindowBlurAreaByWM(blurAreaList);
     } else {
         // convert to QPainterPath
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        for (const DPlatformHandle::WMBlurArea &area : std::as_const(blurAreaList)) {
+#else
         for (const DPlatformHandle::WMBlurArea &area : qAsConst(blurAreaList)) {
+#endif
             QPainterPath path;
             path.addRoundedRect(area.x, area.y, area.width, area.height, area.xRadius, area.yRaduis);
             blurPathList << path;
@@ -343,7 +351,7 @@ bool DQuickWindowAttached::isEnabled() const
 {
     D_DC(DQuickWindowAttached);
     return d->handle && (DPlatformHandle::isEnabledDXcb(window())
-        || DGuiApplicationHelper::testAttribute(DGuiApplicationHelper::IsTreelandPlatform));
+        || DGuiApplicationHelper::testAttribute(DGuiApplicationHelper::IsWaylandPlatform));
 }
 
 /*!
