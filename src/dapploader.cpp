@@ -441,7 +441,7 @@ void DAppLoaderPrivate::_q_onComponentProgressChanged()
     qreal progress = 0;
     auto components = appRootItem->findChildren<QQmlComponent *>();
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    for (auto childCom : std::as_const(components) {
+    for (auto childCom : std::as_const(components)) {
 #else
     for (auto childCom : qAsConst(components)) {
 #endif
