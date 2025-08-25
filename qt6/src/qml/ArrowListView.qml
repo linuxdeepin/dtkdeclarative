@@ -62,6 +62,18 @@ FocusScope {
             highlightFollowsCurrentItem: true
             highlightMoveDuration: -1
             highlightMoveVelocity: 400
+
+            onCountChanged: refreshContentItemWidth()
+            onWidthChanged: refreshContentItemWidth()
+
+            function refreshContentItemWidth() {
+                for (var i = 0; i < itemsView.count; ++i) {
+                    var item = itemsView.itemAtIndex(i)
+                    if (item) {
+                        item.width = itemsView.width
+                    }
+                }
+            }
         }
 
         P.ArrowListViewButton {
