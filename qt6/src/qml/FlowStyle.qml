@@ -565,6 +565,7 @@ QtObject {
         property int height: 180
         property int radius: 18
         property int padding: 10
+        property int margin: 10
     }
 
     property QtObject floatingMessage: QtObject {

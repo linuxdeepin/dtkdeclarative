@@ -30,7 +30,7 @@ T.ComboBox {
     rightPadding: padding + (control.mirrored || !indicator || !indicator.visible ? 0 : indicator.width + spacing)
 
     delegate: MenuItem {
-        implicitWidth: ListView.view.width
+        implicitWidth: Math.max(DS.Style.control.implicitWidth(control), popup.implicitWidth - DS.Style.popup.margin * 2)
         useIndicatorPadding: true
         text: control.textRole ? (Array.isArray(control.model) ? modelData[control.textRole] : (model[control.textRole] === undefined ? modelData[control.textRole] : model[control.textRole])) : modelData
         icon.name: (control.iconNameRole && model[control.iconNameRole] !== undefined) ? model[control.iconNameRole] : null
@@ -103,9 +103,12 @@ T.ComboBox {
         }
 
         T.TextField {
-            Layout.fillWidth: true
+            Layout.fillWidth: !control.flat
             Layout.fillHeight: true
+            implicitWidth: control.flat ? contentWidth : implicitBackgroundWidth + leftInset + rightInset
+                   || contentWidth + leftPadding + rightPadding
             Layout.rightMargin: DS.Style.comboBox.spacing
+            Layout.alignment: control.flat ? Qt.AlignVCenter | Qt.AlignRight : Qt.AlignVCenter | Qt.AlignLeft
             text: control.editable ? control.editText : control.displayText
 
             enabled: control.editable
@@ -124,7 +127,8 @@ T.ComboBox {
     }
 
     background: Item {
-        implicitWidth: DS.Style.comboBox.width
+        implicitWidth: control.flat ? control.implicitContentWidth + control.leftPadding + control.rightPadding
+                        : DS.Style.comboBox.width
         implicitHeight: DS.Style.comboBox.height
         Loader {
             anchors.fill: parent
@@ -156,8 +160,11 @@ T.ComboBox {
     }
 
     popup: Popup {
+        id: popup
+        leftMargin: DS.Style.popup.margin
+        rightMargin: DS.Style.popup.margin
         palette: control.palette
-        implicitWidth: control.width
+        implicitWidth: control.flat ? Math.max(contentItem.implicitWidth, control.width) : control.width
         contentItem: ArrowListView {
             clip: true
             maxVisibleItems: control.maxVisibleItems
