@@ -12,6 +12,8 @@ T.TextField {
     property D.Palette placeholderTextPalette: DS.Style.edit.placeholderText
     placeholderTextColor: D.ColorSelector.placeholderTextPalette
     property alias backgroundColor: panel.backgroundColor
+    property bool canCopy: control.selectedText.length && control.echoMode === TextInput.Normal
+    property bool canCut: !control.readonly && control.selectedText.length && control.echoMode === TextInput.Normal
     // alert control properties
     property alias alertText: panel.alertText
     property alias alertDuration: panel.alertDuration
@@ -77,14 +79,14 @@ T.TextField {
         {
             text: qsTr("Copy")
             onTriggered: control.copy()
-            enabled: control.selectedText.length && control.echoMode === TextInput.Normal
+            enabled: canCopy
         }
 
         MenuItem
         {
             text: qsTr("Cut")
             onTriggered: control.cut()
-            enabled: !control.readonly && control.selectedText.length && control.echoMode === TextInput.Normal
+            enabled: canCut
         }
 
         MenuItem
@@ -116,4 +118,18 @@ T.TextField {
         }
     }
 
+    Keys.enabled: !canCopy || !canCut
+    Keys.onPressed: function(event) {
+        if (event.matches(StandardKey.Copy)) {
+            if (!canCopy) {
+                event.accepted = true
+                return
+            }
+        } else if (event.matches(StandardKey.Cut)) {
+            if (!canCut) {
+                event.accepted = true
+                return
+            }
+        }
+    }
 }
