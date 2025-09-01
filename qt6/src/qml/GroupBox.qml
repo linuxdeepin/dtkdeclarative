@@ -26,8 +26,6 @@ T.GroupBox {
         color: control.palette.windowText
         elide: Text.ElideRight
         verticalAlignment: Text.AlignLeft
-
-        background: Rectangle { }
     }
 
     background: Rectangle {
