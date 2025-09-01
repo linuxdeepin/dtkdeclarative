@@ -140,6 +140,9 @@ D.ApplicationWindow {
         V2.TabButton {
             text: qsTr("Flickable")
         }
+        V2.TabButton {
+            text: qsTr("GroupBox")
+        }
     }
     StackLayout {
         anchors.left: parent.left
@@ -159,6 +162,7 @@ D.ApplicationWindow {
         Example_Menu {}
         Example_Popup {}
         Example_Flickable {}
+        Example_GroupBox {}
     }
 
     D.BehindWindowBlur {
