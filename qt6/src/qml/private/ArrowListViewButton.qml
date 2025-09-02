@@ -16,8 +16,8 @@ Loader {
     property int direction
     active: view.interactive
 
-    sourceComponent: Button {
-        flat: true
+    sourceComponent: ActionButton {
+        palette.windowText: undefined
         enabled: direction === ArrowListViewButton.UpButton ? !view.atYBeginning : !view.atYEnd
         width: DS.Style.arrowListView.stepButtonSize.width
         height: DS.Style.arrowListView.stepButtonSize.height
@@ -25,7 +25,40 @@ Loader {
                                                               : DS.Style.arrowListView.downButtonIconName
         icon.width: DS.Style.arrowListView.stepButtonIconSize.width
         icon.height: DS.Style.arrowListView.stepButtonIconSize.height
-        onClicked: direction === ArrowListViewButton.UpButton ? view.decrementCurrentIndex()
-                                                              : view.incrementCurrentIndex()
+
+        // Unified scroll operation function
+        function performScroll() {
+            direction === ArrowListViewButton.UpButton ? view.decrementCurrentIndex() 
+                                                       : view.incrementCurrentIndex()
+        }
+
+        // Auto-scroll control properties using state machine approach
+        property bool shouldAutoScroll: hovered && enabled
+        property bool delayCompleted: false
+
+        // Timer for initial delay before starting hover scroll
+        Timer {
+            id: initialDelayTimer
+            interval: 300
+            repeat: false
+            running: shouldAutoScroll && !delayCompleted
+            onTriggered: delayCompleted = true
+        }
+
+        // Timer for continuous hover scrolling
+        Timer {
+            id: hoverScrollTimer
+            interval: 100
+            repeat: true
+            running: shouldAutoScroll && delayCompleted
+            onTriggered: performScroll()
+        }
+                
+        // Reset state when auto-scroll should stop
+        onShouldAutoScrollChanged: {
+            if (!shouldAutoScroll) {
+                delayCompleted = false
+            }
+        }
     }
 }

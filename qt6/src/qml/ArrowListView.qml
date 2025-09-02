@@ -24,7 +24,7 @@ FocusScope {
         P.ArrowListViewButton {
             visible: itemsView.interactive
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: width
+            Layout.fillWidth: true
             Layout.preferredHeight: height
             view: itemsView
             direction: P.ArrowListViewButton.UpButton
@@ -79,7 +79,7 @@ FocusScope {
         P.ArrowListViewButton {
             visible: itemsView.interactive
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: width
+            Layout.fillWidth: true
             Layout.preferredHeight: height
             view: itemsView
             direction: P.ArrowListViewButton.DownButton
