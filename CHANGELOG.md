@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.7.22] - 2025-09-04
+
+### Added
+
+- Add missing right bracket
+
+### Changed
+
+- I18n: [dtkdeclarative] Updates for project Deepin Tool Kit (#518)
+- Change scroll trigger from click to hover
+
+### Fixed
+
+- Resolve Qt6 compilation warnings and deprecations
+- Improve ComboBox layout and popup behavior
+- Add a password input box menu setting item
+- Fix: GroupBox label background is always white
+- Adjust scrollbar visibility conditions
+- Hide arrow buttons at list boundaries
+
 ## [5.7.21] - 2025-08-14
 
 ### Added
