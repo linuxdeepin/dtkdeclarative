@@ -22,7 +22,7 @@ FocusScope {
         id: contentLayout
         anchors.fill: parent
         P.ArrowListViewButton {
-            visible: itemsView.interactive
+            visible: itemsView.interactive && !itemsView.atYBeginning
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
             Layout.preferredHeight: height
@@ -77,7 +77,7 @@ FocusScope {
         }
 
         P.ArrowListViewButton {
-            visible: itemsView.interactive
+            visible: itemsView.interactive && !itemsView.atYEnd
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
             Layout.preferredHeight: height
