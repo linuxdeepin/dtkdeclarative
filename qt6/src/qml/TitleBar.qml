@@ -48,6 +48,7 @@ Item {
 
     property D.Palette textColor: DS.Style.button.text
     palette.windowText: D.ColorSelector.textColor
+    objectName: "ColorSelectorMaster"
 
     HoverHandler {
         id: hoverHandler

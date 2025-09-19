@@ -356,7 +356,7 @@ void DQuickControlColorSelector::findAndSetControlParent()
     bool needUpdateControl = true;
     bool needUpdateColorFamily = !m_state->familyIsUserSet;
     do {
-        if (needUpdateControl && _d_isControlItem(parentItem)) {
+        if (needUpdateControl && (_d_isControlItem(parentItem) || specialObjectNameItems().contains(parentItem->objectName()))) {
             needUpdateControl = false;
             setControl(parentItem);
         }
@@ -467,8 +467,12 @@ void DQuickControlColorSelector::setControl(QQuickItem *newControl)
         auto palette = m_control->property("palette").value<QQuickPalette*>();
         connect(palette, &QQuickPalette::changed, this, &DQuickControlColorSelector::updateControlTheme);
 #endif
-        connect(m_control, SIGNAL(paletteChanged()), this, SLOT(updateControlTheme()));
-        connect(m_control, SIGNAL(hoveredChanged()), this, SLOT(updateControlState()));
+        if (m_control->metaObject()->indexOfSignal("paletteChanged()") != -1) {
+            connect(m_control, SIGNAL(paletteChanged()), this, SLOT(updateControlTheme()));
+        }
+        if (m_control->metaObject()->indexOfSignal("hoveredChanged()") != -1) {
+            connect(m_control, SIGNAL(hoveredChanged()), this, SLOT(updateControlState()));
+        }
         if (m_control->metaObject()->indexOfSignal("pressedChanged()") != -1) {
             connect(m_control, SIGNAL(pressedChanged()), this, SLOT(updateControlState()));
         }
