@@ -449,8 +449,8 @@ QtObject {
         }
 
         property D.Palette placeholderText: D.Palette {
-            normal: Qt.rgba(0.33, 0.33, 0.33, 0.4)
-            normalDark: Qt.rgba(1, 1, 1, 0.3)
+            normal: Qt.rgba(0, 0, 0, 0.7)
+            normalDark: Qt.rgba(1, 1, 1, 0.7)
         }
     }
 
