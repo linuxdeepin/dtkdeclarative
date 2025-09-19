@@ -615,6 +615,9 @@ QtObject {
         property int connectorHeight: 12
         property int verticalPadding: 4
         property int horizontalPadding: 10
+        property int width: 30
+        property int height: 24
+        property int radius: 6
 
         property D.Palette text: D.Palette {
             normal: ("#e15736")
