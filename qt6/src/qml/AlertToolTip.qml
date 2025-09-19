@@ -21,6 +21,9 @@ ToolTip {
     closePolicy: Popup.NoAutoClose
 
     background: FloatingPanel {
+        radius: DS.Style.alertToolTip.radius
+        implicitWidth: DS.Style.alertToolTip.width
+        implicitHeight: DS.Style.alertToolTip.height
         backgroundColor: DS.Style.alertToolTip.background
         insideBorderColor: DS.Style.alertToolTip.insideBorder
         outsideBorderColor: DS.Style.alertToolTip.outsideBorder
