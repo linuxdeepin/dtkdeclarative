@@ -842,6 +842,17 @@ QColor DQuickControlColorSelector::getColorOf(const DQuickControlPalette *palett
         colorValue = QColor(255 - r, 255 - g, 255 - b, a);
     }
 
+    // items with inactive state should use inactive color, it likes dtkgui's generatePaletteColor_helper.
+    static const auto useInactiveColor = DGuiApplicationHelper::testAttribute(DGuiApplicationHelper::UseInactiveColorGroup);
+    if (useInactiveColor && state->controlState == DQMLGlobalObject::InactiveState) {
+        const auto &palette = DGuiApplicationHelper::standardPalette(state->controlTheme);
+        const auto &windowColor = palette.color(QPalette::Window);
+
+        QColor inactiveMaskColor = windowColor;
+        inactiveMaskColor.setAlphaF(state->controlTheme == DGuiApplicationHelper::DarkType ? 0.6 : 0.4);
+        colorValue = DGuiApplicationHelper::blendColor(colorValue, inactiveMaskColor);
+    }
+
     return colorValue;
 }
 
