@@ -6,8 +6,7 @@ import QtQuick 2.0
 import org.deepin.dtk 1.0
 import org.deepin.dtk.settings 1.0 as Settings
 
-Rectangle {
-    border.color: "blue"
+Item {
 
     property list<Settings.SettingsGroup> __groups: [
         Settings.SettingsGroup {

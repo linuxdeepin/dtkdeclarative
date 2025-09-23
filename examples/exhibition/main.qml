@@ -98,7 +98,6 @@ ApplicationWindow {
             model: examplesFiles
             delegate: ItemDelegate {
                 text: modelData.substring(0, modelData.indexOf(".qml"))
-                backgroundVisible: false
                 onClicked: navigation.currentIndex = index
                 checked: navigation.currentIndex === index
             }
