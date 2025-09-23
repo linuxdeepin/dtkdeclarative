@@ -5,7 +5,7 @@
 import QtQuick 2.11
 import org.deepin.dtk 1.0
 
-Rectangle {
+Item {
     Label {
         id: changePaletteLabel
         anchors.left: parent.left

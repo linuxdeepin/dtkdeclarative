@@ -5,7 +5,7 @@
 import QtQuick 2.11
 import org.deepin.dtk 1.0
 
-Rectangle {
+Item {
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
