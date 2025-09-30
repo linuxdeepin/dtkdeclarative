@@ -50,4 +50,25 @@ ToolTip {
         // NumberAnimation { properties: "opacity"; from: 1.0; to: 0.0 }
         NumberAnimation { properties: "y"; from: control.target.height + DS.Style.control.spacing ; to: control.target.height }
     }
+
+    BoxShadow {
+        id: line
+        property D.Palette dropShadowColor: DS.Style.alertToolTip.connecterdropShadow
+        property D.Palette backgroundColor: DS.Style.alertToolTip.connecterBackground
+        property D.Palette borderColor: DS.Style.control.border
+        y: - height * (0.75) - control.topMargin - control.topPadding
+        width: DS.Style.alertToolTip.connectorWidth
+        height: DS.Style.alertToolTip.connectorHeight
+        shadowBlur: 4
+        shadowOffsetY: 2
+        shadowColor: D.ColorSelector.dropShadowColor
+        cornerRadius: DS.Style.control.radius
+
+        Rectangle {
+            anchors.fill: parent
+            color: line.D.ColorSelector.backgroundColor
+            border.color: line.D.ColorSelector.borderColor
+            border.width: 1
+        }
+    }
 }
