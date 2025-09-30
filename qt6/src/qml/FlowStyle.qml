@@ -15,8 +15,8 @@ QtObject {
         property real focusBorderPaddings: 1
 
         property D.Palette border: D.Palette {
-            normal: Qt.rgba(0, 0, 0, 0.05)
-            normalDark: Qt.rgba(0, 0, 0, 0.05)
+            normal: Qt.rgba(0, 0, 0, 0.1)
+            normalDark: Qt.rgba(0, 0, 0, 0.1)
         }
 
         function implicitWidth(control) {
@@ -635,7 +635,7 @@ QtObject {
 
         property D.Palette connecterBackground: D.Palette {
             normal: Qt.rgba(1, 1, 1, 1)
-            normalDark: Qt.rgba(0, 0, 0, 0.1)
+            normalDark: Qt.rgba(51 / 255.0, 51 / 255.0, 51 / 255.0, 1)
         }
 
         property D.Palette dropShadow: D.Palette {
