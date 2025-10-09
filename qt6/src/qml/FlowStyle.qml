@@ -7,7 +7,7 @@ import org.deepin.dtk 1.0 as D
 
 QtObject {
     property QtObject control: QtObject {
-        property int radius: 8
+        property int radius: 6
         property int spacing: 6
         property int padding: 6
         property int borderWidth: 1
@@ -96,7 +96,7 @@ QtObject {
     // Button
     property QtObject button: QtObject {
         property int width: 140
-        property int height: 36
+        property int height: 30
         property int hPadding: control.radius
         property int vPadding: control.radius / 2.0
         property int iconSize: 24
@@ -415,7 +415,7 @@ QtObject {
 
     property QtObject comboBox: QtObject {
         property int width: 240
-        property int height: 36
+        property int height: 30
         property int padding: 8
         property int spacing: 10
         property int iconSize: 12
@@ -546,7 +546,7 @@ QtObject {
     property QtObject dialogWindow: QtObject {
         property int width: 120
         property int height: 120
-        property int contentHMargin: 10
+        property int contentHMargin: 6
         property int footerMargin: 10
         property int titleBarHeight: 50
         property int iconSize: 32
