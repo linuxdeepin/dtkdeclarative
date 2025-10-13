@@ -820,6 +820,7 @@ QtObject {
         property real hideOpacity: 0.0
         property int hidePauseDuration: 450
         property int hideDuration: 1500
+        property int hideWidthDuration: 100
 
         property D.Palette background: D.Palette {
             normal: Qt.rgba(0, 0, 0, 0.3)

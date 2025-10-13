@@ -18,10 +18,38 @@ T.ScrollBar {
     policy: D.DTK.platformTheme.scrollBarPolicy
 
     state: "hide"
+    property int __currentState: 0
+    function __calculateStateConditions() {
+        var moving = control.active && !control.pressed && !control.hovered
+        var shouldNormal = (control.policy === T.ScrollBar.AlwaysOn && !control.hovered && !control.pressed) || 
+                       (moving && control.size < 1.0)
+        
+        var shouldHover = ((control.hovered && (control.contentItem.opacity > 0 && control.contentItem.opacity <= 1))  && control.active && !control.pressed && control.size < 1.0)
+        
+        var shouldActive = (control.pressed && control.size < 1.0)
+        
+        var shouldHide = !shouldNormal && !shouldHover && !shouldActive
+
+        __currentState = shouldHide ? 0 : shouldNormal ? 1 : shouldHover ? 2 : 3
+    }
+    
+    onHoveredChanged: {
+       Qt.callLater(() => { __calculateStateConditions() })
+    }
+    onPressedChanged: {
+       Qt.callLater(() => { __calculateStateConditions() })
+    }
+    onActiveChanged: {
+       Qt.callLater(() => { __calculateStateConditions() })
+    }
+    onSizeChanged: {
+       Qt.callLater(() => { __calculateStateConditions() })
+    }
+
     states: [
         State {
             name: "hide"
-            when: control.policy === T.ScrollBar.AlwaysOff || (control.policy !== T.ScrollBar.AlwaysOn && (!control.active || control.size >= 1.0))
+            when: __currentState === 0
             PropertyChanges {
                 target: control.contentItem
                 implicitWidth: DS.Style.scrollBar.width
@@ -30,8 +58,7 @@ T.ScrollBar {
         },
         State {
             name: "normal"
-            property bool moving: control.active && !control.pressed && !control.hovered
-            when: (control.policy === T.ScrollBar.AlwaysOn && !control.hovered && !control.pressed) || (moving && control.size < 1.0)
+            when: __currentState === 1
             PropertyChanges {
                 target: control.contentItem
                 implicitWidth: DS.Style.scrollBar.width
@@ -39,7 +66,7 @@ T.ScrollBar {
         },
         State {
             name: "hover"
-            when: (control.hovered && !control.pressed && control.size < 1.0)
+            when: __currentState === 2
             PropertyChanges {
                 target: control.contentItem
                 implicitWidth: DS.Style.scrollBar.activeWidth
@@ -47,7 +74,7 @@ T.ScrollBar {
         },
         State {
             name: "active"
-            when: (control.pressed && control.size < 1.0)
+            when: __currentState === 3
             PropertyChanges {
                 target: control.contentItem
                 implicitWidth: DS.Style.scrollBar.activeWidth
@@ -58,8 +85,9 @@ T.ScrollBar {
     transitions: Transition {
         to: "hide"
         SequentialAnimation {
+            NumberAnimation { target: control.contentItem; duration: DS.Style.scrollBar.hideWidthDuration; property: "implicitWidth";}
             PauseAnimation { duration: DS.Style.scrollBar.hidePauseDuration }
-            NumberAnimation { target: control.contentItem; duration: DS.Style.scrollBar.hideDuration; property: "opacity"; to:DS.Style.scrollBar.hideOpacity }
+            NumberAnimation { target: control.contentItem; duration: DS.Style.scrollBar.hideDuration; property: "opacity";}
         }
     }
 
