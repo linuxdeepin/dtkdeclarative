@@ -9,6 +9,13 @@ endif()
 
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick DBus QuickControls2 LinguistTools)
 
+if ("${QT_VERSION_MAJOR}" STREQUAL "6")
+    if (${Qt6Quick_VERSION} VERSION_GREATER_EQUAL "6.10.0")
+        set(QT_NO_PRIVATE_MODULE_WARNING ON)
+        find_package(Qt6 REQUIRED COMPONENTS QuickPrivate QuickControls2Private)
+    endif()
+endif()
+
 find_package(Dtk${DTK_VERSION_MAJOR}Core REQUIRED)
 find_package(Dtk${DTK_VERSION_MAJOR}Gui REQUIRED)
 find_package(PkgConfig REQUIRED)

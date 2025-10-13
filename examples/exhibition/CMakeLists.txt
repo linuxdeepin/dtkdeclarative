@@ -13,7 +13,7 @@ if (EnableQt6)
     set(QML_RCS ${CMAKE_CURRENT_LIST_DIR}/qml-qt6.qrc)
 endif()
 add_executable(${BIN_NAME}
-    ${CMAKE_CURRENT_LIST_DIR}/main.cpp 
+    ${CMAKE_CURRENT_LIST_DIR}/main.cpp
     ${CMAKE_CURRENT_LIST_DIR}/assets.qrc
     ${QML_RCS}
 )
@@ -21,7 +21,7 @@ add_executable(${BIN_NAME}
 target_compile_options(${BIN_NAME} PRIVATE "-fpic")
 
 target_link_libraries(${BIN_NAME} PRIVATE
-    Qt${QT_VERSION_MAJOR}::Quick 
+    Qt${QT_VERSION_MAJOR}::Quick
     Qt${QT_VERSION_MAJOR}::QuickControls2
     Dtk${DTK_VERSION_MAJOR}::Core
     Dtk${DTK_VERSION_MAJOR}::Gui
