@@ -24,6 +24,12 @@ qt_add_qml_module(dtkdeclarativesettingsplugin
 
 dtk_extend_target(dtkdeclarativesettingsplugin EnableCov ${ENABLE_COV})
 
+if("${QT_VERSION_MAJOR}" STREQUAL "6")
+    if (${Qt6Core_VERSION} VERSION_GREATER_EQUAL "6.10.0")
+        find_package(Qt6 REQUIRED COMPONENTS CorePrivate QuickPrivate QmlPrivate)
+    endif()
+endif()
+
 target_link_libraries(dtkdeclarativesettingsplugin
 PRIVATE
     Qt${QT_VERSION_MAJOR}::Core

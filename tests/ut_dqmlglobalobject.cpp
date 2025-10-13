@@ -214,13 +214,13 @@ TEST(ut_DColor, construct)
     pt.setBrush(QPalette::HighlightedText, Qt::blue);
     ASSERT_EQ(color1.toColor(pt), Qt::blue);
 
-    DColor color2(QColor(Qt::red));
+    DColor color2{QColor(Qt::red)};
     ASSERT_EQ(color2.color(), Qt::red);
 }
 
 TEST(ut_DColor, common)
 {
-    DColor color(QColor(Qt::red));
+    DColor color{QColor(Qt::red)};
     DColor color2(color.hue(1).opacity(1).saturation(1).lightness(1));
 
     EXPECT_NE(color.data.hue, color2.data.hue);
@@ -231,9 +231,9 @@ TEST(ut_DColor, common)
 
 TEST(ut_DColor, operatorEQ)
 {
-    DColor color1(QColor(Qt::red));
-    DColor color2(QColor(Qt::blue));
-    DColor color3(QColor(Qt::blue));
+    DColor color1{QColor(Qt::red)};
+    DColor color2{QColor(Qt::blue)};
+    DColor color3{QColor(Qt::blue)};
     EXPECT_NE(color1, color2);
     EXPECT_EQ(color2, color3);
 }

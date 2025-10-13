@@ -10,6 +10,16 @@ if(EnableQt5)
     find_package(Qt${QT_VERSION_MAJOR}QuickCompiler)
 endif()
 
+if("${QT_VERSION_MAJOR}" STREQUAL "6")
+  if(${Qt6Qml_VERSION} VERSION_GREATER_EQUAL "6.10.0")
+    set(QT_NO_PRIVATE_MODULE_WARNING ON)
+    find_package(
+      Qt6
+      COMPONENTS QmlPrivate QuickPrivate QuickControls2Private
+      REQUIRED)
+  endif()
+endif()
+
 set(QML_FILES
     ApplicationWindow.qml
     BusyIndicator.qml
