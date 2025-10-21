@@ -30,6 +30,8 @@ Window {
     property string icon
     default property alias content: contentLoader.children
     property alias palette : content.palette
+    property real leftPadding: DS.Style.dialogWindow.contentHMargin
+    property real rightPadding: DS.Style.dialogWindow.contentHMargin
 
     Item {
         id: content
@@ -52,8 +54,8 @@ Window {
                 id: contentLoader
                 Layout.fillWidth: true
                 Layout.preferredHeight: childrenRect.height
-                Layout.leftMargin: DS.Style.dialogWindow.contentHMargin
-                Layout.rightMargin: DS.Style.dialogWindow.contentHMargin
+                Layout.leftMargin: control.leftPadding
+                Layout.rightMargin: control.rightPadding
             }
         }
     }
