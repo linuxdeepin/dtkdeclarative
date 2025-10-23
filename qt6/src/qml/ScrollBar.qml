@@ -45,6 +45,9 @@ T.ScrollBar {
     onSizeChanged: {
        Qt.callLater(() => { __calculateStateConditions() })
     }
+    onPolicyChanged: {
+       Qt.callLater(() => { __calculateStateConditions() })
+    }
 
     states: [
         State {
