@@ -10,7 +10,7 @@ import org.deepin.dtk.style 1.0 as DS
 LineEdit {
     id: control
     property alias placeholder: centerIndicatorLabel.text
-    property bool editting: control.activeFocus || (text.length !== 0)
+    property bool editting: control.activeFocus || control.contextMenuVisible || (text.length !== 0)
     leftPadding: (editting) ? searchIcon.width + DS.Style.searchEdit.iconLeftMargin
                               + DS.Style.searchEdit.iconRightMargin
                             : 0

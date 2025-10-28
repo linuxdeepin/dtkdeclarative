@@ -18,6 +18,7 @@ T.TextField {
     property alias alertText: panel.alertText
     property alias alertDuration: panel.alertDuration
     property alias showAlert: panel.showAlert
+    property alias contextMenuVisible: contextMenu.visible
 
     implicitWidth: Math.max(DS.Style.control.implicitWidth(control),
                             placeholderText ? placeholder.implicitWidth + leftPadding + rightPadding
@@ -52,6 +53,7 @@ T.TextField {
     background: EditPanel {
         id: panel
         control: control
+        showBorder: control.activeFocus || control.contextMenuVisible
         implicitWidth: DS.Style.edit.width
         implicitHeight: DS.Style.edit.textFieldHeight
     }
@@ -74,6 +76,8 @@ T.TextField {
 
     Menu {
         id: contextMenu
+        // Force the text field to keep focus when the context menu is closed
+        onClosed: control.forceActiveFocus()
 
         MenuItem
         {
