@@ -111,7 +111,6 @@ Item {
                     height: DS.Style.titleBar.iconSize
                 }
                 Layout.alignment: Qt.AlignLeft
-                Layout.leftMargin: 2
                 visible: name
                 palette: D.DTK.makeIconPalette(control.palette)
                 mode: control.D.ColorSelector.controlState
