@@ -20,16 +20,17 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    engine.addImportPath(CHAMELEON_PATH);
+    const QString chameleonPath = QStringLiteral("%1/../../../plugins").arg(QGuiApplication::applicationDirPath());
+    engine.addImportPath(chameleonPath);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0) && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QQuickStyle::addStylePath(CHAMELEON_PATH);
+    QQuickStyle::addStylePath(chameleonPath);
 //    QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
 #else
 //    QQuickWindow::setGraphicsApi(QSGRendererInterface::Software);
 #endif
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 12, 0) && defined(QT_NO_DEBUG)
-    QQuickStyle::setStyle(CHAMELEON_PATH"/Chameleon");
+    QQuickStyle::setStyle(chameleonPath"/Chameleon");
 #else
     QQuickStyle::setStyle("Chameleon");
 #endif
