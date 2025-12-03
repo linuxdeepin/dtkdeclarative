@@ -100,10 +100,17 @@ DialogWindow {
                 Label {
                     id: websiteLabel
                     font: D.DTK.fontManager.t8
+                    textFormat: Text.RichText
                     text: (control.websiteLink === "" || control.websiteName === "") ?
                               "" : control.__websiteLinkTemplate.arg(websiteLink).arg(control.websiteName)
                     wrapMode: Text.WordWrap
                     Layout.fillWidth: true
+
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        acceptedButtons: Qt.NoButton
+                    }
                 }
             }
             ColumnLayout {
