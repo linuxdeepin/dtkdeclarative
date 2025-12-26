@@ -27,43 +27,59 @@ Item {
 
         Item {
             BoxShadow {
-                y: (parent.height - height) / 2
-                x: -y
-                width: progressBar.height
-                height: progressBar.visualPosition * progressBar.width
-                shadowOffsetX: -4
+                anchors.fill: parent
+                anchors.rightMargin: (1 - progressBar.visualPosition) * progressBar.width
+                shadowOffsetY: 4
                 shadowBlur: 6
-                rotation: -90
                 cornerRadius: DS.Style.control.radius
                 shadowColor: control.D.ColorSelector.shadowPaletteColor
                 visible: progressBar.visualPosition > 0
+            }
 
+            Item {
+                id: item
+                // 向左偏移height显示，避免宽度过窄时产生的圆角显示问题
+                x: - height
+                width: progressBar.width + height
+                height: progressBar.height
                 Rectangle {
                     id: rect
-                    anchors.fill: parent
-                    radius: parent.cornerRadius
-                    property int count
-                    property real lightPosition
-                    gradient: Gradient {
+                    property color gradientColor: progressBar.palette.highlight
+                    property real lightPosition: 0
+                    width: progressBar.width * progressBar.visualPosition + height
+                    height: progressBar.height
+                    gradient: Gradient { 
+                        orientation: Gradient.Horizontal
                         GradientStop { position: 0; color: progressBar.palette.highlight }
-                        GradientStop { position: rect.lightPosition; color: control.D.ColorSelector.handleGradientColor }
+                        GradientStop { position: rect.lightPosition; color: rect.gradientColor }
                         GradientStop { position: 1; color: progressBar.palette.highlight }
                     }
-                    Timer {
-                        id: moveTimer
-                        interval: 10
-                        repeat: true
-                        running: rect.visible
-                        onTriggered: {
-                            moveTimer.interval = 10
-                            if (rect.count === 100) {
-                                rect.count = 0
-                                rect.lightPosition = 0.0
-                                moveTimer.interval = 2000
-                                return;
+
+                    LightSweepAnimation {
+                        targetItem: rect
+                        running: !control.animationStop && rect.visible
+                    }
+
+                    radius: DS.Style.control.radius
+                    layer.enabled: true
+                    clip: true
+                    layer.effect: OpacityMask {
+                        maskSource: Rectangle {
+                                width: rect.width
+                                height: rect.height
+                                radius: DS.Style.control.radius
                             }
-                            rect.count += 1
-                            rect.lightPosition = rect.count * 0.01
+                    }
+                }
+                layer.enabled: true
+                layer.effect: OpacityMask {
+                    maskSource: Item {
+                        width: item.width
+                        height: item.height
+                        Rectangle {
+                            anchors.fill: parent
+                            anchors.leftMargin: -item.x
+                            radius: DS.Style.control.radius
                         }
                     }
                 }
@@ -121,28 +137,16 @@ Item {
                     id: indeterminateRect
                     anchors.fill: parent
                     radius: indeterminateProgressContent.cornerRadius
-                    property int count
-                    property real lightPosition
+                    property real lightPosition: 0
+                    property color gradientColor: control.D.ColorSelector.handleGradientColor
                     gradient: Gradient {
-                        GradientStop { position: 0.0; color: progressBar.palette.highlight }
-                        GradientStop { position: indeterminateRect.lightPosition; color: control.D.ColorSelector.handleGradientColor }
-                        GradientStop { position: 1.0; color: progressBar.palette.highlight }
+                        GradientStop { position: 0; color: progressBar.palette.highlight }
+                        GradientStop { position: indeterminateRect.lightPosition; color: indeterminateRect.gradientColor }
+                        GradientStop { position: 1; color: progressBar.palette.highlight }
                     }
-                    Timer {
-                        id: indeterminateMoveTimer
-                        interval: 50
-                        repeat: true
-                        running: indeterminateRect.visible
-                        onTriggered: {
-                            indeterminateMoveTimer.interval = 50
-                            if (indeterminateRect.count === 100) {
-                                indeterminateRect.count = 0
-                                indeterminateMoveTimer.interval = 2000
-                                return;
-                            }
-                            indeterminateRect.count += 5
-                            indeterminateRect.lightPosition = indeterminateRect.count * 0.01
-                        }
+                    LightSweepAnimation {
+                        targetItem: indeterminateRect
+                        running: progressBar.indeterminate && !control.animationStop && indeterminateRect.visible
                     }
                 }
 
@@ -223,5 +227,42 @@ Item {
                 }
             }
         }
+    }
+
+    component LightSweepAnimation: SequentialAnimation{
+        id: anim
+        property Item targetItem: null
+        loops: Animation.Infinite
+
+        ParallelAnimation {
+            SequentialAnimation {
+                ColorAnimation {
+                    target: anim.targetItem
+                    property: "gradientColor"
+                    from: progressBar.palette.highlight
+                    to: control.D.ColorSelector.handleGradientColor
+                    duration: 500
+                }
+                PauseAnimation { duration: 2000 }
+                ColorAnimation {
+                    target: anim.targetItem
+                    property: "gradientColor"
+                    from: control.D.ColorSelector.handleGradientColor
+                    to: progressBar.palette.highlight
+                    duration: 500
+                }
+            }
+
+            NumberAnimation {
+                target: anim.targetItem
+                property: "lightPosition"
+                from: 0
+                to: 1
+                duration: 3000
+                easing.type: Easing.InOutSine
+            }
+        }
+
+        PauseAnimation { duration: 2000 }
     }
 }
