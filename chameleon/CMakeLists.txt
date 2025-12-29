@@ -1,12 +1,12 @@
 set(PLUGIN_NAME ${STYLE_PLUGIN_NAME})
 
-find_package(Dtk${DTK_VERSION_MAJOR}Gui REQUIRED)
+find_package(Dtk${DTK_NAME_SUFFIX}Gui REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS
     Qml
     Quick
     QuickControls2 REQUIRED
 )
-if(EnableQt5)
+if(DTK5)
     find_package(Qt${QT_VERSION_MAJOR}QuickCompiler)
 endif()
 
@@ -59,7 +59,7 @@ set(SRC_FILES
     qtquickcontrols2chameleonstyleplugin.h qtquickcontrols2chameleonstyleplugin.cpp
 )
 
-if(EnableQt5)
+if(DTK5)
     file(GLOB _qml_files ${QML_FILES})
     set(TARGETPATH "QtQuick/Controls.2/Chameleon")
     set(PLUGIN_INSTALL_DIR "${QML_INSTALL_DIR}/${TARGETPATH}")
@@ -109,7 +109,7 @@ if(EnableQt5)
     )
 endif()
 
-if(EnableQt6)
+if(NOT DTK5)
     qt_add_qml_module(${PLUGIN_NAME}
         URI "Chameleon"
         VERSION "1.0"

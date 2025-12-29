@@ -10,11 +10,11 @@ set (DOXYGEN_GENERATE_QHP "YES" CACHE STRING "Doxygen QHP output")
 set (DOXYGEN_FILTER_PATTERNS *.qml=doxyqml CACHE STRING "Extra filter patterns")
 set (DOXYGEN_FILE_PATTERNS *.cpp *.h *.zh_CN.md *.zh_CN.dox *.qml CACHE STRING "Doxygen File Patterns")
 set (DOXYGEN_EXTENSION_MAPPING qml=C++ CACHE STRING "Extra extension mapping")
-set (DOXYGEN_PROJECT_NUMBER ${CMAKE_PROJECT_VERSION} CACHE STRING "") # Should be the same as this project is using.
+set (DOXYGEN_PROJECT_NUMBER ${DTK_VERSION} CACHE STRING "") # Should be the same as this project is using.
 set (DOXYGEN_EXTRACT_STATIC YES)
 set (DOXYGEN_OUTPUT_LANGUAGE "Chinese" CACHE STRING "Doxygen Output Language")
 set (DOXYGEN_IMAGE_PATH ${CMAKE_CURRENT_LIST_DIR}/images/)
-if (EnableQt5)
+if (DTK5)
     find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Help)
 else()
     find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ToolsTools)

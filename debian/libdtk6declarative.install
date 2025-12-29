@@ -1,0 +1,3 @@
+usr/lib/*/libdtk6declarative.so.*
+usr/lib/*/qt6/qml/org/deepin/dtk/*
+usr/share/dtk6/DDeclarative/translations/*.qm

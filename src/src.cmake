@@ -19,8 +19,9 @@ file(GLOB PUBLIC_HEADERS
     ${PROJECT_SOURCE_DIR}/src/dtkdeclarative_global.h
 )
 
+
 # exclusive to dtk5
-if (EnableDtk5)
+if (DTK5)
     list(APPEND D_HEADERS
         ${PROJECT_SOURCE_DIR}/src/DPlatformThemeProxy
         ${PROJECT_SOURCE_DIR}/src/DQuickSystemPalette
@@ -43,12 +44,12 @@ if (EnableDtk5)
 endif()
 
 # exclusive to dtk6
-if (EnableDtk6)
+if (NOT DTK5)
     list(REMOVE_ITEM HEADERS
-      ${PROJECT_SOURCE_DIR}/src/dquicksystempalette.h
-      ${PROJECT_SOURCE_DIR}/src/private/dquicksystempalette_p.h
+        ${PROJECT_SOURCE_DIR}/src/dquicksystempalette.h
+        ${PROJECT_SOURCE_DIR}/src/private/dquicksystempalette_p.h
     )
     list(REMOVE_ITEM SRCS
-      ${PROJECT_SOURCE_DIR}/src/dquicksystempalette.cpp
+        ${PROJECT_SOURCE_DIR}/src/dquicksystempalette.cpp
     )
 endif()

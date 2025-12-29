@@ -16,8 +16,8 @@ if ("${QT_VERSION_MAJOR}" STREQUAL "6")
     endif()
 endif()
 
-find_package(Dtk${DTK_VERSION_MAJOR}Core REQUIRED)
-find_package(Dtk${DTK_VERSION_MAJOR}Gui REQUIRED)
+find_package(Dtk${DTK_NAME_SUFFIX}Core REQUIRED)
+find_package(Dtk${DTK_NAME_SUFFIX}Gui REQUIRED)
 find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(GL REQUIRED IMPORTED_TARGET gl)
@@ -53,8 +53,8 @@ endif()
 target_link_libraries(${LIB_NAME}_properties INTERFACE
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Quick
-    Dtk${DTK_VERSION_MAJOR}::Core
-    Dtk${DTK_VERSION_MAJOR}::Gui
+    Dtk${DTK_NAME_SUFFIX}::Core
+    Dtk${DTK_NAME_SUFFIX}::Gui
     $<BUILD_INTERFACE:Qt${QT_VERSION_MAJOR}::QuickPrivate>
     $<BUILD_INTERFACE:Qt${QT_VERSION_MAJOR}::DBus>
     $<BUILD_INTERFACE:PkgConfig::GL>
@@ -83,5 +83,5 @@ list(APPEND PUBLIC_HEADERS ${CONFIG_PATH})
 install(FILES ${PUBLIC_HEADERS} ${D_HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}")
 
 # Install ${LIB_NAME}_properties
-install(TARGETS ${LIB_NAME}_properties EXPORT Dtk${DTK_VERSION_MAJOR}DeclarativeProperties DESTINATION "${LIB_INSTALL_DIR}")
-install(EXPORT Dtk${DTK_VERSION_MAJOR}DeclarativeProperties NAMESPACE Dtk${DTK_VERSION_MAJOR}:: FILE Dtk${DTK_VERSION_MAJOR}DeclarativePropertiesTargets.cmake DESTINATION "${CONFIG_INSTALL_DIR}")
+install(TARGETS ${LIB_NAME}_properties EXPORT Dtk${DTK_NAME_SUFFIX}DeclarativeProperties DESTINATION "${LIB_INSTALL_DIR}")
+install(EXPORT Dtk${DTK_NAME_SUFFIX}DeclarativeProperties NAMESPACE Dtk${DTK_NAME_SUFFIX}:: FILE Dtk${DTK_NAME_SUFFIX}DeclarativePropertiesTargets.cmake DESTINATION "${CONFIG_INSTALL_DIR}")

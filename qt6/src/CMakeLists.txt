@@ -1,6 +1,6 @@
 include(${PROJECT_SOURCE_DIR}/src/targets.cmake)
 
-find_package(Qt${QT_DEFAULT_MAJOR_VERSION}ShaderTools)
+find_package(Qt${QT_VERSION_MAJOR}ShaderTools)
 
 include(${PROJECT_SOURCE_DIR}/qt6/src/qml.cmake)
 qt_add_qml_module(${LIB_NAME}
@@ -32,8 +32,8 @@ qt_add_translations(${LIB_NAME}
 )
 
 set_target_properties(${LIB_NAME} PROPERTIES
-    VERSION ${CMAKE_PROJECT_VERSION}
-    SOVERSION ${CMAKE_PROJECT_VERSION_MAJOR}
+    VERSION ${DTK_VERSION}
+    SOVERSION ${DTK_VERSION_MAJOR}
     EXPORT_NAME Declarative
 )
 
@@ -80,9 +80,9 @@ set_target_properties(${PLUGIN_NAME} PROPERTIES
 )
 
 # Install library
-install(TARGETS ${LIB_NAME} EXPORT Dtk${DTK_VERSION_MAJOR}DeclarativeTargets DESTINATION "${LIB_INSTALL_DIR}")
+install(TARGETS ${LIB_NAME} EXPORT Dtk${DTK_NAME_SUFFIX}DeclarativeTargets DESTINATION "${LIB_INSTALL_DIR}")
 # Install export targets
-install(EXPORT Dtk${DTK_VERSION_MAJOR}DeclarativeTargets NAMESPACE Dtk${DTK_VERSION_MAJOR}:: FILE Dtk${DTK_VERSION_MAJOR}DeclarativeTargets.cmake DESTINATION "${CONFIG_INSTALL_DIR}")
+install(EXPORT Dtk${DTK_NAME_SUFFIX}DeclarativeTargets NAMESPACE Dtk${DTK_NAME_SUFFIX}:: FILE Dtk${DTK_NAME_SUFFIX}DeclarativeTargets.cmake DESTINATION "${CONFIG_INSTALL_DIR}")
 # Install translations
 install(FILES ${QM_FILES} DESTINATION "${TRANSLATIONS_INSTALL_PATH}")
 # Install plugin

@@ -1,47 +1,130 @@
 Source: dtkdeclarative
 Section: libs
 Priority: optional
-Maintainer: Deepin Packages Builder <packages@deepin.com>
+Maintainer: Shanshan Ye <yeshanshan@uniontech.com>
 Build-Depends:
- debhelper-compat ( =12),
+ debhelper-compat (= 12),
  cmake,
- qtdeclarative5-dev,
- qtbase5-dev-tools,
- qtquickcontrols2-5-dev,
- libdtkgui-dev,
- libdtkcore-dev,
- qtdeclarative5-private-dev,
- qtbase5-private-dev,
  pkg-kde-tools,
  libgtest-dev,
- doxygen,
- qttools5-dev-tools,
- qttools5-dev,
- doxyqml,
+ libdtkcommon-dev,
+ qtdeclarative5-dev <!nodtk5>,
+ qtbase5-dev-tools <!nodtk5>,
+ qtquickcontrols2-5-dev <!nodtk5>,
+ libdtkgui-dev <!nodtk5>,
+ libdtkcore-dev <!nodtk5>,
+ qtdeclarative5-private-dev <!nodtk5>,
+ qtbase5-private-dev <!nodtk5>,
+ qttools5-dev-tools <!nodtk5>,
+ qttools5-dev <!nodtk5>,
+ qt6-declarative-dev <!nodtk6>,
+ qt6-base-dev-tools <!nodtk6>,
+ libqt6quickcontrols2-6 <!nodtk6>,
+ libdtk6gui-dev <!nodtk6>,
+ libdtk6core-dev <!nodtk6>,
+ qt6-declarative-private-dev <!nodtk6>,
+ qt6-base-private-dev <!nodtk6>,
+ qt6-tools-dev-tools <!nodtk6>,
+ qt6-tools-dev <!nodtk6>,
+ qt6-shadertools-dev <!nodtk6>,
+ doxygen <!nodoc>,
+ doxyqml <!nodoc>,
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org
+
+Package: qml6-module-qtquick-controls2-styles-chameleon
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},
+ qml6-module-qtquick,
+ qml6-module-qtquick-controls,
+ qml6-module-qtquick-shapes,
+ qml6-module-qt5compat-graphicaleffects,
+ qml6-module-qtqml-workerscript,
+ qml6-module-qtquick-templates,
+ qml6-module-qtquick-effects,
+ libdtk6declarative( =${binary:Version})
+Build-Profiles: <!nodtk6>
+Description: Deepin Tool Kit Qt Quick Controls 2 QML module (DTK6 with Qt6)
+ Dtkdeclarative is base library of Deepin Qt/QtQuick applications.
+ .
+ This package is built for DTK6 with Qt6.
+
+Package: libdtk6declarative
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},
+ libdtk6core
+Multi-Arch: same
+Build-Profiles: <!nodtk6>
+Description: Deepin Tool Kit Declarative library (DTK6 with Qt6)
+ Dtkdeclarative is base library of Deepin Qt/QtQuick applications.
+ .
+ This package contains the shared libraries.
+ This package is built for DTK6 with Qt6.
+
+Package: libdtk6declarative-dev
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},
+ libdtk6declarative( =${binary:Version}),
+ libdtk6core-dev,
+ libdtk6gui-dev,
+ libdtkcommon-dev,
+ qt6-base-dev,
+ qt6-declarative-dev
+Build-Profiles: <!nodtk6>
+Description: Deepin Tool Kit Declarative Devel library (DTK6 with Qt6)
+ Dtkdeclarative is base library of Deepin Qt/QtQuick applications.
+ .
+ This package contains the header files and shared libraries of DtkDeclarative.
+ This package is built for DTK6 with Qt6.
+
+Package: libdtk6declarative-doc
+Architecture: any
+Depends: ${misc:Depends}
+Build-Profiles: <!nodtk6 !nodoc>
+Description: Deepin Tool Kit Declarative Devel library (DTK6 with Qt6 Document)
+ Dtkdeclarative is base library of Deepin Qt/QtQuick applications.
+
+Package: dtk6-exhibition
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},
+ libdtk6declarative( =${binary:Version}),
+ qml6-module-qtquick-controls2-styles-chameleon( =${binary:Version})
+Build-Profiles: <!nodtk6>
+Description: Deepin Tool Kit QML Controls example (DTK6 with Qt6)
+ This package contains an application.
+ .
+ This package is built for DTK6 with Qt6.
 
 Package: qml-module-qtquick-controls2-styles-chameleon
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, qml-module-qtquick-shapes (>= 5.11.3), qml-module-qtgraphicaleffects,
  libdtkdeclarative5( =${binary:Version})
+Build-Profiles: <!nodtk5>
 Description: Deepin Tool Kit Qt Quick Controls 2 QML module
  Dtkdeclarative is base library of Deepin Qt/QtQuick applications.
 
 Package: libdtkdeclarative5
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
-  libdtkcore5 (>= 5.6.12)
+ libdtkcore5 (>= 5.6.12)
 Multi-Arch: same
-Description: Deepin Tool Kit Gui library
+Build-Profiles: <!nodtk5>
+Description: Deepin Tool Kit Declarative library
  Dtkdeclarative is base library of Deepin Qt/QtQuick applications.
  .
  This package contains the shared libraries.
 
 Package: libdtkdeclarative-dev
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libdtkdeclarative5( =${binary:Version})
-Description: Deepin Tool Kit Gui Devel library
+Depends: ${shlibs:Depends}, ${misc:Depends},
+ libdtkdeclarative5( =${binary:Version}),
+ libdtkcore-dev,
+ libdtkgui-dev,
+ libdtkcommon-dev,
+ qtbase5-dev,
+ qtdeclarative5-dev
+Build-Profiles: <!nodtk5>
+Description: Deepin Tool Kit Declarative Devel library
  Dtkdeclarative is base library of Deepin Qt/QtQuick applications.
  .
  This package contains the header files and shared libraries of DtkDeclarative
@@ -49,7 +132,8 @@ Description: Deepin Tool Kit Gui Devel library
 Package: libdtkdeclarative-doc
 Architecture: any
 Depends: ${misc:Depends}
-Description: Deepin Tool Kit Gui Devel library (Document)
+Build-Profiles: <!nodtk5 !nodoc>
+Description: Deepin Tool Kit Declarative Devel library (Document)
  Dtkdeclarative is base library of Deepin Qt/QtQuick applications.
 
 Package: dtk-exhibition
@@ -57,5 +141,6 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
  libdtkdeclarative5( =${binary:Version}),
  qml-module-qtquick-controls2-styles-chameleon( =${binary:Version})
-Description: Deepin Tool Kit QML Controls example.
- This package contains a applicatioin.
+Build-Profiles: <!nodtk5>
+Description: Deepin Tool Kit QML Controls example
+ This package contains an application.
