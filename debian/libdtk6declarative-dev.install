@@ -1,0 +1,6 @@
+usr/lib/*/libdtk6declarative.so
+usr/include/dtk6/
+usr/lib/*/pkgconfig/dtk6declarative.pc
+usr/lib/*/cmake/Dtk6Declarative/*.cmake
+usr/lib/*/qt6/mkspecs/*
+usr/share/qtcreator/templates/wizards/projects/qml6-app-template/*

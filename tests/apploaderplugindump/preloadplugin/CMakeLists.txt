@@ -1,7 +1,6 @@
-if(EnableQt5)
+if(DTK5)
     qtquick_compiler_add_resources(PRELOAD_RCC_SOURCES preload.qrc)
-endif()
-if(EnableQt6)
+else()
     qt_add_resources(PRELOAD_RCC_SOURCES preload.qrc)
 endif()
 

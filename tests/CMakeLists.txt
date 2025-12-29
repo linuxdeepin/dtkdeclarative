@@ -1,7 +1,7 @@
 set(BIN_NAME unit-test)
 
-find_package(Dtk${DTK_VERSION_MAJOR}Core REQUIRED)
-find_package(Dtk${DTK_VERSION_MAJOR}Gui REQUIRED)
+find_package(Dtk${DTK_NAME_SUFFIX}Core REQUIRED)
+find_package(Dtk${DTK_NAME_SUFFIX}Gui REQUIRED)
 find_package(GTest REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Quick QuickControls2 Qml Test)
 
@@ -39,7 +39,7 @@ file(GLOB TEST_SOURCES
     ut_dquickblitframebuffer.cpp
     ut_dtkdeclatative_qmls.cpp
 )
-if (EnableDtk5)
+if (DTK5)
     list(APPEND TEST_SOURCES
         ut_dplatformthemeproxy.cpp
     )
