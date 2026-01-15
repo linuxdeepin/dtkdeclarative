@@ -154,9 +154,9 @@ qreal DQuickIconImagePrivate::calculateDevicePixelRatio() const
 }
 
 DQuickIconImage::DQuickIconImage(QQuickItem *parent)
-    : QQuickImage(*(new DQuickIconImagePrivate), parent)
+    : DQuickIconImage(*(new DQuickIconImagePrivate), parent)
 {
-    setAsynchronous(true); // asynchronous by default
+
 }
 
 DQuickIconImage::~DQuickIconImage()
@@ -341,6 +341,10 @@ DQuickIconImage::DQuickIconImage(DQuickIconImagePrivate &dd, QQuickItem *parent)
     : QQuickImage(dd, parent)
 {
     setAsynchronous(true);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+    setRetainWhileLoading(true);
+#endif
 }
 
 void DQuickIconImage::itemChange(ItemChange change, const ItemChangeData &value)
