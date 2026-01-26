@@ -57,6 +57,7 @@ Item {
     }
     TapHandler {
         acceptedButtons: Qt.RightButton | Qt.LeftButton
+        acceptedDevices: PointerDevice.AllDevices & ~PointerDevice.TouchScreen
         onDoubleTapped: function (eventPoint, button) {
             if (button === Qt.LeftButton) {
                 control.toggleWindowState()
@@ -68,6 +69,15 @@ Item {
                     __dwindow.popupSystemWindowMenu()
                 }
             }
+        }
+    }
+    TapHandler {
+        acceptedDevices: PointerDevice.TouchScreen
+        onDoubleTapped: function () {
+            control.toggleWindowState()
+        }
+        onLongPressed: function () {
+            __dwindow.popupSystemWindowMenu()
         }
     }
 
