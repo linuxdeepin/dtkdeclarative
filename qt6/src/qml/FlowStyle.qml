@@ -449,8 +449,8 @@ QtObject {
         }
 
         property D.Palette placeholderText: D.Palette {
-            normal: Qt.rgba(0, 0, 0, 0.7)
-            normalDark: Qt.rgba(1, 1, 1, 0.7)
+            normal: Qt.rgba(0, 0, 0, 0.4)
+            normalDark: Qt.rgba(1, 1, 1, 0.4)
         }
     }
 
@@ -459,6 +459,11 @@ QtObject {
         property int iconLeftMargin: 10
         property int iconRightMargin: 7
         property int animationDuration: 200
+
+        property D.Palette placeholderText: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.7)
+            normalDark: Qt.rgba(1, 1, 1, 0.7)
+        }
     }
 
     property QtObject ipEdit: QtObject {
