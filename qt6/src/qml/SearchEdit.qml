@@ -9,6 +9,7 @@ import org.deepin.dtk.style 1.0 as DS
 
 LineEdit {
     id: control
+    placeholderTextPalette: DS.Style.searchEdit.placeholderText
     property alias placeholder: centerIndicatorLabel.text
     property bool editting: control.activeFocus || control.contextMenuVisible || (text.length !== 0)
     leftPadding: (editting) ? searchIcon.width + DS.Style.searchEdit.iconLeftMargin
