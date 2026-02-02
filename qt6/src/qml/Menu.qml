@@ -6,6 +6,7 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Templates as T
+import QtQuick.Controls
 import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
@@ -47,6 +48,28 @@ T.Menu {
         // QTBUG-99897 focus doesn't be clear.
         implicitWidth: viewLayout.implicitWidth
         implicitHeight: viewLayout.implicitHeight
+        
+        HoverHandler {
+            id: menuHoverHandler
+            target: viewLayout
+            onHoveredChanged: {
+                if (!hovered) {
+                    var currentItem = control.itemAt(control.currentIndex)
+                    var hasOpenSubMenu = false
+                    
+                    if (currentItem) {
+                        if (currentItem.subMenu && currentItem.subMenu.visible) {
+                            hasOpenSubMenu = true
+                        }
+                    }
+                    
+                    if (!hasOpenSubMenu) {
+                        control.currentIndex = -1
+                    }
+                }
+            }
+        }
+        
         ColumnLayout {
             id: viewLayout
             spacing: 0

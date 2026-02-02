@@ -14,9 +14,15 @@ FocusScope {
     property int maxVisibleItems : DS.Style.arrowListView.maxVisibleItems
     property int itemHeight:  DS.Style.arrowListView.itemHeight
     property alias view: itemsView
+    property bool hovered: hoverHandler.hovered
 
     implicitWidth: Math.max(DS.Style.arrowListView.width, contentLayout.implicitWidth)
     implicitHeight: contentLayout.implicitHeight
+
+    HoverHandler {
+        id: hoverHandler
+        target: itemsView
+    }
 
     ColumnLayout {
         id: contentLayout

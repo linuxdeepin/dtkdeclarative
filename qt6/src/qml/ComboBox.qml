@@ -4,6 +4,7 @@
 
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Controls
 import QtQuick.Templates as T
 import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
@@ -34,7 +35,7 @@ T.ComboBox {
         useIndicatorPadding: true
         text: control.textRole ? (Array.isArray(control.model) ? modelData[control.textRole] : (model[control.textRole] === undefined ? modelData[control.textRole] : model[control.textRole])) : modelData
         icon.name: (control.iconNameRole && model[control.iconNameRole] !== undefined) ? model[control.iconNameRole] : null
-        highlighted: control.highlightedIndex === index
+        highlighted: (control.highlightedIndex === index) && (arrowListView.hovered || (subMenu && subMenu.visible))
         hoverEnabled: control.hoverEnabled
         autoExclusive: true
         checked: control.currentIndex === index
@@ -166,6 +167,7 @@ T.ComboBox {
         palette: control.palette
         implicitWidth: control.flat ? Math.max(contentItem.implicitWidth, control.width) : control.width
         contentItem: ArrowListView {
+            id: arrowListView
             clip: true
             maxVisibleItems: control.maxVisibleItems
             view.model: control.delegateModel
