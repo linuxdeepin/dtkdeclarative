@@ -27,6 +27,7 @@ FocusScope {
             Layout.fillWidth: true
             Layout.preferredHeight: height
             view: itemsView
+            stepSize: control.itemHeight
             direction: P.ArrowListViewButton.UpButton
         }
 
@@ -82,6 +83,7 @@ FocusScope {
             Layout.fillWidth: true
             Layout.preferredHeight: height
             view: itemsView
+            stepSize: control.itemHeight
             direction: P.ArrowListViewButton.DownButton
         }
     }
