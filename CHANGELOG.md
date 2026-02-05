@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.7.33] - 2026-02-05
+
+### Fixed
+
+- Fix touchscreen double-tap and long-press handling
+- Adjust input field placeholder text color
+- Adjust path calculation for handle alignment
+- Handle exceptions when hovering over up/down arrows
+
 ## [6.7.32] - 2026-01-22
 
 ### Changed
