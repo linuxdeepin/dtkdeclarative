@@ -14,6 +14,7 @@ Loader {
 
     required property Item view
     property int direction
+    property int stepSize: DS.Style.arrowListView.itemHeight
     active: view.interactive
 
     sourceComponent: ActionButton {
@@ -26,17 +27,21 @@ Loader {
         icon.width: DS.Style.arrowListView.stepButtonIconSize.width
         icon.height: DS.Style.arrowListView.stepButtonIconSize.height
 
-        // Unified scroll operation function
         function performScroll() {
-            direction === ArrowListViewButton.UpButton ? view.decrementCurrentIndex() 
-                                                       : view.incrementCurrentIndex()
+            if (!view)
+                return
+            var maxY = Math.max(0, view.contentHeight - view.height)
+            if (maxY <= 0)
+                return
+            var step = Math.max(1, stepSize)
+            var nextY = direction === ArrowListViewButton.UpButton ? (view.contentY - step)
+                                                                   : (view.contentY + step)
+            view.contentY = Math.max(0, Math.min(maxY, nextY))
         }
 
-        // Auto-scroll control properties using state machine approach
         property bool shouldAutoScroll: hovered && enabled
         property bool delayCompleted: false
 
-        // Timer for initial delay before starting hover scroll
         Timer {
             id: initialDelayTimer
             interval: 300
@@ -45,7 +50,6 @@ Loader {
             onTriggered: delayCompleted = true
         }
 
-        // Timer for continuous hover scrolling
         Timer {
             id: hoverScrollTimer
             interval: 100
@@ -54,11 +58,11 @@ Loader {
             onTriggered: performScroll()
         }
                 
-        // Reset state when auto-scroll should stop
         onShouldAutoScrollChanged: {
-            if (!shouldAutoScroll) {
+            if (!shouldAutoScroll)
                 delayCompleted = false
-            }
         }
+
+        onClicked: performScroll()
     }
 }
