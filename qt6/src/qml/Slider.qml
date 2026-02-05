@@ -99,7 +99,7 @@ T.Slider {
                         startX: control.horizontal ? 0 : sliderGroove.width / 2
                         startY: control.horizontal ? sliderGroove.height / 2 : sliderGroove.height
                         PathLine {
-                            x: control.horizontal ? control.handle.x : sliderGroove.width / 2
+                            x: control.horizontal ? (control.handleType < 0 ? control.handle.x + control.handle.width : control.handle.x) : sliderGroove.width / 2
                             y: control.horizontal ? sliderGroove.height / 2 : control.handle.y + control.handle.height / 2
                         }
                     }
