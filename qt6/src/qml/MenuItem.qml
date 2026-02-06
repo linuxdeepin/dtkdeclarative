@@ -17,6 +17,7 @@ T.MenuItem {
     padding: DS.Style.control.padding
     spacing: DS.Style.control.spacing
     opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
+    highlighted: hovered || (subMenu && subMenu.visible)
     icon {
         height: DS.Style.menu.item.iconSize.height
         width: DS.Style.menu.item.iconSize.height
