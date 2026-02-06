@@ -19,6 +19,7 @@ T.ComboBox {
     property int maxVisibleItems : DS.Style.comboBox.maxVisibleItems
     property D.Palette separatorColor: DS.Style.comboBox.edit.separator
     property var horizontalAlignment: control.flat ? Text.AlignRight : Text.AlignLeft
+    property bool mouseInPopupContent: false
     opacity: enabled ? 1.0 : 0.4
 
     implicitWidth: DS.Style.control.implicitWidth(control)
@@ -34,10 +35,14 @@ T.ComboBox {
         useIndicatorPadding: true
         text: control.textRole ? (Array.isArray(control.model) ? modelData[control.textRole] : (model[control.textRole] === undefined ? modelData[control.textRole] : model[control.textRole])) : modelData
         icon.name: (control.iconNameRole && model[control.iconNameRole] !== undefined) ? model[control.iconNameRole] : null
-        highlighted: control.highlightedIndex === index
+        highlighted: control.mouseInPopupContent && control.highlightedIndex === index
         hoverEnabled: control.hoverEnabled
         autoExclusive: true
         checked: control.currentIndex === index
+    }
+
+    onHighlightedIndexChanged: {
+        mouseInPopupContent = true
     }
 
     indicator: Loader {
@@ -172,6 +177,12 @@ T.ComboBox {
             view.currentIndex: control.highlightedIndex
             view.highlightRangeMode: ListView.ApplyRange
             view.highlightMoveDuration: 0
+            
+            HoverHandler {
+                onHoveredChanged: {
+                    control.mouseInPopupContent = hovered
+                }
+            }
         }
 
         background: FloatingPanel {
