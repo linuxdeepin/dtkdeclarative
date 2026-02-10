@@ -40,6 +40,28 @@ void DQuickIconImagePrivate::updateBase64Image()
     setImage(image);
 }
 
+void DQuickIconImagePrivate::updateFileUrlImage()
+{
+    Q_ASSERT(iconType == FileUrl);
+
+    D_Q(DQuickIconImage);
+    
+    // 处理本地PNG文件
+    QUrl url(name);
+    if (url.isValid()) {
+        QImage image(url.toLocalFile());
+        if (!image.isNull()) {
+            QSize iconSize = q->sourceSize();
+            if (iconSize.isEmpty()) {
+                iconSize = image.size();
+            }
+            // 应用devicePixelRatio进行缩放
+            image = image.scaled(iconSize * devicePixelRatio, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            setImage(image);
+        }
+    }
+}
+
 QImage DQuickIconImagePrivate::requestImageFromBase64(const QString &name, const QSize &requestedSize, qreal devicePixelRatio)
 {
     const QString flag("base64,");
@@ -94,6 +116,8 @@ void DQuickIconImagePrivate::maybeUpdateUrl()
     if (iconType != ThemeIconName) {
         if (iconType == Base64Data)
             updateBase64Image();
+        else if (iconType == FileUrl)
+            updateFileUrlImage();
         return;
     }
 
@@ -216,10 +240,10 @@ void DQuickIconImage::setName(const QString &name)
     } else if (QQmlFile::isLocalFile(name)) {
         QUrl url(name);
 
-        // 如果name指定的是一个url，则直接将其当作url使用
+        // 如果name指定的是一个url，则将其标记为FileUrl类型
+        // 不直接设置source，而是通过maybeUpdateUrl统一处理以支持缩放
         if (url.isValid()) {
             d->iconType = DQuickIconImagePrivate::FileUrl;
-            setSource(url);
         }
     }
 

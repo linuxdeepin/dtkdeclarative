@@ -31,6 +31,7 @@ public:
     bool updateDevicePixelRatio(qreal targetDevicePixelRatio) override;
 
     void updateBase64Image();
+    void updateFileUrlImage();
 
     static QImage requestImageFromBase64(const QString &name, const QSize &requestedSize, qreal devicePixelRatio);
 
@@ -45,7 +46,7 @@ protected:
     enum IconType : qint8 {
         ThemeIconName, // 图标名称
         Base64Data, // base64编码的图标图片数据
-        FileUrl // 图标文件的url地址
+        FileUrl, // 图标文件的url地址
     };
 
     // 记录此图标是否应该从图标主题中获取。
