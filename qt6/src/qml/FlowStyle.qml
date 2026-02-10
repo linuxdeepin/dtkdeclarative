@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -427,6 +427,27 @@ QtObject {
 
             property D.Palette separator: D.Palette {
                 normal: Qt.rgba(0, 0, 0, 0.05)
+            }
+        }
+
+        property D.Palette flatBackground: D.Palette {
+            normal {
+                common: Qt.rgba(0, 0, 0, 0.1)
+            }
+            normalDark {
+                common: Qt.rgba(1, 1, 1, 0.1)
+            }
+            hovered {
+                common: Qt.rgba(0, 0, 0, 0.1)
+            }
+            hoveredDark {
+                common: (Qt.rgba(0.08, 0.08, 0.08, 0.2))
+            }
+            pressed {
+                common: Qt.rgba(0, 0, 0, 0.2)
+            }
+            pressedDark {
+                common: Qt.rgba(0, 0, 0, 0.15)
             }
         }
     }
