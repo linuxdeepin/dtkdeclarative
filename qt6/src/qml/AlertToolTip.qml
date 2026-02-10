@@ -6,22 +6,35 @@ import QtQuick
 import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
-ToolTip {
+// Use Item instead of ToolTip(Popup) so it stays in the visual tree,
+// scrolls with content and gets clipped properly.
+Item {
     id: control
     property Item target
+    property string text
+    property alias font: contentText.font
+    property int timeout: 0
 
     x: 0
     y: target ? target.height + DS.Style.control.spacing : 0
-    topPadding: DS.Style.alertToolTip.verticalPadding
-    bottomPadding: DS.Style.alertToolTip.verticalPadding
-    leftPadding: DS.Style.alertToolTip.horizontalPadding
-    rightPadding: DS.Style.alertToolTip.horizontalPadding
-    implicitWidth: Math.min(DS.Style.control.implicitWidth(control), target.width)
-    implicitHeight: DS.Style.control.implicitHeight(control)
-    margins: 0
-    closePolicy: Popup.NoAutoClose
+    z: D.DTK.TopOrder
 
-    background: FloatingPanel {
+    readonly property real __naturalWidth: Math.max(DS.Style.alertToolTip.width,
+                                                    contentText.implicitWidth + DS.Style.alertToolTip.horizontalPadding * 2)
+    implicitWidth: target ? Math.min(__naturalWidth, target.width) : __naturalWidth
+    implicitHeight: Math.max(DS.Style.alertToolTip.height,
+                             contentText.implicitHeight + DS.Style.alertToolTip.verticalPadding * 2)
+    width: implicitWidth
+    height: implicitHeight
+
+    Timer {
+        interval: control.timeout
+        running: control.timeout > 0 && control.visible
+        onTriggered: control.visible = false
+    }
+
+    FloatingPanel {
+        anchors.fill: parent
         radius: DS.Style.alertToolTip.radius
         implicitWidth: DS.Style.alertToolTip.width
         implicitHeight: DS.Style.alertToolTip.height
@@ -30,25 +43,19 @@ ToolTip {
         outsideBorderColor: DS.Style.alertToolTip.outsideBorder
     }
 
-    contentItem: Text {
+    Text {
+        id: contentText
         property D.Palette textColor: DS.Style.alertToolTip.text
+        anchors.fill: parent
+        anchors.topMargin: DS.Style.alertToolTip.verticalPadding
+        anchors.bottomMargin: DS.Style.alertToolTip.verticalPadding
+        anchors.leftMargin: DS.Style.alertToolTip.horizontalPadding
+        anchors.rightMargin: DS.Style.alertToolTip.horizontalPadding
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
         text: control.text
-        font: control.font
         color: D.ColorSelector.textColor
         wrapMode: Text.Wrap
-    }
-
-    enter: Transition {
-        // TODO: Transparency causes tooltips to appear through the window background - temporarily removed
-        // NumberAnimation { properties: "opacity"; from: 0.0; to: 1.0; duration: 200 }
-        NumberAnimation { properties: "y"; from: control.target.height; to: control.target.height + DS.Style.control.spacing; duration: 200 }
-    }
-
-    exit: Transition {
-        // NumberAnimation { properties: "opacity"; from: 1.0; to: 0.0 }
-        NumberAnimation { properties: "y"; from: control.target.height + DS.Style.control.spacing ; to: control.target.height }
     }
 
     BoxShadow {
@@ -56,7 +63,7 @@ ToolTip {
         property D.Palette dropShadowColor: DS.Style.alertToolTip.connecterdropShadow
         property D.Palette backgroundColor: DS.Style.alertToolTip.connecterBackground
         property D.Palette borderColor: DS.Style.control.border
-        y: - height * (0.75) - control.topMargin - control.topPadding
+        y: - height * (0.75)
         width: DS.Style.alertToolTip.connectorWidth
         height: DS.Style.alertToolTip.connectorHeight
         shadowBlur: 4
