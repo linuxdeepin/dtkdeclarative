@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -28,6 +28,8 @@ T.ComboBox {
     padding: DS.Style.comboBox.padding
     leftPadding: padding + (!control.mirrored || !indicator || !indicator.visible ? 0 : indicator.width + spacing)
     rightPadding: padding + (control.mirrored || !indicator || !indicator.visible ? 0 : indicator.width + spacing)
+    topPadding: control.flat ? 0 : padding
+    bottomPadding: control.flat ? 0 : padding
 
     delegate: MenuItem {
         implicitWidth: Math.max(DS.Style.control.implicitWidth(control), popup.implicitWidth - DS.Style.popup.margin * 2)
@@ -129,10 +131,9 @@ T.ComboBox {
     background: Item {
         implicitWidth: control.flat ? control.implicitContentWidth + control.leftPadding + control.rightPadding
                         : DS.Style.comboBox.width
-        implicitHeight: DS.Style.comboBox.height
+        implicitHeight: control.flat ? 30 : DS.Style.comboBox.height
         Loader {
             anchors.fill: parent
-            active: !control.flat
             sourceComponent: control.editable ? editableComponent : floatingComponent
             property alias comboBox: control
             Component {
@@ -149,6 +150,9 @@ T.ComboBox {
                 id: floatingComponent
                 P.ButtonPanel {
                     button: comboBox
+                    color1: control.flat ?  DS.Style.comboBox.flatBackground : DS.Style.button.background1
+                    outsideBorderColor: control.flat ? null : DS.Style.button.outsideBorder
+                    visible: !control.flat || control.D.ColorSelector.controlState === D.DTK.PressedState || control.D.ColorSelector.controlState === D.DTK.HoveredState
                 }
             }
         }
