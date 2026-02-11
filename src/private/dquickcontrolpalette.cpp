@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -844,7 +844,17 @@ QColor DQuickControlColorSelector::getColorOf(const DQuickControlPalette *palett
 
     // items with inactive state should use inactive color, it likes dtkgui's generatePaletteColor_helper.
     static const auto useInactiveColor = DGuiApplicationHelper::testAttribute(DGuiApplicationHelper::UseInactiveColorGroup);
-    if (useInactiveColor && state->controlState == DQMLGlobalObject::InactiveState) {
+    bool shouldBlendInactive = useInactiveColor && state->controlState == DQMLGlobalObject::InactiveState;
+    if (shouldBlendInactive) {
+        if (m_control) {
+            // If the control's inactive palette is same as active palette, it means the control does not have a real 
+            // inactive state, we should not blend the color with inactive mask color, otherwise it will cause the 
+            // color looks like disabled and hard to recognize.
+            const auto qpalette = _d_getControlPalette(m_control);
+            shouldBlendInactive = !qpalette.isEqual(QPalette::Inactive, QPalette::Active);
+        }
+    }
+    if (shouldBlendInactive) {
         const auto &palette = DGuiApplicationHelper::standardPalette(state->controlTheme);
         const auto &windowColor = palette.color(QPalette::Window);
 
