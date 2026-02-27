@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -181,6 +181,7 @@ DQuickDciIconImagePrivate::DQuickDciIconImagePrivate(DQuickDciIconImage *qq)
     QObject::connect(imageItem, &DQuickIconImage::nameChanged, qq, &DQuickDciIconImage::nameChanged);
     QObject::connect(imageItem, &DQuickIconImage::asynchronousChanged, qq, &DQuickDciIconImage::asynchronousChanged);
     QObject::connect(imageItem, &DQuickIconImage::cacheChanged, qq, &DQuickDciIconImage::cacheChanged);
+    QObject::connect(imageItem, &DQuickIconImage::fillModeChanged, qq, &DQuickDciIconImage::fillModeChanged);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
     QObject::connect(imageItem, &DQuickIconImage::retainWhileLoadingChanged, qq, &DQuickDciIconImage::retainWhileLoadingChanged);
 #endif
@@ -354,6 +355,18 @@ void DQuickDciIconImage::setRetainWhileLoading(bool retain)
     d->imageItem->setRetainWhileLoading(retain);
 }
 #endif
+
+void DQuickDciIconImage::setFillMode(QQuickImage::FillMode mode)
+{
+    D_D(DQuickDciIconImage);
+    d->imageItem->setFillMode(mode);
+}
+
+QQuickImage::FillMode DQuickDciIconImage::fillMode() const
+{
+    D_DC(DQuickDciIconImage);
+    return d->imageItem->fillMode();
+}
 
 bool DQuickDciIconImage::cache() const
 {
