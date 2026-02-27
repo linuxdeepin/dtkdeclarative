@@ -48,6 +48,7 @@ file(GLOB QML_RCS dtkdeclarative_qml.qrc dtkdeclarative_overridable_qml.qrc)
 qt_add_resources(RESOURCES
     ${QML_RCS}
     ${ASSETS_RCS}
+    dtkdeclarative_shaders_ng.qrc
 )
 target_sources(${LIB_NAME} PRIVATE ${RESOURCES})
 
