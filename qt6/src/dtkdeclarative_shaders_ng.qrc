@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/dtk/declarative">
+        <file alias="shaders/dualkawasedown.frag">../../src/shaders/dualkawasedown.frag</file>
+        <file alias="shaders/dualkawasedown.vert">../../src/shaders/dualkawasedown.vert</file>
+        <file alias="shaders/dualkawaseup.frag">../../src/shaders/dualkawaseup.frag</file>
+        <file alias="shaders/dualkawaseup.vert">../../src/shaders/dualkawaseup.vert</file>
+        <file alias="shaders/noise.vert">../../src/shaders/noise.vert</file>
+        <file alias="shaders/noise.frag">../../src/shaders/noise.frag</file>
+    </qresource>
+</RCC>

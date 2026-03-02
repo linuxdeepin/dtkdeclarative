@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -35,6 +35,7 @@ class DQuickDciIconImage : public QQuickItem, DCORE_NAMESPACE::DObject
 #if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
     Q_PROPERTY(bool retainWhileLoading READ retainWhileLoading WRITE setRetainWhileLoading NOTIFY retainWhileLoadingChanged)
 #endif
+    Q_PROPERTY(QQuickImage::FillMode fillMode READ fillMode WRITE setFillMode NOTIFY fillModeChanged)
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QML_NAMED_ELEMENT(DciIcon)
     QML_ATTACHED(DQuickIconAttached)
@@ -77,6 +78,9 @@ public:
     void setRetainWhileLoading(bool retain);
 #endif
 
+    void setFillMode(QQuickImage::FillMode mode);
+    QQuickImage::FillMode fillMode() const;
+
     DQuickIconImage *imageItem() const;
 
     static bool isNull(const QString &iconName);
@@ -92,6 +96,7 @@ Q_SIGNALS:
     void fallbackToQIconChanged();
     void asynchronousChanged();
     void cacheChanged();
+    void fillModeChanged();
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
     void retainWhileLoadingChanged();
