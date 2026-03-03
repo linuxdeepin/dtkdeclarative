@@ -31,8 +31,11 @@ Rectangle {
         }
     }
 
+    // Keep Loader active while there is alert text so we don't destroy/recreate when
+    // caller toggles showAlert to refresh the message; avoids wrong text (e.g. "systemd journal")
+    // from binding context during recreation.
     Loader {
-        active: showAlert && alertText.length !== 0
+        active: alertText.length !== 0
         sourceComponent: AlertToolTip {
             target: control
             timeout: alertDuration
