@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.7.35] - 2026-03-05
+
+### Added
+
+- Add shader resource file for Qt6 build
+
+### Changed
+
+- Chore: New release 6.7.33
+- Chore: New release 6.7.34
+- Optimized feedback volume display
+- Adjust button background colors for better visual consistency
+- Optimize tooltip positioning logic.
+
+### Fixed
+
+- Fix touchscreen double-tap and long-press handling
+- Adjust input field placeholder text color
+- Adjust path calculation for handle alignment
+- Handle exceptions when hovering over up/down arrows
+- Fix menu highlight remaining after main menu is closed
+- Adjust ComboBox padding and background for flat style
+- Update copyright year and add fillMode property
+- Skip inactive color when active and inactive colors are equal
+- Main interface does not gray out when losing focus
+- Disable smooth scaling for DQuickDciIconImage to prevent icon blur
+
 ## [6.7.34] - 2026-02-27
 
 ### Changed
