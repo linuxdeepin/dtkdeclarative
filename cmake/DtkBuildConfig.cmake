@@ -64,7 +64,7 @@ function(GEN_DTK_CONFIG_HEADER)
     endif()
 
     set(LICENSE_DEC 
-    "// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.\n"
+    "// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.\n"
     "//\n"
     "// SPDX-License-Identifier: LGPL-3.0-or-later\n"
     "\n")
