@@ -208,7 +208,6 @@ DQuickDciIconImage::DQuickDciIconImage(QQuickItem *parent)
     , DObject(*new DQuickDciIconImagePrivate(this))
 {
     D_D(DQuickDciIconImage);
-    setSmooth(false);
     connect(d->imageItem, &QQuickImage::implicitWidthChanged, this, [this, d]() { setImplicitWidth(d->imageItem->implicitWidth()); });
     connect(d->imageItem, &QQuickImage::implicitHeightChanged, this, [this, d]() { setImplicitHeight(d->imageItem->implicitHeight()); });
     connect(this, &DQuickDciIconImage::smoothChanged, d->imageItem, &QQuickImage::setSmooth);
