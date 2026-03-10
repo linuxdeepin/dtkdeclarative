@@ -19,6 +19,7 @@ T.ComboBox {
     property int maxVisibleItems : DS.Style.comboBox.maxVisibleItems
     property D.Palette separatorColor: DS.Style.comboBox.edit.separator
     property var horizontalAlignment: control.flat ? Text.AlignRight : Text.AlignLeft
+    property bool isInteractingWithContent: false
     opacity: enabled ? 1.0 : 0.4
 
     implicitWidth: DS.Style.control.implicitWidth(control)
@@ -36,7 +37,7 @@ T.ComboBox {
         useIndicatorPadding: true
         text: control.textRole ? (Array.isArray(control.model) ? modelData[control.textRole] : (model[control.textRole] === undefined ? modelData[control.textRole] : model[control.textRole])) : modelData
         icon.name: (control.iconNameRole && model[control.iconNameRole] !== undefined) ? model[control.iconNameRole] : null
-        highlighted: control.highlightedIndex === index
+        highlighted: control.isInteractingWithContent ? control.highlightedIndex === index : false
         hoverEnabled: control.hoverEnabled
         autoExclusive: true
         checked: control.currentIndex === index
@@ -169,6 +170,17 @@ T.ComboBox {
         rightMargin: DS.Style.popup.margin
         palette: control.palette
         implicitWidth: control.flat ? Math.max(contentItem.implicitWidth, control.width) : control.width
+        onClosed: control.isInteractingWithContent = false
+        Connections {
+            target: control
+            function onHighlightedIndexChanged() {
+                if (control.highlightedIndex >= 0)
+                    control.isInteractingWithContent = true
+            }
+        }
+        HoverHandler {
+            onHoveredChanged: control.isInteractingWithContent = hovered
+        }
         contentItem: ArrowListView {
             clip: true
             maxVisibleItems: control.maxVisibleItems
