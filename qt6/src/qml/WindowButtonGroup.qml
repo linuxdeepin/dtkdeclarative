@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -19,92 +19,90 @@ RowLayout {
 
     property var __dwindow: Window.window.D.DWindow
     property bool __forceHind: !__dwindow.enabled || embedMode || Window.window.visibility === Window.FullScreen
+    
+    // 缓存 motifFunctions 位运算结果，避免重复计算
+    readonly property bool __canMinimize: __dwindow.motifFunctions & D.WindowManagerHelper.FUNC_MINIMIZE
+    readonly property bool __canMaximize: __dwindow.motifFunctions & D.WindowManagerHelper.FUNC_MAXIMIZE
+    readonly property bool __canResize: __dwindow.motifFunctions & D.WindowManagerHelper.FUNC_RESIZE
+    readonly property bool __canClose: __dwindow.motifFunctions & D.WindowManagerHelper.FUNC_CLOSE
 
     onMaxOrWinded: {
-        if (!(__dwindow.motifFunctions & D.WindowManagerHelper.FUNC_MAXIMIZE)) {
+        if (!__canMaximize) {
             return
         }
 
         if (Window.window.visibility === Window.Maximized) {
             __dwindow.showNormal()
         } else if (Window.window.visibility !== Window.FullScreen &&
-                   maxOrWindedBtn.active) {
+                   maxOrWindedBtn.visible) {
             __dwindow.showMaximized()
         }
     }
 
-    Loader {
+    WindowButton {
         objectName: "minimizeBtn"
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowMinimizeButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowMinimizeButtonHint)
-        active: hasWindowFlag &&  !__forceHind
-        visible: active
-        enabled: (__dwindow.motifFunctions & D.WindowManagerHelper.FUNC_MINIMIZE)
+        
+        icon.name: "window_minimize"
+        textColor: control.textColor
+        
+        visible: hasWindowFlag && !__forceHind
+        enabled: __canMinimize
 
-        sourceComponent: WindowButton {
-            icon.name: "window_minimize"
-            textColor: control.textColor
-
-            onClicked:{
-                __dwindow.showMinimized()
-            }
+        onClicked: {
+            __dwindow.showMinimized()
         }
     }
 
-    Loader {
+    WindowButton {
         objectName: "quitFullBtn"
-        active: !(!control.fullScreenButtonVisible ||
-                  !__dwindow.enabled ||
-                  Window.window.visibility !== Window.FullScreen)
-        visible: active
-        sourceComponent: WindowButton {
-            icon.name: "window_quit_full"
-            textColor: control.textColor
+        
+        icon.name: "window_quit_full"
+        textColor: control.textColor
+        
+        visible: !(!control.fullScreenButtonVisible ||
+                   !__dwindow.enabled ||
+                   Window.window.visibility !== Window.FullScreen)
 
-            onClicked: {
-                if (Window.window.visibility === Window.FullScreen) {
-                    __dwindow.showNormal()
-                } else {
-                    __dwindow.showFullScreen()
-                }
+        onClicked: {
+            if (Window.window.visibility === Window.FullScreen) {
+                __dwindow.showNormal()
+            } else {
+                __dwindow.showFullScreen()
             }
         }
     }
 
-    Loader {
+    WindowButton {
         id: maxOrWindedBtn; objectName: "maxOrWindedBtn"
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowMaximizeButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowMaximizeButtonHint)
 
-        readonly property size maxSize: Qt.size(Window.window.maximumWidth, Window.window.maximumHeight)
-        readonly property size minSize: Qt.size(Window.window.minimumWidth, Window.window.minimumHeight)
-        active: (hasWindowFlag && !__forceHind &&
-                 (__dwindow.motifFunctions & D.WindowManagerHelper.FUNC_RESIZE) &&
-                 maxSize != minSize)
-        visible: active
-        enabled: ((__dwindow.motifFunctions & D.WindowManagerHelper.FUNC_MAXIMIZE) &&
-                    (__dwindow.motifFunctions & D.WindowManagerHelper.FUNC_RESIZE))
-
-        sourceComponent: WindowButton {
-            property bool isMaximized: Window.window.visibility === Window.Maximized
-            icon.name: isMaximized ? "window_restore" : "window_maximize"
-            textColor: control.textColor
-            onClicked: maxOrWinded()
-        }
+        // 使用简单值比较代替对象创建，避免性能开销
+        readonly property bool __sizeResizable: (Window.window.maximumWidth !== Window.window.minimumWidth ||
+                                                  Window.window.maximumHeight !== Window.window.minimumHeight)
+        
+        property bool isMaximized: Window.window.visibility === Window.Maximized
+        icon.name: isMaximized ? "window_restore" : "window_maximize"
+        textColor: control.textColor
+        onClicked: maxOrWinded()
+        
+        visible: (hasWindowFlag && !__forceHind && __canResize && __sizeResizable)
+        enabled: (__canMaximize && __canResize)
     }
 
-    Loader {
+    WindowButton {
         objectName: "closeBtn"
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowCloseButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowCloseButtonHint)
-        active: hasWindowFlag && __dwindow.enabled
-        visible: active
-        enabled: __dwindow.motifFunctions & D.WindowManagerHelper.FUNC_CLOSE
-
-        sourceComponent: WindowButton {
-            icon.name: "window_close"
-            textColor: control.textColor
-            onClicked: Window.window.close()
-        }
+        
+        icon.name: "window_close"
+        textColor: control.textColor
+        
+        visible: hasWindowFlag && __dwindow.enabled
+        enabled: __canClose
+        
+        onClicked: Window.window.close()
     }
 }
