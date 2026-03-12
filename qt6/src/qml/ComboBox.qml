@@ -19,6 +19,7 @@ T.ComboBox {
     property int maxVisibleItems : DS.Style.comboBox.maxVisibleItems
     property D.Palette separatorColor: DS.Style.comboBox.edit.separator
     property var horizontalAlignment: control.flat ? Text.AlignRight : Text.AlignLeft
+    property int keyboardNavIndex: -1
     opacity: enabled ? 1.0 : 0.4
 
     implicitWidth: DS.Style.control.implicitWidth(control)
@@ -36,7 +37,9 @@ T.ComboBox {
         useIndicatorPadding: true
         text: control.textRole ? (Array.isArray(control.model) ? modelData[control.textRole] : (model[control.textRole] === undefined ? modelData[control.textRole] : model[control.textRole])) : modelData
         icon.name: (control.iconNameRole && model[control.iconNameRole] !== undefined) ? model[control.iconNameRole] : null
-        highlighted: control.highlightedIndex === index
+        highlighted: popup.contentHovered
+            ? control.highlightedIndex === index
+            : control.keyboardNavIndex === index
         hoverEnabled: control.hoverEnabled
         autoExclusive: true
         checked: control.currentIndex === index
@@ -165,17 +168,93 @@ T.ComboBox {
 
     popup: Popup {
         id: popup
+        focus: true
         leftMargin: DS.Style.popup.margin
         rightMargin: DS.Style.popup.margin
         palette: control.palette
         implicitWidth: control.flat ? Math.max(contentItem.implicitWidth, control.width) : control.width
+        property bool contentHovered: false
+        property int lastHoveredIndex: -1
+        onOpened: {
+            control.keyboardNavIndex = -1
+            popup.lastHoveredIndex = -1
+        }
         contentItem: ArrowListView {
             clip: true
+            focus: true
             maxVisibleItems: control.maxVisibleItems
             view.model: control.delegateModel
-            view.currentIndex: control.highlightedIndex
+            view.currentIndex: popup.contentHovered
+                ? control.highlightedIndex
+                : control.keyboardNavIndex
             view.highlightRangeMode: ListView.ApplyRange
             view.highlightMoveDuration: 0
+            Keys.priority: Keys.BeforeItem
+            Keys.onPressed: (event) => {
+                switch (event.key) {
+                case Qt.Key_Down: {
+                    const cur = control.keyboardNavIndex >= 0 ? control.keyboardNavIndex
+                        : control.highlightedIndex >= 0 ? control.highlightedIndex
+                        : popup.lastHoveredIndex
+                    popup.contentHovered = false
+                    control.keyboardNavIndex = Math.min(cur + 1, control.count - 1)
+                    event.accepted = true
+                    break
+                }
+                case Qt.Key_Up: {
+                    const cur = control.keyboardNavIndex >= 0 ? control.keyboardNavIndex
+                        : control.highlightedIndex >= 0 ? control.highlightedIndex
+                        : popup.lastHoveredIndex
+                    popup.contentHovered = false
+                    control.keyboardNavIndex = Math.max(
+                        (cur >= 0 ? cur : control.count) - 1, 0)
+                    event.accepted = true
+                    break
+                }
+                case Qt.Key_Home:
+                    popup.contentHovered = false
+                    control.keyboardNavIndex = 0
+                    event.accepted = true
+                    break
+                case Qt.Key_End:
+                    popup.contentHovered = false
+                    control.keyboardNavIndex = control.count - 1
+                    event.accepted = true
+                    break
+                case Qt.Key_Return:
+                case Qt.Key_Enter: {
+                    const idx = control.keyboardNavIndex >= 0
+                        ? control.keyboardNavIndex
+                        : (popup.contentHovered ? control.highlightedIndex : -1)
+                    if (idx >= 0) {
+                        control.currentIndex = idx
+                        control.activated(idx)
+                    }
+                    popup.close()
+                    event.accepted = true
+                    break
+                }
+                }
+            }
+            HoverHandler {
+                onHoveredChanged: {
+                    popup.contentHovered = hovered
+                    if (!hovered)
+                        control.keyboardNavIndex = -1
+                }
+            }
+            Connections {
+                target: control
+                function onHighlightedIndexChanged() {
+                    if (control.highlightedIndex >= 0) {
+                        popup.lastHoveredIndex = control.highlightedIndex
+                        if (!popup.contentHovered) {
+                            popup.contentHovered = true
+                            control.keyboardNavIndex = -1
+                        }
+                    }
+                }
+            }
         }
 
         background: FloatingPanel {
