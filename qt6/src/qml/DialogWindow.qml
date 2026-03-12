@@ -33,9 +33,6 @@ Window {
     property real leftPadding: DS.Style.dialogWindow.contentHMargin
     property real rightPadding: DS.Style.dialogWindow.contentHMargin
 
-    property var transientParentWindow: null
-    transientParent: transientParentWindow
-
     Item {
         id: content
         palette: control.active ? D.DTK.palette : D.DTK.inactivePalette
@@ -61,30 +58,6 @@ Window {
                 Layout.rightMargin: control.rightPadding
             }
         }
-    }
-
-    function updateTransientParent() {
-        if (control.modality !== Qt.WindowModal)
-            return
-        if (!transientParentWindow || transientParentWindow === control) {
-            var candidate = Qt.application.activeWindow
-            if (candidate && candidate !== control)
-                transientParentWindow = candidate
-        }
-    }
-
-    Component.onCompleted: {
-        updateTransientParent()
-    }
-
-    onVisibleChanged: {
-        if (!control.visible)
-            return
-        updateTransientParent()
-        Qt.callLater(function () {
-            control.raise()
-            control.requestActivate()
-        })
     }
 
     onClosing: function(close) {
