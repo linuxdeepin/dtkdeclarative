@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 import QtQuick
+import QtQuick.Controls
 import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
@@ -14,11 +15,22 @@ Control {
     property bool _expired: false
     readonly property bool _shown: control.visible && !_expired
 
-    x: 0
-    y: (target ? target.height : 0) + (_shown ? DS.Style.control.spacing : 0)
+    property point __itemGlobalPos: {
+        let x = 0, y = 0
+        let a = target
+        while (a && a.parent) {
+            x += a.x
+            y += a.y
+            a = a.parent
+        }
+        return Qt.point(x, y)
+    }
+    x: __itemGlobalPos.x
+    y: __itemGlobalPos.y + (target ? target.height : 0) + (_shown ? DS.Style.control.spacing : 0)
     Behavior on y {
         NumberAnimation { duration: 200 }
     }
+    parent: Overlay.overlay
     opacity: _shown ? 1 : 0
     enabled: _shown
     topPadding: DS.Style.alertToolTip.verticalPadding
@@ -27,7 +39,6 @@ Control {
     rightPadding: DS.Style.alertToolTip.horizontalPadding
     implicitWidth: target ? Math.min(DS.Style.control.implicitWidth(control), target.width) : DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
-    z: D.DTK.TopOrder
 
     Timer {
         id: autoHideTimer
