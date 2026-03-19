@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -6,47 +6,20 @@ import QtQuick
 import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
-Control {
+ToolTip {
     id: control
     property Item target
-    property string text
-    property int timeout: 0
-    property bool _expired: false
-    readonly property bool _shown: control.visible && !_expired
 
     x: 0
-    y: (target ? target.height : 0) + (_shown ? DS.Style.control.spacing : 0)
-    Behavior on y {
-        NumberAnimation { duration: 200 }
-    }
-    opacity: _shown ? 1 : 0
-    enabled: _shown
+    y: target ? target.height + DS.Style.control.spacing : 0
     topPadding: DS.Style.alertToolTip.verticalPadding
     bottomPadding: DS.Style.alertToolTip.verticalPadding
     leftPadding: DS.Style.alertToolTip.horizontalPadding
     rightPadding: DS.Style.alertToolTip.horizontalPadding
-    implicitWidth: target ? Math.min(DS.Style.control.implicitWidth(control), target.width) : DS.Style.control.implicitWidth(control)
+    implicitWidth: Math.min(DS.Style.control.implicitWidth(control), target.width)
     implicitHeight: DS.Style.control.implicitHeight(control)
-    z: D.DTK.TopOrder
-
-    Timer {
-        id: autoHideTimer
-        interval: control.timeout
-        running: control.timeout > 0 && control.visible && !control._expired
-        onTriggered: control._expired = true
-    }
-
-    onVisibleChanged: {
-        _expired = false
-        if (visible && timeout > 0)
-            autoHideTimer.restart()
-    }
-
-    onTextChanged: {
-        _expired = false
-        if (visible && timeout > 0)
-            autoHideTimer.restart()
-    }
+    margins: 0
+    closePolicy: Popup.NoAutoClose
 
     background: FloatingPanel {
         radius: DS.Style.alertToolTip.radius
@@ -67,12 +40,23 @@ Control {
         wrapMode: Text.Wrap
     }
 
+    enter: Transition {
+        // TODO: Transparency causes tooltips to appear through the window background - temporarily removed
+        // NumberAnimation { properties: "opacity"; from: 0.0; to: 1.0; duration: 200 }
+        NumberAnimation { properties: "y"; from: control.target.height; to: control.target.height + DS.Style.control.spacing; duration: 200 }
+    }
+
+    exit: Transition {
+        // NumberAnimation { properties: "opacity"; from: 1.0; to: 0.0 }
+        NumberAnimation { properties: "y"; from: control.target.height + DS.Style.control.spacing ; to: control.target.height }
+    }
+
     BoxShadow {
         id: line
         property D.Palette dropShadowColor: DS.Style.alertToolTip.connecterdropShadow
         property D.Palette backgroundColor: DS.Style.alertToolTip.connecterBackground
         property D.Palette borderColor: DS.Style.control.border
-        y: -height * 0.75
+        y: - height * (0.75) - control.topMargin - control.topPadding
         width: DS.Style.alertToolTip.connectorWidth
         height: DS.Style.alertToolTip.connectorHeight
         shadowBlur: 4
