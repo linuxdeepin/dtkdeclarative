@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -104,14 +104,9 @@ static QImage generateDciIconImage(const QImage &src, DDciIcon::Theme theme, DDc
     Q_UNUSED(theme)
     qint8 hue = 0, saturation = 0, lightness = 0,
           red = 0, green = 0, blue = 0, alpha = 0;
-    switch (mode) {
-    case DDciIcon::Hover:
-        lightness += 10;
-        break;
-    case DDciIcon::Pressed:
+    if (mode == DDciIcon::Pressed) {
         lightness -= 10;
-        break;
-    default:
+    } else {
         return src;
     }
 
