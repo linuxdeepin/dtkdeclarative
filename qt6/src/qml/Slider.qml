@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -26,6 +26,7 @@ T.Slider {
     property real dashOffset: 0.0
     property var dashPattern: [0.5, 0.25]
     property bool highlightedPassedGroove: false
+    property bool alignToTicks: false
 
     implicitWidth: Math.max(background ? background.implicitWidth : 0,
                             (handle ? handle.implicitWidth : 0) + leftPadding + rightPadding)
@@ -76,10 +77,10 @@ T.Slider {
                     strokeWidth: control.horizontal ? sliderGroove.height : sliderGroove.width
                     dashOffset: control.dashOffset
                     dashPattern: control.dashPattern
-                    startX: control.horizontal ? 0 : sliderGroove.width / 2
+                    startX: control.horizontal ? (control.alignToTicks ? __handle.width / 2 : 0) : sliderGroove.width / 2
                     startY: control.horizontal ? sliderGroove.height / 2 : 0
                     PathLine {
-                        x: control.horizontal ? sliderGroove.width : sliderGroove.width / 2
+                        x: control.horizontal ? (control.alignToTicks ? sliderGroove.width - __handle.width / 2 : sliderGroove.width) : sliderGroove.width / 2
                         y: control.horizontal ? sliderGroove.height / 2 : sliderGroove.height
                     }
                 }
@@ -96,7 +97,7 @@ T.Slider {
                         strokeWidth: control.horizontal ? sliderGroove.height : sliderGroove.width
                         dashOffset: control.dashOffset
                         dashPattern: control.dashPattern
-                        startX: control.horizontal ? 0 : sliderGroove.width / 2
+                        startX: control.horizontal ? (control.alignToTicks ? __handle.width / 2 : 0) : sliderGroove.width / 2
                         startY: control.horizontal ? sliderGroove.height / 2 : sliderGroove.height
                         PathLine {
                             x: control.horizontal ? control.handle.x : sliderGroove.width / 2
