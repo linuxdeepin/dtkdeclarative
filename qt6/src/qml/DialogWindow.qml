@@ -47,6 +47,7 @@ Window {
                 sourceComponent: DialogTitleBar {
                     enableInWindowBlendBlur: true
                     icon.name: control.icon
+                    title: control.title
                 }
             }
 

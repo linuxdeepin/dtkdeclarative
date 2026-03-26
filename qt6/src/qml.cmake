@@ -100,6 +100,7 @@ set(QML_DTK_CONTROLS
     "qml/ControlGroup.qml"
     "qml/ControlGroupItem.qml"
     "qml/DragItemsImage.qml"
+    "qml/LicenseDialog.qml"
 )
 
 foreach(QML_FILE ${QML_DTK_CONTROLS})

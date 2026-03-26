@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -18,8 +18,9 @@ DialogWindow {
     property alias productIcon: logoLabel.icon.name
     property alias version: versionLabel.text
     property alias description: descriptionLabel.text
-    property alias license: licenseLabel.text
     property alias companyLogo: companyLogoLabel.source
+    property alias license: licenseLabel.text
+    property string licensePath
     property string websiteName
     property string websiteLink
 
@@ -59,6 +60,7 @@ DialogWindow {
                 Layout.alignment: Qt.AlignCenter
                 Layout.topMargin: 30
             }
+
             Label {
                 id: licenseLabel
                 font: D.DTK.fontManager.t10
@@ -68,7 +70,7 @@ DialogWindow {
                 Layout.leftMargin: 30
                 wrapMode: Text.WordWrap
                 elide: Text.ElideRight
-                visible: license !== ""
+                visible: control.license !== ""
             }
         }
         ColumnLayout {
@@ -127,6 +129,31 @@ DialogWindow {
                     elide: Text.ElideRight
                 }
             }
+
+            ColumnLayout {
+                spacing: 1
+                Label {
+                    font: D.DTK.fontManager.t10
+                    text: qsTr("Acknowledgements")
+                }
+                Label {
+                    id: acknowledgmentsLabel
+                    text: qsTr("Sincerely appreciate the %1 used.").arg(control.__websiteLinkTemplate.arg("-").arg(qsTr("open-source software")))
+                    textFormat: Text.RichText
+                    Layout.fillWidth: true
+                    font: D.DTK.fontManager.t8
+                    wrapMode: Text.WordWrap
+                    elide: Text.ElideRight
+
+                    onLinkActivated: function(link) {
+                        licenseDialogLoader.active = true
+                    }
+
+                    HoverHandler {
+                        cursorShape: acknowledgmentsLabel.hoveredLink !== "" ? Qt.PointingHandCursor : Qt.ArrowCursor
+                    }
+                }
+            }
        }
 
         Component.onCompleted: {
@@ -139,6 +166,20 @@ DialogWindow {
         Keys.onEscapePressed: {
             control.close()
             event.accepted = true
+        }
+    }
+
+    Loader {
+        id: licenseDialogLoader
+        active: false
+        sourceComponent: LicenseDialog {
+            licensePath: control.licensePath
+            onClosing: function (close) {
+                licenseDialogLoader.active = false
+            }
+        }
+        onLoaded: function () {
+            licenseDialogLoader.item.show()
         }
     }
 }
