@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -28,6 +28,7 @@
 #include "private/dquickarrowboxpath_p.h"
 #include "private/dquickcoloroverlay_p.h"
 #include "private/dquickapploaderitem_p.h"
+#include "private/dlicenseinfoprovider_p.h"
 #endif
 
 #include "private/dquickimageprovider_p.h"
@@ -195,6 +196,7 @@ void QmlpluginPlugin::registerTypes(const char *uri)
     dtkRegisterType<DQuickArrowBoxPath>(uri, implUri, 1, 0, "ArrowBoxPath");
     dtkRegisterType<DQuickAppLoaderItem>(uri, implUri, 1, 0, "AppLoader");
     dtkRegisterType<DQuickColorOverlay>(uri, implUri, 1, 0, "SoftwareColorOverlay");
+    dtkRegisterType<DLicenseInfoProvider>(uri, implUri, 1, 0, "LicenseInfoProvider");
 
     dtkRegisterAnonymousType<DQUICK_NAMESPACE::DQuickDciIcon>(uri, implUri, 1);
     dtkRegisterAnonymousType<DQuickControlColor>(uri, implUri, 1);

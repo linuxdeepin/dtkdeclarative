@@ -1,8 +1,10 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="cs">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="cs">
 <context>
     <name>AboutAction</name>
     <message>
-        <location filename="../qml/AboutAction.qml" line="9"/>
+        <location filename="../../qt6/src/qml/AboutAction.qml" line="9"/>
         <source>About</source>
         <translation>O aplikaci</translation>
     </message>
@@ -10,33 +12,56 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../qml/AboutDialog.qml" line="83"/>
+        <location filename="../../qt6/src/qml/AboutDialog.qml" line="74"/>
         <source>Version</source>
         <translation>Verze</translation>
     </message>
     <message>
-        <location filename="../qml/AboutDialog.qml" line="97"/>
+        <location filename="../../qt6/src/qml/AboutDialog.qml" line="88"/>
         <source>Homepage</source>
         <translation>Domovská stránka</translation>
     </message>
     <message>
-        <location filename="../qml/AboutDialog.qml" line="112"/>
+        <location filename="../../qt6/src/qml/AboutDialog.qml" line="110"/>
         <source>Description</source>
         <translation>Popis</translation>
+    </message>
+    <message>
+        <location filename="../../qt6/src/qml/AboutDialog.qml" line="125"/>
+        <source>Acknowledgements</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qt6/src/qml/AboutDialog.qml" line="129"/>
+        <source>Sincerely appreciate the %1 used.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qt6/src/qml/AboutDialog.qml" line="129"/>
+        <source>open-source software</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>HelpAction</name>
     <message>
-        <location filename="../qml/HelpAction.qml" line="10"/>
+        <location filename="../../qt6/src/qml/HelpAction.qml" line="10"/>
         <source>Help</source>
         <translation>Nápověda</translation>
     </message>
 </context>
 <context>
+    <name>LicenseDialog</name>
+    <message>
+        <location filename="../../qt6/src/qml/LicenseDialog.qml" line="16"/>
+        <source>open-source software</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QuitAction</name>
     <message>
-        <location filename="../qml/QuitAction.qml" line="9"/>
+        <location filename="../../qt6/src/qml/QuitAction.qml" line="9"/>
         <source>Exit</source>
         <translation>Ukončit</translation>
     </message>
@@ -44,7 +69,7 @@
 <context>
     <name>SearchEdit</name>
     <message>
-        <location filename="../qml/SearchEdit.qml" line="41"/>
+        <location filename="../../qt6/src/qml/SearchEdit.qml" line="42"/>
         <source>Search</source>
         <translation>Hledat</translation>
     </message>
@@ -52,63 +77,62 @@
 <context>
     <name>SettingsDialog</name>
     <message>
-        <location filename="../qml/settings/SettingsDialog.qml" line="79"/>
         <source>Restore Defaults</source>
-        <translation>Vrátit na výchozí hodnoty</translation>
+        <translation type="vanished">Vrátit na výchozí hodnoty</translation>
     </message>
 </context>
 <context>
     <name>TextField</name>
     <message>
-        <location filename="../qml/TextField.qml" line="71"/>
+        <location filename="../../qt6/src/qml/TextField.qml" line="84"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/TextField.qml" line="78"/>
+        <location filename="../../qt6/src/qml/TextField.qml" line="91"/>
         <source>Cut</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/TextField.qml" line="85"/>
+        <location filename="../../qt6/src/qml/TextField.qml" line="98"/>
         <source>Paste</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/TextField.qml" line="91"/>
+        <location filename="../../qt6/src/qml/TextField.qml" line="105"/>
         <source>Select All</source>
         <translation>Vybrat vše</translation>
     </message>
     <message>
-        <location filename="../qml/TextField.qml" line="98"/>
+        <location filename="../../qt6/src/qml/TextField.qml" line="112"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/TextField.qml" line="105"/>
+        <location filename="../../qt6/src/qml/TextField.qml" line="119"/>
         <source>Redo</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ThemeMenu</name>
     <message>
-        <location filename="../qml/ThemeMenu.qml" line="11"/>
+        <location filename="../../qt6/src/qml/ThemeMenu.qml" line="11"/>
         <source>Theme</source>
         <translation>Vzhled</translation>
     </message>
     <message>
-        <location filename="../qml/ThemeMenu.qml" line="23"/>
+        <location filename="../../qt6/src/qml/ThemeMenu.qml" line="23"/>
         <source>Light Theme</source>
         <translation>Světlý vzhled</translation>
     </message>
     <message>
-        <location filename="../qml/ThemeMenu.qml" line="29"/>
+        <location filename="../../qt6/src/qml/ThemeMenu.qml" line="29"/>
         <source>Dark Theme</source>
         <translation>Tmavý vzhled</translation>
     </message>
     <message>
-        <location filename="../qml/ThemeMenu.qml" line="35"/>
+        <location filename="../../qt6/src/qml/ThemeMenu.qml" line="35"/>
         <source>System Theme</source>
         <translation>Systémový vzhled</translation>
     </message>

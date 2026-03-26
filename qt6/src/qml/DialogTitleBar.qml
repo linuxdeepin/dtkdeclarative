@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -15,6 +15,7 @@ Item {
     height: DS.Style.dialogWindow.titleBarHeight
 
     // custom control
+    property alias leftContent: customLeft.sourceComponent
     property alias content: customCenter.sourceComponent
     // dialog icon
     property alias icon: iconLabel
@@ -54,7 +55,7 @@ Item {
         }
 
         RowLayout {
-            spacing: 0
+            spacing: 10
             Layout.alignment: Qt.AlignHCenter
             Layout.fillHeight: true
             Layout.preferredWidth: parent.width
@@ -75,10 +76,17 @@ Item {
                 }
             }
 
+            // left custom area
+            Loader {
+                id: customLeft
+                Layout.alignment: Qt.AlignLeft
+                Layout.fillHeight: true
+                sourceComponent: null
+            }
+
             // center custom area
             Loader {
                 id: customCenter
-                Layout.leftMargin: closeBtn.width - iconLabel.width
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillHeight: true
                 Layout.fillWidth: true
