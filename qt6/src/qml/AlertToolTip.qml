@@ -30,7 +30,7 @@ Control {
     Behavior on y {
         NumberAnimation { duration: 200 }
     }
-    parent: Overlay.overlay
+    parent: _shown ? Overlay.overlay : target
     opacity: _shown ? 1 : 0
     enabled: _shown
     topPadding: DS.Style.alertToolTip.verticalPadding
