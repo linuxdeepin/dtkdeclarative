@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="zh_CN">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="zh_CN">
 <context>
     <name>AboutAction</name>
     <message>
@@ -29,17 +27,17 @@
     <message>
         <location filename="../../qt6/src/qml/AboutDialog.qml" line="125"/>
         <source>Acknowledgements</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../../qt6/src/qml/AboutDialog.qml" line="129"/>
         <source>Sincerely appreciate the %1 used.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../../qt6/src/qml/AboutDialog.qml" line="129"/>
         <source>open-source software</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -55,7 +53,7 @@
     <message>
         <location filename="../../qt6/src/qml/LicenseDialog.qml" line="16"/>
         <source>open-source software</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -72,13 +70,6 @@
         <location filename="../../qt6/src/qml/SearchEdit.qml" line="42"/>
         <source>Search</source>
         <translation>搜索</translation>
-    </message>
-</context>
-<context>
-    <name>SettingsDialog</name>
-    <message>
-        <source>Restore Defaults</source>
-        <translation type="vanished">恢复默认</translation>
     </message>
 </context>
 <context>
