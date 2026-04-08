@@ -27,7 +27,7 @@
     <message>
         <location filename="../../qt6/src/qml/AboutDialog.qml" line="125"/>
         <source>Acknowledgements</source>
-        <translation type="unfinished"/>
+        <translation>Penghargaan</translation>
     </message>
     <message>
         <location filename="../../qt6/src/qml/AboutDialog.qml" line="129"/>
@@ -37,7 +37,7 @@
     <message>
         <location filename="../../qt6/src/qml/AboutDialog.qml" line="129"/>
         <source>open-source software</source>
-        <translation type="unfinished"/>
+        <translation>perisian sumber-terbuka</translation>
     </message>
 </context>
 <context>
@@ -53,7 +53,7 @@
     <message>
         <location filename="../../qt6/src/qml/LicenseDialog.qml" line="16"/>
         <source>open-source software</source>
-        <translation type="unfinished"/>
+        <translation>perisian sumber-terbuka</translation>
     </message>
 </context>
 <context>
