@@ -27,7 +27,7 @@
     <message>
         <location filename="../../qt6/src/qml/AboutDialog.qml" line="125"/>
         <source>Acknowledgements</source>
-        <translation type="unfinished"/>
+        <translation>Tilkendegivelser</translation>
     </message>
     <message>
         <location filename="../../qt6/src/qml/AboutDialog.qml" line="129"/>
