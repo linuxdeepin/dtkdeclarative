@@ -32,7 +32,7 @@
     <message>
         <location filename="../../qt6/src/qml/AboutDialog.qml" line="129"/>
         <source>Sincerely appreciate the %1 used.</source>
-        <translation type="unfinished"/>
+        <translation>Vlerësoni sinqerisht %1 e përdorur.</translation>
     </message>
     <message>
         <location filename="../../qt6/src/qml/AboutDialog.qml" line="129"/>
