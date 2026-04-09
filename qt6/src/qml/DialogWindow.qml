@@ -22,7 +22,7 @@ Window {
     D.DWindow.enableBlurWindow: true
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.MSWindowsFixedSizeDialogHint
     D.ColorSelector.family: D.Palette.CrystalColor
-    color: active ? D.DTK.palette.window : D.DTK.inactivePalette.window
+    color: D.DWindow.enableBlurWindow ? "transparent" : (active ? D.DTK.palette.window : D.DTK.inactivePalette.window)
     height: content.height
     width: content.width
 
@@ -32,6 +32,21 @@ Window {
     property alias palette : content.palette
     property real leftPadding: DS.Style.dialogWindow.contentHMargin
     property real rightPadding: DS.Style.dialogWindow.contentHMargin
+    
+    D.StyledBehindWindowBlur {
+        control: control
+        anchors.fill: parent
+        blendColor: {
+            if (valid) {
+                return DS.Style.control.selectColor(undefined,
+                    Qt.rgba(235 / 255.0, 235 / 255.0, 235 / 255.0, 0.6),
+                    Qt.rgba(10 / 255.0, 10 / 255.0, 10 / 255.0, 85 / 255.0))
+            }
+            return DS.Style.control.selectColor(undefined,
+                DS.Style.behindWindowBlur.lightNoBlurColor,
+                DS.Style.behindWindowBlur.darkNoBlurColor)
+        }
+    }
 
     Item {
         id: content
@@ -45,7 +60,7 @@ Window {
                 id: titleBar
                 z: D.DTK.TopOrder
                 sourceComponent: DialogTitleBar {
-                    enableInWindowBlendBlur: true
+                    enableInWindowBlendBlur: false
                     icon.name: control.icon
                     title: control.title
                 }
@@ -60,7 +75,7 @@ Window {
             }
         }
     }
-
+    
     onClosing: function(close) {
         // close can't reset sub control's hovered state. pms Bug:168405
         // if we need to close, we can add closing handler to set `close.acceped = true`
