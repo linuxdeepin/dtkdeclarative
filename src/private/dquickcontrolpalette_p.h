@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -370,8 +370,8 @@ private:
     void setSuperColorSelector(DQuickControlColorSelector *parent);
     void setFamilyPropertyParent(DQuickControlColorSelector *parent);
 
-    QQuickItem *m_control = nullptr;
-    QQuickWindow *m_controlWindow = nullptr;
+    QPointer<QQuickItem> m_control;
+    QPointer<QQuickWindow> m_controlWindow;
     QPointer<DQuickControlColorSelector> m_superColorSelector;
     QPointer<DQuickControlColorSelector> m_parentOfFamilyProperty;
     typedef QPair<QByteArray, DQuickControlPalette*> ControlPaletteData;
