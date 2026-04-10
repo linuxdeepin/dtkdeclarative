@@ -32,12 +32,12 @@
     <message>
         <location filename="../../qt6/src/qml/AboutDialog.qml" line="129"/>
         <source>Sincerely appreciate the %1 used.</source>
-        <translation type="unfinished"/>
+        <translation>Szczere podziękowania dla użytego %1</translation>
     </message>
     <message>
         <location filename="../../qt6/src/qml/AboutDialog.qml" line="129"/>
         <source>open-source software</source>
-        <translation>oprogramowanie open-source</translation>
+        <translation>oprogramowania open-source</translation>
     </message>
 </context>
 <context>
@@ -53,7 +53,7 @@
     <message>
         <location filename="../../qt6/src/qml/LicenseDialog.qml" line="16"/>
         <source>open-source software</source>
-        <translation>oprogramowanie open-source</translation>
+        <translation>oprogramowania open-source</translation>
     </message>
 </context>
 <context>
