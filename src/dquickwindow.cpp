@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -173,7 +173,8 @@ bool DQuickWindowAttachedPrivate::ensurePlatformHandle()
 
 void DQuickWindowAttachedPrivate::destoryPlatformHandle()
 {
-    handle->setEnabledNoTitlebarForWindow(window, false);
+    if (window)
+        handle->setEnabledNoTitlebarForWindow(window, false);
     delete handle;
     handle = nullptr;
 }
@@ -1025,7 +1026,7 @@ void DQuickWindowAttached::setClipPath(QQuickPath *path)
 
 bool DQuickWindowAttached::eventFilter(QObject *watched, QEvent *event)
 {
-    if (watched == parent()) {
+    if (watched == window()) {
         if (event->type() == QEvent::PlatformSurface) {
             QPlatformSurfaceEvent *surface = static_cast<QPlatformSurfaceEvent *>(event);
             if (surface->surfaceEventType() == QPlatformSurfaceEvent::SurfaceCreated) {
@@ -1045,6 +1046,8 @@ void DQuickWindowAttached::setAlphaBufferSize(int size)
         return;
 
     QQuickWindow *w = window();
+    if (!w)
+        return;
     QSurfaceFormat fmt = w->requestedFormat();
     fmt.setAlphaBufferSize(size);
     w->setFormat(fmt);

@@ -66,10 +66,14 @@ static inline bool _d_isWindowRootItem(QQuickItem *item) {
 // `qvariant_cast` gets application's palette, and `toQPalette` gets root window's
 // palette.
 static inline QPalette _d_getControlPalette(QQuickItem *item) {
+    if (!item)
+        return QPalette();
+
     const QVariant &palette = item->property("palette");
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     const QQuickPalette *pa = palette.value<QQuickPalette *>();
-    Q_ASSERT(pa);
+    if (!pa)
+        return QPalette();
     return pa->toQPalette();
 #else
     return qvariant_cast<QPalette>(palette);
@@ -467,6 +471,10 @@ void DQuickControlColorSelector::setControl(QQuickItem *newControl)
         auto palette = m_control->property("palette").value<QQuickPalette*>();
         connect(palette, &QQuickPalette::changed, this, &DQuickControlColorSelector::updateControlTheme);
 #endif
+        connect(m_control, &QObject::destroyed, this, [this] {
+            m_controlWindow = nullptr;
+            m_control = nullptr;
+        });
         if (m_control->metaObject()->indexOfSignal("paletteChanged()") != -1) {
             connect(m_control, SIGNAL(paletteChanged()), this, SLOT(updateControlTheme()));
         }
@@ -1086,12 +1094,13 @@ void DQuickControlColorSelector::onPaletteDestroyed()
 
 void DQuickControlColorSelector::updateControlWindow()
 {
-    if (m_controlWindow == m_control->window())
+    QQuickWindow *window = m_control ? m_control->window() : nullptr;
+    if (m_controlWindow == window)
         return;
     if (m_controlWindow) {
         m_controlWindow->disconnect(this);
     }
-    m_controlWindow = m_control->window();
+    m_controlWindow = window;
     if (m_controlWindow) {
         connect(m_controlWindow, &QQuickWindow::activeChanged,
                 this, &DQuickControlColorSelector::updateControlState);

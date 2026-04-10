@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -8,6 +8,8 @@
 #include <DObjectPrivate>
 #include <DObject>
 #include <DPlatformHandle>
+
+#include <QPointer>
 
 #include "dquickwindow.h"
 
@@ -52,7 +54,7 @@ public:
     void _q_onPaletteChanged();
 #endif
 
-    QWindow *window = nullptr;
+    QPointer<QWindow> window = nullptr;
     DPlatformHandle *handle = nullptr;
     BoolOptional explicitEnable {Invalid};
     BoolOptional explicitTranslucentBackground {Invalid};
