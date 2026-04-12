@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2023-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -44,7 +44,9 @@ void main()
         discard;
 
     lowp vec4 tex = texture(qt_Texture, qt_TexCoord);
-    // 统一计算此像素点被模板遮盖后的颜色，此处不需要区分点是否在某个区域，不在此区域时取出的mask颜色的alpha值必为1
+    // The input texture is already premultiplied. Multiplying by tex.a again
+    // darkens the partially covered edge pixels and makes corner artifacts more
+    // visible on transparent windows under fractional scaling.
     tex *= mask_tex;
-    fragColor = tex * tex.a;
+    fragColor = tex;
 }
