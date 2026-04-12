@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -200,7 +200,7 @@ bool OpaqueTextureMaterialShader::updateUniformData(RenderState &state, QSGMater
         Q_ASSERT(sizeof(maskScale) == MaskScaleSize);
 
         memcpy(buf->data() + MaskScaleOffset, &maskScale, MaskScaleSize);
-        memcpy(buf->data() + MaskOffsetSize, &maskOffset, MaskOffsetSize);
+        memcpy(buf->data() + MaskOffsetOffset, &maskOffset, MaskOffsetSize);
         memcpy(buf->data() + SourceScaleOffset, &sourceScale, SourceScaleSize);
 
         changed = true;
