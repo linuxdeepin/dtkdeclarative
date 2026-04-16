@@ -44,9 +44,6 @@ void main()
         discard;
 
     lowp vec4 tex = texture(qt_Texture, qt_TexCoord);
-    // The input texture is already premultiplied. Multiplying by tex.a again
-    // darkens the partially covered edge pixels and makes corner artifacts more
-    // visible on transparent windows under fractional scaling.
-    tex *= mask_tex;
-    fragColor = tex;
+
+    fragColor = tex * mask_tex.a;
 }
