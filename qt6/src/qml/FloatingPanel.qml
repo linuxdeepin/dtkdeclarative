@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -85,7 +85,7 @@ Control {
             sourceComponent: InsideBoxBorder {
                 radius: backgroundRect.radius
                 color: control.D.ColorSelector.insideBorderColor
-                borderWidth: DS.Style.control.borderWidth
+                borderWidth: DS.Style.control.borderWidth / Screen.devicePixelRatio
             }
         }
 
@@ -95,7 +95,7 @@ Control {
             sourceComponent: OutsideBoxBorder {
                 radius: backgroundRect.radius
                 color: control.D.ColorSelector.outsideBorderColor
-                borderWidth: DS.Style.control.borderWidth
+                borderWidth: DS.Style.control.borderWidth / Screen.devicePixelRatio
             }
         }
     }
