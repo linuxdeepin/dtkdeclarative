@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ar">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ar">
 <context>
     <name>AboutAction</name>
     <message>
@@ -29,17 +27,17 @@
     <message>
         <location filename="../../qt6/src/qml/AboutDialog.qml" line="125"/>
         <source>Acknowledgements</source>
-        <translation type="unfinished"></translation>
+        <translation>شكر وتقدير</translation>
     </message>
     <message>
         <location filename="../../qt6/src/qml/AboutDialog.qml" line="129"/>
         <source>Sincerely appreciate the %1 used.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../../qt6/src/qml/AboutDialog.qml" line="129"/>
         <source>open-source software</source>
-        <translation type="unfinished"></translation>
+        <translation>تطبيق مفنوح المصدر</translation>
     </message>
 </context>
 <context>
@@ -55,7 +53,7 @@
     <message>
         <location filename="../../qt6/src/qml/LicenseDialog.qml" line="16"/>
         <source>open-source software</source>
-        <translation type="unfinished"></translation>
+        <translation>تطبيق مفنوح المصدر</translation>
     </message>
 </context>
 <context>
@@ -75,28 +73,21 @@
     </message>
 </context>
 <context>
-    <name>SettingsDialog</name>
-    <message>
-        <source>Restore Defaults</source>
-        <translation type="vanished">استعادة الإعدادت الإفتراضية</translation>
-    </message>
-</context>
-<context>
     <name>TextField</name>
     <message>
         <location filename="../../qt6/src/qml/TextField.qml" line="84"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../../qt6/src/qml/TextField.qml" line="91"/>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../../qt6/src/qml/TextField.qml" line="98"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../../qt6/src/qml/TextField.qml" line="105"/>
@@ -106,12 +97,12 @@
     <message>
         <location filename="../../qt6/src/qml/TextField.qml" line="112"/>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../../qt6/src/qml/TextField.qml" line="119"/>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
