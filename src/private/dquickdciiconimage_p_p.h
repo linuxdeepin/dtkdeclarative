@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -13,6 +13,7 @@
 #include <dobject_p.h>
 #include <DDciIconPalette>
 #include <DDciIconPlayer>
+#include <QTimer>
 
 DQUICK_BEGIN_NAMESPACE
 class DQuickDciIconImageItemPrivate;
@@ -41,11 +42,13 @@ class DQuickDciIconImagePrivate : public DCORE_NAMESPACE::DObjectPrivate
 public:
     DQuickDciIconImagePrivate(DQuickDciIconImage *qq);
     void layout();
+    void scheduleLayout();
     void updateImageSourceUrl();
     void play(DQMLGlobalObject::ControlState mode);
 
     DDciIconPalette palette;
     DQuickIconImage *imageItem;
+    QTimer *layoutTimer = nullptr;
     DQMLGlobalObject::ControlState mode = DQMLGlobalObject::NormalState;
     DGuiApplicationHelper::ColorType theme = DGuiApplicationHelper::ColorType::LightType;
     bool fallbackToQIcon = true;
