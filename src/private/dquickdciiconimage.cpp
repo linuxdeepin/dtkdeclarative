@@ -9,6 +9,8 @@
 #include <DPlatformTheme>
 
 #include <QUrlQuery>
+#include <QQuickWindow>
+#include <QPoint>
 
 DQUICK_BEGIN_NAMESPACE
 DGUI_USE_NAMESPACE
@@ -189,8 +191,43 @@ DQuickDciIconImagePrivate::DQuickDciIconImagePrivate(DQuickDciIconImage *qq)
 
 void DQuickDciIconImagePrivate::layout()
 {
-    auto dd = QQuickItemPrivate::get(imageItem);
-    dd->anchors()->setCenterIn(imageItem->parentItem());
+    Q_Q(DQuickDciIconImage);
+    if (!q->isComponentComplete())
+        return;
+
+    qreal targetX = (q->width() - imageItem->width()) / 2.0;
+    qreal targetY = (q->height() - imageItem->height()) / 2.0;
+
+    if (!q->parentItem() || !q->window()) {
+        imageItem->setPosition(QPointF(targetX, targetY));
+        return;
+    }
+
+    QPointF scenePos = q->mapToScene(QPointF(targetX, targetY));
+    
+    qreal dpr = q->window()->effectiveDevicePixelRatio();
+
+    qreal physicalX = qRound(scenePos.x() * dpr);
+    qreal physicalY = qRound(scenePos.y() * dpr);
+
+    QPointF localPos = q->mapFromScene(QPointF(physicalX / dpr, physicalY / dpr));
+
+    imageItem->setPosition(localPos);
+}
+
+void DQuickDciIconImagePrivate::scheduleLayout()
+{
+    Q_Q(DQuickDciIconImage);
+
+    if (!layoutTimer) {
+        layoutTimer = new QTimer(q);
+        layoutTimer->setSingleShot(true);
+        layoutTimer->setInterval(50);
+        QObject::connect(layoutTimer, &QTimer::timeout, q, [this]() {
+            layout();
+        });
+    }
+    layoutTimer->start();
 }
 
 void DQuickDciIconImagePrivate::updateImageSourceUrl()
@@ -211,6 +248,9 @@ DQuickDciIconImage::DQuickDciIconImage(QQuickItem *parent)
     connect(d->imageItem, &QQuickImage::implicitWidthChanged, this, [this, d]() { setImplicitWidth(d->imageItem->implicitWidth()); });
     connect(d->imageItem, &QQuickImage::implicitHeightChanged, this, [this, d]() { setImplicitHeight(d->imageItem->implicitHeight()); });
     connect(this, &DQuickDciIconImage::smoothChanged, d->imageItem, &QQuickImage::setSmooth);
+    connect(d->imageItem, &QQuickItem::widthChanged, this, [d]() { d->scheduleLayout(); });
+    connect(d->imageItem, &QQuickItem::heightChanged, this, [d]() { d->scheduleLayout(); });
+    connect(this, &QQuickItem::scaleChanged, this, [this]() {setSmooth(!qFuzzyCompare(scale(), 1.0)); });
 }
 
 DQuickDciIconImage::~DQuickDciIconImage()
@@ -406,7 +446,6 @@ void DQuickDciIconImage::classBegin()
     D_D(DQuickDciIconImage);
     QQmlEngine::setContextForObject(d->imageItem, QQmlEngine::contextForObject(this));
     QQuickItem::classBegin();
-    d->imageItem->setSmooth(smooth());
 }
 
 void DQuickDciIconImage::componentComplete()
@@ -414,7 +453,30 @@ void DQuickDciIconImage::componentComplete()
     D_D(DQuickDciIconImage);
     d->imageItem->componentComplete();
     QQuickItem::componentComplete();
+    setSmooth(!qFuzzyCompare(scale(), 1.0));
     d->layout();
+}
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+void DQuickDciIconImage::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+{
+    QQuickItem::geometryChanged(newGeometry, oldGeometry);
+    d_func()->scheduleLayout();
+}
+#else
+void DQuickDciIconImage::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
+{
+    QQuickItem::geometryChange(newGeometry, oldGeometry);
+    d_func()->scheduleLayout();
+}
+#endif
+
+void DQuickDciIconImage::itemChange(ItemChange change, const ItemChangeData &value)
+{
+    QQuickItem::itemChange(change, value);
+    if (change == ItemParentHasChanged || change == ItemDevicePixelRatioHasChanged || change == ItemSceneChange) {
+        d_func()->scheduleLayout();
+    }
 }
 
 class DQuickIconAttachedPrivate : public DCORE_NAMESPACE::DObjectPrivate
