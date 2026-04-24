@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -10,79 +10,64 @@
 
 #include "dqmlglobalobject_p.h"
 
+#include <private/qquickitemchangelistener_p.h>
+
 QT_BEGIN_NAMESPACE
 class QQuickWindow;
 class QQuickItem;
 QT_END_NAMESPACE
-
 DQUICK_BEGIN_NAMESPACE
 
-class DPopupWindowHandleImpl;
-class Q_DECL_EXPORT DPopupWindowHandle : public QObject
+class DQuickWindowAttached;
+
+class DPopupWindowHandle : public QObject, public QQuickItemChangeListener
 {
     Q_OBJECT
-    Q_PROPERTY(QQmlComponent *delegate READ delegate WRITE setDelegate)
-    Q_PROPERTY(QQuickWindow *window READ window NOTIFY windowChanged)
-    Q_PROPERTY(bool forceWindowMode READ forceWindowMode WRITE setForceWindowMode)
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    QML_UNCREATABLE("PopupWindow Attached.")
+    
+    QML_UNCREATABLE("PopupHandle Attached.")
     QML_NAMED_ELEMENT(PopupHandle)
-    QML_ATTACHED(DPopupWindowHandle)
-#endif
-
+    QML_ATTACHED(DQuickWindowAttached)
+    
 public:
-    explicit DPopupWindowHandle(QObject *parent = nullptr);
+    explicit DPopupWindowHandle(QObject *popup);
     ~DPopupWindowHandle() override;
 
-    static DPopupWindowHandle *qmlAttachedProperties(QObject *object);
+    static DQuickWindowAttached *qmlAttachedProperties(QObject *object);
 
-    static void setPopupMode(const DQMLGlobalObject::PopupMode mode);
+    DQuickWindowAttached *windowAttached() const;
 
-    QQuickWindow *window() const;
-    QQmlComponent *delegate() const;
-    void setDelegate(QQmlComponent *delegate);
-    bool forceWindowMode() const;
-    void setForceWindowMode(bool forceWindowMode);
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
-Q_SIGNALS:
-    void windowChanged();
+    // QQuickItemChangeListener
+    void itemGeometryChanged(QQuickItem *item,
+                             QQuickGeometryChange change,
+                             const QRectF &oldGeometry) override;
+
+    void itemVisibilityChanged(QQuickItem *item) override;
+
+    void itemParentChanged(QQuickItem *item, QQuickItem *oldParent) override;
 
 private Q_SLOTS:
-    void createHandle();
+    void updateEnabled();
+    void onWindowChanged(QQuickWindow *window);
 
 private:
-    QObject *popup() const;
-    bool needCreateHandle() const;
-
-private:
-    bool m_forceWindowMode = false;
-    bool m_isWindowMode = false;
-    QQmlComponent *m_delegate = nullptr;
-    QScopedPointer<DPopupWindowHandleImpl> m_handle;
-    static DQMLGlobalObject::PopupMode m_popupMode;
-};
-
-class DPopupWindowHandleImpl : public QObject
-{
-    Q_OBJECT
-public:
-    explicit DPopupWindowHandleImpl(QQuickWindow *window, QObject *parent);
-    ~DPopupWindowHandleImpl() override;
-
-    QQuickWindow *window() const;
-    QObject *popup() const;
+    QQuickWindow *popupWindow() const;
     QQuickItem *popupItem() const;
-    void updatePosition();
-    bool isPositioning() const;
-    void setPositioning(bool positioning);
+    void popupItemReparented();
 
-private Q_SLOTS:
-    void reposition();
-    void close();
+    bool isEnabled() const;
+    void adjustPopupPosition();
+    
 private:
-    QQuickWindow *m_window = nullptr;
     QObject *m_popup = nullptr;
-    bool m_positioning = false;
+
+    bool m_enabled = false;
+    DQuickWindowAttached *m_attached = nullptr;
+    QPointer<QQuickWindow> m_parentWindow = nullptr;
+    QPointer<QQuickWindow> m_popupWin = nullptr;
+    QPointer<QQuickItem> m_trackedItem = nullptr;
 };
 
 DQUICK_END_NAMESPACE

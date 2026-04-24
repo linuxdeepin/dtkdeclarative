@@ -1,265 +1,285 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#define protected public
 #include "dpopupwindowhandle_p.h"
+#include "dquickwindow.h"
 
 #include <QQuickItem>
 #include <QQuickWindow>
+#include <QPointer>
+#include <QScreen>
+#include <QGuiApplication>
+#include <QDebug>
+#include <QMouseEvent>
+#include <algorithm>
 
-#include <DVtableHook>
+#include <private/qquickitem_p.h>
 
-DCORE_USE_NAMESPACE
 DQUICK_BEGIN_NAMESPACE
 
-// className prepend string of QT_NAMESPACE if existed.
-bool inheritsTheClassType(QObject *object, QString className) {
-#if defined(QT_NAMESPACE)
-#define D_GET_NAMESPACE_STR_IMPL(M) #M "::"
-#define D_GET_NAMESPACE_STR(M) D_GET_NAMESPACE_STR_IMPL(M)
-    className.prepend(D_GET_NAMESPACE_STR(QT_NAMESPACE));
-#undef D_GET_NAMESPACE_STR
-#undef D_GET_NAMESPACE_STR_IMPL
-#endif
-    return object && object->inherits(qPrintable(className));
+static bool isPopupWindow(QWindow *window)
+{
+    return window && window->inherits("QQuickPopupWindow");
 }
 
-static inline bool shouldCreatePopupWindowForMode(const DQMLGlobalObject::PopupMode mode)
+static bool isPopupItem(QQuickItem *item)
 {
-    switch (mode) {
-    case DQMLGlobalObject::WindowMode:
-        return true;
-    case DQMLGlobalObject::EmbedMode:
-        return false;
-    case DQMLGlobalObject::AutoMode:
-        // TODO https://github.com/linuxdeepin/dtk/issues/70
-        if (qEnvironmentVariableIsEmpty("D_POPUP_MODE"))
-            return false;
-        return qEnvironmentVariable("D_POPUP_MODE") != "embed";
-    }
-    return false;
-}
-DQMLGlobalObject::PopupMode DPopupWindowHandle::m_popupMode = DQMLGlobalObject::AutoMode;
-DPopupWindowHandle::DPopupWindowHandle(QObject *parent)
-    : QObject (parent)
-{
-    // after `autoWindowMode` property initialized to createHandle.
-    connect(popup(), SIGNAL(windowChanged(QQuickWindow *)), this, SLOT(createHandle()));
+    return item && item->inherits("QQuickPopupItem");
 }
 
 DPopupWindowHandle::~DPopupWindowHandle()
 {
+    if (m_trackedItem)
+        QQuickItemPrivate::get(m_trackedItem)->removeItemChangeListener(this, QQuickItemPrivate::Geometry);
+    if (m_parentWindow)
+        m_parentWindow->removeEventFilter(this);
+    if (m_popupWin)
+        m_popupWin->removeEventFilter(this);
 }
 
-DPopupWindowHandle *DPopupWindowHandle::qmlAttachedProperties(QObject *object)
+DPopupWindowHandle::DPopupWindowHandle(QObject *popup)
+    : QObject(popup)
+    , m_popup(popup)
 {
-    if (!inheritsTheClassType(object, "QQuickPopup"))
+    m_attached = DQuickWindow::qmlAttachedProperties(popup);
+    if (!m_attached)
+        return;
+        
+    // Initial update
+    updateEnabled();
+    
+    popupItemReparented();
+
+    connect(popup, SIGNAL(popupTypeChanged()), this, SLOT(updateEnabled()));
+}
+
+DQuickWindowAttached *DPopupWindowHandle::qmlAttachedProperties(QObject *object)
+{
+    auto handle = new DPopupWindowHandle(object);
+    return handle->m_attached;
+}
+
+DQuickWindowAttached *DPopupWindowHandle::windowAttached() const
+{
+    return m_attached;
+}
+
+QQuickItem *DPopupWindowHandle::popupItem() const
+{
+    if (!m_popup)
         return nullptr;
 
-    return new DPopupWindowHandle(object);
-}
-
-void DPopupWindowHandle::setPopupMode(const DQMLGlobalObject::PopupMode mode)
-{
-    m_popupMode = mode;
-}
-
-QQuickWindow *DPopupWindowHandle::window() const
-{
-    return m_handle ? m_handle->window() : nullptr;
-}
-
-QQmlComponent *DPopupWindowHandle::delegate() const
-{
-    return m_delegate;
-}
-
-void DPopupWindowHandle::setDelegate(QQmlComponent *delegate)
-{
-    m_delegate = delegate;
-}
-
-bool DPopupWindowHandle::forceWindowMode() const
-{
-    return m_forceWindowMode;
-}
-
-void DPopupWindowHandle::setForceWindowMode(bool forceWindowMode)
-{
-    if (m_forceWindowMode == forceWindowMode)
-        return;
-
-    m_forceWindowMode = forceWindowMode;
-    if (!m_forceWindowMode && m_handle) {
-        m_handle.reset();
-        Q_EMIT windowChanged();
-    }
-    if (m_forceWindowMode) {
-        // try to create handle.
-        createHandle();
-    }
-}
-
-void DPopupWindowHandle::createHandle()
-{
-    if (!needCreateHandle())
-        return;
-
-    auto window = qobject_cast<QQuickWindow *>(m_delegate->create(m_delegate->creationContext()));
-    Q_ASSERT(window);
-
-    m_handle.reset(new DPopupWindowHandleImpl(window, popup()));
-    Q_EMIT windowChanged();
-}
-
-bool DPopupWindowHandle::needCreateHandle() const
-{
-    // has created.
-    if (m_handle)
-        return false;
-
-    // no delegate.
-    if (!m_delegate) {
-        if (m_forceWindowMode)
-            qWarning() << "delegate don't set but forceWindowMode has been set.";
-
-        return false;
-    }
-    // forceWindowMode > `D_POPUP_MODE` > popupMode
-    return m_forceWindowMode || shouldCreatePopupWindowForMode(m_popupMode);
-}
-
-QObject *DPopupWindowHandle::popup() const
-{
-    return parent();
-}
-
-// it's not to call QQuickPopupItem's reposition when handle is positioning.
-static constexpr char const *PopupWindowHandlePointer = "_d_popup_window_handle";
-static inline void popupGeometryChanged(QQuickItem *obj, const QRectF &newGeometry, const QRectF &oldGeometry)
-{
-    DPopupWindowHandleImpl *handle = obj->property(PopupWindowHandlePointer).value<DPopupWindowHandleImpl *>();
-    Q_ASSERT(handle);
-    if (!handle->isPositioning()) {
-        // only in `reposition` to override virtual function.
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        DVtableHook::callOriginalFun(obj, &QQuickItem::geometryChanged, newGeometry, oldGeometry);
-#else
-        DVtableHook::callOriginalFun(obj, &QQuickItem::geometryChange, newGeometry, oldGeometry);
-#endif
-    }
-}
-static inline void popupUpdatePolish(QQuickItem *obj)
-{
-    DPopupWindowHandleImpl *handle = obj->property(PopupWindowHandlePointer).value<DPopupWindowHandleImpl *>();
-    Q_ASSERT(handle);
-    if (handle->isPositioning()) {
-        // avoid to call original function in `reposition`.
-        handle->setPositioning(false);
-    } else {
-        // only sepcial scene to override virtual function.
-        DVtableHook::callOriginalFun(obj, &QQuickItem::updatePolish);
-    }
-}
-
-DPopupWindowHandleImpl::DPopupWindowHandleImpl(QQuickWindow *window, QObject *parent)
-    : QObject(parent)
-    , m_window(window)
-    , m_popup(parent)
-{
-    Q_ASSERT(popupItem());
-
-    connect(popup(), SIGNAL(opened()), this, SLOT(reposition()));
-    popupItem()->setProperty(PopupWindowHandlePointer, QVariant::fromValue(this));
-    // geometryChanged would call reposition of `PopupItem`.
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    DVtableHook::overrideVfptrFun(popupItem(), &QQuickItem::geometryChanged, &popupGeometryChanged);
-#else
-    DVtableHook::overrideVfptrFun(popupItem(), &QQuickItem::geometryChange, &popupGeometryChanged);
-#endif
-    // updatePolish would call reposition of `PopupItem`.
-    DVtableHook::overrideVfptrFun(popupItem(), &QQuickItem::updatePolish, &popupUpdatePolish);
-
-    // TODO QML Window with Qt::Popup flag not behaving correctly (QTBUG-69777)
-    connect(m_window, &QWindow::activeChanged, this, &DPopupWindowHandleImpl::close);
-    connect(popup(), SIGNAL(closed()), this, SLOT(close()));
-}
-
-DPopupWindowHandleImpl::~DPopupWindowHandleImpl()
-{
-    QQuickItem *item = popupItem();
-    if (item) {
-        // reset original virtual function.
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        DVtableHook::resetVfptrFun(item, &QQuickItem::geometryChanged);
-#else
-        DVtableHook::resetVfptrFun(item, &QQuickItem::geometryChange);
-#endif
-        DVtableHook::resetVfptrFun(item, &QQuickItem::updatePolish);
-        disconnect(item, nullptr, this, nullptr);
-    }
-    disconnect(popup(), nullptr, this, nullptr);
-    disconnect(m_window, nullptr, this, nullptr);
-
-    m_window->deleteLater();
-    m_window = nullptr;
-}
-
-QQuickWindow *DPopupWindowHandleImpl::window() const
-{
-    return m_window;
-}
-
-QObject *DPopupWindowHandleImpl::popup() const
-{
-    return m_popup;
-}
-
-QQuickItem *DPopupWindowHandleImpl::popupItem() const {
-    for (auto item : popup()->children()) {
-        if (inheritsTheClassType(item, "QQuickPopupItem"))
-            return qobject_cast<QQuickItem *>(item);
-    }
+    const auto children = m_popup->findChildren<QQuickItem *>(Qt::FindDirectChildrenOnly);
+    auto it = std::find_if(children.begin(), children.end(), isPopupItem);
+    if (it != children.end())
+        return *it;
     return nullptr;
 }
 
-bool DPopupWindowHandleImpl::isPositioning() const
+void DPopupWindowHandle::popupItemReparented()
 {
-    return m_positioning;
-}
-
-void DPopupWindowHandleImpl::setPositioning(bool positioning)
-{
-    m_positioning = positioning;
-}
-
-void DPopupWindowHandleImpl::reposition()
-{
-    if (isPositioning())
+    QQuickItem *item = popupItem();
+    if (m_trackedItem == item)
         return;
 
-    setPositioning(true);
+    if (m_trackedItem) {
+        QQuickItemPrivate::get(m_trackedItem)->removeItemChangeListener(this, QQuickItemPrivate::Geometry);
+        disconnect(m_trackedItem, &QQuickItem::windowChanged, this, &DPopupWindowHandle::onWindowChanged);
+    }
 
-    m_window->resize(popupItem()->size().toSize());
-    // set window's position to origin popupItem' leftTop position.
-    m_window->setPosition(popupItem()->mapToGlobal(QPoint(0, 0)).toPoint());
-    // reset popupItem's position to window's contentItem leftTop position.
-    popupItem()->setPosition(m_window->contentItem()->position());
-    popupItem()->setParentItem(m_window->contentItem());
+    m_trackedItem = item;
 
-    m_window->show();
-    m_window->requestActivate();
+    QQuickItemPrivate::get(item)->addItemChangeListener(this, QQuickItemPrivate::Geometry | QQuickItemPrivate::Visibility);
+    connect(item, &QQuickItem::windowChanged, this, &DPopupWindowHandle::onWindowChanged);
+
+
+    if (QQuickWindow *window = popupWindow())
+        m_attached->setWindow(window);
 }
 
-void DPopupWindowHandleImpl::close()
+QQuickWindow *DPopupWindowHandle::popupWindow() const
 {
-    if (!m_window->isActive() || !popup()->property("visible").toBool()) {
-        m_window->hide();
-        // window hide but popup's visible is true, and it effects popup next open.
-        popup()->setProperty("visible", false);
+    QQuickItem *item = popupItem();
+    return item ? item->window() : nullptr;
+}
+
+void DPopupWindowHandle::updateEnabled()
+{
+    if (!m_popup || !m_attached)
+        return;
+    
+    QVariant popupTypeVar = m_popup->property("popupType");
+    bool shouldEnable = popupTypeVar.isValid() && popupTypeVar.toInt() == 1;
+    if (shouldEnable == m_enabled)
+        return;
+    m_enabled = shouldEnable;
+    m_attached->setEnabled(shouldEnable);
+}
+
+bool DPopupWindowHandle::isEnabled() const
+{
+    return m_enabled;
+}
+
+void DPopupWindowHandle::onWindowChanged(QQuickWindow *window)
+{
+    // Cleanup old filters
+    if (m_popupWin) {
+        m_popupWin->removeEventFilter(this);
+        m_popupWin = nullptr;
+    }
+    if (m_parentWindow) {
+        m_parentWindow->removeEventFilter(this);
+        m_parentWindow = nullptr;
+    }
+
+    // Apply attached properties (blur, radius, etc.) to popup windows.
+    if (m_attached) {
+        if (!window || isPopupWindow(window))
+            m_attached->setWindow(window);
+    }
+    
+    m_popupWin = window;
+    if (window && isEnabled() && isPopupWindow(window)) {
+
+        window->installEventFilter(this);
+
+        // Install event filter on parent window for close-on-click.
+        // Done here so it is registered once per popup window instance.
+        if (QQuickWindow *main = qobject_cast<QQuickWindow *>(window->transientParent())) {
+            m_parentWindow = main;
+            m_parentWindow->installEventFilter(this);
+        }
     }
 }
+
+bool DPopupWindowHandle::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == m_popupWin && event->type() == QEvent::Move) {
+        adjustPopupPosition();
+    }
+
+    // Close popup on parent window click (only while popup is visible)
+    if (watched == m_parentWindow && event->type() == QEvent::MouseButtonPress
+            && m_popup->property("visible").toBool()) {
+        int closePolicy = m_popup->property("closePolicy").toInt();
+        bool closeOnPressOutside = closePolicy & 0x01;
+        bool closeOnPressOutsideParent = closePolicy & 0x02;
+
+        if (closeOnPressOutside || closeOnPressOutsideParent) {
+            QMetaObject::invokeMethod(m_popup, "close", Qt::QueuedConnection);
+        }
+    }
+
+    return QObject::eventFilter(watched, event);
+}
+
+void DPopupWindowHandle::itemGeometryChanged(QQuickItem *,
+                                              QQuickGeometryChange change,
+                                              const QRectF &)
+{
+    if (!change.positionChange() && !change.sizeChange())
+        return;
+
+    adjustPopupPosition();
+}
+
+void DPopupWindowHandle::itemVisibilityChanged(QQuickItem *item)
+{
+    if (!item->isVisible())
+        return;
+
+    adjustPopupPosition();
+}
+
+void DPopupWindowHandle::itemParentChanged(QQuickItem *item, QQuickItem *)
+{
+    if (!item)
+        return;
+
+    adjustPopupPosition();
+}
+
+void DPopupWindowHandle::adjustPopupPosition()
+{
+    if (!isEnabled() ||!m_popupWin)
+        return;
+
+    const QSize size = m_popupWin->size();
+    if (size.width() <= 0 || size.height() <= 0)
+        return;
+
+    // Nested popup (submenu) detection:
+    // A submenu's popupWindow uses the parent menu's popupWindow as its transientParent.
+    QWindow *transient = m_popupWin->transientParent();
+    const bool isNested = isPopupWindow(transient);
+    QRectF parentWindowRect;
+    if (isNested)
+        parentWindowRect = QRectF(QPointF(transient->position()), QSizeF(transient->size()));
+
+    // Screen selection:
+    // - Nested popups (submenus) must use the parent menu's screen to avoid
+    //   screenAt() returning an adjacent screen or null when the submenu's
+    //   initial position is already off-screen.
+    // - Flat popups use their own position to determine the screen.
+    QScreen *screen = nullptr;
+    if (isNested) {
+        screen = transient->screen();
+    } else {
+        const QPoint winCenter = m_popupWin->position() + QPoint(size.width() / 2, size.height() / 2);
+        screen = QGuiApplication::screenAt(winCenter);
+    }
+    if (!screen)
+        screen = m_popupWin->screen();
+    if (!screen)
+        return;
+
+    const QRectF bounds(screen->availableGeometry());
+    QRectF rect(QPointF(m_popupWin->position()), QSizeF(size));
+
+    // Horizontal flip for submenus:
+    // Qt places submenus to the right of the parent menu by default;
+    // flip to the left if there is not enough space on the right, and vice versa.
+    if (isNested && !parentWindowRect.isNull()) {
+        const bool overflowsRight = rect.right() > bounds.right();
+        const bool overflowsLeft  = rect.left()  < bounds.left();
+
+        if (overflowsRight && !overflowsLeft) {
+            // Not enough space on the right — try flipping to the left of the parent.
+            const qreal leftCandidate = parentWindowRect.left() - size.width();
+            if (leftCandidate >= bounds.left()) {
+                rect.moveLeft(leftCandidate);
+            } else {
+                // Not enough space on either side — push against the right edge.
+                rect.moveRight(bounds.right());
+            }
+        } else if (overflowsLeft && !overflowsRight) {
+            // Not enough space on the left — flip to the right of the parent.
+            const qreal rightCandidate = parentWindowRect.right();
+            if (rightCandidate + size.width() <= bounds.right()) {
+                rect.moveLeft(rightCandidate);
+            } else {
+                rect.moveLeft(bounds.left());
+            }
+        }
+    }
+
+    // Vertical clamping and final bounds enforcement.
+    if (rect.right() > bounds.right())
+        rect.moveRight(bounds.right());
+    if (rect.left() < bounds.left())
+        rect.moveLeft(bounds.left());
+    if (rect.bottom() > bounds.bottom())
+        rect.moveBottom(bounds.bottom());
+    if (rect.top() < bounds.top())
+        rect.moveTop(bounds.top());
+
+    const QPoint newPos = rect.topLeft().toPoint();
+    if (newPos != m_popupWin->position())
+        m_popupWin->setPosition(newPos);
+}
+
 DQUICK_END_NAMESPACE
 
 #include "moc_dpopupwindowhandle_p.cpp"

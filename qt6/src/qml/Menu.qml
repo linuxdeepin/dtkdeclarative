@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -39,9 +39,6 @@ T.Menu {
 
     delegate: MenuItem { }
 
-    D.PopupHandle.delegate: PopupWindow {
-        blurControl: control
-    }
 
     contentItem: FocusScope {
         // QTBUG-99897 focus doesn't be clear.

@@ -35,11 +35,13 @@ if (DTK5)
         ${PROJECT_SOURCE_DIR}/src/private/dbackdropnode_p.h
         ${PROJECT_SOURCE_DIR}/src/private/dquickbackdropblitter_p.h
         ${PROJECT_SOURCE_DIR}/src/private/dquickborderimage_p.h
+        ${PROJECT_SOURCE_DIR}/src/private/dpopupwindowhandle_p.h
     )
     list(REMOVE_ITEM SRCS
         ${PROJECT_SOURCE_DIR}/src/private/dbackdropnode.cpp
         ${PROJECT_SOURCE_DIR}/src/private/dquickbackdropblitter.cpp
         ${PROJECT_SOURCE_DIR}/src/private/dquickborderimage.cpp
+        ${PROJECT_SOURCE_DIR}/src/private/dpopupwindowhandle.cpp
     )
 endif()
 

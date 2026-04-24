@@ -19,7 +19,6 @@ T.Popup {
     padding: DS.Style.popup.padding
 
     background: Loader {
-        active: !control.D.PopupHandle.window
         sourceComponent: FloatingPanel {
             implicitHeight: DS.Style.popup.height
             implicitWidth: DS.Style.popup.width
