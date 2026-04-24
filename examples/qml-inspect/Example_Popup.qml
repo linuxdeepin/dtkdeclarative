@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -68,12 +68,6 @@ Column {
             }
         }
     }
-    Button {
-        text: "handle forceWindowMode"
-        onClicked: {
-            popupWindow.PopupHandle.forceWindowMode = !popupWindow.PopupHandle.forceWindowMode
-        }
-    }
 
     Popup {
         id: popupWindow; objectName: "pupup window"
@@ -85,10 +79,25 @@ Column {
 //        width: 300
 //        height: 300
 //        margins: 100
-        PopupHandle.forceWindowMode: true
-        PopupHandle.delegate: PopupWindow {
-            blurControl: popupWindow
-        }
+        
+        // Test window properties in Qt6
+        // popupType: Popup.Window
+        // PopupHandle.windowRadius: 18
+        // PopupHandle.borderWidth: 2
+        // PopupHandle.borderColor: "red"
+        // PopupHandle.shadowRadius: 30
+        // PopupHandle.shadowOffset: Qt.point(0, 4)
+        // PopupHandle.shadowColor: Qt.rgba(0, 0, 0, 0.5)
+        // PopupHandle.translucentBackground: true
+        // PopupHandle.enableBlurWindow: true
+        
+        // Component.onCompleted: {
+        //     console.log("=== Popup Properties ===")
+        //     console.log("windowRadius:", PopupHandle.windowRadius)
+        //     console.log("borderWidth:", PopupHandle.borderWidth)
+        //     console.log("borderColor:", PopupHandle.borderColor)
+        //     console.log("translucentBackground:", PopupHandle.translucentBackground)
+        // }
         contentItem: Column {
             spacing: 10
             Text {
@@ -125,8 +134,6 @@ Column {
     Menu {
         id: menuPopup
         MenuItem { text: "Text" }
-
-        PopupHandle.forceWindowMode: true
     }
     ArrowShapePopup {
         id: arrow

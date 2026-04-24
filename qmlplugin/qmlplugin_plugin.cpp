@@ -22,7 +22,6 @@
 #include "private/dquickiconlabel_p.h"
 #include "private/dsettingscontainer_p.h"
 #include "private/dmessagemanager_p.h"
-#include "private/dpopupwindowhandle_p.h"
 #include "private/dobjectmodelproxy_p.h"
 #include "private/dquickwaterprogressattribute_p.h"
 #include "private/dquickarrowboxpath_p.h"
@@ -208,7 +207,6 @@ void QmlpluginPlugin::registerTypes(const char *uri)
                                                            QStringLiteral("ColorSelector is only available as an attached property."));
     dtkRegisterUncreatableType<DColor>(uri, implUri, 1, 0, "Color",
                                        QStringLiteral("Color is only available as enums."));
-    dtkRegisterUncreatableType<DPopupWindowHandle>(uri, implUri, 1, 0, "PopupHandle", "PopupWindow Attached");
     dtkRegisterUncreatableType<DPlatformHandle>(uri, implUri, 1, 0, "PlatformHandle", "PlatformHandle");
 
     qRegisterMetaType<DQUICK_NAMESPACE::DQuickDciIcon>();

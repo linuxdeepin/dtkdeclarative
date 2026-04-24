@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -515,11 +515,6 @@ void DQMLGlobalObject::sendSystemMessage(const QString &summary, const QString &
 
         watcher->deleteLater();
     });
-}
-
-void DQMLGlobalObject::setPopupMode(const PopupMode mode)
-{
-    DPopupWindowHandle::setPopupMode(mode);
 }
 
 bool DQMLGlobalObject::loadTranslator()

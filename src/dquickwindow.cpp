@@ -56,6 +56,11 @@ DQuickWindowAttached *DQuickWindow::qmlAttachedProperties(QObject *object)
     if (window) {
         return new DQuickWindowAttached(window);
     }
+    
+    // Support QQuickPopup with popupType == Window
+    if (object && object->inherits("QQuickPopup")) {
+        return new DQuickWindowAttached(object);
+    }
 
     return nullptr;
 }
@@ -131,6 +136,10 @@ bool DQuickWindowAttachedPrivate::ensurePlatformHandle()
     if (handle)
         return true;
 
+    if (!window) {
+        return false;
+    }
+
     if (!DPlatformHandle::setEnabledNoTitlebarForWindow(window, true)) {
         qWarning() << "Failed to enable NoTitlebar for the window:"  << window;
         return false;
@@ -179,10 +188,32 @@ void DQuickWindowAttachedPrivate::destoryPlatformHandle()
     handle = nullptr;
 }
 
+void DQuickWindowAttachedPrivate::setWindow(QWindow *newWindow)
+{
+    Q_Q(DQuickWindowAttached);
+    
+    if (window == newWindow)
+        return;
+    
+    window = newWindow;
+    
+    if (newWindow) {
+        newWindow->installEventFilter(q);
+        QObject::connect(DWindowManagerHelper::instance(), SIGNAL(windowMotifWMHintsChanged(quint32)),
+                     q, SLOT(_q_onWindowMotifHintsChanged(quint32)), Qt::UniqueConnection);
+
+        if (explicitEnable == True) {
+            ensurePlatformHandle();
+        }
+    }
+}
+
 void DQuickWindowAttachedPrivate::_q_onWindowMotifHintsChanged(quint32 winId)
 {
     D_Q(DQuickWindowAttached);
 
+    if (!q->window())
+        return;
     if (q->window()->winId() != winId)
         return;
 
@@ -339,9 +370,22 @@ DQuickWindowAttached::DQuickWindowAttached(QWindow *window)
                      this, SLOT(_q_onWindowMotifHintsChanged(quint32)));
 }
 
+DQuickWindowAttached::DQuickWindowAttached(QObject *popupObject)
+    : QObject(popupObject)
+    , DObject(*new DQuickWindowAttachedPrivate(nullptr, this))
+{
+}
+
 QQuickWindow *DQuickWindowAttached::window() const
 {
-    return qobject_cast<QQuickWindow *>(parent());
+    D_DC(DQuickWindowAttached);
+    return qobject_cast<QQuickWindow *>(d->window);
+}
+
+void DQuickWindowAttached::setWindow(QQuickWindow *window)
+{
+    D_D(DQuickWindowAttached);
+    d->setWindow(window);
 }
 
 /*!
