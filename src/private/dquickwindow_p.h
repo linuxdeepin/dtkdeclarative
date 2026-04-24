@@ -41,6 +41,7 @@ public:
 
     bool ensurePlatformHandle();
     void destoryPlatformHandle();
+    void setWindow(QWindow *newWindow);
     void _q_onWindowMotifHintsChanged(quint32 winId);
     void addBlur(DQuickBehindWindowBlur *blur);
     void removeBlur(DQuickBehindWindowBlur *blur);

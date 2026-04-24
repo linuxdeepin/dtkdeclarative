@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -80,8 +80,10 @@ class DQuickWindowAttached : public QObject, public DTK_CORE_NAMESPACE::DObject
 
 public:
     explicit DQuickWindowAttached(QWindow *window);
+    explicit DQuickWindowAttached(QObject *popupObject);
 
     QQuickWindow *window() const;
+    void setWindow(QQuickWindow *window);
     bool isEnabled() const;
 
     int windowRadius() const;

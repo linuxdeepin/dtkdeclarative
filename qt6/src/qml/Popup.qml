@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -19,7 +19,7 @@ T.Popup {
     padding: DS.Style.popup.padding
 
     background: Loader {
-        active: !control.D.PopupHandle.window
+        active: control.popupType !== Popup.Window
         sourceComponent: FloatingPanel {
             implicitHeight: DS.Style.popup.height
             implicitWidth: DS.Style.popup.width

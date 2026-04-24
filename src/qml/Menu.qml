@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -35,10 +35,6 @@ T.Menu {
     padding: DS.Style.menu.padding
 
     delegate: MenuItem { }
-
-    D.PopupHandle.delegate: PopupWindow {
-        blurControl: control
-    }
 
     contentItem: Control {
         contentItem:  ColumnLayout {
@@ -82,7 +78,6 @@ T.Menu {
     }
 
     background: Loader {
-        active: !control.D.PopupHandle.window
         sourceComponent: FloatingPanel {
             implicitWidth: DS.Style.menu.item.width
             implicitHeight: DS.Style.menu.item.height

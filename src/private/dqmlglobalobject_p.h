@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -170,13 +170,6 @@ public:
     };
     Q_ENUM(ZOrder)
 
-    enum PopupMode {
-        AutoMode,
-        WindowMode,
-        EmbedMode
-    };
-    Q_ENUM(PopupMode)
-
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     enum class CompositionMode {
         Source = QPainter::CompositionMode_Source,
@@ -243,7 +236,6 @@ public:
                                        const QString &appIcon = QString(), const QStringList &actions = QStringList(),
                                        const QVariantMap hints = QVariantMap(), const int timeout = 3000, const uint replaceId = 0);
 
-    static void setPopupMode(const PopupMode mode);
     static bool loadTranslator();
 
 #if QT_VERSION_MAJOR > 5
