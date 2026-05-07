@@ -17,7 +17,8 @@ T.Slider {
         ArrowUp = 2,
         ArrowLeft = 3,
         ArrowBottom = 4,
-        ArrowRight = 5
+        ArrowRight = 5,
+        NoArrowType = 6
     }
 
     property D.Palette grooveColor: DS.Style.slider.groove.background
@@ -100,16 +101,29 @@ T.Slider {
                         startX: control.horizontal ? (control.alignToTicks ? __handle.width / 2 : 0) : sliderGroove.width / 2
                         startY: control.horizontal ? sliderGroove.height / 2 : sliderGroove.height
                         PathLine {
-                            x: control.horizontal ? control.handle.x : sliderGroove.width / 2
-                            y: control.horizontal ? sliderGroove.height / 2 : control.handle.y + control.handle.height / 2
+                            x: control.horizontal ? (control.handleType === Slider.HandleType.NoArrowType
+                                                       ? control.visualPosition * sliderGroove.width
+                                                       : control.handle.x) : sliderGroove.width / 2
+                            y: control.horizontal ? sliderGroove.height / 2
+                                                         : (control.handleType === Slider.HandleType.NoArrowType
+                                                            ? control.visualPosition * sliderGroove.height
+                                                            : control.handle.y + control.handle.height / 2)
                         }
                     }
 
                     Item {
                         id: passItem
-                        y: control.horizontal ? -DS.Style.slider.groove.height / 2 : control.handle.y + control.handle.height / 2
-                        height: control.horizontal ? DS.Style.slider.groove.height : sliderGroove.height - control.handle.y - control.handle.height / 2
-                        width: control.horizontal ? control.handle.x : DS.Style.slider.groove.height
+                        y: control.horizontal ? -DS.Style.slider.groove.height / 2
+                                                : (control.handleType === Slider.HandleType.NoArrowType
+                                                   ? control.visualPosition * sliderGroove.height
+                                                   : control.handle.y + control.handle.height / 2)
+                        height: control.horizontal ? DS.Style.slider.groove.height
+                                                    : (control.handleType === Slider.HandleType.NoArrowType
+                                                      ? sliderGroove.height - control.visualPosition * sliderGroove.height
+                                                      : sliderGroove.height - control.handle.y - control.handle.height / 2)
+                        width: control.horizontal ? (control.handleType === Slider.HandleType.NoArrowType 
+                                                    ? control.visualPosition * sliderGroove.width 
+                                                    : control.handle.x) : DS.Style.slider.groove.height
                     }
 
                     BoxShadow {
