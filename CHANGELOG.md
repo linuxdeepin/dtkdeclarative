@@ -5,6 +5,61 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.7.41] - 2026-05-08
+
+### Added
+
+- Add shader resource file for Qt6 build
+- Add tick alignment support for Slider component
+- Add license dialog and update about dialog
+
+### Changed
+
+- Chore: New release 6.7.33
+- Chore: New release 6.7.34
+- Optimized feedback volume display
+- Adjust button background colors for better visual consistency
+- Optimize tooltip positioning logic.
+- Chore: New release 6.7.35
+- Chore: New release 6.7.36
+- Translate dtkdeclarative.ts in ru
+- Chore: New release 6.7.37
+- Chore: New release 6.7.38
+- Chore: New release 6.7.39
+- [dtkdeclarative] Updates for project Deepin Tool Kit (#609)
+- Chore: New release 6.7.40
+- Rewrite PopupHandle for Qt6 with Window popupType support
+
+### Fixed
+
+- Fix touchscreen double-tap and long-press handling
+- Adjust input field placeholder text color
+- Adjust path calculation for handle alignment
+- Handle exceptions when hovering over up/down arrows
+- Fix menu highlight remaining after main menu is closed
+- Adjust ComboBox padding and background for flat style
+- Update copyright year and add fillMode property
+- Skip inactive color when active and inactive colors are equal
+- Main interface does not gray out when losing focus
+- Disable smooth scaling for DQuickDciIconImage to prevent icon blur
+- Restore smooth scaling to prevent jagged icon edges
+- Optimize window button display delay issue
+- Resolved user confirmation dialog hierarchy anomaly
+- Fix AlertToolTip positioning and z-order issues
+- Fix highlight lingering after mouse leaves
+- Fix AlertToolTip parent causing drag issues
+- Improve DialogWindow blur effect with proper color handling
+- Write maskOffset to the correct uniform buffer offset
+- Avoid double alpha multiplication in rounded popup mask
+- Prevent crashes from dangling pointers in destructors
+- Use mask alpha channel for blending in ItemViewport shaders
+- Improve DCI icon image positioning and layout
+- Adjust path calculation for handle alignment
+
+### Removed
+
+- Remove white border on icon hover state
+
 ## [6.7.40] - 2026-04-23
 
 ### Added
