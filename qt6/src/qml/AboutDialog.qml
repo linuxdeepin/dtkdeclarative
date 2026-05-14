@@ -25,7 +25,7 @@ DialogWindow {
     property string websiteLink
 
     readonly property string __websiteLinkTemplate:
-        "<a href='%1' style='text-decoration: none; font-size:13px; color: #004EE5;'>%2</a>"
+        "<a href='%1' style='text-decoration: none; color: #004EE5;'>%2</a>"
 
     RowLayout {
         id: contentView
