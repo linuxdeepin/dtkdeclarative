@@ -18,7 +18,6 @@ DialogWindow {
     property alias licensePath: licenseProvider.path
 
     header: D.DialogTitleBar {
-        title: control.title
         leftContent: Item {
             width: 32
             D.IconButton {

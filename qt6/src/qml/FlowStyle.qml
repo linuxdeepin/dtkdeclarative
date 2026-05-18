@@ -583,6 +583,7 @@ QtObject {
         property int width: 120
         property int height: 120
         property int contentHMargin: 10
+        property int contentVMargin: 10
         property int footerMargin: 10
         property int titleBarHeight: 50
         property int iconSize: 32

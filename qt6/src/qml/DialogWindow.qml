@@ -32,6 +32,7 @@ Window {
     property alias palette : content.palette
     property real leftPadding: DS.Style.dialogWindow.contentHMargin
     property real rightPadding: DS.Style.dialogWindow.contentHMargin
+    property real topPadding: DS.Style.dialogWindow.contentVMargin
     
     D.StyledBehindWindowBlur {
         control: control
@@ -62,8 +63,15 @@ Window {
                 sourceComponent: DialogTitleBar {
                     enableInWindowBlendBlur: false
                     icon.name: control.icon
-                    title: control.title
                 }
+            }
+
+            D.Label {
+                text: control.title
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignHCenter
+                elide: Text.ElideRight
+                horizontalAlignment: Text.AlignHCenter
             }
 
             Item {
@@ -72,6 +80,7 @@ Window {
                 Layout.preferredHeight: childrenRect.height
                 Layout.leftMargin: control.leftPadding
                 Layout.rightMargin: control.rightPadding
+                Layout.topMargin: control.topPadding
             }
         }
     }
