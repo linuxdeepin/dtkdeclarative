@@ -31,6 +31,12 @@ DialogWindow {
         id: contentView
         width: parent.width
         implicitHeight: contentLayout.implicitHeight
+
+        D.LicenseInfoProvider {
+            id: licensePathChecker
+            path: control.licensePath
+        }
+        
         ColumnLayout {
             id: contentLayout
             spacing: 0
@@ -138,7 +144,13 @@ DialogWindow {
                 }
                 Label {
                     id: acknowledgmentsLabel
-                    text: qsTr("Sincerely appreciate the %1 used.").arg(control.__websiteLinkTemplate.arg("-").arg(qsTr("open-source software")))
+                    text: {
+                        var softwareText = qsTr("open-source software");
+                        if (licensePathChecker.valid)
+                            return qsTr("Sincerely appreciate the %1 used.").arg(control.__websiteLinkTemplate.arg("-").arg(softwareText));
+                        else
+                            return qsTr("Sincerely appreciate the %1 used.").arg(softwareText);
+                    }
                     textFormat: Text.RichText
                     Layout.fillWidth: true
                     font: D.DTK.fontManager.t8
@@ -173,7 +185,7 @@ DialogWindow {
         id: licenseDialogLoader
         active: false
         sourceComponent: LicenseDialog {
-            licensePath: control.licensePath
+            licenseProvider: licensePathChecker
             onClosing: function (close) {
                 licenseDialogLoader.active = false
             }
