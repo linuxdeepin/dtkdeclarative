@@ -15,7 +15,7 @@ DialogWindow {
     height: 900
     title: qsTr("open-source software")
 
-    property alias licensePath: licenseProvider.path
+    property D.LicenseInfoProvider licenseProvider
 
     header: D.DialogTitleBar {
         leftContent: Item {
@@ -36,10 +36,6 @@ DialogWindow {
     Item {
         implicitWidth: control.width - control.leftPadding - control.rightPadding
         implicitHeight: control.height - DS.Style.dialogWindow.titleBarHeight - DS.Style.dialogWindow.contentHMargin
-
-        D.LicenseInfoProvider {
-            id: licenseProvider
-        }
 
         StackView {
             id: stackView
