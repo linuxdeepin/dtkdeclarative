@@ -4,6 +4,7 @@
 
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Controls
 import QtQuick.Window
 import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
@@ -12,6 +13,8 @@ DialogWindow {
     id: control
     width: DS.Style.aboutDialog.width
     height: DS.Style.aboutDialog.height
+    topPadding: 0
+    rightPadding: 0
 
     property alias windowTitle: control.title
     property alias productName: productNameLabel.text
@@ -30,7 +33,7 @@ DialogWindow {
     RowLayout {
         id: contentView
         width: parent.width
-        implicitHeight: contentLayout.implicitHeight
+        height: control.height - DS.Style.dialogWindow.titleBarHeight
 
         D.LicenseInfoProvider {
             id: licensePathChecker
@@ -79,94 +82,109 @@ DialogWindow {
                 visible: control.license !== ""
             }
         }
-        ColumnLayout {
+        Flickable {
+            id: rightContentView
+            ScrollBar.vertical: ScrollBar {}
             Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-            spacing: 10
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.rightMargin: 20
-            ColumnLayout {
-                spacing: 1
-                Label {
-                    font: D.DTK.fontManager.t10
-                    text: qsTr("Version")
-                }
-                Label {
-                    id: versionLabel
-                    font: D.DTK.fontManager.t8
-                    wrapMode: Text.WordWrap
-                    text: Qt.application.version
-                    Layout.fillWidth: true
-                }
-            }
-            ColumnLayout {
-                spacing: 1
-                Label {
-                    font: D.DTK.fontManager.t10
-                    text: qsTr("Homepage")
-                }
-                Label {
-                    id: websiteLabel
-                    font: D.DTK.fontManager.t8
-                    textFormat: Text.RichText
-                    text: (control.websiteLink === "" || control.websiteName === "") ?
-                              "" : control.__websiteLinkTemplate.arg(websiteLink).arg(control.websiteName)
-                    wrapMode: Text.WordWrap
-                    Layout.fillWidth: true
+            clip: true
+            contentWidth: width
+            contentHeight: rightContentLayout.height
+            boundsBehavior: Flickable.StopAtBounds
+            flickableDirection: Flickable.VerticalFlick
 
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        acceptedButtons: Qt.NoButton
+            Item {
+                ColumnLayout {
+                    id: rightContentLayout
+                    width: rightContentView.width
+                    spacing: 10
+
+                    ColumnLayout {
+                        spacing: 1
+                        Label {
+                            font: D.DTK.fontManager.t10
+                            text: qsTr("Version")
+                        }
+                        Label {
+                            id: versionLabel
+                            font: D.DTK.fontManager.t8
+                            wrapMode: Text.WordWrap
+                            text: Qt.application.version
+                            Layout.fillWidth: true
+                        }
                     }
-                }
-            }
-            ColumnLayout {
-                spacing: 1
-                Label {
-                    font: D.DTK.fontManager.t10
-                    text: qsTr("Description")
-                }
-                Label {
-                    id: descriptionLabel
-                    Layout.fillWidth: true
-                    font: D.DTK.fontManager.t8
-                    wrapMode: Text.WordWrap
+                    ColumnLayout {
+                        spacing: 1
+                        Label {
+                            font: D.DTK.fontManager.t10
+                            text: qsTr("Homepage")
+                        }
+                        Label {
+                            id: websiteLabel
+                            font: D.DTK.fontManager.t8
+                            textFormat: Text.RichText
+                            text: (control.websiteLink === "" || control.websiteName === "") ?
+                                      "" : control.__websiteLinkTemplate.arg(websiteLink).arg(control.websiteName)
+                            wrapMode: Text.WordWrap
+                            Layout.fillWidth: true
+
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                                acceptedButtons: Qt.NoButton
+                            }
+                        }
+                    }
+                    ColumnLayout {
+                        spacing: 1
+                        Label {
+                            font: D.DTK.fontManager.t10
+                            text: qsTr("Description")
+                        }
+                        Label {
+                            id: descriptionLabel
+                            Layout.fillWidth: true
+                            font: D.DTK.fontManager.t8
+                            wrapMode: Text.WordWrap
                     elide: Text.ElideRight
+                        }
+                    }
+
+                    ColumnLayout {
+                        Layout.bottomMargin: 30
+                        spacing: 1
+                        Label {
+                            font: D.DTK.fontManager.t10
+                            text: qsTr("Acknowledgements")
+                        }
+                        Label {
+                            id: acknowledgmentsLabel
+                            text: {
+                                var softwareText = qsTr("open-source software");
+                                if (licensePathChecker.valid)
+                                    return qsTr("Sincerely appreciate the %1 used.").arg(control.__websiteLinkTemplate.arg("-").arg(softwareText));
+                                else
+                                    return qsTr("Sincerely appreciate the %1 used.").arg(softwareText);
+                            }
+                            textFormat: Text.RichText
+                            Layout.fillWidth: true
+                            font: D.DTK.fontManager.t8
+                            wrapMode: Text.WordWrap
+                            elide: Text.ElideRight
+
+                            onLinkActivated: function(link) {
+                                licenseDialogLoader.active = true
+                            }
+
+                            HoverHandler {
+                                cursorShape: acknowledgmentsLabel.hoveredLink !== "" ? Qt.PointingHandCursor : Qt.ArrowCursor
+                            }
+                        }
+                    }
                 }
             }
-
-            ColumnLayout {
-                spacing: 1
-                Label {
-                    font: D.DTK.fontManager.t10
-                    text: qsTr("Acknowledgements")
-                }
-                Label {
-                    id: acknowledgmentsLabel
-                    text: {
-                        var softwareText = qsTr("open-source software");
-                        if (licensePathChecker.valid)
-                            return qsTr("Sincerely appreciate the %1 used.").arg(control.__websiteLinkTemplate.arg("-").arg(softwareText));
-                        else
-                            return qsTr("Sincerely appreciate the %1 used.").arg(softwareText);
-                    }
-                    textFormat: Text.RichText
-                    Layout.fillWidth: true
-                    font: D.DTK.fontManager.t8
-                    wrapMode: Text.WordWrap
-                    elide: Text.ElideRight
-
-                    onLinkActivated: function(link) {
-                        licenseDialogLoader.active = true
-                    }
-
-                    HoverHandler {
-                        cursorShape: acknowledgmentsLabel.hoveredLink !== "" ? Qt.PointingHandCursor : Qt.ArrowCursor
-                    }
-                }
-            }
-       }
+        }
 
         Component.onCompleted: {
             websiteLabel.linkActivated.connect(D.ApplicationHelper.openUrl)

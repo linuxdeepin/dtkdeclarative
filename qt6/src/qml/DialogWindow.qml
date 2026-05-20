@@ -66,12 +66,17 @@ Window {
                 }
             }
 
-            D.Label {
-                text: control.title
+            Loader {
+                active: title !== ""
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignHCenter
-                elide: Text.ElideRight
-                horizontalAlignment: Text.AlignHCenter
+                sourceComponent: Component {
+                    D.Label {
+                        text: control.title
+                        elide: Text.ElideRight
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+                }
             }
 
             Item {
