@@ -32,7 +32,7 @@ Window {
     property alias palette : content.palette
     property real leftPadding: DS.Style.dialogWindow.contentHMargin
     property real rightPadding: DS.Style.dialogWindow.contentHMargin
-    property real topPadding: DS.Style.dialogWindow.contentVMargin
+    property real topPadding: title === "" ? 0 : DS.Style.dialogWindow.contentVMargin
     
     D.StyledBehindWindowBlur {
         control: control
