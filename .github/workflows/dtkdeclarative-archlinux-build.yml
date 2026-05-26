@@ -1,0 +1,175 @@
+name: Build dtkdeclarative on Arch Linux
+
+on:
+  push:
+
+  pull_request:
+
+jobs:
+  container:
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - qt_version: 5
+            dtk5: "ON"
+          - qt_version: 6
+            dtk5: "OFF"
+    steps:
+      - name: Initialize pacman and system update
+        run: |
+          pacman-key --init
+          pacman --noconfirm --noprogressbar -Syu
+
+      - name: Install base build tools
+        run: |
+          pacman -S --noconfirm --noprogressbar base-devel git cmake ninja pkgconf
+
+      - name: Install dtkdeclarative Qt5 system dependencies
+        if: matrix.qt_version == 5
+        run: |
+          pacman -S --noconfirm --noprogressbar \
+            qt5-base qt5-tools qt5-declarative qt5-quickcontrols2 \
+            qt5-wayland qt5-svg qt5-imageformats \
+            extra-cmake-modules \
+            gtest \
+            librsvg libraw \
+            libqt5xdg \
+            icu uchardet dbus spdlog gsettings-qt \
+            dtkcommon dtklog \
+            treeland-protocols dtkcore dtkgui
+
+      - name: Install dtkdeclarative Qt6 system dependencies
+        if: matrix.qt_version == 6
+        run: |
+          pacman -S --noconfirm --noprogressbar \
+            qt6-base qt6-tools qt6-declarative qt6-shadertools \
+            qt6-wayland qt6-svg qt6-imageformats \
+            extra-cmake-modules \
+            gtest \
+            librsvg libraw \
+            libqtxdg \
+            icu uchardet dbus spdlog gsettings-qt \
+            vulkan-headers \
+            dtkcommon dtk6log \
+            treeland-protocols dtk6core dtk6gui
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build and install latest DTK dependencies from source
+        run: |
+          set -euxo pipefail
+
+          build_repo() {
+            local repo="$1"
+            local extra_args="${2:-}"
+            case "${repo}" in
+              dtkcommon|dtklog|dtkcore|dtkgui) ;;
+              *) echo "unsupported repo: ${repo}" >&2; exit 1 ;;
+            esac
+            cd /tmp
+            rm -rf "${repo}"
+            git clone --depth=1 "https://github.com/linuxdeepin/${repo}.git"
+            cmake -S "${repo}" -B "${repo}/build" \
+              -GNinja \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DCMAKE_INSTALL_PREFIX=/usr \
+              -DBUILD_DOCS=OFF \
+              -DBUILD_EXAMPLES=OFF \
+              -DBUILD_TESTING=OFF \
+              ${extra_args}
+            cmake --build "${repo}/build" -j"$(nproc)"
+            cmake --install "${repo}/build"
+          }
+
+          build_repo dtkcommon
+          build_repo dtklog "-DDTK5=${{ matrix.dtk5 }}"
+          build_repo dtkcore "-DDTK5=${{ matrix.dtk5 }}"
+          build_repo dtkgui "-DDTK5=${{ matrix.dtk5 }}"
+
+      - name: Configure dtkdeclarative
+        run: |
+          set -o pipefail
+          cmake -B build \
+            -GNinja \
+            -DCMAKE_INSTALL_PREFIX=/usr \
+            -DCMAKE_INSTALL_LIBDIR=lib \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DMKSPECS_INSTALL_DIR=lib/qt/mkspecs/modules \
+            -DQML_INSTALL_DIR=lib/qt/qml \
+            -DBUILD_DOCS=OFF \
+            -DBUILD_EXAMPLES=OFF \
+            -DBUILD_TESTING=${{ matrix.dtk5 }} \
+            -DDTK5=${{ matrix.dtk5 }} 2>&1 | tee /tmp/cmake-configure.log
+          echo "✅ Configure done"
+
+      - name: Print configure log on failure
+        if: failure()
+        run: |
+          echo "=== cmake-configure.log (last 80 lines) ==="
+          tail -80 /tmp/cmake-configure.log 2>/dev/null || echo "(not found)"
+          tail -20 /tmp/cmake-configure.log 2>/dev/null | while IFS= read -r line; do
+            echo "::error::$line"
+          done
+
+      - name: Build dtkdeclarative
+        run: |
+          set -o pipefail
+          cmake --build build -j$(nproc) 2>&1 | tee /tmp/cmake-build.log
+          echo "✅ dtkdeclarative Qt${{ matrix.qt_version }} built successfully!"
+          echo "=== Built files ==="
+          find build -name "*.so" -o -name "*.a" | head -20
+
+      - name: Print build log on failure
+        if: failure()
+        run: |
+          echo "=== cmake-build.log (last 100 lines) ==="
+          tail -100 /tmp/cmake-build.log 2>/dev/null || echo "(not found)"
+          grep -E "error:|Error:|FAILED" /tmp/cmake-build.log 2>/dev/null | head -20 | while IFS= read -r line; do
+            echo "::error::$line"
+          done
+
+      - name: Run unit tests
+        if: matrix.dtk5 == 'ON'
+        run: |
+          set -o pipefail
+          QT_QPA_PLATFORM=offscreen ctest --test-dir build --output-on-failure --timeout 300 -j$(nproc) 2>&1 | tee /tmp/ctest.log
+          echo "✅ dtkdeclarative Qt${{ matrix.qt_version }} tests passed!"
+
+      - name: Print test log on failure
+        if: failure() && matrix.dtk5 == 'ON'
+        run: |
+          echo "=== ctest.log (last 100 lines) ==="
+          tail -100 /tmp/ctest.log 2>/dev/null || echo "(not found)"
+          grep -E "FAILED|Error:|The following tests FAILED" /tmp/ctest.log 2>/dev/null | head -20 | while IFS= read -r line; do
+            echo "::error::$line"
+          done
+
+      - name: Install dtkdeclarative to staging directory
+        run: |
+          DESTDIR=/tmp/dtkdeclarative-install cmake --install build
+          echo "Total: $(find /tmp/dtkdeclarative-install -type f | wc -l) files"
+          find /tmp/dtkdeclarative-install -type f | head -20
+
+      - name: Print install log on failure
+        if: failure()
+        run: echo "::error::Install step failed — check the step output above"
+
+      - name: Create installation package
+        run: |
+          ls -la /tmp/dtkdeclarative-install/ || { echo "Install dir missing!"; exit 1; }
+          tar -czf /tmp/dtkdeclarative-archlinux-qt${{ matrix.qt_version }}-$(date +%Y%m%d-%H%M%S).tar.gz -C /tmp/dtkdeclarative-install .
+          ls -la /tmp/dtkdeclarative-archlinux-qt${{ matrix.qt_version }}-*.tar.gz
+
+      - name: Upload dtkdeclarative Arch Linux build artifacts
+        if: ${{ !env.ACT }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: dtkdeclarative-archlinux-qt${{ matrix.qt_version }}-build
+          path: "/tmp/dtkdeclarative-archlinux-qt${{ matrix.qt_version }}-*.tar.gz"
+          if-no-files-found: error
+          retention-days: 30
