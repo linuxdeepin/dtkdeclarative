@@ -66,8 +66,8 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
  libdtk6declarative( =${binary:Version}),
  libdtk6core-dev,
- libdtk6gui-dev,
- libdtkcommon-dev,
+ libdtk6gui-dev (>> 6.7.42),
+ libdtkcommon-dev (>> 6.7.42),
  qt6-base-dev,
  qt6-declarative-dev
 Build-Profiles: <!nodtk6>
@@ -119,8 +119,8 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
  libdtkdeclarative5( =${binary:Version}),
  libdtkcore-dev,
- libdtkgui-dev,
- libdtkcommon-dev,
+ libdtkgui-dev (>> 5.7.42),
+ libdtkcommon-dev (>> 5.7.42),
  qtbase5-dev,
  qtdeclarative5-dev
 Build-Profiles: <!nodtk5>
