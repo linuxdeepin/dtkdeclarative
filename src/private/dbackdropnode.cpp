@@ -1,17 +1,14 @@
-// SPDX-FileCopyrightText: 2024 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2024 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 #include <QDebug>
-#define protected public
-#define private public
 #include <rhi/qrhi.h>
 #include <private/qsgrenderer_p.h>
-#undef protected
-#undef private
 
 #include "dbackdropnode_p.h"
 #include "dqmlglobalobject_p.h"
+#include "util/dprivateaccessor_p.h"
 
 #include <QQuickItem>
 #include <QRunnable>
@@ -33,6 +30,33 @@
 #endif
 
 #include <algorithm>
+
+#ifndef QT_NO_OPENGL
+D_DECLARE_PRIVATE_MEMBER(QRhi_d_tag, QRhi, d, QRhiImplementation*);
+#endif
+
+// QSGRenderer keeps m_changed_emitted/m_is_rendering as private bit-fields
+// right after m_nodes_dont_preprocess, matching the layout used in Waylib.
+D_DECLARE_PRIVATE_METHOD(QSGRenderer_preprocess_tag, QSGRenderer, preprocess, void);
+D_DECLARE_PRIVATE_METHOD(QSGRenderer_render_tag, QSGRenderer, render, void);
+D_DECLARE_PRIVATE_BITFIELD(QSGRenderer_m_nodes_dont_preprocess_tag,
+                           QSGRenderer, m_nodes_dont_preprocess,
+                           QSet<QSGNode *>, uint);
+static constexpr unsigned k_m_changed_emitted_bit = 0;
+static constexpr unsigned k_m_is_rendering_bit = 1;
+
+static_assert(sizeof(QSGRenderer) == 432,
+              "QSGRenderer size changed — review qsgrenderer_p.h and update the bit-field accessor");
+
+static inline void rendererPreprocess(QSGRenderer *renderer)
+{
+    D_PRIVATE_CALL(*renderer, QSGRenderer_preprocess_tag{});
+}
+
+static inline void rendererRender(QSGRenderer *renderer)
+{
+    D_PRIVATE_CALL(*renderer, QSGRenderer_render_tag{});
+}
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -360,7 +384,7 @@ public:
         QRhiGles2 *gles2Rhi = nullptr;
         if (forceSurface) {
             Q_ASSERT(rhi()->backend() == QRhi::OpenGLES2);
-            gles2Rhi = static_cast<QRhiGles2*>(rhi()->d);
+            gles2Rhi = static_cast<QRhiGles2*>(D_PRIVATE_MEMBER(*rhi(), QRhi_d_tag{}));
             fallbackSurface = gles2Rhi->fallbackSurface;
             gles2Rhi->fallbackSurface = forceSurface;
         }
@@ -383,17 +407,17 @@ public:
         oldCB = dc->currentFrameCommandBuffer();
         context->prepareSync(renderer->devicePixelRatio(), cb, graphicsConfiguration());
 
-        renderer->m_is_rendering = true;
-        renderer->preprocess();
+        D_PRIVATE_BF_SET(*renderer, QSGRenderer_m_nodes_dont_preprocess_tag, k_m_is_rendering_bit, true);
+        rendererPreprocess(renderer);
 
         return true;
     }
 
     bool render(qreal oldDPR, QRhiCommandBuffer* &oldCB) {
-        Q_ASSERT(renderer->m_is_rendering);
-        renderer->render();
-        renderer->m_is_rendering = false;
-        renderer->m_changed_emitted = false;
+        Q_ASSERT(D_PRIVATE_BF_GET(*renderer, QSGRenderer_m_nodes_dont_preprocess_tag, k_m_is_rendering_bit));
+        rendererRender(renderer);
+        D_PRIVATE_BF_SET(*renderer, QSGRenderer_m_nodes_dont_preprocess_tag, k_m_is_rendering_bit, false);
+        D_PRIVATE_BF_SET(*renderer, QSGRenderer_m_nodes_dont_preprocess_tag, k_m_changed_emitted_bit, false);
 
         context->prepareSync(oldDPR, oldCB, graphicsConfiguration());
 

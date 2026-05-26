@@ -2,12 +2,11 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#define private public
 #include <QSGNode>
-#undef private
 
 #include "dqmlglobalobject_p.h"
 #include "dqmlglobalobject_p_p.h"
+#include "util/dprivateaccessor_p.h"
 #include "dquickcontrolpalette_p.h"
 #include "dquickdciicon_p.h"
 #include "dquickimageprovider_p.h"
@@ -35,6 +34,11 @@
 #endif
 
 DGUI_USE_NAMESPACE
+
+D_DECLARE_PRIVATE_MEMBER(QSGNode_m_subtreeRenderableCount_tag, QSGNode, m_subtreeRenderableCount, int);
+D_DECLARE_PRIVATE_MEMBER(QSGNode_m_firstChild_tag, QSGNode, m_firstChild, QSGNode *);
+D_DECLARE_PRIVATE_MEMBER(QSGNode_m_lastChild_tag, QSGNode, m_lastChild, QSGNode *);
+D_DECLARE_PRIVATE_MEMBER(QSGNode_m_parent_tag, QSGNode, m_parent, QSGNode *);
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -550,22 +554,22 @@ QSGRootNode *DQMLGlobalObject::getRootNode(QQuickItem *item)
 
 int &DQMLGlobalObject::QSGNode_subtreeRenderableCount(QSGNode *node)
 {
-    return node->m_subtreeRenderableCount;
+    return D_PRIVATE_MEMBER(*node, QSGNode_m_subtreeRenderableCount_tag{});
 }
 
 QSGNode *&DQMLGlobalObject::QSGNode_firstChild(QSGNode *node)
 {
-    return node->m_firstChild;
+    return D_PRIVATE_MEMBER(*node, QSGNode_m_firstChild_tag{});
 }
 
 QSGNode *&DQMLGlobalObject::QSGNode_lastChild(QSGNode *node)
 {
-    return node->m_lastChild;
+    return D_PRIVATE_MEMBER(*node, QSGNode_m_lastChild_tag{});
 }
 
 QSGNode *&DQMLGlobalObject::QSGNode_parent(QSGNode *node)
 {
-    return node->m_parent;
+    return D_PRIVATE_MEMBER(*node, QSGNode_m_parent_tag{});
 }
 #endif
 
