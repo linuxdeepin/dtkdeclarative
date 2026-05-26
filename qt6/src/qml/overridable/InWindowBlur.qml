@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2023 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -18,7 +18,7 @@ Item {
     D.BackdropBlitter {
         id: blitter
         anchors.fill: parent
-        blitterEnabled: !D.DTK.isSoftwareRender
+        blitterEnabled: !D.DTK.isSoftwareRender && D.DTK.hasInWindowBlur
 
         MultiEffect {
             id: blur

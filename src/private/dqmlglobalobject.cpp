@@ -221,6 +221,11 @@ bool DQMLGlobalObject::hasAnimation()
     return DGuiApplicationHelper::testAttribute(DGuiApplicationHelper::HasAnimations);
 }
 
+bool DQMLGlobalObject::hasInWindowBlur()
+{
+    return DGuiApplicationHelper::testAttribute(DGuiApplicationHelper::HasInWindowBlur);
+}
+
 bool DQMLGlobalObject::isSoftwareRender()
 {
     static bool isSoftware = QQuickWindow::sceneGraphBackend() == QLatin1String("software");
