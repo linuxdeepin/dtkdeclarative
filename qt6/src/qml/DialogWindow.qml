@@ -19,10 +19,9 @@ Window {
     D.DWindow.enableSystemResize: false
     D.DWindow.motifFunctions: D.WindowManagerHelper.FUNC_ALL & ~D.WindowManagerHelper.FUNC_RESIZE
     D.DWindow.wmWindowTypes: D.WindowManagerHelper.DialogType
-    D.DWindow.enableBlurWindow: true
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.MSWindowsFixedSizeDialogHint
     D.ColorSelector.family: D.Palette.CrystalColor
-    color: D.DWindow.enableBlurWindow ? "transparent" : (active ? D.DTK.palette.window : D.DTK.inactivePalette.window)
+    color: "transparent"
     height: content.height
     width: content.width
 
