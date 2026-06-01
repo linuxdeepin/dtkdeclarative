@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -48,31 +48,5 @@ BoxPanel {
         id: hoverBackgroundGradient
         GradientStop { position: 0.0; color: control.D.ColorSelector.color1 }
         GradientStop { position: 0.96; color: control.D.ColorSelector.color2 }
-    }
-
-    CicleSpreadAnimation {
-        id: hoverAnimation
-        anchors.fill: parent
-        visible: enableAnimation
-
-        Rectangle {
-            anchors.fill: parent
-            radius: control.radius
-            // gradient: control.D.ColorSelector.color1 === control.D.ColorSelector.color2 ? null : hoverBackgroundGradient
-            color: control.D.ColorSelector.color1
-        }
-        function triggle() {
-            if (button.hovered) {
-                var pos = D.DTK.cursorPosition()
-                hoverAnimation.centerPoint = hoverAnimation.mapFromGlobal(pos.x, pos.y)
-                hoverAnimation.start()
-            } else {
-                hoverAnimation.stop()
-            }
-        }
-
-        Component.onCompleted: {
-            button.hoveredChanged.connect(hoverAnimation.triggle)
-        }
     }
 }
