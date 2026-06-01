@@ -39,7 +39,7 @@ jobs:
           dpkg -i ../*.deb 2>/dev/null || apt-get install -f -y
           echo "✅ dtkcommon installed"
 
-      - name: Build and install dtklog from source
+      - name: Build and install dtklog from source for Qt${{ matrix.qt_version }}
         run: |
           set -euxo pipefail
           cd /tmp
@@ -50,7 +50,7 @@ jobs:
           dpkg -i ../*.deb 2>/dev/null || apt-get install -f -y
           echo "✅ dtklog installed"
 
-      - name: Build and install treeland-protocols from source
+      - name: Build and install treeland-protocols from source for Qt${{ matrix.qt_version }}
         run: |
           set -euxo pipefail
           apt-get install -y --allow-unauthenticated wlr-protocols || true
@@ -62,7 +62,7 @@ jobs:
           dpkg -i ../*.deb 2>/dev/null || apt-get install -f -y
           echo "✅ treeland-protocols installed"
 
-      - name: Build and install dtkcore from source
+      - name: Build and install dtkcore from source for Qt${{ matrix.qt_version }}
         run: |
           set -euxo pipefail
           cd /tmp
@@ -73,7 +73,7 @@ jobs:
           dpkg -i ../*.deb 2>/dev/null || apt-get install -f -y
           echo "✅ dtkcore installed"
 
-      - name: Build and install dtkgui from source
+      - name: Build and install dtkgui from source for Qt${{ matrix.qt_version }}
         run: |
           set -euxo pipefail
           cd /tmp
@@ -84,12 +84,12 @@ jobs:
           dpkg -i ../*.deb 2>/dev/null || apt-get install -f -y
           echo "✅ dtkgui installed"
 
-      - name: Install dtkdeclarative build dependencies
+      - name: Install dtkdeclarative Qt${{ matrix.qt_version }} build dependencies
         run: |
           set -euxo pipefail
           mk-build-deps --install --remove --tool='apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends --yes' debian/control
 
-      - name: Enable unit tests in deb build
+      - name: Enable unit tests in Qt${{ matrix.qt_version }} deb build
         if: matrix.dtk_profile == 'nodtk6'
         run: |
           set -euxo pipefail
@@ -97,7 +97,7 @@ jobs:
             sed -i 's/BUILD_TESTING=OFF/BUILD_TESTING=ON/g' debian/rules
           fi
 
-      - name: Build dtkdeclarative deb packages
+      - name: Build dtkdeclarative Qt${{ matrix.qt_version }} deb packages
         run: |
           set -euxo pipefail
           export QT_QPA_PLATFORM=offscreen

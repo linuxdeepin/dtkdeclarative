@@ -60,13 +60,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Build and install latest DTK dependencies from source
+      - name: Build and install latest DTK Qt5 dependencies from source
+        if: matrix.qt_version == 5
         run: |
           set -euxo pipefail
 
           build_repo() {
             local repo="$1"
-            local extra_args="${2:-}"
+            shift
             case "${repo}" in
               dtkcommon|dtklog|dtkcore|dtkgui) ;;
               *) echo "unsupported repo: ${repo}" >&2; exit 1 ;;
@@ -81,17 +82,49 @@ jobs:
               -DBUILD_DOCS=OFF \
               -DBUILD_EXAMPLES=OFF \
               -DBUILD_TESTING=OFF \
-              ${extra_args}
+              "$@"
             cmake --build "${repo}/build" -j"$(nproc)"
             cmake --install "${repo}/build"
           }
 
           build_repo dtkcommon
-          build_repo dtklog "-DDTK5=${{ matrix.dtk5 }}"
-          build_repo dtkcore "-DDTK5=${{ matrix.dtk5 }}"
-          build_repo dtkgui "-DDTK5=${{ matrix.dtk5 }}"
+          build_repo dtklog -DDTK5=ON
+          build_repo dtkcore -DDTK5=ON
+          build_repo dtkgui -DDTK5=ON
 
-      - name: Configure dtkdeclarative
+      - name: Build and install latest DTK Qt6 dependencies from source
+        if: matrix.qt_version == 6
+        run: |
+          set -euxo pipefail
+
+          build_repo() {
+            local repo="$1"
+            shift
+            case "${repo}" in
+              dtkcommon|dtklog|dtkcore|dtkgui) ;;
+              *) echo "unsupported repo: ${repo}" >&2; exit 1 ;;
+            esac
+            cd /tmp
+            rm -rf "${repo}"
+            git clone --depth=1 "https://github.com/linuxdeepin/${repo}.git"
+            cmake -S "${repo}" -B "${repo}/build" \
+              -GNinja \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DCMAKE_INSTALL_PREFIX=/usr \
+              -DBUILD_DOCS=OFF \
+              -DBUILD_EXAMPLES=OFF \
+              -DBUILD_TESTING=OFF \
+              "$@"
+            cmake --build "${repo}/build" -j"$(nproc)"
+            cmake --install "${repo}/build"
+          }
+
+          build_repo dtkcommon
+          build_repo dtklog -DDTK5=OFF
+          build_repo dtkcore -DDTK5=OFF
+          build_repo dtkgui -DDTK5=OFF
+
+      - name: Configure dtkdeclarative for Qt${{ matrix.qt_version }}
         run: |
           set -o pipefail
           cmake -B build \
@@ -116,7 +149,7 @@ jobs:
             echo "::error::$line"
           done
 
-      - name: Build dtkdeclarative
+      - name: Build dtkdeclarative for Qt${{ matrix.qt_version }}
         run: |
           set -o pipefail
           cmake --build build -j$(nproc) 2>&1 | tee /tmp/cmake-build.log
@@ -149,7 +182,7 @@ jobs:
             echo "::error::$line"
           done
 
-      - name: Install dtkdeclarative to staging directory
+      - name: Install dtkdeclarative Qt${{ matrix.qt_version }} to staging directory
         run: |
           DESTDIR=/tmp/dtkdeclarative-install cmake --install build
           echo "Total: $(find /tmp/dtkdeclarative-install -type f | wc -l) files"
