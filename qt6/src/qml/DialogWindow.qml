@@ -74,6 +74,7 @@ Window {
                         text: control.title
                         elide: Text.ElideRight
                         horizontalAlignment: Text.AlignHCenter
+                        font: D.DTK.fontManager.t6
                     }
                 }
             }
