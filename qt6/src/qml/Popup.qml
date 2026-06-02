@@ -11,6 +11,8 @@ import org.deepin.dtk.style 1.0 as DS
 T.Popup {
     id: control
 
+    palette: D.DTK.palette
+
     property bool closeOnInactive: true
     readonly property bool active: parent && parent.Window.active
     implicitWidth: DS.Style.control.implicitWidth(control)
@@ -18,12 +20,24 @@ T.Popup {
 
     padding: DS.Style.popup.padding
 
-    background: Loader {
-        active: control.popupType !== Popup.Window
-        sourceComponent: FloatingPanel {
-            implicitHeight: DS.Style.popup.height
-            implicitWidth: DS.Style.popup.width
-            radius: DS.Style.popup.radius
+    background: Item {
+        implicitWidth: DS.Style.control.implicitWidth(control)
+        implicitHeight: DS.Style.control.implicitHeight(control)
+
+        Loader {
+            anchors.fill: parent
+            active: control.popupType === Popup.Window
+            sourceComponent: D.StyledBehindWindowBlur { }
+        }
+
+        Loader {
+            anchors.fill: parent
+            active: control.popupType !== Popup.Window
+            sourceComponent: FloatingPanel {
+                implicitHeight: DS.Style.popup.height
+                implicitWidth: DS.Style.popup.width
+                radius: DS.Style.popup.radius
+            }
         }
     }
 
