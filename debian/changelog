@@ -1,3 +1,9 @@
+dtkdeclarative (6.7.43) unstable; urgency=medium
+
+  * fix: set title font to t6 specification
+
+ -- zhangkun <zhangkun2@uniontech.com>  Thu, 04 Jun 2026 19:32:58 +0800
+
 dtkdeclarative (6.7.42) unstable; urgency=medium
 
   * Release 6.7.42
