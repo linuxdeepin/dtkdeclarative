@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -29,6 +29,14 @@ D.IconButton {
     bottomPadding: 0
     leftPadding: 0
     rightPadding: 0
+    contentItem: D.DciIcon {
+        name: control.icon.name
+        asynchronous: false
+        palette: D.DTK.makeIconPalette(control.palette)
+        mode: control.D.ColorSelector.controlState
+        theme: control.D.ColorSelector.controlTheme
+        sourceSize: Qt.size(control.icon.width, control.icon.height)
+    }
     icon {
         width: DS.Style.windowButton.width
         height: DS.Style.windowButton.height
