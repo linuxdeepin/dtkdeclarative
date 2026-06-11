@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -132,6 +132,13 @@ void DQuickItemViewportPrivate::clearPreprocessNode(PreprocessNode *oldNode)
 {
     Q_ASSERT(load(preprocessNode) == oldNode);
     preprocessNode = nullptr;
+
+    // 断开 textureChanged 信号连接，避免在场景图清理过程中
+    // 信号触发时访问已清除的 preprocessNode 导致空指针解引用
+    if (textureChangedConnection) {
+        QObject::disconnect(textureChangedConnection);
+        textureChangedConnection = {};
+    }
 }
 
 void DQuickItemViewportPrivate::updateUsePreprocess() const
