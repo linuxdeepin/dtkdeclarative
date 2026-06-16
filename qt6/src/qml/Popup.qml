@@ -12,6 +12,7 @@ T.Popup {
     id: control
 
     palette: D.DTK.palette
+    focus: popupType === Popup.Window
 
     property bool closeOnInactive: true
     readonly property bool active: parent && parent.Window.active

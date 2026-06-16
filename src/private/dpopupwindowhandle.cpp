@@ -15,6 +15,7 @@
 #include <algorithm>
 
 #include <private/qquickitem_p.h>
+#include <qpa/qwindowsysteminterface.h>
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -52,6 +53,7 @@ DPopupWindowHandle::DPopupWindowHandle(QObject *popup)
     popupItemReparented();
 
     connect(popup, SIGNAL(popupTypeChanged()), this, SLOT(updateEnabled()));
+    connect(popup, SIGNAL(visibleChanged()), this, SLOT(onPopupVisibleChanged()));
 }
 
 DQuickWindowAttached *DPopupWindowHandle::qmlAttachedProperties(QObject *object)
@@ -124,6 +126,9 @@ bool DPopupWindowHandle::isEnabled() const
 
 void DPopupWindowHandle::onWindowChanged(QQuickWindow *window)
 {
+    if (!window)
+        restoreParentFocus();
+
     // Cleanup old filters
     if (m_popupWin) {
         m_popupWin->removeEventFilter(this);
@@ -154,10 +159,22 @@ void DPopupWindowHandle::onWindowChanged(QQuickWindow *window)
     }
 }
 
+void DPopupWindowHandle::onPopupVisibleChanged()
+{
+    if (!m_popup || m_popup->property("visible").toBool())
+        return;
+
+    restoreParentFocus();
+}
+
 bool DPopupWindowHandle::eventFilter(QObject *watched, QEvent *event)
 {
     if (watched == m_popupWin && event->type() == QEvent::Move) {
         adjustPopupPosition();
+    }
+
+    if (watched == m_popupWin && event->type() == QEvent::Show) {
+        requestPopupFocus();
     }
 
     // Close popup on parent window click (only while popup is visible)
@@ -280,7 +297,52 @@ void DPopupWindowHandle::adjustPopupPosition()
         m_popupWin->setPosition(newPos);
 }
 
+void DPopupWindowHandle::requestPopupFocus()
+{
+    if (!m_popup || !isEnabled() || !m_popupWin || !m_popupWin->isVisible())
+        return;
+    if (!m_popup->property("focus").toBool())
+        return;
+
+    m_restoreFocusItem = m_parentWindow ? m_parentWindow->activeFocusItem() : nullptr;
+
+    QMetaObject::invokeMethod(this, [this] {
+        if (!isEnabled() || !m_popup->property("focus").toBool() || !m_popupWin || !m_popupWin->isVisible())
+            return;
+
+        QPointer<QQuickItem> item = popupItem();
+        if (!item || item->window() != m_popupWin)
+            return;
+
+        m_popupFocusRequested = true;
+        m_popupWin->requestActivate();
+    }, Qt::QueuedConnection);
+}
+
+void DPopupWindowHandle::restoreParentFocus()
+{
+    if (!m_popupFocusRequested)
+        return;
+
+    m_popupFocusRequested = false;
+
+    if (!m_popupWin || !m_parentWindow || !m_parentWindow->isVisible()) {
+        m_restoreFocusItem.clear();
+        return;
+    }
+
+    m_parentWindow->requestActivate();
+    if (QGuiApplication::focusWindow() == m_popupWin)
+        QWindowSystemInterface::handleFocusWindowChanged(m_parentWindow, Qt::PopupFocusReason);
+
+    if (m_restoreFocusItem && m_restoreFocusItem->window() == m_parentWindow
+            && m_restoreFocusItem->isVisible() && m_restoreFocusItem->isEnabled()) {
+        m_restoreFocusItem->forceActiveFocus(Qt::OtherFocusReason);
+    }
+
+    m_restoreFocusItem.clear();
+}
+
 DQUICK_END_NAMESPACE
 
 #include "moc_dpopupwindowhandle_p.cpp"
-
