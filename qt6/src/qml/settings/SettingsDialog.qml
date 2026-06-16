@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -30,6 +30,7 @@ DialogWindow {
 
     ScrollView {
         id: navigationBg
+        clip: true
         width: DS.Style.settings.navigation.width
         background: Rectangle {
             anchors.fill: parent
@@ -50,6 +51,7 @@ DialogWindow {
 
     ScrollView {
         id: contentBg
+        clip: true
         anchors {
             right: parent.right
             left: navigationBg.right
