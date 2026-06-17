@@ -206,6 +206,9 @@ void DPopupWindowHandle::adjustPopupPosition()
     if (!isEnabled() ||!m_popupWin)
         return;
 
+    if (DGuiApplicationHelper::testAttribute(DGuiApplicationHelper::IsWaylandPlatform))
+        return;
+
     const QSize size = m_popupWin->size();
     if (size.width() <= 0 || size.height() <= 0)
         return;
@@ -235,7 +238,7 @@ void DPopupWindowHandle::adjustPopupPosition()
     if (!screen)
         return;
 
-    const QRectF bounds(screen->availableGeometry());
+    const QRectF bounds(screen->geometry());
     QRectF rect(QPointF(m_popupWin->position()), QSizeF(size));
 
     // Horizontal flip for submenus:
