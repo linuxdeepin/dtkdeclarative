@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -352,7 +352,12 @@ void DQuickIconImage::itemChange(ItemChange change, const ItemChangeData &value)
     Q_D(DQuickIconImage);
 
     switch (change) {
-    case ItemDevicePixelRatioHasChanged: Q_FALLTHROUGH();
+    case ItemDevicePixelRatioHasChanged: {
+        if (d->updateDevicePixelRatio(1.0)) {
+            d->maybeUpdateUrl();
+        }
+    }
+        break;
     case ItemEnabledHasChanged: {
         // ###!(Chen Bin): When the program exits, it will be called
         // again, but the engine has been freed, causing subsequent
