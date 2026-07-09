@@ -115,17 +115,17 @@
     <message>
         <location filename="../../qt6/src/qml/ThemeMenu.qml" line="23"/>
         <source>Light Theme</source>
-        <translation>Светлая Тема</translation>
+        <translation>Светлая тема</translation>
     </message>
     <message>
         <location filename="../../qt6/src/qml/ThemeMenu.qml" line="29"/>
         <source>Dark Theme</source>
-        <translation>Темная Тема</translation>
+        <translation>Тёмная тема</translation>
     </message>
     <message>
         <location filename="../../qt6/src/qml/ThemeMenu.qml" line="35"/>
         <source>System Theme</source>
-        <translation>Тема Системы</translation>
+        <translation>Тема системы</translation>
     </message>
 </context>
 </TS>
