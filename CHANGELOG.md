@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.7.45] - 2026-07-09
+
+### Changed
+
+- Chore: update cmake minimum required version in template
+- Translate dtkdeclarative.ts in pt_BR
+
+### Fixed
+
+- Skip popup position clamping on Wayland
+- Restore focus to parent on popup close
+- Prevent icon size flickering when DPR changes with empty sourceSize
+
 ## [6.7.44] - 2026-06-17
 
 ### Changed
