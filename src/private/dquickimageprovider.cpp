@@ -597,7 +597,7 @@ static inline void imageConvoluteFilter(const uint8_t *startRow, uint8_t *destin
 
 static inline void doBoxShdowBlur(QImage &image, int radius, const QRect &rect = QRect())
 {
-    if (radius < 2) {
+    if (radius < 2 || radius > 100) {
         return;
     }
 
@@ -667,6 +667,11 @@ static void cleanFunction(void *image) { delete static_cast<QImage*>(image); }
 ShadowImage *DQuickShadowProvider::getRawShadow(const ShadowConfig &config)
 {
     if (Q_UNLIKELY(qIsNull(config.blurRadius))) {
+        return nullptr;
+    }
+
+    // 限制 blurRadius 在合理范围内，防止异常值导致内存崩溃
+    if (Q_UNLIKELY(config.blurRadius < 0 || config.blurRadius > 100)) {
         return nullptr;
     }
 
