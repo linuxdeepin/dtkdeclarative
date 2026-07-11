@@ -214,7 +214,7 @@ void DQuickWindowAttachedPrivate::_q_onWindowMotifHintsChanged(quint32 winId)
 
     if (!q->window())
         return;
-    if (q->window()->winId() != winId)
+    if (static_cast<quint32>(q->window()->winId()) != winId)
         return;
 
     auto functions_hints = DWindowManagerHelper::getMotifFunctions(q->window());
