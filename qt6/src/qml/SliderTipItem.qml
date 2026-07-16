@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -14,6 +14,21 @@ Control {
     readonly property int direction: parent.parent.tickDirection
     readonly property bool horizontal: parent.parent.children[0].horizontal
     property bool highlight
+    readonly property bool isFirst: {
+        var ticks = parent.parent.ticks || []
+        return ticks.indexOf(control) === 0
+    }
+    readonly property bool isLast: {
+        var ticks = parent.parent.ticks || []
+        return ticks.indexOf(control) === ticks.length - 1
+    }
+    // Align first/last tick labels outward to prevent text overflow at slider edges
+    readonly property int effectiveHorizontalAlignment: {
+        if (!horizontal) return textHorizontalAlignment
+        if (isFirst) return Text.AlignLeft
+        if (isLast) return Text.AlignRight
+        return textHorizontalAlignment
+    }
 
     property D.Palette tickColor: DS.Style.slider.tick.background
     property D.Palette textColor: highlight ? DS.Style.checkedButton.text: DS.Style.button.text
@@ -36,16 +51,16 @@ Control {
         active: text.length !== 0
         anchors {
             top: horizontal ? (TipsSlider.TickDirection.Back === direction ? __rect.bottom : undefined) : undefined
-            topMargin: horizontal && (TipsSlider.TickDirection.Back === direction) ? DS.Style.slider.tick.vPadding : undefined
+            topMargin: horizontal && (TipsSlider.TickDirection.Back === direction) ? DS.Style.slider.tick.vPadding : -DS.Style.slider.tick.vPadding
             bottom: horizontal ? (TipsSlider.TickDirection.Front === direction ? __rect.top : undefined) : undefined
-            bottomMargin: horizontal && (TipsSlider.TickDirection.Front === direction) ? DS.Style.slider.tick.vPadding : undefined
-            left: horizontal ? (Text.AlignLeft === textHorizontalAlignment ? __rect.left : undefined)
+            bottomMargin: horizontal && (TipsSlider.TickDirection.Front === direction) ? DS.Style.slider.tick.vPadding : -DS.Style.slider.tick.vPadding
+            left: horizontal ? (Text.AlignLeft === effectiveHorizontalAlignment ? __rect.left : undefined)
                              : (TipsSlider.TickDirection.Back === direction ? __rect.right : undefined)
-            leftMargin: !horizontal && TipsSlider.TickDirection.Back === direction ? DS.Style.slider.tick.hPadding : undefined
-            right: horizontal ? (Text.AlignRight === textHorizontalAlignment ? __rect.right : undefined)
+            leftMargin: !horizontal && TipsSlider.TickDirection.Back === direction ? DS.Style.slider.tick.hPadding : -DS.Style.slider.tick.hPadding
+            right: horizontal ? (Text.AlignRight === effectiveHorizontalAlignment ? __rect.right : undefined)
                               : (TipsSlider.TickDirection.Front === direction ? __rect.left : undefined)
-            rightMargin: !horizontal && TipsSlider.TickDirection.Front === direction ? DS.Style.slider.tick.hPadding : undefined
-            horizontalCenter: horizontal && Text.AlignHCenter === textHorizontalAlignment ? __rect.horizontalCenter : undefined
+            rightMargin: !horizontal && TipsSlider.TickDirection.Front === direction ? DS.Style.slider.tick.hPadding : -DS.Style.slider.tick.hPadding
+            horizontalCenter: horizontal && Text.AlignHCenter === effectiveHorizontalAlignment ? __rect.horizontalCenter : undefined
             verticalCenter: horizontal ? undefined : __rect.verticalCenter
         }
 
@@ -55,7 +70,7 @@ Control {
             leftPadding: rightPadding
             topPadding: highlight ?  DS.Style.slider.tick.vPadding : 0
             bottomPadding: topPadding
-            horizontalAlignment: textHorizontalAlignment
+            horizontalAlignment: control.effectiveHorizontalAlignment
             verticalAlignment: Text.AlignVCenter
             palette.windowText: control.D.ColorSelector.textColor
             background: Loader {
