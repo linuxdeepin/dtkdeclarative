@@ -21,20 +21,18 @@ T.Popup {
 
     padding: DS.Style.popup.padding
 
-    background: Item {
-        implicitWidth: DS.Style.control.implicitWidth(control)
-        implicitHeight: DS.Style.control.implicitHeight(control)
+    background: Loader {
+        sourceComponent: control.popupType === Popup.Window
+                         ? windowBlurComponent : floatingPanelComponent
 
-        Loader {
-            anchors.fill: parent
-            active: control.popupType === Popup.Window
-            sourceComponent: D.StyledBehindWindowBlur { }
+        Component {
+            id: windowBlurComponent
+            D.StyledBehindWindowBlur { }
         }
 
-        Loader {
-            anchors.fill: parent
-            active: control.popupType !== Popup.Window
-            sourceComponent: FloatingPanel {
+        Component {
+            id: floatingPanelComponent
+            FloatingPanel {
                 implicitHeight: DS.Style.popup.height
                 implicitWidth: DS.Style.popup.width
                 radius: DS.Style.popup.radius
