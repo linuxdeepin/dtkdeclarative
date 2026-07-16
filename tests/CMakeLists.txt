@@ -4,6 +4,9 @@ find_package(Dtk${DTK_NAME_SUFFIX}Core REQUIRED)
 find_package(Dtk${DTK_NAME_SUFFIX}Gui REQUIRED)
 find_package(GTest REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Quick QuickControls2 Qml Test)
+if (NOT DTK5)
+    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS QuickPrivate)
+endif()
 
 file(GLOB TEST_SOURCES
     ut_colorselector.cpp
@@ -69,6 +72,27 @@ target_link_libraries(${BIN_NAME} PRIVATE
     dl
     m
 )
+if (NOT DTK5)
+    target_link_libraries(${BIN_NAME} PRIVATE
+        Qt${QT_VERSION_MAJOR}::QuickPrivate
+    )
+
+    add_executable(test_qsgrenderer_accessor
+        ut_qsgrenderer_accessor.cpp
+    )
+    target_compile_options(test_qsgrenderer_accessor PRIVATE
+        "-fno-access-control"
+    )
+    target_link_libraries(test_qsgrenderer_accessor PRIVATE
+        Qt${QT_VERSION_MAJOR}::Test
+        Qt${QT_VERSION_MAJOR}::Quick
+        Qt${QT_VERSION_MAJOR}::QuickPrivate
+    )
+    add_test(NAME test_qsgrenderer_accessor COMMAND test_qsgrenderer_accessor)
+    set_property(TEST test_qsgrenderer_accessor PROPERTY
+        ENVIRONMENT "QT_QPA_PLATFORM=offscreen"
+    )
+endif()
 
 set(APPLOADER_PLUGINDUMP_OUTPUT_DIR ${PROJECT_BINARY_DIR}/plugins)
 target_compile_definitions(${BIN_NAME} PRIVATE
