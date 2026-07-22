@@ -222,7 +222,7 @@ void DQuickDciIconImagePrivate::scheduleLayout()
     if (!layoutTimer) {
         layoutTimer = new QTimer(q);
         layoutTimer->setSingleShot(true);
-        layoutTimer->setInterval(50);
+        layoutTimer->setInterval(55);
         QObject::connect(layoutTimer, &QTimer::timeout, q, [this]() {
             layout();
         });
