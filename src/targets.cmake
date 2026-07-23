@@ -33,7 +33,6 @@ target_sources(${LIB_NAME}_sources INTERFACE
     ${SRCS}
     ${HEADERS}
     ${D_HEADERS}
-    ${ASSETS_RCS}
 )
 
 set(DTK_QML_APP_PLUGIN_PATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${LIB_NAME}/qml-app" CACHE STRING "dtk qml app plugin path")
