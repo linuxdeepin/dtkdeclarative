@@ -27,11 +27,12 @@
 #include <private/qquickitem_p.h>
 #endif
 
+#include <DStandardPaths>
+#include <DPathBuf>
+
 #ifdef Q_OS_UNIX
 #include <unistd.h>
 #include <pwd.h>
-#include <DStandardPaths>
-#include <DPathBuf>
 #endif
 
 DGUI_USE_NAMESPACE

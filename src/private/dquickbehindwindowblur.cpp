@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -64,9 +64,14 @@ void DSGBlendNode::render(const QSGRenderNode::RenderState *state)
             p->setCompositionMode(QPainter::CompositionMode_Source);
     } else {
 #ifndef QT_NO_OPENGL
-        QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
-        f->glEnable(GL_BLEND);
-        f->glBlendFunc(GL_ONE, GL_ZERO);
+        QOpenGLContext *ctx = QOpenGLContext::currentContext();
+        if (ctx) {
+            QOpenGLFunctions *f = ctx->functions();
+            if (f) {
+                f->glEnable(GL_BLEND);
+                f->glBlendFunc(GL_ONE, GL_ZERO);
+            }
+        }
 #endif
     }
 
