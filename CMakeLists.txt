@@ -54,7 +54,12 @@ set(MKSPECS_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt${QT_VERSION_MAJOR}/mkspecs/m
 set(QML_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt${QT_VERSION_MAJOR}/qml" CACHE STRING "Qml plugin install directory")
 
 set(USE_QQuickStylePluginPrivate OFF)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core QuickControls2)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core QuickControls2 DBus)
+
+# Export all symbols for MinGW since DTK classes lack export macros
+if(WIN32 AND NOT MSVC)
+  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--export-all-symbols")
+endif()
 
 if (${QT_VERSION_MAJOR} STREQUAL "6")
     if (${Qt6QuickControls2_VERSION} VERSION_GREATER_EQUAL "6.10.0")

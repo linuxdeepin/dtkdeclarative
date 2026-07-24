@@ -24,8 +24,12 @@ pkg_check_modules(GL REQUIRED IMPORTED_TARGET gl)
 
 include(${PROJECT_SOURCE_DIR}/src/src.cmake)
 
-file(GLOB ASSETS_RCS ${PROJECT_SOURCE_DIR}/src/dtkdeclarative_assets.qrc)
 file(GLOB TS_FILES "${PROJECT_SOURCE_DIR}/src/translations/*.ts")
+
+# Use qt_add_resources instead of file(GLOB) for better cross-platform compatibility
+if(EXISTS ${PROJECT_SOURCE_DIR}/src/dtkdeclarative_assets.qrc)
+    qt_add_resources(ASSETS_BINARY ${PROJECT_SOURCE_DIR}/src/dtkdeclarative_assets.qrc)
+endif()
 
 add_library(${LIB_NAME}_properties INTERFACE)
 add_library(${LIB_NAME}_sources INTERFACE)
@@ -33,7 +37,7 @@ target_sources(${LIB_NAME}_sources INTERFACE
     ${SRCS}
     ${HEADERS}
     ${D_HEADERS}
-    ${ASSETS_RCS}
+    ${ASSETS_BINARY}
 )
 
 set(DTK_QML_APP_PLUGIN_PATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${LIB_NAME}/qml-app" CACHE STRING "dtk qml app plugin path")

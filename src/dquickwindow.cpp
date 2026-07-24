@@ -144,8 +144,9 @@ bool DQuickWindowAttachedPrivate::ensurePlatformHandle()
         qWarning() << "Failed to enable NoTitlebar for the window:"  << window;
         return false;
     }
-
+#ifndef Q_OS_WIN
     Q_ASSERT(DPlatformHandle::isEnabledNoTitlebar(window));
+#endif
     explicitEnable = Invalid;
     D_Q(DQuickWindowAttached);
     handle = new DPlatformHandle(window);
