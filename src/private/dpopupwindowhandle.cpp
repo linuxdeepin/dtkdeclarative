@@ -29,6 +29,15 @@ static bool isPopupItem(QQuickItem *item)
     return item && item->inherits("QQuickPopupItem");
 }
 
+static bool isTouchOutsideWindow(const QTouchEvent *event, const QWindow *window)
+{
+    if (!window || event->points().isEmpty())
+        return false;
+
+    const QRectF windowRect(QPointF(), QSizeF(window->size()));
+    return !windowRect.contains(event->points().constFirst().position());
+}
+
 DPopupWindowHandle::~DPopupWindowHandle()
 {
     if (m_trackedItem)
@@ -177,9 +186,23 @@ bool DPopupWindowHandle::eventFilter(QObject *watched, QEvent *event)
         requestPopupFocus();
     }
 
-    // Close popup on parent window click (only while popup is visible)
-    if (watched == m_parentWindow && event->type() == QEvent::MouseButtonPress
-            && m_popup->property("visible").toBool()) {
+    bool pressedOutside = false;
+
+    if (watched == m_parentWindow) {
+        pressedOutside = event->type() == QEvent::MouseButtonPress
+                || event->type() == QEvent::TouchBegin;
+    }
+
+    // On some platforms a popup window grabs touch input. In that case a
+    // press outside the popup is still delivered to the popup window, and
+    // the touch position must be checked against the popup's local geometry.
+    if (watched == m_popupWin && event->type() == QEvent::TouchBegin) {
+        const auto *touchEvent = static_cast<QTouchEvent *>(event);
+        pressedOutside = isTouchOutsideWindow(touchEvent, m_popupWin);
+    }
+
+    // Close popup on a press outside (only while popup is visible).
+    if (pressedOutside && m_popup->property("visible").toBool()) {
         int closePolicy = m_popup->property("closePolicy").toInt();
         bool closeOnPressOutside = closePolicy & 0x01;
         bool closeOnPressOutsideParent = closePolicy & 0x02;
