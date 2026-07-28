@@ -396,8 +396,14 @@ void DQuickWindowAttached::setWindow(QQuickWindow *window)
 bool DQuickWindowAttached::isEnabled() const
 {
     D_DC(DQuickWindowAttached);
+#ifdef Q_OS_WIN
+    // On Windows, DPlatformHandle doesn't support isEnabledDXcb,
+    // but we still need to report enabled when handle exists
+    return d->handle != nullptr;
+#else
     return d->handle && (DPlatformHandle::isEnabledDXcb(window())
         || DGuiApplicationHelper::testAttribute(DGuiApplicationHelper::IsWaylandPlatform));
+#endif
 }
 
 /*!
