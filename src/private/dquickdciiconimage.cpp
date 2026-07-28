@@ -255,7 +255,15 @@ DQuickDciIconImage::DQuickDciIconImage(QQuickItem *parent)
 
 DQuickDciIconImage::~DQuickDciIconImage()
 {
-
+    D_D(DQuickDciIconImage);
+    if (d->imageItem) {
+        d->imageItem->disconnect(this);
+    }
+    if (d->layoutTimer) {
+        d->layoutTimer->stop();
+        delete d->layoutTimer;
+        d->layoutTimer = nullptr;
+    }
 }
 
 QString DQuickDciIconImage::name() const
