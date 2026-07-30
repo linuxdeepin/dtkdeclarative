@@ -1,11 +1,19 @@
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2023 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 #include <gtest/gtest.h>
 
 #include "test_helper.hpp"
+#include "dpopupwindowhandle_p.h"
 #include <QQmlModuleRegistration>
+#include <QQuickItem>
+#include <QQuickWindow>
+#if QT_VERSION_MAJOR >= 6
+#include <qpa/qwindowsysteminterface.h>
+#endif
+
+DQUICK_USE_NAMESPACE
 
 class ut_dtkDeclarativeQmls : public ::testing::TestWithParam<std::string> {
 public:
@@ -148,6 +156,94 @@ public:
         };
     }
 };
+
+#if QT_VERSION_MAJOR >= 6
+TEST(ut_DPopupWindowHandle, popupWindowCreatesHandle)
+{
+    ControlHelper<> helper;
+    const QByteArray data(R"(
+        import QtQuick
+        import QtQuick.Controls
+        import org.deepin.dtk 1.0 as D
+
+        Item {
+            property alias popup: popup
+
+            D.Popup {
+                id: popup
+                popupType: Popup.Window
+            }
+        }
+    )");
+
+    ASSERT_TRUE(helper.setData(data));
+    QObject *popup = qvariant_cast<QObject *>(helper.object->property("popup"));
+    ASSERT_TRUE(popup);
+    EXPECT_TRUE(qmlAttachedPropertiesObject<DPopupWindowHandle>(popup, false));
+}
+
+TEST(ut_DPopupWindowHandle, comboBoxKeepsPopupOpenWhenFocusMovesToPopupWindow)
+{
+    ControlHelper<QQuickWindow> helper;
+    const QByteArray data(R"(
+        import QtQuick
+        import QtQuick.Templates as T
+        import org.deepin.dtk 1.0 as D
+
+        Window {
+            width: 400
+            height: 300
+            property alias control: control
+
+            T.ComboBox {
+                id: control
+                width: 200
+                model: 3
+                popup: D.Popup {
+                    width: 200
+                    height: 160
+                    popupType: T.Popup.Window
+                    focus: false
+                    closeOnInactive: false
+                    contentItem: Item { }
+                }
+            }
+        }
+    )");
+
+    ASSERT_TRUE(helper.setData(data));
+    helper.requestExposed();
+
+    auto *control = qvariant_cast<QQuickItem *>(helper.object->property("control"));
+    ASSERT_TRUE(control);
+    auto *popup = qvariant_cast<QObject *>(control->property("popup"));
+    ASSERT_TRUE(popup);
+
+    QWindowSystemInterface::handleFocusWindowChanged(helper.object, Qt::OtherFocusReason);
+    QCoreApplication::processEvents();
+    control->forceActiveFocus(Qt::OtherFocusReason);
+    ASSERT_TRUE(control->hasActiveFocus());
+
+    ASSERT_TRUE(QMetaObject::invokeMethod(popup, "open", Qt::DirectConnection));
+    QCoreApplication::processEvents();
+    ASSERT_TRUE(popup->property("visible").toBool());
+
+    auto *contentItem = qvariant_cast<QQuickItem *>(popup->property("contentItem"));
+    ASSERT_TRUE(contentItem);
+    QQuickWindow *popupWindow = contentItem->window();
+    ASSERT_TRUE(popupWindow);
+    ASSERT_NE(popupWindow, helper.object);
+
+    QWindowSystemInterface::handleFocusWindowChanged(popupWindow, Qt::PopupFocusReason);
+    QCoreApplication::processEvents();
+
+    EXPECT_TRUE(popup->property("visible").toBool());
+
+    QWindowSystemInterface::handleFocusWindowChanged(helper.object, Qt::PopupFocusReason);
+    QMetaObject::invokeMethod(popup, "close", Qt::DirectConnection);
+    QCoreApplication::processEvents();
+}
+#endif
 
 TEST_P(ut_dtkDeclarativeQmls, load)
 {

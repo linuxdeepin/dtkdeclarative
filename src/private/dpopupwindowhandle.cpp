@@ -46,6 +46,8 @@ DPopupWindowHandle::~DPopupWindowHandle()
         m_parentWindow->removeEventFilter(this);
     if (m_popupWin)
         m_popupWin->removeEventFilter(this);
+    if (m_focusOwner)
+        m_focusOwner->removeEventFilter(this);
 }
 
 DPopupWindowHandle::DPopupWindowHandle(QObject *popup)
@@ -147,6 +149,10 @@ void DPopupWindowHandle::onWindowChanged(QQuickWindow *window)
         m_parentWindow->removeEventFilter(this);
         m_parentWindow = nullptr;
     }
+    if (m_focusOwner) {
+        m_focusOwner->removeEventFilter(this);
+        m_focusOwner = nullptr;
+    }
 
     // Apply attached properties (blur, radius, etc.) to popup windows.
     if (m_attached) {
@@ -165,6 +171,12 @@ void DPopupWindowHandle::onWindowChanged(QQuickWindow *window)
             m_parentWindow = main;
             m_parentWindow->installEventFilter(this);
         }
+
+        auto *owner = qobject_cast<QQuickItem *>(m_popup->property("parent").value<QObject *>());
+        if (owner && owner->inherits("QQuickComboBox")) {
+            m_focusOwner = owner;
+            m_focusOwner->installEventFilter(this);
+        }
     }
 }
 
@@ -178,6 +190,14 @@ void DPopupWindowHandle::onPopupVisibleChanged()
 
 bool DPopupWindowHandle::eventFilter(QObject *watched, QEvent *event)
 {
+    // A window popup takes focus from its ComboBox. Keep that internal focus
+    // transfer from being treated as focus leaving the control altogether.
+    if (watched == m_focusOwner && event->type() == QEvent::FocusOut
+            && isEnabled() && m_popup->property("visible").toBool()
+            && m_popupWin && QGuiApplication::focusWindow() == m_popupWin) {
+        return true;
+    }
+
     if (watched == m_popupWin && event->type() == QEvent::Move) {
         adjustPopupPosition();
     }
