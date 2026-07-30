@@ -158,6 +158,57 @@ public:
 };
 
 #if QT_VERSION_MAJOR >= 6
+TEST(ut_DComboBox, popupTypeSelectsMatchingBackground)
+{
+    ControlHelper<> helper;
+    const QByteArray data(R"(
+        import QtQuick
+        import QtQuick.Templates as T
+        import org.deepin.dtk 1.0 as D
+
+        Item {
+            property alias itemPopup: itemCombo.popup
+            property alias windowPopup: windowCombo.popup
+
+            D.ComboBox {
+                id: itemCombo
+                popup.popupType: T.Popup.Item
+            }
+
+            D.ComboBox {
+                id: windowCombo
+                popup.popupType: T.Popup.Window
+            }
+        }
+    )");
+
+    ASSERT_TRUE(helper.setData(data));
+    const auto effectiveBackground = [&helper](const char *popupProperty) {
+        QObject *popup = qvariant_cast<QObject *>(helper.object->property(popupProperty));
+        if (!popup)
+            return static_cast<QObject *>(nullptr);
+
+        QObject *background = qvariant_cast<QObject *>(popup->property("background"));
+        if (!background)
+            return static_cast<QObject *>(nullptr);
+
+        QObject *item = qvariant_cast<QObject *>(background->property("item"));
+        return item ? item : background;
+    };
+
+    QObject *itemBackground = effectiveBackground("itemPopup");
+    ASSERT_TRUE(itemBackground);
+    EXPECT_TRUE(QString::fromLatin1(itemBackground->metaObject()->className()).contains("FloatingPanel"));
+
+    QObject *windowBackground = effectiveBackground("windowPopup");
+    ASSERT_TRUE(windowBackground);
+    EXPECT_TRUE(QString::fromLatin1(windowBackground->metaObject()->className()).contains("StyledBehindWindowBlur"))
+            << windowBackground->metaObject()->className();
+
+    delete helper.object;
+    helper.object = nullptr;
+}
+
 TEST(ut_DPopupWindowHandle, popupWindowCreatesHandle)
 {
     ControlHelper<> helper;

@@ -190,11 +190,24 @@ T.ComboBox {
             view.highlightMoveDuration: 0
         }
 
-        background: FloatingPanel {
-            implicitWidth: DS.Style.menu.item.width
-            implicitHeight: DS.Style.menu.item.height
-            radius: DS.Style.menu.radius
-            backgroundColor: DS.Style.menu.background
+        background: Loader {
+            sourceComponent: popup.popupType === T.Popup.Window
+                             ? windowBlurComponent : floatingPanelComponent
+
+            Component {
+                id: windowBlurComponent
+                D.StyledBehindWindowBlur { }
+            }
+
+            Component {
+                id: floatingPanelComponent
+                FloatingPanel {
+                    implicitWidth: DS.Style.menu.item.width
+                    implicitHeight: DS.Style.menu.item.height
+                    radius: DS.Style.menu.radius
+                    backgroundColor: DS.Style.menu.background
+                }
+            }
         }
     }
 }
