@@ -72,6 +72,7 @@ private:
     QPointer<QQuickWindow> m_popupWin = nullptr;
     QPointer<QQuickItem> m_trackedItem = nullptr;
     QPointer<QQuickItem> m_restoreFocusItem = nullptr;
+    QPointer<QQuickItem> m_focusOwner = nullptr;
     bool m_popupFocusRequested = false;
 };
 
