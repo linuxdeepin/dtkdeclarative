@@ -482,7 +482,10 @@ void DQuickDciIconImage::geometryChange(const QRectF &newGeometry, const QRectF 
 void DQuickDciIconImage::itemChange(ItemChange change, const ItemChangeData &value)
 {
     QQuickItem::itemChange(change, value);
-    if (change == ItemParentHasChanged || change == ItemDevicePixelRatioHasChanged || change == ItemSceneChange) {
+
+    if ((change == ItemParentHasChanged && parentItem()) 
+        || change == ItemDevicePixelRatioHasChanged 
+        || change == ItemSceneChange) {
         d_func()->scheduleLayout();
     }
 }
