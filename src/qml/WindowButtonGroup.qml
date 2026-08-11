@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -88,6 +88,39 @@ RowLayout {
             icon.name: isMaximized ? "window_restore" : "window_maximize"
             textColor: control.textColor
             onClicked: maxOrWinded()
+
+            // Split screen menu: ask kwin to show its split menu when hovering the
+            // maximize button. No self-drawn fallback here; if kwin does not support
+            // it (splitMenuSupported === false) the hover does nothing and the button
+            // keeps its normal click-to-maximize behaviour.
+            Timer {
+                id: splitMenuTimer
+                interval: 300
+                repeat: false
+                onTriggered: {
+                    if (!__dwindow.splitMenuSupported)
+                        return
+                    if (!(__dwindow.motifFunctions & D.WindowManagerHelper.FUNC_MAXIMIZE))
+                        return
+                    var pos = mapToGlobal(Qt.point(0, 0))
+                    __dwindow.showSplitMenu(Qt.rect(pos.x, pos.y, width, height))
+                }
+            }
+            onHoveredChanged: {
+                if (hovered) {
+                    splitMenuTimer.restart()
+                } else {
+                    splitMenuTimer.stop()
+                    if (__dwindow.splitMenuSupported
+                            && (__dwindow.motifFunctions & D.WindowManagerHelper.FUNC_MAXIMIZE))
+                        __dwindow.hideSplitMenu(true)
+                }
+            }
+            onPressedChanged: {
+                if (pressed && __dwindow.splitMenuSupported
+                        && (__dwindow.motifFunctions & D.WindowManagerHelper.FUNC_MAXIMIZE))
+                    __dwindow.hideSplitMenu(true)
+            }
         }
     }
 

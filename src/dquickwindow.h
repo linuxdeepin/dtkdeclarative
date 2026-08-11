@@ -17,6 +17,7 @@ QT_BEGIN_NAMESPACE
 class QQmlComponent;
 class QQuickPath;
 class QQuickTransition;
+class QRectF;
 QT_END_NAMESPACE
 
 DQUICK_BEGIN_NAMESPACE
@@ -74,6 +75,7 @@ class DQuickWindowAttached : public QObject, public DTK_CORE_NAMESPACE::DObject
 #endif
     Q_PROPERTY(DTK_GUI_NAMESPACE::DPlatformHandle::EffectScene windowEffect READ windowEffect WRITE setWindowEffect NOTIFY windowEffectChanged)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DPlatformHandle::EffectType windowStartUpEffect READ windowStartUpEffect WRITE setWindowStartUpEffect NOTIFY windowStartUpEffectChanged)
+    Q_PROPERTY(bool splitMenuSupported READ isSplitMenuSupported NOTIFY splitMenuSupportedChanged)
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QML_ANONYMOUS
 #endif
@@ -124,6 +126,8 @@ public:
     DTK_GUI_NAMESPACE::DPlatformHandle::EffectScene windowEffect() const;
     DTK_GUI_NAMESPACE::DPlatformHandle::EffectType windowStartUpEffect() const;
 
+    bool isSplitMenuSupported() const;
+
 public Q_SLOTS:
     void setEnabled(bool e);
 
@@ -147,6 +151,9 @@ public Q_SLOTS:
     void setMotifDecorations(DTK_GUI_NAMESPACE::DWindowManagerHelper::MotifDecorations motifDecorations);
 
     void popupSystemWindowMenu();
+
+    Q_INVOKABLE void showSplitMenu(const QRectF &buttonRect);
+    Q_INVOKABLE void hideSplitMenu(bool delay);
 
     bool setWindowBlurAreaByWM(const QVector<DPlatformHandle::WMBlurArea> &area);
     bool setWindowBlurAreaByWM(const QList<QPainterPath> &area);
@@ -192,6 +199,7 @@ Q_SIGNALS:
 #endif
     void windowEffectChanged();
     void windowStartUpEffectChanged();
+    void splitMenuSupportedChanged();
 
 private:
     D_DECLARE_PRIVATE(DQuickWindowAttached)

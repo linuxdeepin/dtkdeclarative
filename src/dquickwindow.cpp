@@ -807,6 +807,11 @@ void DQuickWindowAttached::setEnabled(bool e)
         QObject::connect(DWindowManagerHelper::instance(), SIGNAL(hasNoTitlebarChanged()), this, SLOT(_q_ensurePlatformHandle())
                          , Qt::UniqueConnection);
     }
+
+    // The split menu capability follows the active window manager; refresh the
+    // QML-bound property whenever the WM reports a change.
+    QObject::connect(DWindowManagerHelper::instance(), SIGNAL(windowManagerChanged()),
+                     this, SIGNAL(splitMenuSupportedChanged()), Qt::UniqueConnection);
 }
 
 /*!
@@ -1008,6 +1013,21 @@ void DQuickWindowAttached::setMotifDecorations(DWindowManagerHelper::MotifDecora
 void DQuickWindowAttached::popupSystemWindowMenu()
 {
     DWindowManagerHelper::popupSystemWindowMenu(window());
+}
+
+void DQuickWindowAttached::showSplitMenu(const QRectF &buttonRect)
+{
+    DWindowManagerHelper::showSplitMenu(window(), buttonRect.toRect());
+}
+
+void DQuickWindowAttached::hideSplitMenu(bool delay)
+{
+    DWindowManagerHelper::hideSplitMenu(delay);
+}
+
+bool DQuickWindowAttached::isSplitMenuSupported() const
+{
+    return DWindowManagerHelper::instance()->isSplitScreenMenuSupported();
 }
 
 bool DQuickWindowAttached::setWindowBlurAreaByWM(const QVector<DPlatformHandle::WMBlurArea> &area)

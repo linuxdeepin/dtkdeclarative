@@ -90,6 +90,35 @@ RowLayout {
         
         visible: (hasWindowFlag && !__forceHind && __canResize && __sizeResizable)
         enabled: (__canMaximize && __canResize)
+
+        // Split screen menu: ask kwin to show its split menu when hovering the
+        // maximize button. No self-drawn fallback here; if kwin does not support
+        // it (splitMenuSupported === false) the hover does nothing and the button
+        // keeps its normal click-to-maximize behaviour.
+        Timer {
+            id: splitMenuTimer
+            interval: 300
+            repeat: false
+            onTriggered: {
+                if (!__dwindow.splitMenuSupported || !__canMaximize)
+                    return
+                var pos = mapToGlobal(Qt.point(0, 0))
+                __dwindow.showSplitMenu(Qt.rect(pos.x, pos.y, width, height))
+            }
+        }
+        onHoveredChanged: {
+            if (hovered) {
+                splitMenuTimer.restart()
+            } else {
+                splitMenuTimer.stop()
+                if (__dwindow.splitMenuSupported && __canMaximize)
+                    __dwindow.hideSplitMenu(true)
+            }
+        }
+        onPressedChanged: {
+            if (pressed && __dwindow.splitMenuSupported && __canMaximize)
+                __dwindow.hideSplitMenu(true)
+        }
     }
 
     WindowButton {
