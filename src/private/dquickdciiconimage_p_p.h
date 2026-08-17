@@ -23,6 +23,9 @@ class DQuickDciIconImageItemPrivate : public DQuickIconImagePrivate
 
 public:
     DQuickDciIconImageItemPrivate(DQuickDciIconImagePrivate *pqq);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    bool transformChanged(QQuickItem *transformedItem) override;
+#endif
     void maybeUpdateUrl();
     void play(int mode);
     QUrlQuery getUrlQuery();

@@ -67,6 +67,16 @@ DQuickDciIconImageItemPrivate::DQuickDciIconImageItemPrivate(DQuickDciIconImageP
 
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+bool DQuickDciIconImageItemPrivate::transformChanged(QQuickItem *transformedItem)
+{
+    const bool observesTransform = DQuickIconImagePrivate::transformChanged(transformedItem);
+    if (transformedItem != q_func())
+        parentPriv->scheduleLayout();
+    return observesTransform;
+}
+#endif
+
 void DQuickDciIconImageItemPrivate::maybeUpdateUrl()
 {
     Q_Q(DQuickIconImage);
@@ -218,7 +228,9 @@ void DQuickDciIconImagePrivate::layout()
 void DQuickDciIconImagePrivate::scheduleLayout()
 {
     Q_Q(DQuickDciIconImage);
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    q->polish();
+#else
     if (!layoutTimer) {
         layoutTimer = new QTimer(q);
         layoutTimer->setSingleShot(true);
@@ -228,6 +240,7 @@ void DQuickDciIconImagePrivate::scheduleLayout()
         });
     }
     layoutTimer->start();
+#endif
 }
 
 void DQuickDciIconImagePrivate::updateImageSourceUrl()
@@ -245,6 +258,9 @@ DQuickDciIconImage::DQuickDciIconImage(QQuickItem *parent)
     , DObject(*new DQuickDciIconImagePrivate(this))
 {
     D_D(DQuickDciIconImage);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    d->imageItem->setFlag(QQuickItem::ItemObservesViewport);
+#endif
     connect(d->imageItem, &QQuickImage::implicitWidthChanged, this, [this, d]() { setImplicitWidth(d->imageItem->implicitWidth()); });
     connect(d->imageItem, &QQuickImage::implicitHeightChanged, this, [this, d]() { setImplicitHeight(d->imageItem->implicitHeight()); });
     connect(this, &DQuickDciIconImage::smoothChanged, d->imageItem, &QQuickImage::setSmooth);
@@ -448,6 +464,14 @@ DQuickIconAttached *DQuickDciIconImage::qmlAttachedProperties(QObject *object)
 
     return new DQuickIconAttached(item);
 }
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+void DQuickDciIconImage::updatePolish()
+{
+    D_D(DQuickDciIconImage);
+    d->layout();
+}
+#endif
 
 void DQuickDciIconImage::classBegin()
 {

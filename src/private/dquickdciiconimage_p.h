@@ -104,6 +104,9 @@ Q_SIGNALS:
 
 protected:
     void classBegin() override;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    void updatePolish() override;
+#endif
     void componentComplete() override;
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry) override;
