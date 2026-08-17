@@ -14,6 +14,8 @@
 #include <DDciIconPalette>
 #include <DDciIconPlayer>
 #include <QTimer>
+#include <QMetaObject>
+#include <QTransform>
 
 DQUICK_BEGIN_NAMESPACE
 class DQuickDciIconImageItemPrivate;
@@ -43,12 +45,16 @@ public:
     DQuickDciIconImagePrivate(DQuickDciIconImage *qq);
     void layout();
     void scheduleLayout();
+    void watchWindowAnimations();
+    void clearWindowAnimationWatcher();
     void updateImageSourceUrl();
     void play(DQMLGlobalObject::ControlState mode);
 
     DDciIconPalette palette;
     DQuickIconImage *imageItem;
     QTimer *layoutTimer = nullptr;
+    QMetaObject::Connection afterAnimatingConnection;
+    QTransform lastLayoutTransform;
     DQMLGlobalObject::ControlState mode = DQMLGlobalObject::NormalState;
     DGuiApplicationHelper::ColorType theme = DGuiApplicationHelper::ColorType::LightType;
     bool fallbackToQIcon = true;

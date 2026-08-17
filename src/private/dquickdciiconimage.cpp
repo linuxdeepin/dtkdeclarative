@@ -204,15 +204,12 @@ void DQuickDciIconImagePrivate::layout()
     }
 
     QPointF scenePos = q->mapToScene(QPointF(targetX, targetY));
-    
     qreal dpr = q->window()->effectiveDevicePixelRatio();
-
-    qreal physicalX = qRound(scenePos.x() * dpr);
-    qreal physicalY = qRound(scenePos.y() * dpr);
-
-    QPointF localPos = q->mapFromScene(QPointF(physicalX / dpr, physicalY / dpr));
+    QPointF physicalPos(qRound(scenePos.x() * dpr), qRound(scenePos.y() * dpr));
+    QPointF localPos = q->mapFromScene(physicalPos / dpr);
 
     imageItem->setPosition(localPos);
+    lastLayoutTransform = q->itemTransform(q->window()->contentItem(), nullptr);
 }
 
 void DQuickDciIconImagePrivate::scheduleLayout()
@@ -228,6 +225,41 @@ void DQuickDciIconImagePrivate::scheduleLayout()
         });
     }
     layoutTimer->start();
+}
+
+void DQuickDciIconImagePrivate::clearWindowAnimationWatcher()
+{
+    if (afterAnimatingConnection) {
+        QObject::disconnect(afterAnimatingConnection);
+        afterAnimatingConnection = QMetaObject::Connection();
+    }
+}
+
+void DQuickDciIconImagePrivate::watchWindowAnimations()
+{
+    Q_Q(DQuickDciIconImage);
+
+    clearWindowAnimationWatcher();
+
+    if (!q->window())
+        return;
+
+    // Ancestor scale, rotation and arbitrary transforms do not necessarily
+    // change this item's geometry. Recheck the complete scene transform after
+    // QML animations and before rendering, then refresh the local offset if it
+    // was calculated in an intermediate animation state.
+    afterAnimatingConnection = QObject::connect(
+                q->window(), &QQuickWindow::afterAnimating, q, [this]() {
+        Q_Q(DQuickDciIconImage);
+        if (!q->isComponentComplete() || !q->window())
+            return;
+
+        const QTransform transform = q->itemTransform(q->window()->contentItem(), nullptr);
+        if (transform != lastLayoutTransform) {
+            lastLayoutTransform = transform;
+            layout();
+        }
+    });
 }
 
 void DQuickDciIconImagePrivate::updateImageSourceUrl()
@@ -264,6 +296,7 @@ DQuickDciIconImage::~DQuickDciIconImage()
         delete d->layoutTimer;
         d->layoutTimer = nullptr;
     }
+    d->clearWindowAnimationWatcher();
 }
 
 QString DQuickDciIconImage::name() const
@@ -462,6 +495,7 @@ void DQuickDciIconImage::componentComplete()
     d->imageItem->componentComplete();
     QQuickItem::componentComplete();
     setSmooth(!qFuzzyCompare(scale(), 1.0));
+    d->watchWindowAnimations();
     d->layout();
 }
 
@@ -483,9 +517,10 @@ void DQuickDciIconImage::itemChange(ItemChange change, const ItemChangeData &val
 {
     QQuickItem::itemChange(change, value);
 
-    if ((change == ItemParentHasChanged && parentItem()) 
-        || change == ItemDevicePixelRatioHasChanged 
+    if ((change == ItemParentHasChanged && parentItem())
+        || change == ItemDevicePixelRatioHasChanged
         || change == ItemSceneChange) {
+        d_func()->watchWindowAnimations();
         d_func()->scheduleLayout();
     }
 }
