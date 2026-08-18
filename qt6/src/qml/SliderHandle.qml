@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -24,6 +24,9 @@ D.DciIcon {
             return "slider_point_left"
         case Slider.HandleType.ArrowRight:
             return "slider_point_left"
+        case Slider.HandleType.NoArrowType:
+        default:
+            return ""
         }
     }
 
