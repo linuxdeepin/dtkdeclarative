@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -22,7 +22,7 @@ Item {
             margins: -paddings
         }
 
-        radius: parent.radius
+        radius: parent.radius + _border.paddings
         border { width: borderWidth; color: parent.color }
         color: "transparent"
     }
