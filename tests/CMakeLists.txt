@@ -5,7 +5,10 @@ find_package(Dtk${DTK_NAME_SUFFIX}Gui REQUIRED)
 find_package(GTest REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Quick QuickControls2 Qml Test)
 if (NOT DTK5)
-    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS QuickPrivate)
+   if (${Qt6Quick_VERSION} VERSION_GREATER_EQUAL "6.10.0")
+        set(QT_NO_PRIVATE_MODULE_WARNING ON)
+        find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS QuickPrivate)
+    endif()
 endif()
 
 file(GLOB TEST_SOURCES
