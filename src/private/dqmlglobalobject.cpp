@@ -149,6 +149,7 @@ void DQMLGlobalObjectPrivate::ensurePalette()
 #endif
 
     paletteInit = true;
+    previousThemeType = DGuiApplicationHelper::instance()->themeType();
     updatePalettes();
 
     QObject::connect(DGuiApplicationHelper::instance(), SIGNAL(applicationPaletteChanged()), q_func(), SLOT(_q_onPaletteChanged()));
@@ -173,8 +174,15 @@ void DQMLGlobalObjectPrivate::updatePalettes()
 
 void DQMLGlobalObjectPrivate::_q_onPaletteChanged()
 {
+    auto newThemeType = DGuiApplicationHelper::instance()->themeType();
+    bool themeTypeChanged = (previousThemeType != DGuiApplicationHelper::UnknownType && previousThemeType != newThemeType);
+    previousThemeType = newThemeType;
+
     updatePalettes();
 
+    if (themeTypeChanged) {
+        Q_EMIT q_func()->themeTypeChanged(newThemeType);
+    }
     Q_EMIT q_func()->paletteChanged();
     Q_EMIT q_func()->inactivePaletteChanged();
 }
