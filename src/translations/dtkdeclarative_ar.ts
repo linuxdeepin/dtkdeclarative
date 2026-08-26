@@ -32,7 +32,7 @@
     <message>
         <location filename="../../qt6/src/qml/AboutDialog.qml" line="129"/>
         <source>Sincerely appreciate the %1 used.</source>
-        <translation type="unfinished"/>
+        <translation>نشكركم بصدق على استخدام %1</translation>
     </message>
     <message>
         <location filename="../../qt6/src/qml/AboutDialog.qml" line="129"/>
@@ -77,17 +77,17 @@
     <message>
         <location filename="../../qt6/src/qml/TextField.qml" line="84"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>نسخ</translation>
     </message>
     <message>
         <location filename="../../qt6/src/qml/TextField.qml" line="91"/>
         <source>Cut</source>
-        <translation type="unfinished"/>
+        <translation>قص</translation>
     </message>
     <message>
         <location filename="../../qt6/src/qml/TextField.qml" line="98"/>
         <source>Paste</source>
-        <translation type="unfinished"/>
+        <translation>لصق</translation>
     </message>
     <message>
         <location filename="../../qt6/src/qml/TextField.qml" line="105"/>
@@ -97,12 +97,12 @@
     <message>
         <location filename="../../qt6/src/qml/TextField.qml" line="112"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>تراجع</translation>
     </message>
     <message>
         <location filename="../../qt6/src/qml/TextField.qml" line="119"/>
         <source>Redo</source>
-        <translation type="unfinished"/>
+        <translation>إعادة</translation>
     </message>
 </context>
 <context>
