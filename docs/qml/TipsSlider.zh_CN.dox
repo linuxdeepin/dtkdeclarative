@@ -41,10 +41,10 @@ TipsSlider 添加字符标签
         slider.to: 20
         slider.value: 10
 
+        // 首/末刻度文本默认自动左/右对齐，无需显式设置 textHorizontalAlignment
         ticks: [
             SliderTipItem {
                 text: slider.tips[0]
-                textHorizontalAlignment: Text.AlignLeft
             },
             SliderTipItem {
                 highlight: true
@@ -52,7 +52,6 @@ TipsSlider 添加字符标签
             },
             SliderTipItem {
                 text: slider.tips[2]
-                textHorizontalAlignment: Text.AlignRight
             }
         ]
     }
