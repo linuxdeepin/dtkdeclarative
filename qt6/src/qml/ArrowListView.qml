@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -22,10 +22,10 @@ FocusScope {
         id: contentLayout
         anchors.fill: parent
         P.ArrowListViewButton {
-            visible: itemsView.interactive && !itemsView.atYBeginning
+            visible: itemsView.interactive
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
-            Layout.preferredHeight: height
+            Layout.preferredHeight: implicitHeight
             view: itemsView
             stepSize: control.itemHeight
             direction: P.ArrowListViewButton.UpButton
@@ -36,7 +36,7 @@ FocusScope {
             clip: true
             Layout.fillWidth: true
             Layout.fillHeight: true
-            implicitHeight: Math.min(contentHeight, maxVisibleItems * itemHeight)
+            implicitHeight: itemsView.count > 0 ? Math.min(contentHeight, maxVisibleItems * contentHeight / itemsView.count) : 0
             implicitWidth:{
                 var maxWidth = DS.Style.arrowListView.width
                 for (var i = 0; i < itemsView.count; ++i) {
@@ -46,7 +46,7 @@ FocusScope {
                 }
                 return maxWidth
             }
-            interactive: Window.window ? (contentHeight > Window.window.height || model.count > maxVisibleItems) : false
+            interactive: model.count > maxVisibleItems
             ScrollIndicator.vertical: ScrollIndicator { }
             highlight: HighlightPanel {
                 visible: false // TODO listview's highlight is confict with Item's highlight.
@@ -78,10 +78,10 @@ FocusScope {
         }
 
         P.ArrowListViewButton {
-            visible: itemsView.interactive && !itemsView.atYEnd
+            visible: itemsView.interactive
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
-            Layout.preferredHeight: height
+            Layout.preferredHeight: implicitHeight
             view: itemsView
             stepSize: control.itemHeight
             direction: P.ArrowListViewButton.DownButton
