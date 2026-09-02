@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -20,6 +20,13 @@ T.Button {
     leftPadding: DS.Style.button.hPadding
     rightPadding: DS.Style.button.hPadding
     spacing: DS.Style.control.spacing
+    // Reserve 1px on each side for the outside border so it is never clipped
+    // by a parent with clip:true (e.g. ListView). Checked/highlighted buttons
+    // have no outside border, so they keep 0 insets.
+    leftInset: (checked || highlighted) ? 0 : 1
+    rightInset: (checked || highlighted) ? 0 : 1
+    topInset: (checked || highlighted) ? 0 : 1
+    bottomInset: (checked || highlighted) ? 0 : 1
     opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
     D.DciIcon.mode: D.ColorSelector.controlState
     D.DciIcon.theme: D.ColorSelector.controlTheme
@@ -35,6 +42,14 @@ T.Button {
         implicitWidth: DS.Style.button.width
         implicitHeight: DS.Style.button.height
         button: control
+        // The normal (non-checked, non-highlighted) text button opts into the
+        // BoxPanel drop shadow, inner shadow and gradient that were dropped
+        // for every consumer in commit 52633cb. Checked/highlighted buttons
+        // and all other ButtonPanel users keep their existing flat look.
+        radius: control.checked || control.highlighted ? DS.Style.control.radius : DS.Style.button.radius
+        enableDropShadow: !(control.checked || control.highlighted)
+        enableInnerShadow: !(control.checked || control.highlighted)
+        enableGradient: !(control.checked || control.highlighted)
     }
 
     contentItem: Item {
