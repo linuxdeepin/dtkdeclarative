@@ -7,15 +7,13 @@
 
 #include <QQuickItem>
 #include <QQuickWindow>
-#include <QPointer>
 #include <QScreen>
 #include <QGuiApplication>
-#include <QDebug>
 #include <QMouseEvent>
 #include <algorithm>
 
 #include <private/qquickitem_p.h>
-#include <qpa/qwindowsysteminterface.h>
+#include <qcoreevent.h>
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -46,8 +44,6 @@ DPopupWindowHandle::~DPopupWindowHandle()
         m_parentWindow->removeEventFilter(this);
     if (m_popupWin)
         m_popupWin->removeEventFilter(this);
-    if (m_focusOwner)
-        m_focusOwner->removeEventFilter(this);
 }
 
 DPopupWindowHandle::DPopupWindowHandle(QObject *popup)
@@ -64,7 +60,6 @@ DPopupWindowHandle::DPopupWindowHandle(QObject *popup)
     popupItemReparented();
 
     connect(popup, SIGNAL(popupTypeChanged()), this, SLOT(updateEnabled()));
-    connect(popup, SIGNAL(visibleChanged()), this, SLOT(onPopupVisibleChanged()));
 }
 
 DQuickWindowAttached *DPopupWindowHandle::qmlAttachedProperties(QObject *object)
@@ -137,8 +132,6 @@ bool DPopupWindowHandle::isEnabled() const
 
 void DPopupWindowHandle::onWindowChanged(QQuickWindow *window)
 {
-    if (!window)
-        restoreParentFocus();
 
     // Cleanup old filters
     if (m_popupWin) {
@@ -148,10 +141,6 @@ void DPopupWindowHandle::onWindowChanged(QQuickWindow *window)
     if (m_parentWindow) {
         m_parentWindow->removeEventFilter(this);
         m_parentWindow = nullptr;
-    }
-    if (m_focusOwner) {
-        m_focusOwner->removeEventFilter(this);
-        m_focusOwner = nullptr;
     }
 
     // Apply attached properties (blur, radius, etc.) to popup windows.
@@ -172,39 +161,16 @@ void DPopupWindowHandle::onWindowChanged(QQuickWindow *window)
             m_parentWindow->installEventFilter(this);
         }
 
-        auto *owner = qobject_cast<QQuickItem *>(m_popup->property("parent").value<QObject *>());
-        if (owner && owner->inherits("QQuickComboBox")) {
-            m_focusOwner = owner;
-            m_focusOwner->installEventFilter(this);
-        }
     }
 }
 
-void DPopupWindowHandle::onPopupVisibleChanged()
-{
-    if (!m_popup || m_popup->property("visible").toBool())
-        return;
-
-    restoreParentFocus();
-}
 
 bool DPopupWindowHandle::eventFilter(QObject *watched, QEvent *event)
 {
-    // A window popup takes focus from its ComboBox. Keep that internal focus
-    // transfer from being treated as focus leaving the control altogether.
-    if (watched == m_focusOwner && event->type() == QEvent::FocusOut
-            && isEnabled() && m_popup->property("visible").toBool()
-            && m_popupWin && QGuiApplication::focusWindow() == m_popupWin) {
-        return true;
-    }
-
     if (watched == m_popupWin && event->type() == QEvent::Move) {
         adjustPopupPosition();
     }
 
-    if (watched == m_popupWin && event->type() == QEvent::Show) {
-        requestPopupFocus();
-    }
 
     bool pressedOutside = false;
 
@@ -343,51 +309,7 @@ void DPopupWindowHandle::adjustPopupPosition()
         m_popupWin->setPosition(newPos);
 }
 
-void DPopupWindowHandle::requestPopupFocus()
-{
-    if (!m_popup || !isEnabled() || !m_popupWin || !m_popupWin->isVisible())
-        return;
-    if (!m_popup->property("focus").toBool())
-        return;
 
-    m_restoreFocusItem = m_parentWindow ? m_parentWindow->activeFocusItem() : nullptr;
-
-    QMetaObject::invokeMethod(this, [this] {
-        if (!isEnabled() || !m_popup->property("focus").toBool() || !m_popupWin || !m_popupWin->isVisible())
-            return;
-
-        QPointer<QQuickItem> item = popupItem();
-        if (!item || item->window() != m_popupWin)
-            return;
-
-        m_popupFocusRequested = true;
-        m_popupWin->requestActivate();
-    }, Qt::QueuedConnection);
-}
-
-void DPopupWindowHandle::restoreParentFocus()
-{
-    if (!m_popupFocusRequested)
-        return;
-
-    m_popupFocusRequested = false;
-
-    if (!m_popupWin || !m_parentWindow || !m_parentWindow->isVisible()) {
-        m_restoreFocusItem.clear();
-        return;
-    }
-
-    m_parentWindow->requestActivate();
-    if (QGuiApplication::focusWindow() == m_popupWin)
-        QWindowSystemInterface::handleFocusWindowChanged(m_parentWindow, Qt::PopupFocusReason);
-
-    if (m_restoreFocusItem && m_restoreFocusItem->window() == m_parentWindow
-            && m_restoreFocusItem->isVisible() && m_restoreFocusItem->isEnabled()) {
-        m_restoreFocusItem->forceActiveFocus(Qt::OtherFocusReason);
-    }
-
-    m_restoreFocusItem.clear();
-}
 
 DQUICK_END_NAMESPACE
 
