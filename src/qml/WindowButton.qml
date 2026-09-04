@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -17,6 +17,7 @@ Control {
     palette.windowText: D.ColorSelector.textColor
     hoverEnabled: true
     contentItem: D.DciIcon {
+        smooth: control.smooth
         id: iconLoader
         palette: D.DTK.makeIconPalette(control.palette)
         sourceSize {

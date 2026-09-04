@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -37,6 +37,7 @@ T.Switch {
                 opacity: control.D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
 
                 D.DciIcon {
+                    smooth: control.smooth
                     x: Math.max(0, Math.min(parent.width - width, control.visualPosition * parent.width - (width / 2)))
                     y: (parent.height - height) / 2
                     width: DS.Style.switchButton.handleWidth
@@ -65,6 +66,7 @@ T.Switch {
         Component {
             id: animationIndicatorComp
             D.DciIcon {
+                smooth: control.smooth
                 id: switchIcon
                 implicitWidth: DS.Style.switchButton.indicatorWidth
                 implicitHeight: DS.Style.switchButton.indicatorHeight

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -29,6 +29,7 @@ Control {
     Component {
         id: inactiveComponent
         D.DciIcon {
+            smooth: control.smooth
             id: icon
             sourceSize.width: DS.Style.spinBox.indicator.iconSize
             palette: D.DTK.makeIconPalette(control.palette)

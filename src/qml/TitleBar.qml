@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -110,6 +110,7 @@ Control {
             Layout.leftMargin: DS.Style.titleBar.leftMargin
 
             D.DciIcon {
+                smooth: control.smooth
                 id: iconLabel
                 sourceSize {
                     width: DS.Style.titleBar.iconSize

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -27,6 +27,7 @@ LineEdit {
 
             // Search Icon
             D.DciIcon {
+                smooth: control.smooth
                 id: searchIcon
                 name: "action_search"
                 sourceSize.width: DS.Style.searchEdit.iconSize

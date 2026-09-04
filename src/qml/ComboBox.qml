@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -52,6 +52,7 @@ T.ComboBox {
                 }
 
                 D.DciIcon {
+                    smooth: control.smooth
                     sourceSize {
                         width: DS.Style.comboBox.edit.indicatorSize
                         height: DS.Style.comboBox.edit.indicatorSize
@@ -68,6 +69,7 @@ T.ComboBox {
         Component {
             id: normalIndicator
             D.DciIcon {
+                smooth: control.smooth
                 sourceSize {
                     width: DS.Style.comboBox.iconSize
                     height: DS.Style.comboBox.iconSize
@@ -90,6 +92,7 @@ T.ComboBox {
             active: iconName
 
             sourceComponent: D.DciIcon {
+                smooth: control.smooth
                 palette: D.DTK.makeIconPalette(control.palette)
                 mode: control.D.ColorSelector.controlState
                 theme: control.D.ColorSelector.controlTheme
