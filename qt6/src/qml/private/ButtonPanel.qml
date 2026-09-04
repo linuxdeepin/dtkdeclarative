@@ -20,9 +20,10 @@ BoxPanel {
     dropShadowColor2: selectValue(DS.Style.button.dropShadow2, null, null)
     innerShadowColor1: selectValue(DS.Style.button.innerShadow1, DS.Style.checkedButton.innerShadow, DS.Style.highlightedButton.innerShadow1)
     innerShadowColor2: selectValue(DS.Style.button.innerShadow2, null, DS.Style.highlightedButton.innerShadow2)
-    // All states use hard shadows (blur=0). Normal/hover: 2px far shadow +
-    // 1px near shadow layered on top. Pressed: 1px only (CSS `0 1px 0 0`).
-    boxShadowBlur: selectValue(0, 6, 4)
+    // Normal/hover: hard shadows (blur=0) - 2px far shadow + 1px near
+    // shadow layered on top. Pressed: soft shadow (blur=1) via BoxShadow,
+    // offset 1px down.
+    boxShadowBlur: selectValue(control.D.ColorSelector.controlState === D.DTK.PressedState ? 1 : 0, 6, 4)
     boxShadowOffsetY: selectValue(control.D.ColorSelector.controlState === D.DTK.PressedState ? 1 : 2, 4, 4)
     boxShadowOffsetY2: selectValue(control.D.ColorSelector.controlState === D.DTK.PressedState ? 0 : 1, 0, 0)
     innerShadowOffsetY1: -1

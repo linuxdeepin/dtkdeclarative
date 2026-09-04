@@ -66,6 +66,22 @@ Item {
         antialiasing: false
     }
 
+    // Soft drop shadow (blur > 0): uses BoxShadow for blurred rendering.
+    // Active only when boxShadowBlur is non-zero (e.g. pressed state).
+    Loader {
+        active: control.enableBoxShadow && control.enableDropShadow
+                && control.boxShadowBlur > 0
+                && dropShadowColor && control.D.ColorSelector.dropShadowColor.a > 0
+        anchors.fill: parent
+
+        sourceComponent: BoxShadow {
+            cornerRadius: backgroundRect.radius
+            shadowBlur: control.boxShadowBlur
+            shadowOffsetY: control.boxShadowOffsetY
+            shadowColor: control.D.ColorSelector.dropShadowColor
+        }
+    }
+
     Rectangle {
         id: backgroundRect
         property alias color1: control.color1
