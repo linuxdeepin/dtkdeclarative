@@ -42,6 +42,7 @@ T.CheckDelegate {
         D.IconLabel {
             spacing: control.spacing
             mirrored: control.mirrored
+            smooth: control.smooth
             display: control.display
             alignment: control.display === D.IconLabel.IconOnly || control.display === D.IconLabel.TextUnderIcon
                        ? Qt.AlignCenter : Qt.AlignLeft | Qt.AlignVCenter

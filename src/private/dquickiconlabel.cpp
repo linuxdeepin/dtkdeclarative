@@ -53,6 +53,10 @@ void DQuickIconLabelPrivate::createIconImage()
     image->setMode(icon.mode());
     image->setFallbackToQIcon(icon.fallbackToQIcon());
     image->imageItem()->setFallbackSource(icon.source());
+    // Keep the label's smooth property in sync with the internal image so that
+    // setting IconLabel.smooth in QML controls the icon's texture filtering.
+    image->setSmooth(q->smooth());
+    QObject::connect(q, &QQuickItem::smoothChanged, image, &QQuickItem::setSmooth);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
     image->setRetainWhileLoading(true);
 #endif

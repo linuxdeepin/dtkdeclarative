@@ -43,6 +43,7 @@ T.ToolButton {
             width: parent.width - (indicator ? indicator.width : 0)
             spacing: control.spacing
             mirrored: control.mirrored
+            smooth: control.smooth
             display: control.display
             alignment: indicator ? Qt.AlignLeft | Qt.AlignVCenter : Qt.AlignCenter
             text: control.text
