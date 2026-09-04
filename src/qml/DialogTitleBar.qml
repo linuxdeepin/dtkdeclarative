@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -66,6 +66,7 @@ Control {
 
             D.DciIcon {
                 id: iconLabel
+                smooth: control.smooth
                 visible: name !== ""
                 mode: control.D.ColorSelector.controlState
                 theme: control.D.ColorSelector.controlTheme

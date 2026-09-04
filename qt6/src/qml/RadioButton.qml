@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -32,6 +32,7 @@ T.RadioButton {
         implicitHeight: implicitWidth
 
         D.DciIcon {
+            smooth: control.smooth
             anchors.centerIn: parent
             palette: control.D.DTK.makeIconPalette(control.palette)
             mode: control.D.ColorSelector.controlState
@@ -45,6 +46,7 @@ T.RadioButton {
             anchors.centerIn: parent
             active: control.activeFocus
             sourceComponent: D.DciIcon {
+                smooth: control.smooth
                 palette: control.D.DTK.makeIconPalette(control.palette)
                 mode: control.D.ColorSelector.controlState
                 theme: control.D.ColorSelector.controlTheme

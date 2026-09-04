@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -53,6 +53,7 @@ T.ItemDelegate {
         active: control.indicatorVisible && control.checked
 
         sourceComponent: D.DciIcon {
+            smooth: control.smooth
             palette: D.DTK.makeIconPalette(control.palette)
             mode: control.D.ColorSelector.controlState
             theme: control.D.ColorSelector.controlTheme
@@ -66,6 +67,7 @@ T.ItemDelegate {
         D.IconLabel {
             spacing: control.spacing
             mirrored: control.mirrored
+            smooth: control.smooth
             display: control.display
             alignment: control.display === D.IconLabel.IconOnly || control.display === D.IconLabel.TextUnderIcon
                        ? Qt.AlignCenter : Qt.AlignLeft | Qt.AlignVCenter

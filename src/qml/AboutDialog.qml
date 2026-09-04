@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -43,6 +43,7 @@ DialogWindow {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.topMargin: 0
                 display: D.IconLabel.IconOnly
+                smooth: control.smooth
                 icon.mode: control.D.ColorSelector.controlState
                 icon.theme: control.D.ColorSelector.controlTheme
                 icon.palette: D.DTK.makeIconPalette(control.palette)
