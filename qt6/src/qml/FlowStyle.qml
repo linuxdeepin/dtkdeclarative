@@ -397,6 +397,92 @@ QtObject {
         property int height: 30
         property int iconSize: 16
         property int indicatorRightMargin: 6
+
+        property int radius: 6
+
+        // Checked tool buttons render as a subtle overlay chip with an
+        // accent-colored icon, instead of reusing the solid accent-fill
+        // checked button style shared with Button/ItemDelegate/etc.
+        property D.Palette checkedBackground: D.Palette {
+            normal {
+                common: Qt.rgba(0, 0, 0, 0.1)
+                crystal: Qt.rgba(0, 0, 0, 0.1)
+            }
+            normalDark {
+                common: Qt.rgba(0, 0, 0, 0.3)
+                crystal: Qt.rgba(0, 0, 0, 0.3)
+            }
+            hovered {
+                common: Qt.rgba(0, 0, 0, 0.15)
+                crystal: Qt.rgba(0, 0, 0, 0.15)
+            }
+            hoveredDark {
+                common: Qt.rgba(0, 0, 0, 0.35)
+                crystal: Qt.rgba(0, 0, 0, 0.35)
+            }
+            pressed {
+                common: Qt.rgba(0, 0, 0, 0.15)
+                crystal: Qt.rgba(0, 0, 0, 0.15)
+            }
+            pressedDark {
+                common: Qt.rgba(0, 0, 0, 0.35)
+                crystal: Qt.rgba(0, 0, 0, 0.35)
+            }
+        }
+
+        property D.Palette checkedText: D.Palette {
+            normal: D.DTK.makeColor(D.Color.Highlight)
+            normalDark: D.DTK.makeColor(D.Color.Highlight)
+            hovered: D.DTK.makeColor(D.Color.Highlight)
+            hoveredDark: D.DTK.makeColor(D.Color.Highlight)
+            pressed: D.DTK.makeColor(D.Color.Highlight)
+            pressedDark: D.DTK.makeColor(D.Color.Highlight)
+        }
+
+        // Inner shadow for the checked chip. Light mode uses a subtle
+        // 10% black; dark mode uses 50% black so the bottom inset line
+        // stays visible against the translucent overlay.
+        property D.Palette checkedShadow: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.1)
+            normalDark: Qt.rgba(0, 0, 0, 0.5)
+            hovered: Qt.rgba(0, 0, 0, 0.1)
+            hoveredDark: Qt.rgba(0, 0, 0, 0.5)
+            pressed: Qt.rgba(0, 0, 0, 0.1)
+            pressedDark: Qt.rgba(0, 0, 0, 0.5)
+        }
+
+        // Background for non-checked tool buttons. Uses the Palette's
+        // built-in state mechanism: 'normal' is transparent, 'hovered'
+        // and 'pressed' apply a subtle tint. The ColorSelector selects
+        // the correct state automatically, no manual controlState check
+        // is needed. Dark-mode hover adds backdrop blur + inset bevel in
+        // ToolButton.qml on top of the hoveredDark tint.
+        property D.Palette background: D.Palette {
+            normal {
+                common: Qt.rgba(0, 0, 0, 0)
+                crystal: Qt.rgba(0, 0, 0, 0)
+            }
+            normalDark {
+                common: Qt.rgba(0, 0, 0, 0)
+                crystal: Qt.rgba(0, 0, 0, 0)
+            }
+            hovered {
+                common: Qt.rgba(0, 0, 0, 0.15)
+                crystal: Qt.rgba(0, 0, 0, 0.15)
+            }
+            hoveredDark {
+                common: Qt.rgba(20.0 / 255, 20.0 / 255, 20.0 / 255, 0.2)
+                crystal: Qt.rgba(20.0 / 255, 20.0 / 255, 20.0 / 255, 0.2)
+            }
+            pressed {
+                common: Qt.rgba(0, 0, 0, 0.2)
+                crystal: Qt.rgba(0, 0, 0, 0.2)
+            }
+            pressedDark {
+                common: Qt.rgba(0, 0, 0, 0.15)
+                crystal: Qt.rgba(0, 0, 0, 0.15)
+            }
+        }
     }
 
     property QtObject radioButton: QtObject {
