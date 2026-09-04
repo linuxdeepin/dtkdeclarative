@@ -266,7 +266,6 @@ DQuickDciIconImage::DQuickDciIconImage(QQuickItem *parent)
     connect(this, &DQuickDciIconImage::smoothChanged, d->imageItem, &QQuickImage::setSmooth);
     connect(d->imageItem, &QQuickItem::widthChanged, this, [d]() { d->scheduleLayout(); });
     connect(d->imageItem, &QQuickItem::heightChanged, this, [d]() { d->scheduleLayout(); });
-    connect(this, &QQuickItem::scaleChanged, this, [this]() {setSmooth(!qFuzzyCompare(scale(), 1.0)); });
 }
 
 DQuickDciIconImage::~DQuickDciIconImage()
@@ -485,7 +484,6 @@ void DQuickDciIconImage::componentComplete()
     D_D(DQuickDciIconImage);
     d->imageItem->componentComplete();
     QQuickItem::componentComplete();
-    setSmooth(!qFuzzyCompare(scale(), 1.0));
     d->layout();
 }
 

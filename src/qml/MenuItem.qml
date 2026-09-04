@@ -38,6 +38,7 @@ T.MenuItem {
         rightPadding: control.mirrored ? indicatorPadding : arrowPadding
         spacing: control.spacing
         mirrored: control.mirrored
+        smooth: control.smooth
         display: control.display
         alignment: Qt.AlignLeft
         text: control.text
