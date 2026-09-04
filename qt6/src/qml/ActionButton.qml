@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -20,6 +20,7 @@ T.Button {
         height: DS.Style.button.iconSize
     }
     contentItem: D.DciIcon {
+        smooth: control.smooth
         palette: D.DTK.makeIconPalette(control.palette)
         mode: control.D.ColorSelector.controlState
         theme: control.D.ColorSelector.controlTheme

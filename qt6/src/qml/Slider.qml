@@ -38,6 +38,7 @@ T.Slider {
     // draw handle
     handle: SliderHandle {
         id: __handle
+        smooth: control.smooth
         x: control.leftPadding + (control.horizontal ? control.visualPosition * (control.availableWidth - width) : 0)
         y: control.topPadding + (control.horizontal ? 0 : control.visualPosition * (control.availableHeight - height))
         width: control.horizontal ? DS.Style.slider.handle.width : DS.Style.slider.handle.height

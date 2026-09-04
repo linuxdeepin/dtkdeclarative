@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -45,6 +45,7 @@ T.Button {
             width: parent.width - (indicator ? indicator.width : 0)
             spacing: control.spacing
             mirrored: control.mirrored
+            smooth: control.smooth
             display: control.display
             alignment: indicator ? Qt.AlignLeft | Qt.AlignVCenter : Qt.AlignCenter
             text: control.text
