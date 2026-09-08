@@ -11,7 +11,6 @@ T.Button {
     id: control
     property D.Palette textColor: DS.Style.button.text
 
-    palette.windowText: pressed ? D.ColorSelector.textColor : undefined
     opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
@@ -21,7 +20,11 @@ T.Button {
     }
     contentItem: D.DciIcon {
         smooth: control.smooth
-        palette: D.DTK.makeIconPalette(control.palette)
+        palette: {
+            const iconPalette = D.DTK.makeIconPalette(control.palette)
+            iconPalette.foreground = control.pressed ? control.D.ColorSelector.textColor : control.palette.windowText
+            return iconPalette
+        }
         mode: control.D.ColorSelector.controlState
         theme: control.D.ColorSelector.controlTheme
         name: control.icon.name
