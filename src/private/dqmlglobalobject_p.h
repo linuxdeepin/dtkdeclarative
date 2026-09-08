@@ -228,6 +228,15 @@ public:
     Q_INVOKABLE DTK_GUI_NAMESPACE::DDciIconPalette makeIconPalette(const QPalette &palette);
 #else
     Q_INVOKABLE DTK_GUI_NAMESPACE::DDciIconPalette makeIconPalette(const QQuickPalette *palette);
+    // Overload that takes the foreground color explicitly from QML instead of reading
+    // palette->windowText() in C++. This breaks the binding loop: when palette.windowText
+    // is bound to D.ColorSelector.textColor, reading it back via C++ during the
+    // paletteChanged-triggered re-evaluation of makeIconPalette re-enters the windowText
+    // binding. By passing the same value from QML (which depends on textColorChanged, not
+    // paletteChanged), the loop is broken. When foreground is invalid (QML passes undefined
+    // / reset), falls back to palette->windowText() — safe because the windowText binding
+    // evaluates to undefined (reset), not a write.
+    Q_INVOKABLE DTK_GUI_NAMESPACE::DDciIconPalette makeIconPalette(const QQuickPalette *palette, const QColor &foreground);
 #endif
 
     Q_INVOKABLE bool sendMessage(QObject *target, const QString &content, const QString &iconName = QString(), int duration = 4000, const QString &msgId = QString());

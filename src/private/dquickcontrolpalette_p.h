@@ -420,6 +420,14 @@ private:
     };
     QScopedPointer<PaletteState> m_state;
     QList<QMetaObject::Connection> m_itemParentChangeConnections;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    // Guard against double-invocation of updateControlTheme(): a single
+    // QQuickPalette::changed emission reaches updateControlTheme() through two
+    // paths — the direct changed→updateControlTheme connection and the indirect
+    // changed→paletteChanged→updateControlTheme connection (Qt6 internal). The
+    // guard ensures only one full re-evaluation per event-loop iteration.
+    bool m_updateControlThemeGuard = false;
+#endif
 };
 
 DQUICK_END_NAMESPACE

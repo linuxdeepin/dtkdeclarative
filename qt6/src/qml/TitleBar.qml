@@ -122,7 +122,7 @@ Item {
                 }
                 Layout.alignment: Qt.AlignLeft
                 visible: name
-                palette: D.DTK.makeIconPalette(control.palette)
+                palette: D.DTK.makeIconPalette(control.palette, D.ColorSelector.textColor)
                 mode: control.D.ColorSelector.controlState
                 theme: control.D.ColorSelector.controlTheme
             }

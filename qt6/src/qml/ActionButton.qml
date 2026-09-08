@@ -20,7 +20,7 @@ T.Button {
         height: DS.Style.button.iconSize
     }
     contentItem: D.DciIcon {
-        palette: D.DTK.makeIconPalette(control.palette)
+        palette: D.DTK.makeIconPalette(control.palette, control.pressed ? control.D.ColorSelector.textColor : undefined)
         mode: control.D.ColorSelector.controlState
         theme: control.D.ColorSelector.controlTheme
         name: control.icon.name

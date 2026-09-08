@@ -440,6 +440,22 @@ DDciIconPalette DQMLGlobalObject::makeIconPalette(const QQuickPalette *palette)
     iconPalette.setHighlightForeground(palette->highlightedText());
     return iconPalette;
 }
+
+DDciIconPalette DQMLGlobalObject::makeIconPalette(const QQuickPalette *palette, const QColor &foreground)
+{
+    DDciIconPalette iconPalette;
+    // Foreground is passed explicitly from QML (the same value bound to palette.windowText),
+    // so we never read palette->windowText() here — that C++ read was the fourth windowText
+    // read point that caused the binding loop. When foreground is invalid (QML passed
+    // undefined / reset), fall back to palette->windowText(): in that case the windowText
+    // binding evaluates to undefined (a reset), so it is not in a write state and reading
+    // it cannot re-enter the binding.
+    iconPalette.setForeground(foreground.isValid() ? foreground : palette->windowText());
+    iconPalette.setBackground(palette->window());
+    iconPalette.setHighlight(palette->highlight());
+    iconPalette.setHighlightForeground(palette->highlightedText());
+    return iconPalette;
+}
 #endif
 
 bool DQMLGlobalObject::sendMessage(QObject *target, const QString &content, const QString &iconName, int duration, const QString &msgId)

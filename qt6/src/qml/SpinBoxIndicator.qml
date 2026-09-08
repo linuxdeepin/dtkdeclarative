@@ -31,7 +31,7 @@ Control {
         D.DciIcon {
             id: icon
             sourceSize.width: DS.Style.spinBox.indicator.iconSize
-            palette: D.DTK.makeIconPalette(control.palette)
+            palette: D.DTK.makeIconPalette(control.palette, control.D.ColorSelector.inactiveBackgroundColor)
             name: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? "entry_spinbox_up" : "entry_spinbox_down"
             mode: control.D.ColorSelector.controlState
             theme: control.D.ColorSelector.controlTheme

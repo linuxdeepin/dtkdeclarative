@@ -27,7 +27,7 @@ T.ToolButton {
     opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
     D.DciIcon.mode: D.ColorSelector.controlState
     D.DciIcon.theme: D.ColorSelector.controlTheme
-    D.DciIcon.palette: D.DTK.makeIconPalette(palette)
+    D.DciIcon.palette: D.DTK.makeIconPalette(palette, D.ColorSelector.textColor)
     palette.windowText: D.ColorSelector.textColor
     D.ColorSelector.family: D.Palette.CrystalColor
     display: D.IconLabel.TextUnderIcon

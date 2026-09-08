@@ -23,7 +23,7 @@ T.Button {
     opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
     D.DciIcon.mode: D.ColorSelector.controlState
     D.DciIcon.theme: D.ColorSelector.controlTheme
-    D.DciIcon.palette: D.DTK.makeIconPalette(palette)
+    D.DciIcon.palette: D.DTK.makeIconPalette(palette, D.ColorSelector.textColor)
     palette.windowText: D.ColorSelector.textColor
     icon {
         width: DS.Style.button.iconSize

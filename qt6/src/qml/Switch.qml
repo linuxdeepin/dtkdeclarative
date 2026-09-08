@@ -74,7 +74,7 @@ T.Switch {
 
                 sourceSize: Qt.size(DS.Style.switchButton.indicatorWidth, DS.Style.switchButton.indicatorWidth)
                 opacity: control.D.ColorSelector.controlState === D.DTK.DisabledState && control.checked ? 0.4 : 1
-                palette: DTK.makeIconPalette(control.palette)
+                palette: DTK.makeIconPalette(control.palette, control.palette.windowText)
                 mode: control.D.ColorSelector.controlState
                 theme: control.D.ColorSelector.controlTheme
                 fallbackToQIcon: false

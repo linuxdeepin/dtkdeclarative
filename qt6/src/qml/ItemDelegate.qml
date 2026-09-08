@@ -50,7 +50,7 @@ T.ItemDelegate {
 
     D.DciIcon.mode: D.ColorSelector.controlState
     D.DciIcon.theme: D.ColorSelector.controlTheme
-    D.DciIcon.palette: D.DTK.makeIconPalette(palette)
+    D.DciIcon.palette: D.DTK.makeIconPalette(palette, checked && !control.cascadeSelected && (D.DTK.hasAnimation ? control.backgroundVisible && !dragActive : true) ? D.ColorSelector.checkedTextColor : undefined)
     icon {
         width: DS.Style.itemDelegate.iconSize
         height: DS.Style.itemDelegate.iconSize
@@ -64,7 +64,7 @@ T.ItemDelegate {
         active: control.indicatorVisible && control.checked
 
         sourceComponent: D.DciIcon {
-            palette: D.DTK.makeIconPalette(control.palette)
+            palette: D.DTK.makeIconPalette(control.palette, control.D.ColorSelector.checkedTextColor)
             mode: control.D.ColorSelector.controlState
             theme: control.D.ColorSelector.controlTheme
             fallbackToQIcon: false

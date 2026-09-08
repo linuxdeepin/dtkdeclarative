@@ -30,7 +30,7 @@ T.MenuItem {
     palette.windowText: D.ColorSelector.textColor
     D.DciIcon.mode: D.ColorSelector.controlState
     D.DciIcon.theme: D.ColorSelector.controlTheme
-    D.DciIcon.palette: D.DTK.makeIconPalette(palette)
+    D.DciIcon.palette: D.DTK.makeIconPalette(palette, D.ColorSelector.textColor)
     contentItem: D.IconLabel {
         readonly property real arrowPadding: control.subMenu && control.arrow ? control.arrow.width + control.spacing : 0
         readonly property real indicatorPadding: control.useIndicatorPadding && control.indicator ? control.indicator.width + control.spacing : 0
