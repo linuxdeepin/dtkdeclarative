@@ -18,6 +18,10 @@ T.ItemDelegate {
     property bool contentFlow
     property Component content
     property D.Palette checkedTextColor: DS.Style.checkedButton.text
+    readonly property color resolvedTextColor: {
+        let undraged = D.DTK.hasAnimation ? control.backgroundVisible && !dragActive : true
+        return checked && !control.cascadeSelected && undraged ? D.ColorSelector.checkedTextColor : control.palette.windowText
+    }
     property int corners: D.RoundRectangle.TopLeftCorner | D.RoundRectangle.TopRightCorner | D.RoundRectangle.BottomLeftCorner | D.RoundRectangle.BottomRightCorner
     property bool dragActive: false
     // drag
@@ -43,14 +47,10 @@ T.ItemDelegate {
     spacing: DS.Style.control.spacing
     checkable: true
     autoExclusive: true
-    palette.windowText: {
-        let undraged = D.DTK.hasAnimation ? control.backgroundVisible && !dragActive : true
-        return checked && !control.cascadeSelected && undraged ? D.ColorSelector.checkedTextColor : undefined
-    }
 
     D.DciIcon.mode: D.ColorSelector.controlState
     D.DciIcon.theme: D.ColorSelector.controlTheme
-    D.DciIcon.palette: D.DTK.makeIconPalette(palette)
+    D.DciIcon.palette: D.DTK.makeIconPaletteWithForeground(palette, control.resolvedTextColor)
     icon {
         width: DS.Style.itemDelegate.iconSize
         height: DS.Style.itemDelegate.iconSize
@@ -65,7 +65,7 @@ T.ItemDelegate {
 
         sourceComponent: D.DciIcon {
             smooth: control.smooth
-            palette: D.DTK.makeIconPalette(control.palette)
+            palette: D.DTK.makeIconPaletteWithForeground(control.palette, control.resolvedTextColor)
             mode: control.D.ColorSelector.controlState
             theme: control.D.ColorSelector.controlTheme
             fallbackToQIcon: false
@@ -84,7 +84,7 @@ T.ItemDelegate {
                        ? Qt.AlignCenter : Qt.AlignLeft | Qt.AlignVCenter
             text: control.text
             font: control.font
-            color: control.palette.windowText
+            color: control.resolvedTextColor
             icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
             Layout.fillWidth: !control.contentFlow
         }
