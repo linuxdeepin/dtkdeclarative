@@ -444,6 +444,15 @@ DDciIconPalette DQMLGlobalObject::makeIconPalette(const QQuickPalette *palette)
     iconPalette.setHighlightForeground(palette->highlightedText());
     return iconPalette;
 }
+
+// 在 makeIconPalette 基础上，显式设置前景色（用于状态相关图标的颜色渲染）
+DDciIconPalette DQMLGlobalObject::makeIconPaletteWithForeground(const QQuickPalette *palette, const QColor &foreground)
+{
+    DDciIconPalette iconPalette = makeIconPalette(palette);
+    if (foreground.isValid())
+        iconPalette.setForeground(foreground);
+    return iconPalette;
+}
 #endif
 
 bool DQMLGlobalObject::sendMessage(QObject *target, const QString &content, const QString &iconName, int duration, const QString &msgId)
