@@ -105,53 +105,54 @@ QtObject {
         property D.Palette background1: D.Palette {
             normal {
                 common: Qt.rgba(245 / 255, 245 / 255, 245 / 255, 0.9)
-                crystal: Qt.rgba(0, 0, 0, 0.1)
+                crystal: Qt.rgba(0, 0, 0, 0.15)
             }
             normalDark {
                 common: Qt.rgba(60 / 255, 60 / 255, 60 / 255, 0.6)
-                crystal: Qt.rgba(1, 1, 1, 0.08)
+                crystal: Qt.rgba(0, 0, 0, 0.2)
             }
             hovered {
                 common: Qt.rgba(230 / 255, 230 / 255, 230 / 255, 1)
-                crystal:  Qt.rgba(0, 0, 0, 0.2)
+                crystal:  Qt.rgba(1, 1, 1, 0.2)
             }
             hoveredDark {
                 common:  Qt.rgba(110 / 255, 110 / 255, 110 / 255, 0.4)
-                crystal:  Qt.rgba(1, 1, 1, 0.2)
+                crystal:  Qt.rgba(20 / 255, 20 / 255, 20 / 255, 0.2)
             }
             pressed {
                 common: Qt.rgba(169 / 255, 169 / 255, 169 / 255, 0.6)
-                crystal: Qt.rgba(0, 0, 0, 0.15)
+                crystal: Qt.rgba(0, 0, 0, 0.3)
             }
             pressedDark {
                 common:  Qt.rgba(40 / 255, 40 / 255, 40 / 255, 1)
-                crystal:  Qt.rgba(40 / 255, 40 / 255, 40 / 255, 1)
+                crystal: Qt.rgba(0, 0, 0, 0.4)
             }
         }
 
         property D.Palette background2: D.Palette {
             normal {
                 common: Qt.rgba(239 / 255, 239 / 255, 239 / 255, 0.9)
-                crystal: Qt.rgba(0, 0, 0, 0.1)
+                crystal: Qt.rgba(0, 0, 0, 0.15)
             }
             normalDark {
                 common: Qt.rgba(45 / 255, 45 / 255, 45 / 255, 0.6)
-                crystal: Qt.rgba(1, 1, 1, 0.1)
+                crystal: Qt.rgba(0, 0, 0, 0.2)
             }
             hovered {
                 common: Qt.rgba(230 / 255, 230 / 255, 230 / 255, 1)
-                crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.2)
+                crystal: Qt.rgba(1, 1, 1, 0.2)
             }
             hoveredDark {
                 common: Qt.rgba(66 / 255, 66 / 255, 66 / 255, 0.4)
+                crystal: Qt.rgba(20 / 255, 20 / 255, 20 / 255, 0.2)
             }
             pressed {
                 common: Qt.rgba(202 / 255, 202 / 255, 202 / 255, 0.5)
-                crystal: Qt.rgba(16.0 / 255, 16.0 / 255, 16.0 / 255, 0.15)
+                crystal: Qt.rgba(0, 0, 0, 0.3)
             }
             pressedDark {
                 common: Qt.rgba(40 / 255, 40 / 255, 40 / 255, 1)
-                crystal: Qt.rgba(46 / 255, 46 / 255, 46 / 255, 1)
+                crystal: Qt.rgba(0, 0, 0, 0.4)
             }
         }
 
@@ -160,7 +161,10 @@ QtObject {
             normalDark: ("transparent")
             hovered: Qt.rgba(0, 0, 0, 0.05)
             pressed: Qt.rgba(0, 0, 0, 0.1)
-            pressedDark: Qt.rgba(0, 0, 0, 0.4)
+            pressedDark {
+                common: Qt.rgba(0, 0, 0, 0.4)
+                crystal: ("transparent")
+            }
         }
 
         // 1px near hard drop shadow layered over `dropShadow` (the 2px far
@@ -189,18 +193,9 @@ QtObject {
         }
 
         property D.Palette insideBorder: D.Palette {
-            normal {
-                common: ("transparent")
-                crystal: Qt.rgba(1, 1, 1, 0.1)
-            }
-            normalDark {
-                common: ("transparent")
-                crystal: Qt.rgba(1, 1, 1, 0.1)
-            }
-            hovered {
-                common: ("transparent")
-                crystal: Qt.rgba(0, 0, 0, 0.05)
-            }
+            normal: ("transparent")
+            normalDark: ("transparent")
+            hovered: ("transparent")
             hoveredDark: ("transparent")
             pressed: ("transparent")
         }
@@ -208,16 +203,20 @@ QtObject {
         property D.Palette outsideBorder: D.Palette {
             normal {
                 common: Qt.rgba(0, 0, 0, 0.1)
-                crystal: Qt.rgba(0, 0, 0, 0.08)
+                crystal: ("transparent")
             }
             normalDark {
                 common: Qt.rgba(0, 0, 0, 0.05)
+                crystal: ("transparent")
             }
             hovered {
                 common: Qt.rgba(0, 0, 0, 0.15)
-                crystal: Qt.rgba(0, 0, 0, 0.2)
+                crystal: Qt.rgba(0, 0, 0, 0.1)
             }
-            pressed: Qt.rgba(0, 0, 0, 0.15)
+            pressed {
+                common: Qt.rgba(0, 0, 0, 0.15)
+                crystal: ("transparent")
+            }
             pressedDark: ("transparent")
         }
 
@@ -232,7 +231,7 @@ QtObject {
             }
             pressed {
                 common: Qt.rgba(0, 0, 0, 0.7)
-                crystal: Qt.rgba(0, 0, 0, 0.7)
+                crystal: D.DTK.makeColor(D.Color.Highlight)
             }
         }
     }

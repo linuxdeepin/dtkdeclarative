@@ -35,6 +35,18 @@ Item {
     property bool enableInnerShadow: false
     property bool enableGradient: false
 
+    // Gates the direct BoxInsetShadow inner bevel for crystal dark mode
+    // and excludes crystal dark from the Loader-based common inner shadow path.
+    readonly property bool __crystalDark: control.D.ColorSelector.family === D.Palette.CrystalColor
+        && D.DTK.themeType === D.ApplicationHelper.DarkType
+
+    // Shared visibility for crystal dark inner bevel. Pressed state
+    // shows only the flat background + blur, no inner shadow.
+    readonly property bool __crystalDarkBevel: control.__crystalDark
+        && control.enableBoxShadow
+        && control.enableInnerShadow
+        && control.D.ColorSelector.controlState !== D.DTK.PressedState
+
     // Hard drop shadows (blur == 0): two rounded Rectangles matching the
     // border-box, placed below the background and borders in z-order so the
     // button's own paint naturally covers the overlapping part. Only the
@@ -112,6 +124,7 @@ Item {
         anchors.bottomMargin: -1
         readonly property color innerShadowColor: control.D.ColorSelector.innerShadowColor1
         active: control.enableBoxShadow && control.enableInnerShadow
+                && !control.__crystalDark
                 && innerShadowColor1 && innerShadowColor.a !== 0
         z: D.DTK.AboveOrder
 
@@ -128,6 +141,7 @@ Item {
         anchors.fill: backgroundRect
         readonly property color innerShadowColor: control.D.ColorSelector.innerShadowColor2
         active: control.enableBoxShadow && control.enableInnerShadow
+                && !control.__crystalDark
                 && innerShadowColor2 && innerShadowColor.a !== 0
         z: D.DTK.AboveOrder
 
@@ -139,15 +153,35 @@ Item {
         }
     }
 
+    // Crystal dark inner shadows in a Loader so the shadow items are only
+    // created when the bevel is active. Colors are selected via controlState
+    // (a regular property with proper NOTIFY), not the palette ColorSelector
+    // readonly properties which do not reliably re-evaluate in a Loader on
+    // hover transitions.
     Loader {
-        active: insideBorderColor
+        active: control.__crystalDarkBevel
         anchors.fill: backgroundRect
         z: D.DTK.AboveOrder
 
-        sourceComponent: InsideBoxBorder {
-            radius: backgroundRect.radius
-            color: control.D.ColorSelector.insideBorderColor
-            borderWidth: DS.Style.control.borderWidth
+        sourceComponent: Item {
+            BoxInsetShadow {
+                anchors.fill: parent
+                cornerRadius: backgroundRect.radius
+                shadowColor: control.D.ColorSelector.controlState === D.DTK.HoveredState
+                             ? Qt.rgba(1, 1, 1, 0.1) : Qt.rgba(1, 1, 1, 0.05)
+                shadowOffsetX: 0
+                shadowOffsetY: 1
+                shadowBlur: 1
+            }
+            BoxInsetShadow {
+                anchors.fill: parent
+                cornerRadius: backgroundRect.radius
+                shadowColor: control.D.ColorSelector.controlState === D.DTK.HoveredState
+                             ? Qt.rgba(0, 0, 0, 0.5) : Qt.rgba(0, 0, 0, 0.4)
+                shadowOffsetX: 0
+                shadowOffsetY: -1
+                shadowBlur: 1
+            }
         }
     }
 
