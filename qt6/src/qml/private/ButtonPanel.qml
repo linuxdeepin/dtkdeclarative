@@ -20,12 +20,13 @@ BoxPanel {
     dropShadowColor2: selectValue(DS.Style.button.dropShadow2, null, null)
     innerShadowColor1: selectValue(DS.Style.button.innerShadow1, DS.Style.checkedButton.innerShadow, DS.Style.highlightedButton.innerShadow1)
     innerShadowColor2: selectValue(DS.Style.button.innerShadow2, null, DS.Style.highlightedButton.innerShadow2)
-    // Normal/hover: hard shadows (blur=0) - 2px far shadow + 1px near
-    // shadow layered on top. Pressed: soft shadow (blur=1) via BoxShadow,
-    // offset 1px down.
-    boxShadowBlur: selectValue(control.D.ColorSelector.controlState === D.DTK.PressedState ? 1 : 0, 6, 4)
-    boxShadowOffsetY: selectValue(control.D.ColorSelector.controlState === D.DTK.PressedState ? 1 : 2, 4, 4)
-    boxShadowOffsetY2: selectValue(control.D.ColorSelector.controlState === D.DTK.PressedState ? 0 : 1, 0, 0)
+    // Normal button: two soft shadow layers (blur=1) via BoxShadow.
+    // Far shadow (dropShadow) offset 1px down; near shadow (dropShadow2)
+    // offset 2px down in normal/hover, disabled in pressed. Checked/
+    // highlighted use their own blur/offset values.
+    boxShadowBlur: selectValue(1, 6, 4)
+    boxShadowOffsetY: selectValue(1, 4, 4)
+    boxShadowOffsetY2: selectValue(control.D.ColorSelector.controlState === D.DTK.PressedState ? 0 : 2, 0, 0)
     innerShadowOffsetY1: -1
     visible: !button.flat || button.checked || button.highlighted || button.visualFocus || control.D.ColorSelector.controlState === D.DTK.PressedState || control.D.ColorSelector.controlState === D.DTK.HoveredState
 

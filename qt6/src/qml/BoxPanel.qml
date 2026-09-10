@@ -94,6 +94,24 @@ Item {
         }
     }
 
+    // Second soft drop shadow layer (blur > 0), using dropShadowColor2
+    // and boxShadowOffsetY2. Mirrors the hardShadow2 rectangle that
+    // renders when blur == 0.
+    Loader {
+        active: control.enableBoxShadow && control.enableDropShadow
+                && control.boxShadowBlur > 0
+                && dropShadowColor2 && control.D.ColorSelector.dropShadowColor2.a > 0
+                && control.boxShadowOffsetY2 > 0
+        anchors.fill: parent
+
+        sourceComponent: BoxShadow {
+            cornerRadius: backgroundRect.radius
+            shadowBlur: control.boxShadowBlur
+            shadowOffsetY: control.boxShadowOffsetY2
+            shadowColor: control.D.ColorSelector.dropShadowColor2
+        }
+    }
+
     Rectangle {
         id: backgroundRect
         property alias color1: control.color1
