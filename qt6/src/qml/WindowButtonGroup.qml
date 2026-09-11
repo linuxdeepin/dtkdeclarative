@@ -14,6 +14,7 @@ RowLayout {
 
     property D.Palette textColor: DS.Style.button.text
     property bool fullScreenButtonVisible: true
+    property bool splitScreenEnabled: true
     property bool embedMode: false
     signal maxOrWinded()
 
@@ -76,6 +77,7 @@ RowLayout {
 
     WindowButton {
         id: maxOrWindedBtn; objectName: "maxOrWindedBtn"
+        hoverEnabled: true
         property bool hasWindowFlag/*: (Window.window.flags & Qt.WindowMaximizeButtonHint)*/
         Component.onCompleted: hasWindowFlag = (Window.window.flags & Qt.WindowMaximizeButtonHint)
 
@@ -86,7 +88,72 @@ RowLayout {
         property bool isMaximized: Window.window.visibility === Window.Maximized
         icon.name: isMaximized ? "window_restore" : "window_maximize"
         textColor: control.textColor
-        onClicked: maxOrWinded()
+        property bool __longPressed: false
+        property bool __menuRequested: false
+
+        function showSplitMenu() {
+            if (!control.splitScreenEnabled || !visible || !enabled)
+                return false
+            if (!__menuRequested)
+                __menuRequested = control.__dwindow.showSplitMenu(maxOrWindedBtn)
+            return __menuRequested
+        }
+
+        function hideSplitMenu(delay) {
+            hoverTimer.stop()
+            holdTimer.stop()
+            control.__dwindow.hideSplitMenu(delay)
+            __menuRequested = false
+        }
+
+        onHoveredChanged: {
+            if (hovered && !pressed)
+                hoverTimer.restart()
+            else if (!hovered)
+                hideSplitMenu(true)
+        }
+        onPressed: {
+            __longPressed = false
+            hoverTimer.stop()
+            holdTimer.restart()
+        }
+        onReleased: {
+            holdTimer.stop()
+            if (!__longPressed)
+                hideSplitMenu(false)
+        }
+        onCanceled: hideSplitMenu(true)
+        onClicked: {
+            if (!__longPressed)
+                control.maxOrWinded()
+            __longPressed = false
+        }
+        onVisibleChanged: {
+            if (!visible) {
+                hoverTimer.stop()
+                holdTimer.stop()
+                __menuRequested = false
+            }
+        }
+        onEnabledChanged: if (!enabled) hideSplitMenu(false)
+
+        Timer {
+            id: hoverTimer
+            interval: 700
+            onTriggered: maxOrWindedBtn.showSplitMenu()
+        }
+        Timer {
+            id: holdTimer
+            interval: 300
+            onTriggered: maxOrWindedBtn.__longPressed = maxOrWindedBtn.showSplitMenu()
+        }
+        Connections {
+            target: control
+            function onSplitScreenEnabledChanged() {
+                if (!control.splitScreenEnabled)
+                    maxOrWindedBtn.hideSplitMenu(false)
+            }
+        }
         
         visible: (hasWindowFlag && !__forceHind && __canResize && __sizeResizable)
         enabled: (__canMaximize && __canResize)
