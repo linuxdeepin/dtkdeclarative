@@ -51,7 +51,6 @@ protected:
 private Q_SLOTS:
     void updateEnabled();
     void onWindowChanged(QQuickWindow *window);
-    void onPopupVisibleChanged();
 
 private:
     QQuickWindow *popupWindow() const;
@@ -60,8 +59,6 @@ private:
 
     bool isEnabled() const;
     void adjustPopupPosition();
-    void requestPopupFocus();
-    void restoreParentFocus();
     
 private:
     QObject *m_popup = nullptr;
@@ -71,9 +68,6 @@ private:
     QPointer<QQuickWindow> m_parentWindow = nullptr;
     QPointer<QQuickWindow> m_popupWin = nullptr;
     QPointer<QQuickItem> m_trackedItem = nullptr;
-    QPointer<QQuickItem> m_restoreFocusItem = nullptr;
-    QPointer<QQuickItem> m_focusOwner = nullptr;
-    bool m_popupFocusRequested = false;
 };
 
 DQUICK_END_NAMESPACE
