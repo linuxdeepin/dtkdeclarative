@@ -349,6 +349,13 @@ QtObject {
         }
     }
 
+    property QtObject recommandButton: QtObject {
+        property D.Palette text: D.Palette {
+            normal: D.DTK.makeColor(D.Color.Highlight)
+            normalDark: normal
+        }
+    }
+
     property QtObject switchButton: QtObject {
         property int indicatorWidth: 50
         property int indicatorHeight: 24
