@@ -8,5 +8,5 @@ import org.deepin.dtk.style 1.0 as DS
 Button {
     id: control
 
-    highlighted: true
+    textColor: checked ? DS.Style.checkedButton.text : DS.Style.recommandButton.text
 }
