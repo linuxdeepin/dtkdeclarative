@@ -148,6 +148,9 @@ public Q_SLOTS:
 
     void popupSystemWindowMenu();
 
+    bool showSplitMenu(QQuickItem *button);
+    void hideSplitMenu(bool delay = true);
+
     bool setWindowBlurAreaByWM(const QVector<DPlatformHandle::WMBlurArea> &area);
     bool setWindowBlurAreaByWM(const QList<QPainterPath> &area);
 

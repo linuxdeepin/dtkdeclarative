@@ -28,6 +28,7 @@ Item {
 
     // visibility access
     property bool fullScreenButtonVisible: true
+    property bool splitScreenEnabled: true
     signal toggleWindowState()
     property alias windowButtonGroup: windowButtonsLoader.sourceComponent
 
@@ -179,6 +180,7 @@ Item {
                     embedMode: control.embedMode
                     textColor: control.textColor
                     fullScreenButtonVisible: control.fullScreenButtonVisible
+                    splitScreenEnabled: control.splitScreenEnabled
                     Component.onCompleted: {
                         control.toggleWindowState.connect(maxOrWinded)
                     }

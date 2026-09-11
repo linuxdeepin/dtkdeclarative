@@ -56,6 +56,7 @@ public:
 #endif
 
     QPointer<QWindow> window = nullptr;
+    WId splitMenuWindowId = 0;
     DPlatformHandle *handle = nullptr;
     BoolOptional explicitEnable {Invalid};
     BoolOptional explicitTranslucentBackground {Invalid};
