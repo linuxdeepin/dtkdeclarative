@@ -17,8 +17,30 @@ T.Popup {
 
     property bool closeOnInactive: true
     readonly property bool active: parent && parent.Window.active
-    implicitWidth: DS.Style.control.implicitWidth(control)
-    implicitHeight: DS.Style.control.implicitHeight(control)
+
+    // Sticky-max ratchet for Popup.Window: the popup's implicit size is by
+    // default derived from background + contentItem, so keeping the largest
+    // size during an open session is done via the background's implicit size
+    // (windowBlurComponent) rather than overriding implicitWidth/Height here.
+    // Content shrinking (e.g. search filtering) then no longer jumps the
+    // popup window smaller. Reset on aboutToShow for each open session.
+    property real _maxImplicitWidth: 0
+    property real _maxImplicitHeight: 0
+
+    onAboutToShow: {
+        if (control.popupType === Popup.Window) {
+            control._maxImplicitWidth = control.implicitContentWidth
+                    + control.leftPadding + control.rightPadding
+            control._maxImplicitHeight = control.implicitContentHeight
+                    + control.topPadding + control.bottomPadding
+        }
+    }
+    onImplicitContentWidthChanged: if (control.popupType === Popup.Window)
+        control._maxImplicitWidth = Math.max(control._maxImplicitWidth,
+            control.implicitContentWidth + control.leftPadding + control.rightPadding)
+    onImplicitContentHeightChanged: if (control.popupType === Popup.Window)
+        control._maxImplicitHeight = Math.max(control._maxImplicitHeight,
+            control.implicitContentHeight + control.topPadding + control.bottomPadding)
 
     padding: DS.Style.popup.padding
 
@@ -28,7 +50,10 @@ T.Popup {
 
         Component {
             id: windowBlurComponent
-            D.StyledBehindWindowBlur { }
+            D.StyledBehindWindowBlur {
+                implicitWidth: control._maxImplicitWidth
+                implicitHeight: control._maxImplicitHeight
+            }
         }
 
         Component {
