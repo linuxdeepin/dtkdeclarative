@@ -228,6 +228,7 @@ public:
     Q_INVOKABLE DTK_GUI_NAMESPACE::DDciIconPalette makeIconPalette(const QPalette &palette);
 #else
     Q_INVOKABLE DTK_GUI_NAMESPACE::DDciIconPalette makeIconPalette(const QQuickPalette *palette);
+    Q_INVOKABLE DTK_GUI_NAMESPACE::DDciIconPalette makeIconPaletteWithForeground(const QQuickPalette *palette, const QColor &foreground);
 #endif
 
     Q_INVOKABLE bool sendMessage(QObject *target, const QString &content, const QString &iconName = QString(), int duration = 4000, const QString &msgId = QString());
