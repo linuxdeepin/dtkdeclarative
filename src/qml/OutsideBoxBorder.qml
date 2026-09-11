@@ -5,7 +5,7 @@
 import QtQuick 2.0
 
 Item {
-    property real borderWidth: 1
+    property real borderWidth: 1 / Screen.devicePixelRatio
     property color color: "white"
     property real radius: 0
 
