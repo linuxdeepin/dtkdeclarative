@@ -33,6 +33,11 @@ Files: *.md
 Copyright: UnionTech Software Technology Co., Ltd.
 License: CC-BY-4.0
 
+# agent rules
+Files: qt6/src/qml/.AGENTS
+Copyright: UnionTech Software Technology Co., Ltd.
+License: CC-BY-4.0
+
 # ci
 Files: .github/*  *.yml *.yaml .obs/* .syncexclude
 Copyright: None
