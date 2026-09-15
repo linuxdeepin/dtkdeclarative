@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -23,6 +23,10 @@ Item {
     property int boxShadowOffsetY2: 0
     property int innerShadowOffsetY1: -1
     property int innerShadowOffsetY2: 1
+    // Extra height (negative = extend below) for the bottom inner shadow
+    // Loader so it lands on the button edge despite the 1px background
+    // inset. Overridable per consumer if insets differ.
+    property int innerShadowBottomMargin: -1
     // Background color changes with hover state if `backgroundFlowingHovered` is `true`.
     property bool backgroundFlowsHovered: true
     property bool enableBoxShadow: control.D.ColorSelector.family === D.Palette.CommonColor
@@ -139,7 +143,7 @@ Item {
         // without this the shadow sits on the panel bottom, leaving a visible
         // gap and rendering sub-pixel thin at certain DPR values.
         anchors.fill: backgroundRect
-        anchors.bottomMargin: -1
+        anchors.bottomMargin: control.innerShadowBottomMargin
         readonly property color innerShadowColor: control.D.ColorSelector.innerShadowColor1
         active: control.enableBoxShadow && control.enableInnerShadow
                 && !control.__crystalDark
