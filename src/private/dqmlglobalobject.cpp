@@ -237,6 +237,15 @@ bool DQMLGlobalObject::isSoftwareRender()
     return isSoftware;
 }
 
+bool DQMLGlobalObject::isBlurBackendSupported()
+{
+    static bool supported = []() {
+        const QString backend = QQuickWindow::sceneGraphBackend();
+        return backend.isEmpty() || backend == QLatin1String("opengl");
+    }();
+    return supported;
+}
+
 QString DQMLGlobalObject::windowManagerNameString() const
 {
     return DWindowManagerHelper::instance()->windowManagerNameString();
