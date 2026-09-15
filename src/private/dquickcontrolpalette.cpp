@@ -13,6 +13,7 @@
 #include <QDebug>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 #include <private/qquickpalette_p.h>
+#include <private/qv4engine_p.h>
 #endif
 
 #include <private/qqmlopenmetaobject_p.h>
@@ -99,6 +100,22 @@ static QMetaProperty findMetaPropertyFromSignalIndex(const QObject *obj, int sig
     }
 
     return itemProperty;
+}
+
+static bool _d_qmlEngineIsShuttingDown(const QObject *obj)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    for (const QObject *o = obj; o; o = o->parent()) {
+        QQmlEngine *engine = qmlEngine(o);
+        if (!engine)
+            continue;
+        auto *v4 = engine->handle();
+        return v4 && v4->inShutdown;
+    }
+#else
+    Q_UNUSED(obj);
+#endif
+    return false;
 }
 
 DQuickControlColor::DQuickControlColor()
@@ -412,6 +429,8 @@ QByteArray DQuickControlColorSelector::findPalettePropertyName(const DQuickContr
 
 void DQuickControlColorSelector::clearAndInheritParentProperties()
 {
+    if (_d_qmlEngineIsShuttingDown(this))
+        return;
     // Clear meta object properties that contained in it's old parent
     for (int i = 0; i < m_metaObject->count(); ++i) {
         auto name = m_metaObject->name(i);
@@ -985,6 +1004,8 @@ void DQuickControlColorSelector::updatePropertyFromName(const QByteArray &name, 
         return;
     auto appriv = dynamic_cast<QCoreApplicationPrivate *>(QObjectPrivate::get(qApp));
     if (!appriv || appriv->aboutToQuitEmitted)
+        return;
+    if (_d_qmlEngineIsShuttingDown(this))
         return;
     Q_ASSERT(!name.isEmpty());
     QColor color;
