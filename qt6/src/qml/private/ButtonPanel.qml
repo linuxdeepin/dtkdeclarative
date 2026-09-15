@@ -19,7 +19,7 @@ BoxPanel {
     dropShadowColor: selectValue(DS.Style.button.dropShadow, DS.Style.checkedButton.dropShadow, DS.Style.highlightedButton.dropShadow)
     dropShadowColor2: selectValue(DS.Style.button.dropShadow2, null, null)
     innerShadowColor1: selectValue(DS.Style.button.innerShadow1, DS.Style.checkedButton.innerShadow, DS.Style.highlightedButton.innerShadow1)
-    innerShadowColor2: selectValue(DS.Style.button.innerShadow2, null, DS.Style.highlightedButton.innerShadow2)
+    innerShadowColor2: selectValue(DS.Style.button.innerShadow2, DS.Style.checkedButton.innerShadow2, DS.Style.highlightedButton.innerShadow2)
     // Normal button: two soft shadow layers (blur=1) via BoxShadow.
     // Far shadow (dropShadow) offset 1px down; near shadow (dropShadow2)
     // offset 2px down in normal/hover, disabled in pressed. Checked/
@@ -28,6 +28,7 @@ BoxPanel {
     boxShadowOffsetY: selectValue(1, 4, 4)
     boxShadowOffsetY2: selectValue(control.D.ColorSelector.controlState === D.DTK.PressedState ? 0 : 2, 0, 0)
     innerShadowOffsetY1: -1
+    innerShadowBottomMargin: button.checked ? 0 : -1
     visible: !button.flat || button.checked || button.highlighted || button.visualFocus || control.D.ColorSelector.controlState === D.DTK.PressedState || control.D.ColorSelector.controlState === D.DTK.HoveredState
 
     function selectValue(normal, checked, highlighted) {

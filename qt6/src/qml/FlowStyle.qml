@@ -348,8 +348,8 @@ QtObject {
     property QtObject checkedButton: QtObject {
         property D.Palette background : D.Palette {
             normal: D.DTK.makeColor(D.Color.Highlight)
-            hovered: D.DTK.makeColor(D.Color.Highlight).lightness(+10)
-            pressed: D.DTK.makeColor(D.Color.Highlight).lightness(-10)
+            hovered: D.DTK.makeColor(D.Color.Highlight).lightness(+10).saturation(+60)
+            pressed: D.DTK.makeColor(D.Color.Highlight).lightness(-20)
         }
 
         property D.Palette text : D.Palette {
@@ -367,9 +367,17 @@ QtObject {
         }
 
         property D.Palette innerShadow : D.Palette {
-            normal: D.DTK.makeColor(D.Color.Highlight).lightness(-10)
-            hovered: D.DTK.makeColor(D.Color.Highlight)
-            pressed: D.DTK.makeColor(D.Color.Highlight).lightness(-20)
+            normal: Qt.rgba(0, 0, 0, 0.2)
+            normalDark: D.DTK.makeColor(D.Color.Highlight).lightness(-30)
+            hovered: D.DTK.makeColor(D.Color.Highlight).lightness(-25).saturation(+40).opacity(-50)
+            pressed: D.DTK.makeColor(D.Color.Highlight).lightness(-25).saturation(+40).opacity(-50)
+        }
+
+        property D.Palette innerShadow2 : D.Palette {
+            normal: ("transparent")
+            normalDark: Qt.rgba(1, 1, 1, 0.1)
+            hoveredDark: ("transparent")
+            pressedDark: ("transparent")
         }
     }
 
