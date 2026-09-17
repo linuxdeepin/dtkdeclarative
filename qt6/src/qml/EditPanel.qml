@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -17,7 +17,7 @@ Rectangle {
     property string alertText: ""
     property int alertDuration: 0
 
-    radius: DS.Style.control.radius
+    radius: DS.Style.button.radius
     color: showAlert ? D.ColorSelector.alertBackgroundColor
                      : D.ColorSelector.backgroundColor
 
