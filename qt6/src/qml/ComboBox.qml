@@ -18,9 +18,11 @@ T.ComboBox {
     property bool showAlert
     property int maxVisibleItems : DS.Style.comboBox.maxVisibleItems
     property D.Palette separatorColor: DS.Style.comboBox.edit.separator
+    property D.Palette textColor: control.flat ? DS.Style.comboBox.flatText : DS.Style.button.text
     property var horizontalAlignment: control.flat ? Text.AlignRight : Text.AlignLeft
     property bool isInteractingWithContent: false
     opacity: enabled ? 1.0 : 0.4
+    palette.windowText: D.ColorSelector.textColor
 
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
@@ -121,7 +123,7 @@ T.ComboBox {
             validator: control.validator
             selectByMouse: true
 
-            color: control.editable ? control.palette.text : control.palette.buttonText
+            color: control.editable ? control.palette.text : control.D.ColorSelector.textColor
             selectionColor: control.palette.highlight
             selectedTextColor: control.palette.highlightedText
             verticalAlignment: Text.AlignVCenter
@@ -150,10 +152,32 @@ T.ComboBox {
             Component {
                 id: floatingComponent
                 P.ButtonPanel {
+                    id: buttonPanel
                     button: comboBox
-                    color1: control.flat ?  DS.Style.comboBox.flatBackground : DS.Style.button.background1
+                    // Flat combo boxes mirror ToolButton: transparent normal,
+                    // tinted hover/press, 6px radius, no borders or shadows.
+                    color1: control.flat ? DS.Style.toolButton.background : DS.Style.button.background1
+                    color2: control.flat ? buttonPanel.color1 : DS.Style.button.background2
                     outsideBorderColor: control.flat ? null : DS.Style.button.outsideBorder
+                    Binding on insideBorderColor {
+                        when: control.flat
+                        value: null
+                    }
+                    radius: control.flat ? DS.Style.toolButton.radius : DS.Style.button.radius
+                    enableDropShadow: !control.flat
+                    enableInnerShadow: !control.flat
+                    enableGradient: !control.flat
+                    enableBoxShadow: !control.flat
+                        && (buttonPanel.D.ColorSelector.family === D.Palette.CommonColor
+                            || buttonPanel.__crystalDark)
+                    enableCrystalBlur: !control.flat
+                    bevelShadowColor1: control.flat ? DS.Style.toolButton.bevelShadowColor1 : null
+                    bevelShadowColor2: control.flat ? DS.Style.toolButton.bevelShadowColor2 : null
                     visible: !control.flat || control.D.ColorSelector.controlState === D.DTK.PressedState || control.D.ColorSelector.controlState === D.DTK.HoveredState
+
+                    // Crystal blur and dark-hover bevel blur are both handled
+                    // internally by BoxPanel via enableCrystalBlur and
+                    // bevelShadowColor1/2.
                 }
             }
         }
