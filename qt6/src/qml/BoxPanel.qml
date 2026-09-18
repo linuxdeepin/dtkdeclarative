@@ -39,6 +39,14 @@ Item {
     property bool enableInnerShadow: false
     property bool enableGradient: false
 
+    // Bevel shadow colors for the dark-theme hover inner bevel (1px top
+    // highlight + 1px bottom shadow). Also serves as the on/off flag for
+    // the shared crystal backdrop blur: non-null enables both the bevel
+    // (dark hover) and crystal blur (crystal theme); null disables both.
+    // Follows the same palette-as-flag pattern as innerShadowColor1/2.
+    property D.Palette bevelShadowColor1: DS.Style.toolButton.bevelShadowColor1
+    property D.Palette bevelShadowColor2: DS.Style.toolButton.bevelShadowColor2
+
     // Gates the direct BoxInsetShadow inner bevel for crystal dark mode
     // and excludes crystal dark from the Loader-based common inner shadow path.
     readonly property bool __crystalDark: control.D.ColorSelector.family === D.Palette.CrystalColor
@@ -50,6 +58,37 @@ Item {
         && control.enableBoxShadow
         && control.enableInnerShadow
         && control.D.ColorSelector.controlState !== D.DTK.PressedState
+
+    readonly property bool __crystalBlur:
+        control.bevelShadowColor1
+        && control.D.ColorSelector.family === D.Palette.CrystalColor
+        && control.D.ColorSelector.controlState !== D.DTK.DisabledState
+        && (D.DTK.themeType === D.ApplicationHelper.DarkType
+            || control.D.ColorSelector.controlState !== D.DTK.InactiveState)
+
+    readonly property bool __darkHoverBevel: control.bevelShadowColor1
+        && D.DTK.themeType === D.ApplicationHelper.DarkType
+        && control.D.ColorSelector.controlState === D.DTK.HoveredState
+
+    // Backdrop blur for frosted-glass effect: crystal theme or dark-theme
+    // hover, both gated by bevelShadowColor1 (non-null = enabled).
+    D.InWindowBlur {
+        id: backdropBlur
+        anchors.fill: parent
+        radius: 15
+        saturation: 1.0
+        offscreen: true
+        visible: (control.__crystalBlur || control.__darkHoverBevel) && backdropBlur.valid
+        z: -1
+
+        D.ItemViewport {
+            anchors.fill: parent
+            fixed: true
+            sourceItem: backdropBlur.content
+            radius: backgroundRect.radius
+            hideSource: false
+        }
+    }
 
     // Hard drop shadows (blur == 0): two rounded Rectangles matching the
     // border-box, placed below the background and borders in z-order so the
@@ -200,6 +239,37 @@ Item {
                 cornerRadius: backgroundRect.radius
                 shadowColor: control.D.ColorSelector.controlState === D.DTK.HoveredState
                              ? Qt.rgba(0, 0, 0, 0.5) : Qt.rgba(0, 0, 0, 0.4)
+                shadowOffsetX: 0
+                shadowOffsetY: -1
+                shadowBlur: 1
+            }
+        }
+    }
+
+    // Dark-theme hover inner bevel. Shadow colors come from the
+    // bevelShadowColor palettes (resolved at Loader level for reliable
+    // re-evaluation on hover transitions). Null-guard the color resolution
+    // since bevelShadowColor1 may be null when the bevel is disabled.
+    Loader {
+        active: control.__darkHoverBevel
+        anchors.fill: backgroundRect
+        z: D.DTK.AboveOrder
+        readonly property color shadowColor1: control.bevelShadowColor1 ? control.D.ColorSelector.bevelShadowColor1 : "transparent"
+        readonly property color shadowColor2: control.bevelShadowColor2 ? control.D.ColorSelector.bevelShadowColor2 : "transparent"
+
+        sourceComponent: Item {
+            BoxInsetShadow {
+                anchors.fill: parent
+                cornerRadius: backgroundRect.radius
+                shadowColor: shadowColor1
+                shadowOffsetX: 0
+                shadowOffsetY: 1
+                shadowBlur: 1
+            }
+            BoxInsetShadow {
+                anchors.fill: parent
+                cornerRadius: backgroundRect.radius
+                shadowColor: shadowColor2
                 shadowOffsetX: 0
                 shadowOffsetY: -1
                 shadowBlur: 1

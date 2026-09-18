@@ -115,6 +115,14 @@ T.ToolButton {
         outsideBorderColor: null
         insideBorderColor: null
         radius: DS.Style.toolButton.radius
+        Binding on bevelShadowColor1 {
+            when: control.checked
+            value: null
+        }
+        Binding on bevelShadowColor2 {
+            when: control.checked
+            value: null
+        }
 
         // Non-checked tool buttons: bind color1 to the background palette
         // which has transparent 'normal', tinted 'hovered' and 'pressed'
@@ -130,56 +138,8 @@ T.ToolButton {
             value: buttonPanel.color1
         }
 
-        // Dark-theme hover frosted-glass chip for non-checked tool buttons:
-        // backdrop blur (radius 15, saturation 100%) plus a 1px white top
-        // inset highlight and 1px black bottom inset shadow, over the
-        // translucent dark tint from background (rgba(20,20,20,0.2)).
-        // The blur is platform-gated; the inset bevel shows regardless.
-        readonly property bool __darkHover: !control.checked
-            && D.DTK.themeType === D.ApplicationHelper.DarkType
-            && buttonPanel.D.ColorSelector.controlState === D.DTK.HoveredState
-
-        D.InWindowBlur {
-            id: hoverBlur
-            anchors.fill: parent
-            radius: 15
-            saturation: 1.0
-            offscreen: true
-            visible: buttonPanel.__darkHover && hoverBlur.valid
-            z: -1
-
-            D.ItemViewport {
-                anchors.fill: parent
-                fixed: true
-                sourceItem: hoverBlur.content
-                radius: buttonPanel.radius
-                hideSource: false
-            }
-        }
-
-        // Inner shadow 1: 1px white top inset highlight.
-        D.BoxInsetShadow {
-            anchors.fill: parent
-            visible: buttonPanel.__darkHover
-            z: D.DTK.AboveOrder
-            cornerRadius: buttonPanel.radius
-            shadowColor: Qt.rgba(1, 1, 1, 0.1)
-            shadowOffsetX: 0
-            shadowOffsetY: 1
-            shadowBlur: 1
-        }
-
-        // Inner shadow 2: 1px black bottom inset shadow.
-        D.BoxInsetShadow {
-            anchors.fill: parent
-            visible: buttonPanel.__darkHover
-            z: D.DTK.AboveOrder
-            cornerRadius: buttonPanel.radius
-            shadowColor: Qt.rgba(0, 0, 0, 0.5)
-            shadowOffsetX: 0
-            shadowOffsetY: -1
-            shadowBlur: 1
-        }
+        // Dark-hover bevel blur and inset shadows are handled internally
+        // by BoxPanel via bevelShadowColor1/2.
 
         // Checked tool buttons use a subtle overlay chip with an accent icon
         // instead of the shared accent-fill checked button style.
