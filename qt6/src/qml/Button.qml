@@ -60,36 +60,7 @@ T.Button {
         enableBoxShadow: !control.highlighted
             && (buttonPanel.D.ColorSelector.family === D.Palette.CommonColor
                 || buttonPanel.__crystalDark)
-
-        // Crystal backdrop blur behind the translucent tint produces a
-        // frosted-glass chip. Active in all non-disabled crystal states;
-        // light theme additionally excludes the inactive state.
-        // Mirrors the ToolButton hover blur (radius 15, saturation 1.0,
-        // offscreen itemViewport).
-        readonly property bool __crystalBlur:
-            !control.checked && !control.highlighted
-            && buttonPanel.D.ColorSelector.family === D.Palette.CrystalColor
-            && buttonPanel.D.ColorSelector.controlState !== D.DTK.DisabledState
-            && (D.DTK.themeType === D.ApplicationHelper.DarkType
-                || buttonPanel.D.ColorSelector.controlState !== D.DTK.InactiveState)
-
-        D.InWindowBlur {
-            id: crystalBlur
-            anchors.fill: parent
-            radius: 15
-            saturation: 1.0
-            offscreen: true
-            visible: buttonPanel.__crystalBlur && crystalBlur.valid
-            z: -1
-
-            D.ItemViewport {
-                anchors.fill: parent
-                fixed: true
-                sourceItem: crystalBlur.content
-                radius: buttonPanel.radius
-                hideSource: false
-            }
-        }
+        enableCrystalBlur: !(control.checked || control.highlighted)
     }
 
     contentItem: Item {

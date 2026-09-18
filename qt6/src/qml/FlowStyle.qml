@@ -474,6 +474,15 @@ QtObject {
             }
         }
 
+        property D.Palette bevelShadowColor1: D.Palette {
+            normal: Qt.rgba(1, 1, 1, 0.1)
+            normalDark: Qt.rgba(1, 1, 1, 0.1)
+        }
+        property D.Palette bevelShadowColor2: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.5)
+            normalDark: Qt.rgba(0, 0, 0, 0.5)
+        }
+
         property D.Palette checkedText: D.Palette {
             normal: D.DTK.makeColor(D.Color.Highlight)
             normalDark: D.DTK.makeColor(D.Color.Highlight)
@@ -570,26 +579,20 @@ QtObject {
             }
         }
 
-        property D.Palette flatBackground: D.Palette {
+        // Flat combo text color mirrors DS.Style.button.text (0.7 alpha
+        // normal, opaque hovered) but switches to the theme highlight
+        // (active/accent) color on pressed.  Dark theme auto-inverts via
+        // the palette system (no explicit normalDark needed).
+        property D.Palette flatText: D.Palette {
             normal {
-                common: Qt.rgba(0, 0, 0, 0.1)
-            }
-            normalDark {
-                common: Qt.rgba(1, 1, 1, 0.1)
+                common: Qt.rgba(0, 0, 0, 0.7)
             }
             hovered {
-                common: Qt.rgba(0, 0, 0, 0.1)
+                common: Qt.rgba(0, 0, 0, 1)
             }
-            hoveredDark {
-                common: (Qt.rgba(0.08, 0.08, 0.08, 0.2))
-            }
-            pressed {
-                common: Qt.rgba(0, 0, 0, 0.2)
-            }
-            pressedDark {
-                common: Qt.rgba(0, 0, 0, 0.15)
-            }
+            pressed: D.DTK.makeColor(D.Color.Highlight)
         }
+
     }
 
     // Edit
