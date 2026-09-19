@@ -80,6 +80,86 @@ static inline QPalette _d_getControlPalette(QQuickItem *item) {
 #endif
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+// Palette used for DTK color resolution (theme detection via Window, typed-color
+// resolving via Highlight / HighlightedText). Must NOT use toQPalette(): it reads
+// back the DTK-overridden `windowText` role and re-triggers its QML binding.
+// Accent roles come from the stable application palette; only Window is read from
+// the control (never overridden by DTK, safe for theme detection).
+static QPalette _d_getControlPaletteForResolve(QQuickItem *item, DGuiApplicationHelper::ColorType theme)
+{
+    QPalette palette = DGuiApplicationHelper::instance()->applicationPalette(theme);
+    if (item) {
+        if (const QQuickPalette *pa = item->property("palette").value<QQuickPalette *>()) {
+            if (QQuickColorGroup *active = pa->active()) {
+                palette.setColor(QPalette::Window, active->window());
+            }
+        }
+    }
+    return palette;
+}
+
+// Whether the control has a real Inactive palette group (used to decide the
+// inactive mask blending in getColorOf()). Must NOT use toQPalette(): it reads
+// back the DTK-overridden `windowText` and re-triggers its QML binding. Compares
+// Active vs Inactive groups role-by-role, excluding `windowText` (a DTK binding
+// artifact, not a real inactive-state difference) and NoRole.
+static bool _d_controlPaletteHasInactiveState(QQuickItem *item)
+{
+    if (!item)
+        return false;
+    const QQuickPalette *pa = item->property("palette").value<QQuickPalette *>();
+    if (!pa)
+        return false;
+    QQuickColorGroup *activeGroup = pa->active();
+    QQuickColorGroup *inactiveGroup = pa->inactive();
+    if (!activeGroup || !inactiveGroup)
+        return false;
+
+    // QQuickColorGroup::color(ColorRole) is private, so read each role through its
+    // public per-role accessor.
+    auto colorOf = [](QQuickColorGroup *g, QPalette::ColorRole r) -> QColor {
+        switch (r) {
+        case QPalette::WindowText:       return g->windowText();
+        case QPalette::Button:           return g->button();
+        case QPalette::Light:            return g->light();
+        case QPalette::Midlight:         return g->midlight();
+        case QPalette::Dark:             return g->dark();
+        case QPalette::Mid:              return g->mid();
+        case QPalette::Text:             return g->text();
+        case QPalette::BrightText:       return g->brightText();
+        case QPalette::ButtonText:       return g->buttonText();
+        case QPalette::Base:             return g->base();
+        case QPalette::Window:           return g->window();
+        case QPalette::Shadow:           return g->shadow();
+        case QPalette::Highlight:        return g->highlight();
+        case QPalette::HighlightedText:  return g->highlightedText();
+        case QPalette::Link:             return g->link();
+        case QPalette::LinkVisited:      return g->linkVisited();
+        case QPalette::AlternateBase:    return g->alternateBase();
+        case QPalette::NoRole:           return QColor(); // no public accessor; equal by default in both groups
+        case QPalette::ToolTipBase:      return g->toolTipBase();
+        case QPalette::ToolTipText:      return g->toolTipText();
+        case QPalette::PlaceholderText:  return g->placeholderText();
+        case QPalette::Accent:           return g->accent();
+        case QPalette::NColorRoles:      break;
+        }
+        return QColor();
+    };
+
+    QPalette compare;
+    for (int role = QPalette::WindowText; role < QPalette::NColorRoles; ++role) {
+        if (role == QPalette::WindowText || role == QPalette::NoRole)
+            continue; // windowText: DTK overrides it from QML (binding artifact, not a real inactive state).
+                     // NoRole: no public QQuickColorGroup accessor; left at default (equal in both groups).
+        const auto cr = static_cast<QPalette::ColorRole>(role);
+        compare.setColor(QPalette::Active, cr, colorOf(activeGroup, cr));
+        compare.setColor(QPalette::Inactive, cr, colorOf(inactiveGroup, cr));
+    }
+    return !compare.isEqual(QPalette::Inactive, QPalette::Active);
+}
+#endif
+
 static QMetaProperty findMetaPropertyFromSignalIndex(const QObject *obj, int signal_index) {
     QMetaProperty itemProperty;
     if (signal_index < 0)
@@ -838,8 +918,15 @@ QColor DQuickControlColorSelector::getColorOf(const DQuickControlPalette *palett
 
     QColor colorValue;
     if (targetColor.isTypedColor()) {
-        if (m_control)
+        if (m_control) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            // Resolve typed colors without reading back `windowText` (which would
+            // re-trigger its QML binding). Qt5 keeps the original path.
+            colorValue = targetColor.toColor(_d_getControlPaletteForResolve(m_control, state->controlTheme));
+#else
             colorValue = targetColor.toColor(_d_getControlPalette(m_control));
+#endif
+        }
     } else {
         colorValue = targetColor.color();
     }
@@ -855,11 +942,17 @@ QColor DQuickControlColorSelector::getColorOf(const DQuickControlPalette *palett
     bool shouldBlendInactive = useInactiveColor && state->controlState == DQMLGlobalObject::InactiveState;
     if (shouldBlendInactive) {
         if (m_control) {
-            // If the control's inactive palette is same as active palette, it means the control does not have a real 
-            // inactive state, we should not blend the color with inactive mask color, otherwise it will cause the 
+            // If the control's inactive palette is same as active palette, it means the control does not have a real
+            // inactive state, we should not blend the color with inactive mask color, otherwise it will cause the
             // color looks like disabled and hard to recognize.
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            // Compare Active/Inactive groups without toQPalette() (reads back `windowText`)
+            // and excluding `windowText` (a binding artifact, not a real inactive state).
+            shouldBlendInactive = _d_controlPaletteHasInactiveState(m_control);
+#else
             const auto qpalette = _d_getControlPalette(m_control);
             shouldBlendInactive = !qpalette.isEqual(QPalette::Inactive, QPalette::Active);
+#endif
         }
     }
     if (shouldBlendInactive) {
@@ -1015,12 +1108,27 @@ void DQuickControlColorSelector::updateControlTheme()
     if (!m_control)
         return;
 
+    // Re-entrancy guard: writing `palette.windowText` emits QQuickPalette::changed synchronously
+    // and re-enters this slot while already inside an update cycle; skip the redundant recompute.
+    if (m_updateDepth > 0)
+        return;
+
+    ++m_updateDepth;
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    // Detect theme from the control's Window role (never overridden by DTK) without
+    // toQPalette(), which would read back `windowText` and retrigger its QML binding.
+    const QPalette pa = _d_getControlPaletteForResolve(m_control, m_state->controlTheme);
+    const QColor windowColor = pa.color(QPalette::Window);
+#else
     const QPalette pa = _d_getControlPalette(m_control);
     const QColor windowColor = pa.color(QPalette::Window);
+#endif
 
     if (!windowColor.isValid()) {
         // When the palette changed, should update the properties if it's DColor type is variant color.
         updateAllColorProperties();
+        --m_updateDepth;
         return;
     }
 
@@ -1030,6 +1138,7 @@ void DQuickControlColorSelector::updateControlTheme()
         // When the palette changed, should update the properties if it's DColor type is variant color.
         updateAllColorProperties();
     }
+    --m_updateDepth;
 }
 
 bool DQuickControlColorSelector::updateControlState()
@@ -1052,12 +1161,16 @@ bool DQuickControlColorSelector::updateControlState()
 
 void DQuickControlColorSelector::updateAllColorProperties()
 {
+    ++m_updateDepth;
+
     for (int i = 0; i < m_metaObject->count(); ++i) {
         auto p = m_metaObject->name(i);
         if (p.isEmpty())
             continue;
         updatePropertyFromName(p);
     }
+
+    --m_updateDepth;
 }
 
 void DQuickControlColorSelector::recvPaletteColorChanged()

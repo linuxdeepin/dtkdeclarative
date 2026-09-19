@@ -420,6 +420,9 @@ private:
     };
     QScopedPointer<PaletteState> m_state;
     QList<QMetaObject::Connection> m_itemParentChangeConnections;
+    // Re-entrancy guard depth for updateControlTheme()/updateAllColorProperties() to skip
+    // re-entrant calls triggered by the `palette.windowText` binding writing the palette.
+    int m_updateDepth = 0;
 };
 
 DQUICK_END_NAMESPACE
