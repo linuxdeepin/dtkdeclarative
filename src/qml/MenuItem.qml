@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -38,6 +38,7 @@ T.MenuItem {
         rightPadding: control.mirrored ? indicatorPadding : arrowPadding
         spacing: control.spacing
         mirrored: control.mirrored
+        smooth: control.smooth
         display: control.display
         alignment: Qt.AlignLeft
         text: control.text
@@ -58,6 +59,7 @@ T.MenuItem {
         }
 
         sourceComponent: D.DciIcon {
+            smooth: control.smooth
             sourceSize: Qt.size(DS.Style.menu.item.iconSize.width,
                                 DS.Style.menu.item.iconSize.height)
             name: "menu_select"
@@ -80,6 +82,7 @@ T.MenuItem {
         }
 
         sourceComponent: D.DciIcon {
+            smooth: control.smooth
             sourceSize: Qt.size(DS.Style.menu.item.iconSize.width,
                                 DS.Style.menu.item.iconSize.height)
             mirror: control.mirrored

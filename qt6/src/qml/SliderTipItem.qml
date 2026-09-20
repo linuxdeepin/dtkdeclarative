@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -9,10 +9,16 @@ import org.deepin.dtk.style 1.0 as DS
 Control {
     id: control
 
+    readonly property Item __tipsSlider: parent ? parent.parent : null
+
     property string text
-    property int textHorizontalAlignment: Text.AlignHCenter
-    readonly property int direction: parent.parent.tickDirection
-    readonly property bool horizontal: parent.parent.children[0].horizontal
+    property int textHorizontalAlignment: !horizontal || !__tipsSlider ? Text.AlignHCenter
+                                        : control === __tipsSlider.__firstTick ? Text.AlignLeft
+                                        : control === __tipsSlider.__lastTick ? Text.AlignRight
+                                                                              : Text.AlignHCenter
+    readonly property int direction: __tipsSlider ? __tipsSlider.tickDirection
+                                                  : TipsSlider.TickDirection.Back
+    readonly property bool horizontal: __tipsSlider ? __tipsSlider.slider.horizontal : true
     property bool highlight
 
     property D.Palette tickColor: DS.Style.slider.tick.background
@@ -41,10 +47,12 @@ Control {
             bottomMargin: horizontal && (TipsSlider.TickDirection.Front === direction) ? DS.Style.slider.tick.vPadding : undefined
             left: horizontal ? (Text.AlignLeft === textHorizontalAlignment ? __rect.left : undefined)
                              : (TipsSlider.TickDirection.Back === direction ? __rect.right : undefined)
-            leftMargin: !horizontal && TipsSlider.TickDirection.Back === direction ? DS.Style.slider.tick.hPadding : undefined
+            leftMargin: horizontal ? (highlight ? -DS.Style.slider.tick.hPadding : 0)
+                                   : (TipsSlider.TickDirection.Back === direction ? DS.Style.slider.tick.hPadding : undefined)
             right: horizontal ? (Text.AlignRight === textHorizontalAlignment ? __rect.right : undefined)
                               : (TipsSlider.TickDirection.Front === direction ? __rect.left : undefined)
-            rightMargin: !horizontal && TipsSlider.TickDirection.Front === direction ? DS.Style.slider.tick.hPadding : undefined
+            rightMargin: horizontal ? (highlight ? -DS.Style.slider.tick.hPadding : 0)
+                                    : (TipsSlider.TickDirection.Front === direction ? DS.Style.slider.tick.hPadding : undefined)
             horizontalCenter: horizontal && Text.AlignHCenter === textHorizontalAlignment ? __rect.horizontalCenter : undefined
             verticalCenter: horizontal ? undefined : __rect.verticalCenter
         }

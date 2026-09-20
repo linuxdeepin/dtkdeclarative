@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -370,7 +370,6 @@ Item {
 
             ticks: [SliderTipItem {
                     text: sliderTickTip3.tips[0]
-                    textHorizontalAlignment: Text.AlignLeft
                 },
                 SliderTipItem {
                     text: sliderTickTip3.tips[1]
@@ -389,7 +388,6 @@ Item {
                 },
                 SliderTipItem {
                     text: sliderTickTip3.tips[6]
-                    textHorizontalAlignment: Text.AlignRight
                 }]
 
             // test end Indicator

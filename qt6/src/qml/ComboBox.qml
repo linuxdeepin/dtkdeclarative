@@ -60,6 +60,7 @@ T.ComboBox {
                 }
 
                 D.DciIcon {
+                    smooth: control.smooth
                     sourceSize {
                         width: DS.Style.comboBox.edit.indicatorSize
                         height: DS.Style.comboBox.edit.indicatorSize
@@ -76,6 +77,7 @@ T.ComboBox {
         Component {
             id: normalIndicator
             D.DciIcon {
+                smooth: control.smooth
                 sourceSize {
                     width: DS.Style.comboBox.iconSize
                     height: DS.Style.comboBox.iconSize
@@ -98,6 +100,7 @@ T.ComboBox {
             active: iconName
 
             sourceComponent: D.DciIcon {
+                smooth: control.smooth
                 palette: D.DTK.makeIconPalette(control.palette)
                 mode: control.D.ColorSelector.controlState
                 theme: control.D.ColorSelector.controlTheme

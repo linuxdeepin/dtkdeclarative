@@ -66,6 +66,7 @@ Item {
                 visible: iconLabel.name !== ""
                 contentItem: D.DciIcon {
                     id: iconLabel
+                    smooth: iconControl.smooth
                     mode: iconControl.D.ColorSelector.controlState
                     theme: iconControl.D.ColorSelector.controlTheme
                     palette: D.DTK.makeIconPalette(iconControl.palette)
