@@ -46,7 +46,7 @@ FocusScope {
                 }
                 return maxWidth
             }
-            interactive: model.count > maxVisibleItems
+            interactive: itemsView.count > maxVisibleItems
             ScrollIndicator.vertical: ScrollIndicator { }
             highlight: HighlightPanel {
                 visible: false // TODO listview's highlight is confict with Item's highlight.
