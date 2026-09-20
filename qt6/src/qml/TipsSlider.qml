@@ -16,6 +16,18 @@ Control {
     property alias ticks: ticksGrid.children
     property int tickDirection: (TipsSlider.TickDirection.Back)
 
+    readonly property Item __firstTick: __edgeTick(false)
+    readonly property Item __lastTick: __edgeTick(true)
+
+    function __edgeTick(fromEnd) {
+        for (var i = 0; i < ticks.length; ++i) {
+            var tick = ticks[fromEnd ? ticks.length - 1 - i : i]
+            if (tick instanceof D.SliderTipItem)
+                return tick
+        }
+        return null
+    }
+
     implicitWidth: __slider.width + (__slider.horizontal ? 0 : ticksGrid.childrenRect.width)
     implicitHeight: __slider.height + (__slider.horizontal ? ticksGrid.childrenRect.height : 0)
 

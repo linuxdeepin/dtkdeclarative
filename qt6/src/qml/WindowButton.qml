@@ -30,6 +30,7 @@ D.IconButton {
     leftPadding: 0
     rightPadding: 0
     contentItem: D.DciIcon {
+        smooth: control.smooth
         name: control.icon.name
         asynchronous: false
         palette: D.DTK.makeIconPalette(control.palette)

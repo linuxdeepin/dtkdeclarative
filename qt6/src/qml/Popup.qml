@@ -17,6 +17,7 @@ T.Popup {
 
     property bool closeOnInactive: true
     readonly property bool active: parent && parent.Window.active
+
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
 
@@ -28,7 +29,10 @@ T.Popup {
 
         Component {
             id: windowBlurComponent
-            D.StyledBehindWindowBlur { }
+            D.StyledBehindWindowBlur {
+                implicitWidth: DS.Style.popup.width
+                implicitHeight: DS.Style.popup.height
+            }
         }
 
         Component {

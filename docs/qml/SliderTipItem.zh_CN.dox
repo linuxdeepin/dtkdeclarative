@@ -33,8 +33,10 @@
 @brief text 属性用于控制 SliderTipItem 当前显示的文本。
 
 @property enumeration SliderTipItem::textHorizontalAlignment
-@brief textHorizontalAlignment 属性用于控制 SliderTipItem 文本水平布局，默认情况下为 水平居中（Text.AlignHCenter）。
-    可使用以下枚举： Text.AlignLeft, Text.AlignRight, Text.AlignHCenter
+@brief textHorizontalAlignment 属性用于控制 SliderTipItem 文本水平布局。水平方向的滑块默认按刻度位置
+    自动对齐：首个刻度左对齐（Text.AlignLeft），末个刻度右对齐（Text.AlignRight），其余居中
+    （Text.AlignHCenter），以避免两端文本越出滑块范围；垂直方向的滑块默认水平居中。
+    显式赋值可覆盖默认行为，可使用以下枚举： Text.AlignLeft, Text.AlignRight, Text.AlignHCenter
 
 @property enumeration SliderTipItem::direction
 @note 只读属性
