@@ -628,8 +628,18 @@ QtObject {
         }
 
         property D.Palette alertBackground: D.Palette {
-            normal: Qt.rgba(0.95, 0.22, 0.20, 0.15)
-            normalDark: normal
+            normal: Qt.rgba(241 / 255, 57 / 255, 58 / 255, 0.15)
+            normalDark: Qt.rgba(241 / 255, 57 / 255, 58 / 255, 0.15)
+        }
+
+        property D.Palette alertDropShadow: D.Palette {
+            normal: Qt.rgba(145 / 255, 0, 0, 0.3)
+            normalDark: Qt.rgba(0, 0, 0, 0.5)
+        }
+
+        property D.Palette alertInnerShadow: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0)
+            normalDark: Qt.rgba(1, 1, 1, 0.05)
         }
 
         property D.Palette placeholderText: D.Palette {

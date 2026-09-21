@@ -18,6 +18,8 @@ Item {
     property D.Palette insideBorderColor: DS.Style.edit.insideBorder
     property D.Palette innerShadowColor: DS.Style.edit.innerShadow
     property D.Palette dropShadowColor: DS.Style.edit.dropShadow
+    property D.Palette alertDropShadow: DS.Style.edit.alertDropShadow
+    property D.Palette alertInnerShadow: DS.Style.edit.alertInnerShadow
     property alias showBorder: _border.active
     property bool showAlert: false
     property string alertText: ""
@@ -28,7 +30,7 @@ Item {
     // Outer drop shadow: rendered below the background so only the
     // 1px strip extending past the bottom edge is visible.
     Loader {
-        active: dropShadowColor
+        active: dropShadowColor || showAlert
         anchors.fill: parent
 
         sourceComponent: BoxShadow {
@@ -36,7 +38,8 @@ Item {
             shadowBlur: 1
             shadowOffsetY: 1
             hollow: true
-            shadowColor: panel.D.ColorSelector.dropShadowColor
+            shadowColor: showAlert ? panel.D.ColorSelector.alertDropShadow
+                                   : panel.D.ColorSelector.dropShadowColor
         }
     }
 
@@ -50,7 +53,7 @@ Item {
     }
 
     Loader {
-        active: outsideBorderColor
+        active: outsideBorderColor && !showAlert
         anchors.fill: parent
 
         sourceComponent: OutsideBoxBorder {
@@ -61,7 +64,7 @@ Item {
     }
 
     Loader {
-        active: insideBorderColor
+        active: insideBorderColor && !showAlert
         anchors.fill: parent
 
         sourceComponent: InsideBoxBorder {
@@ -72,14 +75,15 @@ Item {
 
     // Inner shadow: 1px inset at the top edge.
     Loader {
-        active: innerShadowColor
+        active: showAlert ? alertInnerShadow : innerShadowColor
         anchors.fill: parent
 
         sourceComponent: BoxInsetShadow {
             shadowBlur: 1
-            shadowOffsetY: -1
+            shadowOffsetY: 1
             spread: 0
-            shadowColor: panel.D.ColorSelector.innerShadowColor
+            shadowColor: showAlert ? panel.D.ColorSelector.alertInnerShadow
+                                   : panel.D.ColorSelector.innerShadowColor
             cornerRadius: panel.radius
         }
     }
