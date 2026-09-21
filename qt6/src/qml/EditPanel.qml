@@ -7,19 +7,82 @@ import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
 
-Rectangle {
+Item {
     id: panel
     property Item control
     property D.Palette backgroundColor: DS.Style.edit.background
     property D.Palette alertBackgroundColor: DS.Style.edit.alertBackground
+    property color color: panel.showAlert ? panel.D.ColorSelector.alertBackgroundColor
+                                            : panel.D.ColorSelector.backgroundColor
+    property D.Palette outsideBorderColor: DS.Style.edit.outsideBorder
+    property D.Palette insideBorderColor: DS.Style.edit.insideBorder
+    property D.Palette innerShadowColor: DS.Style.edit.innerShadow
+    property D.Palette dropShadowColor: DS.Style.edit.dropShadow
     property alias showBorder: _border.active
     property bool showAlert: false
     property string alertText: ""
     property int alertDuration: 0
 
-    radius: DS.Style.button.radius
-    color: showAlert ? D.ColorSelector.alertBackgroundColor
-                     : D.ColorSelector.backgroundColor
+    readonly property real radius: DS.Style.button.radius
+
+    // Outer drop shadow: rendered below the background so only the
+    // 1px strip extending past the bottom edge is visible.
+    Loader {
+        active: dropShadowColor
+        anchors.fill: parent
+
+        sourceComponent: BoxShadow {
+            cornerRadius: panel.radius
+            shadowBlur: 1
+            shadowOffsetY: 1
+            hollow: true
+            shadowColor: panel.D.ColorSelector.dropShadowColor
+        }
+    }
+
+    // Background fill: rendered on top of the drop shadow, covering
+    // the overlapping area.
+    Rectangle {
+        id: background
+        anchors.fill: parent
+        radius: panel.radius
+        color: panel.color
+    }
+
+    Loader {
+        active: outsideBorderColor
+        anchors.fill: parent
+
+        sourceComponent: OutsideBoxBorder {
+            radius: panel.radius
+            color: panel.D.ColorSelector.outsideBorderColor
+            borderWidth: DS.Style.control.borderWidth
+        }
+    }
+
+    Loader {
+        active: insideBorderColor
+        anchors.fill: parent
+
+        sourceComponent: InsideBoxBorder {
+            radius: panel.radius
+            color: panel.D.ColorSelector.insideBorderColor
+        }
+    }
+
+    // Inner shadow: 1px inset at the top edge.
+    Loader {
+        active: innerShadowColor
+        anchors.fill: parent
+
+        sourceComponent: BoxInsetShadow {
+            shadowBlur: 1
+            shadowOffsetY: -1
+            spread: 0
+            shadowColor: panel.D.ColorSelector.innerShadowColor
+            cornerRadius: panel.radius
+        }
+    }
 
     Loader {
         id: _border

@@ -603,8 +603,28 @@ QtObject {
         property int textAreaHeight: 100
 
         property D.Palette background: D.Palette {
-            normal: Qt.rgba(0, 0, 0, 0.08)
-            normalDark: Qt.rgba(1, 1, 1, 0.1)
+            normal: Qt.rgba(1, 1, 1, 0.6)
+            normalDark: Qt.rgba(1, 1, 1, 0.05)
+        }
+
+        property D.Palette outsideBorder: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.05)
+            normalDark: ("transparent")
+        }
+
+        property D.Palette insideBorder: D.Palette {
+            normal: ("transparent")
+            normalDark: Qt.rgba(1, 1, 1, 0.05)
+        }
+
+        property D.Palette innerShadow: D.Palette {
+            normal: Qt.rgba(1, 1, 1, 0.1)
+            normalDark: ("transparent")
+        }
+
+        property D.Palette dropShadow: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.05)
+            normalDark: Qt.rgba(0, 0, 0, 0.4)
         }
 
         property D.Palette alertBackground: D.Palette {
