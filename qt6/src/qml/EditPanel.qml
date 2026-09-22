@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -39,7 +39,7 @@ Rectangle {
         sourceComponent: AlertToolTip {
             target: control
             timeout: alertDuration
-            visible: showAlert
+            requestVisible: showAlert
             text: alertText
         }
     }
