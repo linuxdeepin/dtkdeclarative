@@ -20,7 +20,9 @@ find_package(Dtk${DTK_NAME_SUFFIX}Core REQUIRED)
 find_package(Dtk${DTK_NAME_SUFFIX}Gui REQUIRED)
 find_package(PkgConfig REQUIRED)
 
-pkg_check_modules(GL REQUIRED IMPORTED_TARGET gl)
+if(LINUX)
+    pkg_check_modules(GL REQUIRED IMPORTED_TARGET gl)
+endif()
 
 include(${PROJECT_SOURCE_DIR}/src/src.cmake)
 
@@ -61,8 +63,13 @@ target_link_libraries(${LIB_NAME}_properties INTERFACE
     Dtk${DTK_NAME_SUFFIX}::Gui
     $<BUILD_INTERFACE:Qt${QT_VERSION_MAJOR}::QuickPrivate>
     $<BUILD_INTERFACE:Qt${QT_VERSION_MAJOR}::DBus>
-    $<BUILD_INTERFACE:PkgConfig::GL>
 )
+
+if(LINUX)
+    target_link_libraries(${LIB_NAME}_properties INTERFACE $<BUILD_INTERFACE:PkgConfig::GL>)
+else()
+    target_link_libraries(${LIB_NAME}_properties INTERFACE $<BUILD_INTERFACE:opengl32>)
+endif()
 
 target_include_directories(${LIB_NAME}_properties INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
