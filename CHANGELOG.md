@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.7.50] - 2026-09-22
+
+### Added
+
+- Add split screen menu to title bar
+
+### Changed
+
+- I18n: Translate dtkdeclarative.ts in sv (#674)
+
+### Fixed
+
+- Set fixed default implicit size for Window popupType
+- Restore implicit size bindings on Popup for qt6
+- Correct model reference in ArrowListView
+- Use formal parameter in ThemeMenu signal handler
+
 ## [6.7.49] - 2026-09-10
 
 ### Added
