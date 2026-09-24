@@ -83,13 +83,14 @@ Control {
         property D.Palette dropShadowColor: DS.Style.alertToolTip.connecterdropShadow
         property D.Palette backgroundColor: DS.Style.alertToolTip.connecterBackground
         property D.Palette borderColor: DS.Style.control.border
+        x: 10
         y: -height * 0.75
         width: DS.Style.alertToolTip.connectorWidth
         height: DS.Style.alertToolTip.connectorHeight
-        shadowBlur: 4
-        shadowOffsetY: 2
+        shadowBlur: 2
+        shadowOffsetY: 0
         shadowColor: D.ColorSelector.dropShadowColor
-        cornerRadius: DS.Style.control.radius
+        cornerRadius: 0
 
         Rectangle {
             anchors.fill: parent

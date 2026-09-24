@@ -831,6 +831,7 @@ QtObject {
 
         property D.Palette connecterdropShadow: D.Palette {
             normal: Qt.rgba(0, 0, 0, 0.1)
+            normalDark: Qt.rgba(0, 0, 0, 0.1)
         }
 
         property D.Palette connecterBackground: D.Palette {
