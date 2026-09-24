@@ -22,7 +22,7 @@ Rectangle {
             width: DS.Style.buttonIndicator.iconSize
         }
         name: "arrow_ordinary_down"
-        palette: control.D.DTK.makeIconPalette(control.palette)
+        palette: control.D.DTK.makeIconPaletteWithForeground(control.palette, control.D.ColorSelector.textColor)
         mode: control.D.ColorSelector.controlState
         theme: control.D.ColorSelector.controlTheme
         fallbackToQIcon: false
