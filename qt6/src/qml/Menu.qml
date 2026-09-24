@@ -30,6 +30,7 @@ T.Menu {
     readonly property bool active: parent && parent.Window.active
 
     implicitHeight: DS.Style.control.implicitHeight(control)
+    palette: D.DTK.palette
     implicitWidth: DS.Style.control.implicitWidth(control)
     margins: DS.Style.menu.margins
     overlap: DS.Style.menu.overlap
