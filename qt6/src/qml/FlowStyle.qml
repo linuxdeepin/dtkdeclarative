@@ -857,30 +857,32 @@ QtObject {
 
     property QtObject menu: QtObject {
         property int padding: 6
-        property int topPadding: 8
+        property int topPadding: 6
         property int radius: D.DTK.platformTheme.windowRadius < 0 ? 12 : D.DTK.platformTheme.windowRadius
         property int margins: 10
         property int overlap: 1
 
         property QtObject item: QtObject {
             property int width: 180
-            property int height: 30
+            property int height: 26
             property size iconSize: Qt.size(14, 14)
             property int count: 0
             property int contentPadding: 30
             property int indicatorMargin: 10
             property int radius: 6
+            property int padding: 3
         }
 
         property QtObject separator: QtObject {
-            property int lineTopPadding : 0
-            property int lineBottomPadding : 0
+            property int lineTopPadding : 3
+            property int lineBottomPadding : 3
             property int lineHeight : 2
             property int topPadding: 11
             property int bottomPadding: 2
 
             property D.Palette lineColor: D.Palette {
                 normal: Qt.rgba(0, 0, 0, 0.1)
+                normalDark: Qt.rgba(1, 1, 1, 0.1)
             }
         }
 
