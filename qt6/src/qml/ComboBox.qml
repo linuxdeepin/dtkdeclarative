@@ -173,6 +173,9 @@ T.ComboBox {
         rightMargin: DS.Style.popup.margin
         palette: control.palette
         implicitWidth: control.flat ? Math.max(contentItem.implicitWidth, control.width) : control.width
+        // 60 is a temporary viewport so the list can realize one row and be measured.
+        implicitHeight: (contentItem.sizedHeight > 0 ? contentItem.sizedHeight : 2 * DS.Style.arrowListView.itemHeight)
+                        + topPadding + bottomPadding
         onClosed: control.isInteractingWithContent = false
         Connections {
             target: control
