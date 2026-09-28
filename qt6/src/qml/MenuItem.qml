@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -14,10 +14,10 @@ T.MenuItem {
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
     baselineOffset: contentItem.y + contentItem.baselineOffset
-    padding: DS.Style.control.padding
+    padding: DS.Style.menu.item.padding
     spacing: DS.Style.control.spacing
     opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
-    highlighted: hovered || (subMenu && subMenu.visible)
+    highlighted: enabled && (hovered || (subMenu && subMenu.visible))
     icon {
         height: DS.Style.menu.item.iconSize.height
         width: DS.Style.menu.item.iconSize.height
