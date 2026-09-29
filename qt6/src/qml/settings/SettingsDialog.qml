@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 import QtQuick
+import QtQuick.Layouts
 import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 import org.deepin.dtk.settings 1.0 as Settings
@@ -10,6 +11,7 @@ import org.deepin.dtk 1.0
 
 DialogWindow {
     id: control
+    enableBehindWindowBlur: false
 
     property list<Settings.SettingsGroup> groups
     property QtObject config
@@ -28,60 +30,74 @@ DialogWindow {
     property alias navigationView: navigationView
     property alias contentView: contentView
 
-    ScrollView {
-        id: navigationBg
-        clip: true
-        width: DS.Style.settings.navigation.width
-        background: Rectangle {
-            anchors.fill: parent
-            color: palette.base
-        }
+    RowLayout {
+        anchors.fill: parent
+        spacing: 0
 
-        ListView {
-            id: navigationView
-            model: container.navigationModel
-            leftMargin: DS.Style.settings.navigation.margin
-            rightMargin: DS.Style.settings.navigation.margin
-            currentIndex: 0
-            onCurrentIndexChanged: {
-                contentView.currentIndex = currentIndex
+        ScrollView {
+            id: navigationBg
+            clip: true
+            Layout.preferredWidth: DS.Style.settings.navigation.width
+            Layout.fillHeight: true
+
+            ListView {
+                id: navigationView
+                clip: true
+                model: container.navigationModel
+                leftMargin: DS.Style.settings.navigation.margin
+                rightMargin: DS.Style.settings.navigation.margin
+                currentIndex: 0
+                onCurrentIndexChanged: {
+                    contentView.currentIndex = currentIndex
+                }
             }
         }
-    }
 
-    ScrollView {
-        id: contentBg
-        clip: true
-        anchors {
-            right: parent.right
-            left: navigationBg.right
-            top: control.top
-        }
-        padding: DS.Style.settings.content.margin
-        background: Rectangle {
-            anchors.fill: parent
-            color: palette.base
-        }
-
-        ListView {
-            id: contentView
-            model: container.contentModel
-            highlightRangeMode: ListView.StrictlyEnforceRange
-            currentIndex: 0
-            onCurrentIndexChanged: {
-                navigationView.currentIndex = currentIndex
+        ScrollView {
+            id: contentBg
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            leftPadding: DS.Style.settings.content.margin
+            rightPadding: DS.Style.settings.content.margin
+            topPadding: DS.Style.settings.content.margin
+            bottomPadding: DS.Style.settings.content.margin
+            background: Rectangle {
+                anchors.fill: parent
+                color: palette.window
+                radius: DS.Style.control.radius
+                Rectangle {
+                    anchors {
+                        fill: parent
+                        leftMargin: contentBg.leftPadding
+                        rightMargin: contentBg.rightPadding
+                        topMargin: contentBg.topPadding
+                        bottomMargin: contentBg.bottomPadding
+                    }
+                    color: palette.base
+                }
             }
-            footer: Item {
-                width: parent.width
-                height: DS.Style.settings.content.resetButtonHeight
 
-                Button {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.bottom: parent.bottom
-                    text: qsTr("Restore Defaults")
+            ListView {
+                id: contentView
+                model: container.contentModel
+                clip: true
+                highlightRangeMode: ListView.StrictlyEnforceRange
+                currentIndex: 0
+                onCurrentIndexChanged: {
+                    navigationView.currentIndex = currentIndex
+                }
+                footer: Item {
+                    width: parent.width
+                    height: DS.Style.settings.content.resetButtonHeight
 
-                    onClicked: {
-                        settingsContainer.resetSettings();
+                    Button {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.bottom: parent.bottom
+                        text: qsTr("Restore Defaults")
+
+                        onClicked: {
+                            settingsContainer.resetSettings();
+                        }
                     }
                 }
             }
