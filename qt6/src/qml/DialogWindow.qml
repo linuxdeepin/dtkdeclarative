@@ -21,6 +21,7 @@ Window {
     D.DWindow.wmWindowTypes: D.WindowManagerHelper.DialogType
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.MSWindowsFixedSizeDialogHint
     D.ColorSelector.family: D.Palette.CrystalColor
+    property bool enableBehindWindowBlur: true
     color: "transparent"
     height: content.height
     width: content.width
@@ -34,6 +35,7 @@ Window {
     property real topPadding: title === "" ? 0 : DS.Style.dialogWindow.contentVMargin
     
     D.StyledBehindWindowBlur {
+        visible: control.enableBehindWindowBlur
         control: control
         anchors.fill: parent
         blendColor: {
