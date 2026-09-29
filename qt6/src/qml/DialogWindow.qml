@@ -21,9 +21,10 @@ Window {
     D.DWindow.wmWindowTypes: D.WindowManagerHelper.DialogType
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.MSWindowsFixedSizeDialogHint
     D.ColorSelector.family: D.Palette.CrystalColor
-    color: "transparent"
-    height: content.height
-    width: content.width
+    property bool enableBehindWindowBlur: true
+    color: enableBehindWindowBlur ? "transparent" : palette.base
+    height: content.implicitHeight
+    width: content.implicitWidth
 
     property alias header: titleBar.sourceComponent
     property string icon
@@ -33,31 +34,40 @@ Window {
     property real rightPadding: DS.Style.dialogWindow.contentHMargin
     property real topPadding: title === "" ? 0 : DS.Style.dialogWindow.contentVMargin
     
-    D.StyledBehindWindowBlur {
-        control: control
+    Loader {
         anchors.fill: parent
-        blendColor: {
-            if (valid) {
+        active: control.enableBehindWindowBlur
+        sourceComponent: D.StyledBehindWindowBlur {
+            control: Window.window
+            anchors.fill: parent
+            blendColor: {
+                if (valid) {
+                    return DS.Style.control.selectColor(undefined,
+                        Qt.rgba(235 / 255.0, 235 / 255.0, 235 / 255.0, 0.6),
+                        Qt.rgba(10 / 255.0, 10 / 255.0, 10 / 255.0, 85 / 255.0))
+                }
                 return DS.Style.control.selectColor(undefined,
-                    Qt.rgba(235 / 255.0, 235 / 255.0, 235 / 255.0, 0.6),
-                    Qt.rgba(10 / 255.0, 10 / 255.0, 10 / 255.0, 85 / 255.0))
+                    DS.Style.behindWindowBlur.lightNoBlurColor,
+                    DS.Style.behindWindowBlur.darkNoBlurColor)
             }
-            return DS.Style.control.selectColor(undefined,
-                DS.Style.behindWindowBlur.lightNoBlurColor,
-                DS.Style.behindWindowBlur.darkNoBlurColor)
         }
     }
 
     Item {
         id: content
+        anchors.fill: parent
+        implicitWidth: layout.implicitWidth
+        implicitHeight: layout.implicitHeight
         palette: control.active ? D.DTK.palette : D.DTK.inactivePalette
-        implicitHeight: childrenRect.height
         ColumnLayout {
             id: layout
+            anchors.fill: parent
             spacing: 0
 
             Loader {
                 id: titleBar
+                Layout.fillWidth: true
+                Layout.preferredWidth: item ? item.implicitWidth : 0
                 z: D.DTK.TopOrder
                 sourceComponent: DialogTitleBar {
                     enableInWindowBlendBlur: false
@@ -67,6 +77,7 @@ Window {
 
             Loader {
                 active: title !== ""
+                visible: active
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignHCenter
                 sourceComponent: Component {
@@ -82,6 +93,7 @@ Window {
             Item {
                 id: contentLoader
                 Layout.fillWidth: true
+                Layout.fillHeight: true
                 Layout.preferredHeight: childrenRect.height
                 Layout.leftMargin: control.leftPadding
                 Layout.rightMargin: control.rightPadding
