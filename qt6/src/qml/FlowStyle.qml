@@ -910,6 +910,16 @@ QtObject {
             normal: Qt.rgba(0, 0, 0, 0.2)
             normalDark: Qt.rgba(1, 1, 1, 0.1)
         }
+        property D.Palette itemHighlightInnerShadow: D.Palette {
+            // Light: 20% black; Dark: 24% black.
+            normal: Qt.rgba(0, 0, 0, 0.2)
+            normalDark: Qt.rgba(0, 0, 0, 0.24)
+        }
+        property D.Palette itemHighlightInnerShadowTop: D.Palette {
+            // Light: no top highlight; Dark: 1px white 10% top inset highlight.
+            normal: ("transparent")
+            normalDark: Qt.rgba(1, 1, 1, 0.1)
+        }
 
         property D.Palette itemText: D.Palette {
             normal: ("black")
