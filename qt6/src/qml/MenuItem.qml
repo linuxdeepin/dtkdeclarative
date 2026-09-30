@@ -108,6 +108,8 @@ T.MenuItem {
             sourceComponent: HighlightPanel {
                 outerShadowColor: null
                 innerShadowColor: null
+                bevelShadowColor1: DS.Style.menu.itemHighlightInnerShadowTop
+                bevelShadowColor2: DS.Style.menu.itemHighlightInnerShadow
                 radius: DS.Style.menu.item.radius
             }
         }
