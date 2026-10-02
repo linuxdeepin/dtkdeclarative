@@ -10,6 +10,8 @@ import org.deepin.dtk 1.0
 
 DialogWindow {
     id: control
+    enableBehindWindowBlur: false
+    color: palette.base
 
     property list<Settings.SettingsGroup> groups
     property QtObject config
@@ -39,6 +41,7 @@ DialogWindow {
 
         ListView {
             id: navigationView
+            clip: true
             model: container.navigationModel
             leftMargin: DS.Style.settings.navigation.margin
             rightMargin: DS.Style.settings.navigation.margin
@@ -57,14 +60,30 @@ DialogWindow {
             left: navigationBg.right
             top: control.top
         }
-        padding: DS.Style.settings.content.margin
+        height: Math.max(0, control.height - parent.y)
+        leftPadding: DS.Style.settings.content.margin
+        rightPadding: DS.Style.settings.content.margin
+        topPadding: DS.Style.settings.content.margin
+        bottomPadding: DS.Style.settings.content.margin
         background: Rectangle {
             anchors.fill: parent
-            color: palette.base
+            color: palette.window
+            radius: DS.Style.control.radius
+            Rectangle {
+                anchors {
+                    fill: parent
+                    leftMargin: contentBg.leftPadding
+                    rightMargin: contentBg.rightPadding
+                    topMargin: contentBg.topPadding
+                    bottomMargin: contentBg.bottomPadding
+                }
+                color: palette.base
+            }
         }
 
         ListView {
             id: contentView
+            clip: true
             model: container.contentModel
             highlightRangeMode: ListView.StrictlyEnforceRange
             currentIndex: 0
