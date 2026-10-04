@@ -237,6 +237,21 @@ bool DQMLGlobalObject::isSoftwareRender()
     return isSoftware;
 }
 
+// Check whether the current scene graph backend supports InWindowBlur rendering.
+// The blur effect requires the OpenGL RHI backend; other backends (e.g. Vulkan,
+// Metal, D3D11) are not supported by DBackdropNode's RHI render path and would
+// silently fall back to a no-op (reset), leaving a semi-transparent background
+// without actual blur. This is distinct from isSoftwareRender(), which only
+// detects the explicit "software" backend string.
+bool DQMLGlobalObject::isBlurBackendSupported()
+{
+    static bool supported = []() {
+        const QString backend = QQuickWindow::sceneGraphBackend();
+        return backend.isEmpty() || backend == QLatin1String("opengl");
+    }();
+    return supported;
+}
+
 QString DQMLGlobalObject::windowManagerNameString() const
 {
     return DWindowManagerHelper::instance()->windowManagerNameString();
