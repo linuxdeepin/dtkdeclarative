@@ -68,23 +68,29 @@ T.Menu {
                 view.highlightMoveDuration: 50
                 view.highlightMoveVelocity: -1
 
-                view.highlight: HighlightPanel {
-                    id: highlightRect
+                view.highlight: Control {
                     visible: false // TODO listview's highlight is confict with Item's highlight.
+                    hoverEnabled: false
                     anchors.left: parent ? parent.left : undefined
                     anchors.right: parent ? parent.right : undefined
                     anchors.leftMargin: 0
                     anchors.rightMargin: 0
                     scale: D.DTK.hasAnimation ? 0.9 : 1.0
 
-                    radius: DS.Style.menu.item.radius
-                    outerShadowColor: null
-                    innerShadowColor: null
                     Component.onCompleted: {
                         scale = 1.0
                     }
                     Behavior on scale {
                         NumberAnimation { duration: 100 }
+                    }
+
+                    // Keep the highlight panel under a Control so that its
+                    // ColorSelector can resolve typed colors (e.g. D.Color.Highlight).
+                    contentItem: HighlightPanel {
+                        id: highlightRect
+                        radius: DS.Style.menu.item.radius
+                        outerShadowColor: null
+                        innerShadowColor: null
                     }
                 }
             }
