@@ -11,6 +11,7 @@ import org.deepin.dtk.style 1.0 as DS
 
 T.Menu {
     id: control
+    popupType: T.Popup.Window
 
     property bool closeOnInactive: true
     property int maxVisibleItems : DS.Style.arrowListView.maxVisibleItems
