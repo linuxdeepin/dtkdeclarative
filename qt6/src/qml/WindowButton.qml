@@ -33,7 +33,7 @@ D.IconButton {
         smooth: control.smooth
         name: control.icon.name
         asynchronous: false
-        palette: D.DTK.makeIconPalette(control.palette)
+        palette: control.D.DciIcon.palette
         mode: control.D.ColorSelector.controlState
         theme: control.D.ColorSelector.controlTheme
         sourceSize: Qt.size(control.icon.width, control.icon.height)
