@@ -15,7 +15,7 @@ T.MenuItem {
     implicitHeight: DS.Style.control.implicitHeight(control)
     baselineOffset: contentItem.y + contentItem.baselineOffset
     padding: DS.Style.menu.item.padding
-    spacing: DS.Style.control.spacing
+    spacing: DS.Style.menu.item.spacing
     opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
     highlighted: enabled && (hovered || (subMenu && subMenu.visible))
     icon {
@@ -33,7 +33,9 @@ T.MenuItem {
     D.DciIcon.palette: D.DTK.makeIconPalette(palette)
     contentItem: D.IconLabel {
         readonly property real arrowPadding: control.subMenu && control.arrow ? control.arrow.width + control.spacing : 0
-        readonly property real indicatorPadding: control.useIndicatorPadding && control.indicator ? control.indicator.width + control.spacing : 0
+        readonly property real indicatorPadding: control.useIndicatorPadding && control.indicator
+            ? (DS.Style.menu.item.indicatorMargin - control.padding) + control.indicator.width + control.spacing
+            : 0
 
         leftPadding: !control.mirrored ? Math.max(DS.Style.menu.item.contentPadding, indicatorPadding) : arrowPadding
         rightPadding: control.mirrored ? Math.max(DS.Style.menu.item.contentPadding, indicatorPadding) : arrowPadding

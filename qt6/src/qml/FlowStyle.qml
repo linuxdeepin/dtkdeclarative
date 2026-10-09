@@ -865,12 +865,13 @@ QtObject {
         property QtObject item: QtObject {
             property int width: 180
             property int height: 26
-            property size iconSize: Qt.size(14, 14)
+            property size iconSize: Qt.size(16, 16)
             property int count: 0
-            property int contentPadding: 30
+            property int contentPadding: 7
             property int indicatorMargin: 10
             property int radius: 6
             property int padding: 3
+            property int spacing: 8
         }
 
         property QtObject separator: QtObject {
