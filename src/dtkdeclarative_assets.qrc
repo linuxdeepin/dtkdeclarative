@@ -77,7 +77,6 @@
         <file alias="built-in-icons/entry_voice.dci">icons/bloom/entry_voice.dci</file>
         <file alias="built-in-icons/list_add.dci">icons/bloom/list_add.dci</file>
         <file alias="built-in-icons/list_delete.dci">icons/bloom/list_delete.dci</file>
-        <file alias="built-in-icons/menu_arrow.dci">icons/bloom/menu_arrow.dci</file>
         <file alias="built-in-icons/menu_select.dci">icons/bloom/menu_select.dci</file>
         <file alias="built-in-icons/item_checked.dci">icons/bloom/item_checked.dci</file>
         <file alias="built-in-icons/item_unchecked.dci">icons/bloom/item_unchecked.dci</file>

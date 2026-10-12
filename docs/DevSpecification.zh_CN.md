@@ -137,7 +137,6 @@ Button {
 | entry_voice             | ![图片](images/DS24.png) |
 | list_add                | ![图片](images/DS25.png) |
 | list_delete             | ![图片](images/DS26.png) |
-| menu_arrow              | ![图片](images/DS27.png) |
 | menu_select             | ![图片](images/DS28.png) |
 | window_close            | ![图片](images/DS29.png) |
 | window_maximize         | ![图片](images/DS30.png) |

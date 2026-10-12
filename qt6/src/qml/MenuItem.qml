@@ -78,22 +78,22 @@ T.MenuItem {
     }
 
     arrow: Loader {
-        width: DS.Style.menu.item.iconSize.width
-        height: DS.Style.menu.item.iconSize.height
+        width: DS.Style.control.arrowIconSize.width
+        height: DS.Style.control.arrowIconSize.height
         active: control.subMenu
         anchors {
             right: parent.right
-            rightMargin: control.mirrored ? control.width - width - control.rightPadding
-                                          : control.rightPadding
+            rightMargin: control.mirrored ? control.width - width - control.rightPadding - 2
+                                          : control.rightPadding + 2
             verticalCenter: parent.verticalCenter
         }
 
         sourceComponent: D.DciIcon {
             smooth: control.smooth
-            sourceSize: Qt.size(DS.Style.menu.item.iconSize.width,
-                                DS.Style.menu.item.iconSize.height)
+            sourceSize: Qt.size(DS.Style.control.arrowIconSize.width,
+                                DS.Style.control.arrowIconSize.height)
             mirror: control.mirrored
-            name: "menu_arrow"
+            name: "arrow_ordinary_right"
             palette: control.D.DciIcon.palette
             mode: control.D.ColorSelector.controlState
             theme: control.D.ColorSelector.controlTheme
