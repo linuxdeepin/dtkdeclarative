@@ -13,6 +13,7 @@ QtObject {
         property int borderWidth: 1
         property real focusBorderWidth: 2
         property real focusBorderPaddings: 1
+        property size arrowIconSize: Qt.size(16, 16)
 
         property D.Palette border: D.Palette {
             normal: Qt.rgba(0, 0, 0, 0.1)

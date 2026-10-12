@@ -86,7 +86,7 @@ T.MenuItem {
             sourceSize: Qt.size(DS.Style.menu.item.iconSize.width,
                                 DS.Style.menu.item.iconSize.height)
             mirror: control.mirrored
-            name: "menu_arrow"
+            name: "arrow_ordinary_right"
             palette: control.D.DciIcon.palette
             mode: control.D.ColorSelector.controlState
             theme: control.D.ColorSelector.controlTheme
