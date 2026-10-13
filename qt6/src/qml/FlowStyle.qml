@@ -923,8 +923,8 @@ QtObject {
         }
 
         property D.Palette itemText: D.Palette {
-            normal: ("black")
-            normalDark: ("white")
+            normal: Qt.rgba(0, 0, 0, 0.7)
+            normalDark: Qt.rgba(1, 1, 1, 0.7)
         }
 
         property D.Palette separatorText: D.Palette {
