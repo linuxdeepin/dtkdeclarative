@@ -1,3 +1,9 @@
+dtkdeclarative (6.7.51) unstable; urgency=medium
+
+  * fix(ComboBox): size popup before it is mapped
+
+ -- mhduiy <zhangkun2@uniontech.com>  Tue, 13 Oct 2026 13:48:50 +0800
+
 dtkdeclarative (6.7.50) unstable; urgency=medium
 
   * Release 6.7.50
