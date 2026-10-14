@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -19,6 +19,8 @@ T.MenuSeparator {
 
     topPadding: __lineStyle ? DS.Style.menu.separator.lineTopPadding : DS.Style.menu.separator.topPadding
     bottomPadding: __lineStyle ? DS.Style.menu.separator.lineBottomPadding : DS.Style.menu.separator.bottomPadding
+    leftPadding: __lineStyle ? DS.Style.menu.separator.lineLeftPadding : 0
+    rightPadding: __lineStyle ? DS.Style.menu.separator.lineRightPadding : 0
 
     contentItem: Loader {
         sourceComponent: __lineStyle ? lineCom : titleCom
@@ -27,7 +29,7 @@ T.MenuSeparator {
             id: lineCom
             Rectangle {
                 property D.Palette separatorColor: DS.Style.menu.separator.lineColor
-                width: control.parent.width
+                width: parent.width
                 implicitHeight: DS.Style.menu.separator.lineHeight
                 color: D.ColorSelector.separatorColor
             }

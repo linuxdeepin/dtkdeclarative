@@ -879,6 +879,8 @@ QtObject {
             property int lineTopPadding : 3
             property int lineBottomPadding : 3
             property int lineHeight : 2
+            property int lineLeftPadding: 10
+            property int lineRightPadding: 10
             property int topPadding: 11
             property int bottomPadding: 2
 
