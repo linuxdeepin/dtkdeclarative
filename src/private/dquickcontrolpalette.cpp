@@ -840,6 +840,11 @@ QColor DQuickControlColorSelector::getColorOf(const DQuickControlPalette *palett
     if (targetColor.isTypedColor()) {
         if (m_control)
             colorValue = targetColor.toColor(_d_getControlPalette(m_control));
+        else
+            // no control in the parent chain (e.g. popup/window context):
+            // fall back to the application-wide standard palette instead of
+            // returning an invalid color
+            colorValue = targetColor.toColor(DGuiApplicationHelper::standardPalette(state->controlTheme));
     } else {
         colorValue = targetColor.color();
     }
