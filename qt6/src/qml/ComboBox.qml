@@ -169,6 +169,7 @@ T.ComboBox {
 
     popup: Popup {
         id: popup
+        popupType: T.Popup.Window
         leftMargin: DS.Style.popup.margin
         rightMargin: DS.Style.popup.margin
         palette: control.palette
