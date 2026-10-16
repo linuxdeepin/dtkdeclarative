@@ -9,9 +9,17 @@ import org.deepin.dtk.style 1.0 as DS
 
 T.Button {
     id: control
-    property D.Palette textColor: DS.Style.button.text
+    property D.Palette textColor: D.Palette {
+        normal {
+            common: Qt.rgba(0, 0, 0, 0.7)
+        }
+        hovered {
+            common: Qt.rgba(0, 0, 0, 1)
+        }
+        pressed: D.DTK.makeColor(D.Color.Highlight)
+    }
 
-    palette.windowText: pressed ? D.ColorSelector.textColor : undefined
+    palette.windowText: D.ColorSelector.textColor
     opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
