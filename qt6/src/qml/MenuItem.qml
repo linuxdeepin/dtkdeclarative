@@ -27,10 +27,13 @@ T.MenuItem {
                                                       : DS.Style.menu.itemText
     property D.Palette subMenuBackgroundColor: DS.Style.menu.subMenuOpenedBackground
 
-    palette.windowText: D.ColorSelector.textColor
     D.DciIcon.mode: D.ColorSelector.controlState
     D.DciIcon.theme: D.ColorSelector.controlTheme
-    D.DciIcon.palette: D.DTK.makeIconPalette(palette)
+    D.DciIcon.palette: {
+        const iconPalette = D.DTK.makeIconPalette(control.palette)
+        iconPalette.foreground = control.D.ColorSelector.textColor
+        return iconPalette
+    }
     contentItem: D.IconLabel {
         readonly property real arrowPadding: control.subMenu && control.arrow ? control.arrow.width + control.spacing : 0
         readonly property real indicatorPadding: control.useIndicatorPadding && control.indicator ? control.indicator.width + control.spacing : 0
@@ -44,7 +47,7 @@ T.MenuItem {
         alignment: Qt.AlignLeft
         text: control.text
         font: control.font
-        color: control.palette.windowText
+        color: control.D.ColorSelector.textColor
         Behavior on color {
             enabled: D.DTK.hasAnimation
             ColorAnimation { duration: control.hovered ? 100 : 0; }

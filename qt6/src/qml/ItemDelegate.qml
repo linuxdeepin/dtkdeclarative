@@ -43,14 +43,19 @@ T.ItemDelegate {
     spacing: DS.Style.control.spacing
     checkable: true
     autoExclusive: true
-    palette.windowText: {
-        let undraged = D.DTK.hasAnimation ? control.backgroundVisible && !dragActive : true
-        return checked && !control.cascadeSelected && undraged ? D.ColorSelector.checkedTextColor : undefined
-    }
 
     D.DciIcon.mode: D.ColorSelector.controlState
     D.DciIcon.theme: D.ColorSelector.controlTheme
-    D.DciIcon.palette: D.DTK.makeIconPalette(palette)
+    D.DciIcon.palette: {
+        const iconPalette = D.DTK.makeIconPalette(control.palette)
+        const dragAllowsSelection = D.DTK.hasAnimation
+                ? control.backgroundVisible && !control.dragActive
+                : true
+        iconPalette.foreground = control.checked && !control.cascadeSelected && dragAllowsSelection
+                ? control.D.ColorSelector.checkedTextColor
+                : control.palette.windowText
+        return iconPalette
+    }
     icon {
         width: DS.Style.itemDelegate.iconSize
         height: DS.Style.itemDelegate.iconSize
@@ -65,7 +70,7 @@ T.ItemDelegate {
 
         sourceComponent: D.DciIcon {
             smooth: control.smooth
-            palette: D.DTK.makeIconPalette(control.palette)
+            palette: control.D.DciIcon.palette
             mode: control.D.ColorSelector.controlState
             theme: control.D.ColorSelector.controlTheme
             fallbackToQIcon: false
@@ -84,7 +89,7 @@ T.ItemDelegate {
                        ? Qt.AlignCenter : Qt.AlignLeft | Qt.AlignVCenter
             text: control.text
             font: control.font
-            color: control.palette.windowText
+            color: control.D.DciIcon.palette.foreground
             icon: D.DTK.makeIcon(control.icon, control.D.DciIcon)
             Layout.fillWidth: !control.contentFlow
         }
