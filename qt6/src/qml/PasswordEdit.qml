@@ -38,6 +38,10 @@ LineEdit {
         focusPolicy: Qt.NoFocus
 
         onClicked: control.toggleEchoMode()
-        icon.name: control.isEchoMode ? "entry_password_shown" : "entry_password_hide"
+        icon {
+            name: control.isEchoMode ? "entry_password_shown" : "entry_password_hide"
+            width: DS.Style.edit.actionIconSize
+            height: DS.Style.edit.actionIconSize
+        }
     }
 }
