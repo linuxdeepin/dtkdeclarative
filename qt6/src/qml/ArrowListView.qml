@@ -21,22 +21,23 @@ FocusScope {
             return 0
         const item = itemsView.itemAtIndex(0)
         const measured = itemsView.contentHeight > 0 && item ? (item.height || item.implicitHeight) : 0
-        const arrowStrips = itemsView.count > maxVisibleItems
-                ? 2 * (DS.Style.arrowListView.stepButtonIconSize.height + contentLayout.spacing) : 0
-        return Math.min(itemsView.count, maxVisibleItems) * (measured > 0 ? measured : itemHeight) + arrowStrips
+        const arrowStrips = 2 * (DS.Style.arrowListView.stepButtonSize.height + contentLayout.spacing)
+        return Math.min(itemsView.count, maxVisibleItems) * (measured > 0 ? measured : itemHeight) + arrowStrips + contentLayout.anchors.topMargin
     }
 
     implicitWidth: Math.max(DS.Style.arrowListView.width, contentLayout.implicitWidth)
-    implicitHeight: contentLayout.implicitHeight
+    implicitHeight: contentLayout.implicitHeight + contentLayout.anchors.topMargin
 
     ColumnLayout {
         id: contentLayout
         anchors.fill: parent
+        anchors.topMargin: 6
+        spacing: 6
         P.ArrowListViewButton {
-            visible: itemsView.interactive
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
-            Layout.preferredHeight: DS.Style.arrowListView.stepButtonIconSize.height
+            Layout.preferredHeight: DS.Style.arrowListView.stepButtonSize.height
+            Layout.minimumHeight: DS.Style.arrowListView.stepButtonSize.height
             view: itemsView
             stepSize: control.itemHeight
             direction: P.ArrowListViewButton.UpButton
@@ -90,10 +91,10 @@ FocusScope {
         }
 
         P.ArrowListViewButton {
-            visible: itemsView.interactive
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
-            Layout.preferredHeight: DS.Style.arrowListView.stepButtonIconSize.height
+            Layout.preferredHeight: DS.Style.arrowListView.stepButtonSize.height
+            Layout.minimumHeight: DS.Style.arrowListView.stepButtonSize.height
             view: itemsView
             stepSize: control.itemHeight
             direction: P.ArrowListViewButton.DownButton

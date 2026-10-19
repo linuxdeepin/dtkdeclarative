@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -15,7 +15,6 @@ Loader {
     required property Item view
     property int direction
     property int stepSize: DS.Style.arrowListView.itemHeight
-    active: view.interactive
 
     sourceComponent: ActionButton {
         palette.windowText: undefined
