@@ -11,6 +11,7 @@
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QDebug>
+#include <QMetaObject>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 #include <private/qquickpalette_p.h>
 #endif
@@ -458,6 +459,7 @@ void DQuickControlColorSelector::setControl(QQuickItem *newControl)
         return;
 
     // Clean for old
+    disconnect(m_controlPaletteConnection);
     if (m_control) {
         m_control->disconnect(this);
         if (auto w = m_control->window())
@@ -469,14 +471,16 @@ void DQuickControlColorSelector::setControl(QQuickItem *newControl)
     if (m_control) {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
         auto palette = m_control->property("palette").value<QQuickPalette*>();
-        connect(palette, &QQuickPalette::changed, this, &DQuickControlColorSelector::updateControlTheme);
+        if (palette)
+            m_controlPaletteConnection = connect(palette, &QQuickPalette::changed,
+                    this, &DQuickControlColorSelector::scheduleControlThemeUpdate);
 #endif
         connect(m_control, &QObject::destroyed, this, [this] {
             m_controlWindow = nullptr;
             m_control = nullptr;
         });
         if (m_control->metaObject()->indexOfSignal("paletteChanged()") != -1) {
-            connect(m_control, SIGNAL(paletteChanged()), this, SLOT(updateControlTheme()));
+            connect(m_control, SIGNAL(paletteChanged()), this, SLOT(scheduleControlThemeUpdate()));
         }
         if (m_control->metaObject()->indexOfSignal("hoveredChanged()") != -1) {
             connect(m_control, SIGNAL(hoveredChanged()), this, SLOT(updateControlState()));
@@ -1008,6 +1012,20 @@ void DQuickControlColorSelector::updateFamilyForChildrenRecu(QQuickItem *parent)
             updateFamilyForChildrenRecu(child);
         }
     }
+}
+
+void DQuickControlColorSelector::scheduleControlThemeUpdate()
+{
+    if (m_controlThemeUpdatePending)
+        return;
+
+    m_controlThemeUpdatePending = true;
+    // Palette changes can originate from a binding to one of our colors.
+    // Wait until that binding has finished before notifying it again.
+    QMetaObject::invokeMethod(this, [this] {
+        m_controlThemeUpdatePending = false;
+        updateControlTheme();
+    }, Qt::QueuedConnection);
 }
 
 void DQuickControlColorSelector::updateControlTheme()

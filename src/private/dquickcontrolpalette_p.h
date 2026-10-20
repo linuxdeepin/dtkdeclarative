@@ -352,6 +352,7 @@ private:
     QByteArray findPalettePropertyName(const DQuickControlPalette *palette) const;
     void clearAndInheritParentProperties();
 
+    Q_SLOT void scheduleControlThemeUpdate();
     Q_SLOT void updateControlTheme();
     Q_SLOT bool updateControlState();
     Q_SLOT void updateAllColorProperties();
@@ -371,6 +372,8 @@ private:
     void setFamilyPropertyParent(DQuickControlColorSelector *parent);
 
     QPointer<QQuickItem> m_control;
+    QMetaObject::Connection m_controlPaletteConnection;
+    bool m_controlThemeUpdatePending = false;
     QPointer<QQuickWindow> m_controlWindow;
     QPointer<DQuickControlColorSelector> m_superColorSelector;
     QPointer<DQuickControlColorSelector> m_parentOfFamilyProperty;
