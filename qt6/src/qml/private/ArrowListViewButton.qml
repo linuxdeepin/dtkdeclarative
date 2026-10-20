@@ -15,6 +15,7 @@ Loader {
     required property Item view
     property int direction
     property int stepSize: DS.Style.arrowListView.itemHeight
+    active: view.interactive
 
     sourceComponent: ActionButton {
         palette.windowText: undefined
