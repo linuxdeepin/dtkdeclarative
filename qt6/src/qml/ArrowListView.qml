@@ -21,8 +21,10 @@ FocusScope {
             return 0
         const item = itemsView.itemAtIndex(0)
         const measured = itemsView.contentHeight > 0 && item ? (item.height || item.implicitHeight) : 0
-        const arrowStrips = 2 * (DS.Style.arrowListView.stepButtonSize.height + contentLayout.spacing)
-        return Math.min(itemsView.count, maxVisibleItems) * (measured > 0 ? measured : itemHeight) + arrowStrips + contentLayout.anchors.topMargin
+        const showArrows = itemsView.count > maxVisibleItems
+        const arrowStrips = showArrows
+                ? 2 * (DS.Style.arrowListView.stepButtonSize.height + contentLayout.spacing) + contentLayout.anchors.topMargin : 0
+        return Math.min(itemsView.count, maxVisibleItems) * (measured > 0 ? measured : itemHeight) + arrowStrips
     }
 
     implicitWidth: Math.max(DS.Style.arrowListView.width, contentLayout.implicitWidth)
@@ -31,9 +33,10 @@ FocusScope {
     ColumnLayout {
         id: contentLayout
         anchors.fill: parent
-        anchors.topMargin: 6
-        spacing: 6
+        anchors.topMargin: itemsView.interactive ? 6 : 0
+        spacing: itemsView.interactive ? 6 : 0
         P.ArrowListViewButton {
+            visible: itemsView.interactive
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
             Layout.preferredHeight: DS.Style.arrowListView.stepButtonSize.height
@@ -91,6 +94,7 @@ FocusScope {
         }
 
         P.ArrowListViewButton {
+            visible: itemsView.interactive
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
             Layout.preferredHeight: DS.Style.arrowListView.stepButtonSize.height
