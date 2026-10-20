@@ -15,6 +15,8 @@
 #include <private/qquickwindow_p.h>
 
 #include <QPlatformSurfaceEvent>
+#include <QGuiApplication>
+#include <QQuickItem>
 
 DQUICK_BEGIN_NAMESPACE
 
@@ -1008,6 +1010,45 @@ void DQuickWindowAttached::setMotifDecorations(DWindowManagerHelper::MotifDecora
 void DQuickWindowAttached::popupSystemWindowMenu()
 {
     DWindowManagerHelper::popupSystemWindowMenu(window());
+}
+
+// Platform split-menu functions take a Qt window id and a global logical rectangle.
+bool DQuickWindowAttached::showSplitMenu(QQuickItem *button)
+{
+    D_D(DQuickWindowAttached);
+    auto *w = window();
+    if (!w || !w->isVisible() || !w->handle() || !button || button->window() != w
+            || !button->isVisible() || !button->isEnabled())
+        return false;
+
+    const auto support = reinterpret_cast<bool (*)(WId)>(
+            QGuiApplication::platformFunction("_d_supportSplitMenu"));
+    const auto show = reinterpret_cast<void (*)(WId, const QRect &)>(
+            QGuiApplication::platformFunction("_d_showSplitMenu"));
+    const auto hide = QGuiApplication::platformFunction("_d_hideSplitMenu");
+    const WId wid = w->winId();
+    if (!support || !show || !hide || !support(wid))
+        return false;
+
+    const QRect rect = button->mapRectToScene(button->boundingRect()).toAlignedRect();
+    if (!rect.isValid())
+        return false;
+    show(wid, QRect(w->mapToGlobal(rect.topLeft()), rect.size()));
+    d->splitMenuWindowId = wid;
+    return true;
+}
+
+void DQuickWindowAttached::hideSplitMenu(bool delay)
+{
+    D_D(DQuickWindowAttached);
+    if (!d->splitMenuWindowId)
+        return;
+    const auto hide = reinterpret_cast<void (*)(WId, bool)>(
+            QGuiApplication::platformFunction("_d_hideSplitMenu"));
+    if (hide)
+        hide(d->splitMenuWindowId, delay);
+    if (!delay)
+        d->splitMenuWindowId = 0;
 }
 
 bool DQuickWindowAttached::setWindowBlurAreaByWM(const QVector<DPlatformHandle::WMBlurArea> &area)
