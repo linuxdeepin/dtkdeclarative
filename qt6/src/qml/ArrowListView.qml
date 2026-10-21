@@ -22,9 +22,10 @@ FocusScope {
         const item = itemsView.itemAtIndex(0)
         const measured = itemsView.contentHeight > 0 && item ? (item.height || item.implicitHeight) : 0
         const showArrows = itemsView.count > maxVisibleItems
-        const arrowStrips = showArrows
-                ? 2 * (DS.Style.arrowListView.stepButtonSize.height + contentLayout.spacing) + contentLayout.anchors.topMargin : 0
-        return Math.min(itemsView.count, maxVisibleItems) * (measured > 0 ? measured : itemHeight) + arrowStrips
+        const topMargin = contentLayout.anchors.topMargin
+        const extraHeight = topMargin + (showArrows
+                ? 2 * (DS.Style.arrowListView.stepButtonSize.height + contentLayout.spacing) : 0)
+        return Math.min(itemsView.count, maxVisibleItems) * (measured > 0 ? measured : itemHeight) + extraHeight
     }
 
     implicitWidth: Math.max(DS.Style.arrowListView.width, contentLayout.implicitWidth)
@@ -33,7 +34,7 @@ FocusScope {
     ColumnLayout {
         id: contentLayout
         anchors.fill: parent
-        anchors.topMargin: itemsView.interactive ? 6 : 0
+        anchors.topMargin: 0
         spacing: itemsView.interactive ? 6 : 0
         P.ArrowListViewButton {
             visible: itemsView.interactive
