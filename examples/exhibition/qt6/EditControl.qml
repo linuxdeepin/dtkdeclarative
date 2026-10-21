@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -111,13 +111,18 @@ Column {
             id: keyLineEdit
             width: Math.max(implicitWidth, editInputMinWidth)
             text: "~/.ssh/ssh_keygen.key"
+            clearButton.anchors.rightMargin: fileBtn1.width + 8
             ActionButton {
+                id: fileBtn1
                 anchors {
-                    right: keyLineEdit.clearButton.left
-                    rightMargin: 5
+                    right: parent.right
+                    rightMargin: 8
                     verticalCenter: parent.verticalCenter
                 }
+                width: height
                 icon.name: "entry_loadfile"
+                icon.width: 16
+                icon.height: 16
                 onClicked: {
                     keyFileDialog.open()
                 }
@@ -135,13 +140,18 @@ Column {
         LineEdit {
             width: Math.max(implicitWidth, editInputMinWidth)
             text: "~/.ssh/ssh_keygen.key"
+            clearButton.anchors.rightMargin: fileBtn2.width + 8
             ActionButton {
+                id: fileBtn2
                 anchors {
-                    right: parent.clearButton.left
-                    rightMargin: 5
+                    right: parent.right
+                    rightMargin: 8
                     verticalCenter: parent.verticalCenter
                 }
+                width: height
                 icon.name: "entry_loadfile"
+                icon.width: 16
+                icon.height: 16
             }
         }
 
@@ -150,13 +160,18 @@ Column {
             text: "~/.ssh/ssh_keygen.key"
             alertText: "文件非法"
             showAlert: true
+            clearButton.anchors.rightMargin: fileBtn3.width + 8
             ActionButton {
+                id: fileBtn3
                 anchors {
-                    right: parent.clearButton.left
-                    rightMargin: 5
+                    right: parent.right
+                    rightMargin: 8
                     verticalCenter: parent.verticalCenter
                 }
+                width: height
                 icon.name: "entry_loadfile"
+                icon.width: 16
+                icon.height: 16
 
             }
         }
