@@ -50,6 +50,7 @@ T.Menu {
             anchors.fill: parent
 
             Loader {
+                id: headerLoader
                 Layout.fillWidth: true
                 Layout.preferredHeight: height
                 sourceComponent: control.header
@@ -61,6 +62,8 @@ T.Menu {
                 view.model: control.model
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                Layout.topMargin: headerLoader.item ? 6 : 0
+                Layout.bottomMargin: footerLoader.item ? 6 : 0
                 view.currentIndex: control.currentIndex
                 maxVisibleItems: control.maxVisibleItems
                 itemHeight: DS.Style.menu.item.height
@@ -89,6 +92,7 @@ T.Menu {
                 }
             }
             Loader {
+                id: footerLoader
                 Layout.fillWidth: true
                 Layout.preferredHeight: height
                 sourceComponent: control.footer
