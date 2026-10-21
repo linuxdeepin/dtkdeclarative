@@ -93,7 +93,7 @@ Item {
         anchors.fill: parent
         active: control.activeFocus
         sourceComponent: FocusBoxBorder {
-            color: control.palette.highlight
+            color: D.DTK.makeColor(control.palette.highlight).opacity(-40).color()
             radius: panel.radius
         }
     }
