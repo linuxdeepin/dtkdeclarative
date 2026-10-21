@@ -60,16 +60,22 @@ FocusScope {
             }
             interactive: itemsView.count > maxVisibleItems
             ScrollIndicator.vertical: ScrollIndicator { }
-            highlight: HighlightPanel {
+            highlight: Control {
                 visible: false // TODO listview's highlight is confict with Item's highlight.
-                outerShadowColor: null
-                innerShadowColor: null
+                hoverEnabled: false
                 scale: D.DTK.hasAnimation ? 0.9 : 1.0
                 Component.onCompleted: {
                     scale = 1.0
                 }
                 Behavior on scale {
                     NumberAnimation { duration: 100 }
+                }
+
+                // Keep the highlight panel under a Control so that its
+                // ColorSelector can resolve typed colors (e.g. D.Color.Highlight).
+                contentItem: HighlightPanel {
+                    outerShadowColor: null
+                    innerShadowColor: null
                 }
             }
             highlightFollowsCurrentItem: true
