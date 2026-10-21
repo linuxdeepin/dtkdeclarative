@@ -18,7 +18,7 @@ Item {
     D.BackdropBlitter {
         id: blitter
         anchors.fill: parent
-        blitterEnabled: !D.DTK.isSoftwareRender && D.DTK.hasInWindowBlur
+        blitterEnabled: !D.DTK.isSoftwareRender && D.DTK.hasInWindowBlur && D.DTK.isBlurBackendSupported
 
         MultiEffect {
             id: blur
