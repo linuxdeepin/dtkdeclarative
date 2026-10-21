@@ -22,8 +22,26 @@ LineEdit {
     }
 
     echoMode: TextInput.Password
+
+    font.family: control.isEchoMode ? D.DTK.fontManager.t6.family : "Noto Mono"
+    font.pixelSize: D.DTK.fontManager.t6.pixelSize
+    font.letterSpacing: control.isEchoMode ? 0
+                        : control._dotAdvance - passwordDotMetrics.advanceWidth
+
+    leftPadding: DS.Style.passwordEdit.dotLeftMargin
+
     clearButton.anchors.rightMargin: echoButton.visible ? DS.Style.passwordEdit.echoActionSpacing
                                                           + echoButton.width : 0
+
+    readonly property int _dotAdvance: DS.Style.passwordEdit.dotSize
+                                       + DS.Style.passwordEdit.dotSpacing
+
+    TextMetrics {
+        id: passwordDotMetrics
+        text: control.passwordCharacter
+        font.family: "Noto Mono"
+        font.pixelSize: D.DTK.fontManager.t6.pixelSize
+    }
 
     ActionButton {
         id: echoButton

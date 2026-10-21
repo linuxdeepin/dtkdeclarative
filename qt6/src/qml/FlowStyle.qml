@@ -667,6 +667,9 @@ QtObject {
 
     property QtObject passwordEdit: QtObject {
         property int echoActionSpacing: 8
+        property int dotSize: 6
+        property int dotSpacing: 5
+        property int dotLeftMargin: 8
     }
 
     property QtObject keySequenceEdit: QtObject {
