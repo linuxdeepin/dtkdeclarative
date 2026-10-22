@@ -17,7 +17,7 @@ T.MenuItem {
     padding: DS.Style.menu.item.padding
     spacing: DS.Style.menu.item.spacing
     opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
-    highlighted: enabled && (hovered || (subMenu && subMenu.visible))
+    highlighted: enabled && hovered
     icon {
         height: DS.Style.menu.item.iconSize.height
         width: DS.Style.menu.item.iconSize.height
@@ -25,7 +25,7 @@ T.MenuItem {
 
     property D.Palette textColor: control.highlighted ? DS.Style.checkedButton.text
                                                       : DS.Style.menu.itemText
-    property D.Palette subMenuBackgroundColor: DS.Style.menu.subMenuOpenedBackground
+    property D.Palette subMenuBackgroundColor: DS.Style.menu.submenuOpenedItemHighlight
 
     palette.windowText: D.ColorSelector.textColor
     D.DciIcon.mode: D.ColorSelector.controlState
@@ -106,7 +106,16 @@ T.MenuItem {
         implicitHeight: DS.Style.menu.item.height
         Loader {
             anchors.fill: parent
-            active: control.highlighted
+            active: !control.hovered && control.subMenu && control.subMenu.visible
+            sourceComponent: Rectangle {
+                color: control.D.ColorSelector.subMenuBackgroundColor
+                radius: DS.Style.menu.item.radius
+            }
+        }
+
+        Loader {
+            anchors.fill: parent
+            active: control.down || control.highlighted
             sourceComponent: HighlightPanel {
                 outerShadowColor: null
                 innerShadowColor: null
