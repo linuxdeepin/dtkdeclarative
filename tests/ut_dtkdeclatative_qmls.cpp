@@ -4,11 +4,15 @@
 
 #include <gtest/gtest.h>
 
+#include <algorithm>
+
 #include "test_helper.hpp"
 #include "dpopupwindowhandle_p.h"
 #include <QQmlModuleRegistration>
 #include <QQuickItem>
 #include <QQuickWindow>
+#include <QFile>
+#include <QTemporaryDir>
 #if QT_VERSION_MAJOR >= 6
 #include <qpa/qwindowsysteminterface.h>
 #endif
@@ -296,6 +300,108 @@ TEST(ut_DPopupWindowHandle, comboBoxKeepsPopupOpenWhenFocusMovesToPopupWindow)
 }
 #endif
 
+#if QT_VERSION_MAJOR >= 6
+namespace {
+QList<QQuickItem *> collectToolButtons(QQuickItem *parent)
+{
+    QList<QQuickItem *> buttons;
+    for (QQuickItem *child : parent->childItems()) {
+        if (QString::fromLatin1(child->metaObject()->className()).contains("ToolButton"))
+            buttons.append(child);
+        buttons.append(collectToolButtons(child));
+    }
+    return buttons;
+}
+
+QVariant evaluateOnItem(QQuickItem *scope, const QString &expression)
+{
+    QQmlExpression qmlExpression(qmlContext(scope), scope, expression);
+    return qmlExpression.evaluate();
+}
+}
+
+TEST(ut_DPlusMinusSpinBox, buttonsUseToolButtonStyle)
+{
+    QuickViewHelper<QQuickItem> helper;
+    const QByteArray data(R"(
+                    import QtQuick 2.11
+                    import org.deepin.dtk 1.0 as D
+                    import org.deepin.dtk.style 1.0 as DS
+
+                    Item {
+                        width: 400
+                        height: 100
+                        property int toolButtonIconSize: DS.Style.toolButton.iconSize
+                        property int inputButtonSpacing: DS.Style.plusMinusSpinBox.spacing
+                        property int buttonSpacing: DS.Style.plusMinusSpinBox.buttonSpacing
+                        property alias control: control
+                        property alias spinBox: control.spinBox
+
+                        D.PlusMinusSpinBox {
+                            id: control
+                            resetButtonVisible: true
+                        }
+                    })");
+
+    QTemporaryDir temporaryDir;
+    ASSERT_TRUE(temporaryDir.isValid());
+    QFile qmlFile(temporaryDir.path() + QStringLiteral("/PlusMinusSpinBoxGeometry.qml"));
+    ASSERT_TRUE(qmlFile.open(QIODevice::WriteOnly | QIODevice::Text));
+    ASSERT_GT(qmlFile.write(data), 0);
+    qmlFile.close();
+
+    ASSERT_TRUE(helper.load(qmlFile.fileName()));
+    helper.requestExposed();
+    auto *control = qobject_cast<QQuickItem *>(qvariant_cast<QObject *>(helper.object->property("control")));
+    ASSERT_TRUE(control);
+
+    const int toolButtonIconSize = helper.object->property("toolButtonIconSize").toInt();
+    const qreal inputButtonSpacing = helper.object->property("inputButtonSpacing").toReal();
+    const qreal buttonSpacing = helper.object->property("buttonSpacing").toReal();
+    ASSERT_GT(toolButtonIconSize, 0);
+    ASSERT_DOUBLE_EQ(inputButtonSpacing, 6.0);
+    ASSERT_DOUBLE_EQ(buttonSpacing, 0.0);
+
+    auto *spinBox = qobject_cast<QQuickItem *>(qvariant_cast<QObject *>(helper.object->property("spinBox")));
+    ASSERT_TRUE(spinBox);
+
+    QList<QQuickItem *> buttons = collectToolButtons(control);
+    ASSERT_EQ(buttons.count(), 3);
+    std::sort(buttons.begin(), buttons.end(), [control](QQuickItem *left, QQuickItem *right) {
+        return left->mapToItem(control, QPointF(0, 0)).x()
+                < right->mapToItem(control, QPointF(0, 0)).x();
+    });
+
+    QStringList iconNames;
+    for (QQuickItem *button : buttons) {
+        iconNames.append(evaluateOnItem(button, QStringLiteral("icon.name")).toString());
+        EXPECT_TRUE(button->property("flat").toBool());
+        EXPECT_EQ(evaluateOnItem(button, QStringLiteral("icon.width")).toInt(), toolButtonIconSize);
+        EXPECT_EQ(evaluateOnItem(button, QStringLiteral("icon.height")).toInt(), toolButtonIconSize);
+        EXPECT_EQ(button->width(), spinBox->height());
+        EXPECT_EQ(button->height(), spinBox->height());
+        EXPECT_EQ(button->property("implicitWidth").toReal(), spinBox->height());
+        EXPECT_EQ(button->property("implicitHeight").toReal(), spinBox->height());
+    }
+
+    EXPECT_TRUE(iconNames.contains(QStringLiteral("action_add")));
+    EXPECT_TRUE(iconNames.contains(QStringLiteral("action_reduce")));
+    EXPECT_TRUE(iconNames.contains(QStringLiteral("action_reset")));
+
+    const qreal spinBoxRight = spinBox->mapToItem(control, QPointF(0, 0)).x() + spinBox->width();
+    const qreal firstButtonX = buttons.at(0)->mapToItem(control, QPointF(0, 0)).x();
+    EXPECT_DOUBLE_EQ(firstButtonX - spinBoxRight, inputButtonSpacing);
+
+    for (int i = 1; i < buttons.count(); ++i) {
+        const qreal previousButtonX = buttons.at(i - 1)->mapToItem(control, QPointF(0, 0)).x();
+        const qreal previousButtonRight = previousButtonX + buttons.at(i - 1)->width();
+        const qreal buttonX = buttons.at(i)->mapToItem(control, QPointF(0, 0)).x();
+        EXPECT_DOUBLE_EQ(buttonX - previousButtonRight, buttonSpacing);
+    }
+
+}
+
+#endif
 TEST_P(ut_dtkDeclarativeQmls, load)
 {
     QString path = QString::fromStdString(GetParam());

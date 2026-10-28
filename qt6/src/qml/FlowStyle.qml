@@ -743,6 +743,8 @@ QtObject {
 
     property QtObject plusMinusSpinBox: QtObject {
         property int buttonIconSize: 16
+        property int spacing: 6
+        property int buttonSpacing: 0
     }
 
     // Window
