@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 UnionTech Software Technology Co., Ltd.
+#
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 cmake_minimum_required(VERSION 3.10)
 
 file(READ "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" FILE_VERSION)
@@ -39,6 +43,8 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX /usr)
 endif()
+add_compile_definitions(QT_NO_KEYWORDS)
+
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
