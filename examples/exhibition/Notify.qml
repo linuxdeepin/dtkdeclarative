@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -106,7 +106,7 @@ Column {
         ImageCell {
             source: "qrc:/assets/popup/nointeractive.svg"
             onClicked: {
-                DTK.sendMessage(control, "成功添加到＂校园名谣＂", "checked")
+                DTK.sendMessage(control, "成功添加到＂校园名谣＂", "emblem-checked")
             }
         }
 
