@@ -334,9 +334,14 @@ public:
         return m_rhi->gc;
     }
 
+    // renderer 的生命周期由 QSGRenderContext::invalidated 决定，见 destroyRenderer()。
+    // 失效后 sync()/preprocess()/render() 一律空转，避免在已销毁的 context 上继续渲染。
     void sync(const QSize &pixelSize, QSGRootNode *rootNode,
               const QMatrix4x4 &matrix = {}, QSGRenderer *base = nullptr,
               const QVector2D &dpr = {}, bool flipY = false) {
+        if (Q_UNLIKELY(!renderer))
+            return;
+
         Q_ASSERT(!renderer->rootNode());
 
         if (base) {
@@ -377,6 +382,9 @@ public:
     }
 
     bool preprocess(QRhiRenderTarget *rt, qreal &oldDPR, QRhiCommandBuffer* &oldCB, QSurface *forceSurface = nullptr) {
+        if (Q_UNLIKELY(!renderer || !m_rhi))
+            return false;
+
         QRhiCommandBuffer *cb = nullptr;
 
 #ifndef QT_NO_OPENGL
@@ -414,6 +422,9 @@ public:
     }
 
     bool render(qreal oldDPR, QRhiCommandBuffer* &oldCB) {
+        if (Q_UNLIKELY(!renderer))
+            return false;
+
         Q_ASSERT(D_PRIVATE_BF_GET(*renderer, QSGRenderer_m_nodes_dont_preprocess_tag, k_m_is_rendering_bit));
         rendererRender(renderer);
         D_PRIVATE_BF_SET(*renderer, QSGRenderer_m_nodes_dont_preprocess_tag, k_m_is_rendering_bit, false);
@@ -441,7 +452,9 @@ private:
     friend class DataManager;
 
     RhiManager(QQuickWindow *owner)
-        : DataManager<RhiManager, void>(owner) {
+        : DataManager<RhiManager, void>(owner)
+        , context(nullptr)
+        , renderer(nullptr) {
         Q_ASSERT(owner->findChildren<RhiManager*>(Qt::FindDirectChildrenOnly).size() == 1);
         auto oldGraphicsDevice = owner->graphicsDevice();
         if (owner->rhi()->backend() == QRhi::OpenGLES2) {
@@ -460,10 +473,22 @@ private:
 
         context = QQuickWindowPrivate::get(owner)->context;
         renderer = context->createRenderer(QSGRendererInterface::RenderMode2DNoDepthBuffer);
+
+        // QSGRenderContext 在析构前会 emit invalidated()，其 QObject 子对象 ShaderManager
+        // （Renderer 的 m_shaderManager 指向它，见 qsgbatchrenderer.cpp）随之先被销毁。
+        // Renderer 必须在这一刻释放，不能等 RhiManager 作为 QQuickWindow 的 QObject 子对象
+        // 被 deleteChildren() 清理时才 delete——那时 ~Renderer 会访问已释放的 ShaderManager。
+        // Qt 自身对 QSGRhiLayer 的处理即此模式（qsgrhilayer.cpp:31-37）。
+        connect(context, &QSGRenderContext::invalidated, this, &RhiManager::destroyRenderer, Qt::DirectConnection);
     }
 
     ~RhiManager() {
+        destroyRenderer();
+    }
+
+    void destroyRenderer() {
         delete renderer;
+        renderer = nullptr;
     }
 
     static bool check() {
