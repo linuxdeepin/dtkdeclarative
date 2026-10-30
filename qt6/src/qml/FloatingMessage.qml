@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -62,8 +62,9 @@ D.FloatingMessageContainer {
             timer.running = true
         }
         contentItem: RowLayout {
-            height: DS.Style.floatingMessage.minimumHeight
-            width: Math.min(DS.Style.floatingMessage.maximumWidth, children.width + floatingPanel.leftPadding - floatingPanel.rightPadding)
+            readonly property int baseHeight: closeButton.active ? DS.Style.floatingMessage.minimumHeight : DS.Style.floatingMessage.minimumHeightWithoutButton
+            height: Math.max(baseHeight, implicitHeight)
+            width: Math.min(DS.Style.floatingMessage.maximumWidth, implicitWidth)
             spacing: 10
             Loader {
                 id: iconLoader
@@ -73,8 +74,8 @@ D.FloatingMessageContainer {
 
                 sourceComponent: D.DciIcon {
                     sourceSize {
-                        width: 20
-                        height: 20
+                        width: 16
+                        height: 16
                     }
                     name: iconName
                     mode: floatingPanel.D.ColorSelector.controlState
@@ -90,7 +91,7 @@ D.FloatingMessageContainer {
                 Layout.alignment: Qt.AlignVCenter
                 Layout.rightMargin: closeButton.active ? 0 : 6 // when no closeButton, contentLoader.rightMargin is 10 + 6, otherwise is 10
                 Layout.maximumWidth: maxContentWidth
-                Layout.preferredHeight: DS.Style.floatingMessage.minimumHeight
+                Layout.preferredHeight: Math.max(baseHeight, implicitHeight)
                 property int maxContentWidth: DS.Style.floatingMessage.maximumWidth - iconLoader.implicitWidth - closeButton.implicitWidth
                 sourceComponent: control.contentItem
             }
