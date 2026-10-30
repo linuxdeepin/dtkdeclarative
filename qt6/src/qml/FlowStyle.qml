@@ -777,13 +777,14 @@ QtObject {
     property QtObject floatingMessage: QtObject {
         property int maximumWidth: 450
         property int minimumHeight: 40
+        property int minimumHeightWithoutButton: 30
         property int closeButtonSize: 24
     }
 
     property QtObject floatingPanel: QtObject {
         property int width: 180
         property int height: 40
-        property int radius: 14
+        property int radius: D.DTK.platformTheme.windowRadius < 0 ? 12 : Math.min(D.DTK.platformTheme.windowRadius, 12)
         property D.Palette background: D.Palette {
             normal: behindWindowBlur.lightColor
             normalDark: behindWindowBlur.darkColor
