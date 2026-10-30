@@ -213,6 +213,9 @@ void DQuickIconImage::setName(const QString &name)
 
     if (name.startsWith("data:image/")) {
         d->iconType = DQuickIconImagePrivate::Base64Data;
+        // Cancel pending URL loads and prevent sourceSize changes from
+        // reloading the previous icon over the image set by updateBase64Image().
+        setSource(QUrl());
     } else if (QQmlFile::isLocalFile(name)) {
         QUrl url(name);
 
