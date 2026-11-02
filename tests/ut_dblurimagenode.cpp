@@ -82,7 +82,7 @@ protected:
         return node;
     }
 
-signals:
+Q_SIGNALS:
     void callbackCalled();
 
 public:
