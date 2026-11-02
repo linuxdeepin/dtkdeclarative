@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -58,16 +58,15 @@ T.TextField {
         implicitHeight: DS.Style.edit.textFieldHeight
     }
 
-    MouseArea {
-        anchors.fill: parent
+    TapHandler {
         acceptedButtons: Qt.RightButton
 
-        onClicked: function (mouse) {
-            var point = Qt.point(mouse.x, mouse.y)
-            if (Window.window && Window.window.width > Screen.desktopAvailableWidth) {
+        onTapped: function (eventPoint) {
+            var point = Qt.point(eventPoint.position.x, eventPoint.position.y)
+            if (control.Window.window && control.Window.window.width > Screen.desktopAvailableWidth) {
                 point.x = control.mapFromGlobal(Screen.desktopAvailableWidth - contextMenu.width).x
             }
-            if (Window.window && Window.window.height > Screen.desktopAvailableHeight) {
+            if (control.Window.window && control.Window.window.height > Screen.desktopAvailableHeight) {
                 point.y = control.mapFromGlobal(0, Screen.desktopAvailableHeight - contextMenu.height).y
             }
             contextMenu.popup(point.x, point.y)
