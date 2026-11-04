@@ -24,8 +24,8 @@ T.Button {
     implicitWidth: DS.Style.control.implicitWidth(control)
     implicitHeight: DS.Style.control.implicitHeight(control)
     icon {
-        width: DS.Style.button.iconSize
-        height: DS.Style.button.iconSize
+        width: DS.Style.edit.actionIconSize
+        height: DS.Style.edit.actionIconSize
     }
     contentItem: D.DciIcon {
         smooth: control.smooth
