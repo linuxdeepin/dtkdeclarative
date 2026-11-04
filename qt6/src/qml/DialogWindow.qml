@@ -66,8 +66,6 @@ Window {
 
             Loader {
                 id: titleBar
-                Layout.fillWidth: true
-                Layout.preferredWidth: item ? item.implicitWidth : 0
                 z: D.DTK.TopOrder
                 sourceComponent: DialogTitleBar {
                     enableInWindowBlendBlur: false
