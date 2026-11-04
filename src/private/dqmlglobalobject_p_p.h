@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -8,6 +8,7 @@
 #include <DObjectPrivate>
 #include <DObject>
 #include <DWindowManagerHelper>
+#include <DGuiApplicationHelper>
 
 #include "dqmlglobalobject_p.h"
 
@@ -26,6 +27,7 @@ public:
     mutable DPlatformThemeProxy *platformTheme = nullptr;
 
     bool paletteInit = false;
+    DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType previousThemeType = DTK_GUI_NAMESPACE::DGuiApplicationHelper::UnknownType;
     QPalette palette;
     QPalette inactivePalette;
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
