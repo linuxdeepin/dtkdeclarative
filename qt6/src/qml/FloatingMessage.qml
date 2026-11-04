@@ -27,11 +27,7 @@ D.FloatingMessageContainer {
         maximumLineCount: 1
     }
     property Component button: ActionButton {
-        icon {
-            name: "entry_clear"
-            width: DS.Style.floatingMessage.closeButtonSize
-            height: DS.Style.floatingMessage.closeButtonSize
-        }
+        icon.name: "entry_clear"
         onClicked: closeMessage()
     }
 
