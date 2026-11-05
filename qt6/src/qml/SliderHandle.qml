@@ -13,9 +13,8 @@ D.DciIcon {
     function getIconNameByType(handleType) {
         switch(handleType) {
         case Slider.HandleType.NoArrowHorizontal:
-            return "slider_round_hor"
         case Slider.HandleType.NoArrowVertical:
-            return "slider_round_ver"
+            return "slider_round"
         case Slider.HandleType.ArrowUp:
             return "slider_point_up"
         case Slider.HandleType.ArrowBottom:
