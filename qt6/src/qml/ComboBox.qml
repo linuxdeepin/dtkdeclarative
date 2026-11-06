@@ -33,7 +33,6 @@ T.ComboBox {
     bottomPadding: control.flat ? 0 : padding
 
     delegate: MenuItem {
-        implicitWidth: Math.max(DS.Style.control.implicitWidth(control), popup.implicitWidth - DS.Style.popup.margin * 2)
         useIndicatorPadding: true
         text: control.textRole ? (Array.isArray(control.model) ? modelData[control.textRole] : (model[control.textRole] === undefined ? modelData[control.textRole] : model[control.textRole])) : modelData
         icon.name: (control.iconNameRole && model[control.iconNameRole] !== undefined) ? model[control.iconNameRole] : null
@@ -172,7 +171,7 @@ T.ComboBox {
         leftMargin: DS.Style.popup.margin
         rightMargin: DS.Style.popup.margin
         palette: control.palette
-        implicitWidth: control.flat ? Math.max(contentItem.implicitWidth, control.width) : control.width
+        implicitWidth: control.flat ? Math.max(contentItem.implicitWidth + leftPadding + rightPadding, control.width) : control.width
         // 60 is a temporary viewport so the list can realize one row and be measured.
         implicitHeight: (contentItem.sizedHeight > 0 ? contentItem.sizedHeight : 2 * DS.Style.arrowListView.itemHeight)
                         + topPadding + bottomPadding
