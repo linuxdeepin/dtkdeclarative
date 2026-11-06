@@ -53,10 +53,10 @@ TEST_F(ut_ColorSelector, getColorFromProperty)
     engine.globalObject().setProperty("background", engine.newQObject(background));
 
     ASSERT_TRUE(QQmlProperty::write(helper.object, "palette.window", QColor(Qt::white)));
-    QTest::qWaitFor([&] {
+    EXPECT_TRUE(QTest::qWaitFor([&] {
         return background->property("color")
                 == engine.evaluate("background.color1.normal.common.color()").toVariant();
-    });
+    }));
     ASSERT_EQ(background->property("color"), engine.evaluate("background.color1.normal.common.color()").toVariant());
 }
 
