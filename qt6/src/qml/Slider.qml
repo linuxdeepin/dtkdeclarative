@@ -50,7 +50,9 @@ T.Slider {
         Loader {
             anchors.fill: parent
             active: control.visualFocus
-            sourceComponent: FocusBoxBorder {}
+            sourceComponent: FocusBoxBorder {
+                focusBorderPaddings: DS.Style.slider.focusBorderPaddings
+            }
         }
     }
 
