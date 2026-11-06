@@ -47,29 +47,41 @@ T.ComboBox {
 
     indicator: Loader {
         sourceComponent: control.editable ? editableIndicator : normalIndicator
-        x: control.mirrored ? control.padding : control.width - width - control.padding
+        x: control.mirrored ? control.padding : (control.editable ? control.width - width - DS.Style.control.borderWidth : control.width - width - control.padding)
         y: control.topPadding + (control.availableHeight - height) / 2
         Component {
             id: editableIndicator
-            RowLayout {
-                spacing: DS.Style.comboBox.edit.indicatorSpacing
+            // A 32px-wide strip at the right edge of the combo box
+            // (measured from the inner fill edge, excluding the outside
+            // border).  The separator sits at the left of the strip and
+            // the arrow button fills the whole area so hover/press is
+            // triggered anywhere within it.
+            Item {
+                width: 32
+                height: control.height
+
                 Rectangle {
                     width: 1
-                    height: control.height
+                    height: parent.height
+                    anchors.left: parent.left
                     color: control.D.ColorSelector.separatorColor
                 }
 
-                D.DciIcon {
-                    smooth: control.smooth
-                    sourceSize {
-                        width: DS.Style.comboBox.edit.indicatorSize
-                        height: DS.Style.comboBox.edit.indicatorSize
+                ActionButton {
+                    anchors.fill: parent
+                    focusPolicy: Qt.NoFocus
+                    enabled: control.enabled
+                    icon.name: "arrow_ordinary_down"
+                    icon.width: DS.Style.comboBox.iconSize
+                    icon.height: DS.Style.comboBox.iconSize
+                    property bool wasOpen: false
+                    onPressed: wasOpen = control.popup.visible
+                    onClicked: {
+                        if (wasOpen)
+                            control.popup.close()
+                        else
+                            control.popup.open()
                     }
-                    palette: D.DTK.makeIconPalette(control.palette)
-                    name: "entry_option_arrow_down"
-                    mode: control.D.ColorSelector.controlState
-                    theme: control.D.ColorSelector.controlTheme
-                    fallbackToQIcon: false
                 }
             }
         }
