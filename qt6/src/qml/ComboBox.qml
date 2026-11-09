@@ -47,26 +47,36 @@ T.ComboBox {
 
     indicator: Loader {
         sourceComponent: control.editable ? editableIndicator : normalIndicator
-        x: control.mirrored ? control.padding : control.width - width - control.padding
+        x: control.mirrored ? control.padding : (control.editable ? control.width - width - DS.Style.control.borderWidth : control.width - width - control.padding)
         y: control.topPadding + (control.availableHeight - height) / 2
         Component {
             id: editableIndicator
-            RowLayout {
-                spacing: DS.Style.comboBox.edit.indicatorSpacing
+            // A 32px-wide strip at the right edge of the combo box
+            // (measured from the inner fill edge, excluding the outside
+            // border).  The separator sits at the left of the strip and
+            // the arrow icon is centred within it.  The icon follows the
+            // ComboBox control state so hover/press feedback is applied
+            // automatically; the click is handled by the ComboBox itself.
+            Item {
+                width: 32
+                height: control.height
+
                 Rectangle {
                     width: 1
-                    height: control.height
+                    height: parent.height
+                    anchors.left: parent.left
                     color: control.D.ColorSelector.separatorColor
                 }
 
                 D.DciIcon {
+                    anchors.centerIn: parent
                     smooth: control.smooth
                     sourceSize {
-                        width: DS.Style.comboBox.edit.indicatorSize
-                        height: DS.Style.comboBox.edit.indicatorSize
+                        width: DS.Style.comboBox.iconSize
+                        height: DS.Style.comboBox.iconSize
                     }
                     palette: D.DTK.makeIconPalette(control.palette)
-                    name: "entry_option_arrow_down"
+                    name: "arrow_ordinary_down"
                     mode: control.D.ColorSelector.controlState
                     theme: control.D.ColorSelector.controlTheme
                     fallbackToQIcon: false
