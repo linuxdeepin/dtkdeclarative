@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.7.53] - 2026-11-10
+
+### Fixed
+
+- Preserve Qt6 text field cursor with TapHandler
+- Cancel pending URL loads when setting base64 icon
+- Adjust dialog layout sizing to prevent stretch issues
+- Silence -Wunused-result in color selector unit test
+
+### Removed
+
+- Delete backdrop renderer on invalidated
+
 ## [6.7.52] - 2026-10-28
 
 ### Added
