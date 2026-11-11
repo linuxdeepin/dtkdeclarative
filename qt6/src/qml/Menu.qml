@@ -42,8 +42,17 @@ T.Menu {
 
     contentItem: FocusScope {
         // QTBUG-99897 focus doesn't be clear.
+        // Handle keys even before a menu item is selected.
+        focus: true
         implicitWidth: viewLayout.implicitWidth
         implicitHeight: viewLayout.implicitHeight
+
+        // Match QWidget menus with SH_MenuBar_AltKeyNavigation disabled.
+        Keys.onPressed: function(event) {
+            if (event.key === Qt.Key_Alt)
+                event.accepted = true
+        }
+
         ColumnLayout {
             id: viewLayout
             spacing: 0
