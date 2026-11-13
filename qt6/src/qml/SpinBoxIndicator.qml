@@ -5,7 +5,6 @@
 import QtQuick
 import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
-import org.deepin.dtk.private as P
 
 Control {
     id: control
@@ -19,90 +18,61 @@ Control {
     property bool singleIndicator: false
     property int direction
     property D.Palette inactiveBackgroundColor: DS.Style.spinBox.indicator.background
+    property D.Palette indicatorBackground: DS.Style.spinBox.indicatorBackground
+    property D.Palette indicatorInnerShadow: DS.Style.spinBox.indicatorInnerShadow
 
     palette.windowText: control.D.ColorSelector.inactiveBackgroundColor
+    // Background stays full opacity; only the icon dims when disabled.
     hoverEnabled: true
     implicitWidth: DS.Style.spinBox.indicator.width
-    implicitHeight: spinBox.activeFocus ? spinBox.implicitHeight / 2 : DS.Style.spinBox.indicator.height
-    opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
+    implicitHeight: (spinBox.implicitHeight - 2 * DS.Style.spinBox.indicatorContainerVMargin) / 2
 
-    Component {
-        id: inactiveComponent
-        D.DciIcon {
-            id: icon
-            smooth: control.smooth
-            sourceSize.width: DS.Style.spinBox.indicator.iconSize
-            palette: D.DTK.makeIconPalette(control.palette)
-            name: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? "entry_spinbox_up" : "entry_spinbox_down"
-            mode: control.D.ColorSelector.controlState
-            theme: control.D.ColorSelector.controlTheme
-            fallbackToQIcon: false
+    // Each indicator draws its own half of the combined background.
+    // The up indicator has rounded top corners; the down indicator has
+    // rounded bottom corners. Together they form a seamless whole with
+    // no overlap and no gap.
+    background: Rectangle {
+        radius: DS.Style.spinBox.indicatorContainerRadius
+        color: control.D.ColorSelector.indicatorBackground
+        topLeftRadius: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? DS.Style.spinBox.indicatorContainerRadius : 0
+        topRightRadius: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? DS.Style.spinBox.indicatorContainerRadius : 0
+        bottomLeftRadius: direction === SpinBoxIndicator.IndicatorDirection.DownIndicator ? DS.Style.spinBox.indicatorContainerRadius : 0
+        bottomRightRadius: direction === SpinBoxIndicator.IndicatorDirection.DownIndicator ? DS.Style.spinBox.indicatorContainerRadius : 0
+
+        Loader {
+            active: D.DTK.themeType === D.ApplicationHelper.DarkType && direction === SpinBoxIndicator.IndicatorDirection.DownIndicator
+            anchors.fill: parent
+            sourceComponent: BoxInsetShadow {
+                shadowBlur: 1
+                shadowOffsetY: -1
+                spread: 0
+                shadowColor: control.D.ColorSelector.indicatorInnerShadow
+                cornerRadius: DS.Style.spinBox.indicatorContainerRadius
+            }
         }
     }
 
-    Component {
-        id: activeComponent
-        Item {
-            Item {
-                id: btnBackground
-                width: parent.width + DS.Style.control.radius
-                height: parent.height + DS.Style.control.radius
-                anchors {
-                    right: parent.right
-                    top: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? parent.top : undefined
-                    bottom: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? undefined : parent.bottom
-                }
-
-                Button {
-                    id: btn
-                    anchors {
-                        right: parent.right
-                        top: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? parent.top : undefined
-                        bottom: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? undefined : parent.bottom
-                    }
-                    width: DS.Style.spinBox.indicatorWidth
-                    height: spinBox.implicitHeight / 2
-                    icon {
-                        name: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? "arrow_ordinary_up" : "arrow_ordinary_down"
-                        width: DS.Style.spinBox.indicator.focusIconSize
-                        height: DS.Style.spinBox.indicator.focusIconSize
-                    }
-                    activeFocusOnTab: false
-                    opacity: 1
-                    background: P.ButtonPanel {
-                        button: btn
-                        radius: 0
-                    }
-                    onClicked: {
-                        if (direction === SpinBoxIndicator.IndicatorDirection.UpIndicator) {
-                            spinBox.increase()
-                        } else {
-                            spinBox.decrease()
-                        }
-                    }
-                }
-            }
-
-            D.ItemViewport {
-                id: viewport
-                sourceItem: btnBackground
-                radius: DS.Style.control.radius
-                fixed: true
-                width: btnBackground.width
-                height: btnBackground.height
-                anchors {
-                    right: parent.right
-                    top: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? parent.top : undefined
-                    bottom: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? undefined : parent.bottom
-                }
-                hideSource: true
-            }
-        }
-
-    }
-
-    Loader {
+    ToolButton {
+        opacity: D.ColorSelector.controlState === D.DTK.DisabledState ? 0.4 : 1
         anchors.fill: parent
-        sourceComponent: spinBox.activeFocus ? activeComponent : inactiveComponent
+        topPadding: 0
+        bottomPadding: 0
+        leftPadding: 0
+        rightPadding: 0
+        focusPolicy: Qt.NoFocus
+        background: null
+        icon {
+            name: direction === SpinBoxIndicator.IndicatorDirection.UpIndicator ? "arrow_ordinary_up" : "arrow_ordinary_down"
+            width: DS.Style.spinBox.indicator.focusIconSize
+            height: DS.Style.spinBox.indicator.focusIconSize
+        }
+        activeFocusOnTab: false
+        onClicked: {
+            if (direction === SpinBoxIndicator.IndicatorDirection.UpIndicator) {
+                spinBox.increase()
+            } else {
+                spinBox.decrease()
+            }
+        }
     }
 }
