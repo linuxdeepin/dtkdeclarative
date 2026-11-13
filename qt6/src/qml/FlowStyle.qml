@@ -726,9 +726,10 @@ QtObject {
         property int width : 300
         property int height: 36
         property int spacing: 10
+        property int indicatorSpacing: 2
 
         property QtObject indicator: QtObject {
-            property int width: 24
+            property int width: 20
             property int height: 14
             property int iconSize: 24
             property int focusIconSize: 10
@@ -738,6 +739,17 @@ QtObject {
                 hovered: Qt.rgba(0, 0, 0, 0.6)
                 pressed: Qt.rgba(0, 0, 0, 0.8)
             }
+        }
+
+        // Combined background for both up/down indicators
+        property int indicatorContainerVMargin: 2
+        property D.Palette indicatorBackground: D.Palette {
+            normal: Qt.rgba(0, 0, 0, 0.15)
+            normalDark: Qt.rgba(0, 0, 0, 0.2)
+        }
+        // 1px inner shadow, dark mode only
+        property D.Palette indicatorInnerShadow: D.Palette {
+            normalDark: Qt.rgba(0, 0, 0, 0.4)
         }
     }
 
