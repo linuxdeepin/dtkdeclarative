@@ -25,7 +25,8 @@ T.Slider {
 
     property alias handleType: __handle.type
     property real dashOffset: 0.0
-    property var dashPattern: [0.5, 0.25]
+    // Dash length matches the logical stroke width, producing square blocks.
+    property var dashPattern: [1, 1]
     property bool highlightedPassedGroove: false
     property bool alignToTicks: false
 
@@ -74,16 +75,17 @@ T.Slider {
             Shape {
                 ShapePath {
                     capStyle: ShapePath.FlatCap
+                    joinStyle: ShapePath.MiterJoin
                     strokeStyle: ShapePath.DashLine
                     strokeColor: control.D.ColorSelector.grooveColor
-                    strokeWidth: control.horizontal ? sliderGroove.height : sliderGroove.width
+                    strokeWidth: 2
                     dashOffset: control.dashOffset
                     dashPattern: control.dashPattern
                     startX: control.horizontal ? (control.alignToTicks ? __handle.width / 2 : 0) : sliderGroove.width / 2
-                    startY: control.horizontal ? sliderGroove.height / 2 : 0
+                    startY: control.horizontal ? sliderGroove.height / 2 : sliderGroove.height
                     PathLine {
                         x: control.horizontal ? (control.alignToTicks ? sliderGroove.width - __handle.width / 2 : sliderGroove.width) : sliderGroove.width / 2
-                        y: control.horizontal ? sliderGroove.height / 2 : sliderGroove.height
+                        y: control.horizontal ? sliderGroove.height / 2 : 0
                     }
                 }
             }
@@ -94,9 +96,10 @@ T.Slider {
                 sourceComponent: Shape {
                     ShapePath {
                         capStyle: ShapePath.FlatCap
+                        joinStyle: ShapePath.MiterJoin
                         strokeStyle: ShapePath.DashLine
                         strokeColor: control.palette.highlight
-                        strokeWidth: control.horizontal ? sliderGroove.height : sliderGroove.width
+                        strokeWidth: 2
                         dashOffset: control.dashOffset
                         dashPattern: control.dashPattern
                         startX: control.horizontal ? (control.alignToTicks ? __handle.width / 2 : 0) : sliderGroove.width / 2
