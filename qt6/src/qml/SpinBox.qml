@@ -1,9 +1,10 @@
-// SPDX-FileCopyrightText: 2021 - 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2021 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 import QtQuick
 import QtQuick.Templates as T
+import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
 T.SpinBox {
@@ -57,6 +58,43 @@ T.SpinBox {
         validator: control.validator
         inputMethodHints: control.inputMethodHints
         selectByMouse: control.editable
+    }
+
+    // Combined background for both up/down indicators.
+    Control {
+        id: indicatorContainer
+        anchors {
+            right: control.right
+            rightMargin: DS.Style.spinBox.indicatorSpacing
+            verticalCenter: control.verticalCenter
+        }
+        width: DS.Style.spinBox.indicator.width
+        height: control.height - 2 * DS.Style.spinBox.indicatorContainerVMargin
+        visible: up.indicator || down.indicator
+        z: -1
+
+        property D.Palette indicatorBackground: DS.Style.spinBox.indicatorBackground
+        property D.Palette indicatorInnerShadow: DS.Style.spinBox.indicatorInnerShadow
+
+        background: Item {
+            Rectangle {
+                anchors.fill: parent
+                radius: 4
+                color: indicatorContainer.D.ColorSelector.indicatorBackground
+            }
+
+            Loader {
+                active: D.DTK.themeType === D.ApplicationHelper.DarkType
+                anchors.fill: parent
+                sourceComponent: BoxInsetShadow {
+                    shadowBlur: 1
+                    shadowOffsetY: -1
+                    spread: 0
+                    shadowColor: indicatorContainer.D.ColorSelector.indicatorInnerShadow
+                    cornerRadius: 4
+                }
+            }
+        }
     }
 
     up.indicator: SpinBoxIndicator {
