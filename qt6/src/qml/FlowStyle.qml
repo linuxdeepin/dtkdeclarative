@@ -559,6 +559,8 @@ QtObject {
         property int width : 300
         property int height: 36
         property int spacing: 10
+        property int indicatorWidth: 24
+        property int indicatorSpacing: 0
 
         property QtObject indicator: QtObject {
             property int width: 24
