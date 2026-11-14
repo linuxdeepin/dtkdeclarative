@@ -122,6 +122,7 @@ class DQMLGlobalObject : public QObject, public DTK_CORE_NAMESPACE::DObject
     Q_PROPERTY(bool hasAnimation READ hasAnimation NOTIFY hasAnimationChanged)
     Q_PROPERTY(bool hasInWindowBlur READ hasInWindowBlur NOTIFY hasInWindowBlurChanged)
     Q_PROPERTY(bool isSoftwareRender READ isSoftwareRender FINAL CONSTANT)
+    Q_PROPERTY(bool isBlurBackendSupported READ isBlurBackendSupported FINAL CONSTANT)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DWindowManagerHelper::WMName windowManagerName READ windowManagerName CONSTANT)
     Q_PROPERTY(DTK_GUI_NAMESPACE::DGuiApplicationHelper::ColorType themeType READ themeType NOTIFY themeTypeChanged)
     Q_PROPERTY(QString windowManagerNameString READ windowManagerNameString CONSTANT)
@@ -188,6 +189,7 @@ public:
     static bool hasAnimation();
     static bool hasInWindowBlur();
     static bool isSoftwareRender();
+    static bool isBlurBackendSupported();
 
     DWindowManagerHelper::WMName windowManagerName() const;
     QString windowManagerNameString() const;
