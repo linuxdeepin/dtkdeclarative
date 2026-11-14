@@ -11,11 +11,12 @@ Item {
     property color color: palette.highlight
     property real borderWidth: DS.Style.control.focusBorderWidth
     property real radius: DS.Style.control.radius
+    property real focusBorderPaddings: DS.Style.control.focusBorderPaddings
 
     Rectangle {
         id: _border
 
-        readonly property real paddings: borderWidth + DS.Style.control.focusBorderPaddings
+        readonly property real paddings: borderWidth + control.focusBorderPaddings
 
         anchors {
             fill: parent

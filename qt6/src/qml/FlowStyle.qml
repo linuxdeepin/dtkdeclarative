@@ -958,6 +958,8 @@ QtObject {
         property int height: 60
         property int highlightMargin: -4
 
+        property int focusBorderPaddings: 5
+
         property QtObject handle: QtObject {
             property int width: 20
             property int height: 24
