@@ -25,8 +25,9 @@ T.Slider {
 
     property alias handleType: __handle.type
     property real dashOffset: 0.0
-    // Dash length matches the logical stroke width, producing square blocks.
-    property var dashPattern: [1, 1]
+    // Design spec: 2px dash, 1px gap. Pattern values are in strokeWidth units (2),
+    // so 1.0 -> 2px dash, 0.5 -> 1px gap.
+    property var dashPattern: [1, 0.5]
     property bool highlightedPassedGroove: false
     property bool alignToTicks: false
 
@@ -137,6 +138,7 @@ T.Slider {
                         shadowColor: control.palette.highlight
                         rotation: control.horizontal ? 0 : 180
                         opacity: 0.25
+                        visible: D.DTK.themeType === D.ApplicationHelper.DarkType
                     }
                 }
             }
