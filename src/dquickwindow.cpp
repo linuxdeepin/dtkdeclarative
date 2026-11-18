@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -736,7 +736,7 @@ void DQuickWindowAttached::setThemeType(const DTK_GUI_NAMESPACE::DGuiApplication
     d->ensurePalette();
     d->_q_onPaletteChanged();
 
-    emit themeTypeChanged();
+    Q_EMIT themeTypeChanged();
 }
 
 void DQuickWindowAttached::resetThemeType()
@@ -758,7 +758,7 @@ void DQuickWindowAttached::resetThemeType()
 
     if (d->themeType != DGuiApplicationHelper::UnknownType) {
         d->themeType = DGuiApplicationHelper::UnknownType;
-        emit themeTypeChanged();
+        Q_EMIT themeTypeChanged();
     }
     QQuickWindowPrivate::get(window())->resetPalette();
 }
