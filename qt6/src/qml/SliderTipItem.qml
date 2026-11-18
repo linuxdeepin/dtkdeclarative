@@ -68,7 +68,11 @@ Control {
             palette.windowText: control.D.ColorSelector.textColor
             background: Loader {
                 active: highlight
-                sourceComponent: HighlightPanel { }
+                sourceComponent: HighlightPanel {
+                    backgroundColor: DS.Style.checkedButton.background
+                    outerShadowColor: DS.Style.checkedButton.dropShadow
+                    innerShadowColor: DS.Style.checkedButton.innerShadow
+                }
             }
         }
     }
