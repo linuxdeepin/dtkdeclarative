@@ -1,12 +1,13 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 import QtQuick
+import QtQuick.Templates as T
 import org.deepin.dtk 1.0 as D
 import org.deepin.dtk.style 1.0 as DS
 
-Item {
+T.Control {
     id: panel
 
     property D.Palette backgroundColor: DS.Style.highlightPanel.background
@@ -26,9 +27,8 @@ Item {
     //     cornerRadius: backgroundRect.radius
     // }
 
-    Rectangle {
+    contentItem: Rectangle {
         id: backgroundRect
-        anchors.fill: parent
         color: panel.D.ColorSelector.backgroundColor
         radius: panel.radius
     }
