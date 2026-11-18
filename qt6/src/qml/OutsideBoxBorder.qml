@@ -3,9 +3,10 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 import QtQuick
+import QtQuick.Window
 
 Item {
-    property real borderWidth: 1
+    property real borderWidth: 1 / Screen.devicePixelRatio
     property color color: "white"
     property real radius: 0
 
