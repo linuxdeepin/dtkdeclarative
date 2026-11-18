@@ -10,6 +10,7 @@ import org.deepin.dtk.style 1.0 as DS
 
 T.Popup {
     id: control
+    popupType: T.Popup.Window
 
     palette: D.DTK.palette
     focus: popupType === Popup.Window
