@@ -45,7 +45,7 @@
     <message>
         <location filename="../../qt6/src/qml/HelpAction.qml" line="10"/>
         <source>Help</source>
-        <translation>Помощь</translation>
+        <translation>Справка</translation>
     </message>
 </context>
 <context>
