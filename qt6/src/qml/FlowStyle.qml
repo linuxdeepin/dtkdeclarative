@@ -1051,19 +1051,24 @@ QtObject {
     // Bar
     property QtObject scrollBar: QtObject {
         property int padding: 2
-        property int width: 4
+        property int width: 6
+        property int horizontalWidth: 4
         property int activeWidth: 12
+        property int hoverWidth: 14
+        property int horizontalHoverWidth: 12
+        property int normalRadius: 4
         property real hideOpacity: 0.0
         property int hidePauseDuration: 450
         property int hideDuration: 1500
         property int hideWidthDuration: 100
+        property int radius: 6
 
         property D.Palette background: D.Palette {
-            normal: Qt.rgba(0, 0, 0, 0.3)
+            normal: Qt.rgba(0, 0, 0, 0.5)
             normalDark: Qt.rgba(1, 1, 1, 0.3)
 
-            hovered: Qt.rgba(0, 0, 0, 0.4)
-            hoveredDark: Qt.rgba(1, 1, 1, 0.6)
+            hovered: Qt.rgba(0, 0, 0, 0.7)
+            hoveredDark: Qt.rgba(1, 1, 1, 0.7)
 
             pressed: Qt.rgba(0, 0, 0, 0.4)
             pressedDark: Qt.rgba(1, 1, 1, 0.3)
@@ -1076,7 +1081,10 @@ QtObject {
 
         property D.Palette insideBorder: D.Palette {
             normal: Qt.rgba(0, 0, 0, 0.05)
-            normalDark: Qt.rgba(1, 1, 1, 0.1)
+            normalDark: Qt.rgba(1, 1, 1, 0.05)
+
+            hoveredDark: Qt.rgba(1, 1, 1, 0.1)
+            pressedDark: Qt.rgba(1, 1, 1, 0.05)
         }
     }
 

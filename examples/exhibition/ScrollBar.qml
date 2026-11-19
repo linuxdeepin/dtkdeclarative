@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -7,6 +7,11 @@ import org.deepin.dtk 1.0
 
 Column {
     id: panel
+
+    property bool darkMode: ApplicationHelper.n === ApplicationHelper.DarkType
+    property color borderColor: darkMode ? "#3d3d3d" : "#cacaca"
+    property color contentBgColor: darkMode ? "#2a2a2a" : "#f5f5f5"
+
     Label {
         width: parent.width
         wrapMode: Text.WordWrap
@@ -21,7 +26,8 @@ Column {
         width: parent.width
 
         Rectangle {
-            border.color: "#cacaca"
+            border.color: panel.borderColor
+            color: panel.contentBgColor
             width: 300
             height: 213
             Flickable {
@@ -44,14 +50,15 @@ Column {
             }
         }
 
-        Item { width: parent.width; height: 1}
+        Item { width: parent.width; height: 1 }
 
         Rectangle {
             id: frame
             clip: true
             width: 1000
             height: 278
-            border.color: "black"
+            border.color: panel.borderColor
+            color: panel.contentBgColor
             Rectangle {
                 id: content
                 width: 450

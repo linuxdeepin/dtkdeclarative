@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
@@ -55,8 +55,12 @@ T.ScrollBar {
             when: __currentState === 0
             PropertyChanges {
                 target: control.contentItem
-                implicitWidth: DS.Style.scrollBar.width
+                implicitWidth: control.orientation == Qt.Horizontal ? DS.Style.scrollBar.horizontalWidth : DS.Style.scrollBar.width
                 opacity: DS.Style.scrollBar.hideOpacity
+            }
+            PropertyChanges {
+                target: backgroundRect
+                radius: DS.Style.scrollBar.normalRadius
             }
         },
         State {
@@ -64,7 +68,11 @@ T.ScrollBar {
             when: __currentState === 1
             PropertyChanges {
                 target: control.contentItem
-                implicitWidth: DS.Style.scrollBar.width
+                implicitWidth: control.orientation == Qt.Horizontal ? DS.Style.scrollBar.horizontalWidth : DS.Style.scrollBar.width
+            }
+            PropertyChanges {
+                target: backgroundRect
+                radius: DS.Style.scrollBar.normalRadius
             }
         },
         State {
@@ -72,7 +80,11 @@ T.ScrollBar {
             when: __currentState === 2
             PropertyChanges {
                 target: control.contentItem
-                implicitWidth: DS.Style.scrollBar.activeWidth
+                implicitWidth: control.orientation == Qt.Horizontal ? DS.Style.scrollBar.horizontalHoverWidth : DS.Style.scrollBar.hoverWidth
+            }
+            PropertyChanges {
+                target: backgroundRect
+                radius: DS.Style.scrollBar.radius
             }
         },
         State {
@@ -81,6 +93,10 @@ T.ScrollBar {
             PropertyChanges {
                 target: control.contentItem
                 implicitWidth: DS.Style.scrollBar.activeWidth
+            }
+            PropertyChanges {
+                target: backgroundRect
+                radius: DS.Style.scrollBar.radius
             }
         }
     ]
@@ -100,13 +116,13 @@ T.ScrollBar {
         property D.Palette insideBorderColor: DS.Style.scrollBar.insideBorder
         property D.Palette outsideBorderColor: DS.Style.scrollBar.outsideBorder
 
-        implicitWidth: DS.Style.scrollBar.width
+        implicitWidth: control.orientation == Qt.Horizontal ? DS.Style.scrollBar.horizontalWidth : DS.Style.scrollBar.width
         implicitHeight: implicitWidth
 
         Rectangle {
             id: backgroundRect
             anchors.fill: parent
-            radius: control.orientation == Qt.Horizontal ? control.height / 2 : control.width / 2
+            radius: DS.Style.scrollBar.normalRadius
             color: content.D.ColorSelector.backgroundColor
         }
 
