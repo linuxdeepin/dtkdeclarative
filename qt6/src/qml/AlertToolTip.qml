@@ -12,8 +12,10 @@ Control {
     property Item target
     property string text
     property int timeout: 0
+    property bool requestVisible: false
     property bool _expired: false
-    readonly property bool _shown: control.visible && !_expired
+    readonly property bool _shown: requestVisible && !_expired
+    visible: requestVisible
 
     property point __itemGlobalPos: {
         let x = 0, y = 0
@@ -30,7 +32,10 @@ Control {
     Behavior on y {
         NumberAnimation { duration: 200 }
     }
-    parent: _shown ? Overlay.overlay : target
+    parent: {
+      const overlay = target ? target.Overlay.overlay : null
+      return _shown && overlay ? overlay : target
+  }
     opacity: _shown ? 1 : 0
     enabled: _shown
     topPadding: DS.Style.alertToolTip.verticalPadding
