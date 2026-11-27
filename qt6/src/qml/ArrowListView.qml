@@ -23,7 +23,8 @@ FocusScope {
     readonly property real sizedHeight: {
         if (itemsView.count === 0)
             return 0
-        if (itemsView.contentHeight > 0)
+        // Once a delegate exists, zero is a valid measured content height.
+        if (itemsView.contentHeight > 0 || itemsView.hasDelegate)
             return implicitHeight
         const arrowStrips = itemsView.count > maxVisibleItems
                 ? 2 * (DS.Style.arrowListView.stepButtonIconSize.height + contentLayout.spacing) : 0
@@ -57,6 +58,7 @@ FocusScope {
         ListView {
             id: itemsView
             property real itemMaxWidth: 0
+            property bool hasDelegate: false
             clip: true
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -98,9 +100,13 @@ FocusScope {
 
             function refreshContentItemWidth() {
                 var maxWidth = itemMaxWidth
+                var foundDelegate = false
                 for (var i = 0; i < itemsView.count; ++i) {
                     var item = itemsView.itemAtIndex(i)
-                    if (!item || !item.visible)
+                    if (!item)
+                        continue
+                    foundDelegate = true
+                    if (!item.visible)
                         continue
                     item.width = itemsView.width
                     if (control._measuredRowHeight <= 0 && item.height > 0)
@@ -108,6 +114,7 @@ FocusScope {
                     if (item.implicitWidth > maxWidth)
                         maxWidth = item.implicitWidth
                 }
+                hasDelegate = foundDelegate
                 itemMaxWidth = maxWidth
             }
         }
